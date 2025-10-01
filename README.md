@@ -11,6 +11,13 @@ It allows you to:
 - 🖥️ View cheats in a resizable popup window  
 
 Everything is managed through a single Bash script and a folder of `.md` files.
+---
+
+## Example Screenshots
+
+![Main menu](docs/img/menu.png)
+![Sub menu](docs/img/cat.png)
+![One item](docs/img/item.png)
 
 ---
 
@@ -122,13 +129,6 @@ You can override defaults via environment variables:
 - `CHEATS_REBUILD=1` → force rebuild cache on every run  
 - `EXPORT_MODE=1` → make `showCheat` print Markdown to stdout instead of showing popup  
 
----
-
-## Example Screenshots
-
-![Main menu](docs/img/menu.png)
-![Sub menu](docs/img/cat.png)
-![One item](docs/img/item.png)
 
 ---
 
