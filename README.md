@@ -162,32 +162,114 @@ The repository already ships with a structured set of categories (groups):
 
 This repository already includes ready-to-use cheatsheets for popular tools:
 
-**Basics & Files**
-- `rsync`, `cp/mv/ln`, `tar`, `zip/unzip`, `find`, `grep`, `sed`, `awk`
+### Backups 0 S3
+- [🗄️ rclone — Remotes/S3](cheats.d/backups-s3/rclonecheatsheet.md)
+- [🗄️ restic — Backups](cheats.d/backups-s3/resticcheatsheet.md)
 
-**Network**
-- `ssh/scp/sftp`, `curl/httpie`, `iptables/nft`, `ss/iptables`
+### Basics
+- [📗 Linux Basics 2 — Next Steps](cheats.d/basics/linuxbasics2cheatsheet.md)
+- [📚 Linux Basics — Cheatsheet](cheats.d/basics/linuxbasicscheatsheet.md)
 
-**Text & Parsing**
-- `jq`, `awk`, `sed`, `ripgrep`
+### Databases
+- [🍃 MongoDB — Cheatsheet](cheats.d/databases/mongodbcheatsheet.md)
+- [🗃️ MySQL/MariaDB](cheats.d/databases/mysqlcheatsheet.md)
+- [🔎 OpenSearch — Cheatsheet](cheats.d/databases/opensearchcheatsheet.md)
+- [🗃️ PostgreSQL — psql/pg_dump](cheats.d/databases/postgrescheatsheet.md)
+- [🗃️ SQLite](cheats.d/databases/sqlitecheatsheet.md)
 
-**Kubernetes & Containers**
-- `kubectl`, `helm`, `docker` / `podman`, `containerd`, `k9s`
+### Dev 0 Tools
+- [🛠️ Build — Make/CMake](cheats.d/dev-tools/buildtoolscheatsheet.md)
+- [🧬 Git — Advanced](cheats.d/dev-tools/gitadvancedcheatsheet.md)
+- [🧬 Git — Basics](cheats.d/dev-tools/gitcheatsheet.md)
+- [🟢 Node — nvm/npm/yarn](cheats.d/dev-tools/nodetoolscheatsheet.md)
+- [🐍 Python — venv/pip/pipx](cheats.d/dev-tools/pythontoolscheatsheet.md)
+- [🧷 tmux — Commands](cheats.d/dev-tools/tmuxcheatsheet.md)
 
-**System & Logs**
-- `systemctl`, `journalctl`, `top/htop/btop`, `dmesg`
+### Diagnostics
+- [🔍 strace / perf / tcpdump — Commands](cheats.d/diagnostics/diagcheatsheet.md)
 
-**Web Servers**
-- `nginx`, `apache2`
+### Files 0 Archives
+- [🔁 diff / patch — Commands](cheats.d/files-archives/diffpatchcheatsheet.md)
+- [📦 TAR — Commands](cheats.d/files-archives/tarcheatsheet.md)
+- [📦 TAR (zstd) — Commands](cheats.d/files-archives/tarzstdcheatsheet.md)
+- [📦 ZIP / 7z / ZSTD — Commands](cheats.d/files-archives/zip7zzstdcheatsheet.md)
 
-**Databases**
-- `mysql/mariadb`, `postgresql`, `mongodb`, `redis`
+### Kubernetes 0 Containers
+- [🐳 Docker — Commands](cheats.d/kubernetes-containers/dockercheatsheet.md)
+- [⛏ Helm — Commands](cheats.d/kubernetes-containers/helmcheatsheet.md)
+- [⛏ Helm — template/lint](cheats.d/kubernetes-containers/helmtemplatelintcheatsheet.md)
+- [🎛 k9s — Hotkeys](cheats.d/kubernetes-containers/k9scheatsheet.md)
+- [☸️ KUBECTL — Commands](cheats.d/kubernetes-containers/kubectlcheatsheet.md)
+- [☸️ KUBECTL — JSONPath](cheats.d/kubernetes-containers/kubectljsonpathcheatsheet.md)
+- [☸️ Kustomize — kustomization.yaml](cheats.d/kubernetes-containers/kubectlkustomizecheatsheet.md)
+- [🫙 Podman / nerdctl — Commands](cheats.d/kubernetes-containers/podmannerdctlcheatsheet.md)
 
-**Backups & S3**
-- `rclone`, `aws s3 / awscli`, `restic`, `borg`
+### Network
+- [🔁 autossh — Resilient tunnels](cheats.d/network/autosshcheatsheet.md)
+- [🌐 CURL — Commands](cheats.d/network/curlcheatsheet.md)
+- [🧭 DNS — dig/nslookup](cheats.d/network/dnscheatsheet.md)
+- [🚓 Fail2Ban — Commands](cheats.d/network/fail2bancheatsheet.md)
+- [🔥 firewalld — Commands](cheats.d/network/firewalldcheatsheet.md)
+- [🌐 ip — Commands](cheats.d/network/ipcheatsheet.md)
+- [🔥 iptables — Commands](cheats.d/network/iptablescheatsheet.md)
+- [🔁 iptables → nftables — Mapping](cheats.d/network/iptablesnfttranslatecheatsheet.md)
+- [🔌 nc / nmap — Commands](cheats.d/network/ncnmapcheatsheet.md)
+- [🛰️ Network diag — mtr/traceroute/iperf3](cheats.d/network/netdiagcheatsheet.md)
+- [🕸 nftables — Commands](cheats.d/network/nftcheatsheet.md)
+- [🚚 RSYNC — Commands](cheats.d/network/rsynccheatsheet.md)
+- [🔐 SCP — Commands](cheats.d/network/scpcheatsheet.md)
+- [🔑 SSH — Commands 0 Config](cheats.d/network/sshcheatsheet.md)
+- [📡 SS — Socket Stats](cheats.d/network/sscheatsheet.md)
+- [🧱 UFW — Commands](cheats.d/network/ufwcheatsheet.md)
+- [🔐 WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
 
-**Security & Crypto**
-- `openssl`, `gpg`, `ssh-keygen`
+### Package Managers
+- [📦 Package Managers](cheats.d/package-managers/pkgmanagerscheatsheet.md)
+
+### Security 0 Crypto
+- [CrowdSec Cheatsheet](cheats.d/security-crypto/crowdseccheatsheet.md)
+- [🔐 gpg / age](cheats.d/security-crypto/gpgagecheatsheet.md)
+- [🔐 OpenSSL — Commands](cheats.d/security-crypto/opensslcheatsheet.md)
+- [🔐 OpenSSL — CSR with SAN](cheats.d/security-crypto/opensslsancsrcheatsheet.md)
+- [🔐 pass — Password Store](cheats.d/security-crypto/passcheatsheet.md)
+
+### Storage 0 FS
+- [💿 Grow Disk (Cloud EXT4/XFS)](cheats.d/storage-fs/diskgrowcheatsheet.md)
+- [💿 LVM — Basics](cheats.d/storage-fs/lvmcheatsheet.md)
+- [💿 Partition 0 Mount](cheats.d/storage-fs/partitionmountcheatsheet.md)
+- [💿 SMART 0 mdadm RAID](cheats.d/storage-fs/smartraidcheatsheet.md)
+
+### System 0 Logs
+- [⏰ cron / at — Commands](cheats.d/system-logs/cronatcheatsheet.md)
+- [📅 date / TZ — Commands](cheats.d/system-logs/datetzcheatsheet.md)
+- [💽 du/df/lsof/ps — Commands](cheats.d/system-logs/diskproccheatsheet.md)
+- [📜 journalctl — Basics](cheats.d/system-logs/journalctlbasicscheatsheet.md)
+- [📜 journalctl — Commands](cheats.d/system-logs/journalctlcheatsheet.md)
+- [🌀 logrotate — Basics](cheats.d/system-logs/logrotatecheatsheet.md)
+- [🛡️ SELinux / AppArmor — Basic diag](cheats.d/system-logs/selinuxapparmorcheatsheet.md)
+- [🛠 systemctl — Commands](cheats.d/system-logs/systemctlcheatsheet.md)
+- [🕰️ systemd timers — Basics](cheats.d/system-logs/systemdtimerscheatsheet.md)
+- [🧩 systemd unit — template](cheats.d/system-logs/systemdunittemplate.md)
+
+### Text 0 Parsing
+- [🦾 AWK — Commands](cheats.d/text-parsing/awkcheatsheet.md)
+- [🌀 Bash — Loops](cheats.d/text-parsing/loopscheatsheet.md)
+- [🔪 cut/sort/uniq — Commands](cheats.d/text-parsing/cutsortuniqcheatsheet.md)
+- [🗃 FIND — Commands](cheats.d/text-parsing/findcheatsheet.md)
+- [⚡ fzf — Fuzzy Finder](cheats.d/text-parsing/fzfcheatsheet.md)
+- [🔎 GREP — Commands](cheats.d/text-parsing/grepcheatsheet.md)
+- [🧩 JQ — Commands](cheats.d/text-parsing/jqcheatsheet.md)
+- [⚡ ripgrep / fd / bat](cheats.d/text-parsing/modernclicheatsheet.md)
+- [✂️ SED — Commands](cheats.d/text-parsing/sedcheatsheet.md)
+- [Tree — Cheatsheet](cheats.d/text-parsing/treecheatsheet.md)
+- [🔤 tr/head/tail/watch — Commands](cheats.d/text-parsing/trheadtailwatchcheatsheet.md)
+- [✍️ vim](cheats.d/text-parsing/vimquickstartcheatsheet.md)
+- [🧪 yq — YAML processor](cheats.d/text-parsing/yqcheatsheet.md)
+
+### Web Servers
+- [🪶 Apache HTTPD — Cheatsheet](cheats.d/web-servers/apachecheatsheet.md)
+- [🌐 Nginx — Cheatsheet](cheats.d/web-servers/nginxcheatsheet.md)
+- [🐱 Tomcat — Cheatsheet](cheats.d/web-servers/tomcatcheatsheet.md)
 
 > Each cheat lives as a Markdown file under `cheats.d/` with front-matter (`Title`, `Group`, `Icon`, `Order`).
 
