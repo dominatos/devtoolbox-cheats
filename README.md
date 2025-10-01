@@ -124,8 +124,11 @@ You can override defaults via environment variables:
 
 ---
 
-## Example Screenshot
-*(Add `docs/img/menu.png` and `docs/img/search.png` here)*
+## Example Screenshots
+
+![Main menu](docs/img/menu.png)
+![Sub menu](docs/img/cat.png)
+![One item](docs/img/item.png)
 
 ---
 
