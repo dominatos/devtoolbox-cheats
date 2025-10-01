@@ -59,7 +59,7 @@ Reload GNOME shell (`Alt+F2 → r → Enter`) or restart Argos — you should se
 ## Cheatsheet Format
 Each cheatsheet is a simple Markdown file (`.md`) with optional **front-matter keys** in the first 80 lines.
 
-### Example file: `cheats.d/rsync.md`
+### Example file: `cheats.d/network/rsync.md`
 ```markdown
 Title: rsync basics
 Group: Basics
