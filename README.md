@@ -138,6 +138,59 @@ You can override defaults via environment variables:
 - 🔄 HTML/EPUB export with `pandoc`  
 - 🔄 Automatic installer script  
 
+## Included categories
+
+The repository already ships with a structured set of categories (groups):
+
+- 📚 **Basics**
+- 📡 **Network**
+- 💿 **Storage & FS**
+- 🗄️ **Backups & S3**
+- 📦 **Files & Archives**
+- 📝 **Text & Parsing**
+- ☸️ **Kubernetes & Containers**
+- 🛠 **System & Logs**
+- 🌐 **Web Servers**
+- 🗃️ **Databases**
+- 📦 **Package Managers**
+- 🔐 **Security & Crypto**
+- 🧬 **Dev & Tools**
+- 🧩 **Misc**
+
+
+## Included cheats (selected)
+
+This repository already includes ready-to-use cheatsheets for popular tools:
+
+**Basics & Files**
+- `rsync`, `cp/mv/ln`, `tar`, `zip/unzip`, `find`, `grep`, `sed`, `awk`
+
+**Network**
+- `ssh/scp/sftp`, `curl/httpie`, `iptables/nft`, `ss/iptables`
+
+**Text & Parsing**
+- `jq`, `awk`, `sed`, `ripgrep`
+
+**Kubernetes & Containers**
+- `kubectl`, `helm`, `docker` / `podman`, `containerd`, `k9s`
+
+**System & Logs**
+- `systemctl`, `journalctl`, `top/htop/btop`, `dmesg`
+
+**Web Servers**
+- `nginx`, `apache2`
+
+**Databases**
+- `mysql/mariadb`, `postgresql`, `mongodb`, `redis`
+
+**Backups & S3**
+- `rclone`, `aws s3 / awscli`, `restic`, `borg`
+
+**Security & Crypto**
+- `openssl`, `gpg`, `ssh-keygen`
+
+> Each cheat lives as a Markdown file under `cheats.d/` with front-matter (`Title`, `Group`, `Icon`, `Order`).
+
 ---
 
 ## License
