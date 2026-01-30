@@ -9,7 +9,7 @@ It allows you to:
 - 🔎 Search cheats interactively  
 - 📥 Export all cheats into a single Markdown (and PDF if `pandoc` is installed)  
 - ⚡ Copy cheats instantly to clipboard (Wayland/X11 compatible)  
-- 🖥️ View cheats in a resizable popup window  
+- 🖥️ View cheats in Visual Code or a resizable popup window 
 - 🖼️ Compact mode for small screens  
 
 Everything is managed through a single Bash script and a folder of `.md` files.
@@ -235,8 +235,7 @@ This repository already includes ready-to-use cheatsheets for popular tools:
 - [🔐 WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
 - [🔑 🔑 SSH / VPN / Port Forwarding](cheats.d/network/ssh_vpn_tunnel_cheatsheet.md)
 - [🖧 🖧 resolvectl](cheats.d/network/resolvectlcheatsheet.md)
-- [🔑 🔑 SSH / VPN / Port Forwarding](cheats.d/network/ssh_vpn_tunnel_cheatsheet.md)
-- [🖧 🖧 resolvectl](cheats.d/network/resolvectlcheatsheet.md)
+
 
 ### Package Managers
 - [📦 Package Managers](cheats.d/package-managers/pkgmanagerscheatsheet.md)
