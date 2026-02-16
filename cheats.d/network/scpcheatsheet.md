@@ -15,76 +15,102 @@ Order: 7
 # 📤 Basic Transfer / Базовая передача
 
 ### Upload to Remote / Загрузка на удалённый хост
+```bash
 scp file.txt <USER>@<HOST>:/path/             # Copy file to remote / Скопировать файл на удалённый хост
 scp file.txt <USER>@<HOST>:                   # Copy to home directory / Скопировать в домашнюю директорию
 scp file1.txt file2.txt <USER>@<HOST>:/path/  # Copy multiple files / Скопировать несколько файлов
 scp -r dir/ <USER>@<HOST>:/path/              # Copy directory recursively / Скопировать директорию рекурсивно
 scp -r dir1/ dir2/ <USER>@<HOST>:/path/       # Copy multiple directories / Скопировать несколько директорий
+```
 
 ### Download from Remote / Скачивание с удалённого хоста
+```bash
 scp <USER>@<HOST>:/path/file.txt ./           # Copy from remote / Скопировать с удалённого хоста
 scp <USER>@<HOST>:/path/file.txt ./local/     # Copy to local directory / Скопировать в локальную директорию
 scp -r <USER>@<HOST>:/path/dir/ ./            # Copy directory from remote / Скопировать директорию с удалённого
 scp <USER>@<HOST>:/path/\*.txt ./             # Copy with wildcard / Скопировать по маске
+```
 
 ### Copy Between Remotes / Копирование между удалёнными
+```bash
 scp -3 <USER1>@<HOST1>:/p/file <USER2>@<HOST2>:/p/  # Copy between remotes via local / Между удалёнными через локальный
 scp <USER1>@<HOST1>:/p/file <USER2>@<HOST2>:/p/     # Direct copy (no -3) / Прямое копирование
+```
 
 ---
 
 # ⚙️ Advanced Options / Продвинутые опции
 
 ### Custom Port & Key / Пользовательский порт и ключ
+```bash
 scp -P 2222 file.txt <USER>@<HOST>:/path/     # Custom SSH port / Пользовательский SSH порт
 scp -i ~/.ssh/id_ed25519 file <USER>@<HOST>:/path/  # Specific SSH key / Конкретный SSH ключ
 scp -P 2222 -i ~/.ssh/key file <USER>@<HOST>:/path/  # Port + key / Порт + ключ
+```
 
 ### Preserve Attributes / Сохранить атрибуты
+```bash
 scp -p file.txt <USER>@<HOST>:/path/          # Preserve modification times / Сохранить время модификации
 scp -rp dir/ <USER>@<HOST>:/path/             # Recursive with attributes / Рекурсивно с атрибутами
+```
 
 ### Limit Bandwidth / Ограничить пропускную способность
+```bash
 scp -l 1000 file.txt <USER>@<HOST>:/path/     # Limit to 1000 Kbit/s / Ограничить до 1000 Кбит/с
 scp -l 8000 large.iso <USER>@<HOST>:/path/    # Limit to 8000 Kbit/s (1MB/s) / Ограничить до 8000 Кбит/с (1МБ/с)
+```
 
 ### Quiet & Verbose / Тихий и подробный
+```bash
 scp -q file.txt <USER>@<HOST>:/path/          # Quiet mode / Тихий режим
 scp -v file.txt <USER>@<HOST>:/path/          # Verbose mode / Подробный режим
 scp -vvv file.txt <USER>@<HOST>:/path/        # Extra verbose / Очень подробный
+```
 
 ---
 
 # ⚡ Performance & Compression / Производительность и сжатие
 
 ### Compression / Сжатие
+```bash
 scp -C file.txt <USER>@<HOST>:/path/          # Enable compression / Включить сжатие
 scp -C big.iso <USER>@<HOST>:/path/           # Compress large file / Сжать большой файл
 scp -C -r /large/dir <USER>@<HOST>:/path/     # Compress directory / Сжать директорию
+```
 
 ### Cipher Selection / Выбор шифра
+```bash
 scp -c aes128-ctr file <USER>@<HOST>:/path/   # Fast cipher / Быстрый шифр
 scp -c aes256-ctr file <USER>@<HOST>:/path/   # Secure cipher / Безопасный шифр
 scp -c chacha20-poly1305@openssh.com file <USER>@<HOST>:/path/  # Modern cipher / Современный шифр
+```
 
 ### Parallel Transfer / Параллельная передача
+```bash
 # SCP doesn't support parallel, use rsync or pscp instead / SCP не поддерживает параллель, используйте rsync или pscp
+```
 
 ---
 
 # 🐛 Troubleshooting / Устранение неполадок
 
 ### Debug Connection / Отладка соединения
+```bash
 scp -v file.txt <USER>@<HOST>:/path/          # Verbose output / Подробный вывод
 scp -vvv file.txt <USER>@<HOST>:/path/        # Debug output / Отладочный вывод
+```
 
 ### Permission Issues / Проблемы с правами
+```bash
 chmod 600 ~/.ssh/id_rsa                       # Fix key permissions / Исправить права ключа
 ssh-add ~/.ssh/id_rsa                         # Add key to agent / Добавить ключ в агента
+```
 
 ### Test Connection / Проверить соединение
+```bash
 ssh <USER>@<HOST> "echo test"                 # Test SSH first / Сначала проверить SSH
 ssh -p 2222 <USER>@<HOST>                     # Test custom port / Проверить пользовательский порт
+```
 
 ---
 

@@ -18,12 +18,16 @@ Order: 7
 3. [Groovy Script Console](#groovy-script-console--консоль-скриптов-groovy)
 4. [Pipeline Syntax](#pipeline-syntax--синтаксис-pipeline-declarative)
 5. [Security](#security--безопасность)
+6. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
 ## 1. Service Management / Управление сервисом
 
 ### Systemd / Systemd
+
+`/etc/systemd/system/jenkins.service`
+
 ```bash
 systemctl start jenkins
 systemctl stop jenkins
@@ -135,3 +139,29 @@ Located in `$JENKINS_HOME/users/`.
 ### Reset Admin Password / Сброс пароля админа
 If locked out, edit `$JENKINS_HOME/config.xml` and change `<useSecurity>true</useSecurity>` to `false`. Restart Jenkins.
 Если заблокированы, измените `true` на `false` в теге `<useSecurity>`. Перезапустите Jenkins.
+
+---
+
+## 6. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/jenkins`
+
+```conf
+/var/log/jenkins/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 jenkins jenkins
+    copytruncate
+}
+```
+
+> [!TIP]
+> Use `copytruncate` as Jenkins keeps the log file handle open.
+> Используйте `copytruncate`, так как Jenkins держит файл лога открытым.
+
+---
+

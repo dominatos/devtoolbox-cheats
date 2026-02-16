@@ -19,6 +19,7 @@ Order: 8
 4. [Security](#security--безопасность)
 5. [Backup & Restore](#backup--restore--резервное-копирование-и-восстановление)
 6. [Troubleshooting & Tools](#troubleshooting--tools--устранение-неполадок-и-инструменты)
+7. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -212,3 +213,28 @@ netstat -tulpn | grep 2181
 # Check process specific logs / Логи процесса
 grep -E "ERROR|WARN" /opt/zookeeper/logs/zookeeper-*.log
 ```
+
+---
+
+## 7. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/zookeeper`
+
+```conf
+/opt/zookeeper/logs/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+```
+
+> [!NOTE]
+> Zookeeper manages snapshot cleanup via `autopurge.*` settings in `zoo.cfg`.
+> Zookeeper управляет очисткой снапшотов через настройки `autopurge.*` в `zoo.cfg`.
+
+---
+

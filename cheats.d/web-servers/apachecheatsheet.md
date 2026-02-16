@@ -16,6 +16,7 @@ Order: 2
 - [Performance Tuning](#performance-tuning)
 - [Logs & Monitoring](#logs--monitoring)
 - [Troubleshooting & Tools](#troubleshooting--tools)
+- [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -34,22 +35,20 @@ sudo systemctl enable httpd                              # Enable at boot / Ав
 
 ### Default Paths / Пути по умолчанию
 
-```bash
-# Debian/Ubuntu
-/etc/apache2/apache2.conf                                # Main config / Основной конфиг
-/etc/apache2/sites-available/                            # Available sites / Доступные сайты
-/etc/apache2/sites-enabled/                              # Enabled sites / Включенные сайты
-/etc/apache2/mods-available/                             # Available modules / Доступные модули
-/etc/apache2/mods-enabled/                               # Enabled modules / Включенные модули
-/var/www/html/                                           # Default document root / Корень по умолчанию
-/var/log/apache2/                                        # Logs directory / Директория логов
+**Debian/Ubuntu:**  
+`/etc/apache2/apache2.conf` — Main config / Основной конфиг  
+`/etc/apache2/sites-available/` — Available sites / Доступные сайты  
+`/etc/apache2/sites-enabled/` — Enabled sites / Включенные сайты  
+`/etc/apache2/mods-available/` — Available modules / Доступные модули  
+`/etc/apache2/mods-enabled/` — Enabled modules / Включенные модули  
+`/var/www/html/` — Default document root / Корень по умолчанию  
+`/var/log/apache2/` — Logs directory / Директория логов
 
-# RHEL/CentOS/AlmaLinux
-/etc/httpd/conf/httpd.conf                               # Main config / Основной конфиг
-/etc/httpd/conf.d/                                       # Additional configs / Дополнительные конфиги
-/var/www/html/                                           # Default document root / Корень по умолчанию
-/var/log/httpd/                                          # Logs directory / Директория логов
-```
+**RHEL/CentOS/AlmaLinux:**  
+`/etc/httpd/conf/httpd.conf` — Main config / Основной конфиг  
+`/etc/httpd/conf.d/` — Additional configs / Дополнительные конфиги  
+`/var/www/html/` — Default document root / Корень по умолчанию  
+`/var/log/httpd/` — Logs directory / Директория логов
 
 ### Default Ports / Порты по умолчанию
 
@@ -95,6 +94,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 ## Virtual Hosts
 
 ### Basic HTTP Virtual Host / Базовый HTTP виртуальный хост
+`/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
 <VirtualHost *:80>
@@ -114,6 +114,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 ```
 
 ### Reverse Proxy Virtual Host / Виртуальный хост обратный прокси
+`/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
 <VirtualHost *:80>
@@ -129,6 +130,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 ```
 
 ### HTTPS Virtual Host / HTTPS виртуальный хост
+`/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
 <VirtualHost *:443>
@@ -151,6 +153,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 ```
 
 ### HTTP to HTTPS Redirect / Редирект с HTTP на HTTPS
+`/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
 <VirtualHost *:80>
@@ -225,6 +228,7 @@ sudo certbot renew --dry-run                             # Test renewal / Тес
 ```
 
 ### SSL Best Practices / Лучшие практики SSL
+`/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
 <VirtualHost *:443>
@@ -251,6 +255,7 @@ sudo certbot renew --dry-run                             # Test renewal / Тес
 ## Security & Access Control
 
 ### Directory Access Control / Контроль доступа к директориям
+`.htaccess` or `/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
 <Directory /var/www/<HOST>/admin>
@@ -276,6 +281,7 @@ sudo htpasswd /etc/apache2/.htpasswd <USER>              # Add another user / Д
 ```
 
 ### Security Headers / Заголовки безопасности
+`/etc/apache2/conf-available/security.conf` or Vhost
 
 ```apache
 <IfModule mod_headers.c>
@@ -288,6 +294,7 @@ sudo htpasswd /etc/apache2/.htpasswd <USER>              # Add another user / Д
 ```
 
 ### Disable Directory Listing / Отключить листинг директорий
+`.htaccess` or Vhost
 
 ```apache
 <Directory /var/www/<HOST>>
@@ -296,6 +303,7 @@ sudo htpasswd /etc/apache2/.htpasswd <USER>              # Add another user / Д
 ```
 
 ### Hide Apache Version / Скрыть версию Apache
+`/etc/apache2/conf-available/security.conf`
 
 ```apache
 # Add to apache2.conf or httpd.conf
@@ -308,6 +316,7 @@ ServerSignature Off                                      # Hide signature / Ск
 ## Performance Tuning
 
 ### Enable Compression / Включить сжатие
+`/etc/apache2/mods-available/deflate.conf` or Vhost
 
 ```apache
 <IfModule mod_deflate.c>
@@ -325,6 +334,7 @@ ServerSignature Off                                      # Hide signature / Ск
 ```
 
 ### Browser Caching / Кеширование браузера
+`/etc/apache2/mods-available/expires.conf` or Vhost
 
 ```apache
 <IfModule mod_expires.c>
@@ -348,6 +358,7 @@ ServerSignature Off                                      # Hide signature / Ск
 ```
 
 ### MPM Configuration / Конфигурация MPM
+`/etc/apache2/mods-available/mpm_*.conf`
 
 ```apache
 # MPM prefork (for mod_php) / MPM prefork (для mod_php)
@@ -371,6 +382,7 @@ ServerSignature Off                                      # Hide signature / Ск
 ```
 
 ### KeepAlive Settings / Настройки KeepAlive
+`/etc/apache2/apache2.conf`
 
 ```apache
 KeepAlive On                                             # Enable KeepAlive / Включить KeepAlive
@@ -396,6 +408,7 @@ sudo tail -f /var/log/httpd/error_log
 ```
 
 ### Custom Log Formats / Пользовательские форматы логов
+`/etc/apache2/apache2.conf` or Vhost
 
 ```apache
 # Combined log format (default) / Комбинированный формат (по умолчанию)
@@ -417,6 +430,7 @@ sudo logrotate -f /etc/logrotate.d/apache2               # Force rotation / Пр
 ```
 
 ### Apache Status Module / Модуль статуса Apache
+`/etc/apache2/mods-available/status.conf`
 
 ```bash
 sudo a2enmod status                                      # Enable status module / Включить модуль
@@ -478,6 +492,7 @@ sudo apache2ctl -t -D DUMP_MODULES                       # Dump modules / Дам
 ```
 
 ### Increase Error Log Verbosity / Увеличить подробность логов
+`/etc/apache2/apache2.conf` or Vhost
 
 ```apache
 # In apache2.conf or httpd.conf
@@ -522,3 +537,52 @@ sudo a2ensite <SITE>.conf                                # Enable site / Вкл�
 - Keep Apache updated / Обновляй Apache
 
 ---
+
+## Logrotate Configuration / Конфигурация Logrotate
+
+### Debian/Ubuntu
+
+`/etc/logrotate.d/apache2`
+
+```conf
+/var/log/apache2/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 root adm
+    sharedscripts
+    postrotate
+        /usr/sbin/apachectl graceful > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+### RHEL/CentOS/AlmaLinux
+
+`/etc/logrotate.d/httpd`
+
+```conf
+/var/log/httpd/*log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 root adm
+    sharedscripts
+    postrotate
+        /bin/systemctl reload httpd.service > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+> [!TIP]
+> Use `graceful` instead of `restart` to avoid dropping connections.
+> Используйте `graceful` вместо `restart` для сохранения соединений.
+
+---
+

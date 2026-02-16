@@ -3,21 +3,26 @@ Group: Basics
 Icon: 📚
 Order: 1
 
-## Table of Contents
-- [Navigation](#-navigation--навигация)
-- [Files & Directories](#-files--dirs--файлы-и-папки)
-- [View & Edit](#-viewedit--просмотрредактирование)
-- [Nano Editor](#️-nano-editor--редактор-nano)
-- [Privileges](#-privileges--права-и-привилегии)
-- [Package Management (APT)](#-apt-debianubuntu)
-- [Process Management](#-process-management--управление-процессами)
-- [System Information](#-system-information--информация-о-системе)
-- [Network Basics](#-network-basics--основы-сети)
-- [Helpful Tips](#-good-to-know--полезно)
+# 📚 Linux Basics — Cheatsheet
+
+## 📚 Table of Contents / Содержание
+
+1. [Navigation](#navigation--навигация)
+2. [Files & Directories](#files--directories--файлы-и-папки)
+3. [View & Edit](#view--edit--просмотр-и-редактирование)
+4. [Nano Editor](#nano-editor--редактор-nano)
+5. [Privileges](#privileges--права-и-привилегии)
+6. [Package Management (APT)](#package-management-apt--управление-пакетами-apt)
+7. [Process Management](#process-management--управление-процессами)
+8. [System Information](#system-information--информация-о-системе)
+9. [Network Basics](#network-basics--основы-сети)
+10. [Helpful Tips](#helpful-tips--полезные-советы)
 
 ---
 
-# 🔎 Navigation / Навигация
+## Navigation / Навигация
+
+```bash
 pwd                                           # Show current directory / Показать текущую директорию
 ls -la                                        # List detailed incl. hidden / Подробный список (включая скрытые)
 cd /path/to/dir                               # Change directory / Перейти в папку
@@ -25,8 +30,13 @@ cd ..                                         # Up one level / Вверх на �
 cd -                                          # Previous directory / В предыдущую папку
 cd ~                                          # Home directory / Домашняя директория
 cd /                                          # Filesystem root / Корень ФС
+```
 
-# 📁 Files & dirs / Файлы и папки
+---
+
+## Files & Directories / Файлы и Папки
+
+```bash
 mkdir newdir                                  # Create directory / Создать папку
 mkdir -p a/b/c                                # Create nested dirs / Вложенные папки
 touch file.txt                                # New empty/update mtime / Пустой файл/обновить время
@@ -41,27 +51,62 @@ rm -i file.txt                                # Delete with prompt / Удали�
 rm -r dir/                                    # Remove dir recursively / Рекурсивно удалить каталог
 rm -rf dir/                                   # ⚠️ Force remove / ⚠️ Силовое удаление
 rmdir emptydir                                # Remove empty dir / Удалить пустую папку
+```
 
-# 📖 View/edit / Просмотр/редактирование
+> [!CAUTION]
+> `rm -rf` is extremely dangerous! Always double-check the path before executing.
+> `rm -rf` крайне опасен! Всегда проверяйте путь перед выполнением.
+
+---
+
+## View & Edit / Просмотр и Редактирование
+
+```bash
 cat file.txt                                  # Print file / Вывести файл
 less file.txt                                 # Pager (q exit, / search) / Просмотрщик (q выход, / поиск)
 head -n 20 file.txt                           # First 20 lines / Первые 20 строк
 tail -n 50 file.txt                           # Last 50 lines / Последние 50 строк
 tail -f /var/log/syslog                       # Follow log / «Хвост» лога
+```
 
-# ✏️ nano editor / Редактор nano
+---
+
+## Nano Editor / Редактор Nano
+
+```bash
 nano file.txt                                 # Open in nano / Открыть в nano
-# Ctrl+O save | Ctrl+X exit | Ctrl+W search | Ctrl+K cut | Ctrl+U paste | Ctrl+\ replace
-# Сохранить Ctrl+O | Выход Ctrl+X | Поиск Ctrl+W | Вырезать Ctrl+K | Вставить Ctrl+U | Замена Ctrl+\
+```
 
-# 🔐 Privileges / Права и привилегии
+| Shortcut | Action / Действие |
+|----------|-------------------|
+| `Ctrl+O` | Save / Сохранить |
+| `Ctrl+X` | Exit / Выход |
+| `Ctrl+W` | Search / Поиск |
+| `Ctrl+K` | Cut line / Вырезать строку |
+| `Ctrl+U` | Paste / Вставить |
+| `Ctrl+\` | Replace / Замена |
+
+---
+
+## Privileges / Права и Привилегии
+
+```bash
 whoami                                        # Current user / Текущий пользователь
 sudo command                                  # Run as root / Выполнить от root
 sudo -i                                       # Root shell (root env) / Оболочка root (окружение root)
 sudo -s                                       # Root shell (user env) / Оболочка root (ваше окружение)
 su -                                          # Switch to root / Переключиться на root
+```
 
-# 📦 APT (Debian/Ubuntu)
+---
+
+## Package Management (APT) / Управление Пакетами (APT)
+
+> [!NOTE]
+> APT is the package manager for Debian/Ubuntu based distributions.
+> APT — менеджер пакетов для Debian/Ubuntu дистрибутивов.
+
+```bash
 sudo apt update                               # Update package lists / Обновить списки пакетов
 sudo apt upgrade                              # Upgrade packages / Установить обновления
 sudo apt install htop                         # Install package / Установить пакет
@@ -70,8 +115,13 @@ sudo apt purge htop                           # Remove + purge conf / Удали
 sudo apt autoremove                           # Remove unused deps / Удалить неисп. зависимости
 apt search nginx                              # Search package / Поиск пакета
 apt show nginx                                # Package info / Информация о пакете
+```
 
-# 🔄 Process Management / Управление процессами
+---
+
+## Process Management / Управление Процессами
+
+```bash
 ps aux                                        # All processes / Все процессы
 ps aux | grep nginx                           # Search process / Найти процесс
 top                                           # Live monitor (q exit) / Мониторинг (q — выход)
@@ -86,8 +136,13 @@ fg                                            # Foreground job / На перед
 bg                                            # Background job / В фон
 command &                                     # Run in background / Запустить в фоне
 nohup command &                               # Run detached / Запустить независимо
+```
 
-# 📊 System Information / Информация о системе
+---
+
+## System Information / Информация о Системе
+
+```bash
 uname -a                                      # System info / Информация о системе
 hostname                                      # Machine name / Имя машины
 uptime                                        # System uptime / Время работы системы
@@ -100,8 +155,13 @@ df -h                                         # Disk usage / Использов�
 du -sh *                                      # Dir sizes / Размеры папок
 lsb_release -a                                # Distro info / Информация о дистрибутиве
 cat /etc/os-release                           # OS info / Информация об ОС
+```
 
-# 🌐 Network Basics / Основы сети
+---
+
+## Network Basics / Основы Сети
+
+```bash
 ip a                                          # IP addresses / IP-адреса
 ip r                                          # Routes / Маршруты
 ping -c 4 8.8.8.8                             # Ping 4 packets / Пинг 4 пакета
@@ -110,8 +170,13 @@ wget https://example.com/file                 # Download file / Скачать �
 ss -tulpn                                     # Listening ports / Прослушиваемые порты
 netstat -tulpn                                # Network stats / Сетевая статистика
 hostname -I                                   # Local IP / Локальный IP
+```
 
-# 💡 Good to know / Полезно
+---
+
+## Helpful Tips / Полезные Советы
+
+```bash
 man ls                                        # Manual (q exit) / Руководство (q — выход)
 ls --help                                     # Help options / Короткая справка
 history                                       # Shell history / История команд
@@ -122,8 +187,16 @@ which command                                 # Command location / Распол�
 type command                                  # Command type / Тип команды
 echo $PATH                                    # PATH variable / Переменная PATH
 export VAR=value                              # Set env variable / Установить переменную окружения
-# TAB completion helps with paths and names / TAB дополняет пути и имена
-# CTRL+C stops running command / CTRL+C останавливает команду
-# CTRL+Z suspends to background / CTRL+Z приостанавливает в фон
-# CTRL+R search command history / CTRL+R поиск по истории
+```
 
+### Keyboard Shortcuts / Клавиатурные сокращения
+
+| Shortcut | Action / Действие |
+|----------|-------------------|
+| `TAB` | Completion helps with paths and names / Дополняет пути и имена |
+| `Ctrl+C` | Stops running command / Останавливает команду |
+| `Ctrl+Z` | Suspends to background / Приостанавливает в фон |
+| `Ctrl+R` | Search command history / Поиск по истории |
+| `Ctrl+L` | Clear screen / Очистить экран |
+
+---

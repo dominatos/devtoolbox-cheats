@@ -18,6 +18,7 @@ Order: 2
 3. [Core Management](#core-management-as-site-user--управление-как-пользователь-сайта)
 4. [Sysadmin Operations](#sysadmin-operations--операции-сисадмина)
 5. [Backup (OMD)](#backup-omd--бэкап-omd)
+6. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -123,3 +124,17 @@ omd backup <SITE_NAME> /tmp/backup.tar.gz
 # Restore site / Восстановление сайта
 omd restore <SITE_NAME> /tmp/backup.tar.gz
 ```
+
+---
+
+## 6. Logrotate Configuration / Конфигурация Logrotate
+
+> [!NOTE]
+> CheckMK/OMD manages log rotation internally via the site framework.
+> CheckMK/OMD управляет ротацией логов внутренне через фреймворк сайта.
+
+Logs are rotated automatically in the OMD site's `~/var/log/` directory.
+Логи ротируются автоматически в директории `~/var/log/` сайта OMD.
+
+---
+

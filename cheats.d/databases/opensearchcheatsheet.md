@@ -15,6 +15,7 @@ Order: 4
 6. [Security / Безопасность](#6-security--безопасность)
 7. [Sysadmin Operations / Сисадминские Операции](#7-sysadmin-operations--сисадминские-операции)
 8. [Tools / Инструменты](#8-tools--инструменты)
+9. [Logrotate Configuration / Конфигурация Logrotate](#9-logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -37,10 +38,12 @@ docker run opensearchproject/opensearch:3.7.0 # Run in Docker / Запуск в 
 vm.max_map_count = 262144
 vm.swappiness = 1
 fs.file-max = 262144
+```
 
 # Apply sysctl / Применить sysctl
 sysctl --system
 
+```bash
 # /etc/security/limits.d/99-opensearch.conf
 opensearch soft nofile 65536
 opensearch hard nofile 65536
@@ -48,8 +51,11 @@ opensearch soft nproc  4096
 opensearch hard nproc  4096
 opensearch soft memlock unlimited
 opensearch hard memlock unlimited
+```
 
 # Systemd override (systemctl edit opensearch)
+
+```bash
 [Service]
 LimitNOFILE=65536
 LimitNPROC=4096
@@ -420,3 +426,34 @@ elasticdump --input=https://admin:<PASSWORD>@localhost:9200/my-index --output=da
 # Import / Импорт
 elasticdump --input=data.json --output=https://admin:<PASSWORD>@target:9200/my-index --type=data
 ```
+
+---
+
+## 9. Logrotate Configuration / Конфигурация Logrotate
+
+```bash
+/etc/logrotate.d/opensearch
+```
+
+```bash
+/var/log/opensearch/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 opensearch opensearch
+    sharedscripts
+    postrotate
+        systemctl reload opensearch > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+> [!NOTE]
+> OpenSearch can also manage logs internally via `logging.yml` configuration.
+> OpenSearch также может управлять логами через конфигурацию `logging.yml`.
+
+---
+

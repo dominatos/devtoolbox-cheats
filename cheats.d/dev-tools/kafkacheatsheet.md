@@ -19,6 +19,7 @@ Order: 9
 4. [Security](#security--безопасность)
 5. [Backup & Restore](#backup--restore--резервное-копирование-и-восстановление)
 6. [Troubleshooting & Tools](#troubleshooting--tools--устранение-неполадок-и-инструменты)
+7. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -243,3 +244,28 @@ tar -czf kafka_data_backup_$(date +%F).tar.gz /var/lib/kafka/data
 > [!WARNING]
 > Keep `delete.topic.enable=true` with caution in production!
 > Будьте осторожны с `delete.topic.enable=true` в продакшене!
+
+---
+
+## 7. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/kafka`
+
+```conf
+/opt/kafka/logs/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+```
+
+> [!NOTE]
+> Kafka manages data log rotation internally via `log.retention.hours` in `server.properties`.
+> Kafka управляет ротацией логов данных через `log.retention.hours` в `server.properties`.
+
+---
+

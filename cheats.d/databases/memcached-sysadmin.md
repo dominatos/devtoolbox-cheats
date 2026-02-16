@@ -123,11 +123,14 @@ echo "stats" | nc localhost 11211
 ## 5. Configuration / Конфигурация
 
 Default config file:  
-`/etc/memcached.conf`
+
+```bash
+/etc/memcached.conf
+```
 
 ### Key parameters / Важные параметры
 
-```conf
+```bash
 -m 512        # Memory limit in MB / Лимит памяти
 -p 11211      # Port / Порт
 -l 127.0.0.1  # Bind address (CRITICAL) / Адрес привязки
@@ -137,7 +140,7 @@ Default config file:
 
 ### ❌ Dangerous configuration / Опасная конфигурация
 
-```conf
+```bash
 -l 0.0.0.0
 ```
 

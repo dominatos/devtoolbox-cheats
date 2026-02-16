@@ -17,6 +17,7 @@ Order: 5
 2. [Server Lifecycle](#server-lifecycle--жизненный-цикл-сервера)
 3. [WLST (WebLogic Scripting Tool)](#wlst-weblogic-scripting-tool--wlst)
 4. [Maintenance](#maintenance--обслуживание)
+5. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -103,3 +104,28 @@ Set in `setDomainEnv.sh` or `USER_MEM_ARGS`.
 ```bash
 export USER_MEM_ARGS="-Xms2g -Xmx2g"
 ```
+
+---
+
+## 5. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/weblogic`
+
+```conf
+/u01/oracle/user_projects/domains/<DOMAIN>/servers/*/logs/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+```
+
+> [!WARNING]
+> Use `copytruncate` for WebLogic logs as the JVM keeps file handles open.
+> Используйте `copytruncate` для логов WebLogic, так как JVM держит файлы открытыми.
+
+---
+

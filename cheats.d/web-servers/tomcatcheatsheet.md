@@ -16,6 +16,7 @@ Order: 3
 - [Security](#security)
 - [Logs & Monitoring](#logs--monitoring)
 - [Troubleshooting & Tools](#troubleshooting--tools)
+- [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -148,9 +149,10 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 
 ### server.xml / Основной конфигурационный файл
 
+`/etc/tomcat9/server.xml`
+
 ```xml
 <!-- Main configuration file / Основной конфигурационный файл -->
-<!-- Location: /etc/tomcat9/server.xml -->
 
 <!-- Shutdown port / Порт остановки -->
 <Server port="8005" shutdown="SHUTDOWN">
@@ -182,8 +184,9 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 
 ### tomcat-users.xml / Пользователи и роли
 
+`/etc/tomcat9/tomcat-users.xml`
+
 ```xml
-<!-- Location: /etc/tomcat9/tomcat-users.xml -->
 <tomcat-users>
   <!-- Manager GUI access / Доступ к Manager GUI -->
   <role rolename="manager-gui"/>
@@ -195,8 +198,9 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 
 ### context.xml / Конфигурация контекста
 
+`/etc/tomcat9/context.xml` or `META-INF/context.xml`
+
 ```xml
-<!-- Location: /etc/tomcat9/context.xml or in webapp META-INF/ -->
 <Context>
   <!-- Database connection pool / Пул соединений БД -->
   <Resource name="jdbc/mydb" auth="Container"
@@ -210,8 +214,9 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 
 ### web.xml / Дескриптор веб-приложения
 
+`/etc/tomcat9/web.xml` or `WEB-INF/web.xml`
+
 ```xml
-<!-- Location: /etc/tomcat9/web.xml (global) or in webapp WEB-INF/ -->
 <web-app>
   <!-- Default servlet / Сервлет по умолчанию -->
   <!-- Session timeout / Таймаут сессии -->
@@ -547,3 +552,37 @@ sudo rm -rf /var/lib/tomcat9/webapps/app*                # Undeploy / Удали
 - Keep Tomcat and Java updated / Обновляй Tomcat и Java
 
 ---
+
+## Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/tomcat9`
+
+```conf
+/var/log/tomcat9/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 tomcat adm
+    copytruncate
+}
+
+/var/log/tomcat9/catalina.out {
+    daily
+    rotate 7
+    compress
+    missingok
+    notifempty
+    size 100M
+    copytruncate
+}
+```
+
+> [!WARNING]
+> Use `copytruncate` for Tomcat logs as the JVM keeps file handles open.
+> Используйте `copytruncate` для логов Tomcat, так как JVM держит файлы открытыми.
+
+---
+

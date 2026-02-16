@@ -18,116 +18,155 @@ Order: 16
 # 🔧 Basic Commands / Базовые команды
 
 ### Enable & Disable / Включение и отключение
+```bash
 sudo ufw enable                               # Enable firewall / Включить фаервол
 sudo ufw disable                              # Disable firewall / Отключить фаервол
 sudo ufw reload                               # Reload rules / Перезагрузить правила
 sudo ufw reset                                # Reset to defaults / Сбросить к умолчаниям
+```
 
 ### Status / Статус
+```bash
 sudo ufw status                               # Show status / Показать статус
 sudo ufw status verbose                       # Verbose status / Подробный статус
 sudo ufw status numbered                      # Numbered rules / Пронумерованные правила
+```
 
 ### Default Policies / Политики по умолчанию
+```bash
 sudo ufw default deny incoming                # Deny incoming / Запретить входящие
 sudo ufw default allow outgoing               # Allow outgoing / Разрешить исходящие
 sudo ufw default reject incoming              # Reject incoming / Отклонять входящие
 sudo ufw default deny forward                 # Deny forwarding / Запретить пересылку
+```
 
 ---
 
 # ✅ Allow Rules / Правила разрешения
 
 ### Basic Allow / Базовое разрешение
+```bash
 sudo ufw allow 22                             # Allow port 22 / Разрешить порт 22
 sudo ufw allow 22/tcp                         # Allow TCP port 22 / Разрешить TCP порт 22
 sudo ufw allow 53/udp                         # Allow UDP port 53 / Разрешить UDP порт 53
 sudo ufw allow 80,443/tcp                     # Allow multiple ports / Разрешить несколько портов
+```
 
 ### Port Ranges / Диапазоны портов
+```bash
 sudo ufw allow 8000:9000/tcp                  # Allow port range / Разрешить диапазон портов
 sudo ufw allow 10000:20000/udp                # UDP port range / UDP диапазон портов
+```
 
 ### Allow from Specific IP / Разрешить с конкретного IP
+```bash
 sudo ufw allow from <IP>                      # Allow from IP / Разрешить с IP
 sudo ufw allow from <IP> to any port 22       # Allow SSH from IP / Разрешить SSH с IP
 sudo ufw allow from <IP> to any port 3306     # Allow MySQL from IP / Разрешить MySQL с IP
+```
 
 ### Allow from Subnet / Разрешить из подсети
+```bash
 sudo ufw allow from 192.168.1.0/24            # Allow from subnet / Разрешить из подсети
 sudo ufw allow from 192.168.1.0/24 to any port 22  # SSH from subnet / SSH из подсети
+```
 
 ### Allow on Interface / Разрешить на интерфейсе
+```bash
 sudo ufw allow in on eth0 to any port 80      # Allow on eth0 / Разрешить на eth0
 sudo ufw allow in on tun0                     # Allow on VPN interface / Разрешить на VPN интерфейсе
+```
 
 ---
 
 # ❌ Deny Rules / Правила запрета
 
 ### Basic Deny / Базовый запрет
+```bash
 sudo ufw deny 23                              # Deny port 23 / Запретить порт 23
 sudo ufw deny 23/tcp                          # Deny TCP port 23 / Запретить TCP порт 23
 sudo ufw deny from <IP>                       # Deny from IP / Запретить с IP
 sudo ufw deny from <IP> to any port 22        # Deny SSH from IP / Запретить SSH с IP
+```
 
 ### Reject vs Deny / Отклонить vs Запретить
+```bash
 sudo ufw reject out 25                        # Reject outgoing SMTP / Отклонить исходящий SMTP
 sudo ufw deny out 25                          # Drop outgoing SMTP / Отбросить исходящий SMTP
+```
 
 ---
 
 # 🗑️ Delete Rules / Удаление правил
 
 ### Delete by Rule / Удалить по правилу
+```bash
 sudo ufw delete allow 22                      # Delete allow rule / Удалить правило разрешения
 sudo ufw delete allow 80/tcp                  # Delete specific rule / Удалить конкретное правило
 sudo ufw delete deny from <IP>                # Delete deny rule / Удалить правило запрета
+```
 
 ### Delete by Number / Удалить по номеру
+```bash
 sudo ufw status numbered                      # Show numbered rules / Показать пронумерованные правила
 sudo ufw delete 3                             # Delete rule #3 / Удалить правило #3
 sudo ufw delete 1                             # Delete rule #1 / Удалить правило #1
+```
 
 ---
 
 # 🔬 Advanced Rules / Продвинутые правила
 
 ### Limit Connections / Ограничить соединения
+```bash
 sudo ufw limit 22/tcp                         # Rate limit SSH / Ограничить скорость SSH
 sudo ufw limit ssh                            # Same as above / То же что выше
+```
 
 ### Allow Specific Protocol / Разрешить конкретный протокол
+```bash
 sudo ufw allow proto tcp from <IP> to any port 22  # TCP from IP / TCP с IP
 sudo ufw allow proto udp from <IP> to any port 53  # UDP from IP / UDP с IP
+```
 
 ### Insert Rules / Вставить правила
+```bash
 sudo ufw insert 1 allow from <IP>             # Insert at position 1 / Вставить в позицию 1
 sudo ufw insert 2 deny from <IP>              # Insert at position 2 / Вставить в позицию 2
+```
 
 ### Interface-Specific / Для конкретного интерфейса
+```bash
 sudo ufw allow in on eth0 from 192.168.1.0/24 to any port 22  # LAN SSH / SSH из LAN
 sudo ufw deny in on eth1 from any to any      # Deny all on eth1 / Запретить всё на eth1
+```
 
 ### Direction Specific / Для конкретного направления
+```bash
 sudo ufw allow out 53/udp                     # Allow outgoing DNS / Разрешить исходящий DNS
 sudo ufw deny out on eth0 to <IP>             # Deny outgoing to IP / Запретить исходящий к IP
+```
 
 ---
 
 # 📱 Application Profiles / Профили приложений
 
 ### List Applications / Список приложений
+```bash
 sudo ufw app list                             # List available apps / Список доступных приложений
 sudo ufw app info <APP>                       # Show app info / Показать информацию о приложении
+```
 
 ### Allow Applications / Разрешить приложения
+```bash
 sudo ufw allow OpenSSH                        # Allow SSH / Разрешить SSH
 sudo ufw allow 'Nginx Full'                   # Allow Nginx HTTP+HTTPS / Разрешить Nginx HTTP+HTTPS
 sudo ufw allow 'Nginx HTTP'                   # Allow Nginx HTTP only / Разрешить только Nginx HTTP
 sudo ufw allow 'Apache Full'                  # Allow Apache HTTP+HTTPS / Разрешить Apache HTTP+HTTPS
+```
 
 ### Custom Application Profiles / Пользовательские профили
+```bash
 # Create /etc/ufw/applications.d/myapp / Создать /etc/ufw/applications.d/myapp
 # [MyApp]
 # title=My Application
@@ -136,28 +175,35 @@ sudo ufw allow 'Apache Full'                  # Allow Apache HTTP+HTTPS / Раз
 
 sudo ufw app update MyApp                     # Update app profile / Обновить профиль приложения
 sudo ufw allow MyApp                          # Allow custom app / Разрешить пользовательское приложение
+```
 
 ---
 
 # 📊 Logging & Status / Логирование и статус
 
 ### Logging / Логирование
+```bash
 sudo ufw logging on                           # Enable logging / Включить логирование
 sudo ufw logging off                          # Disable logging / Отключить логирование
 sudo ufw logging low                          # Low verbosity / Низкая детализация
 sudo ufw logging medium                       # Medium verbosity / Средняя детализация
 sudo ufw logging high                         # High verbosity / Высокая детализация
 sudo ufw logging full                         # Full verbosity / Полная детализация
+```
 
 ### View Logs / Просмотр логов
+```bash
 sudo tail -f /var/log/ufw.log                 # Follow UFW log / Следовать за логом UFW
 sudo journalctl -u ufw -f                     # Follow UFW journal / Следовать за журналом UFW
 sudo grep UFW /var/log/syslog                 # Search syslog / Поиск в syslog
+```
 
 ### Show Rules / Показать правила
+```bash
 sudo ufw show raw                             # Show raw rules / Показать сырые правила
 sudo ufw show added                           # Show added rules / Показать добавленные правила
 sudo ufw show listening                       # Show listening ports / Показать слушающие порты
+```
 
 ---
 
@@ -272,24 +318,21 @@ sudo ufw insert 1 deny from 192.168.100.0/24
 # Test rules before deploying to production / Тестируйте правила перед развёртыванием в продакшене
 
 # 🔧 Configuration Files / Файлы конфигурации
+```bash
 # /etc/ufw/ufw.conf — Main config / Основная конфигурация
 # /etc/ufw/before.rules — Rules processed first / Правила обрабатываемые первыми
 # /etc/ufw/after.rules — Rules processed last / Правила обрабатываемые последними
 # /etc/default/ufw — Default settings / Настройки по умолчанию
 # /etc/ufw/applications.d/ — Application profiles / Профили приложений
 # /var/log/ufw.log — UFW log file / Файл логов UFW
+```
 
 # 📋 Common Ports / Распространённые порты
-# 22 — SSH
-# 80 — HTTP
-# 443 — HTTPS
-# 25 — SMTP
-# 53 — DNS
-# 3306 — MySQL
-# 5432 — PostgreSQL
-# 6379 — Redis
-# 27017 — MongoDB
+```bash
+# 22 — SSH, 80 — HTTP, 443 — HTTPS, 25 — SMTP, 53 — DNS
+# 3306 — MySQL, 5432 — PostgreSQL, 6379 — Redis, 27017 — MongoDB
 # 8080 — Alternative HTTP / Альтернативный HTTP
+```
 
 # ⚠️ Important Notes / Важные примечания
 # UFW is frontend for iptables / UFW это фронтенд для iptables
@@ -297,3 +340,4 @@ sudo ufw insert 1 deny from 192.168.100.0/24
 # Always test SSH access after enabling / Всегда тестируйте SSH доступ после включения
 # Use 'reject' for informative denial / Используйте 'reject' для информативного отказа
 # Use 'deny' for silent drop / Используйте 'deny' для тихого отбрасывания
+```

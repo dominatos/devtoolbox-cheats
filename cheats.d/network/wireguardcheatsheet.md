@@ -18,35 +18,47 @@ Order: 9
 # 📥 Installation / Установка
 
 ### Ubuntu/Debian
+```bash
 sudo apt update && sudo apt install wireguard  # Install WireGuard / Установить WireGuard
 sudo apt install wireguard-tools              # Install tools only / Только инструменты
+```
 
 ### RHEL/AlmaLinux/Rocky
+```bash
 sudo dnf install epel-release                 # Enable EPEL / Включить EPEL
 sudo dnf install wireguard-tools              # Install tools / Установить инструменты
 sudo dnf install kmod-wireguard               # Install kernel module / Установить модуль ядра
+```
 
 ### Verify Installation / Проверка установки
+```bash
 wg --version                                  # Check version / Проверить версию
 sudo modprobe wireguard                       # Load module / Загрузить модуль
 lsmod | grep wireguard                        # Verify module loaded / Проверить загрузку модуля
+```
 
 ---
 
 # 🔑 Key Generation / Генерация ключей
 
 ### Generate Keys / Генерация ключей
+```bash
 wg genkey | tee server.key | wg pubkey > server.pub  # Server keys / Ключи сервера
 wg genkey | tee client.key | wg pubkey > client.pub  # Client keys / Ключи клиента
+```
 
 ### Generate Preshared Key / Генерация предварительно разделённого ключа
+```bash
 wg genpsk > preshared.key                     # Preshared key (optional) / Предварительно разделённый ключ (опционально)
+```
 
 ### Secure Key Files / Защита файлов ключей
+```bash
 chmod 600 server.key client.key preshared.key # Secure keys / Защитить ключи
 sudo mkdir -p /etc/wireguard                  # Create config dir / Создать директорию конфигов
 sudo mv *.key /etc/wireguard/                 # Move keys / Переместить ключи
 sudo chmod 600 /etc/wireguard/*.key# Secure moved keys / Защитить перемещённые ключи
+```
 
 ---
 
@@ -99,11 +111,14 @@ AllowedIPs = 10.0.0.0/24, 192.168.1.0/24      # VPN subnets only / Только 
 # 🔧 Interface Management / Управление интерфейсами
 
 ### Start/Stop Interface / Запуск/остановка интерфейса
+```bash
 sudo wg-quick up wg0                          # Bring up wg0 / Поднять wg0
 sudo wg-quick down wg0                        # Bring down wg0 / Опустить wg0
 sudo wg-quick up /path/to/custom.conf         # Custom config / Пользовательская конфигурация
+```
 
 ### Status and Information / Статус и информация
+```bash
 sudo wg show                                  # Show all interfaces / Показать все интерфейсы
 sudo wg show wg0                              # Show specific interface / Показать конкретный интерфейс
 sudo wg show wg0 dump                         # Dump full config / Выгрузить полную конфигурацию
@@ -111,48 +126,63 @@ sudo wg show wg0 peers                        # Show peers / Показать п
 sudo wg show wg0 latest-handshakes            # Latest handshakes / Последние handshakes
 sudo wg show wg0 transfer                     # Transfer stats / Статистика передачи
 sudo wg show wg0 endpoints                    # Peer endpoints / Конечные точки пиров
+```
 
 ### Enable on Boot / Включить при загрузке
+```bash
 sudo systemctl enable wg-quick@wg0            # Enable wg0 / Включить wg0
 sudo systemctl start wg-quick@wg0             # Start wg0 / Запустить wg0
 sudo systemctl status wg-quick@wg0            # Check status / Проверить статус
 sudo systemctl restart wg-quick@wg0           # Restart wg0 / Перезапустить wg0
+```
 
 ---
 
 # 🐛 Troubleshooting / Устранение неполадок
 
 ### Check Interface Status / Проверка статуса интерфейса
+```bash
 ip addr show wg0                              # Show wg0 IP / Показать IP wg0
 ip route show                                 # Show routing table / Показать таблицу маршрутизации
 sudo wg show wg0                              # WireGuard status / Статус WireGuard
+```
 
 ### Test Connectivity / Тестирование подключения
+```bash
 ping 10.0.0.1                                 # Ping server VPN IP / Пинг VPN IP сервера
 ping 10.0.0.2                                 # Ping client VPN IP / Пинг VPN IP клиента
 traceroute 10.0.0.1                           # Trace route / Трассировка маршрута
+```
 
 ### Check Firewall / Проверка файрвола
+```bash
 sudo iptables -L -n -v | grep wg0             # Check iptables rules / Проверить правила iptables
 sudo ufw status                               # UFW status / Статус UFW
 sudo ufw allow 51820/udp                      # Allow WireGuard port / Разрешить порт WireGuard
 sudo firewall-cmd --add-port=51820/udp --permanent  # FirewallD (RHEL) / FirewallD (RHEL)
 sudo firewall-cmd --reload                    # Reload firewall / Перезагрузить файрвол
+```
 
 ### Check IP Forwarding / Проверка пересылки IP
+```bash
 sysctl net.ipv4.ip_forward                    # Check forwarding status / Проверить статус пересылки
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf  # Enable permanently / Включить постоянно
 sudo sysctl -p                                # Apply sysctl changes / Применить изменения sysctl
+```
 
 ### View Logs / Просмотр логов
+```bash
 sudo journalctl -u wg-quick@wg0 -f            # Follow logs / Следить за логами
 sudo journalctl -u wg-quick@wg0 --since "10 minutes ago"  # Recent logs / Последние логи
 dmesg | grep wireguard                        # Check kernel messages / Проверить сообщения ядра
+```
 
 ### Dynamic Peer Management / Динамическое управление пирами
+```bash
 sudo wg set wg0 peer <PEER_PUBLIC_KEY> allowed-ips 10.0.0.4/32  # Add peer / Добавить пир
 sudo wg set wg0 peer <PEER_PUBLIC_KEY> remove  # Remove peer / Удалить пир
 sudo wg syncconf wg0 <(wg-quick strip wg0)    # Reload without restart / Перезагрузить без перезапуска
+```
 
 ---
 
@@ -274,7 +304,7 @@ PostUp = iptables -A FORWARD -i wg0 -o docker0 -j ACCEPT
 PostDown = iptables -D FORWARD -i wg0 -o docker0 -j ACCEPT
 
 [Peer]
-AllowedIPs = 172.17.0.0/16, 10.0.0.2/32      # Docker subnet + client / Docker подсеть + клиент
+AllowedIPs = 172.17.0.0/16, 10.0.0.2/32      # Docker подсеть + клиент
 ```
 
 ### QR Code for Mobile / QR-код для мобильных
@@ -294,9 +324,6 @@ qrencode -o mobile.png < /etc/wireguard/client-mobile.conf  # Save as image / С
 # Regularly rotate keys / Регулярно меняйте ключи
 # Monitor peer handshakes / Мониторьте handshakes пиров
 # Use firewall rules to restrict access / Используйте правила файрвола для ограничения доступа
-
-# 📋 Default Port / Порт по умолчанию
-# 51820/UDP - WireGuard default / WireGuard по умолчанию
 
 # 🔧 Configuration Paths / Пути конфигурации
 # /etc/wireguard/          — Config directory / Директория конфигураций

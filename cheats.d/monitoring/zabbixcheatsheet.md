@@ -19,6 +19,7 @@ Order: 3
 4. [Security](#security--безопасность)
 5. [Backup & Restore](#backup--restore--резервное-копирование-и-восстановление)
 6. [Troubleshooting & Tools](#troubleshooting--tools--устранение-неполадок-и-инструменты)
+7. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -38,6 +39,7 @@ dnf install zabbix-server-mysql zabbix-web-mysql zabbix-apache-conf zabbix-sql-s
 ### Essential Configs / Основные конфиги
 
 **Server:** `/etc/zabbix/zabbix_server.conf`
+
 ```ini
 DBHost=localhost
 DBName=zabbix
@@ -46,6 +48,7 @@ DBPassword=<PASSWORD>
 ```
 
 **Agent:** `/etc/zabbix/zabbix_agentd.conf` (or `zabbix_agent2.conf`)
+
 ```ini
 # Server IP for passive checks / IP сервера для пассивных проверок
 Server=<IP_SERVER>
@@ -173,3 +176,32 @@ zabbix_server -R log_level_increase
 # ... wait for issue / ждем проблему ...
 zabbix_server -R log_level_decrease
 ```
+
+---
+
+## 7. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/zabbix-server`
+
+```conf
+/var/log/zabbix/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 zabbix zabbix
+    sharedscripts
+    postrotate
+        /bin/kill -HUP $(cat /var/run/zabbix/zabbix_server.pid 2>/dev/null) 2>/dev/null || true
+    endscript
+}
+```
+
+> [!TIP]
+> Zabbix handles log rotation via config (`LogFileSize` parameter). External logrotate is optional.
+> Zabbix управляет ротацией через конфиг (`LogFileSize`). Внешний logrotate опционален.
+
+---
+

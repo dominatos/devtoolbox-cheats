@@ -26,9 +26,11 @@ Order: 10
 
 ### Essential Info / Основная информация
 
-*   **Default Port:** `1521` (TCP)
-*   **Default User:** `SYS`, `SYSTEM`
-*   **Service Name:** `<SID>` or `<SERVICE_NAME>`
+```bash
+# Default Port: 1521 (TCP)
+# Default User: SYS, SYSTEM
+# Service Name: <SID> or <SERVICE_NAME>
+```
 
 ### Environment Variables / Переменные окружения
 Always ensure these are set before running commands. / Всегда проверяйте их перед запуском команд.
@@ -151,7 +153,10 @@ ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;
 ## 6. Maintenance & Troubleshooting / Обслуживание и проблемы
 
 ### Alert Log / Лог алертов
-File: `$ORACLE_BASE/diag/rdbms/<DB_NAME>/<SID>/trace/alert_<SID>.log`
+
+```bash
+# Alert Log Path: $ORACLE_BASE/diag/rdbms/<DB_NAME>/<SID>/trace/alert_<SID>.log
+```
 
 ```bash
 tail -f $ORACLE_BASE/diag/rdbms/<DB_NAME>/<SID>/trace/alert_<SID>.log
@@ -160,14 +165,20 @@ tail -f $ORACLE_BASE/diag/rdbms/<DB_NAME>/<SID>/trace/alert_<SID>.log
 ### Common Issues / Частые проблемы
 
 **ORA-12541: TNS:no listener / Нет прослушивателя:**
-*   Check if listener is running: `lsnrctl status`
-*   Start it: `lsnrctl start`
+```bash
+lsnrctl status                                                            # Check if listener is running / Проверить прослушиватель
+lsnrctl start                                                             # Start listener / Запустить прослушиватель
+```
 
 **ORA-01034: ORACLE not available / Oracle недоступен:**
-*   Instance is down. Connect as sysdba and run `STARTUP;`.
+```sql
+STARTUP;                                                                  -- Connect as sysdba and run / Запустить
+```
 
 **Locked Account / Заблокированный аккаунт:**
-*   `ALTER USER <USER> ACCOUNT UNLOCK;`
+```sql
+ALTER USER <USER> ACCOUNT UNLOCK;                                         -- Unlock account / Разблокировать аккаунт
+```
 
 ### RMAN (Backup Basics) / RMAN (Основы бэкапа)
 

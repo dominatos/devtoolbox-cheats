@@ -13,6 +13,7 @@ Order: 1
 4. [Security](#security--безопасность)
 5. [Backup & Restore](#backup--restore--бэкап-и-восстановление)
 6. [Troubleshooting](#troubleshooting--устранение-проблем)
+7. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -31,12 +32,14 @@ sudo postgresql-setup --initdb                                            # Init
 
 ### Configuration / Конфигурация
 
+**Main config files / Основной файл конфигурации:**
+
 ```bash
-# Main config files / Основные файлы конфигурации
-/etc/postgresql/<VERSION>/main/postgresql.conf                            # Main config (Debian/Ubuntu) / Основной конфиг
-/var/lib/pgsql/data/postgresql.conf                                       # Main config (RHEL-based) / Основной конфиг
-/etc/postgresql/<VERSION>/main/pg_hba.conf                                # Auth config (Debian/Ubuntu) / Конфиг аутентификации
-/var/lib/pgsql/data/pg_hba.conf                                           # Auth config (RHEL-based) / Конфиг аутентификации
+/etc/postgresql/<VERSION>/main/postgresql.conf    # Debian/Ubuntu
+/var/lib/pgsql/data/postgresql.conf               # RHEL-based
+
+/etc/postgresql/<VERSION>/main/pg_hba.conf        # Debian/Ubuntu
+/var/lib/pgsql/data/pg_hba.conf                   # RHEL-based
 ```
 
 **Common postgresql.conf settings / Основные настройки:**
@@ -53,6 +56,10 @@ wal_buffers = 16MB                          # WAL buffers / Буферы WAL
 ```
 
 **pg_hba.conf (authentication) / Аутентификация:**
+
+```bash
+/etc/postgresql/<VERSION>/main/pg_hba.conf
+```
 
 ```conf
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -176,16 +183,16 @@ grep "ERROR" /var/log/postgresql/*.log                                    # Find
 ### Important Paths / Важные пути
 
 ```bash
-/var/lib/postgresql/<VERSION>/main/                                       # Data directory (Debian/Ubuntu) / Директория данных
-/var/lib/pgsql/data/                                                      # Data directory (RHEL-based) / Директория данных
-/etc/postgresql/<VERSION>/main/postgresql.conf                            # Main config (Debian/Ubuntu) / Основной конфиг
-/var/lib/pgsql/data/postgresql.conf                                       # Main config (RHEL-based) / Основной конфиг
+/var/lib/postgresql/<VERSION>/main/                                       # Data directory (Debian/Ubuntu)
+/var/lib/pgsql/data/                                                      # Data directory (RHEL-based)
+/etc/postgresql/<VERSION>/main/postgresql.conf                            # Main config (Debian/Ubuntu)
+/var/lib/pgsql/data/postgresql.conf                                       # Main config (RHEL-based)
 /tmp/.s.PGSQL.5432                                                        # Unix socket / Unix-сокет
 ```
 
 ### Default Port / Порт по умолчанию
 
-```
+```bash
 5432/tcp                                                                  # PostgreSQL default port / Порт по умолчанию
 ```
 
@@ -383,3 +390,32 @@ SELECT * FROM pg_stat_user_tables;                                        -- Tab
 ```ini
 log_min_duration_statement = 1000                                         # Log queries > 1s / Логировать запросы > 1с
 ```
+
+---
+
+## Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/postgresql`
+
+```conf
+/var/log/postgresql/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 postgres adm
+    sharedscripts
+    postrotate
+        /usr/lib/postgresql/*/bin/pg_ctl reload -D /var/lib/postgresql/*/main > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+> [!NOTE]
+> PostgreSQL typically handles log rotation internally via `log_rotation_age` and `log_rotation_size` in `postgresql.conf`.
+> PostgreSQL обычно управляет ротацией логов через `log_rotation_age` и `log_rotation_size` в `postgresql.conf`.
+
+---
+

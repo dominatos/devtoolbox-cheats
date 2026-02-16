@@ -18,6 +18,7 @@ Order: 1
 - [Caching & Performance](#caching--performance)
 - [Advanced Features](#advanced-features)
 - [Production Configuration](#production-configuration)
+- [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -36,15 +37,19 @@ sudo systemctl enable nginx                              # Enable at boot / Ав
 
 ### Default Paths / Пути по умолчанию
 
-```bash
-/etc/nginx/nginx.conf                                    # Main config / Основной конфиг
-/etc/nginx/sites-available/                              # Available sites (Debian/Ubuntu)
-/etc/nginx/sites-enabled/                                # Enabled sites (Debian/Ubuntu)
-/etc/nginx/conf.d/                                       # Additional configs (RHEL/CentOS)
-/var/log/nginx/                                          # Logs directory / Директория логов
-/usr/share/nginx/html/                                   # Default document root / Корень по умолчанию
-/var/www/html/                                           # Alternative root / Альтернативный корень
-```
+**Main config / Основной конфиг:**  
+`/etc/nginx/nginx.conf`
+
+**Site configs / Конфиги сайтов:**  
+`/etc/nginx/sites-available/` (Debian/Ubuntu)  
+`/etc/nginx/sites-enabled/` (Debian/Ubuntu)  
+`/etc/nginx/conf.d/` (RHEL/CentOS)
+
+**Logs directory / Директория логов:**  
+`/var/log/nginx/`
+
+**Default document root / Корень по умолчанию:**  
+`/usr/share/nginx/html/` or `/var/www/html/`
 
 ### Default Ports / Порты по умолчанию
 
@@ -588,5 +593,31 @@ server_tokens off;                                       # Hide nginx version
 - Always run `nginx -t` / Всегда проверяй конфиг
 - Separate upstreams / Разделяй upstream-и
 - Log slow backends / Логируй медленные бэкенды
+
+---
+
+## Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/nginx`
+
+```conf
+/var/log/nginx/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 www-data adm
+    sharedscripts
+    postrotate
+        [ -f /var/run/nginx.pid ] && kill -USR1 $(cat /var/run/nginx.pid) > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+> [!TIP]
+> Nginx reopens log files on `USR1` signal. No reload required.
+> Nginx переоткрывает лог-файлы по сигналу `USR1`. Перезагрузка не требуется.
 
 ---

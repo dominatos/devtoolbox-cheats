@@ -17,63 +17,81 @@ Order: 17
 # 🔧 Basic Commands / Базовые команды
 
 ### Service Management / Управление сервисом
+```bash
 sudo systemctl start fail2ban                 # Start fail2ban / Запустить fail2ban
 sudo systemctl stop fail2ban                  # Stop fail2ban / Остановить fail2ban
 sudo systemctl restart fail2ban               # Restart fail2ban / Перезапустить fail2ban
 sudo systemctl status fail2ban                # Check status / Проверить статус
 sudo systemctl enable fail2ban                # Enable on boot / Включить при загрузке
+```
 
 ### Client Commands / Команды клиента
+```bash
 sudo fail2ban-client status                   # List active jails / Список активных jails
 sudo fail2ban-client ping                     # Test connection / Проверить соединение
 sudo fail2ban-client reload                   # Reload configuration / Перезагрузить конфигурацию
 sudo fail2ban-client version                  # Show version / Показать версию
+```
 
 ---
 
 # 🔒 Jail Management / Управление jail
 
 ### Jail Status / Статус jail
+```bash
 sudo fail2ban-client status                   # List all jails / Список всех jails
 sudo fail2ban-client status sshd              # Status of sshd jail / Статус jail sshd
 sudo fail2ban-client status nginx-limit-req   # Status of nginx jail / Статус jail nginx
 sudo fail2ban-client status apache-auth       # Status of apache jail / Статус jail apache
+```
 
 ### Jail Control / Управление jail
+```bash
 sudo fail2ban-client start sshd               # Start jail / Запустить jail
 sudo fail2ban-client stop sshd                # Stop jail / Остановить jail
 sudo fail2ban-client reload sshd              # Reload jail / Перезагрузить jail
+```
 
 ---
 
 # 🚫 Ban Operations / Операции бана
 
 ### Manual Ban / Ручной бан
+```bash
 sudo fail2ban-client set sshd banip <IP>      # Ban IP in sshd jail / Забанить IP в jail sshd
 sudo fail2ban-client set nginx-limit-req banip <IP>  # Ban IP in nginx jail / Забанить IP в jail nginx
+```
 
 ### Unban IP / Разбанить IP
+```bash
 sudo fail2ban-client set sshd unbanip <IP>    # Unban IP from sshd / Разбанить IP из sshd
 sudo fail2ban-client set sshd unbanip --all   # Unban all IPs / Разбанить все IP
+```
 
 ### Check Banned IPs / Проверить забаненные IP
+```bash
 sudo fail2ban-client status sshd | grep "Banned IP"  # List banned IPs / Список забаненных IP
 sudo iptables -L -n | grep fail2ban           # Check iptables rules / Проверить правила iptables
 sudo nft list ruleset | grep fail2ban         # Check nftables rules / Проверить правила nftables
+```
 
 ---
 
 # ⚙️ Configuration / Конфигурация
 
 ### Configuration Files / Файлы конфигурации
-/etc/fail2ban/fail2ban.conf                   # Main config / Основная конфигурация
-/etc/fail2ban/jail.conf                       # Default jail config / Конфигурация jail по умолчанию
-/etc/fail2ban/jail.local                      # Local jail overrides / Локальные переопределения jail
-/etc/fail2ban/jail.d/                         # Custom jail configs / Пользовательские конфигурации
+```bash
+# /etc/fail2ban/fail2ban.conf                   # Main config / Основная конфигурация
+# /etc/fail2ban/jail.conf                       # Default jail config / Конфигурация jail по умолчанию
+# /etc/fail2ban/jail.local                      # Local jail overrides / Локальные переопределения jail
+# /etc/fail2ban/jail.d/                         # Custom jail configs / Пользовательские конфигурации
+```
 
 ### Test Configuration / Проверить конфигурацию
+```bash
 sudo fail2ban-client -t                       # Test configuration / Проверить конфигурацию
 sudo fail2ban-client reload                   # Reload after changes / Перезагрузить после изменений
+```
 
 ### Common Jail Settings / Общие настройки jail
 ```ini
@@ -92,32 +110,42 @@ bantime = 1h                                  # Ban duration / Длительн�
 # 🎯 Filters & Actions / Фильтры и действия
 
 ### Filters / Фильтры
-/etc/fail2ban/filter.d/                       # Filter directory / Директория фильтров
-/etc/fail2ban/filter.d/sshd.conf              # SSH filter / SSH фильтр
-/etc/fail2ban/filter.d/nginx-limit-req.conf   # Nginx filter / Nginx фильтр
+```bash
+# /etc/fail2ban/filter.d/                       # Filter directory / Директория фильтров
+# /etc/fail2ban/filter.d/sshd.conf              # SSH filter / SSH фильтр
+# /etc/fail2ban/filter.d/nginx-limit-req.conf   # Nginx filter / Nginx фильтр
+```
 
 ### Test Filter / Проверить фильтр
+```bash
 sudo fail2ban-regex /var/log/auth.log /etc/fail2ban/filter.d/sshd.conf  # Test SSH filter / Проверить SSH фильтр
 sudo fail2ban-regex /var/log/nginx/error.log /etc/fail2ban/filter.d/nginx-limit-req.conf  # Test nginx filter / Проверить nginx фильтр
+```
 
 ### Actions / Действия
-/etc/fail2ban/action.d/                       # Action directory / Директория действий
-/etc/fail2ban/action.d/iptables.conf          # iptables action / iptables действие
-/etc/fail2ban/action.d/sendmail.conf          # Email notification / Email уведомление
+```bash
+# /etc/fail2ban/action.d/                       # Action directory / Директория действий
+# /etc/fail2ban/action.d/iptables.conf          # iptables action / iptables действие
+# /etc/fail2ban/action.d/sendmail.conf          # Email notification / Email уведомление
+```
 
 ---
 
 # 📊 Monitoring & Logs / Мониторинг и логи
 
 ### View Logs / Просмотр логов
+```bash
 sudo tail -f /var/log/fail2ban.log            # Follow fail2ban log / Следовать за логом fail2ban
 sudo journalctl -u fail2ban -f                # Follow journal / Следовать за журналом
 sudo grep "Ban" /var/log/fail2ban.log         # Show bans / Показать баны
 sudo grep "Unban" /var/log/fail2ban.log       # Show unbans / Показать разбаны
+```
 
 ### Statistics / Статистика
+```bash
 sudo fail2ban-client status sshd              # Show jail stats / Показать статистику jail
 sudo awk '($(NF-1) = /Ban/){print $NF}' /var/log/fail2ban.log | sort | uniq -c | sort -n  # Count bans by IP / Подсчитать баны по IP
+```
 
 ---
 
@@ -297,20 +325,21 @@ done > banned-ips.txt
 # Enable recidive jail for repeat offenders / Включите jail recidive для рецидивистов
 
 # 🔧 Configuration Files / Файлы конфигурации
+```bash
 # /etc/fail2ban/fail2ban.conf — Main config / Основная конфигурация
 # /etc/fail2ban/jail.conf — Default jails / Jails по умолчанию
 # /etc/fail2ban/jail.local — Local overrides / Локальные переопределения
 # /etc/fail2ban/filter.d/ — Filter definitions / Определения фильтров
 # /etc/fail2ban/action.d/ — Action definitions / Определения действий
-# /var/log/fail2ban.log — Fail2ban log / Лог fail2ban
+```
 
 # 📋 Common Jails / Распространённые jails
-# sshd — SSH protection / Защита SSH
-# apache-auth — Apache authentication / Аутентификация Apache
+```bash
+# sshd — SSH protection / Защита SSH, apache-auth — Apache authentication / Аутентификация Apache
 # nginx-limit-req — Nginx rate limiting / Ограничение скорости Nginx
-# mysqld-auth — MySQL protection / Защита MySQL
-# postfix — Mail server protection / Защита почтового сервера
+# mysqld-auth — MySQL protection / Защита MySQL, postfix — Mail server protection / Защита почтового сервера
 # recidive — Repeat offender jail / Jail для рецидивистов
+```
 
 # ⚠️ Important Notes / Важные примечания
 # Always whitelist your own IPs / Всегда вносите свои IP в белый список
@@ -318,3 +347,4 @@ done > banned-ips.txt
 # Monitor for false positives / Мониторьте на ложные срабатывания
 # Fail2ban requires iptables or nftables / Fail2ban требует iptables или nftables
 # Ban time -1 means permanent ban / Время бана -1 означает постоянный бан
+```

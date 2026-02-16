@@ -18,7 +18,7 @@ Order: 7
 # 📘 SSH Tunnel Basics / Основы SSH-туннелей
 
 ### Common SSH Tunnel Flags / Распространённые флаги SSH-туннелей
-```
+```bash
 -L [local_port]:[remote_host]:[remote_port]  # Local port forwarding / Локальный порт форвардится на удалённый
 -R [remote_port]:[local_host]:[local_port]   # Remote port forwarding / Обратный порт
 -D [local_port]                              # Dynamic SOCKS proxy / Динамический SOCKS прокси
@@ -34,71 +34,95 @@ Order: 7
 # 🔀 Local Port Forwarding / Локальный проброс портов
 
 ### Basic Syntax / Базовый синтаксис
+```bash
 ssh -L [LOCAL_IP:]<LOCAL_PORT>:<REMOTE_HOST>:<REMOTE_PORT> <user>@<SSH_SERVER>
+```
 
 ### Examples / Примеры
+```bash
 ssh -L 2222:192.168.164.51:22 <user>@<BASTION>  # Forward local 2222 to remote SSH / Проброс локального 2222 на удалённый SSH
 ssh -L 9080:<INTERNAL_HOST>:9080 <user>@<BASTION>  # Forward web service / Проброс веб-сервиса
 ssh -L 3306:<DB_SERVER>:3306 <user>@<BASTION>  # Forward MySQL / Проброс MySQL
 ssh -L 5432:<DB_SERVER>:5432 <user>@<BASTION>  # Forward PostgreSQL / Проброс PostgreSQL
 ssh -L 6379:<REDIS_SERVER>:6379 <user>@<BASTION>  # Forward Redis / Проброс Redis
+```
 
 ### Background Tunnel / Туннель в фоне
+```bash
 ssh -f -N -L 9080:<INTERNAL_HOST>:9080 <user>@<BASTION>  # Background tunnel / Туннель в фоне
+```
 
 ### Bind to Specific Interface / Привязка к конкретному интерфейсу
+```bash
 ssh -L 127.0.0.1:9080:<HOST>:9080 <user>@<BASTION>  # Localhost only / Только localhost
 ssh -L 0.0.0.0:9080:<HOST>:9080 <user>@<BASTION>  # All interfaces / Все интерфейсы
+```
 
 ---
 
 # 🔁 Remote Port Forwarding / Обратный проброс портов
 
 ### Basic Syntax / Базовый синтаксис
+```bash
 ssh -R [REMOTE_IP:]<REMOTE_PORT>:<LOCAL_HOST>:<LOCAL_PORT> <user>@<SSH_SERVER>
+```
 
 ### Examples / Примеры
+```bash
 ssh -R 8080:localhost:80 <user>@<BASTION>  # Expose local web server / Открыть локальный веб-сервер
 ssh -R 3000:localhost:3000 <user>@<BASTION>  # Expose dev server / Открыть dev-сервер
 ssh -R 5432:localhost:5432 <user>@<BASTION>  # Expose local database / Открыть локальную БД
+```
 
 ### Background Remote Tunnel / Обратный туннель в фоне
+```bash
 ssh -f -N -R 8080:localhost:80 <user>@<BASTION>  # Background remote tunnel / Обратный туннель в фоне
+```
 
 ---
 
 # 🌐 Dynamic Port Forwarding (SOCKS) / Динамический проброс (SOCKS)
 
 ### SOCKS Proxy / SOCKS прокси
+```bash
 ssh -D <LOCAL_PORT> <user>@<SSH_SERVER>  # Create SOCKS proxy / Создать SOCKS прокси
 ssh -D 1080 <user>@<BASTION>  # Standard SOCKS on port 1080 / Стандартный SOCKS на порту 1080
 ssh -f -N -D 1080 <user>@<BASTION>  # Background SOCKS proxy / SOCKS прокси в фоне
+```
 
 ### Use with Applications / Использование с приложениями
+```bash
 # Configure browser / Настроить браузер
 # SOCKS Host: localhost
 # Port: 1080
 
 # curl with SOCKS / curl с SOCKS
 curl --socks5 localhost:1080 http://example.com
+```
 
 ---
 
 # 🎛️ SSH Control Sockets / Управляющие сокеты SSH
 
 ### Create Master Session / Создать мастер-сессию
+```bash
 ssh -fNM -S /tmp/ssh.sock -L 2222:<INTERNAL_HOST>:22 <user>@<BASTION>  # Create master with socket / Создать мастер с сокетом
+```
 
 ### Reuse Session / Переиспользовать сессию
+```bash
 ssh -S /tmp/ssh.sock <user>@localhost -p 2222  # Use existing tunnel / Использовать существующий туннель
+```
 
 ### Control Master Session / Управлять мастер-сессией
+```bash
 ssh -S /tmp/ssh.sock -O check <user>@<BASTION>  # Check status / Проверить статус
 ssh -S /tmp/ssh.sock -O exit <user>@<BASTION>  # Close master / Закрыть мастер
 ssh -S /tmp/ssh.sock -O stop <user>@<BASTION>  # Stop accepting connections / Остановить приём соединений
+```
 
 ### SSH Config with ControlMaster / SSH конфиг с ControlMaster
-```
+```bash
 Host bastion
     HostName <BASTION_IP>
     User <USER>
@@ -130,11 +154,13 @@ sudo systemctl restart sshd
 ```
 
 ### Create Tunnel-Only User / Создать пользователя только для туннелей
+```bash
 sudo useradd -m -s /bin/false <TUNNEL_USER>  # Create user with no shell / Создать пользователя без shell
 sudo passwd <TUNNEL_USER>                    # Set password / Установить пароль
+```
 
 ### ProxyJump Configuration / Конфигурация ProxyJump
-```
+```bash
 # SSH config with ProxyJump / SSH конфиг с ProxyJump
 Host internal-server
     HostName <INTERNAL_HOST>
@@ -147,29 +173,39 @@ Host internal-server
 # 🐛 Troubleshooting / Устранение неполадок
 
 ### Check Local Ports / Проверка локальных портов
+```bash
 ss -tnlp | grep <PORT>                       # Check listening ports / Проверить слушающие порты
 netstat -tnlp | grep <PORT>                  # Alternative check / Альтернативная проверка
 lsof -i :<PORT>                              # Show process using port / Показать процесс на порту
+```
 
 ### Test Tunnel / Тестировать туннель
+```bash
 curl http://localhost:<LOCAL_PORT>           # Test HTTP service / Тестировать HTTP сервис
 nc -zv localhost <LOCAL_PORT>                # Test port connectivity / Тестировать доступность порта
 telnet localhost <LOCAL_PORT>                # Interactive test / Интерактивный тест
+```
 
 ### Check Remote Service / Проверка удалённого сервиса
+```bash
 # From bastion / С бастион-хоста
 nc -zv <INTERNAL_HOST> <PORT>                # Test connectivity to internal host / Тестировать доступность внутреннего хоста
 ss -tnlp | grep :<PORT>                      # Check if service is listening / Проверить слушает ли сервис
+```
 
 ### Debug SSH Tunnel / Отладка SSH туннеля
+```bash
 ssh -v -L <LOCAL_PORT>:<HOST>:<PORT> <user>@<BASTION>  # Verbose output / Подробный вывод
 ssh -vv -L <LOCAL_PORT>:<HOST>:<PORT> <user>@<BASTION>  # More verbose / Ещё более подробно
 ssh -vvv -L <LOCAL_PORT>:<HOST>:<PORT> <user>@<BASTION>  # Maximum verbosity / Максимальная подробность
+```
 
 ### Kill Stuck Tunnels / Убить зависшие туннели
+```bash
 ps aux | grep 'ssh.*-L'                      # Find tunnel processes / Найти процессы туннелей
 pkill -f 'ssh.*-L.*<PORT>'                   # Kill specific tunnel / Убить конкретный туннель
 killall ssh                                  # Kill all SSH (dangerous) / Убить все SSH (опасно)
+```
 
 ---
 

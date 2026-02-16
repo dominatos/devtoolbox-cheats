@@ -17,23 +17,23 @@ Order: 15
 # 📘 Translation Basics / Основы перевода
 
 ### Key Differences / Ключевые отличия
-```
-iptables: Separate tables (filter, nat, mangle, raw)
-nftables: Unified inet family with configurable chains
+```bash
+# iptables: Separate tables (filter, nat, mangle, raw)
+# nftables: Unified inet family with configurable chains
 
-iptables: Rules appended/inserted with -A/-I
-nftables: Rules added to chains with explicit priority
+# iptables: Rules appended/inserted with -A/-I
+# nftables: Rules added to chains with explicit priority
 
-iptables: Verbose syntax with many flags
-nftables: Cleaner, more consistent syntax
+# iptables: Verbose syntax with many flags
+# nftables: Cleaner, more consistent syntax
 ```
 
 ### Table/Chain Family Mapping / Соответствие таблиц/семейств
-```
-iptables -t filter  → nft add table inet filter
-iptables -t nat     → nft add table inet nat
-iptables -t mangle  → nft add table inet mangle
-iptables -t raw     → nft add table inet raw
+```bash
+# iptables -t filter  → nft add table inet filter
+# iptables -t nat     → nft add table inet nat
+# iptables -t mangle  → nft add table inet mangle
+# iptables -t raw     → nft add table inet raw
 ```
 
 ---
@@ -166,7 +166,6 @@ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
 # nftables
 nft add rule inet filter input ct state established,related accept
-nft add rule inet filter input ct state { established, related } accept
 ```
 
 ### Drop Invalid Packets / Отбросить недействительные пакеты
@@ -342,8 +341,6 @@ nft add rule inet filter input tcp dport { 80, 443 } accept
 nft add rule inet filter input drop
 ```
 
----
-
 # 💡 Best Practices / Лучшие практики
 # Use iptables-translate for initial migration / Используйте iptables-translate для начальной миграции
 # Test nftables rules before disabling iptables / Тестируйте правила nftables перед отключением iptables
@@ -353,23 +350,23 @@ nft add rule inet filter input drop
 # Document migration for rollback / Документируйте миграцию для отката
 
 # 🔧 Configuration Files / Файлы конфигурации
+```bash
 # /etc/nftables.conf                        — Main nftables configuration / Основная конфигурация nftables
 # /tmp/iptables-backup.rules                — iptables backup / Резервная копия iptables
 # /tmp/nftables.conf                        — Translated nftables config / Переведённая конфигурация nftables
+```
 
 # 📋 Quick Reference Chart / Краткая справочная таблица
+```bash
 # iptables -A         → nft add rule
 # iptables -I         → nft insert rule
 # iptables -D         → nft delete rule
 # iptables -L         → nft list ruleset
 # iptables -F         → nft flush ruleset
 # iptables -P         → policy in chain definition
-# -j ACCEPT           → accept
-# -j DROP             → drop
-# -j REJECT           → reject
-# --dport             → dport
-# --sport             → sport
-# -s                  → ip saddr
-# -d                  → ip daddr
-# -i                  → iifname
+# -j ACCEPT           → accept, -j DROP             → drop
+# -j REJECT           → reject, --dport             → dport
+# --sport             → sport, -s                  → ip saddr
+# -d                  → ip daddr, -i                  → iifname
 # -o                  → oifname
+```

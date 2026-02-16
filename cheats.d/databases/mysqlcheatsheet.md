@@ -13,6 +13,7 @@ Order: 2
 4. [Security](#security--безопасность)
 5. [Backup & Restore](#backup--restore--бэкап-и-восстановление)
 6. [Troubleshooting](#troubleshooting--устранение-проблем)
+7. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -38,14 +39,18 @@ sudo mysql_secure_installation                                            # Secu
 
 ### Configuration / Конфигурация
 
-```bash
-# Main config file / Основной файл конфигурации
-/etc/mysql/my.cnf                                                         # Debian/Ubuntu
-/etc/my.cnf                                                               # RHEL/CentOS/AlmaLinux
+**Main config file / Основной файл конфигурации:**
 
-# Config directory / Директория конфигураций
-/etc/mysql/mysql.conf.d/                                                  # Ubuntu/Debian
-/etc/my.cnf.d/                                                            # RHEL-based
+```bash
+/etc/mysql/my.cnf           # Debian/Ubuntu
+/etc/my.cnf                 # RHEL/CentOS/AlmaLinux
+```
+
+**Config directory / Директория конфигураций:**
+
+```bash
+/etc/mysql/mysql.conf.d/    # Ubuntu/Debian
+/etc/my.cnf.d/              # RHEL-based
 ```
 
 **Common settings / Основные настройки:**
@@ -147,7 +152,7 @@ grep "ERROR" /var/log/mysql/error.log                                     # Find
 
 ### Default Port / Порт по умолчанию
 
-```
+```bash
 3306/tcp                                                                  # MySQL/MariaDB default port / Порт по умолчанию
 ```
 
@@ -312,3 +317,32 @@ SELECT table_schema AS 'Database',
 FROM information_schema.tables 
 GROUP BY table_schema;                                                    -- Database sizes / Размеры баз
 ```
+
+---
+
+## Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/mysql`
+
+```conf
+/var/log/mysql/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 mysql adm
+    sharedscripts
+    postrotate
+        /usr/bin/mysqladmin flush-logs > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+> [!TIP]
+> Use `mysqladmin flush-logs` to rotate binary logs: `mysqladmin -u root -p flush-logs`
+> Для ротации бинарных логов используйте: `mysqladmin -u root -p flush-logs`
+
+---
+

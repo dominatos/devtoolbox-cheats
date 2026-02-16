@@ -18,6 +18,7 @@ Order: 99
 9. [Sorted Set / Stream](#9-sorted-set--stream)
 10. [Read-through / Write-through Cache](#10-read-through--write-through-cache)
 11. [Redis Eviction](#11-redis-eviction--как-работает)
+12. [Logrotate Configuration](#12-logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -32,7 +33,12 @@ Order: 99
 
 ## 1. Минимальный безопасный `redis.conf` для PROD / Minimal safe `redis.conf` for PROD
 
-```conf
+```bash
+/etc/redis/redis.conf    # Debian/Ubuntu
+/etc/redis.conf           # RHEL-based
+```
+
+```bash
 # === NETWORK / СЕТЬ ===
 bind 127.0.0.1              # Listen only locally / Слушать только локально
 protected-mode yes           # Extra safety / Доп. защита
@@ -164,7 +170,7 @@ ulimit -n
 
 Фикс / Fix (systemd):
 
-```ini
+```bash
 LimitNOFILE=100000
 ```
 
@@ -314,4 +320,35 @@ Expected answer: eviction policies, `noeviction`, impact on application.
 - allkeys-lru, volatile-lru, allkeys-random, volatile-random, noeviction
 **EN:** on reaching `maxmemory`, keys evicted based on `maxmemory-policy`
 - allkeys-lru, volatile-lru, allkeys-random, volatile-random, noeviction
+
+---
+
+## 12. Logrotate Configuration / Конфигурация Logrotate
+
+```bash
+/etc/logrotate.d/redis-server
+```
+
+```bash
+/var/log/redis/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 redis adm
+    sharedscripts
+    postrotate
+        redis-cli -a <PASSWORD> DEBUG RELOAD > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+> [!TIP]
+> Alternatively, use `redis-cli DEBUG RELOAD` or configure log rotation in `redis.conf` directly.
+> Альтернативно можно использовать `redis-cli DEBUG RELOAD` или настроить ротацию логов в `redis.conf`.
+
+---
+
 

@@ -18,12 +18,14 @@ Order: 1
 3. [Sysadmin Operations](#sysadmin-operations--операции-сисадмина)
 4. [NRPE (Remote Monitoring)](#nrpe-remote-monitoring--nrpe-удаленный-мониторинг)
 5. [Maintenance](#maintenance--обслуживание)
+6. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
 ## 1. Installation & Configuration / Установка и конфигурация
 
 ### Main Config Files / Основные файлы конфигурации
+
 Root directory: `/usr/local/nagios/etc/` or `/etc/nagios/`
 
 *   `nagios.cfg`: Main configuration file / Основной файл конфигурации
@@ -121,3 +123,29 @@ commandfile='/usr/local/nagios/var/rw/nagios.cmd'
 ### Performance Data / Данные производительности
 Nagios writes perfdata to `host-perfdata` and `service-perfdata` files if enabled. Processed by PNP4Nagios or Graphite.
 Nagios пишет perfdata в файлы `host-perfdata` и `service-perfdata`, если включено. Обрабатывается PNP4Nagios или Graphite.
+
+---
+
+## 6. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/nagios`
+
+```conf
+/var/log/nagios/*.log
+/usr/local/nagios/var/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 nagios nagios
+    sharedscripts
+    postrotate
+        /bin/kill -HUP $(cat /var/run/nagios/nagios.lock 2>/dev/null) 2>/dev/null || true
+    endscript
+}
+```
+
+---
+

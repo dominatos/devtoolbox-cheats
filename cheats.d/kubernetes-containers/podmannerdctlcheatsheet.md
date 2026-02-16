@@ -11,6 +11,7 @@ Order: 7
 - [nerdctl Basics](#nerdctl-basics)
 - [crictl (CRI Debugging)](#crictl-cri-debugging)
 - [Sysadmin Essentials](#sysadmin-essentials)
+- [Logrotate Configuration](#logrotate-configuration)
 
 ---
 
@@ -187,7 +188,9 @@ crictl rmp <POD_ID>                            # Remove pod / Удалить pod
 
 /etc/crictl.yaml                               # crictl config / Конфигурация crictl
 
-# Sample /etc/crictl.yaml
+`/etc/crictl.yaml`
+
+```yaml
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
 timeout: 10
@@ -261,3 +264,30 @@ nerdctl system prune -af
 # - Native BuildKit support / Нативная поддержка BuildKit
 # - Kubernetes namespace awareness / Осведомлённость о namespace Kubernetes
 # - Lazy image pulling / Ленивая загрузка образов
+
+---
+
+## Logrotate Configuration
+
+> [!NOTE]
+> Podman is daemonless; logs are managed per-container or via journald.
+> Podman без демона; логи управляются по контейнерам или через journald.
+
+For containerd logs:
+
+`/etc/logrotate.d/containerd`
+
+```conf
+/var/log/containerd/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+```
+
+---
+
