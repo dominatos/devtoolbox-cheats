@@ -1,0 +1,115 @@
+Search Dir: /home/sviatoslav/cheats.d
+/home/sviatoslav/cheats.d/diagnostics/diagcheatsheet.md|🔍 Diagnostics — strace/perf/tcpdump/lsof|Diagnostics|🔍|1
+/home/sviatoslav/cheats.d/text-parsing/sedcheatsheet.md|✂️ SED — Commands|Text & Parsing|✂️|5
+/home/sviatoslav/cheats.d/text-parsing/awkcheatsheet.md|🦾 AWK — Commands|Text & Parsing|🦾|4
+/home/sviatoslav/cheats.d/text-parsing/treecheatsheet.md|Tree — Cheatsheet|Text & Parsing|🔐|13
+/home/sviatoslav/cheats.d/text-parsing/vimquickstartcheatsheet.md|✍️ vim|Text & Parsing|✍️|1
+/home/sviatoslav/cheats.d/text-parsing/modernclicheatsheet.md|⚡ Modern CLI — ripgrep/fd/bat/exa|Text & Parsing|⚡|10
+/home/sviatoslav/cheats.d/text-parsing/grepcheatsheet.md|🔎 GREP — Commands|Text & Parsing|🔎|2
+/home/sviatoslav/cheats.d/text-parsing/cutsortuniqcheatsheet.md|🔪 cut/sort/uniq — Commands|Text & Parsing|🔪|6
+/home/sviatoslav/cheats.d/text-parsing/trheadtailwatchcheatsheet.md|🔤 tr/head/tail/watch — Commands|Text & Parsing|🔤|7
+/home/sviatoslav/cheats.d/text-parsing/yqcheatsheet.md|🧪 yq — YAML processor|Text & Parsing|🧪|8
+/home/sviatoslav/cheats.d/text-parsing/jqcheatsheet.md|🧩 JQ — Commands|Text & Parsing|🧩|9
+/home/sviatoslav/cheats.d/text-parsing/loopscheatsheet.md|🌀 Bash — Loops|Text & Parsing|🌀|12
+/home/sviatoslav/cheats.d/text-parsing/fzfcheatsheet.md|⚡ fzf — Fuzzy Finder|Text & Parsing|⚡|11
+/home/sviatoslav/cheats.d/text-parsing/findcheatsheet.md|🗃 FIND — Commands|Text & Parsing|🗃|3
+/home/sviatoslav/cheats.d/monitoring/nagioscheatsheet.md|📈 Nagios Core|Monitoring|📈|1
+/home/sviatoslav/cheats.d/monitoring/zabbixcheatsheet.md|📈 Zabbix Server|Monitoring|📈|3
+/home/sviatoslav/cheats.d/monitoring/checkmkcheatsheet.md|📈 CheckMK|Monitoring|📈|2
+/home/sviatoslav/cheats.d/system-logs/systemdunittemplate.md|🧩 systemd unit — template|System & Logs|🧩|5
+/home/sviatoslav/cheats.d/system-logs/datetzcheatsheet.md|📅 date & timedatectl — Time Management|System & Logs|📅|9
+/home/sviatoslav/cheats.d/system-logs/systemctlcheatsheet.md|🛠 systemctl — Commands|System & Logs|🛠|1
+/home/sviatoslav/cheats.d/system-logs/kernelpanicscheatsheet.md|📜 Kernel-panic RHEL|System & Logs|📜|99
+/home/sviatoslav/cheats.d/system-logs/cronatcheatsheet.md|⏰ cron / at — Commands|System & Logs|⏰|8
+/home/sviatoslav/cheats.d/system-logs/kibanacheatsheet.md|📜 Kibana|System & Logs|📜|5
+/home/sviatoslav/cheats.d/system-logs/systemdtimerscheatsheet.md|🕰️ systemd Timers — Scheduled Tasks|System & Logs|🕰️|4
+/home/sviatoslav/cheats.d/system-logs/selinuxapparmorcheatsheet.md|🛡️ SELinux & AppArmor — Security Modules|System & Logs|🛡️|7
+/home/sviatoslav/cheats.d/system-logs/logrotatecheatsheet.md|🌀 logrotate — Log Management|System & Logs|🌀|6
+/home/sviatoslav/cheats.d/system-logs/journalctlcheatsheet.md|📜 journalctl — Systemd Journal|System & Logs|📜|2
+/home/sviatoslav/cheats.d/system-logs/journalctlbasicscheatsheet.md|📜 journalctl — Basics|System & Logs|📜|3
+/home/sviatoslav/cheats.d/system-logs/diskproccheatsheet.md|💽 du/df/lsof/ps — Commands|System & Logs|💽|10
+/home/sviatoslav/cheats.d/system-logs/ionicenicescheatsheet.md|📜 ionice & nice — Priority Control|System & Logs|📜|98
+/home/sviatoslav/cheats.d/system-logs/optimize-vps-ubuntu.md|Ubuntu VPS optimization|System & Logs||7
+/home/sviatoslav/cheats.d/databases/mongodbcheatsheet.md|🍃 MongoDB — Cheatsheet|Databases|🍃|5
+/home/sviatoslav/cheats.d/databases/opensearchcheatsheet.md|🔎 OpenSearch|Databases|🔎|4
+/home/sviatoslav/cheats.d/databases/sqlitecheatsheet.md|🗃️ SQLite|Databases|🗃️|3
+/home/sviatoslav/cheats.d/databases/memcached-sysadmin.md|Memcached|Databases|🗃️|99
+/home/sviatoslav/cheats.d/databases/redis_prod_cheatsheet.md|Redis|Databases|🗃️|99
+/home/sviatoslav/cheats.d/databases/postgrescheatsheet.md|🗃️ PostgreSQL — psql/pg_dump|Databases|🗃️|1
+/home/sviatoslav/cheats.d/databases/mysqlcheatsheet.md|🗃️ MySQL/MariaDB|Databases|🗃️|2
+/home/sviatoslav/cheats.d/databases/oraclecheatsheet.md|🗃️ Oracle Database|Databases|🗃️|10
+/home/sviatoslav/cheats.d/security-crypto/opensslsancsrcheatsheet.md|🔐 OpenSSL — CSR with Subject Alternative Names (SAN)|Security & Crypto|🔐|3
+/home/sviatoslav/cheats.d/security-crypto/htpasswdcheatsheet.md|🔐 htpasswd — Basic Auth|Security & Crypto|🔐|10
+/home/sviatoslav/cheats.d/security-crypto/gpgagecheatsheet.md|🔐 GPG / age — Encryption|Security & Crypto|🔐|4
+/home/sviatoslav/cheats.d/security-crypto/opensslcheatsheet.md|🔐 OpenSSL — Commands|Security & Crypto|🔐|2
+/home/sviatoslav/cheats.d/security-crypto/passcheatsheet.md|🔐 pass — Password Store|Security & Crypto|🔐|5
+/home/sviatoslav/cheats.d/security-crypto/crowdseccheatsheet.md|CrowdSec Cheatsheet|Security & Crypto|🔐|1
+/home/sviatoslav/cheats.d/basics/linuxbasics2cheatsheet.md|📗 Linux Basics 2 — Next Steps|Basics|📗|2
+/home/sviatoslav/cheats.d/basics/linuxbasicscheatsheet.md|📚 Linux Basics — Cheatsheet|Basics|📚|1
+/home/sviatoslav/cheats.d/cloud/openstackcheatsheet.md|☁️ OpenStack|Cloud|☁️|1
+/home/sviatoslav/cheats.d/storage-fs/diskgrowcheatsheet.md|💿 Disk Growth — Cloud/VM Expansion|Storage & FS|💿|3
+/home/sviatoslav/cheats.d/storage-fs/partitionmountcheatsheet.md|💿 Partition & Mount|Storage & FS|💿|2
+/home/sviatoslav/cheats.d/storage-fs/aclcheatsheet.md|ACL Cheat Sheet for Linux|Storage & FS|💿|5
+/home/sviatoslav/cheats.d/storage-fs/lvmcheatsheet.md|💿 LVM — Basics|Storage & FS|💿|1
+/home/sviatoslav/cheats.d/storage-fs/smartraidcheatsheet.md|💿 SMART & mdadm RAID|Storage & FS|💿|4
+/home/sviatoslav/cheats.d/package-managers/pkgmanagerscheatsheet.md|📦 Package Managers — APT/DNF/Pacman/Snap/Flatpak|Package Managers|📦|1
+/home/sviatoslav/cheats.d/files-archives/diffpatchcheatsheet.md|🔁 diff / patch — File Comparison|Files & Archives|🔁|4
+/home/sviatoslav/cheats.d/files-archives/tarcheatsheet.md|📦 TAR — Commands|Files & Archives|📦|2
+/home/sviatoslav/cheats.d/files-archives/zip7zzstdcheatsheet.md|📦 ZIP / 7z / ZSTD — Archive Tools|Files & Archives|📦|3
+/home/sviatoslav/cheats.d/files-archives/tarzstdcheatsheet.md|📦 TAR with Zstandard Compression|Files & Archives|📦|1
+/home/sviatoslav/cheats.d/web-servers/nginxcheatsheet.md|🌐 Nginx — Cheatsheet|Web Servers|🌐|1
+/home/sviatoslav/cheats.d/web-servers/weblogiccheatsheet.md|🌐 WebLogic Server|Web Servers|🌐|5
+/home/sviatoslav/cheats.d/web-servers/apachecheatsheet.md|🪶 Apache HTTPD — Cheatsheet|Web Servers|🪶|2
+/home/sviatoslav/cheats.d/web-servers/haproxycheatsheet.md|🌀 HAProxy — Cheatsheet|Web Servers|🌀|5
+/home/sviatoslav/cheats.d/web-servers/tomcatcheatsheet.md|🐱 Tomcat — Cheatsheet|Web Servers|🐱|3
+/home/sviatoslav/cheats.d/network/ufwcheatsheet.md|🧱 UFW — Uncomplicated Firewall|Network|🧱|16
+/home/sviatoslav/cheats.d/network/dnscheatsheet.md|🧭 DNS — dig/nslookup/host|Network|🧭|5
+/home/sviatoslav/cheats.d/network/scpcheatsheet.md|🔐 SCP — Secure Copy|Network|🔐|7
+/home/sviatoslav/cheats.d/network/resolvectlcheatsheet.md|🖧 resolvectl — DNS Resolution Management|Network|🖧|999
+/home/sviatoslav/cheats.d/network/ncnmapcheatsheet.md|🔌 nc / nmap — Network Tools|Network|🔌|4
+/home/sviatoslav/cheats.d/network/firewalldcheatsheet.md|🔥 firewalld — Firewall Management|Network|🔥|12
+/home/sviatoslav/cheats.d/network/autosshcheatsheet.md|🔁 autossh — Resilient SSH Tunnels|Network|🔁|10
+/home/sviatoslav/cheats.d/network/ipcheatsheet.md|🌐 ip — Network Configuration|Network|🌐|3
+/home/sviatoslav/cheats.d/network/nftcheatsheet.md|🕸 nftables — Modern Firewall|Network|🕸|14
+/home/sviatoslav/cheats.d/network/iptablesnfttranslatecheatsheet.md|🔁 iptables → nftables Translation|Network|🔁|15
+/home/sviatoslav/cheats.d/network/curlcheatsheet.md|🌐 CURL — HTTP Client|Network|🌐|1
+/home/sviatoslav/cheats.d/network/netdiagcheatsheet.md|🛰️ Network Diagnostics — mtr/traceroute/iperf3/ping|Network|🛰️|11
+/home/sviatoslav/cheats.d/network/rsynccheatsheet.md|🚚 RSYNC — File Synchronization|Network|🚚|8
+/home/sviatoslav/cheats.d/network/sscheatsheet.md|📡 SS — Socket Statistics|Network|📡|2
+/home/sviatoslav/cheats.d/network/wireguardcheatsheet.md|🔐 WireGuard — VPN Setup|Network|🔐|9
+/home/sviatoslav/cheats.d/network/sshcheatsheet.md|🔑 SSH — Commands & Config|Network|🔑|6
+/home/sviatoslav/cheats.d/network/iptablescheatsheet.md|🔥 iptables — Firewall Rules|Network|🔥|13
+/home/sviatoslav/cheats.d/network/ssh_vpn_tunnel_cheatsheet.md|🔑 SSH Tunneling & Port Forwarding|Network|🔑|7
+/home/sviatoslav/cheats.d/network/fail2bancheatsheet.md|🚓 Fail2Ban — Intrusion Prevention|Network|🚓|17
+/home/sviatoslav/cheats.d/dev-tools/gitadvancedcheatsheet.md|🧬 Git — Advanced Techniques|Dev & Tools|🧬|2
+/home/sviatoslav/cheats.d/dev-tools/tmuxcheatsheet.md|🧷 tmux — Terminal Multiplexer|Dev & Tools|🧷|6
+/home/sviatoslav/cheats.d/dev-tools/buildtoolscheatsheet.md|🛠️ Build — Make/CMake/Meson|Dev & Tools|🛠️|5
+/home/sviatoslav/cheats.d/dev-tools/kafkacheatsheet.md|🛠️ Apache Kafka|Dev & Tools|🛠️|9
+/home/sviatoslav/cheats.d/dev-tools/ansiblecheatsheet.md|🛠️ Ansible|Dev & Tools|🛠️|5
+/home/sviatoslav/cheats.d/dev-tools/nodetoolscheatsheet.md|🟢 Node — nvm/npm/yarn/pnpm|Dev & Tools|🟢|4
+/home/sviatoslav/cheats.d/dev-tools/terraformcheatsheet.md|🛠️ Terraform|Dev & Tools|🛠️|6
+/home/sviatoslav/cheats.d/dev-tools/gitcheatsheet.md|🧬 Git — Basics|Dev & Tools|🧬|1
+/home/sviatoslav/cheats.d/dev-tools/zookeepercheatsheet.md|🛠️ Apache Zookeeper|Dev & Tools|🛠️|8
+/home/sviatoslav/cheats.d/dev-tools/jenkinscheatsheet.md|🛠️ Jenkins CI/CD|Dev & Tools|🛠️|7
+/home/sviatoslav/cheats.d/dev-tools/pythontoolscheatsheet.md|🐍 Python — venv/pip/pipx/poetry|Dev & Tools|🐍|3
+/home/sviatoslav/cheats.d/kubernetes-containers/openshiftcheatsheet.md|☸️ OpenShift (OCP)|Kubernetes & Containers|☸️|10
+/home/sviatoslav/cheats.d/kubernetes-containers/dockercheatsheet.md|🐳 Docker — Commands|Kubernetes & Containers|🐳|6
+/home/sviatoslav/cheats.d/kubernetes-containers/kubectlcheatsheet.md|☸️ KUBECTL — Commands|Kubernetes & Containers|☸️|1
+/home/sviatoslav/cheats.d/kubernetes-containers/k9scheatsheet.md|🎛 k9s — Hotkeys|Kubernetes & Containers|🎛|8
+/home/sviatoslav/cheats.d/kubernetes-containers/podmannerdctlcheatsheet.md|🫙 Podman / nerdctl — Commands|Kubernetes & Containers|🫙|7
+/home/sviatoslav/cheats.d/kubernetes-containers/kubectljsonpathcheatsheet.md|☸️ KUBECTL — JSONPath|Kubernetes & Containers|☸️|2
+/home/sviatoslav/cheats.d/kubernetes-containers/kubectlkustomizecheatsheet.md|☸️ Kustomize — kustomization.yaml|Kubernetes & Containers|☸️|3
+/home/sviatoslav/cheats.d/kubernetes-containers/helmcheatsheet.md|⛏ Helm — Commands|Kubernetes & Containers|⛏|4
+/home/sviatoslav/cheats.d/backups-s3/veeamcheatsheet.md|🗄️ Veeam Agent — Linux Backup|Backups & S3|🗄️|7
+/home/sviatoslav/cheats.d/backups-s3/borgbackupcheatsheet.md|🗄️ BorgBackup — Deduplicating Backups|Backups & S3|🗄️|3
+/home/sviatoslav/cheats.d/backups-s3/targpgcheatsheet.md|🗄️ tar + GPG — Classic Encrypted Backups|Backups & S3|🗄️|5
+/home/sviatoslav/cheats.d/backups-s3/clone-server.md|🗄️ Complete Server Clone & Backup Cheatsheet — Linux|Backups & S3|🗄️|7
+/home/sviatoslav/cheats.d/backups-s3/snapshotscheatsheet.md|🗄️ Snapshots — LVM/ZFS/Btrfs|Backups & S3|🗄️|8
+/home/sviatoslav/cheats.d/backups-s3/rclonecheatsheet.md|🗄️ rclone — Remotes/S3|Backups & S3|🗄️|2
+/home/sviatoslav/cheats.d/backups-s3/azcopycheatsheet.md|🗄️ azcopy — Azure Blob Storage|Backups & S3|🗄️|11
+/home/sviatoslav/cheats.d/backups-s3/duplicitycheatsheet.md|🗄️ Duplicity — Encrypted Incremental Backups|Backups & S3|🗄️|4
+/home/sviatoslav/cheats.d/backups-s3/resticcheatsheet.md|🗄️ restic — Backups|Backups & S3|🗄️|1
+/home/sviatoslav/cheats.d/backups-s3/baculacheatsheet.md|🗄️ Bareos/Bacula — Enterprise Backup|Backups & S3|🗄️|6
+/home/sviatoslav/cheats.d/backups-s3/veritascheatsheet.md|🗄️ Veritas InfoScale|Backups & S3|🗄️|8
+/home/sviatoslav/cheats.d/backups-s3/awsclicheatsheet.md|🗄️ aws-cli — AWS S3 Backups|Backups & S3|🗄️|9
+/home/sviatoslav/cheats.d/backups-s3/gsutilcheatsheet.md|🗄️ gsutil — Google Cloud Storage|Backups & S3|🗄️|10

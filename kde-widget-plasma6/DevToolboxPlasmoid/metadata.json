@@ -1,0 +1,21 @@
+{
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "sviatoslavfedorenko@gmail.com",
+                "Name": "Dominatos"
+            }
+        ],
+        "Category": "Development Tools",
+        "Description": "Menu for Markdown Cheatsheets with search and export",
+        "Icon": "accessories-text-editor",
+        "Id": "com.dominatos.devtoolboxcheats",
+        "License": "MIT",
+        "Name": "DevToolbox Cheats",
+        "Version": "1.0",
+        "Website": "https://github.com/dominatos/devtoolbox-cheats"
+    },
+    "KPackageStructure": "Plasma/Applet"
+}

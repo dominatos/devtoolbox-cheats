@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <group name="General">
+    <entry name="cheatsDir" type="String">
+      <default>~/cheats.d</default>
+      <label>Path to cheats directory</label>
+    </entry>
+    <entry name="cacheFile" type="String">
+      <default>~/.cache/devtoolbox-cheats.json</default>
+      <label>Path to cache file</label>
+    </entry>
+    <entry name="preferredEditor" type="String">
+      <default>code</default>
+      <label>Preferred editor command</label>
+    </entry>
+    <entry name="autoRebuildCache" type="Bool">
+      <default>false</default>
+      <label>Rebuild cache on startup</label>
+    </entry>
+  </group>
+</kcfg>
