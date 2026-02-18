@@ -324,6 +324,7 @@ mongosh --eval 'db.adminCommand( { setFeatureCompatibilityVersion: "8.0",  confi
 > [!WARNING]
 > Always backup both data and configuration before upgrading.
 > Всегда делайте резервную копию данных и конфигурации перед обновлением.
+> [Official documentation](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-red-hat/)
 
 ## 5 --> 6 Upgrade / Обновление 5 --> 6
 
@@ -338,6 +339,13 @@ cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
 systemctl stop mongod
 # Add/Update /etc/apt/sources.list.d/mongodb-org-6.0.list or /etc/yum.repos.d/mongodb-org-6.0.repo
 # Добавьте/Обновите /etc/apt/sources.list.d/mongodb-org-6.0.list или /etc/yum.repos.d/mongodb-org-6.0.repo
+#edit for corredt REDHAT VERSION!!
+[mongodb-org-6.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/6.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://pgp.mongodb.com/server-6.0.asc
 
 # 4. Install / Установить
 # Debian/Ubuntu: apt-get update && apt-get install -y mongodb-org
