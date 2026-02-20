@@ -5,15 +5,16 @@
 import QtQuick 2.15
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.kirigami 2.19 as Kirigami
 
 Item {
     id: compactRoot
 
-    // Icon handling using IconLabel (more compatible across P5/P6)
-    PlasmaComponents.IconLabel {
+    // Icon handling using Kirigami.Icon for Plasma 6 compatibility
+    Kirigami.Icon {
         id: icon
         anchors.fill: parent
-        icon.name: "accessories-text-editor"
+        source: "accessories-text-editor"
         opacity: mouseArea.containsMouse ? 1 : 0.8
     }
 
