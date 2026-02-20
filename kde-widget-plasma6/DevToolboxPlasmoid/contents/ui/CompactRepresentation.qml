@@ -15,20 +15,5 @@ Item {
         id: icon
         anchors.fill: parent
         source: "accessories-text-editor"
-        opacity: mouseArea.containsMouse ? 1 : 0.8
-    }
-
-    // Mouse handling
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: plasmoid.expanded = !plasmoid.expanded
-    }
-
-    // Simple tooltip for compatibility
-    PlasmaComponents.ToolTip {
-        visible: mouseArea.containsMouse
-        text: plasmoid.title || "DevToolbox Cheats"
     }
 }

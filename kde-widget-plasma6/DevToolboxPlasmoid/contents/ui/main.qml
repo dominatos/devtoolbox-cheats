@@ -24,6 +24,9 @@ PlasmoidItem {
     property string cacheFile: plasmoid.configuration.cacheFile
     property string preferredEditor: plasmoid.configuration.preferredEditor
 
+    toolTipMainText: "DevToolbox Cheats"
+    toolTipSubText: "Click to search and copy cheatsheets"
+
     Component.onCompleted: {
         console.log("DevToolbox Cheats widget loaded");
     }
