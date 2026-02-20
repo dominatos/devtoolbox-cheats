@@ -43,7 +43,11 @@ read -p "❓ Do you want to restart Plasma now to immediately apply changes? [y/
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "🔄 Restarting Plasma..."
-    systemctl --user restart plasma-plasmashell.service
+    if ! systemctl --user restart plasma-plasmashell.service 2>/dev/null; then
+        echo "⚠️ systemd restart failed, falling back to manual restart..."
+        kquitapp6 plasmashell 2>/dev/null || killall plasmashell 2>/dev/null || true
+        kstart plasmashell >/dev/null 2>&1 &
+    fi
 else
     echo "You may need to restart Plasma to see the changes:"
     echo "  systemctl --user restart plasma-plasmashell.service"
