@@ -37,7 +37,14 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "✅ Removed ~/.cache/devtoolbox-cheats.json"
 fi
 
-echo ""
 echo "✅ Uninstallation complete!"
-echo "You may need to restart Plasma to see the changes:"
-echo "  systemctl --user restart plasma-plasmashell.service"
+
+read -p "❓ Do you want to restart Plasma now to immediately apply changes? [y/N] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "🔄 Restarting Plasma..."
+    systemctl --user restart plasma-plasmashell.service
+else
+    echo "You may need to restart Plasma to see the changes:"
+    echo "  systemctl --user restart plasma-plasmashell.service"
+fi
