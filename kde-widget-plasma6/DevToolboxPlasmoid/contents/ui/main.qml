@@ -9,11 +9,15 @@ PlasmoidItem {
     id: root
 
     // Plasmoid preferred representation (Compact/Full)
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
+    preferredRepresentation: compactRepresentation
 
     // Define representations
-    compactRepresentation: CompactRepresentation {}
-    fullRepresentation: FullRepresentation {}
+    compactRepresentation: Component {
+        CompactRepresentation {}
+    }
+    fullRepresentation: Component {
+        FullRepresentation {}
+    }
 
     // Configuration properties shortcut
     property string cheatsDir: plasmoid.configuration.cheatsDir
