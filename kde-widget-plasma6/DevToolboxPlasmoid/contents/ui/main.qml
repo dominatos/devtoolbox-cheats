@@ -12,8 +12,8 @@ PlasmoidItem {
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
 
     // Define representations
-    Plasmoid.compactRepresentation: CompactRepresentation {}
-    Plasmoid.fullRepresentation: FullRepresentation {}
+    compactRepresentation: CompactRepresentation {}
+    fullRepresentation: FullRepresentation {}
 
     // Configuration properties shortcut
     property string cheatsDir: plasmoid.configuration.cheatsDir
