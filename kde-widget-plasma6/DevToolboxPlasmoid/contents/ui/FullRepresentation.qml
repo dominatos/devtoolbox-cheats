@@ -1,10 +1,10 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import org.kde.plasma.components 3.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.plasmoid 2.0
-import org.kde.kirigami 2.19 as Kirigami
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.plasmoid
+import org.kde.kirigami as Kirigami
 
 import "../code/cheats.js" as Cheats
 import "../code/utils.js" as Utils

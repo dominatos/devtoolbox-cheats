@@ -2,8 +2,8 @@
  * Main UI entry point for DevToolbox Cheats Plasmoid
  */
 
-import QtQuick 2.15
-import org.kde.plasma.plasmoid 2.0
+import QtQuick
+import org.kde.plasma.plasmoid
 
 PlasmoidItem {
     id: root
