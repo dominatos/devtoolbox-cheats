@@ -5,7 +5,7 @@
 import QtQuick 2.15
 import org.kde.plasma.plasmoid 2.0
 
-Item {
+PlasmoidItem {
     id: root
 
     // Plasmoid preferred representation (Compact/Full)
