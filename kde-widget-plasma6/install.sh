@@ -22,7 +22,7 @@ fi
 # Upgrade logic (clean removal before install)
 if $TOOL --type Plasma/Applet --list | grep -q "com.dominatos.devtoolboxcheats"; then
     echo "🔄 Found existing widget, removing before re-installation..."
-    $TOOL --type Plasma/Applet --remove com.dominatos.devtoolboxcheats
+    $TOOL --type Plasma/Applet --remove com.dominatos.devtoolboxcheats || true
 fi
 $TOOL --type Plasma/Applet --install "$PKG"
 
