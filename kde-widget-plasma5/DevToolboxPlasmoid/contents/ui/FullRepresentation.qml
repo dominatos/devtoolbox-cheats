@@ -267,8 +267,10 @@ Item {
                             Text {
                                 text: modelData.icon.length <= 3 ? modelData.icon : ""
                                 visible: text !== ""
-                                font.pointSize: 12
-                                renderType: Text.NativeRendering
+                                font.family: "Noto Color Emoji, Noto Emoji, sans-serif"
+                                font.pointSize: 14
+                                renderType: Text.QtRendering
+                                textFormat: Text.PlainText
                                 color: Kirigami.Theme.textColor
                             }
 
@@ -315,8 +317,10 @@ Item {
                                             anchors.centerIn: parent
                                             text: !parent.isSystemIcon ? parent.effectiveIcon : ""
                                             visible: !parent.isSystemIcon
-                                            font.pointSize: 12 // Slightly larger for emojis
-                                            renderType: Text.NativeRendering // Improves text crispness and sometimes glyph finding
+                                            font.family: "Noto Color Emoji, Noto Emoji, sans-serif"
+                                            font.pointSize: 14
+                                            renderType: Text.QtRendering
+                                            textFormat: Text.PlainText
                                             color: Kirigami.Theme.textColor
                                         }
                                     }
