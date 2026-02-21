@@ -5,6 +5,7 @@ import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasma5support as Plasma5Support
 
 import "../code/cheats.js" as Cheats
 import "../code/utils.js" as Utils
@@ -21,37 +22,23 @@ Item {
     property string statusMessage: ""
     property bool isLoading: false
     
-    // Dynamic DataSource for compatibility between Plasma 5 (PlasmaCore) and 6 (Plasma5Support)
-    property var shSource: null
-
-    function createDataSource() {
-        try {
-            // Try Plasma 6 way first
-            shSource = Qt.createQmlObject('import org.kde.plasma.plasma5support; DataSource { engine: "executable" }', fullRoot, "DynamicDataSource");
-        } catch (e) {
-            try {
-                // Fallback to Plasma 5 way
-                shSource = Qt.createQmlObject('import org.kde.plasma.core 2.0; DataSource { engine: "executable" }', fullRoot, "DynamicDataSource");
-            } catch (e2) {
-                console.error("Failed to create DataSource for both Plasma 5 and 6");
-            }
-        }
-
-        if (shSource) {
-            shSource.newData.connect(function(sourceName, data) {
-                var stdout = data["stdout"]
-                if (shSource.connectedSources.indexOf(sourceName) !== -1) {
-                    if (stdout && stdout.indexOf('|') !== -1) {
-                        processIndexOutput(stdout)
-                    }
-                    shSource.disconnectSource(sourceName)
+    // Plasma 6 DataSource for running shell commands
+    Plasma5Support.DataSource {
+        id: shSource
+        engine: "executable"
+        onNewData: function(sourceName, data) {
+            var stdout = data["stdout"]
+            if (connectedSources.indexOf(sourceName) !== -1) {
+                if (stdout && stdout.indexOf('|') !== -1) {
+                    processIndexOutput(stdout)
                 }
-            });
+                disconnectSource(sourceName)
+            }
         }
     }
 
     function runCommand(cmd) {
-        if (shSource) shSource.connectedSources.push(cmd)
+        shSource.connectSource(cmd)
     }
 
     function refreshCheats() {
@@ -84,8 +71,7 @@ Item {
 
     // Initialize
     Component.onCompleted: {
-        createDataSource()
-        if (shSource) refreshCheats()
+        refreshCheats()
     }
 
     function updateFilter() {

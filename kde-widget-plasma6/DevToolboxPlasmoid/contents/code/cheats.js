@@ -34,7 +34,7 @@ function getIndexCommand(cheatsDir, cacheFile) {
     // Robust indexing command wrapped in bash
     // We iterate over files and extract metadata one by one.
 
-    var debugLog = "/home/sviatoslav/Downloads/devtoolbox-kde/devtoolbox-cheats-beta/kde-widget-plasma6/debug.log";
+    var debugLog = "$HOME/.cache/devtoolbox-cheats-debug.log";
 
     var script = "{ " +
         "searchDir=\"" + cheatsDir + "\"; " +

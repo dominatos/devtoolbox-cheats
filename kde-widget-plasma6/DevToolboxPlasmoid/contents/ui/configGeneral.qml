@@ -6,8 +6,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
+import org.kde.kcmutils as KCM
 
-Kirigami.FormLayout {
+KCM.SimpleKCM {
     id: configPage
 
     // Property aliases for KConfig binding
@@ -16,27 +17,29 @@ Kirigami.FormLayout {
     property alias cfg_preferredEditor: editorField.text
     property alias cfg_autoRebuildCache: autoRebuildField.checked
 
-    TextField {
-        id: cheatsDirField
-        Kirigami.FormData.label: "Cheats Directory:"
-        placeholderText: "~/cheats.d"
-    }
+    Kirigami.FormLayout {
+        TextField {
+            id: cheatsDirField
+            Kirigami.FormData.label: "Cheats Directory:"
+            placeholderText: "~/cheats.d"
+        }
 
-    TextField {
-        id: cacheFileField
-        Kirigami.FormData.label: "Cache File Path:"
-        placeholderText: "~/.cache/devtoolbox-cheats.json"
-    }
+        TextField {
+            id: cacheFileField
+            Kirigami.FormData.label: "Cache File Path:"
+            placeholderText: "~/.cache/devtoolbox-cheats.json"
+        }
 
-    TextField {
-        id: editorField
-        Kirigami.FormData.label: "Preferred Editor:"
-        placeholderText: "code"
-    }
-    
-    CheckBox {
-        id: autoRebuildField
-        Kirigami.FormData.label: "Cache:"
-        text: "Rebuild cache on startup"
+        TextField {
+            id: editorField
+            Kirigami.FormData.label: "Preferred Editor:"
+            placeholderText: "code"
+        }
+
+        CheckBox {
+            id: autoRebuildField
+            Kirigami.FormData.label: "Cache:"
+            text: "Rebuild cache on startup"
+        }
     }
 }

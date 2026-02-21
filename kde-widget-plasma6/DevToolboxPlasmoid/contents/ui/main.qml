@@ -11,12 +11,8 @@ PlasmoidItem {
     // Show compact (icon) in panel; clicking expands to full popup
     preferredRepresentation: compactRepresentation
 
-    compactRepresentation: Component {
-        CompactRepresentation {}
-    }
-    fullRepresentation: Component {
-        FullRepresentation {}
-    }
+    compactRepresentation: CompactRepresentation {}
+    fullRepresentation: FullRepresentation {}
 
     toolTipMainText: "DevToolbox Cheats"
     toolTipSubText: "Click to search and copy cheatsheets"
