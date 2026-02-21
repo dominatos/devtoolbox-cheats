@@ -38,18 +38,38 @@ else
 fi
 
 echo ""
-echo "📦 Installing Noto Color Emoji font..."
+echo "📦 Installing dependencies..."
+# fzf, bat, zenity, wl-clipboard, xclip, libnotify, fontconfig
 if command -v apt &>/dev/null; then
     echo "  → Detected apt (Debian/Ubuntu)"
-    sudo apt install -y fonts-noto-color-emoji
+    sudo apt install -y \
+        fonts-noto-color-emoji \
+        fzf bat \
+        zenity \
+        wl-clipboard xclip \
+        libnotify-bin \
+        fontconfig
 elif command -v dnf &>/dev/null; then
     echo "  → Detected dnf (RHEL/Rocky/AlmaLinux)"
-    sudo dnf install -y google-noto-emoji-color-fonts
+    sudo dnf install -y \
+        google-noto-emoji-color-fonts \
+        fzf bat \
+        zenity \
+        wl-clipboard xclip \
+        libnotify \
+        fontconfig
 elif command -v pacman &>/dev/null; then
     echo "  → Detected pacman (Arch)"
-    sudo pacman -S --noconfirm noto-fonts-emoji
+    sudo pacman -S --noconfirm \
+        noto-fonts-emoji \
+        fzf bat \
+        zenity \
+        wl-clipboard xclip \
+        libnotify \
+        fontconfig
 else
-    echo "  ⚠️  No supported package manager found (apt/dnf/pacman). Skipping emoji font install."
+    echo "  ⚠️  No supported package manager found (apt/dnf/pacman)."
+    echo "     Please install manually: fzf bat zenity wl-clipboard xclip libnotify fontconfig"
 fi
 
 echo ""
