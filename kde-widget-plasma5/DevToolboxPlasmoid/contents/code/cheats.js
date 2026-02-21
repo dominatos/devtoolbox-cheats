@@ -214,3 +214,43 @@ function getExportMarkdownCommand(cheatsDir, outputFile) {
 
     return cmd;
 }
+
+// Export a single cheatsheet (front-matter stripped) to outputFile
+function getExportCheatCommand(cheatPath, outputFile) {
+    var safePath = cheatPath.replace(/'/g, "'\\''")
+    var safeOut = outputFile.replace(/'/g, "'\\''");
+    return "bash -c " +
+        "\"sed '1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}' " +
+        "'" + safePath + "' > '" + safeOut + "' && " +
+        "notify-send 'DevToolbox' 'Exported to " + safeOut + "'\"";
+}
+
+// Build command to launch fzf search in a terminal.
+// Selected file:line is opened in the preferred editor.
+function getFzfSearchCommand(cheatsDir, editor) {
+    var safeDir = cheatsDir.replace(/'/g, "'\\''")
+    var safeEditor = (editor || "code").replace(/'/g, "'\\''");
+    // The inner bash script mirrors the argos fzfSearch() function:
+    //   grep -rnH all .md -> fzf with bat/cat preview -> open result in editor
+    var inner =
+        "if ! command -v fzf >/dev/null 2>&1; then " +
+        "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
+        "read -rp 'Press enter to exit...'; exit 1; fi; " +
+        "selected=\$(grep -rnH --include='*.md' . '" + safeDir + "' 2>/dev/null | " +
+        "fzf --delimiter : " +
+        "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
+        "--preview-window 'right:60%' " +
+        "--header 'Type to search all cheats... Enter to open.' " +
+        "--bind 'enter:accept') || exit 0; " +
+        "[ -z \"\$selected\" ] && exit 0; " +
+        "file=\$(echo \"\$selected\" | cut -d: -f1); " +
+        "line=\$(echo \"\$selected\" | cut -d: -f2); " +
+        "if command -v '" + safeEditor + "' >/dev/null 2>&1; then " +
+        "'" + safeEditor + "' -g \"\$file:\$line\"; " +
+        "else " +
+        "\${EDITOR:-nano} +\"\$line\" \"\$file\"; " +
+        "fi";
+    // Escape inner for embedding in outer single-quoted bash string
+    var safeInner = inner.replace(/'/g, "'\\'' ");
+    return "bash -c '" + safeInner + "'";
+}

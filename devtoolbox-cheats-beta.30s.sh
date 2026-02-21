@@ -5,8 +5,8 @@ trap '  exit 0' ERR
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
-# Defaults to $HOME/.config/argos/cheats.d if CHEATS_DIR is not set.
-CHEATS_DIR="${CHEATS_DIR:-$HOME/.config/argos/cheats.d}"
+# Defaults to $HOME/cheats.d if CHEATS_DIR is not set.
+CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
 
 # Resolve symlink to ensure find works reliably
 # If CHEATS_DIR is a symbolic link, we resolve it to its absolute path.

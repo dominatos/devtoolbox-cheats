@@ -145,6 +145,33 @@ Item {
         statusMessage = "Exporting..."
     }
 
+    // Export a single cheatsheet to ~/DevToolbox-<title>_<date>.md
+    function exportCheat(cheatPath, cheatTitle) {
+        var safeName = cheatTitle.replace(/[^a-zA-Z0-9_\-]/g, '_').replace(/__+/g, '_')
+        var outFile  = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
+        var cmd = Cheats.getExportCheatCommand(cheatPath, outFile)
+        runCommand(cmd)
+        statusMessage = "📥 Exported: " + safeName + ".md"
+    }
+
+    // Launch fzf grep search in a terminal window
+    function fzfSearch() {
+        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
+        var editor    = plasmoid.configuration.preferredEditor || "code"
+        var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir, editor)
+        // Try konsole first (KDE native), fall back to xterm
+        var termCmd =
+            "if command -v konsole >/dev/null 2>&1; then " +
+            "  konsole --hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "elif command -v xterm >/dev/null 2>&1; then " +
+            "  xterm -hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "else " +
+            "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm). Install one first.'; " +
+            "fi"
+        runCommand("bash -c '" + termCmd.replace(/'/g, "'\\''" ) + "'")
+        statusMessage = "🚀 Opening FZF search..."
+    }
+
     function toggleGroup(index) {
         var list = filteredModel
         var group = list[index]
@@ -181,7 +208,15 @@ Item {
                 text: "Export"
                 icon.name: "document-export"
                 onClicked: exportCheats()
-                ToolTip.text: "Export all to Markdown"
+                ToolTip.text: "Export all cheats to Markdown"
+                ToolTip.visible: hovered
+            }
+
+            PlasmaComponents.Button {
+                text: "FZF"
+                icon.name: "search"
+                onClicked: fzfSearch()
+                ToolTip.text: "🚀 FZF: full-text search in terminal (requires fzf)"
                 ToolTip.visible: hovered
             }
         }
@@ -348,6 +383,13 @@ Item {
                                             display: AbstractButton.IconOnly
                                             onClicked: openCheat(modelData.path)
                                             ToolTip.text: "Open in Editor"
+                                            ToolTip.visible: hovered
+                                        }
+                                        PlasmaComponents.Button {
+                                            icon.name: "document-save"
+                                            display: AbstractButton.IconOnly
+                                            onClicked: exportCheat(modelData.path, modelData.title)
+                                            ToolTip.text: "Export this cheat to ~/"
                                             ToolTip.visible: hovered
                                         }
                                     }

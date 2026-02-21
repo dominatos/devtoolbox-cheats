@@ -24,6 +24,6 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton
-        onClicked: root.expanded = !root.expanded
+        onClicked: Plasmoid.expanded = !Plasmoid.expanded
     }
 }
