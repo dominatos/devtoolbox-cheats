@@ -9,9 +9,8 @@ import org.kde.plasma.core as PlasmaCore
 PlasmoidItem {
     id: root
 
-    // Clicking the compact icon toggles the full popup
     Plasmoid.status: PlasmaCore.Types.ActiveStatus
-    
+
     // Show compact (icon) in panel; clicking expands to full popup
     preferredRepresentation: compactRepresentation
 
@@ -20,12 +19,12 @@ PlasmoidItem {
 
     toolTipMainText: "DevToolbox Cheats"
     toolTipSubText: "Click to search and copy cheatsheets"
-    
-    // This property controls popup behavior
-    property bool expanded: false
-    
+
+    // Toggle popup on click — uses PlasmoidItem's built-in 'expanded' property
     Plasmoid.onActivated: {
+        console.log("[DevToolbox] Plasmoid.onActivated fired, expanded was:", expanded);
         expanded = !expanded
+        console.log("[DevToolbox] expanded is now:", expanded);
     }
 
     Component.onCompleted: {
