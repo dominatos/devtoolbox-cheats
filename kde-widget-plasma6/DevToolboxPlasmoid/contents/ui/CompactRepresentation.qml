@@ -18,15 +18,13 @@ Item {
         opacity: mouseArea.containsMouse ? 1 : 0.8
     }
 
-    // Mouse handling — expansion is handled by activationTogglesExpanded on PlasmoidItem
+    // Hover-only mouse area for visual feedback
+    // Click/expansion is handled by Plasmoid.onActivated in main.qml
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        acceptedButtons: Qt.LeftButton
-        onClicked: {
-            console.log("[DevToolbox] CompactRepresentation clicked");
-        }
+        acceptedButtons: Qt.NoButton
     }
 
     Component.onCompleted: {
