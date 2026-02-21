@@ -15,5 +15,15 @@ Item {
         id: icon
         anchors.fill: parent
         source: "accessories-text-editor"
+        opacity: mouseArea.containsMouse ? 1 : 0.8
+    }
+
+    // Mouse handling
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.LeftButton
+        onClicked: root.expanded = !root.expanded
     }
 }
