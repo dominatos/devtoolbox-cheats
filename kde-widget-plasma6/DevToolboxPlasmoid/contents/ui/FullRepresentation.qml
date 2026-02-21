@@ -21,16 +21,21 @@ Item {
     property var filteredModel: []
     property string statusMessage: ""
     property bool isLoading: false
-    
+
     // Plasma 6 DataSource for running shell commands
     Plasma5Support.DataSource {
         id: shSource
         engine: "executable"
         onNewData: function(sourceName, data) {
+            console.log("[DevToolbox] DataSource newData for:", sourceName);
             var stdout = data["stdout"]
+            var stderr = data["stderr"]
+            if (stderr) console.log("[DevToolbox] stderr:", stderr);
             if (connectedSources.indexOf(sourceName) !== -1) {
                 if (stdout && stdout.indexOf('|') !== -1) {
                     processIndexOutput(stdout)
+                } else {
+                    console.log("[DevToolbox] Command output (no pipe chars):", stdout ? stdout.substring(0, 200) : "(empty)");
                 }
                 disconnectSource(sourceName)
             }
@@ -38,6 +43,7 @@ Item {
     }
 
     function runCommand(cmd) {
+        console.log("[DevToolbox] runCommand:", cmd.substring(0, 100));
         shSource.connectSource(cmd)
     }
 
@@ -48,16 +54,15 @@ Item {
             plasmoid.configuration.cheatsDir.replace("~", "$HOME"),
             plasmoid.configuration.cacheFile.replace("~", "$HOME")
         )
-        console.log("DevToolbox: Refreshing cheats with command:", cmd)
+        console.log("[DevToolbox] Refreshing cheats with command (first 200 chars):", cmd.substring(0, 200))
         runCommand(cmd)
     }
 
     function processIndexOutput(output) {
-        console.log("DevToolbox: Received index output (length=" + output.length + ")")
-        // console.log("DevToolbox: Output snippet:", output.substring(0, 200))
+        console.log("[DevToolbox] Received index output (length=" + output.length + ")")
 
         cheatsModel = Cheats.parseIndexOutput(output)
-        console.log("DevToolbox: Parsed model with " + cheatsModel.length + " groups.")
+        console.log("[DevToolbox] Parsed model with " + cheatsModel.length + " groups.")
         updateFilter()
         isLoading = false
         statusMessage = "Loaded " + countCheats(cheatsModel) + " cheats."
@@ -71,6 +76,10 @@ Item {
 
     // Initialize
     Component.onCompleted: {
+        console.log("[DevToolbox] FullRepresentation loaded");
+        console.log("[DevToolbox] cheatsDir config:", plasmoid.configuration.cheatsDir);
+        console.log("[DevToolbox] cacheFile config:", plasmoid.configuration.cacheFile);
+        console.log("[DevToolbox] preferredEditor config:", plasmoid.configuration.preferredEditor);
         refreshCheats()
     }
 

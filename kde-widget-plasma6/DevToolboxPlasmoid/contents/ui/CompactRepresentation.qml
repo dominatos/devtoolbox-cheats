@@ -1,5 +1,5 @@
 /*
- * Compact representation (Panel Icon)
+ * Compact representation (Panel Icon) — Plasma 6
  */
 
 import QtQuick
@@ -18,12 +18,18 @@ Item {
         opacity: mouseArea.containsMouse ? 1 : 0.8
     }
 
-    // Mouse handling
+    // Mouse handling — expansion is handled by activationTogglesExpanded on PlasmoidItem
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton
-        onClicked: compactRoot.parent.expanded = !compactRoot.parent.expanded
+        onClicked: {
+            console.log("[DevToolbox] CompactRepresentation clicked");
+        }
+    }
+
+    Component.onCompleted: {
+        console.log("[DevToolbox] CompactRepresentation loaded");
     }
 }
