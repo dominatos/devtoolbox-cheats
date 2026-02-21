@@ -38,6 +38,25 @@ else
 fi
 
 echo ""
+echo "📦 Installing Noto Color Emoji font..."
+if command -v apt &>/dev/null; then
+    echo "  → Detected apt (Debian/Ubuntu)"
+    sudo apt install -y fonts-noto-color-emoji
+elif command -v dnf &>/dev/null; then
+    echo "  → Detected dnf (RHEL/Rocky/AlmaLinux)"
+    sudo dnf install -y google-noto-emoji-color-fonts
+elif command -v pacman &>/dev/null; then
+    echo "  → Detected pacman (Arch)"
+    sudo pacman -S --noconfirm noto-fonts-emoji
+else
+    echo "  ⚠️  No supported package manager found (apt/dnf/pacman). Skipping emoji font install."
+fi
+
+echo ""
+echo "🔤 Refreshing font cache..."
+fc-cache -f -v
+
+echo ""
 echo "✅ Installation complete!"
 echo "You can now add 'DevToolbox Cheats' to your panel or desktop."
 echo "You may need to logout/login or restart Plasma to see the new widget."
