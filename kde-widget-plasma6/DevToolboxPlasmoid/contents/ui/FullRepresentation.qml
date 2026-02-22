@@ -21,6 +21,7 @@ Item {
     property var filteredModel: []
     property string statusMessage: ""
     property bool isLoading: false
+    property string scriptBasePath: ""
 
     // Plasma 6 DataSource for running shell commands
     Plasma5Support.DataSource {
@@ -29,9 +30,11 @@ Item {
         onNewData: function(sourceName, data) {
             var stdout = data["stdout"] || ""
             var stderr = data["stderr"] || ""
+            var exitCode = data["exit code"] || 0
             
             // Log full output details for debugging
             console.log("[DevToolbox] DataSource newData received.");
+            console.log("[DevToolbox] Exit code:", exitCode);
             console.log("[DevToolbox] Stdout length:", stdout.length);
             if (stderr) console.log("[DevToolbox] Stderr:", stderr);
             
@@ -39,9 +42,16 @@ Item {
                 if (stdout.length > 0 && stdout.indexOf('|') !== -1) {
                     processIndexOutput(stdout)
                 } else if (stdout.length > 0) {
-                    console.log("[DevToolbox] No pipe chars found in output. Raw:", stdout.substring(0, 100));
+                    console.log("[DevToolbox] No pipe chars found in output. Raw:", stdout.substring(0, 200));
+                    console.log("[DevToolbox] Full output:", stdout);
                 } else {
                     console.log("[DevToolbox] Command returned empty stdout.");
+                    if (stderr) {
+                        statusMessage = "⚠️ Error: " + stderr.substring(0, 100);
+                    } else {
+                        statusMessage = "⚠️ No cheats found. Check ~/cheats.d directory.";
+                    }
+                    isLoading = false;
                 }
                 disconnectSource(sourceName)
             }
@@ -49,8 +59,7 @@ Item {
     }
 
     function runCommand(cmd) {
-        // Logging the shielded command might be messy, but helpful
-        console.log("[DevToolbox] runCommand (shielded):", cmd.substring(0, 200));
+        console.log("[DevToolbox] runCommand:", cmd);
         shSource.connectSource(cmd)
     }
 
@@ -59,16 +68,22 @@ Item {
         statusMessage = "Indexing cheats..."
         
         // Construct the absolute path to our helper script
-        // In Plasma 6, we can use Qt.resolvedUrl to get the base path correctly
-        var baseUrl = Qt.resolvedUrl(".").toString().replace("file://", "")
-        var scriptPath = baseUrl + "indexer.sh"
-
-        // Use literal $HOME for robust path construction
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
-        var cacheFile = plasmoid.configuration.cacheFile.replace("~", "$HOME")
+        if (scriptBasePath === "") {
+            scriptBasePath = Qt.resolvedUrl("../code/indexer.sh").toString().replace("file://", "")
+            console.log("[DevToolbox] Resolved script path:", scriptBasePath);
+        }
         
-        // getIndexCommand now points to the helper script
-        var cmd = Cheats.getIndexCommand(cheatsDir, cacheFile, scriptPath)
+        var scriptPath = scriptBasePath;
+        var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
+        var debugLog = "/tmp/devtoolbox-debug.log"
+        
+        console.log("[DevToolbox] Using cheats directory:", cheatsDir);
+        console.log("[DevToolbox] Using script:", scriptPath);
+        
+        var cmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\""
+        cmd = Cheats.plasmaShield(cmd)
+        
+        console.log("[DevToolbox] Final shielded command:", cmd);
         runCommand(cmd)
     }
 
@@ -79,7 +94,13 @@ Item {
         console.log("[DevToolbox] Parsed model with " + cheatsModel.length + " groups.")
         updateFilter()
         isLoading = false
-        statusMessage = "Loaded " + countCheats(cheatsModel) + " cheats."
+        
+        var totalCheats = countCheats(cheatsModel);
+        if (totalCheats > 0) {
+            statusMessage = "✅ Loaded " + totalCheats + " cheats."
+        } else {
+            statusMessage = "⚠️ No cheats found in ~/cheats.d"
+        }
     }
     
     function countCheats(groups) {
@@ -88,12 +109,12 @@ Item {
         return c;
     }
 
-    // Initialize
     Component.onCompleted: {
         console.log("[DevToolbox] FullRepresentation loaded. Configuration:");
         console.log("  - cheatsDir:", plasmoid.configuration.cheatsDir);
         console.log("  - cacheFile:", plasmoid.configuration.cacheFile);
-        refreshCheats()
+        console.log("  - preferredEditor:", plasmoid.configuration.preferredEditor);
+        Qt.callLater(refreshCheats)
     }
 
     function updateFilter() {
@@ -117,7 +138,7 @@ Item {
                         name: group.name,
                         icon: group.icon,
                         cheats: matchingCheats,
-                        expanded: true // Auto-expand when searching
+                        expanded: true
                     }
                     result.push(newGroup)
                 }
@@ -146,11 +167,11 @@ Item {
     function exportCheats() {
         var file = "$HOME/DevToolbox-Cheatsheet_" + Utils.formatDate(new Date()) + ".md"
         var cmd = Cheats.getExportMarkdownCommand(
-            plasmoid.configuration.cheatsDir.replace("~", "$HOME"),
+            plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME"),
             file
         )
         runCommand(cmd)
-        statusMessage = "Exporting all cheats..."
+        statusMessage = "📥 Exporting all cheats..."
     }
 
     function exportCheat(cheatPath, cheatTitle) {
@@ -162,16 +183,15 @@ Item {
     }
 
     function fzfSearch() {
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
+        var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
         var editor    = plasmoid.configuration.preferredEditor || "code"
         var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir, editor)
         
-        // Shielded terminal launcher
         var termScript =
             "if command -v konsole >/dev/null 2>&1; then " +
-            "  konsole --hold -e " + fzfCmd + "; " +
+            "  konsole -e " + fzfCmd + "; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "  xterm --hold -e " + fzfCmd + "; " +
+            "  xterm -hold -e " + fzfCmd + "; " +
             "else " +
             "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
             "fi"
@@ -188,7 +208,6 @@ Item {
         var group = list[index]
         group.expanded = !group.expanded
         
-        // Force update
         filteredModel = []
         filteredModel = list
     }
@@ -197,7 +216,6 @@ Item {
         anchors.fill: parent
         spacing: Kirigami.Units.smallSpacing
 
-        // --- Header ---
         RowLayout {
             Layout.fillWidth: true
             
@@ -207,28 +225,33 @@ Item {
                 font.pointSize: 12
             }
             
-            Item { Layout.fillWidth: true } // spacer
+            Item { Layout.fillWidth: true }
             
             PlasmaComponents.Button {
                 text: "Refresh"
                 icon.name: "view-refresh"
                 onClicked: refreshCheats()
+                ToolTip.text: "Reload cheatsheets"
+                ToolTip.visible: hovered
             }
             
             PlasmaComponents.Button {
                 text: "Export"
                 icon.name: "document-export"
                 onClicked: exportCheats()
+                ToolTip.text: "Export all cheats to ~/"
+                ToolTip.visible: hovered
             }
 
             PlasmaComponents.Button {
                 text: "FZF"
                 icon.name: "search"
                 onClicked: fzfSearch()
+                ToolTip.text: "Open interactive search"
+                ToolTip.visible: hovered
             }
         }
 
-        // --- Search ---
         PlasmaComponents.TextField {
             id: searchField
             Layout.fillWidth: true
@@ -237,27 +260,33 @@ Item {
             clearButtonShown: true
         }
         
-        // --- Status ---
         PlasmaComponents.Label {
             visible: statusMessage !== ""
             text: statusMessage
-            color: Kirigami.Theme.highlightColor
+            color: statusMessage.indexOf("⚠️") === 0 || statusMessage.indexOf("❌") === 0 ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.highlightColor
             font.italic: true
             Layout.alignment: Qt.AlignRight
+            wrapMode: Text.WordWrap
+            Layout.fillWidth: true
             
-             // Auto clear status after 4s
             Timer {
-                interval: 4000
-                running: statusMessage !== ""
+                interval: 5000
+                running: statusMessage !== "" && statusMessage.indexOf("⚠️") === -1 && statusMessage.indexOf("❌") === -1
                 onTriggered: statusMessage = ""
             }
         }
+        
+        PlasmaComponents.BusyIndicator {
+            Layout.alignment: Qt.AlignHCenter
+            visible: isLoading
+            running: isLoading
+        }
 
-        // --- Content ---
         ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
+            visible: !isLoading && filteredModel.length > 0
 
             ListView {
                 id: cheatsList
@@ -322,7 +351,6 @@ Item {
                         }
                     }
 
-                    // Cheats container
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 0
@@ -404,48 +432,7 @@ Item {
                 }
             }
         }
-    }
-}
-                  Layout.fillWidth: true
-                                        }
-                                    }
-                                    
-                                    RowLayout {
-                                        visible: hovered || visualFocus
-                                        
-                                        PlasmaComponents.Button {
-                                            icon.name: "edit-copy"
-                                            display: AbstractButton.IconOnly
-                                            onClicked: copyCheat(modelData.path)
-                                            ToolTip.text: "Copy to Clipboard"
-                                            ToolTip.visible: hovered
-                                        }
-                                        PlasmaComponents.Button {
-                                            icon.name: "document-open"
-                                            display: AbstractButton.IconOnly
-                                            onClicked: openCheat(modelData.path)
-                                            ToolTip.text: "Open in Editor"
-                                            ToolTip.visible: hovered
-                                        }
-                                        PlasmaComponents.Button {
-                                            icon.name: "document-save"
-                                            display: AbstractButton.IconOnly
-                                            onClicked: exportCheat(modelData.path, modelData.title)
-                                            ToolTip.text: "Export this cheat to ~/"
-                                            ToolTip.visible: hovered
-                                        }
-                                    }
-                                }
-                                
-                                onClicked: openCheat(modelData.path)
-                            }
-                        }
-                    }
-                }
-            }
-        }
         
-        // --- Empty state ---
         PlasmaComponents.Label {
             Layout.fillWidth: true
             Layout.fillHeight: true
