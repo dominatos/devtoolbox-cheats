@@ -91,8 +91,15 @@ Item {
     function processIndexOutput(output) {
         console.log("[DevToolbox] Received index output (length=" + output.length + ")")
 
-        cheatsModel = Cheats.parseIndexOutput(output)
-        console.log("[DevToolbox] Parsed model with " + cheatsModel.length + " groups.")
+        var parsed = Cheats.parseIndexOutput(output)
+        console.log("[DevToolbox] Parsed model with " + parsed.length + " groups.")
+        
+        // Initialize expanded property for each group
+        for (var i = 0; i < parsed.length; i++) {
+            parsed[i].expanded = false;
+        }
+        
+        cheatsModel = parsed
         updateFilter()
         isLoading = false
         
@@ -121,7 +128,8 @@ Item {
     function updateFilter() {
         var query = searchField.text.toLowerCase()
         if (query === "") {
-            filteredModel = cheatsModel
+            // Just copy the model, preserving expanded states
+            filteredModel = cheatsModel.slice()
         } else {
             var result = []
             for (var i = 0; i < cheatsModel.length; i++) {
@@ -139,7 +147,7 @@ Item {
                         name: group.name,
                         icon: group.icon,
                         cheats: matchingCheats,
-                        expanded: true
+                        expanded: true  // Auto-expand when searching
                     }
                     result.push(newGroup)
                 }
@@ -205,12 +213,34 @@ Item {
     }
 
     function toggleGroup(index) {
-        var list = filteredModel
-        var group = list[index]
-        group.expanded = !group.expanded
+        console.log("[DevToolbox] Toggling group at index:", index);
         
-        filteredModel = []
-        filteredModel = list
+        // Create a new array from filtered model
+        var newModel = []
+        for (var i = 0; i < filteredModel.length; i++) {
+            var group = filteredModel[i]
+            if (i === index) {
+                // Toggle this group's expanded state
+                newModel.push({
+                    name: group.name,
+                    icon: group.icon,
+                    cheats: group.cheats,
+                    expanded: !group.expanded
+                })
+                console.log("[DevToolbox] Group '" + group.name + "' expanded:", !group.expanded);
+            } else {
+                // Keep other groups as-is
+                newModel.push(group)
+            }
+        }
+        
+        // Assign the new model to trigger QML update
+        filteredModel = newModel
+        
+        // Also update the main model if not filtering
+        if (searchField.text === "") {
+            cheatsModel = newModel
+        }
     }
 
     ColumnLayout {
@@ -300,17 +330,21 @@ Item {
                     spacing: 0
                     
                     property string groupIcon: modelData.icon
+                    property bool groupExpanded: modelData.expanded
 
                     Rectangle {
                         Layout.fillWidth: true
                         height: 30
                         color: Kirigami.Theme.highlightColor
-                        opacity: modelData.expanded ? 0.3 : 0.1
+                        opacity: groupExpanded ? 0.3 : 0.1
                         
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: toggleGroup(index)
+                            onClicked: {
+                                console.log("[DevToolbox] Rectangle clicked for group:", modelData.name);
+                                toggleGroup(index);
+                            }
                         }
                     }
                     
@@ -319,13 +353,16 @@ Item {
                         Layout.topMargin: -25
                         leftPadding: 5
                         
-                        onClicked: toggleGroup(index)
+                        onClicked: {
+                            console.log("[DevToolbox] ItemDelegate clicked for group:", modelData.name);
+                            toggleGroup(index);
+                        }
                         
                         contentItem: RowLayout {
                             spacing: 5
 
                             PlasmaComponents.Label {
-                                text: modelData.expanded ? "▼" : "▶"
+                                text: groupExpanded ? "▼" : "▶"
                             }
 
                             Kirigami.Icon {
@@ -355,7 +392,7 @@ Item {
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: modelData.expanded
+                        visible: groupExpanded
 
                         Repeater {
                             model: modelData.cheats
