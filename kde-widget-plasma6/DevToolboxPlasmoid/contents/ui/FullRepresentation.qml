@@ -80,10 +80,11 @@ Item {
         console.log("[DevToolbox] Using cheats directory:", cheatsDir);
         console.log("[DevToolbox] Using script:", scriptPath);
         
+        // DON'T use plasmaShield - just pass the plain command
+        // The DataSource executable engine will handle it correctly
         var cmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\""
-        cmd = Cheats.plasmaShield(cmd)
         
-        console.log("[DevToolbox] Final shielded command:", cmd);
+        console.log("[DevToolbox] Command to run:", cmd);
         runCommand(cmd)
     }
 
