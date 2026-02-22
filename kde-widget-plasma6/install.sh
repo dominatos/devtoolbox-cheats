@@ -105,27 +105,67 @@ else
     echo "  ✅ All dependencies present"
 fi
 
-# --- 7. Restart Plasma Shell ---
-echo ""
-echo "→ Restarting Plasma Shell..."
-if systemctl --user is-active plasma-plasmashell.service >/dev/null 2>&1; then
-    systemctl --user restart plasma-plasmashell.service
-    echo "✅ Plasma Shell restarted"
-    echo "   Widget will be available after shell reloads (few seconds)"
-else
-    echo "⚠️  Could not restart via systemctl, trying killall..."
-    killall plasmashell 2>/dev/null && sleep 1 && plasmashell >/dev/null 2>&1 &
-    echo "✅ Plasma Shell restarted"
-fi
-
-# --- Done ---
+# --- 7. Restart Plasma Shell (SAFE METHOD) ---
 echo ""
 echo "============================================"
 echo "✅ Installation complete!"
 echo "============================================"
 echo ""
-echo "Next steps:"
-echo "  1. Wait a few seconds for Plasma Shell to fully reload"
-echo "  2. Right-click panel → Add Widgets → search 'DevToolbox Cheats'"
-echo "  3. Click the widget icon to open"
+echo "🔄 Plasma Shell needs to restart for the widget to appear."
+echo ""
+echo "Choose restart method:"
+echo "  1. Restart manually (safest - recommended for VMs)"
+echo "  2. Automatic restart (tries systemctl then kquitapp6)"
+echo ""
+read -p "Enter choice [1-2]: " RESTART_CHOICE
+
+case "$RESTART_CHOICE" in
+    1)
+        echo ""
+        echo "Manual restart commands (choose one):"
+        echo ""
+        echo "Option A (systemctl):"
+        echo "  systemctl --user restart plasma-plasmashell.service"
+        echo ""
+        echo "Option B (kquitapp6):"
+        echo "  kquitapp6 plasmashell && sleep 2 && plasmashell &"
+        echo ""
+        echo "After restart:"
+        echo "  1. Right-click panel → Add Widgets"
+        echo "  2. Search 'DevToolbox Cheats'"
+        echo "  3. Add to panel or desktop"
+        ;;
+    2)
+        echo ""
+        echo "→ Attempting automatic restart..."
+        if systemctl --user is-active plasma-plasmashell.service >/dev/null 2>&1; then
+            echo "Using systemctl..."
+            systemctl --user restart plasma-plasmashell.service &
+            echo "✅ Plasma Shell restart initiated"
+            echo "   Desktop will reload in a few seconds..."
+        else
+            if command -v kquitapp6 >/dev/null 2>&1; then
+                echo "Using kquitapp6 (systemctl not available)..."
+                (kquitapp6 plasmashell && sleep 2 && plasmashell) >/dev/null 2>&1 &
+                echo "✅ Plasma Shell restart initiated"
+                echo "   Desktop will reload in a few seconds..."
+            else
+                echo "❌ Cannot restart automatically"
+                echo "Please restart manually:"
+                echo "  systemctl --user restart plasma-plasmashell.service"
+            fi
+        fi
+        ;;
+    *)
+        echo ""
+        echo "Invalid choice. To restart manually:"
+        echo "  systemctl --user restart plasma-plasmashell.service"
+        ;;
+esac
+
+echo ""
+echo "After Plasma Shell restarts:"
+echo "  1. Right-click panel → Add Widgets"
+echo "  2. Search 'DevToolbox Cheats'"
+echo "  3. Add to panel or desktop"
 echo ""
