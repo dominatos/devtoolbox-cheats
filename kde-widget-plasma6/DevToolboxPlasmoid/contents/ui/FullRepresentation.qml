@@ -406,3 +406,55 @@ Item {
         }
     }
 }
+                  Layout.fillWidth: true
+                                        }
+                                    }
+                                    
+                                    RowLayout {
+                                        visible: hovered || visualFocus
+                                        
+                                        PlasmaComponents.Button {
+                                            icon.name: "edit-copy"
+                                            display: AbstractButton.IconOnly
+                                            onClicked: copyCheat(modelData.path)
+                                            ToolTip.text: "Copy to Clipboard"
+                                            ToolTip.visible: hovered
+                                        }
+                                        PlasmaComponents.Button {
+                                            icon.name: "document-open"
+                                            display: AbstractButton.IconOnly
+                                            onClicked: openCheat(modelData.path)
+                                            ToolTip.text: "Open in Editor"
+                                            ToolTip.visible: hovered
+                                        }
+                                        PlasmaComponents.Button {
+                                            icon.name: "document-save"
+                                            display: AbstractButton.IconOnly
+                                            onClicked: exportCheat(modelData.path, modelData.title)
+                                            ToolTip.text: "Export this cheat to ~/"
+                                            ToolTip.visible: hovered
+                                        }
+                                    }
+                                }
+                                
+                                onClicked: openCheat(modelData.path)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // --- Empty state ---
+        PlasmaComponents.Label {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignCenter
+            visible: !isLoading && filteredModel.length === 0 && statusMessage === ""
+            text: "No cheatsheets found.\n\nMake sure you have .md files in:\n" + plasmoid.configuration.cheatsDir
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+            color: Kirigami.Theme.disabledTextColor
+        }
+    }
+}
