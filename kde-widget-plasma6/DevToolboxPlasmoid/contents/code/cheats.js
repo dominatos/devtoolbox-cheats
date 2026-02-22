@@ -26,42 +26,49 @@ var GROUP_ICONS = {
     "Monitoring": "utilities-energy-monitor"
 };
 
-// ... (existing code snippet skip) ...
+/**
+ * Plasma 6 Shield: Backslash-escape every non-alphanumeric character (except space)
+ * to survive the DataSource whitelist stripping in Plasma 6.
+ * The DataSource strips characters like / | $ _ = ; & [ ] before execution.
+ * By escaping them, they survive the stripping AND the shell then interprets them correctly.
+ */
+function plasmaShield(str) {
+    if (!str) return "";
+    return str.replace(/([^a-zA-Z0-9 ])/g, "\\$1");
+}
 
 // Build command to index cheats (using shell for performance)
 // We retain the bash logic for indexing because it's faster and reliable on Linux
 function getIndexCommand(cheatsDir, cacheFile) {
-    // Use a cache-based debug log
-    var debugLog = "\\$HOME/.cache/devtoolbox-cheats-debug.log";
+    // Simple debug log path to avoid complex stripping issues
+    var debugLog = "/tmp/devtoolbox-debug.log";
 
-    // Build the script block with escaped quotes and variables
-    // We use \" for internal quotes and \$ for shell variables because
-    // the outer wrapper will be bash -c "..."
+    // Build the script block
     var script = "{ " +
-        "searchDir=\\\"" + cheatsDir + "\\\"; " +
-        "echo \\\"Search Dir: \\$searchDir\\\" > " + debugLog + "; " +
-        "[ -d \\\"\\$searchDir\\\" ] || echo \\'Directory not found!\\' >> " + debugLog + "; " +
-        "find -L \\\"\\$searchDir\\\" -type f -name \\'*.md\\' | while read -r f; do " +
-        "  title=\\$(grep -i -m1 \\'^Title:\\' \\\"\\$f\\\" | sed -E \\'s/^[Tt][Ii][Tt][Ll][Ee]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
-        "  group=\\$(grep -i -m1 \\'^Group:\\' \\\"\\$f\\\" | sed -E \\'s/^[Gg][Rr][Oo][Uu][Pp]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
-        "  icon=\\$(grep -i -m1 \\'^Icon:\\' \\\"\\$f\\\" | sed -E \\'s/^[Ii][Cc][Oo][Nn]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
-        "  order=\\$(grep -i -m1 \\'^Order:\\' \\\"\\$f\\\" | sed -E \\'s/^[Oo][Rr][Dd][Ee][Rr]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
-        "  [ -z \\\"\\$title\\\" ] && title=\\$(basename \\\"\\$f\\\" .md); " +
-        "  [ -z \\\"\\$group\\\" ] && group=\\\"Misc\\\"; " +
-        "  [ -z \\\"\\$order\\\" ] && order=9999; " +
-        "  res=\\\"\\$f|\\$title|\\$group|\\$icon|\\$order\\\"; " +
-        "  echo \\\"\\$res\\\"; " +
-        "  echo \\\"\\$res\\\" >> " + debugLog + "; " +
+        "searchDir=\"" + cheatsDir + "\"; " +
+        "echo \"Search Dir: $searchDir\" > " + debugLog + "; " +
+        "[ -d \"$searchDir\" ] || echo 'Directory not found!' >> " + debugLog + "; " +
+        "find -L \"$searchDir\" -type f -name '*.md' | while read -r f; do " +
+        "  title=$(grep -i -m1 '^Title:' \"$f\" | sed -E 's/^[Tt][Ii][Tt][Ll][Ee]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
+        "  group=$(grep -i -m1 '^Group:' \"$f\" | sed -E 's/^[Gg][Rr][Oo][Uu][Pp]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
+        "  icon=$(grep -i -m1 '^Icon:' \"$f\" | sed -E 's/^[Ii][Cc][Oo][Nn]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
+        "  order=$(grep -i -m1 '^Order:' \"$f\" | sed -E 's/^[Oo][Rr][Dd][Ee][Rr]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
+        "  [ -z \"$title\" ] && title=$(basename \"$f\" .md); " +
+        "  [ -z \"$group\" ] && group=\"Misc\"; " +
+        "  [ -z \"$order\" ] && order=9999; " +
+        "  res=\"$f|$title|$group|$icon|$order\"; " +
+        "  echo \"$res\"; " +
+        "  echo \"$res\" >> " + debugLog + "; " +
         "done; }";
 
-    // Wrap in bash -c with double quotes for robust passing in Plasma 6
-    // Aggressively escape characters that Plasma 6 might be stripping.
-    // We escape _, =, /, |, and $ because the DataSource seems to have a strict whitelist.
-    var finalCmd = "env LC\\_ALL\\=C.UTF-8 bash -c \"" + script + "\"";
+    // Escape for bash -c "..."
+    var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
 
-    // In some Plasma 6 versions, even forward slashes and pipes must be escaped 
-    // to survive the journey to the DataSource engine.
-    return finalCmd.replace(/\//g, "\\/").replace(/\|/g, "\\|");
+    // Construct the full command
+    var finalCmd = "env LC_ALL=C.UTF-8 bash -c \"" + escapedScript + "\"";
+
+    // Apply the Plasma 6 Shield
+    return plasmaShield(finalCmd);
 }
 
 // Parse the output of the index command
@@ -94,9 +101,6 @@ function parseIndexOutput(output) {
             };
         }
 
-        // If the group itself doesn't have an icon yet, but the cheat has one, 
-        // valid mainly if index provides group icon separately, but here we just use defaults.
-
         groupsMap[group].cheats.push({
             path: path,
             title: title,
@@ -125,56 +129,53 @@ function parseIndexOutput(output) {
 // vs an emoji or other text.
 function isIconName(str) {
     if (!str) return false;
-    // Allow standard icon names: "git", "network-wired", "go-next", "c++" (escaped as needed)
-    // Rejects spaces, emojis (multibyte), etc.
-    // Note: '+' is used in some icons like 'c++' or 'zoom-in+'
     return /^[a-zA-Z0-9\.\-_+]+$/.test(str);
 }
 
 function getExportMarkdownCommand(cheatsDir, outputFile) {
-    // Generate command to concat all cheats
-    // We use the same robust escaping for Plasma 6
-    var script = "rm -f \\\"" + outputFile + "\\\"; " +
-        "echo \\\"# Dev Toolbox Cheatsheet\\\" > \\\"" + outputFile + "\\\"; " +
-        "find \\\"" + cheatsDir + "\\\" -type f -name \\'*.md\\' | sort | while read f; do " +
-        "  echo \\'\\' >> \\\"" + outputFile + "\\\"; " +
-        "  sed \\'1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}\\' \\\"\\$f\\\" >> \\\"" + outputFile + "\\\"; " +
+    var script = "rm -f \"" + outputFile + "\"; " +
+        "echo \"# Dev Toolbox Cheatsheet\" > \"" + outputFile + "\"; " +
+        "find \"" + cheatsDir + "\" -type f -name '*.md' | sort | while read f; do " +
+        "  echo '' >> \"" + outputFile + "\"; " +
+        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> \"" + outputFile + "\"; " +
         "done";
 
-    return "bash -c \"" + script + "\"";
+    var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+    return plasmaShield("bash -c \"" + escapedScript + "\"");
 }
 
 // Export a single cheatsheet (front-matter stripped) to outputFile
 function getExportCheatCommand(cheatPath, outputFile) {
-    return "bash -c \"" +
-        "sed \\'1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}\\' " +
-        "\\\"" + cheatPath + "\\\" > \\\"" + outputFile + "\\\" && " +
-        "notify-send \\'DevToolbox\\' \\'Exported to " + outputFile + "\\'\"";
+    var script = "sed '1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}' " +
+        "\"" + cheatPath + "\" > \"" + outputFile + "\" && " +
+        "notify-send 'DevToolbox' 'Exported to " + outputFile + "'";
+
+    var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+    return plasmaShield("bash -c \"" + escapedScript + "\"");
 }
 
 // Build command to launch fzf search in a terminal.
-// Selected file:line is opened in the preferred editor.
 function getFzfSearchCommand(cheatsDir, editor) {
     var safeEditor = editor || "code";
-    // The inner bash script block with escaped quotes and variables
     var inner =
         "if ! command -v fzf >/dev/null 2>&1; then " +
-        "echo \\'ERROR: fzf not installed. Install via apt/dnf/pacman.\\'; " +
-        "read -rp \\'Press enter to exit...\\'; exit 1; fi; " +
-        "selected=\\$(grep -rnH --include=\\'*.md\\' . \\\"" + cheatsDir + "\\\" 2>/dev/null | " +
+        "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
+        "read -rp 'Press enter to exit...'; exit 1; fi; " +
+        "selected=$(grep -rnH --include='*.md' . \"" + cheatsDir + "\" 2>/dev/null | " +
         "fzf --delimiter : " +
-        "--preview \\'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi\\' " +
-        "--preview-window \\'right:60%\\' " +
-        "--header \\'Type to search all cheats... Enter to open.\\' " +
-        "--bind \\'enter:accept\\') || exit 0; " +
-        "[ -z \\\"\\$selected\\\" ] && exit 0; " +
-        "file=\\$(echo \\\"\\$selected\\\" | cut -d: -f1); " +
-        "line=\\$(echo \\\"\\$selected\\\" | cut -d: -f2); " +
-        "if command -v \\\"" + safeEditor + "\\\" >/dev/null 2>&1; then " +
-        "\\\"" + safeEditor + "\\\" -g \\\"\\$file:\\$line\\\"; " +
+        "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
+        "--preview-window 'right:60%' " +
+        "--header 'Type to search all cheats... Enter to open.' " +
+        "--bind 'enter:accept') || exit 0; " +
+        "[ -z \"$selected\" ] && exit 0; " +
+        "file=$(echo \"$selected\" | cut -d: -f1); " +
+        "line=$(echo \"$selected\" | cut -d: -f2); " +
+        "if command -v \"" + safeEditor + "\" >/dev/null 2>&1; then " +
+        "\"" + safeEditor + "\" -g \"$file:$line\"; " +
         "else " +
-        "\\${EDITOR:-nano} +\\\"\\$line\\\" \\\"\\$file\\\"; " +
+        "${EDITOR:-nano} +\"$line\" \"$file\"; " +
         "fi";
 
-    return "bash -c \"" + inner + "\"";
+    var escapedScript = inner.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+    return plasmaShield("bash -c \"" + escapedScript + "\"");
 }

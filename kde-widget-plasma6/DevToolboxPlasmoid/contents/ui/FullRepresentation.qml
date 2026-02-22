@@ -29,13 +29,19 @@ Item {
         onNewData: function(sourceName, data) {
             var stdout = data["stdout"] || ""
             var stderr = data["stderr"] || ""
-            console.log("[DevToolbox] DataSource newData. Source:", sourceName.substring(0, 50), "Stdout length:", stdout.length, "Stderr:", stderr);
+            
+            // Log full output details for debugging
+            console.log("[DevToolbox] DataSource newData received.");
+            console.log("[DevToolbox] Stdout length:", stdout.length);
+            if (stderr) console.log("[DevToolbox] Stderr:", stderr);
             
             if (connectedSources.indexOf(sourceName) !== -1) {
-                if (stdout.indexOf('|') !== -1) {
+                if (stdout.length > 0 && stdout.indexOf('|') !== -1) {
                     processIndexOutput(stdout)
-                } else {
+                } else if (stdout.length > 0) {
                     console.log("[DevToolbox] No pipe chars found in output. Raw:", stdout.substring(0, 100));
+                } else {
+                    console.log("[DevToolbox] Command returned empty stdout.");
                 }
                 disconnectSource(sourceName)
             }
@@ -43,19 +49,21 @@ Item {
     }
 
     function runCommand(cmd) {
-        console.log("[DevToolbox] runCommand:", cmd.substring(0, 100));
+        // Logging the shielded command might be messy, but helpful
+        console.log("[DevToolbox] runCommand (shielded):", cmd.substring(0, 200));
         shSource.connectSource(cmd)
     }
 
     function refreshCheats() {
         isLoading = true
         statusMessage = "Indexing cheats..."
-        // Use literal \$HOME to avoid stripping during transport to the DataSource
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "\\$HOME")
-        var cacheFile = plasmoid.configuration.cacheFile.replace("~", "\\$HOME")
         
+        // Use litetal $HOME for robust path construction
+        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
+        var cacheFile = plasmoid.configuration.cacheFile.replace("~", "$HOME")
+        
+        // getIndexCommand now applies aggressive backslash shielding
         var cmd = Cheats.getIndexCommand(cheatsDir, cacheFile)
-        console.log("[DevToolbox] Refreshing cheats with command (first 200 chars):", cmd.substring(0, 200))
         runCommand(cmd)
     }
 
@@ -77,10 +85,9 @@ Item {
 
     // Initialize
     Component.onCompleted: {
-        console.log("[DevToolbox] FullRepresentation loaded");
-        console.log("[DevToolbox] cheatsDir config:", plasmoid.configuration.cheatsDir);
-        console.log("[DevToolbox] cacheFile config:", plasmoid.configuration.cacheFile);
-        console.log("[DevToolbox] preferredEditor config:", plasmoid.configuration.preferredEditor);
+        console.log("[DevToolbox] FullRepresentation loaded. Configuration:");
+        console.log("  - cheatsDir:", plasmoid.configuration.cheatsDir);
+        console.log("  - cacheFile:", plasmoid.configuration.cacheFile);
         refreshCheats()
     }
 
@@ -89,7 +96,6 @@ Item {
         if (query === "") {
             filteredModel = cheatsModel
         } else {
-            // Deep filter groups
             var result = []
             for (var i = 0; i < cheatsModel.length; i++) {
                 var group = cheatsModel[i]
@@ -102,11 +108,11 @@ Item {
                     }
                 }
                 if (matchingCheats.length > 0) {
-                    // Clone group but with filtered cheats
                     var newGroup = {
                         name: group.name,
                         icon: group.icon,
-                        cheats: matchingCheats
+                        cheats: matchingCheats,
+                        expanded: true // Auto-expand when searching
                     }
                     result.push(newGroup)
                 }
@@ -115,10 +121,12 @@ Item {
         }
     }
     
-    // Clipboard Helper
     function copyCheat(cheatPath) {
-        var copyCmd = "bash -c \"if command -v wl-copy >/dev/null; then APP=wl-copy; else APP=\\'xclip -selection clipboard\\'; fi; " +
-                  "sed \\'1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}\\' \\\"" + cheatPath + "\\\" | \\$APP\"";
+        var script = "if command -v wl-copy >/dev/null; then APP=wl-copy; else APP='xclip -selection clipboard'; fi; " +
+                  "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" | $APP";
+        
+        var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+        var copyCmd = Cheats.plasmaShield("bash -c \"" + escapedScript + "\"");
 
         runCommand(copyCmd)
         statusMessage = "✅ Copied to clipboard!"
@@ -126,7 +134,7 @@ Item {
 
     function openCheat(cheatPath) {
         var editor = plasmoid.configuration.preferredEditor || "code"
-        var cmd = editor + " '" + cheatPath + "'"
+        var cmd = Cheats.plasmaShield(editor + " \"" + cheatPath + "\"")
         runCommand(cmd)
     }
     
@@ -136,11 +144,10 @@ Item {
             plasmoid.configuration.cheatsDir.replace("~", "$HOME"),
             file
         )
-        runCommand(cmd + " && notify-send 'DevToolbox' 'Exported to " + file + "'")
-        statusMessage = "Exporting..."
+        runCommand(cmd)
+        statusMessage = "Exporting all cheats..."
     }
 
-    // Export a single cheatsheet to ~/DevToolbox-<title>_<date>.md
     function exportCheat(cheatPath, cheatTitle) {
         var safeName = cheatTitle.replace(/[^a-zA-Z0-9_\-]/g, '_').replace(/__+/g, '_')
         var outFile  = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
@@ -149,22 +156,25 @@ Item {
         statusMessage = "📥 Exported: " + safeName + ".md"
     }
 
-    // Launch fzf grep search in a terminal window
     function fzfSearch() {
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "\\$HOME")
+        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
         var editor    = plasmoid.configuration.preferredEditor || "code"
         var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir, editor)
         
-        // Use double quotes for the outer terminal wrappers and escape interior quotes
-        var termCmd =
+        // Shielded terminal launcher
+        var termScript =
             "if command -v konsole >/dev/null 2>&1; then " +
-            "  konsole --hold -e " + fzfCmd + "; " + // fzfCmd is already bash -c "..."
+            "  konsole --hold -e " + fzfCmd + "; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "  xterm -hold -e " + fzfCmd + "; " +
+            "  xterm --hold -e " + fzfCmd + "; " +
             "else " +
-            "  notify-send \\'DevToolbox\\' \\'No terminal found (konsole/xterm). Install one first.\\'; " +
+            "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
             "fi"
-        runCommand("bash -c \"" + termCmd.replace(/"/g, "\\\"") + "\"")
+            
+        var escapedTerm = termScript.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+        var runTerm = Cheats.plasmaShield("bash -c \"" + escapedTerm + "\"");
+        
+        runCommand(runTerm)
         statusMessage = "🚀 Opening FZF search..."
     }
 
@@ -173,7 +183,7 @@ Item {
         var group = list[index]
         group.expanded = !group.expanded
         
-        // Force update by assigning a new array reference
+        // Force update
         filteredModel = []
         filteredModel = list
     }
@@ -204,16 +214,12 @@ Item {
                 text: "Export"
                 icon.name: "document-export"
                 onClicked: exportCheats()
-                ToolTip.text: "Export all cheats to Markdown"
-                ToolTip.visible: hovered
             }
 
             PlasmaComponents.Button {
                 text: "FZF"
                 icon.name: "search"
                 onClicked: fzfSearch()
-                ToolTip.text: "🚀 FZF: full-text search in terminal (requires fzf)"
-                ToolTip.visible: hovered
             }
         }
 
@@ -234,9 +240,9 @@ Item {
             font.italic: true
             Layout.alignment: Qt.AlignRight
             
-             // Auto clear status after 3s
+             // Auto clear status after 4s
             Timer {
-                interval: 3000
+                interval: 4000
                 running: statusMessage !== ""
                 onTriggered: statusMessage = ""
             }
@@ -246,7 +252,7 @@ Item {
         ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            clip: true // Important for clean scrolling
+            clip: true
 
             ListView {
                 id: cheatsList
@@ -265,7 +271,6 @@ Item {
                         height: 30
                         color: Kirigami.Theme.highlightColor
                         opacity: modelData.expanded ? 0.3 : 0.1
-                        visible: true
                         
                         MouseArea {
                             anchors.fill: parent
@@ -316,7 +321,7 @@ Item {
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: modelData.expanded // Collapse/Expand container
+                        visible: modelData.expanded
 
                         Repeater {
                             model: modelData.cheats
@@ -331,9 +336,7 @@ Item {
                                         height: 22
                                         
                                         property string iconMeta: modelData.icon || ""
-                                        // Use group icon if specific icon is missing
                                         property string effectiveIcon: iconMeta !== "" ? iconMeta : (groupIcon || "document-properties")
-                                        
                                         property bool isSystemIcon: Cheats.isIconName(effectiveIcon)
 
                                         Kirigami.Icon {
@@ -346,8 +349,8 @@ Item {
                                             anchors.centerIn: parent
                                             text: !parent.isSystemIcon ? parent.effectiveIcon : ""
                                             visible: !parent.isSystemIcon
-                                            font.pointSize: 12 // Slightly larger for emojis
-                                            renderType: Text.NativeRendering // Improves text crispness and sometimes glyph finding
+                                            font.pointSize: 12
+                                            renderType: Text.NativeRendering
                                             color: Kirigami.Theme.textColor
                                         }
                                     }
@@ -357,13 +360,11 @@ Item {
                                         spacing: 0
                                         PlasmaComponents.Label {
                                             text: modelData.title
-                                            font.bold: false // Argos style is cleaner/lighter
                                             elide: Text.ElideRight
                                             Layout.fillWidth: true
                                         }
                                     }
                                     
-                                    // Buttons
                                     RowLayout {
                                         visible: hovered || visualFocus
                                         
@@ -391,7 +392,7 @@ Item {
                                     }
                                 }
                                 
-                                onClicked: openCheat(modelData.path) // Default action: Open in Editor
+                                onClicked: openCheat(modelData.path)
                             }
                         }
                     }
