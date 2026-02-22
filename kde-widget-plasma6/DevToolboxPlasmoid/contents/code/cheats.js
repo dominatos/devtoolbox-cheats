@@ -31,15 +31,8 @@ var GROUP_ICONS = {
 // Build command to index cheats (using shell for performance)
 // We retain the bash logic for indexing because it's faster and reliable on Linux
 function getIndexCommand(cheatsDir, cacheFile) {
-<<<<<<< HEAD
-    // Robust indexing command wrapped in bash
-    // We iterate over files and extract metadata one by one.
-
-    var debugLog = "$HOME/.cache/devtoolbox-cheats-debug.log";
-=======
     // Use a cache-based debug log
     var debugLog = "\\$HOME/.cache/devtoolbox-cheats-debug.log";
->>>>>>> 7afa847 (refactor: Reimplement shell command construction and escaping for Plasma 6 compatibility using `bash -c "..."` with backslash-escaped internal quotes and variables.)
 
     // Build the script block with escaped quotes and variables
     // We use \" for internal quotes and \$ for shell variables because
