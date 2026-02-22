@@ -47,11 +47,22 @@ done
 find "$HOME/.cache" -name "*.qmlc" -path "*devtoolbox*" -delete 2>/dev/null || true
 find "$HOME/.cache" -name "*.jsc" -path "*devtoolbox*" -delete 2>/dev/null || true
 
+# --- 4. Restart Plasma Shell ---
+echo ""
+echo "→ Restarting Plasma Shell..."
+if systemctl --user is-active plasma-plasmashell.service >/dev/null 2>&1; then
+    systemctl --user restart plasma-plasmashell.service
+    echo "✅ Plasma Shell restarted"
+    echo "   Widget will be removed after shell reloads (few seconds)"
+else
+    echo "⚠️  Could not restart via systemctl, trying killall..."
+    killall plasmashell 2>/dev/null && sleep 1 && plasmashell >/dev/null 2>&1 &
+    echo "✅ Plasma Shell restarted"
+fi
+
 echo ""
 echo "✅ Widget uninstalled and caches cleared."
 echo ""
 echo "To also remove data files, run:"
 echo "  rm -rf ~/cheats.d ~/.cache/devtoolbox-cheats.json ~/.cache/devtoolbox-cheats-debug.log"
 echo ""
-echo "Restart Plasma to apply:"
-echo "  systemctl --user restart plasma-plasmashell.service"
