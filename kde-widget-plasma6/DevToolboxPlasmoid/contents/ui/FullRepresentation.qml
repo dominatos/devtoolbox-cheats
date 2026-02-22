@@ -205,23 +205,24 @@ Item {
     }
 
     function fzfSearch() {
+        // FIXED: Use simple helper script instead of complex escaping
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var editor    = plasmoid.configuration.preferredEditor || "code"
-        var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir, editor)
+        var editor = plasmoid.configuration.preferredEditor || "code"
         
-        var termScript =
-            "if command -v konsole >/dev/null 2>&1; then " +
-            "  konsole -e " + fzfCmd + "; " +
+        // Get path to fzf-search.sh helper
+        var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")
+        
+        // Simple command to launch terminal with our script
+        var cmd = "if command -v konsole >/dev/null 2>&1; then " +
+            "konsole -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"" + editor + "\"; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "  xterm -hold -e " + fzfCmd + "; " +
+            "xterm -hold -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"" + editor + "\"; " +
             "else " +
-            "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
+            "notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
             "fi"
-            
-        var escapedTerm = termScript.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
-        var runTerm = Cheats.plasmaShield("bash -c \"" + escapedTerm + "\"");
         
-        runCommand(runTerm)
+        console.log("[DevToolbox] FZF command:", cmd);
+        runCommand(cmd)
         statusMessage = "🚀 Opening FZF search..."
     }
 
