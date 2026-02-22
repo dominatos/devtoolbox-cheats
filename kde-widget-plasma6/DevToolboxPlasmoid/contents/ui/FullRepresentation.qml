@@ -58,12 +58,17 @@ Item {
         isLoading = true
         statusMessage = "Indexing cheats..."
         
-        // Use litetal $HOME for robust path construction
+        // Construct the absolute path to our helper script
+        // In Plasma 6, we can use Qt.resolvedUrl to get the base path correctly
+        var baseUrl = Qt.resolvedUrl(".").toString().replace("file://", "")
+        var scriptPath = baseUrl + "indexer.sh"
+
+        // Use literal $HOME for robust path construction
         var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
         var cacheFile = plasmoid.configuration.cacheFile.replace("~", "$HOME")
         
-        // getIndexCommand now applies aggressive backslash shielding
-        var cmd = Cheats.getIndexCommand(cheatsDir, cacheFile)
+        // getIndexCommand now points to the helper script
+        var cmd = Cheats.getIndexCommand(cheatsDir, cacheFile, scriptPath)
         runCommand(cmd)
     }
 

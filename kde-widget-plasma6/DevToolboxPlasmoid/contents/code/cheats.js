@@ -38,36 +38,16 @@ function plasmaShield(str) {
 }
 
 // Build command to index cheats (using shell for performance)
-// We retain the bash logic for indexing because it's faster and reliable on Linux
-function getIndexCommand(cheatsDir, cacheFile) {
-    // Simple debug log path to avoid complex stripping issues
+// We use a helper script to avoid complex escaping issues in Plasma 6
+function getIndexCommand(cheatsDir, cacheFile, scriptPath) {
+    // Simple debug log path
     var debugLog = "/tmp/devtoolbox-debug.log";
 
-    // Build the script block
-    var script = "{ " +
-        "searchDir=\"" + cheatsDir + "\"; " +
-        "echo \"Search Dir: $searchDir\" > " + debugLog + "; " +
-        "[ -d \"$searchDir\" ] || echo 'Directory not found!' >> " + debugLog + "; " +
-        "find -L \"$searchDir\" -type f -name '*.md' | while read -r f; do " +
-        "  title=$(grep -i -m1 '^Title:' \"$f\" | sed -E 's/^[Tt][Ii][Tt][Ll][Ee]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  group=$(grep -i -m1 '^Group:' \"$f\" | sed -E 's/^[Gg][Rr][Oo][Uu][Pp]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  icon=$(grep -i -m1 '^Icon:' \"$f\" | sed -E 's/^[Ii][Cc][Oo][Nn]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  order=$(grep -i -m1 '^Order:' \"$f\" | sed -E 's/^[Oo][Rr][Dd][Ee][Rr]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  [ -z \"$title\" ] && title=$(basename \"$f\" .md); " +
-        "  [ -z \"$group\" ] && group=\"Misc\"; " +
-        "  [ -z \"$order\" ] && order=9999; " +
-        "  res=\"$f|$title|$group|$icon|$order\"; " +
-        "  echo \"$res\"; " +
-        "  echo \"$res\" >> " + debugLog + "; " +
-        "done; }";
+    // Construct the command to call the helper script
+    // We point to the absolute path of indexer.sh provided by the QML
+    var finalCmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\"";
 
-    // Escape for bash -c "..."
-    var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
-
-    // Construct the full command
-    var finalCmd = "env LC_ALL=C.UTF-8 bash -c \"" + escapedScript + "\"";
-
-    // Apply the Plasma 6 Shield
+    // Apply the Plasma 6 Shield to survive the journey
     return plasmaShield(finalCmd);
 }
 
