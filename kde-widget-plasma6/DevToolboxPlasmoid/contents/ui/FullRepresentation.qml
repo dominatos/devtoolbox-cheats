@@ -50,10 +50,11 @@ Item {
     function refreshCheats() {
         isLoading = true
         statusMessage = "Indexing cheats..."
-        var cmd = Cheats.getIndexCommand(
-            plasmoid.configuration.cheatsDir.replace("~", "$HOME"),
-            plasmoid.configuration.cacheFile.replace("~", "$HOME")
-        )
+        // Use literal \$HOME to avoid stripping during transport to the DataSource
+        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "\\$HOME")
+        var cacheFile = plasmoid.configuration.cacheFile.replace("~", "\\$HOME")
+        
+        var cmd = Cheats.getIndexCommand(cheatsDir, cacheFile)
         console.log("[DevToolbox] Refreshing cheats with command (first 200 chars):", cmd.substring(0, 200))
         runCommand(cmd)
     }
@@ -116,9 +117,8 @@ Item {
     
     // Clipboard Helper
     function copyCheat(cheatPath) {
-        var safePath = cheatPath.replace(/'/g, "'\\''");
-        var copyCmd = "if command -v wl-copy >/dev/null; then APP=wl-copy; else APP='xclip -selection clipboard'; fi; " +
-                  "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' '" + safePath + "' | $APP";
+        var copyCmd = "bash -c \"if command -v wl-copy >/dev/null; then APP=wl-copy; else APP=\\'xclip -selection clipboard\\'; fi; " +
+                  "sed \\'1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}\\' \\\"" + cheatPath + "\\\" | \\$APP\"";
 
         runCommand(copyCmd)
         statusMessage = "✅ Copied to clipboard!"
@@ -151,19 +151,20 @@ Item {
 
     // Launch fzf grep search in a terminal window
     function fzfSearch() {
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
+        var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "\\$HOME")
         var editor    = plasmoid.configuration.preferredEditor || "code"
         var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir, editor)
-        // Try konsole first (KDE native), fall back to xterm
+        
+        // Use double quotes for the outer terminal wrappers and escape interior quotes
         var termCmd =
             "if command -v konsole >/dev/null 2>&1; then " +
-            "  konsole --hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "  konsole --hold -e " + fzfCmd + "; " + // fzfCmd is already bash -c "..."
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "  xterm -hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "  xterm -hold -e " + fzfCmd + "; " +
             "else " +
-            "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm). Install one first.'; " +
+            "  notify-send \\'DevToolbox\\' \\'No terminal found (konsole/xterm). Install one first.\\'; " +
             "fi"
-        runCommand("bash -c '" + termCmd.replace(/'/g, "'\\''" ) + "'")
+        runCommand("bash -c \"" + termCmd.replace(/"/g, "\\\"") + "\"")
         statusMessage = "🚀 Opening FZF search..."
     }
 

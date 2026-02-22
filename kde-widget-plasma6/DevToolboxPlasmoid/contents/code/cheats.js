@@ -31,31 +31,40 @@ var GROUP_ICONS = {
 // Build command to index cheats (using shell for performance)
 // We retain the bash logic for indexing because it's faster and reliable on Linux
 function getIndexCommand(cheatsDir, cacheFile) {
+<<<<<<< HEAD
     // Robust indexing command wrapped in bash
     // We iterate over files and extract metadata one by one.
 
     var debugLog = "$HOME/.cache/devtoolbox-cheats-debug.log";
+=======
+    // Use a cache-based debug log
+    var debugLog = "\\$HOME/.cache/devtoolbox-cheats-debug.log";
+>>>>>>> 7afa847 (refactor: Reimplement shell command construction and escaping for Plasma 6 compatibility using `bash -c "..."` with backslash-escaped internal quotes and variables.)
 
+    // Build the script block with escaped quotes and variables
+    // We use \" for internal quotes and \$ for shell variables because
+    // the outer wrapper will be bash -c "..."
     var script = "{ " +
-        "searchDir=\"" + cheatsDir + "\"; " +
-        "echo \"Search Dir: $searchDir\" > " + debugLog + "; " +
-        "[ -d \"$searchDir\" ] || echo 'Directory not found!' >> " + debugLog + "; " +
-        "find -L \"$searchDir\" -type f -name '*.md' | while read -r f; do " +
-        "  title=$(grep -i -m1 '^Title:' \"$f\" | sed -E 's/^[Tt][Ii][Tt][Ll][Ee]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  group=$(grep -i -m1 '^Group:' \"$f\" | sed -E 's/^[Gg][Rr][Oo][Uu][Pp]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  icon=$(grep -i -m1 '^Icon:' \"$f\" | sed -E 's/^[Ii][Cc][Oo][Nn]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  order=$(grep -i -m1 '^Order:' \"$f\" | sed -E 's/^[Oo][Rr][Dd][Ee][Rr]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  [ -z \"$title\" ] && title=$(basename \"$f\" .md); " +
-        "  [ -z \"$group\" ] && group=\"Misc\"; " +
-        "  [ -z \"$order\" ] && order=9999; " +
-        "  res=\"$f|$title|$group|$icon|$order\"; " +
-        "  echo \"$res\"; " +
-        "  echo \"$res\" >> " + debugLog + "; " +
+        "searchDir=\\\"" + cheatsDir + "\\\"; " +
+        "echo \\\"Search Dir: \\$searchDir\\\" > " + debugLog + "; " +
+        "[ -d \\\"\\$searchDir\\\" ] || echo \\'Directory not found!\\' >> " + debugLog + "; " +
+        "find -L \\\"\\$searchDir\\\" -type f -name \\'*.md\\' | while read -r f; do " +
+        "  title=\\$(grep -i -m1 \\'^Title:\\' \\\"\\$f\\\" | sed -E \\'s/^[Tt][Ii][Tt][Ll][Ee]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
+        "  group=\\$(grep -i -m1 \\'^Group:\\' \\\"\\$f\\\" | sed -E \\'s/^[Gg][Rr][Oo][Uu][Pp]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
+        "  icon=\\$(grep -i -m1 \\'^Icon:\\' \\\"\\$f\\\" | sed -E \\'s/^[Ii][Cc][Oo][Nn]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
+        "  order=\\$(grep -i -m1 \\'^Order:\\' \\\"\\$f\\\" | sed -E \\'s/^[Oo][Rr][Dd][Ee][Rr]:[[:space:]]*//; s/[[:space:]]*$//\\' | tr -d \\'\\\\r\\'); " +
+        "  [ -z \\\"\\$title\\\" ] && title=\\$(basename \\\"\\$f\\\" .md); " +
+        "  [ -z \\\"\\$group\\\" ] && group=\\\"Misc\\\"; " +
+        "  [ -z \\\"\\$order\\\" ] && order=9999; " +
+        "  res=\\\"\\$f|\\$title|\\$group|\\$icon|\\$order\\\"; " +
+        "  echo \\\"\\$res\\\"; " +
+        "  echo \\\"\\$res\\\" >> " + debugLog + "; " +
         "done; }";
 
-    var safeScript = script.replace(/'/g, "'\\''");
-    // Force UTF-8 locale to ensure emojis are output correctly
-    return "env LC_ALL=C.UTF-8 bash -c '" + safeScript + "'";
+    // Wrap in bash -c with double quotes for robust passing in Plasma 6
+    // We escape _ and = just in case, though usually bash -c "..." handles them.
+    // The user mentioned env LC_ALL=C.UTF-8 was becoming LCALLC.UTF-8
+    return "env LC\\_ALL\\=C.UTF-8 bash -c \"" + script + "\"";
 }
 
 // Parse the output of the index command
@@ -127,54 +136,48 @@ function isIconName(str) {
 
 function getExportMarkdownCommand(cheatsDir, outputFile) {
     // Generate command to concat all cheats
-    // We reuse the logic: iterate, cat, strip frontmatter
-
-    var cmd = "rm -f '" + outputFile + "'; " +
-        "echo '# Dev Toolbox Cheatsheet' > '" + outputFile + "'; " +
-        "find '" + cheatsDir + "' -type f -name '*.md' | sort | while read f; do " +
-        "  echo '' >> '" + outputFile + "'; " +
-        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> '" + outputFile + "'; " +
+    // We use the same robust escaping for Plasma 6
+    var script = "rm -f \\\"" + outputFile + "\\\"; " +
+        "echo \\\"# Dev Toolbox Cheatsheet\\\" > \\\"" + outputFile + "\\\"; " +
+        "find \\\"" + cheatsDir + "\\\" -type f -name \\'*.md\\' | sort | while read f; do " +
+        "  echo \\'\\' >> \\\"" + outputFile + "\\\"; " +
+        "  sed \\'1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}\\' \\\"\\$f\\\" >> \\\"" + outputFile + "\\\"; " +
         "done";
 
-    return cmd;
+    return "bash -c \"" + script + "\"";
 }
 
 // Export a single cheatsheet (front-matter stripped) to outputFile
 function getExportCheatCommand(cheatPath, outputFile) {
-    var safePath = cheatPath.replace(/'/g, "'\\''")
-    var safeOut = outputFile.replace(/'/g, "'\\''");
-    return "bash -c " +
-        "\"sed '1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}' " +
-        "'" + safePath + "' > '" + safeOut + "' && " +
-        "notify-send 'DevToolbox' 'Exported to " + safeOut + "'\"";
+    return "bash -c \"" +
+        "sed \\'1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}\\' " +
+        "\\\"" + cheatPath + "\\\" > \\\"" + outputFile + "\\\" && " +
+        "notify-send \\'DevToolbox\\' \\'Exported to " + outputFile + "\\'\"";
 }
 
 // Build command to launch fzf search in a terminal.
 // Selected file:line is opened in the preferred editor.
 function getFzfSearchCommand(cheatsDir, editor) {
-    var safeDir = cheatsDir.replace(/'/g, "'\\''")
-    var safeEditor = (editor || "code").replace(/'/g, "'\\''");
-    // The inner bash script mirrors the argos fzfSearch() function:
-    //   grep -rnH all .md -> fzf with bat/cat preview -> open result in editor
+    var safeEditor = editor || "code";
+    // The inner bash script block with escaped quotes and variables
     var inner =
         "if ! command -v fzf >/dev/null 2>&1; then " +
-        "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
-        "read -rp 'Press enter to exit...'; exit 1; fi; " +
-        "selected=\$(grep -rnH --include='*.md' . '" + safeDir + "' 2>/dev/null | " +
+        "echo \\'ERROR: fzf not installed. Install via apt/dnf/pacman.\\'; " +
+        "read -rp \\'Press enter to exit...\\'; exit 1; fi; " +
+        "selected=\\$(grep -rnH --include=\\'*.md\\' . \\\"" + cheatsDir + "\\\" 2>/dev/null | " +
         "fzf --delimiter : " +
-        "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
-        "--preview-window 'right:60%' " +
-        "--header 'Type to search all cheats... Enter to open.' " +
-        "--bind 'enter:accept') || exit 0; " +
-        "[ -z \"\$selected\" ] && exit 0; " +
-        "file=\$(echo \"\$selected\" | cut -d: -f1); " +
-        "line=\$(echo \"\$selected\" | cut -d: -f2); " +
-        "if command -v '" + safeEditor + "' >/dev/null 2>&1; then " +
-        "'" + safeEditor + "' -g \"\$file:\$line\"; " +
+        "--preview \\'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi\\' " +
+        "--preview-window \\'right:60%\\' " +
+        "--header \\'Type to search all cheats... Enter to open.\\' " +
+        "--bind \\'enter:accept\\') || exit 0; " +
+        "[ -z \\\"\\$selected\\\" ] && exit 0; " +
+        "file=\\$(echo \\\"\\$selected\\\" | cut -d: -f1); " +
+        "line=\\$(echo \\\"\\$selected\\\" | cut -d: -f2); " +
+        "if command -v \\\"" + safeEditor + "\\\" >/dev/null 2>&1; then " +
+        "\\\"" + safeEditor + "\\\" -g \\\"\\$file:\\$line\\\"; " +
         "else " +
-        "\${EDITOR:-nano} +\"\$line\" \"\$file\"; " +
+        "\\${EDITOR:-nano} +\\\"\\$line\\\" \\\"\\$file\\\"; " +
         "fi";
-    // Escape inner for embedding in outer single-quoted bash string
-    var safeInner = inner.replace(/'/g, "'\\'' ");
-    return "bash -c '" + safeInner + "'";
+
+    return "bash -c \"" + inner + "\"";
 }
