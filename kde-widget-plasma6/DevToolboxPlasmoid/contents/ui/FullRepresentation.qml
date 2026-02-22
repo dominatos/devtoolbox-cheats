@@ -160,9 +160,8 @@ Item {
     function copyCheat(cheatPath) {
         console.log("[DevToolbox] Copy cheat:", cheatPath);
         
-        // Simple approach without over-escaping
-        // Strip metadata headers and pipe to clipboard
-        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + cheatPath + " | ";
+        // FIXED: Properly quote the path to handle spaces
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" | ";
         
         // Auto-detect and use available clipboard tool
         cmd += "if command -v wl-copy >/dev/null 2>&1; then wl-copy; ";
@@ -176,8 +175,8 @@ Item {
 
     function openCheat(cheatPath) {
         var editor = plasmoid.configuration.preferredEditor || "code"
-        // Simple command without over-escaping
-        var cmd = editor + " " + cheatPath
+        // FIXED: Properly quote the path
+        var cmd = editor + " \"" + cheatPath + "\""
         console.log("[DevToolbox] Open command:", cmd);
         runCommand(cmd)
     }
@@ -194,8 +193,13 @@ Item {
 
     function exportCheat(cheatPath, cheatTitle) {
         var safeName = cheatTitle.replace(/[^a-zA-Z0-9_\-]/g, '_').replace(/__+/g, '_')
-        var outFile  = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
-        var cmd = Cheats.getExportCheatCommand(cheatPath, outFile)
+        var outFile = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
+        
+        // FIXED: Direct sed command without over-escaping
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" > \"" + outFile + "\" && " +
+            "notify-send 'DevToolbox' 'Exported to " + outFile + "'";
+        
+        console.log("[DevToolbox] Export command:", cmd);
         runCommand(cmd)
         statusMessage = "📥 Exported: " + safeName + ".md"
     }
