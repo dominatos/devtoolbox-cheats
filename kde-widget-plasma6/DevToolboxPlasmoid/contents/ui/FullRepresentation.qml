@@ -226,33 +226,17 @@ Item {
     }
 
     function toggleGroup(index) {
-        console.log("[DevToolbox] Toggling group at index:", index);
-        
-        // Create a new array from filtered model
-        var newModel = []
-        for (var i = 0; i < filteredModel.length; i++) {
-            var group = filteredModel[i]
-            if (i === index) {
-                // Toggle this group's expanded state
-                newModel.push({
-                    name: group.name,
-                    icon: group.icon,
-                    cheats: group.cheats,
-                    expanded: !group.expanded
-                })
-                console.log("[DevToolbox] Group '" + group.name + "' expanded:", !group.expanded);
-            } else {
-                // Keep other groups as-is
-                newModel.push(group)
+        // OPTIMIZED: Just toggle the expanded property in-place
+        // No need to recreate the entire array!
+        if (index >= 0 && index < filteredModel.length) {
+            filteredModel[index].expanded = !filteredModel[index].expanded;
+            // Force QML to re-evaluate by reassigning
+            filteredModel = filteredModel;
+            
+            // Also update main model if not filtering
+            if (searchField.text === "") {
+                cheatsModel = filteredModel;
             }
-        }
-        
-        // Assign the new model to trigger QML update
-        filteredModel = newModel
-        
-        // Also update the main model if not filtering
-        if (searchField.text === "") {
-            cheatsModel = newModel
         }
     }
 
@@ -354,10 +338,7 @@ Item {
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: {
-                                console.log("[DevToolbox] Rectangle clicked for group:", modelData.name);
-                                toggleGroup(index);
-                            }
+                            onClicked: toggleGroup(index)
                         }
                     }
                     
@@ -365,11 +346,7 @@ Item {
                         Layout.fillWidth: true
                         Layout.topMargin: -25
                         leftPadding: 5
-                        
-                        onClicked: {
-                            console.log("[DevToolbox] ItemDelegate clicked for group:", modelData.name);
-                            toggleGroup(index);
-                        }
+                        onClicked: toggleGroup(index)
                         
                         contentItem: RowLayout {
                             spacing: 5
