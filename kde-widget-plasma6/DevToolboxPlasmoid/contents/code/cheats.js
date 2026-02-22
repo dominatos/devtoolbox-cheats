@@ -55,9 +55,13 @@ function getIndexCommand(cheatsDir, cacheFile) {
         "done; }";
 
     // Wrap in bash -c with double quotes for robust passing in Plasma 6
-    // We escape _ and = just in case, though usually bash -c "..." handles them.
-    // The user mentioned env LC_ALL=C.UTF-8 was becoming LCALLC.UTF-8
-    return "env LC\\_ALL\\=C.UTF-8 bash -c \"" + script + "\"";
+    // Aggressively escape characters that Plasma 6 might be stripping.
+    // We escape _, =, /, |, and $ because the DataSource seems to have a strict whitelist.
+    var finalCmd = "env LC\\_ALL\\=C.UTF-8 bash -c \"" + script + "\"";
+
+    // In some Plasma 6 versions, even forward slashes and pipes must be escaped 
+    // to survive the journey to the DataSource engine.
+    return finalCmd.replace(/\//g, "\\/").replace(/\|/g, "\\|");
 }
 
 // Parse the output of the index command

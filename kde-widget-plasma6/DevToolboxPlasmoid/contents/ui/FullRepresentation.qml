@@ -27,15 +27,15 @@ Item {
         id: shSource
         engine: "executable"
         onNewData: function(sourceName, data) {
-            console.log("[DevToolbox] DataSource newData for:", sourceName);
-            var stdout = data["stdout"]
-            var stderr = data["stderr"]
-            if (stderr) console.log("[DevToolbox] stderr:", stderr);
+            var stdout = data["stdout"] || ""
+            var stderr = data["stderr"] || ""
+            console.log("[DevToolbox] DataSource newData. Source:", sourceName.substring(0, 50), "Stdout length:", stdout.length, "Stderr:", stderr);
+            
             if (connectedSources.indexOf(sourceName) !== -1) {
-                if (stdout && stdout.indexOf('|') !== -1) {
+                if (stdout.indexOf('|') !== -1) {
                     processIndexOutput(stdout)
                 } else {
-                    console.log("[DevToolbox] Command output (no pipe chars):", stdout ? stdout.substring(0, 200) : "(empty)");
+                    console.log("[DevToolbox] No pipe chars found in output. Raw:", stdout.substring(0, 100));
                 }
                 disconnectSource(sourceName)
             }
