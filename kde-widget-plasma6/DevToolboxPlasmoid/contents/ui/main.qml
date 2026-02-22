@@ -20,13 +20,6 @@ PlasmoidItem {
     toolTipMainText: "DevToolbox Cheats"
     toolTipSubText: "Click to search and copy cheatsheets"
 
-    // Toggle popup on click — uses PlasmoidItem's built-in 'expanded' property
-    Plasmoid.onActivated: {
-        console.log("[DevToolbox] Plasmoid.onActivated fired, expanded was:", expanded);
-        expanded = !expanded
-        console.log("[DevToolbox] expanded is now:", expanded);
-    }
-
     Component.onCompleted: {
         console.log("[DevToolbox] main.qml loaded successfully");
         console.log("[DevToolbox] Plasmoid.title =", Plasmoid.title);

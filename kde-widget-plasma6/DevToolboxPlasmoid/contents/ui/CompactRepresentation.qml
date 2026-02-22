@@ -18,13 +18,18 @@ Item {
         opacity: mouseArea.containsMouse ? 1 : 0.8
     }
 
-    // Hover-only mouse area for visual feedback
-    // Click/expansion is handled by Plasmoid.onActivated in main.qml
+    // Handle clicks to toggle widget expansion
+    // In Plasma 6, PlasmoidItem's expanded property controls popup visibility
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        acceptedButtons: Qt.NoButton
+        acceptedButtons: Qt.LeftButton
+        
+        onClicked: {
+            console.log("[DevToolbox] CompactRepresentation clicked, toggling expanded");
+            root.expanded = !root.expanded
+        }
     }
 
     Component.onCompleted: {
