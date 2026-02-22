@@ -28,14 +28,25 @@ fi
 rm -rf "$INSTALL_DIR" 2>/dev/null || true
 rm -rf "$HOME/.local/share/kpackage/generic/$PKG_ID" 2>/dev/null || true
 
-# --- 3. Clear QML cache (critical — Plasma caches old QML!) ---
+# --- 3. Clear QML cache (CRITICAL!) ---
 echo "→ Clearing QML cache..."
+echo "  This ensures config page shows correctly!"
+
+# Clear all QML caches
 rm -rf "$HOME/.cache/plasmashell/qmlcache" 2>/dev/null || true
 rm -rf "$HOME/.cache/plasma-plasmashell/qmlcache" 2>/dev/null || true
 rm -rf "$HOME/.cache/qt6/qmlcache" 2>/dev/null || true
 rm -rf "$HOME/.cache/qmlcache" 2>/dev/null || true
-find "$HOME/.cache" -name "*.qmlc" -path "*devtoolbox*" -delete 2>/dev/null || true
-find "$HOME/.cache" -name "*.jsc" -path "*devtoolbox*" -delete 2>/dev/null || true
+
+# Clear KCM (configuration module) caches
+rm -rf "$HOME/.cache/kcmshell6" 2>/dev/null || true
+rm -rf "$HOME/.cache/plasma_theme" 2>/dev/null || true
+
+# Remove any cached QML files for this specific widget
+find "$HOME/.cache" -type f \( -name "*.qmlc" -o -name "*.jsc" \) -path "*devtoolbox*" -delete 2>/dev/null || true
+find "$HOME/.cache" -type f \( -name "*.qmlc" -o -name "*.jsc" \) -path "*dominatos*" -delete 2>/dev/null || true
+
+echo "  ✅ QML cache cleared"
 
 # --- 4. Install widget ---
 echo "→ Installing widget..."
@@ -111,7 +122,8 @@ echo "============================================"
 echo "✅ Installation complete!"
 echo "============================================"
 echo ""
-echo "🔄 Plasma Shell needs to restart for the widget to appear."
+echo "🔄 Plasma Shell needs to restart for changes to take effect."
+echo "   (This ensures config page shows correctly!)"
 echo ""
 echo "Choose restart method:"
 echo "  1. Restart manually (safest - recommended for VMs)"
@@ -134,6 +146,7 @@ case "$RESTART_CHOICE" in
         echo "  1. Right-click panel → Add Widgets"
         echo "  2. Search 'DevToolbox Cheats'"
         echo "  3. Add to panel or desktop"
+        echo "  4. Right-click widget → Configure to see editor dropdown!"
         ;;
     2)
         echo ""
@@ -168,4 +181,7 @@ echo "After Plasma Shell restarts:"
 echo "  1. Right-click panel → Add Widgets"
 echo "  2. Search 'DevToolbox Cheats'"
 echo "  3. Add to panel or desktop"
+echo "  4. Right-click widget → Configure"
+echo "     - You'll see editor dropdown with auto-detected editors!"
+echo "     - Widget auto-falls back if configured editor is missing"
 echo ""
