@@ -157,19 +157,27 @@ Item {
     }
     
     function copyCheat(cheatPath) {
-        var script = "if command -v wl-copy >/dev/null; then APP=wl-copy; else APP='xclip -selection clipboard'; fi; " +
-                  "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" | $APP";
+        console.log("[DevToolbox] Copy cheat:", cheatPath);
         
-        var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
-        var copyCmd = Cheats.plasmaShield("bash -c \"" + escapedScript + "\"");
-
-        runCommand(copyCmd)
-        statusMessage = "✅ Copied to clipboard!"
+        // Simple approach without over-escaping
+        // Strip metadata headers and pipe to clipboard
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + cheatPath + " | ";
+        
+        // Auto-detect and use available clipboard tool
+        cmd += "if command -v wl-copy >/dev/null 2>&1; then wl-copy; ";
+        cmd += "elif command -v xclip >/dev/null 2>&1; then xclip -selection clipboard; ";
+        cmd += "else cat; fi";
+        
+        console.log("[DevToolbox] Copy command:", cmd);
+        runCommand(cmd);
+        statusMessage = "✅ Copied to clipboard!";
     }
 
     function openCheat(cheatPath) {
         var editor = plasmoid.configuration.preferredEditor || "code"
-        var cmd = Cheats.plasmaShield(editor + " \"" + cheatPath + "\"")
+        // Simple command without over-escaping
+        var cmd = editor + " " + cheatPath
+        console.log("[DevToolbox] Open command:", cmd);
         runCommand(cmd)
     }
     
