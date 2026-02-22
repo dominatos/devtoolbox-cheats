@@ -65,7 +65,7 @@ Item {
 
     function refreshCheats() {
         isLoading = true
-        statusMessage = "Indexing cheats..."
+        statusMessage = "Loading cheats..."
         
         // Construct the absolute path to our helper script
         if (scriptBasePath === "") {
@@ -76,13 +76,14 @@ Item {
         var scriptPath = scriptBasePath;
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
         var debugLog = "/tmp/devtoolbox-debug.log"
+        var cacheFile = plasmoid.configuration.cacheFile.replace(/^~/, "$HOME")
         
         console.log("[DevToolbox] Using cheats directory:", cheatsDir);
+        console.log("[DevToolbox] Using cache file:", cacheFile);
         console.log("[DevToolbox] Using script:", scriptPath);
         
-        // DON'T use plasmaShield - just pass the plain command
-        // The DataSource executable engine will handle it correctly
-        var cmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\""
+        // Pass cache file as third parameter to indexer
+        var cmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\" \"" + cacheFile + "\""
         
         console.log("[DevToolbox] Command to run:", cmd);
         runCommand(cmd)
@@ -105,7 +106,7 @@ Item {
         
         var totalCheats = countCheats(cheatsModel);
         if (totalCheats > 0) {
-            statusMessage = "✅ Loaded " + totalCheats + " cheats."
+            statusMessage = "✅ Loaded " + totalCheats + " cheats.";
         } else {
             statusMessage = "⚠️ No cheats found in ~/cheats.d"
         }
