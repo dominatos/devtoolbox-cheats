@@ -22,6 +22,7 @@ Item {
     property string statusMessage: ""
     property bool isLoading: false
     property string scriptBasePath: ""
+    property string detectedEditor: ""  // Auto-detected fallback editor
 
     // Plasma 6 DataSource for running shell commands
     Plasma5Support.DataSource {
@@ -56,6 +57,34 @@ Item {
                 disconnectSource(sourceName)
             }
         }
+    }
+
+    // DataSource for detecting available editor
+    Plasma5Support.DataSource {
+        id: editorDetector
+        engine: "executable"
+        
+        onNewData: function(sourceName, data) {
+            var stdout = data["stdout"] || ""
+            if (stdout.trim() !== "") {
+                detectedEditor = stdout.trim()
+                console.log("[DevToolbox] Detected fallback editor:", detectedEditor);
+            }
+            disconnectSource(sourceName)
+        }
+    }
+
+    Component.onCompleted: {
+        console.log("[DevToolbox] FullRepresentation loaded. Configuration:");
+        console.log("  - cheatsDir:", plasmoid.configuration.cheatsDir);
+        console.log("  - cacheFile:", plasmoid.configuration.cacheFile);
+        console.log("  - preferredEditor:", plasmoid.configuration.preferredEditor);
+        
+        // Detect fallback editor
+        var detectCmd = "for cmd in code codium kate geany gedit vim nvim nano kwrite; do command -v $cmd >/dev/null 2>&1 && echo $cmd && break; done"
+        editorDetector.connectSource(detectCmd)
+        
+        Qt.callLater(refreshCheats)
     }
 
     function runCommand(cmd) {
@@ -118,14 +147,6 @@ Item {
         return c;
     }
 
-    Component.onCompleted: {
-        console.log("[DevToolbox] FullRepresentation loaded. Configuration:");
-        console.log("  - cheatsDir:", plasmoid.configuration.cheatsDir);
-        console.log("  - cacheFile:", plasmoid.configuration.cacheFile);
-        console.log("  - preferredEditor:", plasmoid.configuration.preferredEditor);
-        Qt.callLater(refreshCheats)
-    }
-
     function updateFilter() {
         var query = searchField.text.toLowerCase()
         if (query === "") {
@@ -174,9 +195,22 @@ Item {
     }
 
     function openCheat(cheatPath) {
-        var editor = plasmoid.configuration.preferredEditor || "code"
-        // FIXED: Properly quote the path
-        var cmd = editor + " \"" + cheatPath + "\""
+        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
+        
+        // Try configured editor first, fallback to detected editor
+        var cmd = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then " +
+            "\"" + configuredEditor + "\" \"" + cheatPath + "\"; " +
+            "else "
+        
+        if (detectedEditor !== "") {
+            cmd += "notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Using \"" + detectedEditor + "\" instead.' && "
+            cmd += "\"" + detectedEditor + "\" \"" + cheatPath + "\"; "
+        } else {
+            cmd += "notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Please install an editor.'; "
+        }
+        
+        cmd += "fi"
+        
         console.log("[DevToolbox] Open command:", cmd);
         runCommand(cmd)
     }
@@ -207,7 +241,13 @@ Item {
     function fzfSearch() {
         // FIXED: Use simple helper script instead of complex escaping
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var editor = plasmoid.configuration.preferredEditor || "code"
+        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
+        var editor = configuredEditor
+        
+        // Use detected editor if configured one doesn't exist
+        if (detectedEditor !== "") {
+            editor = detectedEditor
+        }
         
         // Get path to fzf-search.sh helper
         var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")
