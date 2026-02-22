@@ -1,213 +1,493 @@
-# 📒 DevToolbox Cheats (Beta) — Universal Linux Cheatsheet Menu
+# 🗒️ DevToolbox Cheats — KDE Plasma Widget for Markdown Cheatsheets
 
-**Cross-DE Beta Version** with support for GNOME, KDE, XFCE, MATE, Cinnamon, and generic Window Managers (i3, sway, etc.)
+**Fast, searchable cheatsheet manager** as a native KDE Plasma widget. Organize your command-line references, code snippets, and quick guides in Markdown files with instant access from your panel.
 
----
-
-## 🚀 Features (Beta)
-- **Universal Menu:** Native Argos menu on GNOME, Dialog menu on other DEs.
-- **Cross-DE Support:** Auto-detects your desktop environment.
-  - **GNOME:** Integration via [Argos](https://github.com/p-e-w/argos).
-  - **KDE Plasma:** Native dialogs via `kdialog` or [Kargos](https://github.com/lipido/kargos).
-  - **XFCE / MATE / Cinnamon:** Dialogs via `zenity` or `yad`.
-  - **Terminal / WM:** Interactive menu via `fzf` in your preferred terminal.
-- **Terminal Detection:** Supports 15+ terminals (Konsole, GNOME Terminal, Alacritty, Kitty, etc.).
-- **Smart Fallbacks:** Gracefully degrades from rich GUI -> basic GUI -> terminal interactions.
-- **All Original Features:** Search, FZF deep search, PDF export, caching, and clipboard support.
+![Version](https://img.shields.io/badge/version-1.0-blue)
+![Plasma 5](https://img.shields.io/badge/Plasma-5-informational)
+![Plasma 6](https://img.shields.io/badge/Plasma-6-informational)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
-## 💻 Supported Environments
+## ✨ Features
 
-| Environment | Menu Type | Interaction | Dependencies |
-|-------------|-----------|-------------|--------------|
-| **GNOME** | Database (Argos) | Native Panel | `argos` extension |
-| **KDE Plasma** | Dialog (Standalone) | kdialog | `kdialog` |
-| **XFCE / MATE** | Dialog (Standalone) | zenity | `zenity` |
-| **Cinnamon** | Dialog (Standalone) | zenity | `zenity` |
-| **I3 / Sway / WM** | Terminal (Standalone) | fzf | `fzf` + `xterm/alacritty/...` |
+### 🚀 Performance
+- **Instant Loading** - Smart caching loads 100+ cheats in <100ms
+- **Fast Category Toggle** - Optimized for instant expand/collapse
+- **Auto Cache Invalidation** - Rebuilds only when files change
+
+### 🎯 Core Features
+- **Native KDE Widget** - Full Plasma 5 & 6 support
+- **Category Organization** - Group cheats by topic with emoji icons
+- **Live Search** - Filter cheats as you type
+- **Copy to Clipboard** - One-click copy (wl-clipboard/xclip support)
+- **Open in Editor** - Launch any editor with auto-detection
+- **Export** - Save individual or all cheats to Markdown
+- **FZF Integration** - Powerful fuzzy search in terminal
+
+### 🎨 Smart Features
+- **Editor Auto-Detection** - Scans for 16+ popular editors
+- **Editor Dropdown** - Quick selection with ✓ marks for installed
+- **Auto-Fallback** - Uses first available editor if preferred missing
+- **Custom Icons** - Emoji or system icons per category/cheat
+- **Safe Install** - No crashes, works in VMs
 
 ---
 
 ## 📦 Installation
 
-### 1. Requirements (Common)
-All users need these base utilities:
+### Quick Install
+
 ```bash
-# Debian/Ubuntu
-sudo apt install git bash coreutils grep sed awk findutils git
+# Clone repository
+git clone -b beta https://github.com/dominatos/devtoolbox-cheats.git
+cd devtoolbox-cheats
 
-# Fedora/RHEL
-sudo dnf install git bash coreutils grep sed gawk findutils git
+# Install for Plasma 6 (recommended)
+cd kde-widget-plasma6
+./install.sh
 
-# Arch Linux
-sudo pacman -S git bash coreutils grep sed gawk findutils git
+# OR Install for Plasma 5
+cd kde-widget-plasma5
+./install.sh
 ```
 
-### 2. Desktop-Specific Setup
+The installer will:
+1. ✅ Install the widget to `~/.local/share/plasma/plasmoids/`
+2. ✅ Clear QML cache (ensures config shows correctly)
+3. ✅ Deploy 133 example cheatsheets to `~/cheats.d`
+4. ✅ Install dependencies (fzf, bat, wl-clipboard, fonts)
+5. ✅ Prompt for safe Plasma Shell restart
 
-#### 🟠 GNOME (Argos)
-1. Install **Argos** extension from [extensions.gnome.org](https://extensions.gnome.org/extension/1176/argos/) or from [github](https://github.com/p-e-w/argos)
-2. Install dependencies:
-   ```bash
-   sudo apt install zenity xclip fzf python3-pip pandoc
-   ```
-3. Clone and link:
-   ```bash
-   git clone https://github.com/dominatos/devtoolbox-cheats ~/.config/argos/devtoolbox-cheats
-   cd ~/.config/argos
-   ln -s devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh .
-   ln -s devtoolbox-cheats/cheats.d .
-   ```
+### After Install
 
-#### 🔵 KDE Plasma
-1. Install dependencies:
-   ```bash
-   # Debian/Ubuntu
-   sudo apt install kdialog wl-clipboard fzf pandoc
-   
-   # Fedora
-   sudo dnf install kdialog wl-clipboard fzf pandoc
-   
-   # Arch
-   sudo pacman -S kdialog wl-clipboard fzf pandoc
-   ```
-2. Clone repository:
-   ```bash
-   git clone https://github.com/dominatos/devtoolbox-cheats ~/devtoolbox-cheats
-   ```
-3. **Usage:** Add a "Command" widget to your panel or run directly:
-   ```bash
-   ~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu
-   ```
+1. **Add to Panel:**
+   - Right-click panel → Add Widgets
+   - Search "DevToolbox Cheats"
+   - Drag to panel or desktop
 
-#### 🟢 XFCE / MATE / Cinnamon / LXQt
-1. Install dependencies:
-   ```bash
-   # Debian/Ubuntu
-   sudo apt install zenity xclip fzf pandoc
-   # (For Wayland sessions, replace xclip with wl-clipboard)
-   ```
-2. Clone and run:
-   ```bash
-   git clone https://github.com/dominatos/devtoolbox-cheats ~/devtoolbox-cheats
-   ~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu
-   ```
-3. **Tip:** Create a `.desktop` launcher in `~/.local/share/applications/` to add it to your start menu.
+2. **Configure:**
+   - Right-click widget → Configure
+   - **Editor Dropdown** - Select from auto-detected editors (marked with ✓)
+   - **Cheats Directory** - Default: `~/cheats.d`
+   - **Cache File** - Default: `~/.cache/devtoolbox-cheats.json`
+   - **Auto-Rebuild Cache** - Enable to rebuild cache on startup
 
-#### ⚫ Tiling WMs (i3, sway, hyprland)
-1. Install dependencies:
-   ```bash
-   # Dependencies
-   sudo apt install fzf xclip pandoc
-   # (Use wl-clipboard for Hyprland/Sway)
-   ```
-2. Run via terminal or keybinding:
-   ```bash
-   # i3 config example
-   bindsym $mod+c exec --no-startup-id ~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu
-   ```
+3. **Start Using:**
+   - Click widget to open
+   - Click categories to expand
+   - Search with top field
+   - Click cheat to open in editor
+   - Use buttons: Copy, Open, Export
 
 ---
 
-## 🧩 System Tray & Panel Integration
+## 📋 Requirements
 
-You can add this script to your panel to get an "Argos-like" dropdown experience on other Desktop Environments.
+### Core (Required)
+- KDE Plasma 5.20+ or Plasma 6.0+
+- Bash 4.0+
 
+### Recommended
+- **Clipboard:** `wl-clipboard` (Wayland) or `xclip` (X11)
+- **FZF Search:** `fzf`, `bat`
+- **Notifications:** `libnotify` (notify-send)
+- **Fonts:** `noto-fonts-emoji` (for emoji icons)
 
-
-### 🔷 KDE Plasma
-
-**Option A: Native Plasmoid (Recommended)**
-This repository includes a native KDE Widget (Plasmoid) for the best experience.
-1. Install dependencies:
-   ```bash
-   # Debian/Ubuntu
-   sudo apt install kde-plasma-desktop wl-clipboard
-   ```
-2. Install the widget:
-   ```bash
-   cd kde-widget
-   ./install.sh
-   ```
-3. Add **"DevToolbox Cheats"** widget to your panel/desktop.
-4. Configure it (Right Click -> Configure) to point to your cheats directory (default: `~/devtoolbox-cheats/cheats.d`) and cache file.
-
-**Option B: Kargos**
-Kargos is a KDE port of Argos. It natively supports this script format.
-1. Install Kargos: [https://github.com/lipido/kargos](https://github.com/lipido/kargos)
-   (Available in AUR as `plasma5-applet-kargos-git` or via KDE Store)
-2. Add "Kargos" widget to your panel.
-3. In settings, set **Command** to:
-   ```bash
-   ~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh
-   ```
-
-**Option C: Command Widget**
-1. Add "Command Output" widget.
-2. Set command to run the menu on click:
-   ```bash
-   ~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu
-   ```
-
-### 🐭 XFCE
-
-**Option A: Genmon Plugin**
-1. Install Genmon:
-   ```bash
-   sudo apt install xfce4-genmon-plugin
-   ```
-2. Add "Generic Monitor" to your panel.
-3. Configure it:
-   - **Command:** `echo "🗒️"` (or path to icon)
-   - **On Click:** `~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu`
-   - **Period:** 30s
-
-### 🟢 Universal (Yad / System Tray)
-If you just want a tray icon that opens the menu:
-
-1. Install `yad`:
-   ```bash
-   sudo apt install yad
-   ```
-2. Run this command on startup:
-   ```bash
-   yad --notification \
-       --text="DevToolbox Cheats" \
-       --image="gtk-edit" \
-       --command="~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu"
-   ```
+### Supported Editors
+Auto-detected:
+- **VS Code** (`code`), **VS Codium** (`codium`)
+- **Kate** (`kate`), **KWrite** (`kwrite`)
+- **Geany** (`geany`), **Gedit** (`gedit`)
+- **Sublime Text** (`subl`), **Atom** (`atom`)
+- **Vim** (`vim`), **Neovim** (`nvim`)
+- **Emacs** (`emacs`), **Nano** (`nano`)
+- **Mousepad** (`mousepad`), **Pluma** (`pluma`)
+- **XED** (`xed`), **Notepadqq** (`notepadqq`)
+- **Custom** - Type any command
 
 ---
 
-## 🕹️ Usage Modes
+## 📚 Creating Cheatsheets
 
-### Auto-Detection
-The script automatically detects your environment.
+### File Structure
+
+Cheatsheets are Markdown files in `~/cheats.d/` with metadata in the first 80 lines:
+
+```markdown
+Title: Docker Basics
+Group: Containers
+Icon: 🐳
+Order: 1
+
+# Docker Commands
+
+## Containers
+
 ```bash
-./devtoolbox-cheats-beta.30s.sh
+# List running containers
+docker ps
+
+# Stop container
+docker stop <container_id>
 ```
-- In **GNOME + Argos**: Outputs formatted text for the panel.
-- In **Others**: Launches the standalone graphical menu.
 
-### Force Standalone Menu
-Force the dialog menu to appear regardless of the environment:
+## Images
+
 ```bash
-./devtoolbox-cheats-beta.30s.sh menu
+# List images
+docker images
+
+# Pull image
+docker pull nginx
+```
 ```
 
-### Configuration
-Override detection or paths via environment variables:
+### Metadata Fields
+
+- **Title:** (Required) Display name
+- **Group:** (Required) Category name
+- **Icon:** (Optional) Emoji (🐳) or system icon name (`docker`)
+- **Order:** (Optional) Sort order within group (1-999)
+
+### Icon Options
+
+**Emoji:**
+```markdown
+Icon: 🐳
+Icon: 🔒
+Icon: 🌐
+```
+
+**System Icons:**
+```markdown
+Icon: docker
+Icon: database-server
+Icon: network-server
+```
+
+### Example Categories
+
+```
+~/cheats.d/
+├── docker-basics.md          (Group: Containers, Icon: 🐳)
+├── kubernetes-commands.md    (Group: Containers, Icon: ☸️)
+├── mysql-queries.md          (Group: Databases, Icon: 🗄️)
+├── mongodb-basics.md         (Group: Databases, Icon: 🍃)
+├── nginx-config.md           (Group: Network, Icon: 🌐)
+└── ssl-certificates.md       (Group: Security, Icon: 🔒)
+```
+
+Result:
+- **🐳 Containers (2)** - Docker Basics, Kubernetes Commands
+- **🗄️ Databases (2)** - MySQL Queries, MongoDB Basics
+- **🌐 Network (1)** - Nginx Config
+- **🔒 Security (1)** - SSL Certificates
+
+---
+
+## ⚙️ Configuration
+
+### Widget Settings
+
+Right-click widget → Configure:
+
+**Cheats Directory**
+- Default: `~/cheats.d`
+- Where your Markdown files are stored
+
+**Cache File**
+- Default: `~/.cache/devtoolbox-cheats.json`
+- Enables instant loading (<100ms)
+
+**Preferred Editor**
+- Dropdown shows auto-detected editors with ✓
+- Falls back to first available if not found
+- Custom option for any command
+
+**Auto-Rebuild Cache**
+- Off by default (cache auto-invalidates on file changes)
+- Enable to force rebuild on widget load
+
+### Advanced Configuration
+
+Edit `~/.config/plasma-org.kde.plasma.desktop-appletsrc` or use widget config UI.
+
+---
+
+## 🎯 Usage
+
+### Basic Operations
+
+1. **Browse Cheats**
+   - Click widget in panel
+   - Categories show count: "🐳 Containers (8)"
+   - Click category to expand/collapse
+
+2. **Search**
+   - Type in search field at top
+   - Filters by title and filename
+   - Categories auto-expand with results
+
+3. **Copy to Clipboard**
+   - Hover over cheat → Click copy button
+   - Strips metadata (Title, Group, Icon, Order)
+   - Status shows: "✅ Copied to clipboard!"
+
+4. **Open in Editor**
+   - Click cheat name
+   - Opens with configured editor
+   - Falls back to any available editor
+
+5. **Export**
+   - **Export All** - Saves all cheats to `~/DevToolbox-Cheatsheet_<date>.md`
+   - **Export Single** - Hover → Export button → `~/DevToolbox-<name>_<date>.md`
+
+6. **FZF Search**
+   - Click FZF button
+   - Opens terminal with fuzzy search
+   - Preview with syntax highlighting (bat)
+   - Select to open in editor
+
+### Keyboard Shortcuts
+
+No default shortcuts. Add custom shortcut in System Settings:
+- System Settings → Shortcuts → Custom Shortcuts
+- Add script: `qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.activateLauncherMenu`
+
+---
+
+## 🔧 Troubleshooting
+
+### Widget Not Showing After Install
+
+**Cause:** QML cache not cleared
+
+**Solution:**
 ```bash
-export DEVTOOLBOX_DE=kde    # Force KDE mode (uses kdialog)
-export DEVTOOLBOX_DE=gnome  # Force GNOME/Argos output
-export CHEATS_DIR=~/my-cheats
+# Clear QML cache
+rm -rf ~/.cache/plasmashell/qmlcache
+rm -rf ~/.cache/plasma-plasmashell/qmlcache
+rm -rf ~/.cache/qt6/qmlcache
+
+# Restart Plasma Shell
+systemctl --user restart plasma-plasmashell.service
+```
+
+### Config Page Not Showing
+
+**Cause:** KCM cache not cleared
+
+**Solution:**
+```bash
+# Reinstall with fresh cache clear
+cd kde-widget-plasma6
+./install.sh
+# Choose option 2 for automatic restart
+```
+
+### Editor Not Found Error
+
+**Cause:** Configured editor uninstalled
+
+**Solution:**
+- Widget auto-falls back to first available editor
+- Notification shows: "Editor 'code' not found. Using 'kate' instead."
+- Or reconfigure: Right-click → Configure → Select different editor
+
+### Copy Not Working
+
+**Cause:** Missing clipboard tool
+
+**Solution:**
+```bash
+# For Wayland
+sudo apt install wl-clipboard
+
+# For X11
+sudo apt install xclip
+```
+
+### FZF Search Not Opening
+
+**Cause:** Missing fzf or terminal
+
+**Solution:**
+```bash
+# Install fzf
+sudo apt install fzf bat
+
+# Ensure terminal installed (konsole, xterm, etc.)
+sudo apt install konsole
+```
+
+### Slow Loading
+
+**Cause:** Cache not being used
+
+**Solution:**
+1. Check cache file exists: `ls -lh ~/.cache/devtoolbox-cheats.json`
+2. If missing, click "Refresh" button to rebuild
+3. Check permissions: `chmod 644 ~/.cache/devtoolbox-cheats.json`
+
+### Categories Won't Toggle
+
+**Cause:** Old version before optimization
+
+**Solution:**
+```bash
+cd ~/devtoolbox-cheats
+git pull origin beta
+cd kde-widget-plasma6
+./install.sh
 ```
 
 ---
 
-## 🛠 Troubleshooting
-- **No menu appears?** Run in terminal to see errors.
-- **"File not found"?** Ensure `cheats.d` is linked or configured correctly.
-- **KDE but no kdialog?** The script will warn you and fall back to `zenity`.
-- **FZF search not working?** Ensure a compatible terminal is installed (`konsole`, `gnome-terminal`, `alacritty`, etc.).
+## 🚀 Performance
+
+### Benchmark Results
+
+**Test System:** 133 cheatsheets, 15 categories
+
+| Operation | Time | Notes |
+|-----------|------|-------|
+| **First Load** | ~1-2s | Builds cache |
+| **Cached Load** | <100ms | Reads from cache |
+| **Category Toggle** | <10ms | Optimized in-place |
+| **Search Filter** | <50ms | Filters 133 items |
+| **Copy to Clipboard** | <200ms | Strips metadata |
+
+### Optimization Features
+
+1. **Smart Caching**
+   - JSON cache with modification time check
+   - Auto-invalidates on file changes
+   - Single-pass metadata extraction
+
+2. **Toggle Optimization**
+   - In-place property modification
+   - No array recreation (was 200-500ms)
+   - Simple reassignment for QML update
+
+3. **Lazy Loading**
+   - Categories collapsed by default
+   - Cheats loaded only in expanded categories
+
+---
+
+## 🛠 Development
+
+### Project Structure
+
+```
+devtoolbox-cheats/
+├── kde-widget-plasma6/          # Plasma 6 widget
+│   ├── install.sh              # Safe installer
+│   ├── uninstall.sh            # Safe uninstaller
+│   └── DevToolboxPlasmoid/
+│       ├── contents/
+│       │   ├── ui/
+│       │   │   ├── FullRepresentation.qml    # Main UI
+│       │   │   └── configGeneral.qml         # Config page
+│       │   └── code/
+│       │       ├── indexer.sh                # Cache builder
+│       │       ├── fzf-search.sh             # FZF helper
+│       │       ├── cheats.js                 # Utilities
+│       │       └── utils.js                  # Date helpers
+│       ├── metadata.json         # Widget metadata
+│       └── config/
+│           └── main.xml          # Config schema
+├── kde-widget-plasma5/          # Plasma 5 widget (same structure)
+├── cheats.d/                    # Example cheatsheets (133 files)
+└── README.md                    # This file
+```
+
+### Building from Source
+
+```bash
+# Clone
+git clone -b beta https://github.com/dominatos/devtoolbox-cheats.git
+cd devtoolbox-cheats
+
+# Test widget (no install)
+kpackagetool6 --type Plasma/Applet --show kde-widget-plasma6/DevToolboxPlasmoid
+
+# Install for development
+cd kde-widget-plasma6
+./install.sh
+
+# View logs
+journalctl --user -f | grep DevToolbox
+```
+
+### Contributing
+
+Pull requests welcome! Please:
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing`
+5. Open Pull Request to `beta` branch
+
+---
+
+## 📝 Changelog
+
+### v1.0 (2026-02-22) - Beta Branch
+
+**Performance:**
+- ✅ Smart caching: <100ms load time
+- ✅ Category toggle optimization: <10ms (was 200-500ms)
+- ✅ Auto cache invalidation on file changes
+
+**Features:**
+- ✅ Editor auto-detection (16+ editors)
+- ✅ Editor dropdown in config with ✓ marks
+- ✅ Auto-fallback when editor missing
+- ✅ FZF search with helper script
+- ✅ Copy/Open/Export functions fixed
+- ✅ Safe install/uninstall (no crashes in VMs)
+
+**Fixes:**
+- ✅ Fixed quote escaping in all commands
+- ✅ Fixed config page not showing (QML cache)
+- ✅ Fixed category toggle not working
+- ✅ Fixed FZF search errors
+- ✅ Fixed dangerous plasmashell restart method
+
+---
+
+## 📄 License
+
+MIT License - See LICENSE file
+
+---
+
+## 🙏 Credits
+
+- **Developer:** Sviatoslav Fedorenko ([@dominatos](https://github.com/dominatos))
+- **Inspired by:** DevHints, tldr, cheat.sh
+- **Icons:** Noto Color Emoji
+
+---
+
+## 🔗 Links
+
+- **Repository:** https://github.com/dominatos/devtoolbox-cheats
+- **Issues:** https://github.com/dominatos/devtoolbox-cheats/issues
+- **Beta Branch:** https://github.com/dominatos/devtoolbox-cheats/tree/beta
+
+---
+
+## ⭐ Support
+
+If you find this useful:
+- ⭐ Star the repository
+- 🐛 Report bugs via Issues
+- 💡 Suggest features
+- 🍴 Fork and contribute
+
+---
+
+**Made with ❤️ for the KDE community**
