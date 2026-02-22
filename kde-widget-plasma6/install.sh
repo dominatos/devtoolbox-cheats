@@ -105,6 +105,19 @@ else
     echo "  ✅ All dependencies present"
 fi
 
+# --- 7. Restart Plasma Shell ---
+echo ""
+echo "→ Restarting Plasma Shell..."
+if systemctl --user is-active plasma-plasmashell.service >/dev/null 2>&1; then
+    systemctl --user restart plasma-plasmashell.service
+    echo "✅ Plasma Shell restarted"
+    echo "   Widget will be available after shell reloads (few seconds)"
+else
+    echo "⚠️  Could not restart via systemctl, trying killall..."
+    killall plasmashell 2>/dev/null && sleep 1 && plasmashell >/dev/null 2>&1 &
+    echo "✅ Plasma Shell restarted"
+fi
+
 # --- Done ---
 echo ""
 echo "============================================"
@@ -112,6 +125,7 @@ echo "✅ Installation complete!"
 echo "============================================"
 echo ""
 echo "Next steps:"
-echo "  1. Restart Plasma:  systemctl --user restart plasma-plasmashell.service"
+echo "  1. Wait a few seconds for Plasma Shell to fully reload"
 echo "  2. Right-click panel → Add Widgets → search 'DevToolbox Cheats'"
 echo "  3. Click the widget icon to open"
+echo ""
