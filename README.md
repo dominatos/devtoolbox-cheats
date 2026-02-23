@@ -152,13 +152,32 @@ cd devtoolbox-cheats
 ./devtoolbox-cheats-beta.30s.sh menu
 ```
 
-**Add to panel (XFCE example):**
+**Add to panel (XFCE):**
 1. Install Genmon plugin: `sudo apt install xfce4-genmon-plugin`
-2. Add "Generic Monitor" to panel
-3. Configure:
-   - **Label:** 🗒️ (or leave empty for icon)
-   - **Command (on click):** `~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu`
-   - **Period:** 30 seconds
+2. Right-click panel → Add New Items → "Generic Monitor"
+3. Right-click the new monitor → Properties:
+   - **Label:** 🗒️ (or leave blank)
+   - **Command:** `~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu`
+   - **Period (s):** 30
+
+**Add to panel (MATE):**
+1. Right-click panel → "Add to Panel..."
+2. Select "Custom Application Launcher" → Add
+3. Configure properties:
+   - **Type:** Application
+   - **Name:** DevToolbox Cheats
+   - **Command:** `~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu`
+   - **Icon:** 🗒️ (click to select icon)
+
+**Add to panel (Cinnamon):**
+1. Right-click the Menu applet → Configure → Menu → "Open the menu editor"
+2. Select a category (e.g., Accessories) → "New Item"
+3. Configure properties:
+   - **Name:** DevToolbox Cheats
+   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu'`
+   - **Icon:** 🗒️ (click to select icon)
+4. Save and close the menu editor.
+5. Open the Cinnamon Menu, search for "DevToolbox Cheats", right-click it, and select "Add to panel".
 
 </details>
 
