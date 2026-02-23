@@ -594,41 +594,65 @@ bindsym $mod+c exec ~/devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh menu | wof
 
 ### File Structure
 
-Cheatsheets are Markdown files in `~/cheats.d/` with metadata in the first 80 lines:
+Cheatsheets are Markdown files organized in category subfolders under `~/cheats.d/`.
 
-```markdown
-Title: Docker Basics
-Group: Containers
-Icon: 🐳
-Order: 1
-
-# Docker Commands
-
-## Containers
-
-```bash
-# List running containers
-docker ps
-
-# Stop container
-docker stop <container_id>
+**Directory structure:**
+```
+~/cheats.d/
+├── databases/
+│   ├── mysqlcheatsheet.md
+│   ├── mongodbcheatsheet.md
+│   ├── postgrescheatsheet.md
+│   └── redis_prod_cheatsheet.md
+├── kubernetes-containers/
+│   ├── docker-basics.md
+│   ├── docker-compose.md
+│   └── kubernetes-commands.md
+├── network/
+│   ├── nginx-config.md
+│   ├── ssh-tunneling.md
+│   └── firewall-basics.md
+└── security-crypto/
+    ├── ssl-certificates.md
+    ├── gpg-basics.md
+    └── openssl-commands.md
 ```
 
-## Images
+**Each Markdown file contains metadata in the first 80 lines:**
+
+```markdown
+Title: MySQL Queries
+Group: Databases
+Icon: 🗄️
+Order: 1
+
+# MySQL Commands
+
+## Basic Queries
 
 ```bash
-# List images
-docker images
+# Show databases
+mysql -u root -p -e "SHOW DATABASES;"
 
-# Pull image
-docker pull nginx
+# Create database
+mysql -u root -p -e "CREATE DATABASE mydb;"
+```
+
+## User Management
+
+```bash
+# Create user
+CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+
+# Grant privileges
+GRANT ALL PRIVILEGES ON mydb.* TO 'newuser'@'localhost';
 ```
 ```
 
 ### Metadata Fields
 
-- **Title:** (Required) Display name
-- **Group:** (Required) Category name
+- **Title:** (Required) Display name for the cheat
+- **Group:** (Required) Category name (matches subfolder or custom)
 - **Icon:** (Optional) Emoji (🐳) or system icon name (`docker`)
 - **Order:** (Optional) Sort order within group (1-999)
 
@@ -648,23 +672,13 @@ Icon: database-server
 Icon: network-server
 ```
 
-### Example Structure
+### Result in Menu
 
-```
-~/cheats.d/
-├── docker-basics.md          (Group: Containers, Icon: 🐳)
-├── kubernetes-commands.md    (Group: Containers, Icon: ☸️)
-├── mysql-queries.md          (Group: Databases, Icon: 🗄️)
-├── mongodb-basics.md         (Group: Databases, Icon: 🍃)
-├── nginx-config.md           (Group: Network, Icon: 🌐)
-└── ssl-certificates.md       (Group: Security, Icon: 🔒)
-```
-
-**Result in Menu:**
-- **🐳 Containers** → Docker Basics, Kubernetes Commands
-- **🗄️ Databases** → MySQL Queries, MongoDB Basics
-- **🌐 Network** → Nginx Config
-- **🔒 Security** → SSL Certificates
+**Categories are auto-detected from subfolders:**
+- **🗄️ Databases** → MySQL Queries, MongoDB Basics, PostgreSQL, Redis
+- **🐳 Kubernetes & Containers** → Docker Basics, Docker Compose, Kubernetes Commands
+- **🌐 Network** → Nginx Config, SSH Tunneling, Firewall Basics
+- **🔒 Security & Crypto** → SSL Certificates, GPG Basics, OpenSSL Commands
 
 ---
 
@@ -934,6 +948,10 @@ devtoolbox-cheats/
 │           └── fzf-search.sh              # FZF helper
 ├── kde-widget-plasma5/               # Plasma 5 widget (same structure)
 ├── cheats.d/                         # Example cheatsheets (133 files)
+│   ├── databases/                    # Category subfolder
+│   ├── kubernetes-containers/        # Category subfolder
+│   ├── network/                      # Category subfolder
+│   └── ...                           # More category subfolders
 └── README.md
 ```
 
