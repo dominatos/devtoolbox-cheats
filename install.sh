@@ -49,7 +49,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # gnome-shell extension is loaded (pgrep looks for the extension helper).
 install_argos() {
     local argos_dir="$HOME/.config/argos"
-    local script_src="$SCRIPT_DIR/devtoolbox-cheats-beta.30s.sh"
+    local script_src="$SCRIPT_DIR/devtoolbox-cheats.30s.sh"
     local cheats_src="$SCRIPT_DIR/cheats.d"
 
     echo "🐚 Installing Argos variant..."
@@ -57,8 +57,8 @@ install_argos() {
 
     if [ -f "$script_src" ]; then
         cp "$script_src" "$argos_dir/"
-        chmod +x "$argos_dir/devtoolbox-cheats-beta.30s.sh"
-        echo "  ✅ Script installed → $argos_dir/devtoolbox-cheats-beta.30s.sh"
+        chmod +x "$argos_dir/devtoolbox-cheats.30s.sh"
+        echo "  ✅ Script installed → $argos_dir/devtoolbox-cheats.30s.sh"
     else
         echo "  ⚠️  Script not found: $script_src"
     fi
