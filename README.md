@@ -67,10 +67,12 @@ sudo pacman -S zenity xclip fzf bat pandoc
 
 #### 3. Clone and Link
 ```bash
-git clone -b beta https://github.com/dominatos/devtoolbox-cheats.git ~/.config/argos/devtoolbox-cheats
-cd ~/.config/argos
-ln -s devtoolbox-cheats/devtoolbox-cheats-beta.30s.sh .
-ln -s devtoolbox-cheats/cheats.d .
+git clone -b beta https://github.com/dominatos/devtoolbox-cheats.git
+cd devtoolbox-cheats
+chmod +x devtoolbox-cheats-beta.30s.sh
+mv devtoolbox-cheats-beta.30s.sh ~/.config/argos/
+mv cheats.d/ ~/cheats.d/
+
 ```
 
 #### 4. Restart Argos
