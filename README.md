@@ -9,6 +9,24 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
+## Overview
+> [!IMPORTANT]
+> **Batteries Included!** This repository is not just a menu engine; it comes pre-packed with a comprehensive collection of over **100+ production-ready cheatsheets** for sysadmins, DevOps, and developers.
+
+---
+
+
+If you like this project, consider supporting me on [Buy Me a Coffee](https://www.buymeacoffee.com/dominatos) ☕️
+
+---
+
+## Example Screenshots from GNOME ARGOS
+
+![Main menu](docs/img/menu.png)
+![Sub menu](docs/img/cat.png)
+![One item](docs/img/item.png)
+
+---
 
 ## ✨ Features
 
@@ -1027,6 +1045,186 @@ Pull requests welcome! Please:
 
 ---
 
+## Included categories
+
+- 📚 **Basics**  
+- 📡 **Network**  
+- 💿 **Storage & FS**  
+- 🗄️ **Backups & S3**  
+- 📦 **Files & Archives**  
+- 📝 **Text & Parsing**  
+- ☸️ **Kubernetes & Containers**  
+- 🛠 **System & Logs**  
+- 🌐 **Web Servers**  
+- 🗃️ **Databases**  
+- 📦 **Package Managers**  
+- 🔐 **Security & Crypto**  
+- 🧬 **Dev & Tools**  
+- 🧩 **Misc**  
+- 🔎 **Diagnostics**
+- ☁️ **Cloud**
+- 📈 **Monitoring**
+
+
+## Included cheats (full list)
+
+This repository includes ready-to-use cheatsheets for popular tools, organized by category:
+
+### Backups & S3
+- [🗄️ aws-cli — AWS S3 Backups](cheats.d/backups-s3/awsclicheatsheet.md)
+- [🗄️ azcopy — Azure Blob Storage](cheats.d/backups-s3/azcopycheatsheet.md)
+- [🗄️ Bareos/Bacula — Enterprise Backup](cheats.d/backups-s3/baculacheatsheet.md)
+- [🗄️ BorgBackup — Deduplicating Backups](cheats.d/backups-s3/borgbackupcheatsheet.md)
+- [🗄️ Complete Server Clone & Backup Cheatsheet — Linux](cheats.d/backups-s3/clone-server.md)
+- [🗄️ Duplicity — Encrypted Incremental Backups](cheats.d/backups-s3/duplicitycheatsheet.md)
+- [🗄️ gsutil — Google Cloud Storage](cheats.d/backups-s3/gsutilcheatsheet.md)
+- [🗄️ rclone — Remotes/S3](cheats.d/backups-s3/rclonecheatsheet.md)
+- [🗄️ restic — Backups](cheats.d/backups-s3/resticcheatsheet.md)
+- [🗄️ Snapshots — LVM/ZFS/Btrfs](cheats.d/backups-s3/snapshotscheatsheet.md)
+- [🗄️ tar + GPG — Classic Encrypted Backups](cheats.d/backups-s3/targpgcheatsheet.md)
+- [🗄️ Veeam Agent — Linux Backup](cheats.d/backups-s3/veeamcheatsheet.md)
+- [🗄️ Veritas InfoScale](cheats.d/backups-s3/veritascheatsheet.md)
+
+### Basics
+- [📗 Linux Basics 2 — Next Steps](cheats.d/basics/linuxbasics2cheatsheet.md)
+- [📚 Linux Basics — Cheatsheet](cheats.d/basics/linuxbasicscheatsheet.md)
+
+### Cloud
+- [☁️ OpenStack](cheats.d/cloud/openstackcheatsheet.md)
+
+### Databases
+- [🗃️ Memcached — Sysadmin Cheatsheet](cheats.d/databases/memcached-sysadmin.md)
+- [🍃 MongoDB — Cheatsheet](cheats.d/databases/mongodbcheatsheet.md)
+- [🗃️ MySQL/MariaDB](cheats.d/databases/mysqlcheatsheet.md)
+- [🔎 OpenSearch — Cheatsheet](cheats.d/databases/opensearchcheatsheet.md)
+- [🗃️ Oracle Database](cheats.d/databases/oraclecheatsheet.md)
+- [🗃️ PostgreSQL — psql/pg_dump](cheats.d/databases/postgrescheatsheet.md)
+- [🗃️ Redis — Production Cheatsheet](cheats.d/databases/redis_prod_cheatsheet.md)
+- [🗃️ SQLite](cheats.d/databases/sqlitecheatsheet.md)
+
+### Dev & Tools
+- [🛠️ Ansible](cheats.d/dev-tools/ansiblecheatsheet.md)
+- [🛠️ Apache Kafka](cheats.d/dev-tools/kafkacheatsheet.md)
+- [🛠️ Apache Zookeeper](cheats.d/dev-tools/zookeepercheatsheet.md)
+- [🛠️ Build — Make/CMake](cheats.d/dev-tools/buildtoolscheatsheet.md)
+- [🧬 Git — Advanced](cheats.d/dev-tools/gitadvancedcheatsheet.md)
+- [🧬 Git — Basics](cheats.d/dev-tools/gitcheatsheet.md)
+- [�️ Jenkins CI/CD](cheats.d/dev-tools/jenkinscheatsheet.md)
+- [�🟢 Node — nvm/npm/yarn](cheats.d/dev-tools/nodetoolscheatsheet.md)
+- [🐍 Python — venv/pip/pipx](cheats.d/dev-tools/pythontoolscheatsheet.md)
+- [🛠️ Terraform](cheats.d/dev-tools/terraformcheatsheet.md)
+- [🧷 tmux — Commands](cheats.d/dev-tools/tmuxcheatsheet.md)
+
+### Diagnostics
+- [🔍 strace / perf / tcpdump — Commands](cheats.d/diagnostics/diagcheatsheet.md)
+
+### Files & Archives
+- [🔁 diff / patch — Commands](cheats.d/files-archives/diffpatchcheatsheet.md)
+- [📦 TAR — Commands](cheats.d/files-archives/tarcheatsheet.md)
+- [📦 TAR (zstd) — Commands](cheats.d/files-archives/tarzstdcheatsheet.md)
+- [📦 ZIP / 7z / ZSTD — Commands](cheats.d/files-archives/zip7zzstdcheatsheet.md)
+
+### Kubernetes & Containers
+- [🐳 Docker — Commands](cheats.d/kubernetes-containers/dockercheatsheet.md)
+- [⛏ Helm — Commands](cheats.d/kubernetes-containers/helmcheatsheet.md)
+- [🎛 k9s — Hotkeys](cheats.d/kubernetes-containers/k9scheatsheet.md)
+- [☸️ KUBECTL — Commands](cheats.d/kubernetes-containers/kubectlcheatsheet.md)
+- [☸️ KUBECTL — JSONPath](cheats.d/kubernetes-containers/kubectljsonpathcheatsheet.md)
+- [☸️ Kustomize — kustomization.yaml](cheats.d/kubernetes-containers/kubectlkustomizecheatsheet.md)
+- [☸️ OpenShift (OCP)](cheats.d/kubernetes-containers/openshiftcheatsheet.md)
+- [🫙 Podman / nerdctl — Commands](cheats.d/kubernetes-containers/podmannerdctlcheatsheet.md)
+
+### Monitoring
+- [📈 CheckMK](cheats.d/monitoring/checkmkcheatsheet.md)
+- [📈 Nagios Core](cheats.d/monitoring/nagioscheatsheet.md)
+- [📈 Zabbix Server](cheats.d/monitoring/zabbixcheatsheet.md)
+
+### Network
+- [🔁 autossh — Resilient tunnels](cheats.d/network/autosshcheatsheet.md)
+- [🌐 CURL — Commands](cheats.d/network/curlcheatsheet.md)
+- [🧭 DNS — dig/nslookup](cheats.d/network/dnscheatsheet.md)
+- [🚓 Fail2Ban — Commands](cheats.d/network/fail2bancheatsheet.md)
+- [🔥 firewalld — Commands](cheats.d/network/firewalldcheatsheet.md)
+- [🌐 ip — Commands](cheats.d/network/ipcheatsheet.md)
+- [🔥 iptables — Commands](cheats.d/network/iptablescheatsheet.md)
+- [🔁 iptables → nftables — Mapping](cheats.d/network/iptablesnfttranslatecheatsheet.md)
+- [🔌 nc / nmap — Commands](cheats.d/network/ncnmapcheatsheet.md)
+- [🛰️ Network diag — mtr/traceroute/iperf3](cheats.d/network/netdiagcheatsheet.md)
+- [🕸 nftables — Commands](cheats.d/network/nftcheatsheet.md)
+- [� resolvectl — DNS/Network](cheats.d/network/resolvectlcheatsheet.md)
+- [� RSYNC — Commands](cheats.d/network/rsynccheatsheet.md)
+- [� SCP — Commands](cheats.d/network/scpcheatsheet.md)
+- [📡 SS — Socket Stats](cheats.d/network/sscheatsheet.md)
+- [🔑 SSH / VPN / Port Forwarding](cheats.d/network/ssh_vpn_tunnel_cheatsheet.md)
+- [� SSH — Commands & Config](cheats.d/network/sshcheatsheet.md)
+- [🧱 UFW — Commands](cheats.d/network/ufwcheatsheet.md)
+- [� WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
+
+### Package Managers
+- [📦 Package Managers](cheats.d/package-managers/pkgmanagerscheatsheet.md)
+- [📦 APT — Debian/Ubuntu](cheats.d/package-managers/aptcheatsheet.md)
+- [📦 DNF — RHEL/Fedora](cheats.d/package-managers/dnfcheatsheet.md)
+- [🟢 Pacman — Arch Linux](cheats.d/package-managers/pacmancheatsheet.md)
+- [🟢 Zypper — OpenSUSE](cheats.d/package-managers/zyppercheatsheet.md)
+- [📦 Snap — Universal Packages](cheats.d/package-managers/snapcheatsheet.md)
+- [📦 Flatpak — Application Sandboxes](cheats.d/package-managers/flatpakcheatsheet.md)
+- [📦 AppImage — Portable Apps](cheats.d/package-managers/appimagecheatsheet.md)
+
+### Security & Crypto
+- [🔐 CrowdSec — Cheatsheet](cheats.d/security-crypto/crowdseccheatsheet.md)
+- [🔐 gpg / age — Encryption](cheats.d/security-crypto/gpgagecheatsheet.md)
+- [🔐 htpasswd — Basic Auth](cheats.d/security-crypto/htpasswdcheatsheet.md)
+- [🔐 OpenSSL — Commands](cheats.d/security-crypto/opensslcheatsheet.md)
+- [🔐 OpenSSL — CSR with SAN](cheats.d/security-crypto/opensslsancsrcheatsheet.md)
+- [🔐 pass — Password Store](cheats.d/security-crypto/passcheatsheet.md)
+
+### Storage & FS
+- [💿 ACL — Access Control Lists](cheats.d/storage-fs/aclcheatsheet.md)
+- [💿 Grow Disk (Cloud EXT4/XFS)](cheats.d/storage-fs/diskgrowcheatsheet.md)
+- [💿 LVM — Basics](cheats.d/storage-fs/lvmcheatsheet.md)
+- [💿 Partition & Mount](cheats.d/storage-fs/partitionmountcheatsheet.md)
+- [💿 SMART & mdadm RAID](cheats.d/storage-fs/smartraidcheatsheet.md)
+
+### System & Logs
+- [⏰ cron / at — Commands](cheats.d/system-logs/cronatcheatsheet.md)
+- [📅 date / TZ — Commands](cheats.d/system-logs/datetzcheatsheet.md)
+- [💽 du/df/lsof/ps — Commands](cheats.d/system-logs/diskproccheatsheet.md)
+- [📜 Ionice / Nice — Priority](cheats.d/system-logs/ionicenicescheatsheet.md)
+- [📜 journalctl — Basics](cheats.d/system-logs/journalctlbasicscheatsheet.md)
+- [📜 journalctl — Commands](cheats.d/system-logs/journalctlcheatsheet.md)
+- [📜 Kibana](cheats.d/system-logs/kibanacheatsheet.md)
+- [📜 Kernel-panic — RHEL/CentOS](cheats.d/system-logs/kernelpanicscheatsheet.md)
+- [🌀 logrotate — Basics](cheats.d/system-logs/logrotatecheatsheet.md)
+- [� VPS Optimization — Ubuntu/Debian](cheats.d/system-logs/optimize-vps-ubuntu.md)
+- [�🛡️ SELinux / AppArmor — Basic diag](cheats.d/system-logs/selinuxapparmorcheatsheet.md)
+- [🛠 systemctl — Commands](cheats.d/system-logs/systemctlcheatsheet.md)
+- [🕰️ systemd timers — Basics](cheats.d/system-logs/systemdtimerscheatsheet.md)
+- [🧩 systemd unit — template](cheats.d/system-logs/systemdunittemplate.md)
+
+### Text & Parsing
+- [🦾 AWK — Commands](cheats.d/text-parsing/awkcheatsheet.md)
+- [🔪 cut/sort/uniq — Commands](cheats.d/text-parsing/cutsortuniqcheatsheet.md)
+- [🗃 FIND — Commands](cheats.d/text-parsing/findcheatsheet.md)
+- [⚡ fzf — Fuzzy Finder](cheats.d/text-parsing/fzfcheatsheet.md)
+- [🔎 GREP — Commands](cheats.d/text-parsing/grepcheatsheet.md)
+- [🧩 JQ — Commands](cheats.d/text-parsing/jqcheatsheet.md)
+- [🌀 Bash — Loops](cheats.d/text-parsing/loopscheatsheet.md)
+- [⚡ modern-cli — ripgrep / fd / bat](cheats.d/text-parsing/modernclicheatsheet.md)
+- [✂️ SED — Commands](cheats.d/text-parsing/sedcheatsheet.md)
+- [🌳 Tree — Cheatsheet](cheats.d/text-parsing/treecheatsheet.md)
+- [🔤 tr/head/tail/watch — Commands](cheats.d/text-parsing/trheadtailwatchcheatsheet.md)
+- [✍️ vim — Quickstart](cheats.d/text-parsing/vimquickstartcheatsheet.md)
+- [🧪 yq — YAML processor](cheats.d/text-parsing/yqcheatsheet.md)
+
+### Web Servers
+- [🪶 Apache HTTPD — Cheatsheet](cheats.d/web-servers/apachecheatsheet.md)
+- [� HAProxy — Cheatsheet](cheats.d/web-servers/haproxycheatsheet.md)
+- [🌐 Nginx — Cheatsheet](cheats.d/web-servers/nginxcheatsheet.md)
+- [🐱 Tomcat — Cheatsheet](cheats.d/web-servers/tomcatcheatsheet.md)
+- [🌐 WebLogic Server](cheats.d/web-servers/weblogiccheatsheet.md)
+---
+---
+
 ## 📄 License
 
 MIT License - See LICENSE file
@@ -1059,6 +1257,11 @@ If you find this useful:
 - 💡 Suggest features
 - 🍴 Fork and contribute
 - 💬 Share with the Linux community
+
+---
+---
+
+If you like this project, consider supporting me on [Buy Me a Coffee](https://www.buymeacoffee.com/dominatos) ☕️
 
 ---
 
