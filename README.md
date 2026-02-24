@@ -2,7 +2,7 @@
 
 **Cross-Desktop cheatsheet manager** for Linux with native support for GNOME, KDE, XFCE, and more. Access your Markdown command references instantly from your panel or menu.
 
-![Version](https://img.shields.io/badge/version-1.0_beta-blue)
+
 ![GNOME](https://img.shields.io/badge/GNOME-Argos-informational)
 ![KDE](https://img.shields.io/badge/KDE-Plasma_5%2F6-informational)
 ![Universal](https://img.shields.io/badge/DE-Universal-green)
