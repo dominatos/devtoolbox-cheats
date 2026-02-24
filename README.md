@@ -231,11 +231,12 @@ cd devtoolbox-cheats
 
 **LXQt Panel:**
 1. Right-click panel → "Manage Widgets" → "Add Widgets"
-2. Select "Quick Launch" → Add
-3. Right-click the Quick Launch widget → Configure
+2. Select "Custom command" → Add
+3. Right-click the Custom command widget → Configure
 4. Click "+" to add new launcher:
    - **Name:** DevToolbox Cheats
    - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
+   - **Click command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
    - **Icon:** Click to browse and select a suitable icon (e.g., accessories-text-editor)
 5. Click OK and close
 
@@ -1064,6 +1065,7 @@ Pull requests welcome! Please:
 - 🔎 **Diagnostics**
 - ☁️ **Cloud**
 - 📈 **Monitoring**
+- 🖥️ **Virtualization**
 
 
 ## Included cheats (full list)
@@ -1079,6 +1081,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🗄️ Duplicity — Encrypted Incremental Backups](cheats.d/backups-s3/duplicitycheatsheet.md)
 - [🗄️ gsutil — Google Cloud Storage](cheats.d/backups-s3/gsutilcheatsheet.md)
 - [🗄️ rclone — Remotes/S3](cheats.d/backups-s3/rclonecheatsheet.md)
+- [🗄️ MinIO — S3 Compatible Storage](cheats.d/backups-s3/miniocheatsheet.md)
 - [🗄️ restic — Backups](cheats.d/backups-s3/resticcheatsheet.md)
 - [🗄️ Snapshots — LVM/ZFS/Btrfs](cheats.d/backups-s3/snapshotscheatsheet.md)
 - [🗄️ tar + GPG — Classic Encrypted Backups](cheats.d/backups-s3/targpgcheatsheet.md)
@@ -1117,6 +1120,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 
 ### Diagnostics
 - [🔍 strace / perf / tcpdump — Commands](cheats.d/diagnostics/diagcheatsheet.md)
+- [🔍 Process Diagnostics — htop/atop/lsof](cheats.d/diagnostics/process_diagnostics_cheatsheet.md)
 
 ### Files & Archives
 - [🔁 diff / patch — Commands](cheats.d/files-archives/diffpatchcheatsheet.md)
@@ -1150,15 +1154,21 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🔁 iptables → nftables — Mapping](cheats.d/network/iptablesnfttranslatecheatsheet.md)
 - [🔌 nc / nmap — Commands](cheats.d/network/ncnmapcheatsheet.md)
 - [🛰️ Network diag — mtr/traceroute/iperf3](cheats.d/network/netdiagcheatsheet.md)
+- [📡 Network Backend Detection](cheats.d/network/network-backend-detectioncheatsheet.md)
+- [🌐 nmcli — NetworkManager CLI](cheats.d/network/nmclicheatsheet.md)
+- [🌐 NetworkManager — Commands](cheats.d/network/networkmanagercheatsheet.md)
+- [🌐 Netplan — Configuration](cheats.d/network/netplancheatsheet.md)
+- [🌐 systemd-networkd — Configuration](cheats.d/network/systemd-networkdcheatsheet.md)
+- [🌐 VPN Plugins — NetworkManager](cheats.d/network/vpn-pluginscheatsheet.md)
 - [🕸 nftables — Commands](cheats.d/network/nftcheatsheet.md)
-- [� resolvectl — DNS/Network](cheats.d/network/resolvectlcheatsheet.md)
-- [� RSYNC — Commands](cheats.d/network/rsynccheatsheet.md)
-- [� SCP — Commands](cheats.d/network/scpcheatsheet.md)
+- [ resolvectl — DNS/Network](cheats.d/network/resolvectlcheatsheet.md)
+- [ RSYNC — Commands](cheats.d/network/rsynccheatsheet.md)
+- [ SCP — Commands](cheats.d/network/scpcheatsheet.md)
 - [📡 SS — Socket Stats](cheats.d/network/sscheatsheet.md)
 - [🔑 SSH / VPN / Port Forwarding](cheats.d/network/ssh_vpn_tunnel_cheatsheet.md)
-- [� SSH — Commands & Config](cheats.d/network/sshcheatsheet.md)
+- [ SSH — Commands & Config](cheats.d/network/sshcheatsheet.md)
 - [🧱 UFW — Commands](cheats.d/network/ufwcheatsheet.md)
-- [� WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
+- [ WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
 
 ### Package Managers
 - [📦 Package Managers](cheats.d/package-managers/pkgmanagerscheatsheet.md)
@@ -1175,11 +1185,14 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🔐 gpg / age — Encryption](cheats.d/security-crypto/gpgagecheatsheet.md)
 - [🔐 htpasswd — Basic Auth](cheats.d/security-crypto/htpasswdcheatsheet.md)
 - [🔐 OpenSSL — Commands](cheats.d/security-crypto/opensslcheatsheet.md)
+- [🔐 Gitleaks — Secret Scanning](cheats.d/security-crypto/gitleakscheatsheet.md)
+- [🔐 SSH Keys — Management](cheats.d/security-crypto/ssh_keys_cheatsheet.md)
 - [🔐 OpenSSL — CSR with SAN](cheats.d/security-crypto/opensslsancsrcheatsheet.md)
 - [🔐 pass — Password Store](cheats.d/security-crypto/passcheatsheet.md)
 
 ### Storage & FS
 - [💿 ACL — Access Control Lists](cheats.d/storage-fs/aclcheatsheet.md)
+- [💿 Chroot — System Recovery](cheats.d/storage-fs/chrootcheatsheet.md)
 - [💿 Grow Disk (Cloud EXT4/XFS)](cheats.d/storage-fs/diskgrowcheatsheet.md)
 - [💿 LVM — Basics](cheats.d/storage-fs/lvmcheatsheet.md)
 - [💿 Partition & Mount](cheats.d/storage-fs/partitionmountcheatsheet.md)
@@ -1220,8 +1233,11 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🪶 Apache HTTPD — Cheatsheet](cheats.d/web-servers/apachecheatsheet.md)
 - [� HAProxy — Cheatsheet](cheats.d/web-servers/haproxycheatsheet.md)
 - [🌐 Nginx — Cheatsheet](cheats.d/web-servers/nginxcheatsheet.md)
-- [🐱 Tomcat — Cheatsheet](cheats.d/web-servers/tomcatcheatsheet.md)
 - [🌐 WebLogic Server](cheats.d/web-servers/weblogiccheatsheet.md)
+- [🐱 Tomcat — Cheatsheet](cheats.d/web-servers/tomcatcheatsheet.md)
+
+### Virtualization
+- [🖥️ KVM / QEMU — Virtualization](cheats.d/virtualization/kvmcheatsheet.md)
 ---
 ---
 
