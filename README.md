@@ -37,7 +37,7 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 <img src="docs/img/zenity-general.png" alt="Main menu">
 <img src="docs/img/cat-zenity.png" alt="Sub menu">
 </details>
----
+
 
 ## ✨ Features
 
