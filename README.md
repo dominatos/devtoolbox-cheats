@@ -7,6 +7,7 @@
 ![KDE](https://img.shields.io/badge/KDE-Plasma_5%2F6-informational)
 ![Universal](https://img.shields.io/badge/DE-Universal-green)
 ![License](https://img.shields.io/badge/license-MIT-green)
+[![Open-Source Software][oss icon]](https://github.com/dominatos/devtoolbox-cheats)
 
 ---
 ## Overview
@@ -1293,3 +1294,5 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 ---
 
 **Made with ❤️ for the Linux community**
+
+[oss icon]: https://img.shields.io/badge/Open--Source-Software-blue.svg
