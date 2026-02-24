@@ -23,19 +23,19 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 ## Example Screenshots
 <details>
 <summary>Screenshots from GNOME ARGOS</summary>
-![Main menu](docs/img/menu.png)
-![Sub menu](docs/img/cat.png)
-![One item](docs/img/item.png)
+<img src="docs/img/menu.png" alt="Main menu">
+<img src="docs/img/cat.png" alt="Sub menu">
+<img src="docs/img/item.png" alt="One item">
 </details>
 <details>
 <summary>Screenshots from KDE Plasma 5/6</summary>
-![Main menu](docs/img/kde-widget.png)
-![Sub menu](docs/img/kde-widget-settings.png)
+<img src="docs/img/kde-widget.png" alt="Main menu">
+<img src="docs/img/kde-widget-settings.png" alt="Sub menu">
 </details>
 <details>
 <summary>Screenshots from universal Zenity (XFCE, MATE, Cinnamon, LXQt, LXDE, Budgie, Pantheon, Deepin)</summary>
-![Main menu](docs/img/zenity-general.png)
-![Sub menu](docs/img/cat-zenity.png)
+<img src="docs/img/zenity-general.png" alt="Main menu">
+<img src="docs/img/cat-zenity.png" alt="Sub menu">
 </details>
 ---
 
