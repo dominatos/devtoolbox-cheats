@@ -19,267 +19,354 @@ Order: 10
 
 ## Installation & Authentication
 
-### Install
+### Install gcloud SDK / Установить gcloud SDK
 
-# Install gcloud SDK / Установить gcloud SDK
+```bash
+# Script-based install / Установка через скрипт
 curl https://sdk.cloud.google.com | bash
 exec -l $SHELL
 
-# Or via package manager / Или через менеджер пакетов
-# Debian/Ubuntu
-echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+# Debian/Ubuntu via apt / Через apt
+echo "deb https://packages.cloud.google.com/apt cloud-sdk main" \
+  | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 apt update && apt install google-cloud-sdk
 
-### Authenticate
+gsutil version                                  # Verify install / Проверить установку
+```
 
-gcloud auth login                              # Interactive login / Интерактивный вход
-gcloud auth activate-service-account --key-file=<KEY_FILE>.json # Service account / Сервисный аккаунт
+### Authenticate / Аутентифицироваться
 
-gsutil version                                 # Check version / Проверить версию
-gsutil ls                                      # Test access / Тестировать доступ
+```bash
+gcloud auth login                               # Interactive login / Интерактивный вход
+gcloud auth activate-service-account \
+  --key-file=<KEY_FILE>.json                    # Service account / Сервисный аккаунт
+
+gsutil ls                                       # Test access / Тест доступа
+```
 
 ---
 
 ## Bucket Operations
 
-### Create Bucket
+### Create Bucket / Создать bucket
 
-gsutil mb gs://<BUCKET>                        # Make bucket / Создать bucket  
-gsutil mb -l us-east1 gs://<BUCKET>            # Specific region / Конкретный регион
-gsutil mb -c NEARLINE gs://<BUCKET>            # Specific storage class / Конкретный класс хранилища
+```bash
+gsutil mb gs://<BUCKET>                         # Make bucket (default region) / Создать bucket
+gsutil mb -l us-east1 gs://<BUCKET>             # Specific region / Конкретный регион
+gsutil mb -c NEARLINE gs://<BUCKET>             # Specific storage class / Конкретный класс
+```
 
-### List Buckets & Objects
+### List Buckets & Objects / Список buckets и объектов
 
-gsutil ls                                      # List buckets / Список buckets
-gsutil ls gs://<BUCKET>                        # List objects / Список объектов
-gsutil ls -L gs://<BUCKET>/file.txt            # Detailed info / Подробная информация
-gsutil ls -r gs://<BUCKET>/**                  # Recursive list / Рекурсивный список
+```bash
+gsutil ls                                       # List all buckets / Все buckets
+gsutil ls gs://<BUCKET>                         # List objects in bucket / Объекты в bucket
+gsutil ls -L gs://<BUCKET>/file.txt             # Detailed info / Подробная информация
+gsutil ls -r gs://<BUCKET>/**                   # Recursive list / Рекурсивный список
+```
 
-### Delete Bucket
+### Delete Bucket / Удалить bucket
 
-gsutil rb gs://<BUCKET>                        # Remove bucket (empty) / Удалить bucket (пустой)
+> [!WARNING]
+> Deleting all objects before removing the bucket is irreversible. Double-check the bucket name.
+
+```bash
 gsutil -m rm -r gs://<BUCKET>/**               # Delete all objects / Удалить все объекты
-gsutil rb gs://<BUCKET>                        # Then remove bucket / Затем удалить bucket
+gsutil rb gs://<BUCKET>                         # Remove empty bucket / Удалить пустой bucket
+```
 
 ---
 
 ## Upload & Download
 
-### Upload (cp)
+### Upload (cp) / Загрузить
 
-gsutil cp file.txt gs://<BUCKET>/              # Upload file / Загрузить файл
-gsutil cp -r /data gs://<BUCKET>/data          # Upload directory / Загрузить директорию
-gsutil -m cp *.jpg gs://<BUCKET>/images/       # Parallel upload / Параллельная загрузка
+```bash
+gsutil cp file.txt gs://<BUCKET>/               # Upload file / Загрузить файл
+gsutil cp -r /data gs://<BUCKET>/data           # Upload directory / Загрузить директорию
+gsutil -m cp *.jpg gs://<BUCKET>/images/        # Parallel upload / Параллельная загрузка
+```
 
-### Download
+### Download / Скачать
 
-gsutil cp gs://<BUCKET>/file.txt .             # Download file / Скачать файл
-gsutil cp -r gs://<BUCKET>/data /restore       # Download directory / Скачать директорию
-gsutil -m cp gs://<BUCKET>/images/* .          # Parallel download / Параллельное скачивание
+```bash
+gsutil cp gs://<BUCKET>/file.txt .              # Download file / Скачать файл
+gsutil cp -r gs://<BUCKET>/data /restore        # Download directory / Скачать директорию
+gsutil -m cp gs://<BUCKET>/images/* .           # Parallel download / Параллельное скачивание
+```
 
-### Move & Remove
+### Move & Remove / Переместить и удалить
 
-gsutil mv gs://<BUCKET>/old.txt gs://<BUCKET>/new.txt # Move/rename / Переместить/переименовать
-gsutil rm gs://<BUCKET>/file.txt               # Delete file / Удалить файл
-gsutil -m rm gs://<BUCKET>/path/**             # Delete directory / Удалить директорию
+```bash
+gsutil mv gs://<BUCKET>/old.txt gs://<BUCKET>/new.txt  # Move/rename / Переместить/переименовать
+gsutil rm gs://<BUCKET>/file.txt                # Delete file / Удалить файл
+gsutil -m rm gs://<BUCKET>/path/**              # Delete directory / Удалить директорию
+```
 
-### Cat & Compose
+### Cat & Compose / Просмотр и объединение
 
-gsutil cat gs://<BUCKET>/file.txt              # Display file / Показать файл
-gsutil compose gs://<BUCKET>/part1 gs://<BUCKET>/part2 gs://<BUCKET>/combined # Combine files / Объединить файлы
+```bash
+gsutil cat gs://<BUCKET>/file.txt               # Display file content / Показать содержимое
+gsutil compose \
+  gs://<BUCKET>/part1 gs://<BUCKET>/part2 \
+  gs://<BUCKET>/combined                        # Compose (merge) files / Объединить файлы
+```
 
 ---
 
 ## Rsync Operations
 
-### Sync Local → GCS
+### Sync Local → GCS / Синхронизация в GCS
 
-gsutil rsync /data gs://<BUCKET>/data          # Sync to GCS / Синхронизация в GCS
-gsutil rsync -d /data gs://<BUCKET>/data       # Delete removed files / Удалить удалённые файлы
-gsutil rsync -r /data gs://<BUCKET>/data       # Recursive / Рекурсивно
-
-### Sync GCS → Local
-
-gsutil rsync gs://<BUCKET>/data /restore       # Sync from GCS / Синхронизация из GCS
-gsutil rsync -d gs://<BUCKET>/data /restore    # Delete removed files / Удалить удалённые файлы
-
-### Advanced Rsync
-
+```bash
 gsutil -m rsync -r /data gs://<BUCKET>/data    # Parallel rsync / Параллельная синхронизация
-gsutil rsync -x ".*\.tmp$" /data gs://<BUCKET>/data # Exclude pattern / Исключить паттерн
-gsutil rsync -c /data gs://<BUCKET>/data       # Compare checksums / Сравнить контрольные суммы
+gsutil rsync -d /data gs://<BUCKET>/data        # Delete removed files / Удалить удалённые
+```
+
+### Sync GCS → Local / Синхронизация из GCS
+
+```bash
+gsutil rsync gs://<BUCKET>/data /restore        # Sync from GCS / Синхронизация из GCS
+gsutil rsync -d gs://<BUCKET>/data /restore     # Delete dest extras / Удалить лишние
+```
+
+### Advanced Rsync / Расширенная синхронизация
+
+```bash
+gsutil rsync -x ".*\.tmp$" /data gs://<BUCKET>/data  # Exclude by regex / Исключить по regex
+gsutil rsync -c /data gs://<BUCKET>/data         # Compare by checksum / Сравнить по контрольной сумме
+```
 
 ---
 
 ## Storage Classes
 
-### Available Classes
+### Storage Class Comparison / Сравнение классов хранения
 
-# STANDARD — Default, frequent access / По умолчанию, частый доступ
-# NEARLINE — Accessed ~once/month / Доступ ~раз/месяц
-# COLDLINE — Accessed ~once/quarter / Доступ ~раз/квартал
-# ARCHIVE — Long-term archive / Долгосрочный архив
+| Class | Access Frequency / Частота доступа | Min Duration | Use Case |
+|-------|------------------------------------|--------------|----------|
+| `STANDARD` | Frequent / Частый | None | Active data |
+| `NEARLINE` | ~1×/month / ~раз/месяц | 30 days | Monthly backups |
+| `COLDLINE` | ~1×/quarter / ~раз/квартал | 90 days | Quarterly archives |
+| `ARCHIVE` | Rarely / Редко | 365 days | Compliance, long-term |
 
-### Set Storage Class
+### Set Storage Class / Установить класс хранения
 
-gsutil -m setmeta -h "x-goog-storage-class:NEARLINE" gs://<BUCKET>/** # Change class / Изменить класс
-gsutil cp -s NEARLINE file.txt gs://<BUCKET>/  # Upload to Nearline / Загрузить в Nearline
+```bash
+gsutil cp -s NEARLINE file.txt gs://<BUCKET>/   # Upload to Nearline / Загрузить в Nearline
+gsutil -m setmeta -h "x-goog-storage-class:NEARLINE" gs://<BUCKET>/**  # Change existing / Изменить
+```
 
-### Default Bucket Class
+### Default Bucket Class / Класс bucket по умолчанию
 
-gsutil defstorageclass set NEARLINE gs://<BUCKET> # Set default class / Установить класс по умолчанию
-gsutil defstorageclass get gs://<BUCKET>       # Get default class / Получить класс по умолчанию
+```bash
+gsutil defstorageclass set NEARLINE gs://<BUCKET>  # Set default / Установить по умолчанию
+gsutil defstorageclass get gs://<BUCKET>            # Get default / Получить текущий
+```
 
 ---
 
 ## Lifecycle Management
 
-### Set Lifecycle Policy
+### Apply Lifecycle Policy / Применить политику lifecycle
 
-gsutil lifecycle set lifecycle.json gs://<BUCKET> # Set lifecycle / Установить lifecycle
+```bash
+gsutil lifecycle set lifecycle.json gs://<BUCKET>  # Set policy / Установить политику
+gsutil lifecycle get gs://<BUCKET>                  # View policy / Просмотреть политику
+```
 
-#### lifecycle.json Example
+`/tmp/lifecycle.json`
 
+```json
 {
   "lifecycle": {
     "rule": [
       {
-        "action": {
-          "type": "SetStorageClass",
-          "storageClass": "NEARLINE"
-        },
-        "condition": {
-          "age": 30
-        }
+        "action": { "type": "SetStorageClass", "storageClass": "NEARLINE" },
+        "condition": { "age": 30 }
       },
       {
-        "action": {
-          "type": "Delete"
-        },
-        "condition": {
-          "age": 365
-        }
+        "action": { "type": "SetStorageClass", "storageClass": "ARCHIVE" },
+        "condition": { "age": 90 }
+      },
+      {
+        "action": { "type": "Delete" },
+        "condition": { "age": 365 }
       }
     ]
   }
 }
-
-### View Lifecycle
-
-gsutil lifecycle get gs://<BUCKET>             # Get lifecycle / Получить lifecycle
+```
 
 ---
 
 ## Versioning & Retention
 
-### Enable Versioning
+### Enable Versioning / Включить версионирование
 
-gsutil versioning set on gs://<BUCKET>         # Enable versioning / Включить версионирование
-gsutil versioning get gs://<BUCKET>            # Check versioning / Проверить версионирование
+```bash
+gsutil versioning set on gs://<BUCKET>          # Enable / Включить
+gsutil versioning get gs://<BUCKET>             # Check status / Проверить
+gsutil ls -a gs://<BUCKET>/file.txt             # List all versions / Все версии
+```
 
-### List Versions
+### Retention Policy / Политика хранения
 
-gsutil ls -a gs://<BUCKET>/file.txt            # List all versions / Список всех версий
-
-### Retention Policy
-
-gsutil retention set 30d gs://<BUCKET>         # Set 30-day retention / Установить хранение 30 дней
-gsutil retention get gs://<BUCKET>             # Get retention / Получить политику хранения
-gsutil retention clear gs://<BUCKET>           # Clear retention / Очистить политику хранения
+```bash
+gsutil retention set 30d gs://<BUCKET>          # Set 30-day retention / 30 дней хранения
+gsutil retention get gs://<BUCKET>              # Get policy / Получить политику
+gsutil retention clear gs://<BUCKET>            # Clear policy / Очистить политику
+```
 
 ---
 
 ## Parallel Operations
 
-### Enable Parallel Transfers
+```bash
+gsutil -m cp -r /data gs://<BUCKET>/data        # Parallel copy / Параллельное копирование
+gsutil -m rsync -r /data gs://<BUCKET>/data     # Parallel rsync / Параллельная синхронизация
+gsutil -m rm gs://<BUCKET>/path/**              # Parallel delete / Параллельное удаление
 
-gsutil -m cp -r /data gs://<BUCKET>/data       # Parallel copy / Параллельное копирование
-gsutil -m rsync -r /data gs://<BUCKET>/data    # Parallel rsync / Параллельная синхронизация
-gsutil -m rm gs://<BUCKET>/path/**             # Parallel delete / Параллельное удаление
-
-### Performance Tuning
-
-gsutil -o "GSUtil:parallel_thread_count=20" cp -r /data gs://<BUCKET>/ # 20 threads / 20 потоков
-gsutil -o "GSUtil:parallel_process_count=8" cp -r /data gs://<BUCKET>/  # 8 processes / 8 процессов
+# Fine-tuned parallelism / Точная настройка параллелизма
+gsutil -o "GSUtil:parallel_thread_count=20" -m cp -r /data gs://<BUCKET>/
+gsutil -o "GSUtil:parallel_process_count=8"  -m cp -r /data gs://<BUCKET>/
+```
 
 ---
 
 ## Sysadmin Operations
 
-### Automated Backup Script
+### Automated Backup Script / Автоматический скрипт бэкапа
 
+`/usr/local/bin/gcs-backup.sh`
+
+```bash
 #!/bin/bash
-# /usr/local/bin/gcs-backup.sh
+# GCS daily backup with Nearline storage class
+# / Ежедневный бэкап в GCS с классом Nearline
+
+set -euo pipefail
 
 BUCKET="<BUCKET>"
 SOURCE="/data"
 DATE=$(date +%Y%m%d)
+LOG="/var/log/gcs-backup.log"
 
-# Rsync to GCS / Синхронизация в GCS
-gsutil -m rsync -r -d $SOURCE gs://$BUCKET/backups/$DATE/
+echo "$(date): Starting GCS backup → gs://$BUCKET/backups/$DATE/" >> "$LOG"
 
-# Set storage class to Nearline / Установить класс хранилища Nearline
-gsutil -m setmeta -h "x-goog-storage-class:NEARLINE" gs://$BUCKET/backups/$DATE/**
+gsutil -m rsync -r -d "$SOURCE" "gs://$BUCKET/backups/$DATE/" >> "$LOG" 2>&1
+gsutil -m setmeta -h "x-goog-storage-class:NEARLINE" "gs://$BUCKET/backups/$DATE/**" >> "$LOG" 2>&1
 
-### Service Account
+echo "$(date): Backup complete." >> "$LOG"
+```
 
+```bash
+chmod +x /usr/local/bin/gcs-backup.sh
+```
+
+### Service Account Setup / Настройка сервисного аккаунта
+
+```bash
 # Create service account / Создать сервисный аккаунт
 gcloud iam service-accounts create backup-sa --display-name="Backup Service Account"
 
-# Grant storage permissions / Выдать права на хранилище
+# Grant storage permissions / Права на хранилище
 gcloud projects add-iam-policy-binding <PROJECT_ID> \
   --member="serviceAccount:backup-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/storage.objectAdmin"
 
-# Create key / Создать ключ
-gcloud iam service-accounts keys create key.json \
+# Create JSON key / Создать ключ JSON
+gcloud iam service-accounts keys create /etc/gcs-key.json \
   --iam-account=backup-sa@<PROJECT_ID>.iam.gserviceaccount.com
+chmod 600 /etc/gcs-key.json
 
-# Use key / Использовать ключ
-gcloud auth activate-service-account --key-file=key.json
+# Activate key / Активировать ключ
+gcloud auth activate-service-account --key-file=/etc/gcs-key.json
+```
 
-### Environment Variables
+### Cron Schedule / Расписание cron
 
-export CLOUDSDK_CORE_PROJECT=<PROJECT_ID>      # Default project / Проект по умолчанию
-export CLOUDSDK_COMPUTE_REGION=us-east1        # Default region / Регион по умолчанию
+`/etc/cron.d/gcs-backup`
 
-### Configuration
+```
+# GCS daily backup at 02:30 / Ежедневный бэкап в GCS в 02:30
+30 2 * * * root /usr/local/bin/gcs-backup.sh
+```
 
-~/.config/gcloud/                              # Config directory / Директория конфигурации
-~/.boto                                        # gsutil config / Конфигурация gsutil
+### Environment Variables / Переменные окружения
 
-gsutil config                                  # Interactive config / Интерактивная настройка
+```bash
+export CLOUDSDK_CORE_PROJECT=<PROJECT_ID>       # Default project / Проект по умолчанию
+export CLOUDSDK_COMPUTE_REGION=us-east1         # Default region / Регион по умолчанию
+```
+
+### Configuration Paths / Пути конфигурации
+
+```bash
+~/.config/gcloud/      # gcloud config dir / Директория конфигурации gcloud
+~/.boto                # gsutil config / Конфигурация gsutil
+```
+
+```bash
+gsutil config                                   # Interactive config / Интерактивная настройка
+```
+
+### Logrotate / Logrotate
+
+`/etc/logrotate.d/gcs-backup`
+
+```
+/var/log/gcs-backup.log {
+    daily
+    rotate 30
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 root root
+}
+```
 
 ---
 
 ## Troubleshooting
 
-### Common Errors
+### Common Errors / Распространённые ошибки
 
-# "AccessDeniedException" / "Доступ запрещён"
-gcloud auth list                               # List accounts / Список аккаунтов
-gcloud config set account <ACCOUNT>            # Switch account / Переключить аккаунт
+```bash
+# "AccessDeniedException" / "Отказано в доступе"
+gcloud auth list                                # List accounts / Список аккаунтов
+gcloud config set account <ACCOUNT>             # Switch account / Переключить аккаунт
 
 # "BucketNotFoundException" / "Bucket не найден"
-gsutil ls                                      # List buckets / Список buckets
-gsutil mb gs://<BUCKET>                        # Create bucket / Создать bucket
+gsutil ls                                       # List buckets / Список buckets
+gsutil mb gs://<BUCKET>                         # Create bucket / Создать bucket
 
 # Slow transfers / Медленные передачи
-gsutil -m cp -r /data gs://<BUCKET>/           # Use parallel / Использовать параллелизм
-gsutil -o "GSUtil:parallel_thread_count=32" cp -r /data gs://<BUCKET>/ # More threads / Больше потоков
+gsutil -m cp -r /data gs://<BUCKET>/            # Enable parallel / Использовать параллелизм
+gsutil -o "GSUtil:parallel_thread_count=32" -m cp -r /data gs://<BUCKET>/
+```
 
-### Verify Upload
+### Verify Upload / Проверить загрузку
 
-gsutil ls -L gs://<BUCKET>/file.txt            # Check file / Проверить файл
-gsutil hash file.txt                           # Local hash / Локальный хэш
-gsutil hash gs://<BUCKET>/file.txt             # Remote hash / Удалённый хэш
+```bash
+gsutil ls -L gs://<BUCKET>/file.txt             # Check file metadata / Метаданные файла
+gsutil hash file.txt                            # Local hash / Локальный хэш
+gsutil hash gs://<BUCKET>/file.txt              # Remote hash / Удалённый хэш
+```
 
-### Debug Mode
+### Debug Mode / Режим отладки
 
-gsutil -D cp file.txt gs://<BUCKET>/           # Debug output / Отладочный вывод
-gsutil -d rsync /data gs://<BUCKET>/data       # Verbose rsync / Подробная синхронизация
+```bash
+gsutil -D cp file.txt gs://<BUCKET>/            # Full debug output / Полный отладочный вывод
+gsutil -d rsync /data gs://<BUCKET>/data        # Verbose rsync / Подробная синхронизация
+```
 
-### Performance
+### Performance Test / Тест производительности
 
-gsutil perfdiag -n 100 -s 1M gs://<BUCKET>     # Performance test / Тест производительности
-gsutil -o "GSUtil:sliced_object_download_threshold=100M" cp gs://<BUCKET>/large-file . # Sliced download / Разбитое скачивание
+```bash
+gsutil perfdiag -n 100 -s 1M gs://<BUCKET>     # Performance diagnostic / Диагностика производительности
+gsutil -o "GSUtil:sliced_object_download_threshold=100M" \
+  cp gs://<BUCKET>/large-file .                 # Sliced download / Разбитое скачивание
+```
