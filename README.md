@@ -8,6 +8,9 @@
 ![Universal](https://img.shields.io/badge/DE-Universal-green)
 ![License](https://img.shields.io/badge/license-MIT-green)
 [![Open-Source Software][oss icon]](https://github.com/dominatos/devtoolbox-cheats)
+[![Online Version](https://img.shields.io/badge/Online%20Version-cheats.alteron.net-blue)](https://cheats.alteron.net/)
+
+> 🌐 **Online version available at [cheats.alteron.net](https://cheats.alteron.net/)**
 
 ---
 ## Overview
