@@ -7,6 +7,7 @@
 ![KDE](https://img.shields.io/badge/KDE-Plasma_5%2F6-informational)
 ![Universal](https://img.shields.io/badge/DE-Universal-green)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/github/v/release/dominatos/devtoolbox-cheats)
 [![Open-Source Software][oss icon]](https://github.com/dominatos/devtoolbox-cheats)
 [![Online Version](https://img.shields.io/badge/Online%20Version-cheats.alteron.net-blue)](https://cheats.alteron.net/)
 
@@ -1024,7 +1025,7 @@ update-desktop-database ~/.local/share/applications
 ### Cache System
 
 - **Format:** TSV index with metadata
-- **Location:** `~/.cache/devtoolbox-cheats-beta.idx` (script) or `.json` (widget)
+- **Location:** `~/.cache/devtoolbox-cheats.idx` (script) or `.json` (widget)
 - **Invalidation:** Auto-detects file changes via mtime
 - **Rebuild:** Only when needed or forced
 
@@ -1092,11 +1093,33 @@ Pull requests welcome! Please:
 3. Test on your DE
 4. Commit changes: `git commit -m 'Add amazing feature'`
 5. Push to branch: `git push origin feature/amazing`
-6. Open Pull Request to `beta` branch
+6. Open Pull Request to `main` branch
 
 ---
 
 ## 📝 Changelog
+
+### v1.1 (2026-03-04)
+
+**Universal Installer:**
+- ✅ Unified `install.sh` — single installer for all 12+ desktop environments
+- ✅ Auto-detection for GNOME, KDE, XFCE, MATE, Cinnamon, LXQt, LXDE, Budgie, Pantheon, Deepin, Cosmic, Tiling WMs
+- ✅ Per-DE panel integration instructions printed after install
+- ✅ Universal `cheats.d` deployment to `~/cheats.d` for all DEs
+
+**Auto-Updater:**
+- ✅ New `cheats-updater.sh` — check, list, and update cheatsheets from upstream
+- ✅ Smart diff — only overwrites changed files; custom cheatsheets never touched
+- ✅ Automatic backups before every update
+- ✅ systemd daily timer for automatic updates
+- ✅ Installed to `~/.local/bin/` (PATH-accessible)
+
+**Cheatsheet Library:**
+- ✅ 130+ cheatsheets organized in 17 categories
+- ✅ Refactored and standardized formatting across all cheatsheets
+- ✅ Proper fenced code blocks, consistent headers, improved readability
+
+---
 
 ### v1.0 Beta (2026-02-23)
 
@@ -1324,7 +1347,6 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 ### Virtualization
 - [🖥️ KVM / QEMU — Virtualization](cheats.d/virtualization/kvmcheatsheet.md)
 ---
----
 
 ## 📄 License
 
@@ -1345,7 +1367,7 @@ MIT License - See LICENSE file
 
 - **Repository:** https://github.com/dominatos/devtoolbox-cheats
 - **Issues:** https://github.com/dominatos/devtoolbox-cheats/issues
-- **Beta Branch:** https://github.com/dominatos/devtoolbox-cheats/tree/beta
+- **Releases:** https://github.com/dominatos/devtoolbox-cheats/releases
 - **Argos Extension:** https://github.com/p-e-w/argos
 
 ---
@@ -1359,7 +1381,6 @@ If you find this useful:
 - 🍴 Fork and contribute
 - 💬 Share with the Linux community
 
----
 ---
 
 If you like this project, consider supporting me on [Buy Me a Coffee](https://www.buymeacoffee.com/dominatos) ☕️
