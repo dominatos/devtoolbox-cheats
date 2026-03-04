@@ -10,131 +10,190 @@ Order: 3
 - [ZSTD — Modern Compression](#-zstd--modern-compression)
 - [Comparison & Benchmarks](#-comparison--benchmarks--сравнение-и-бенчмарки)
 - [Real-World Examples](#-real-world-examples--примеры-из-практики)
+- [Best Practices](#-best-practices--лучшие-практики)
 
 ---
 
 # 📁 ZIP — Classic Archives
 
 ### Create Archives / Создание архивов
+```bash
 zip archive.zip file.txt                     # Zip single file / Архивировать один файл
 zip -r archive.zip dir/                       # Zip recursively / Архивировать рекурсивно
 zip -r archive.zip file1 file2 dir/           # Multiple files/dirs / Несколько файлов/каталогов
 zip -r -9 archive.zip dir/                    # Maximum compression / Максимальное сжатие
 zip -r -0 archive.zip dir/                    # Store only (no compression) / Только хранение
+```
 
 ### Update & Add / Обновление и добавление
+```bash
 zip -u archive.zip newfile.txt                # Update archive / Обновить архив
 zip -d archive.zip file.txt                   # Delete from archive / Удалить из архива
 zip -r archive.zip . -x "*.log"               # Exclude pattern / Исключить шаблон
 zip -r archive.zip dir/ -x "*/.git/*"         # Exclude .git / Исключить .git
+```
 
 ### Password Protection / Защита паролем
+```bash
 zip -r -e archive.zip dir/                    # Encrypt with password / Зашифровать паролем
 zip -r -P <PASSWORD> archive.zip dir/         # Password in command / Пароль в команде
+```
+
+> [!CAUTION]
+> Using `-P <PASSWORD>` exposes the password in shell history and process list. Prefer `-e` for interactive password entry.
+> Использование `-P <PASSWORD>` оставляет пароль в истории команд. Используйте `-e` для интерактивного ввода.
 
 ### List & Test / Просмотр и тестирование
+```bash
 unzip -l archive.zip                          # List contents / Список содержимого
 unzip -t archive.zip                          # Test integrity / Проверить целостность
 unzip -v archive.zip                          # Verbose list / Подробный список
+```
 
 ---
 
 # 📂 UNZIP — Extract ZIP
 
 ### Basic Extraction / Базовая распаковка
+```bash
 unzip archive.zip                             # Extract to current dir / Распаковать в текущую директорию
 unzip archive.zip -d out/                     # Extract to out/ / Распаковать в out/
 unzip -q archive.zip                          # Quiet mode / Тихий режим
 unzip -o archive.zip                          # Overwrite without prompt / Перезаписать без подтверждения
 unzip -n archive.zip                          # Never overwrite / Никогда не перезаписывать
+```
 
 ### Selective Extraction / Выборочная распаковка
+```bash
 unzip archive.zip file.txt                    # Extract single file / Распаковать один файл
 unzip archive.zip "*.txt"                     # Extract by pattern / Распаковать по шаблону
 unzip archive.zip -x "*.log"                  # Exclude pattern / Исключить шаблон
 unzip archive.zip dir/                        # Extract directory / Распаковать каталог
+```
 
 ### Password-Protected / Защищённые паролем
+```bash
 unzip -P <PASSWORD> archive.zip               # Extract with password / Распаковать с паролем
+```
 
 ---
 
 # 🗜️ 7-Zip — High Compression
 
 ### Installation / Установка
+```bash
 sudo apt install p7zip-full p7zip-rar         # Debian/Ubuntu
 sudo dnf install p7zip p7zip-plugins          # RHEL/Fedora
+sudo pacman -S p7zip                          # Arch Linux
+```
 
 ### Create Archives / Создание архивов
+```bash
 7z a archive.7z file.txt                      # Create 7z archive / Создать 7z архив
 7z a archive.7z file1 dir/                    # Add files/dirs / Добавить файлы/каталоги
 7z a -t7z -mx=9 archive.7z dir/               # Maximum compression / Максимальное сжатие
 7z a -t7z -mx=1 archive.7z dir/               # Fastest compression / Быстрое сжатие
 7z a -tzip archive.zip dir/                   # Create ZIP format / Создать формат ZIP
 7z a -ttar archive.tar dir/                   # Create TAR format / Создать формат TAR
+```
 
 ### Extract Archives / Распаковка архивов
+```bash
 7z x archive.7z                               # Extract with paths / Распаковать с путями
 7z e archive.7z                               # Extract to current dir / Распаковать в текущую директорию
 7z x archive.7z -o/path/to/out/               # Extract to path / Распаковать в путь
 7z x archive.zip                              # Extract ZIP / Распаковать ZIP
 7z x archive.rar                              # Extract RAR / Распаковать RAR
+```
+
+> [!NOTE]
+> `7z x` preserves directory structure, while `7z e` extracts all files to a single directory.
+> `7z x` сохраняет структуру каталогов, а `7z e` извлекает все файлы в одну директорию.
 
 ### List & Test / Просмотр и тестирование
+```bash
 7z l archive.7z                               # List contents / Список содержимого
 7z t archive.7z                               # Test integrity / Проверить целостность
 7z l -slt archive.7z                          # Detailed list / Подробный список
+```
 
 ### Update & Delete / Обновление и удаление
+```bash
 7z u archive.7z newfile.txt                   # Update archive / Обновить архив
 7z d archive.7z file.txt                      # Delete from archive / Удалить из архива
+```
 
 ### Password & Encryption / Пароль и шифрование
+```bash
 7z a -p<PASSWORD> archive.7z dir/             # Password protection / Защита паролем
 7z a -p<PASSWORD> -mhe=on archive.7z dir/     # Encrypt headers / Зашифровать заголовки
 7z x -p<PASSWORD> archive.7z                  # Extract with password / Распаковать с паролем
+```
+
+> [!TIP]
+> Use `-mhe=on` to encrypt file names in the archive header. Without it, file names are visible even without the password.
+> Используйте `-mhe=on` для шифрования имён файлов в заголовке архива. Без этого имена файлов видны даже без пароля.
 
 ### Compression Levels / Уровни сжатия
+```bash
 7z a -mx=0 archive.7z dir/                    # Copy (no compression) / Копирование (без сжатия)
 7z a -mx=1 archive.7z dir/                    # Fastest / Быстрое
 7z a -mx=5 archive.7z dir/                    # Normal (default) / Нормальное (по умолчанию)
 7z a -mx=9 archive.7z dir/                    # Ultra / Ультра
+```
 
 ---
 
 # ⚡ ZSTD — Modern Compression
 
 ### Installation / Установка
+```bash
 sudo apt install zstd                         # Debian/Ubuntu
 sudo dnf install zstd                         # RHEL/Fedora
+sudo pacman -S zstd                           # Arch Linux
+```
 
 ### Compress Files / Сжатие файлов
+```bash
 zstd file.txt                                 # Compress file / Сжать файл
 zstd -19 file.txt                             # Max compression (level 19) / Максимальное сжатие
 zstd -1 file.txt                              # Fast compression / Быстрое сжатие
 zstd -T0 file.txt                             # Use all CPU cores / Использовать все ядра CPU
 zstd -o output.zst file.txt                   # Specify output / Указать выход
 zstd -v file.txt                              # Verbose / Подробный вывод
+```
 
 ### Decompress Files / Распаковка файлов
+```bash
 zstd -d file.zst                              # Decompress / Распаковать
 unzstd file.zst                               # Alternative / Альтернатива
 zstd -d -c file.zst > output.txt              # Decompress to stdout / Распаковать в stdout
+```
 
 ### Multiple Files / Несколько файлов
+```bash
 zstd *.txt                                    # Compress all txt / Сжать все txt
 zstd -d *.zst                                 # Decompress all zst / Распаковать все zst
 zstd -rm *.txt                                # Compress and remove / Сжать и удалить
+```
+
+> [!WARNING]
+> `zstd -rm` removes original files after compression. Use with caution in production.
+> `zstd -rm` удаляет оригинальные файлы после сжатия. Используйте с осторожностью в продакшене.
 
 ### Tar Integration / Интеграция с tar
+```bash
 tar --zstd -cvf archive.tar.zst dir/          # Create tar.zst / Создать tar.zst
 tar --zstd -xvf archive.tar.zst               # Extract tar.zst / Распаковать tar.zst
 tar --use-compress-program=zstd -cvf archive.tar.zst dir/  # Alternative / Альтернатива
 tar -I zstd -xvf archive.tar.zst              # Alternative extraction / Альтернативная распаковка
+```
 
 ### Benchmarking / Бенчмарки
+```bash
 zstd -b file.txt                              # Benchmark compression / Бенчмарк сжатия
 zstd -b1:19 file.txt                          # Test levels 1-19 / Тест уровней 1-19
+```
 
 ---
 
@@ -161,12 +220,15 @@ zstd:  ~400 MB/s   (very fast)
 ```
 
 ### Use Cases / Случаи использования
-- **gzip**: Universal, default for archives / Универсальное, по умолчанию для архивов
-- **bzip2**: Better compression, legacy / Лучшее сжатие, устаревшее
-- **xz**: Maximum compression, slow / Максимальное сжатие, медленное
-- **7z**: Maximum compression, Windows compatible / Максимальное сжатие, совместимость с Windows
-- **zstd**: Modern, fast, best balance / Современное, быстрое, лучший баланс
-- **zip**: Universal, Windows compatible / Универсальное, совместимость с Windows
+
+| Tool | Best For (EN / RU) |
+|------|---------------------|
+| **gzip** | Universal, default for archives / Универсальное, по умолчанию для архивов |
+| **bzip2** | Better compression, legacy systems / Лучшее сжатие, устаревшие системы |
+| **xz** | Maximum compression, slow / Максимальное сжатие, медленное |
+| **7z** | Maximum compression, Windows compatible / Максимальное сжатие, совместимость с Windows |
+| **zstd** | Modern, fast, best balance / Современное, быстрое, лучший баланс |
+| **zip** | Universal, Windows compatible / Универсальное, совместимость с Windows |
 
 ---
 
@@ -175,7 +237,7 @@ zstd:  ~400 MB/s   (very fast)
 ### Backup with ZSTD / Резервная копия с ZSTD
 ```bash
 # Fast backup / Быстрая резервная копия
-tar --zstd -cvf backup-$(date +%F).tar.zst /home/user
+tar --zstd -cvf backup-$(date +%F).tar.zst /home/<USER>
 
 # Maximum compression backup / Максимальное сжатие резервной копии
 tar -I "zstd -19 -T0" -cvf backup-$(date +%F).tar.zst /data
@@ -256,6 +318,8 @@ unzip -t archive.zip
 # Verify tar.zst / Проверить tar.zst
 tar --zstd -tvf archive.tar.zst
 ```
+
+---
 
 # 💡 Best Practices / Лучшие практики
 

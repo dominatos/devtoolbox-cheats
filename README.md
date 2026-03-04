@@ -1138,10 +1138,10 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🔍 Process Diagnostics — htop/atop/lsof](cheats.d/diagnostics/process_diagnostics_cheatsheet.md)
 
 ### Files & Archives
-- [🔁 diff / patch — Commands](cheats.d/files-archives/diffpatchcheatsheet.md)
-- [📦 TAR — Commands](cheats.d/files-archives/tarcheatsheet.md)
-- [📦 TAR (zstd) — Commands](cheats.d/files-archives/tarzstdcheatsheet.md)
-- [📦 ZIP / 7z / ZSTD — Commands](cheats.d/files-archives/zip7zzstdcheatsheet.md)
+- [🔁 diff / patch — File Comparison](cheats.d/files-archives/diffpatchcheatsheet.md)
+- [📦 TAR — Archive Commands](cheats.d/files-archives/tarcheatsheet.md)
+- [📦 TAR + Zstandard (zstd) — Compression](cheats.d/files-archives/tarzstdcheatsheet.md)
+- [📦 ZIP / 7z / ZSTD — Archive Tools](cheats.d/files-archives/zip7zzstdcheatsheet.md)
 
 ### Kubernetes & Containers
 - [🐳 Docker — Commands](cheats.d/kubernetes-containers/dockercheatsheet.md)
