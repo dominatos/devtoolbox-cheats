@@ -828,6 +828,71 @@ click-left = ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
 
 ---
 
+## 🔄 Auto-Updater
+
+Keep your cheatsheets in sync with the latest upstream version using the built-in updater.
+
+### Commands
+
+After installation, `cheats-updater` is available in your PATH (`~/.local/bin/`):
+
+```bash
+# Check what changed upstream
+cheats-updater check
+
+# Download / update all official cheatsheets
+cheats-updater update
+
+# List all available cheatsheets
+cheats-updater list
+```
+
+**Behavior:**
+- Only changed files are overwritten (`cmp` diff check)
+- Custom cheatsheets you add to `~/cheats.d/` are **never** touched
+- Automatic backup is created before every update at `~/.local/share/devtoolbox-cheats/backups/`
+
+### Automatic Daily Updates (systemd)
+
+The installer sets up a **systemd user timer** that runs `cheats-updater.sh update` once per day.
+
+```bash
+# Check timer status
+systemctl --user status devtoolbox-cheats-updater.timer
+
+# View update logs
+journalctl --user -u devtoolbox-cheats-updater.service
+
+# Trigger a manual run via systemd
+systemctl --user start devtoolbox-cheats-updater.service
+
+# Disable automatic updates
+systemctl --user disable --now devtoolbox-cheats-updater.timer
+
+# Re-enable automatic updates
+systemctl --user enable --now devtoolbox-cheats-updater.timer
+```
+
+### Manual Setup (if not using install.sh)
+
+```bash
+# Symlink units and enable timer
+mkdir -p ~/.config/systemd/user
+ln -sf ~/devtoolbox-cheats/systemd/devtoolbox-cheats-updater.service ~/.config/systemd/user/
+ln -sf ~/devtoolbox-cheats/systemd/devtoolbox-cheats-updater.timer   ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now devtoolbox-cheats-updater.timer
+```
+
+### Environment Variables
+
+```bash
+# Override target directory (default: ~/cheats.d)
+CHEATS_DIR=/custom/path ./cheats-updater.sh update
+```
+
+---
+
 ## 🔧 Troubleshooting
 
 ### GNOME: Icon Not Showing
@@ -972,6 +1037,11 @@ update-desktop-database ~/.local/share/applications
 ```
 devtoolbox-cheats/
 ├── devtoolbox-cheats.30s.sh    # Universal script (all DEs)
+├── cheats-updater.sh           # Cheats update manager
+├── install.sh                  # Universal installer
+├── systemd/                    # Systemd user units
+│   ├── devtoolbox-cheats-updater.service
+│   └── devtoolbox-cheats-updater.timer
 ├── kde-widget-plasma6/               # Plasma 6 widget
 │   ├── install.sh
 │   ├── uninstall.sh

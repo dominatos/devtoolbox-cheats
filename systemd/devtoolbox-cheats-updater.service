@@ -1,16 +1,15 @@
 [Unit]
-Description=DevToolbox Cheats Updater — check for cheatsheet updates
-After=network-online.target
+Description=Update devtoolbox-cheats cheatsheets
 Wants=network-online.target
+After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=%h/devtoolbox-cheats/cheats-updater.sh check
-# Adjust path above if your repo is elsewhere
+ExecStart=%h/.local/bin/cheats-updater update
+Environment=CHEATS_DIR=%h/cheats.d
 
-# Notifications require access to the user's D-Bus session
-Environment=DISPLAY=:0
-Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
-
-[Install]
-WantedBy=default.target
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=%h/cheats.d %h/.local/share/devtoolbox-cheats
+PrivateTmp=true

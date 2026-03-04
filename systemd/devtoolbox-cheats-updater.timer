@@ -1,10 +1,9 @@
 [Unit]
-Description=DevToolbox Cheats Updater — weekly check timer
+Description=Daily update of devtoolbox-cheats cheatsheets
 
 [Timer]
-# Run once a week (Monday 09:00), randomized ±2h to avoid thundering herd
-OnCalendar=Mon *-*-* 09:00:00
-RandomizedDelaySec=7200
+OnCalendar=daily
+RandomizedDelaySec=1h
 Persistent=true
 
 [Install]

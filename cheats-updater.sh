@@ -32,7 +32,6 @@ clone_repo() {
     
     if ! git clone --branch "$BRANCH" --depth 1 --quiet "$UPSTREAM_URL" "$TEMP_DIR" 2>&1; then
         log_error "Failed to clone repository"
-        log_error "Check your internet connection and try again"
         exit 1
     fi
     
@@ -44,163 +43,133 @@ clone_repo() {
     log_info "Clone complete"
 }
 
-# Compare and show differences using diff
+# Check for updates
 cmd_check() {
     clone_repo
     
     log_info "Comparing with ${C_CYAN}${CHEATS_DIR}${C_RESET}..."
     echo
     
-    local new=0 modified=0 unchanged=0
+    local new=0 modified=0 unchanged=0 custom=0
     
-    # Find files only in remote (new files)
-    while IFS= read -r -d '' remote_file; do
+    if [[ ! -d "$CHEATS_DIR" ]]; then
+        local total
+        total=$(find "$TEMP_DIR/cheats.d" -type f -name "*.md" | wc -l)
+        echo "  ${C_GREEN}All ${total} files are new${C_RESET}"
+        echo
+        echo "  Run ${C_CYAN}cheats-updater.sh update${C_RESET} to download"
+        return 0
+    fi
+    
+    # Build list of official files
+    declare -A official_files
+    while IFS= read -r rel_path; do
+        [[ -n "$rel_path" ]] && official_files["$rel_path"]=1
+    done < <(find "$TEMP_DIR/cheats.d" -type f -name "*.md" -printf "%P\n" 2>/dev/null)
+    
+    # Check official files for updates (process substitution to avoid subshell)
+    while IFS= read -r remote_file; do
         local rel_path="${remote_file#${TEMP_DIR}/cheats.d/}"
         local local_file="${CHEATS_DIR}/${rel_path}"
         
         if [[ ! -f "$local_file" ]]; then
-            echo "  ${C_GREEN}+ ${rel_path}${C_RESET} (new)"
-            ((new++))
+            echo "  ${C_GREEN}+ ${rel_path}${C_RESET}"
+            ((new++)) || true
+        elif ! cmp -s "$remote_file" "$local_file"; then
+            echo "  ${C_YELLOW}~ ${rel_path}${C_RESET}"
+            ((modified++)) || true
+        else
+            ((unchanged++)) || true
         fi
-    done < <(find "$TEMP_DIR/cheats.d" -type f -name "*.md" -print0)
+    done < <(find "$TEMP_DIR/cheats.d" -type f -name "*.md" | sort)
     
-    # Compare existing files using diff
-    if [[ -d "$CHEATS_DIR" ]]; then
-        while IFS= read -r line; do
-            # diff output: "Files <path1> and <path2> differ"
-            if [[ "$line" =~ Files\ (.*)\ and\ (.*)\ differ ]]; then
-                local file1="${BASH_REMATCH[1]}"
-                local rel_path="${file1#${TEMP_DIR}/cheats.d/}"
-                echo "  ${C_YELLOW}~ ${rel_path}${C_RESET} (modified)"
-                ((modified++))
-            fi
-        done < <(diff -qr "$TEMP_DIR/cheats.d" "$CHEATS_DIR" 2>/dev/null | grep "^Files.*differ" || true)
-        
-        # Count unchanged files
-        unchanged=$(find "$TEMP_DIR/cheats.d" -type f -name "*.md" | wc -l)
-        unchanged=$((unchanged - new - modified))
-    else
-        # If CHEATS_DIR doesn't exist, all files are new
-        new=$(find "$TEMP_DIR/cheats.d" -type f -name "*.md" | wc -l)
-        unchanged=0
-    fi
+    # Check for custom user files (process substitution to avoid subshell)
+    while IFS= read -r local_file; do
+        local rel_path="${local_file#${CHEATS_DIR}/}"
+        if [[ ! -v official_files["$rel_path"] ]]; then
+            echo "  ${C_BLUE}? ${rel_path}${C_RESET} (custom)"
+            ((custom++)) || true
+        fi
+    done < <(find "$CHEATS_DIR" -type f -name "*.md" | sort)
     
     echo
-    echo "  ${C_BOLD}Summary:${C_RESET} ${C_GREEN}+${new} new${C_RESET} | ${C_YELLOW}~${modified} modified${C_RESET} | ${unchanged} unchanged"
+    echo "  ${C_BOLD}Summary:${C_RESET}"
+    echo "    ${C_GREEN}+${new}${C_RESET} new  ${C_YELLOW}~${modified}${C_RESET} modified  ${C_DIM}=${unchanged}${C_RESET} unchanged  ${C_BLUE}?${custom}${C_RESET} custom"
     echo
-    
-    if ((new + modified > 0)); then
+    if (( new + modified > 0 )); then
         echo "  Run ${C_CYAN}cheats-updater.sh update${C_RESET} to apply changes"
-        return 1
     else
-        echo "  ${C_GREEN}? Already up to date${C_RESET}"
-        return 0
+        echo "  ${C_GREEN}Everything is up to date${C_RESET}"
     fi
 }
 
-# List detailed changes using diff
+# List all files
 cmd_list() {
     clone_repo
     
-    log_info "Listing changes..."
+    log_info "Listing all files..."
     echo
     
-    # Find new files
-    while IFS= read -r -d '' remote_file; do
-        local rel_path="${remote_file#${TEMP_DIR}/cheats.d/}"
-        local local_file="${CHEATS_DIR}/${rel_path}"
-        
-        if [[ ! -f "$local_file" ]]; then
-            echo "${C_GREEN}+++ NEW: ${rel_path}${C_RESET}"
-            echo "    $(head -1 "$remote_file" | sed 's/^[#* ]*//')"
-            
-            local file_size=$(wc -c < "$remote_file")
-            echo "    Size: ${file_size} bytes"
-            echo
-        fi
-    done < <(find "$TEMP_DIR/cheats.d" -type f -name "*.md" -print0)
+    echo "  ${C_BOLD}Official cheatsheets:${C_RESET}"
+    find "$TEMP_DIR/cheats.d" -type f -name "*.md" -printf "    %P\n" | sort
     
-    # Find modified files and show diffs
-    if [[ -d "$CHEATS_DIR" ]]; then
-        while IFS= read -r line; do
-            if [[ "$line" =~ Files\ (.*)\ and\ (.*)\ differ ]]; then
-                local remote_file="${BASH_REMATCH[1]}"
-                local local_file="${BASH_REMATCH[2]}"
-                local rel_path="${remote_file#${TEMP_DIR}/cheats.d/}"
-                
-                echo "${C_YELLOW}=== MODIFIED: ${rel_path}${C_RESET}"
-                
-                # Show size difference
-                local local_size=$(wc -c < "$local_file")
-                local remote_size=$(wc -c < "$remote_file")
-                local size_diff=$((remote_size - local_size))
-                
-                if ((size_diff > 0)); then
-                    echo "    Size: ${local_size} > ${remote_size} bytes (${C_GREEN}+${size_diff}${C_RESET})"
-                elif ((size_diff < 0)); then
-                    echo "    Size: ${local_size} > ${remote_size} bytes (${C_RED}${size_diff}${C_RESET})"
-                else
-                    echo "    Size: ${local_size} bytes (content changed)"
-                fi
-                
-                # Show diff snippet
-                echo "    ${C_DIM}Diff preview:${C_RESET}"
-                diff -u "$local_file" "$remote_file" 2>/dev/null | head -25 | tail -n +3 | sed 's/^/      /' || echo "      (binary or large diff)"
-                echo
-            fi
-        done < <(diff -qr "$TEMP_DIR/cheats.d" "$CHEATS_DIR" 2>/dev/null | grep "^Files.*differ" || true)
-    fi
+    echo
 }
 
-# Update files
+# Update files - preserve custom cheats
 cmd_update() {
     clone_repo
     
     # Create backup
     local backup_dir="${HOME}/.local/share/devtoolbox-cheats/backups/$(date +%Y-%m-%d-%H%M%S)"
     if [[ -d "$CHEATS_DIR" ]]; then
-        log_info "Creating backup to ${C_DIM}${backup_dir}${C_RESET}..."
+        log_info "Creating backup..."
         mkdir -p "$backup_dir"
-        cp -a "$CHEATS_DIR" "$backup_dir/" 2>/dev/null || true
+        cp -a "$CHEATS_DIR/." "$backup_dir/"
+        log_info "Backup saved to: ${backup_dir}"
     fi
     
-    # Ensure target directory exists
     mkdir -p "$CHEATS_DIR"
     
-    local updated=0 added=0 skipped=0
-    
-    log_info "Updating cheats..."
+    log_info "Updating official cheats to ${C_CYAN}${CHEATS_DIR}${C_RESET}..."
     echo
     
-    # Copy all files from remote
-    while IFS= read -r -d '' remote_file; do
+    local added=0 modified=0 unchanged=0
+    
+    # Get list of all remote files
+    mapfile -t remote_files < <(find "$TEMP_DIR/cheats.d" -type f -name "*.md" | sort)
+    
+    # Process each file
+    for remote_file in "${remote_files[@]}"; do
         local rel_path="${remote_file#${TEMP_DIR}/cheats.d/}"
         local local_file="${CHEATS_DIR}/${rel_path}"
-        local local_dir="$(dirname "$local_file")"
+        local local_dir
+        local_dir="$(dirname "$local_file")"
         
         mkdir -p "$local_dir"
         
         if [[ ! -f "$local_file" ]]; then
             cp "$remote_file" "$local_file"
             echo "  ${C_GREEN}+ ${rel_path}${C_RESET}"
-            ((added++))
-        elif ! diff -q "$remote_file" "$local_file" >/dev/null 2>&1; then
+            ((added++)) || true
+        elif ! cmp -s "$remote_file" "$local_file"; then
             cp "$remote_file" "$local_file"
             echo "  ${C_YELLOW}~ ${rel_path}${C_RESET}"
-            ((updated++))
+            ((modified++)) || true
         else
-            ((skipped++))
+            ((unchanged++)) || true
         fi
-    done < <(find "$TEMP_DIR/cheats.d" -type f -name "*.md" -print0 | sort -z)
+    done
     
     echo
-    echo "  ${C_BOLD}Results:${C_RESET} ${C_GREEN}+${added} added${C_RESET} | ${C_YELLOW}~${updated} modified${C_RESET} | ${skipped} unchanged"
+    echo "  ${C_BOLD}Results:${C_RESET}"
+    echo "    ${C_GREEN}+${added}${C_RESET} new  ${C_YELLOW}~${modified}${C_RESET} modified  ${C_DIM}=${unchanged}${C_RESET} unchanged"
     echo
-    echo "  ${C_GREEN}? Update complete${C_RESET}"
+    echo "  ${C_GREEN}Update complete — Total: $((added + modified)) changed, ${unchanged} unchanged${C_RESET}"
     
     # Notification
     if command -v notify-send &>/dev/null; then
-        notify-send "DevToolbox Cheats" "? Updated: +${added} new, ~${updated} modified" 2>/dev/null || true
+        notify-send "DevToolbox Cheats" "Updated: +${added} new, ~${modified} modified" 2>/dev/null || true
     fi
 }
 
@@ -212,30 +181,30 @@ ${C_BOLD}USAGE${C_RESET}
     cheats-updater.sh <command>
 
 ${C_BOLD}COMMANDS${C_RESET}
-    ${C_GREEN}check${C_RESET}       Check for updates (shows summary)
-    ${C_GREEN}list${C_RESET}        Show detailed changes with diffs
-    ${C_GREEN}update${C_RESET}      Apply updates to local cheats
+    ${C_GREEN}check${C_RESET}       Check for updates
+    ${C_GREEN}list${C_RESET}        List all official cheatsheets
+    ${C_GREEN}update${C_RESET}      Update all official cheatsheets
 
 ${C_BOLD}ENVIRONMENT${C_RESET}
     CHEATS_DIR     Target directory (default: ~/cheats.d)
 
 ${C_BOLD}EXAMPLES${C_RESET}
     cheats-updater.sh check
-    cheats-updater.sh list
     cheats-updater.sh update
     
     CHEATS_DIR=/custom/path cheats-updater.sh update
 
-${C_BOLD}REQUIREMENTS${C_RESET}
-    git, diff, find
+${C_BOLD}BACKUP${C_RESET}
+    Automatic backup is created before every update:
+    ~/.local/share/devtoolbox-cheats/backups/YYYY-MM-DD-HHMMSS/
 
 EOF
 }
 
 # Check dependencies
-for cmd in git diff find; do
+for cmd in git find cp; do
     if ! command -v "$cmd" &>/dev/null; then
-        log_error "Required command not found: ${cmd}"
+        log_error "Required command: ${cmd}"
         exit 1
     fi
 done

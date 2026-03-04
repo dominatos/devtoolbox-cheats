@@ -354,6 +354,63 @@ EOF
     echo "──────────────────────────────────────────────────────────"
 }
 
+# ─── Cheats Updater + Systemd Timer ──────────────────────────────────────────
+install_updater() {
+    local updater_src="$SCRIPT_DIR/cheats-updater.sh"
+    local install_bin="$HOME/.local/bin"
+    local install_dest="$install_bin/cheats-updater"
+    local systemd_dir="$SCRIPT_DIR/systemd"
+    local user_systemd="$HOME/.config/systemd/user"
+
+    echo ""
+    echo "🔄 Installing cheats-updater..."
+
+    # Deploy updater script to ~/.local/bin
+    if [ -f "$updater_src" ]; then
+        mkdir -p "$install_bin"
+        cp "$updater_src" "$install_dest"
+        chmod +x "$install_dest"
+        echo "  ✅ Installed to: $install_dest"
+
+        # Ensure ~/.local/bin is in PATH
+        if ! echo "$PATH" | grep -q "$install_bin"; then
+            echo "  ⚠️  $install_bin is not in your PATH"
+            echo "     Add to your shell rc: export PATH=\"\$HOME/.local/bin:\$PATH\""
+        fi
+    else
+        echo "  ⚠️  cheats-updater.sh not found: $updater_src"
+        return
+    fi
+
+    # Install systemd user timer
+    if [ -d "$systemd_dir" ] && [ -f "$systemd_dir/devtoolbox-cheats-updater.service" ]; then
+        mkdir -p "$user_systemd"
+        ln -sf "$systemd_dir/devtoolbox-cheats-updater.service" "$user_systemd/"
+        ln -sf "$systemd_dir/devtoolbox-cheats-updater.timer"   "$user_systemd/"
+
+        # Reload and enable timer
+        if systemctl --user daemon-reload 2>/dev/null; then
+            systemctl --user enable --now devtoolbox-cheats-updater.timer 2>/dev/null && \
+                echo "  ✅ Systemd daily timer enabled" || \
+                echo "  ⚠️  Could not enable timer (try: systemctl --user enable --now devtoolbox-cheats-updater.timer)"
+        else
+            echo "  ⚠️  systemctl --user not available in this session"
+            echo "     Run manually after login:"
+            echo "       systemctl --user daemon-reload"
+            echo "       systemctl --user enable --now devtoolbox-cheats-updater.timer"
+        fi
+    else
+        echo "  ⚠️  Systemd unit files not found in: $systemd_dir"
+        echo "     You can still run the updater manually: cheats-updater update"
+    fi
+
+    echo ""
+    echo "  📋 Updater commands:"
+    echo "     cheats-updater check    — Check for updates"
+    echo "     cheats-updater update   — Download latest cheatsheets"
+    echo "     cheats-updater list     — List all official cheatsheets"
+}
+
 # ─── DE routing ──────────────────────────────────────────────────────────────
 INSTALLED=0
 
@@ -390,5 +447,7 @@ if [ "$INSTALLED" -eq 0 ]; then
     echo ""
     echo "   Supported natively: KDE Plasma 5/6 (kpackagetool), GNOME + Argos (~/.config/argos)"
     echo "   For all other DEs, follow the instructions above to add the script as a panel launcher."
-    exit 1
 fi
+
+# Always install the updater (works on any DE)
+install_updater
