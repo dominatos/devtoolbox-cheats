@@ -1,203 +1,314 @@
-Title: CrowdSec Cheatsheet
+Title: 🛡️ CrowdSec — Intrusion Prevention
 Group: Security & Crypto
-Icon: 🔐
+Icon: 🛡️
 Order: 1
 
 ## Table of Contents
-- [General](#general--основное)
-- [Service Basics](#service-basics-linux-units--сервисы-для-справки)
-- [LAPI & CAPI](#lapi--capi--локальное-api-и-центральное-api)
-- [Console Integration](#console--веб-консоль-crowdsec-appcrowdsecnet)
-- [Hub Management](#hub-management--управление-hub-коллекции-парсеры-сценарии)
-- [Machines](#machines-lapi-db--машины-агенты-управляются-на-lapi)
-- [Bouncers](#bouncers--баунсеры-файрвол-nginx-caddy-и-тд)
-- [Decisions](#decisions-bancaptcha--решения-блокировкикапча)
-- [Alerts](#alerts-detections--алерты-сработки)
-- [Hub Items by Type](#hub-items-by-type--по-типам-пакетов-hub)
-- [Metrics & Diagnostics](#metrics--diag--метрики-и-диагностика)
-- [Docker Usage](#docker-usage--использование-в-docker)
-- [Firewall Bouncer](#firewall-bouncer-notes--заметки-по-файрвол-баунсеру)
-- [Windows Example](#windows-пример--windows-example)
-- [Handy One-Liners](#handy-one-liners--полезные-однострочники)
-- [Troubleshooting](#troubleshooting-tips--советы-по-отладке)
+- [General](#general)
+- [Service Basics](#service-basics)
+- [LAPI & CAPI](#lapi--capi)
+- [Console Integration](#console-integration)
+- [Hub Management](#hub-management)
+- [Machines](#machines)
+- [Bouncers](#bouncers)
+- [Decisions](#decisions)
+- [Alerts](#alerts)
+- [Hub Items by Type](#hub-items-by-type)
+- [Metrics & Diagnostics](#metrics--diagnostics)
+- [Docker Usage](#docker-usage)
+- [Firewall Bouncer](#firewall-bouncer)
+- [Windows Usage](#windows-usage)
+- [Handy One-Liners](#handy-one-liners)
+- [Troubleshooting](#troubleshooting)
 
 ---
 
-#==============================================================================
-# GENERAL / ОСНОВНОЕ
-#==============================================================================
+## General
 
-cscli version                               # Show version / Показать версию. :contentReference[oaicite:0]{index=0}
+### Core Commands / Основные команды
+```bash
+cscli version                               # Show version / Показать версию
 cscli -h                                    # Show global help / Общая справка
-cscli -o json <subcommand>                  # JSON output / Вывод в JSON (удобно для скриптов). :contentReference[oaicite:1]{index=1}
-cscli --info|--debug|--trace <cmd>          # Verbose logs / Подробные логи. :contentReference[oaicite:2]{index=2}
+cscli -o json <subcommand>                  # JSON output / Вывод в JSON (удобно для скриптов)
+cscli --info|--debug|--trace <cmd>          # Verbose logs / Подробные логи
+```
 
-#==============================================================================
-# SERVICE BASICS (Linux units) / СЕРВИСЫ (для справки)
-#==============================================================================
+### Default Paths / Пути по умолчанию
 
+| Path | Description (EN / RU) |
+|------|----------------------|
+| `/etc/crowdsec/` | Main config directory / Основная директория конфигурации |
+| `/etc/crowdsec/config.yaml` | Main config / Основной конфиг |
+| `/etc/crowdsec/bouncers/` | Bouncer configs / Конфиги баунсеров |
+| `/var/lib/crowdsec/data/` | Data directory / Директория данных |
+| `/var/log/crowdsec.log` | Engine log / Лог движка |
+
+---
+
+## Service Basics
+
+### Service Control / Управление сервисами
+```bash
 sudo systemctl status crowdsec               # Engine status / Статус движка CrowdSec
+sudo systemctl start crowdsec                # Start engine / Запустить движок
+sudo systemctl stop crowdsec                 # Stop engine / Остановить движок
+sudo systemctl restart crowdsec              # Restart engine / Перезапустить движок
 sudo systemctl status crowdsec-firewall-bouncer  # Bouncer status / Статус файрвол-баунсера
-sudo journalctl -u crowdsec -e               # Tail logs / Хвост логов движка
+```
+
+### Logs / Логи
+```bash
+sudo journalctl -u crowdsec -e               # Tail engine logs / Хвост логов движка
 sudo journalctl -u crowdsec-firewall-bouncer -e  # Tail bouncer logs / Хвост логов баунсера
+sudo journalctl -u crowdsec -f               # Follow engine logs / Следить за логами движка
+```
 
-#==============================================================================
-# LAPI & CAPI / ЛОКАЛЬНОЕ API И ЦЕНТРАЛЬНОЕ API
-#==============================================================================
+---
 
-cscli lapi status                           # Check auth to Local API (LAPI) / Проверить авторизацию к LAPI. :contentReference[oaicite:3]{index=3}
-sudo cscli lapi register -u http://LAPI:8080  # Register this machine to remote LAPI / Регистрация агента на удалённом LAPI. :contentReference[oaicite:4]{index=4}
-cscli capi status                           # Check Central API link / Проверить связь с Central API (CAPI). :contentReference[oaicite:5]{index=5}
-cscli capi register                         # Register to Central API / Регистрация в Central API (получить токены). :contentReference[oaicite:6]{index=6}
+## LAPI & CAPI
 
-# Полезные примеры:
-sudo cscli lapi register -u http://10.0.0.1:8080 --machine web-01   # Name machine / С именем ноды. :contentReference[oaicite:7]{index=7}
-cscli capi status -o json                    # JSON status / Статус в JSON. :contentReference[oaicite:8]{index=8}
+### Local API (LAPI) / Локальное API
+```bash
+cscli lapi status                           # Check auth to LAPI / Проверить авторизацию к LAPI
+sudo cscli lapi register -u http://<LAPI_HOST>:8080  # Register to remote LAPI / Регистрация на удалённом LAPI
+sudo cscli lapi register -u http://<IP>:8080 --machine web-01  # Register with name / С именем ноды
+```
 
-#==============================================================================
-# CONSOLE / ВЕБ-КОНСОЛЬ CrowdSec (app.crowdsec.net)
-#==============================================================================
+### Central API (CAPI) / Центральное API
+```bash
+cscli capi status                           # Check Central API link / Проверить связь с CAPI
+cscli capi register                         # Register to Central API / Регистрация в Central API
+cscli capi status -o json                   # JSON status / Статус в JSON
+```
 
-cscli console enroll                        # Enroll instance to Console / Привязать инстанс к консоли (локально на LAPI). :contentReference[oaicite:9]{index=9}
-cscli console enable context                # Enable context export / Включить экспорт контекстов в консоль. :contentReference[oaicite:10]{index=10}
-cscli console status                        # Show console integration status / Проверить статус интеграции консоли. :contentReference[oaicite:11]{index=11}
+> [!NOTE]
+> LAPI listens on port `8080` by default. CAPI connects to CrowdSec's cloud service at `api.crowdsec.net`.
+> LAPI слушает на порту `8080` по умолчанию. CAPI подключается к облачному сервису CrowdSec на `api.crowdsec.net`.
 
-#==============================================================================
-# HUB MANAGEMENT / УПРАВЛЕНИЕ HUB (коллекции, парсеры, сценарии)
-#==============================================================================
+---
 
-cscli hub list                              # List available/installed items / Список доступных и установленных пакетов. :contentReference[oaicite:12]{index=12}
-sudo cscli hub update                       # Refresh hub index / Обновить индекс HUB. :contentReference[oaicite:13]{index=13}
-sudo cscli hub upgrade                      # Upgrade installed items / Обновить установленные пакеты. :contentReference[oaicite:14]{index=14}
+## Console Integration
 
-# Установка/удаление:
-sudo cscli collections install crowdsecurity/linux       # Install collection / Установка коллекции. :contentReference[oaicite:15]{index=15}
-sudo cscli scenarios install crowdsecurity/ssh-bf        # Install scenario / Установка сценария брутфорса SSH. :contentReference[oaicite:16]{index=16}
-sudo cscli parsers install crowdsecurity/nginx           # Install parser / Установка парсера Nginx. :contentReference[oaicite:17]{index=17}
-sudo cscli postoverflows install crowdsecurity/grok-geoip # Install postoverflow / Постобработка. :contentReference[oaicite:18]{index=18}
-sudo cscli collections remove crowdsecurity/linux        # Remove collection / Удалить коллекцию. :contentReference[oaicite:19]{index=19}
+### Web Console (app.crowdsec.net) / Веб-консоль
+```bash
+cscli console enroll                        # Enroll instance to Console / Привязать инстанс к консоли
+cscli console enable context                # Enable context export / Включить экспорт контекстов
+cscli console status                        # Show integration status / Проверить статус интеграции
+```
 
-#==============================================================================
-# MACHINES (LAPI DB) / МАШИНЫ (агенты), управляются на LAPI
-#==============================================================================
+---
 
-cscli machines list                          # List machines / Список машин (агентов). :contentReference[oaicite:20]{index=20}
-sudo cscli machines add my-agent -f -        # Create machine creds to stdout / Создать креды агента в stdout (для копирования). :contentReference[oaicite:21]{index=21}
-sudo cscli machines validate my-agent        # Validate machine / Подтвердить агента. :contentReference[oaicite:22]{index=22}
-sudo cscli machines delete my-agent          # Delete machine / Удалить агента. :contentReference[oaicite:23]{index=23}
+## Hub Management
 
-#==============================================================================
-# BOUNCERS / БАУНСЕРЫ (файрвол, nginx, caddy, и т.д.)
-#==============================================================================
+### Hub Operations / Операции с Hub
+```bash
+cscli hub list                              # List available/installed items / Список доступных и установленных пакетов
+sudo cscli hub update                       # Refresh hub index / Обновить индекс Hub
+sudo cscli hub upgrade                      # Upgrade installed items / Обновить установленные пакеты
+```
 
-cscli bouncers list                         # List bouncers / Список баунсеров. :contentReference[oaicite:24]{index=24}
-sudo cscli bouncers add fw-bouncer          # Create API key / Создать ключ для баунсера. :contentReference[oaicite:25]{index=25}
-sudo cscli bouncers delete fw-bouncer       # Remove bouncer / Удалить баунсер. :contentReference[oaicite:26]{index=26}
+### Install / Remove / Установка / Удаление
+```bash
+sudo cscli collections install crowdsecurity/linux       # Install collection / Установка коллекции
+sudo cscli scenarios install crowdsecurity/ssh-bf        # Install scenario / Установка сценария брутфорса SSH
+sudo cscli parsers install crowdsecurity/nginx           # Install parser / Установка парсера Nginx
+sudo cscli postoverflows install crowdsecurity/grok-geoip # Install postoverflow / Постобработка
+sudo cscli collections remove crowdsecurity/linux        # Remove collection / Удалить коллекцию
+```
 
-# Примеры и заметки:
-sudo cscli bouncers add myfw --key <KEY>    # Use custom key / Задать свой ключ. :contentReference[oaicite:27]{index=27}
-sudo systemctl enable --now crowdsec-firewall-bouncer   # Enable/start bouncer / Включить и запустить баунсер. :contentReference[oaicite:28]{index=28}
+---
 
-#==============================================================================
-# DECISIONS (ban/captcha) / РЕШЕНИЯ (блокировки/капча)
-#==============================================================================
+## Machines
 
-cscli decisions list                         # List active decisions / Список активных решений. :contentReference[oaicite:29]{index=29}
-cscli decisions add --ip 1.2.3.4             # Ban one IP / Забанить IP. :contentReference[oaicite:30]{index=30}
-cscli decisions add --range 1.2.3.0/24       # Ban CIDR / Забанить подсеть. :contentReference[oaicite:31]{index=31}
-cscli decisions add --ip 1.2.3.4 --duration 24h --type captcha  # Temporary captcha / Временная «капча». :contentReference[oaicite:32]{index=32}
-cscli decisions add --scope username --value alice      # Scope=username / Бан по «username». :contentReference[oaicite:33]{index=33}
-cscli decisions delete --ip 1.2.3.4          # Delete decisions for IP / Снять бан с IP. :contentReference[oaicite:34]{index=34}
-cscli decisions import -f decisions.json     # Import from file / Импорт решений из файла/pipe. :contentReference[oaicite:35]{index=35}
+### Machine Management (LAPI DB) / Управление машинами
+```bash
+cscli machines list                          # List machines / Список машин (агентов)
+sudo cscli machines add my-agent -f -        # Create machine creds to stdout / Создать креды агента в stdout
+sudo cscli machines validate my-agent        # Validate machine / Подтвердить агента
+sudo cscli machines delete my-agent          # Delete machine / Удалить агента
+```
 
-# Частые фильтры:
-cscli decisions list --origin cscli          # Show manual bans / Только ручные баны. :contentReference[oaicite:36]{index=36}
-cscli decisions list -i 1.2.3.4              # Filter by IP / Фильтр по IP. :contentReference[oaicite:37]{index=37}
-cscli decisions list --type ban --since 24h  # Recent bans / Баны за последние 24 часа. :contentReference[oaicite:38]{index=38}
+---
 
-#==============================================================================
-# ALERTS (detections) / АЛЕРТЫ (сработки)
-#==============================================================================
+## Bouncers
 
-cscli alerts list                            # List alerts / Список алертов. :contentReference[oaicite:39]{index=39}
-cscli alerts list --since 24h --type ban     # Alerts in last 24h / Алерты за 24 часа. :contentReference[oaicite:40]{index=40}
-cscli alerts list -i 1.2.3.4                 # Alerts for IP / Алерты по IP. :contentReference[oaicite:41]{index=41}
-cscli alerts inspect -a <ALERT_ID>           # Inspect alert / Подробно об алерте. :contentReference[oaicite:42]{index=42}
-sudo cscli alerts flush                      # Flush all alerts (local only) / Сбросить алерты (локально). :contentReference[oaicite:43]{index=43}
-sudo cscli alerts delete -a <ALERT_ID>       # Delete one alert (local) / Удалить конкретный алерт (локально). :contentReference[oaicite:44]{index=44}
+### Bouncer Management / Управление баунсерами
+```bash
+cscli bouncers list                         # List bouncers / Список баунсеров
+sudo cscli bouncers add fw-bouncer          # Create API key / Создать ключ для баунсера
+sudo cscli bouncers delete fw-bouncer       # Remove bouncer / Удалить баунсер
+sudo cscli bouncers add myfw --key <SECRET_KEY>  # Use custom key / Задать свой ключ
+sudo systemctl enable --now crowdsec-firewall-bouncer  # Enable/start bouncer / Включить и запустить баунсер
+```
 
-#==============================================================================
-# HUB ITEMS BY TYPE / ПО ТИПАМ ПАКЕТОВ HUB
-#==============================================================================
+---
 
-cscli collections list                       # List collections / Список коллекций. :contentReference[oaicite:45]{index=45}
-cscli parsers list                           # List parsers / Список парсеров. :contentReference[oaicite:46]{index=46}
-cscli scenarios list                         # List scenarios / Список сценариев. :contentReference[oaicite:47]{index=47}
-cscli postoverflows list                     # List postoverflows / Список пост-процессоров. :contentReference[oaicite:48]{index=48}
+## Decisions
 
-# Установка конкретных версий/веток:
-sudo cscli scenarios install crowdsecurity/ssh-bf@<version>  # Install specific version / Установить версию. :contentReference[oaicite:49]{index=49}
+### Decision Management (ban/captcha) / Управление решениями
+```bash
+cscli decisions list                         # List active decisions / Список активных решений
+cscli decisions add --ip <IP>                # Ban one IP / Забанить IP
+cscli decisions add --range <IP>/24          # Ban CIDR / Забанить подсеть
+cscli decisions add --ip <IP> --duration 24h --type captcha  # Temporary captcha / Временная капча
+cscli decisions add --scope username --value <USER>  # Ban by username / Бан по username
+cscli decisions delete --ip <IP>             # Delete decisions for IP / Снять бан с IP
+cscli decisions import -f decisions.json     # Import from file / Импорт решений из файла
+```
 
-#==============================================================================
-# METRICS & DIAG / МЕТРИКИ И ДИАГНОСТИКА
-#==============================================================================
+> [!CAUTION]
+> Be careful with `decisions add` — banning wrong IPs can lock out legitimate users or even yourself!
+> Будьте осторожны с `decisions add` — блокировка неверных IP может заблокировать легитимных пользователей или даже вас!
 
-cscli metrics                                # Show engine metrics / Показать метрики движка (парсеры/сценарии).
-cscli explain --log <file>                   # Explain parsing/detection / Объяснить разбор логов (почему сработало/нет).
-cscli config show                            # Show running config / Текущая конфигурация.
-cscli hubtest run                            # Test hub items against samples / Тест парсеров/сценариев по образцам.
+### Decision Filters / Фильтры решений
+```bash
+cscli decisions list --origin cscli          # Show manual bans / Только ручные баны
+cscli decisions list -i <IP>                 # Filter by IP / Фильтр по IP
+cscli decisions list --type ban --since 24h  # Recent bans / Баны за последние 24 часа
+```
 
-#==============================================================================
-# DOCKER USAGE / ИСПОЛЬЗОВАНИЕ В DOCKER
-#==============================================================================
+---
 
-docker exec crowdsec cscli metrics           # Run cscli in container / Вызов cscli внутри контейнера. :contentReference[oaicite:50]{index=50}
-docker exec -it crowdsec /bin/bash           # Attach shell then use cscli / Зайти в контейнер и работать cscli. :contentReference[oaicite:51]{index=51}
-docker exec crowdsec cscli decisions add -i 1.2.3.4 -d 2m  # Quick test ban / Тестовый бан из Docker. :contentReference[oaicite:52]{index=52}
+## Alerts
 
-#==============================================================================
-# FIREWALL BOUNCER NOTES / ЗАМЕТКИ ПО ФАЙРВОЛ-БАУНСЕРУ
-#==============================================================================
+### Alert Management / Управление алертами
+```bash
+cscli alerts list                            # List alerts / Список алертов
+cscli alerts list --since 24h --type ban     # Alerts in last 24h / Алерты за 24 часа
+cscli alerts list -i <IP>                    # Alerts for IP / Алерты по IP
+cscli alerts inspect -a <ALERT_ID>           # Inspect alert / Подробно об алерте
+sudo cscli alerts flush                      # Flush all alerts (local only) / Сбросить алерты (локально)
+sudo cscli alerts delete -a <ALERT_ID>       # Delete one alert / Удалить конкретный алерт
+```
 
-# Автоустановка обычно сама вызывает 'cscli bouncers add'.
-# Конфиг по умолчанию: /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
-# После настройки — запустить сервис:
-sudo systemctl enable --now crowdsec-firewall-bouncer   # Start bouncer / Запуск баунсера. :contentReference[oaicite:53]{index=53}
+> [!WARNING]
+> `cscli alerts flush` removes all local alert history. Use with caution in production.
+> `cscli alerts flush` удаляет всю локальную историю алертов. Используйте осторожно в продакшене.
 
-#==============================================================================
-# WINDOWS (пример) / WINDOWS EXAMPLE
-#==============================================================================
+---
 
-cscli.exe bouncers add windows-firewall-bouncer  # Create key for Windows bouncer / Ключ для Windows-баунсера. :contentReference[oaicite:54]{index=54}
+## Hub Items by Type
 
-#==============================================================================
-# HANDY ONE-LINERS / ПОЛЕЗНЫЕ ОДНОСТРОЧНИКИ
-#==============================================================================
+### List by Type / Списки по типам
+```bash
+cscli collections list                       # List collections / Список коллекций
+cscli parsers list                           # List parsers / Список парсеров
+cscli scenarios list                         # List scenarios / Список сценариев
+cscli postoverflows list                     # List postoverflows / Список пост-процессоров
+```
 
-# Забанить все IP из файла (по одному в строке):
-while read ip; do cscli decisions add --ip "$ip" --duration 24h; done < bad_ips.txt  # Mass ban / Массовый бан (осторожно!)
+### Version Pinning / Закрепление версий
+```bash
+sudo cscli scenarios install crowdsecurity/ssh-bf@<VERSION>  # Install specific version / Установить конкретную версию
+```
 
-# Снять бан со всех IP из файла:
-while read ip; do cscli decisions delete --ip "$ip"; done < unban_ips.txt            # Mass unban / Массовое снятие бана
+---
 
-# Посмотреть ТОП источников за 24 часа:
-cscli alerts list --since 24h -o json | jq -r '.[].source.ip' | sort | uniq -c | sort -nr | head  # Top sources / Топ источников
+## Metrics & Diagnostics
 
-# Список активных решений с таймингом истечения:
-cscli decisions list -o json | jq -r '.[] | "\(.value)\t\(.type)\t\(.until)"'       # Show value/type/until / Вывод значения/типа/когда истекает
+### Monitoring / Мониторинг
+```bash
+cscli metrics                                # Show engine metrics / Показать метрики движка
+cscli explain --log <FILE>                   # Explain parsing/detection / Объяснить разбор логов
+cscli config show                            # Show running config / Текущая конфигурация
+cscli hubtest run                            # Test hub items against samples / Тест парсеров/сценариев
+```
 
-# Проверить связность компонентов быстро:
-cscli lapi status && cscli capi status && cscli bouncers list                       # Quick health / Быстрая проверка. :contentReference[oaicite:55]{index=55}
+---
 
-#==============================================================================
-# TROUBLESHOOTING TIPS / СОВЕТЫ ПО ОТЛАДКЕ
-#==============================================================================
+## Docker Usage
 
-# 1) LAPI недоступно: проверь порт/файрвол и URL регистрации:
-#    "failed to connect to LAPI ..." → проверьте 127.0.0.1:8088 или адрес LAPI. :contentReference[oaicite:56]{index=56}
-# 2) После 'cscli lapi register' агент ожидает валидации на LAPI (machines validate). :contentReference[oaicite:57]{index=57}
-# 3) 'capi register' — создаёт/обновляет креды онлайн-API; после — проверьте 'capi status'. :contentReference[oaicite:58]{index=58}
-# 4) Блокировки не применяются? Убедитесь, что установлен и запущен соответствующий bouncer (firewall/nginx/... ). :contentReference[oaicite:59]{index=59}
-# 5) Hub не обновляется (permissions): проверьте права каталога hub (часто встречается на OPNsense). :contentReference[oaicite:60]{index=60}
+### Running in Docker / Использование в Docker
+```bash
+docker exec crowdsec cscli metrics           # Run cscli in container / Вызов cscli внутри контейнера
+docker exec -it crowdsec /bin/bash           # Attach shell / Зайти в контейнер
+docker exec crowdsec cscli decisions add -i <IP> -d 2m  # Quick test ban / Тестовый бан из Docker
+```
 
+---
 
+## Firewall Bouncer
+
+### Configuration / Конфигурация
+`/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`
+
+```bash
+# Auto-install usually calls 'cscli bouncers add' / Автоустановка обычно вызывает 'cscli bouncers add'
+# After configuration — start the service / После настройки — запустить сервис:
+sudo systemctl enable --now crowdsec-firewall-bouncer  # Start bouncer / Запуск баунсера
+sudo systemctl status crowdsec-firewall-bouncer        # Check status / Проверить статус
+```
+
+---
+
+## Windows Usage
+
+### Windows Bouncer / Windows-баунсер
+```bash
+cscli.exe bouncers add windows-firewall-bouncer  # Create key for Windows bouncer / Ключ для Windows-баунсера
+```
+
+---
+
+## Handy One-Liners
+
+### Mass Operations / Массовые операции
+```bash
+# Ban all IPs from file (one per line) / Забанить все IP из файла (по одному в строке):
+while read ip; do cscli decisions add --ip "$ip" --duration 24h; done < bad_ips.txt
+
+# Unban all IPs from file / Снять бан со всех IP из файла:
+while read ip; do cscli decisions delete --ip "$ip"; done < unban_ips.txt
+```
+
+> [!CAUTION]
+> Mass ban operations can lock out legitimate traffic. Always verify the IP list before executing.
+> Массовые операции бана могут заблокировать легитимный трафик. Всегда проверяйте список IP перед выполнением.
+
+### Analytics / Аналитика
+```bash
+# Top sources in last 24h / ТОП источников за 24 часа:
+cscli alerts list --since 24h -o json | jq -r '.[].source.ip' | sort | uniq -c | sort -nr | head
+
+# Show decisions with expiration / Список решений с таймингом истечения:
+cscli decisions list -o json | jq -r '.[] | "\(.value)\t\(.type)\t\(.until)"'
+```
+
+### Health Check / Быстрая проверка
+```bash
+# Quick connectivity check / Быстрая проверка связности:
+cscli lapi status && cscli capi status && cscli bouncers list
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues / Частые проблемы
+
+1. **LAPI unavailable / LAPI недоступно:**
+   - Check port/firewall and registration URL / Проверьте порт/файрвол и URL регистрации
+   - `"failed to connect to LAPI ..."` → check `127.0.0.1:8080` or LAPI address / проверьте адрес LAPI
+
+2. **Machine pending validation / Машина ожидает валидации:**
+   - After `cscli lapi register`, validate on LAPI side with `cscli machines validate` / Подтвердите на стороне LAPI
+
+3. **CAPI registration / Регистрация CAPI:**
+   - `cscli capi register` creates/updates online API creds / создаёт/обновляет креды
+   - Verify with `cscli capi status` / Проверьте статус
+
+4. **Decisions not applied / Блокировки не применяются:**
+   - Ensure the appropriate bouncer is installed and running / Убедитесь что установлен и запущен баунсер
+   - Check with `systemctl status crowdsec-firewall-bouncer`
+
+5. **Hub update fails (permissions) / Hub не обновляется (права):**
+   - Check hub directory permissions / Проверьте права каталога hub
+   - Common on OPNsense / Часто встречается на OPNsense
+
+### Diagnostic Commands / Команды диагностики
+```bash
+cscli metrics                                # Engine metrics / Метрики движка
+cscli config show                            # Running config / Текущая конфигурация
+sudo journalctl -u crowdsec -e               # Engine logs / Логи движка
+sudo journalctl -u crowdsec-firewall-bouncer -e  # Bouncer logs / Логи баунсера
+```

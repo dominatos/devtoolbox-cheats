@@ -1,11 +1,7 @@
----
-
 Title: 🔐 htpasswd — Basic Auth
 Group: Security & Crypto
 Icon: 🔐
 Order: 10
-
----
 
 ## Table of Contents
 - [Installation](#-installation--установка)

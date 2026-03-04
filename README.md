@@ -1196,12 +1196,12 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [📦 AppImage — Portable Apps](cheats.d/package-managers/appimagecheatsheet.md)
 
 ### Security & Crypto
-- [🔐 CrowdSec — Cheatsheet](cheats.d/security-crypto/crowdseccheatsheet.md)
-- [🔐 gpg / age — Encryption](cheats.d/security-crypto/gpgagecheatsheet.md)
+- [🛡️ CrowdSec — Intrusion Prevention](cheats.d/security-crypto/crowdseccheatsheet.md)
+- [🔐 GPG / age — Encryption](cheats.d/security-crypto/gpgagecheatsheet.md)
 - [🔐 htpasswd — Basic Auth](cheats.d/security-crypto/htpasswdcheatsheet.md)
 - [🔐 OpenSSL — Commands](cheats.d/security-crypto/opensslcheatsheet.md)
-- [🔐 Gitleaks — Secret Scanning](cheats.d/security-crypto/gitleakscheatsheet.md)
-- [🔐 SSH Keys — Management](cheats.d/security-crypto/ssh_keys_cheatsheet.md)
+- [🔐 Git Secret Leak Detection](cheats.d/security-crypto/gitleakscheatsheet.md)
+- [🔑 SSH Keys & Access Management](cheats.d/security-crypto/ssh_keys_cheatsheet.md)
 - [🔐 OpenSSL — CSR with SAN](cheats.d/security-crypto/opensslsancsrcheatsheet.md)
 - [🔐 pass — Password Store](cheats.d/security-crypto/passcheatsheet.md)
 

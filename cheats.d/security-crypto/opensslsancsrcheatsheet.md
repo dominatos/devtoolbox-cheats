@@ -9,6 +9,7 @@ Order: 3
 - [Generating CSR](#-generating-csr--создание-csr)
 - [Verification](#-verification--проверка)
 - [Real-World Examples](#-real-world-examples--примеры-из-практики)
+- [Best Practices](#-best-practices--лучшие-практики)
 
 ---
 
@@ -28,8 +29,9 @@ Order: 3
 # 📄 Configuration File / Файл конфигурации
 
 ### Basic SAN Configuration / Базовая конфигурация SAN
+`openssl-san.cnf`
+
 ```ini
-# openssl-san.cnf
 [req]
 default_bits       = 2048
 prompt             = no
@@ -55,8 +57,9 @@ DNS.4 = mail.<DOMAIN>
 ```
 
 ### Example Configuration / Пример конфигурации
+`openssl-san.cnf`
+
 ```ini
-# openssl-san.cnf
 [req]
 default_bits       = 2048
 prompt             = no
@@ -95,45 +98,65 @@ IP.2  = <ANOTHER_IP>
 # 🔑 Generating CSR / Создание CSR
 
 ### Generate New Key + CSR / Создать новый ключ + CSR
+```bash
 openssl req -new -newkey rsa:2048 -nodes \
   -keyout <KEYFILE>.pem \
   -out <CSR_FILE>.pem \
   -config openssl-san.cnf
+```
 
 ### Generate CSR from Existing Key / Создать CSR из существующего ключа
+```bash
 openssl req -new -key <EXISTING_KEY>.pem \
   -out <CSR_FILE>.pem \
   -config openssl-san.cnf
+```
 
 ### Generate 4096-bit Key / Создать ключ 4096-бит
+```bash
 openssl req -new -newkey rsa:4096 -nodes \
   -keyout <KEYFILE>.pem \
   -out <CSR_FILE>.pem \
   -config openssl-san.cnf
+```
 
 ### Generate ECC Key (Modern) / Создать ECC ключ (современный)
+```bash
 openssl req -new -newkey ec:<(openssl ecparam -name prime256v1) -nodes \
   -keyout <KEYFILE>.pem \
   -out <CSR_FILE>.pem \
   -config openssl-san.cnf
+```
+
+> [!TIP]
+> ECC keys (prime256v1/secp384r1) are faster and smaller than RSA while providing equivalent security.
+> ECC ключи быстрее и компактнее RSA при эквивалентном уровне безопасности.
 
 ---
 
 # ✅ Verification / Проверка
 
 ### View CSR Details / Просмотр деталей CSR
+```bash
 openssl req -text -noout -in <CSR_FILE>.pem  # View CSR / Просмотр CSR
 openssl req -text -noout -in <CSR_FILE>.pem | grep -A1 "Subject Alternative Name"  # View SANs only / Только SANs
+```
 
 ### Verify CSR Signature / Проверить подпись CSR
+```bash
 openssl req -verify -in <CSR_FILE>.pem -noout  # Verify CSR / Проверить CSR
+```
 
 ### Extract Public Key from CSR / Извлечь публичный ключ из CSR
+```bash
 openssl req -in <CSR_FILE>.pem -pubkey -noout  # Extract public key / Извлечь публичный ключ
+```
 
 ### View Private Key / Просмотр приватного ключа
+```bash
 openssl rsa -in <KEYFILE>.pem -text -noout  # View RSA key / Просмотр RSA ключа
 openssl ec -in <KEYFILE>.pem -text -noout   # View EC key / Просмотр EC ключа
+```
 
 ---
 
@@ -264,24 +287,31 @@ openssl req -new -newkey rsa:2048 -nodes \
 ---
 
 # 💡 Best Practices / Лучшие практики
-# Always include the CN in SANs / Всегда включайте CN в SANs
-# Use SHA-256 or higher for hashing / Используйте SHA-256 или выше для хеширования
-# Consider ECC keys for better performance / Рассмотрите ECC ключи для лучшей производительности
-# Keep private keys secure (chmod 600) / Храните приватные ключи безопасно (chmod 600)
-# Use 2048-bit minimum for RSA / Используйте минимум 2048-бит для RSA
-# Test SANs before submitting to CA / Тестируйте SANs перед отправкой в CA
-# Keep backup of .key and .csr files / Храните резервные копии .key и .csr файлов
 
-# 🔧 Configuration Files / Файлы конфигурации
-# openssl-san.cnf                          — SAN configuration / Конфигурация SAN
-# <DOMAIN>.key                              — Private key / Приватный ключ
-# <DOMAIN>.csr                              — Certificate signing request / Запрос на подпись сертификата
-# <DOMAIN>.crt                              — Signed certificate / Подписанный сертификат
+- Always include the CN in SANs / Всегда включайте CN в SANs
+- Use SHA-256 or higher for hashing / Используйте SHA-256 или выше для хеширования
+- Consider ECC keys for better performance / Рассмотрите ECC ключи для лучшей производительности
+- Keep private keys secure (`chmod 600`) / Храните приватные ключи безопасно
+- Use 2048-bit minimum for RSA / Используйте минимум 2048-бит для RSA
+- Test SANs before submitting to CA / Тестируйте SANs перед отправкой в CA
+- Keep backup of `.key` and `.csr` files / Храните резервные копии `.key` и `.csr` файлов
 
-# 📋 Common DN Fields / Распространённые поля DN
-# C   — Country (2-letter code) / Страна (2-буквенный код)
-# ST  — State or Province / Штат или область
-# L   — Locality (city) / Город
-# O   — Organization / Организация
-# OU  — Organizational Unit / Подразделение
-# CN  — Common Name (primary domain) / Основное имя (основной домен)
+## File Types / Типы файлов
+
+| File | Description (EN / RU) |
+|------|----------------------|
+| `openssl-san.cnf` | SAN configuration / Конфигурация SAN |
+| `<DOMAIN>.key` | Private key / Приватный ключ |
+| `<DOMAIN>.csr` | Certificate signing request / Запрос на подпись сертификата |
+| `<DOMAIN>.crt` | Signed certificate / Подписанный сертификат |
+
+## Common DN Fields / Распространённые поля DN
+
+| Field | Description (EN / RU) |
+|-------|----------------------|
+| `C` | Country (2-letter code) / Страна (2-буквенный код) |
+| `ST` | State or Province / Штат или область |
+| `L` | Locality (city) / Город |
+| `O` | Organization / Организация |
+| `OU` | Organizational Unit / Подразделение |
+| `CN` | Common Name (primary domain) / Основное имя (основной домен) |
