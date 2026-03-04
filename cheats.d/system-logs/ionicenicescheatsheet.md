@@ -187,12 +187,18 @@ ionice -c2 -n7 nice -n10 mysqldump --all-databases > backup.sql
 
 ---
 
-# 💡 Quick Reference / Быстрый справочник
-# nice -n19 cmd           — Lowest CPU priority / Минимальный приоритет CPU
-# ionice -c3 cmd          — Idle I/O class / Класс I/O idle
-# ionice -c3 nice -n19 cmd — Both low / Оба низкие
-# renice -n10 -p PID      — Change running process / Изменить запущенный процесс
+## 💡 Quick Reference / Быстрый справочник
 
-# 📋 Priority Levels Summary / Сводка уровней приоритета
-# CPU (nice):  -20 (high) → 0 (default) → +19 (low)
-# I/O (ionice): Class 1 (realtime) → Class 2 (best-effort) → Class 3 (idle)
+```text
+nice -n19 cmd              — Lowest CPU priority / Минимальный приоритет CPU
+ionice -c3 cmd             — Idle I/O class / Класс I/O idle
+ionice -c3 nice -n19 cmd   — Both low / Оба низкие
+renice -n10 -p PID         — Change running process / Изменить запущенный процесс
+```
+
+## 📋 Priority Levels Summary / Сводка уровней приоритета
+
+```text
+CPU (nice):   -20 (high) → 0 (default) → +19 (low)
+I/O (ionice): Class 1 (realtime) → Class 2 (best-effort) → Class 3 (idle)
+```

@@ -217,14 +217,19 @@ lsof -i :8080
 
 ---
 
-# 💡 Best Practices / Лучшие практики
-# Use htop for interactive monitoring / Используйте htop для интерактивного мониторинга
-# Combine ps with grep for filtering / Комбинируйте ps с grep для фильтрации
-# Check lsof +L1 when disk full / Проверяйте lsof +L1 при заполненном диске
-# Use du -x to stay on one filesystem / Используйте du -x для одной ФС
+## 💡 Best Practices / Лучшие практики
 
-# 📋 Quick Reference / Быстрый справочник
-# du -sh *        — Directory sizes / Размеры папок
-# df -hT          — Filesystem space / Пространство ФС
-# lsof -i :PORT   — What's on port / Что на порту
-# ps aux --sort   — Sorted processes / Сортированные процессы
+- Use `htop` for interactive monitoring. / Используйте `htop` для интерактивного мониторинга.
+- Combine `ps` with `grep` for filtering. / Комбинируйте `ps` с `grep` для фильтрации.
+- Check `lsof +L1` when disk is full (deleted but open files). / Проверяйте `lsof +L1` при заполненном диске.
+- Use `du -x` to stay on one filesystem. / Используйте `du -x` для одной ФС.
+
+## 📋 Quick Reference / Быстрый справочник
+
+```text
+du -sh *           — Directory sizes / Размеры папок
+df -hT             — Filesystem space / Пространство ФС
+lsof -i :PORT      — What's on port / Что на порту
+ps aux --sort=-%cpu — Sorted by CPU / Сортировка по CPU
+free -h            — Memory overview / Обзор памяти
+```

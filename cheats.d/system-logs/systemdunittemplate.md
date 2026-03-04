@@ -231,13 +231,17 @@ systemctl reset-failed                    # Reset failed state / Сбросит�
 
 ---
 
-# 💡 Best Practices / Лучшие практики
-# Always use daemon-reload after changes / Всегда daemon-reload после изменений
-# Use Type=notify for apps that support it / Используйте Type=notify для поддерживающих его
-# Set RestartSec to avoid restart loops / Установите RestartSec для избежания циклов
-# Use EnvironmentFile for secrets / Используйте EnvironmentFile для секретов
+## 💡 Best Practices / Лучшие практики
 
-# 📋 Unit File Paths / Пути к юнит-файлам
-# /etc/systemd/system/           — Admin units (override) / Админские юниты (приоритет)
-# /lib/systemd/system/           — Package units / Юниты пакетов
-# /run/systemd/system/           — Runtime units / Runtime юниты
+- Always run `daemon-reload` after changes. / Всегда `daemon-reload` после изменений.
+- Use `Type=notify` for apps that support it. / Используйте `Type=notify` для поддерживающих его.
+- Set `RestartSec` to avoid restart loops. / Установите `RestartSec` для избежания циклов.
+- Use `EnvironmentFile` for secrets. / Используйте `EnvironmentFile` для секретов.
+
+## 📋 Unit File Paths / Пути к юнит-файлам
+
+```text
+/etc/systemd/system/    — Admin units (override) / Админские юниты (приоритет)
+/lib/systemd/system/    — Package units / Юниты пакетов
+/run/systemd/system/    — Runtime units / Runtime юниты
+```

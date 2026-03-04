@@ -237,14 +237,18 @@ journalctl -k | grep -i "oom\|out of memory"
 
 ---
 
-# 💡 Best Practices / Лучшие практики
-# Use -u for service logs, not grep in /var/log / Используйте -u для логов сервисов
-# Enable persistent journal for post-reboot debugging / Включите постоянный журнал для отладки после перезагрузки
-# Set up log rotation via journald.conf / Настройте ротацию через journald.conf
-# Use --since and --until to narrow down issues / Используйте --since и --until для сужения поиска
+## 💡 Best Practices / Лучшие практики
 
-# 📋 Quick Reference / Быстрый справочник
-# journalctl -u nginx -f        — Follow nginx / Следить за nginx
-# journalctl -p err --since today — Today's errors / Ошибки за сегодня
-# journalctl -b -1              — Previous boot / Предыдущая загрузка
-# journalctl --vacuum-size=500M — Cleanup / Очистка
+- Use `-u` for service logs, not `grep` in `/var/log`. / Используйте `-u` для логов сервисов.
+- Enable persistent journal for post-reboot debugging. / Включите постоянный журнал для отладки после перезагрузки.
+- Set up log rotation via `journald.conf`. / Настройте ротацию через `journald.conf`.
+- Use `--since` and `--until` to narrow down issues. / Используйте `--since` и `--until` для сужения поиска.
+
+## 📋 Quick Reference / Быстрый справочник
+
+```text
+journalctl -u nginx -f         — Follow nginx / Следить за nginx
+journalctl -p err --since today — Today's errors / Ошибки за сегодня
+journalctl -b -1               — Previous boot / Предыдущая загрузка
+journalctl --vacuum-size=500M  — Cleanup / Очистка
+```

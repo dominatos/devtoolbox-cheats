@@ -43,6 +43,14 @@ mount --bind /sys  /mnt/sysroot/sys     # Bind system info / Пробросит�
 mount --bind /run  /mnt/sysroot/run     # Bind runtime data / Пробросить данные выполнения
 ```
 
+> [!TIP]
+> On UEFI systems, also mount the EFI partition and efivars:
+> На UEFI системах также смонтируйте EFI раздел и efivars:
+> ```bash
+> mount /dev/sdXZ /mnt/sysroot/boot/efi
+> mount --bind /sys/firmware/efi/efivars /mnt/sysroot/sys/firmware/efi/efivars
+> ```
+
 ### 4. Enter Chroot Environment / Вход в окружение Chroot
 Switch to the mounted system environment.
 
@@ -51,6 +59,10 @@ chroot /mnt/sysroot /bin/bash    # Enter using Bash / Войти через Bash
 # OR / ИЛИ
 chroot /mnt/sysroot /bin/sh      # Fallback to SH / Войти через SH
 ```
+
+> [!TIP]
+> On Arch-based systems, use `arch-chroot /mnt/sysroot` — it auto-mounts `/proc`, `/sys`, `/dev`, and `/run` for you.
+> На системах Arch используйте `arch-chroot /mnt/sysroot` — он автоматически монтирует `/proc`, `/sys`, `/dev` и `/run`.
 
 ### 5. Exit and Cleanup / Выход и очистка
 Always unmount recursively to ensure all bind mounts are released.
@@ -120,6 +132,12 @@ update-grub                               # Refresh GRUB / Обновить GRUB
 ### Log Locations / Расположение логов
 Checking logs inside chroot after a failed boot attempt.
 
-- `/var/log/syslog` — General system logs / Общие системные логи
-- `/var/log/apt/history.log` — Package history / История установки пакетов
-- `/var/log/boot.log` — Boot process logs / Логи процесса загрузки
+| Log Path | Description (EN) | Описание (RU) |
+| :--- | :--- | :--- |
+| `/var/log/syslog` | General system logs | Общие системные логи |
+| `/var/log/apt/history.log` | Package history | История установки пакетов |
+| `/var/log/boot.log` | Boot process logs | Логи процесса загрузки |
+
+---
+
+*End of Chroot Cheat Sheet*

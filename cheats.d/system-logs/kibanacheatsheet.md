@@ -5,9 +5,12 @@ Order: 5
 
 # Kibana Sysadmin Cheatsheet
 
-> **Context:** Kibana is a data visualization and exploration tool used for log and time-series analytics, application monitoring, and operational intelligence. / Kibana - инструмент визуализации и исследования данных для аналитики логов, мониторинга приложений и операционной аналитики.
+> **Context:** Kibana is a data visualization and exploration tool used for log and time-series analytics, application monitoring, and operational intelligence. / Kibana — инструмент визуализации и исследования данных для аналитики логов, мониторинга приложений и операционной аналитики.
 > **Role:** Sysadmin / DevOps
 > **Stack:** ELK (Elasticsearch, Logstash, Kibana)
+> **Default Port:** `5601`
+> **Config:** `/etc/kibana/kibana.yml`
+> **Logs:** `journalctl -u kibana` or `/var/log/kibana/kibana.log`
 
 ---
 
@@ -80,7 +83,8 @@ Define how Kibana accesses indices. / Определяет, как Kibana обр
 ## 3. Sysadmin Operations / Операции сисадмина
 
 ### Config File / Файл конфигурации
-File: `/etc/kibana/kibana.yml`
+
+`/etc/kibana/kibana.yml`
 
 ```yaml
 server.port: 5601
@@ -95,9 +99,13 @@ elasticsearch.password: "<PASSWORD>"
 ### Service Management / Управление сервисом
 
 ```bash
-systemctl start kibana
-systemctl status kibana
-journalctl -u kibana -f
+sudo systemctl start kibana                   # Start Kibana / Запустить Kibana
+sudo systemctl stop kibana                    # Stop Kibana / Остановить Kibana
+sudo systemctl restart kibana                 # Restart Kibana / Перезапустить Kibana
+sudo systemctl enable kibana                  # Enable on boot / Включить автозапуск
+systemctl status kibana                       # Check status / Проверить статус
+journalctl -u kibana -f                       # Follow logs / Следить за логами
+journalctl -u kibana --since "1 hour ago"     # Recent logs / Недавние логи
 ```
 
 ---
@@ -119,4 +127,18 @@ Checks plugin status and Elasticsearch connectivity. / Проверяет ста
     *   Ensure Index Pattern time field matches data. / Убедитесь, что поле времени в Index Pattern совпадает с данными.
 
 3.  **Heap Memory / Память Heap**
-    *   Node.js options via `NODE_OPTIONS="--max-old-space-size=4096"` in environment/systemd if crashing.
+    *   Node.js options via systemd override if Kibana is crashing:
+    ```bash
+    sudo systemctl edit kibana
+    # Add: [Service]
+    # Environment="NODE_OPTIONS=--max-old-space-size=4096"
+    sudo systemctl daemon-reload && sudo systemctl restart kibana
+    ```
+
+---
+
+## 💡 Best Practices / Лучшие практики
+
+- Always verify the **time picker** in the top right corner of Discover. / Всегда проверяйте выбор времени.
+- Use `systemctl status kibana` to check health before debugging UI issues. / Проверяйте статус сервиса.
+- Back up Saved Objects (dashboards, visualizations) as JSON regularly. / Регулярно бэкапьте Saved Objects.

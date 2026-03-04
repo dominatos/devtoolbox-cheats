@@ -3,15 +3,15 @@ Group: System & Logs
 Icon: 📜
 Order: 99
 
-# 🧰 Kernel panic после обновления ядра (EL9: Alma/Rocky/RHEL) — мега-шпаргалка1
+# 🧰 Kernel Panic After Kernel Update (EL9: Alma/Rocky/RHEL)
 
-> **Сценарий:** после апдейта ядра нода не грузится, а старое ядро — ок.
-> **Цель:** быстро вернуть загрузку, понять причину, сделать фикс «на будущее».
-> **Стек по умолчанию:** NVMe + LVM + XFS (адаптируй под себя).
+> **Scenario / Сценарий:** After kernel update the node won't boot, but the old kernel works. / После апдейта ядра нода не грузится, а старое ядро — ок.
+> **Goal / Цель:** Quickly restore boot, find root cause, apply a permanent fix. / Быстро вернуть загрузку, понять причину, сделать фикс «на будущее».
+> **Default stack / Стек:** NVMe + LVM + XFS (adapt to your setup / адаптируй под себя).
 
 ---
 
-## 🔎 0) Быстрый чек-лист (EN/RU)
+## 🔎 0) Quick Checklist / Быстрый чек-лист
 
 ```bash
 # 1) Загрузись в рабочее ядро (из GRUB)
@@ -31,7 +31,7 @@ lsinitrd -m /boot/initramfs-${KVER}.img | egrep 'nvme|dm_|lvm|xfs|ext4|md_|raid|
 
 ---
 
-## 🚑 1) Быстрый «временный» фикс через cmdline (EN/RU)
+## 🚑 1) Quick Temporary Fix via cmdline / Быстрый временный фикс
 
 ```bash
 # Force-load modules early + give time + remove noisy flags
@@ -46,7 +46,7 @@ grubby --update-kernel="/boot/vmlinuz-${KVER}" \
 
 ---
 
-## 🧱 2) Постоянный фикс через dracut (EN/RU)
+## 🧱 2) Permanent Fix via dracut / Постоянный фикс
 
 ```bash
 # Жёстко добавляем драйверы в initramfs «на будущее»
@@ -67,7 +67,7 @@ lsinitrd -m "/boot/initramfs-${KVER}.img" | egrep 'nvme|dm_mod|lvm|xfs|ext4'
 
 ---
 
-## 🧰 3) Полезные «страховочные» параметры ядра (EN/RU)
+## 🧰 3) Safety Kernel Parameters / Страховочные параметры ядра
 
 ```bash
 # Больше логов и таймаут на панику (успеть сфоткать экран)
@@ -82,7 +82,7 @@ grubby --update-kernel="/boot/vmlinuz-${KVER}" \
 
 ---
 
-## 🐣 4) Диагностика ранней стадии boot (EN/RU)
+## 🐣 4) Early Boot Diagnostics / Диагностика ранней стадии boot
 
 ### Вариант A: шелл в initramfs (dracut)
 
@@ -121,7 +121,7 @@ ls -lah /sys/fs/pstore/
 
 ---
 
-## 🧩 5) Типовые причины → решения (EN/RU)
+## 🧩 5) Common Causes → Solutions / Типовые причины → решения
 
 ### ❌ В initramfs нет драйверов диска/ФС/LVM
 
@@ -172,7 +172,7 @@ lsblk -f; blkid
 
 ---
 
-## 🧪 6) Полезные приёмы с `grubby`/GRUB (EN/RU)
+## 🧪 6) grubby / GRUB Tips / Полезные приёмы с grubby/GRUB
 
 ```bash
 # Все записи и дефолт
@@ -196,7 +196,7 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 
 ---
 
-## 🧱 7) «Толстый» initramfs для всех ядер (EN/RU)
+## 🧱 7) Fat initramfs for All Kernels / Толстый initramfs для всех ядер
 
 ```bash
 cat >/etc/dracut.conf.d/99-fat.conf <<'EOF'
@@ -224,7 +224,7 @@ lsinitrd -m "/boot/initramfs-${KVER}.img" | egrep 'nvme|dm_|lvm|xfs|ext4|md_|rai
 
 ---
 
-## 🛟 8) Rescue-mode / chroot, если совсем «кирпич» (EN/RU)
+## 🛟 8) Rescue Mode / chroot (Bricked System)
 
 ```bash
 # С ISO → Troubleshooting → Rescue → chroot
@@ -242,7 +242,7 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 
 ---
 
-## 🧊 9) Заморозить ядро временно (EN/RU)
+## 🧊 9) Freeze Kernel Temporarily / Заморозить ядро временно
 
 ```bash
 dnf install -y 'dnf-command:versionlock'
@@ -252,7 +252,7 @@ grubby --set-default /boot/vmlinuz-5.14.0-503.11.1.el9_5.x86_64
 
 ---
 
-## ❓ 10) Мини-FAQ (EN/RU)
+## ❓ 10) Mini FAQ
 
 * **Почему новые ядра «вдруг» требуют явных модулей?**
   Поменялась логика dracut/udev/LVM/порядок инициализации. Hostonly/модули не подтянулись автоматически.
