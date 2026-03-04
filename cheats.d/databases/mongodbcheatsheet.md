@@ -30,7 +30,7 @@ mongosh "mongodb://<USER>:<PASSWORD>@localhost:27017/admin"                     
 mongosh "mongodb://<USER>:<PASSWORD>@<NODE_1>:27017,<NODE_2>:27017/<DB>?replicaSet=<RS>"  # Connect to Replica Set / Подключение к реплике
 ```
 
-# Basics / Основы
+## Basics / Основы
 
 ```bash
 show dbs                                                                            # List DBs / Список баз
@@ -40,7 +40,7 @@ db.stats()                                                                      
 db.<COLLECTION>.stats()                                                             # Collection stats / Статистика коллекции
 ```
 
-# CRUD Operations / Операции CRUD
+## CRUD Operations / Операции CRUD
 
 ```bash
 db.items.insertOne({name:"item1", qty:10})                                          # Insert document / Вставить документ
@@ -50,7 +50,7 @@ db.items.deleteOne({name:"item1"})                                              
 db.items.createIndex({name:1}, {unique:true})                                       # Create Index / Создать индекс
 ```
 
-# Data Management / Управление данными
+## Data Management / Управление данными
 
 ```bash
 mongoexport --uri="mongodb://<USER>:<PASSWORD>@localhost/mydb" \
@@ -62,14 +62,14 @@ mongodump --uri="mongodb://<USER>:<PASSWORD>@localhost/" -o dump/               
 mongorestore --uri="mongodb://<USER>:<PASSWORD>@localhost/" dump/                   # Restore from dump / Восстановление из дампа
 ```
 
-# Administration / Администрирование
+## Administration / Администрирование
 
 ```bash
 sudo systemctl status mongod                                                        # Service status / Статус сервиса
 sudo journalctl -u mongod -f                                                        # Follow logs / Логи в реальном времени
 ```
 
-// Create Admin User / Создать администратора
+### Create Admin User / Создать администратора
 
 ```bash
 use admin;
@@ -80,13 +80,13 @@ db.createUser({
 });
 ```
 
-// Change Password / Сменить пароль
+### Change Password / Сменить пароль
 
 ```bash
 db.updateUser("<USER>", { pwd: "<NEW_PASSWORD>" });
 ```
 
-// Replica Set Initiation / Инициализация Replica Set
+### Replica Set Initiation / Инициализация Replica Set
 
 ```bash
 rs.initiate({
@@ -99,7 +99,7 @@ rs.initiate({
 });
 ```
 
-// Replica Set Management / Управление Репликами
+### Replica Set Management / Управление Репликами
 
 ```bash
 rs.status()                                                                         # Replica set status / Статус реплики
@@ -111,7 +111,7 @@ rs.add("<HOST>:<PORT>")                                                         
 rs.remove("<HOST>:<PORT>")                                                          # Remove member / Удалить узел
 ```
 
-// Oplog & Replication Info / Oplog и Инфо о репликации
+### Oplog & Replication Info / Oplog и Инфо о репликации
 
 ```bash
 db.getReplicationInfo()                                                             # Oplog size & time window / Размер и время Oplog
@@ -120,7 +120,7 @@ db.printSlaveReplicationInfo()                                                  
 use local; db.oplog.rs.stats();                                                     # Oplog collection stats / Статистика коллекции Oplog
 ```
 
-# Profiling & Performance / Профилирование и Производительность
+## Profiling & Performance / Профилирование и Производительность
 
 ```bash
 db.getProfilingStatus()                                                             # Get current status / Текущий статус
@@ -130,9 +130,11 @@ db.setProfilingLevel(0)                                                         
 db.system.profile.find({ millis: { $gt: 500 } }).sort({ ts: -1 })                   # Find slow queries > 500ms / Найти запросы > 500мс
 db.system.profile.find({ ns: "mydb.users" }).limit(5).sort({ ts: -1 })             # Queries for collection / Запросы к коллекции
 ```
-[un manual](https://hevodata.com/learn/mongodb-profiler/)
 
-# Audit Log Configuration (mongod.conf) / Настройка Аудита
+
+### Audit Log Configuration / Настройка Аудита
+
+`/etc/mongod.conf`
 
 ```bash
 auditLog:
@@ -147,9 +149,9 @@ setParameter:
   auditAuthorizationSuccess: true
 ```
 
-# Sysadmin Toolkit / Инструменты Сисадмина
+## Sysadmin Toolkit / Инструменты Сисадмина
 
-// 🩺 Diagnostics & Operations / Диагностика и Операции
+### 🩺 Diagnostics & Operations / Диагностика и Операции
 
 ```bash
 db.currentOp()                                                                      # List active operations / Список активных операций
@@ -159,15 +161,14 @@ db.serverStatus().connections                                                   
 db.runCommand({ serverStatus: 1 }).asserts                                          # Assertions info / Инфо об ошибках (asserts)
 ```
 
-// 📉 External Monitoring Tools / Внешний Мониторинг
-// Run in terminal / Запускать в терминале:
+### 📉 External Monitoring Tools / Внешний Мониторинг
 
 ```bash
 mongostat --uri="mongodb://<USER>:<PASS>@localhost" --rowcount=20 1              # Live stats (1s interval) / Живая статистика
 mongotop --uri="mongodb://<USER>:<PASS>@localhost" 1                             # Collection I/O stats / Статистика I/O коллекций
 ```
 
-// 🧹 Maintenance / Обслуживание
+### 🧹 Maintenance / Обслуживание
 
 ```bash
 db.adminCommand({ logRotate: 1 })                                                   # Rotate logs / Ротация логов
@@ -177,7 +178,7 @@ db.runCommand({ compact: "<COLLECTION>" })                                      
 
 
 
-# Percona Upgrade Guide / Руководство по обновлению Percona
+## Percona Upgrade Guide / Руководство по обновлению Percona
 
 > [!WARNING]
 > Always backup both data and configuration before upgrading.
@@ -319,7 +320,7 @@ mongosh --eval 'db.adminCommand( { setFeatureCompatibilityVersion: "8.0",  confi
 ```
 
 
-# MongoDB Community Upgrade Guide / Руководство по обновлению MongoDB Community
+## MongoDB Community Upgrade Guide / Руководство по обновлению MongoDB Community
 
 > [!WARNING]
 > Always backup both data and configuration before upgrading.
@@ -337,15 +338,15 @@ cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
 
 # 3. Stop & Update Repo / Остановить и обновить репо
 systemctl stop mongod
-# Add/Update /etc/apt/sources.list.d/mongodb-org-6.0.list or /etc/yum.repos.d/mongodb-org-6.0.repo
-# Добавьте/Обновите /etc/apt/sources.list.d/mongodb-org-6.0.list или /etc/yum.repos.d/mongodb-org-6.0.repo
-#edit for corredt REDHAT VERSION!!
-[mongodb-org-6.0]
+```bash
+# Add/Update /etc/yum.repos.d/mongodb-org-6.0.repo
+# Добавьте/Обновите /etc/yum.repos.d/mongodb-org-6.0.repo
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/6.0/x86_64/
 gpgcheck=1
 enabled=1
 gpgkey=https://pgp.mongodb.com/server-6.0.asc
+```
 
 # 4. Install / Установить
 # Debian/Ubuntu: apt-get update && apt-get install -y mongodb-org
@@ -411,9 +412,11 @@ mongosh --eval 'db.version()'
 mongosh --eval 'db.adminCommand({setFeatureCompatibilityVersion: "8.0", confirm: true})'
 ```
 
-# Advanced Cheatsheet - Queries / Продвинутая шпаргалка - Запросы
+## Advanced Cheatsheet - Queries / Продвинутая шпаргалка - Запросы
 
-// 📄 Search / Поиск
+### 📄 Search / Поиск
+
+```bash
 db.users.find({ age: { $gt: 25 } })                                                 # Age > 25 / Возраст > 25
 db.users.find({ languages: "english" })                                             # Array contains "english" / Массив содержит "english"
 db.users.find({ age: { $gte: 18, $lte: 25 } })                                      # 18 <= Age <= 25 / Возраст от 18 до 25
@@ -424,50 +427,72 @@ db.users.find({ phone: { $eq: null } })                                         
 db.users.find({ age: { $ne: 30 } })                                                 # Age != 30 / Возраст не 30
 db.users.find({ $or: [{ languages: "english" }, { languages: "french" }] })         # OR condition / ИЛИ
 db.users.find({ email: { $exists: true } })                                         # Field exists / Поле существует
+```
 
-// Array & Embedded / Массивы и Вложенность
+### Array & Embedded / Массивы и Вложенность
+
+```bash
 db.users.find({ "skills.level": { $in: ["base", "advanced"] } })                    # Nested field Match / Поиск по вложенному полю
 db.users.find({ tags: { $all: ["admin", "active"] } })                              # Array constraints all / Массив содержит все значения
 db.users.find({ $expr: { $eq: [ { $size: "$languages" }, 2 ] } })                   # Array size = 2 / Размер массива = 2
+```
 
-// ➕ Insert / Вставка
+### ➕ Insert / Вставка
+
+```bash
 db.users.insertOne({ name: "Anna", age: 22 })
 db.users.insertMany([{ name: "Luca", age: 30 }, { name: "Tom", age: 25 }])
+```
 
-// 🔁 Update / Обновление
+### 🔁 Update / Обновление
+
+```bash
 db.users.updateOne({ name: "Tom" }, { $set: { age: 30 } })                          # Set field / Установить поле
 db.users.updateOne({ name: "Tom" }, { $inc: { age: 1 } })                           # Increment / Увеличить значение
 db.users.updateOne({ name: "Tom" }, { $push: { languages: "spanish" } })            # Add to array / Добавить в массив
 db.users.updateMany({ "skills.level": "advanced" }, { $inc: { salary: 100 } })      # Update multiple / Обновить множественные
+```
 
-// ❌ Delete / Удаление
+### ❌ Delete / Удаление
+
+```bash
 db.users.deleteMany({ email: { $exists: false } })                                  # Delete if missing email / Удалить если нет email
+```
 
-# Real-world Scenarios (Sanitized) / Примеры из практики
+---
 
-// ElasticDump Migration / Миграция ElasticDump
-// Export Data / Экспорт данных
+## Real-world Scenarios / Примеры из практики
+
+### ElasticDump Migration / Миграция ElasticDump
+
+```bash
+# Export Data / Экспорт данных
 NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump \
     --input=http://<SOURCE_IP>:9200/<INDEX> \
     --output=<INDEX>.json --type=data
 
-// Export Settings / Экспорт настроек
+# Export Settings / Экспорт настроек
 NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump \
     --input=http://<SOURCE_IP>:9200/<INDEX> \
     --output=<INDEX>-settings.json --type=settings
 
-// Import Data / Импорт данных
+# Import Data / Импорт данных
 NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump \
     --output=http://<DEST_IP>:9200/<INDEX> \
     --input=<INDEX>.json --type=data
 
-// Mongodump Specific / Специфичный дамп
+# Mongodump Specific / Специфичный дамп
 mongodump --uri="mongodb://<ADMIN>:<PASS>@<NODE_1>:27017,<NODE_2>:27017/?replicaSet=<RS>" \
     --db=<DB_NAME> --collection=<COLL> --out=dump/
+```
+
+### Create Views / Создание представлений
+
+```javascript
 
 db.createView(
-  "fasc_chiusi_view",     // The name of your "soft link"
-  "fasc",                 // The source collection
+  "fasc_chiusi_view",     // View name / Имя представления
+  "fasc",                 // Source collection / Исходная коллекция
   [ 
     { $match: { "customFields_Frontespizio_o_DataChiusura_ld": { $exists: true } } },
     { $project: { _id: 1, customFields_Frontespizio_o_DataChiusura_ld: 1 } }
@@ -482,36 +507,26 @@ db.createView(
       $project: {
         _id: 1,
         statoFascicolo: 1,
-
         tipologia_cod: { $ifNull: ["$tipologia_cod", "$tipologia.cod"] },
-
         tipoFascicolo: {
           $ifNull: [
             "$tipologia.descrizione",
             { $ifNull: ["$tipologia_descrizione", "$tipologia.cod"] }
           ]
         },
-
         dataChiusura: 1,
         dataInizioAssegnazione: 1,
         numeroFascicolo: 1,
-
-
         customFields_Frontespizio_o_DataChiusuraArchiviazioneFascicolo_ld:
           "$customFields.Frontespizio_o.DataChiusura_ld",
-
         customFields_nomegruppo0_o_DataChiusuraArchiviazioneFascicolo_ld:
           "$customFields.nomegruppo0_o.DataChiusuraArchiviazioneFascicolo_ld",
-
         customFields_nomegruppo0_o_datadepositoricorso_ld:
           "$customFields.nomegruppo0_o.datadepositoricorso_ld",
-
         customFields_Frontespizio_o_DataDepositoRicorso_ld:
           "$customFields.Frontespizio_o.DataDepositoRicorso_ld",
-
         customFields_nomegruppo0_o_DataDepositoRicorso_ld_1:
           "$customFields.nomegruppo0_o.DataDepositoRicorso_ld_1",
-
         dataChiusura_ld: {
           $ifNull: [
             "$customFields.Frontespizio_o.DataChiusura_ld",
@@ -522,6 +537,9 @@ db.createView(
     }
   ]
 )
+```
+
+---
 
 
 
