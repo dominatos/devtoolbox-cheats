@@ -47,10 +47,20 @@ terraform apply "tfplan"
 
 # Auto approve / Автоподтверждение
 terraform apply -auto-approve
+```
 
+> [!WARNING]
+> `terraform apply -auto-approve` skips the confirmation prompt. Use only in CI/CD pipelines or non-critical environments.
+> `terraform apply -auto-approve` пропускает подтверждение. Используйте только в CI/CD или некритичных окружениях.
+
+```bash
 # Destroy infrastructure / Удалить инфраструктуру
 terraform destroy
 ```
+
+> [!CAUTION]
+> `terraform destroy` permanently removes all managed resources. Always run `terraform plan -destroy` first to preview what will be deleted.
+> `terraform destroy` безвозвратно удаляет все ресурсы. Всегда сначала выполняйте `terraform plan -destroy`.
 
 ---
 
@@ -112,3 +122,14 @@ Interactive console to test expressions. / Интерактивная консо
 terraform console
 > local.my_variable
 ```
+
+---
+
+## Best Practices
+
+- Always run `terraform plan` before `apply` / Всегда выполняйте `terraform plan` перед `apply`
+- Use remote state backend (S3, GCS) for team collaboration / Используйте удалённый state backend для командной работы
+- Lock state files to prevent conflicts / Блокируйте state файлы для предотвращения конфликтов
+- Use workspaces for multi-environment setups (dev/staging/prod) / Используйте workspaces для многосредных настроек
+- Pin provider versions in `required_providers` / Фиксируйте версии провайдеров
+- Use `terraform fmt` to keep code consistent / Используйте `terraform fmt` для единообразия кода

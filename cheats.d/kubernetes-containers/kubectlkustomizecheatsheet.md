@@ -18,6 +18,7 @@ Order: 3
 
 ## Basic Structure
 
+```yaml
 # Minimal kustomization.yaml / Минимальный kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -28,6 +29,7 @@ resources:
 
 commonLabels:
   app: demo
+```
 
 ---
 
@@ -48,6 +50,7 @@ commonLabels:
 
 ### base/kustomization.yaml
 
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -57,6 +60,29 @@ resources:
 
 commonLabels:
   app: myapp
+```
+
+---
+
+### overlays/dev/kustomization.yaml
+
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+namePrefix: dev-
+
+replicas:
+  - name: myapp
+    count: 1
+
+images:
+  - name: myapp
+    newTag: dev
+```
 
 ---
 
@@ -82,6 +108,7 @@ images:
 
 ### overlays/prod/kustomization.yaml
 
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -103,18 +130,22 @@ configMapGenerator:
     literals:
       - MODE=production
       - LOG_LEVEL=info
+```
 
 ---
 
 ## Strategic Merge Patches
 
+```yaml
 # overlays/prod/kustomization.yaml
 patchesStrategicMerge:
   - patch-resources.yaml
   - patch-env.yaml
+```
 
 ### patch-resources.yaml (Strategic Merge)
 
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -131,11 +162,13 @@ spec:
             limits:
               cpu: 1000m
               memory: 1Gi
+```
 
 ---
 
 ## JSON Patches
 
+```yaml
 # overlays/prod/kustomization.yaml
 patchesJson6902:
   - target:
@@ -152,6 +185,7 @@ patchesJson6902:
         value:
           name: NEW_VAR
           value: "production"
+```
 
 ---
 
@@ -159,37 +193,45 @@ patchesJson6902:
 
 ### ConfigMap from literals / ConfigMap из значений
 
+```yaml
 configMapGenerator:
   - name: app-config
     literals:
       - MODE=prod
       - LOG_LEVEL=info
       - MAX_CONNECTIONS=100
+```
 
 ### ConfigMap from files / ConfigMap из файлов
 
+```yaml
 configMapGenerator:
   - name: app-config
     files:
       - config.properties
       - application.yaml
+```
 
 ### Secret from literals / Secret из значений
 
+```yaml
 secretGenerator:
   - name: app-secret
     literals:
       - DB_PASSWORD=<PASSWORD>
       - API_KEY=<SECRET_KEY>
+```
 
 ### Secret from files / Secret из файлов
 
+```yaml
 secretGenerator:
   - name: tls-secret
     files:
       - tls.crt=cert.pem
       - tls.key=key.pem
     type: kubernetes.io/tls
+```
 
 ---
 
@@ -235,6 +277,7 @@ nameSuffix: -v2
 
 ## Common Commands
 
+```bash
 # Render kustomization / Рендер kustomization
 kubectl kustomize ./overlays/prod
 
@@ -249,11 +292,13 @@ kubectl delete -k ./overlays/prod
 
 # Build to file / Сохранить в файл
 kubectl kustomize ./overlays/prod > rendered.yaml
+```
 
 ---
 
 ## Troubleshooting
 
+```bash
 # Validate kustomization.yaml / Проверка kustomization.yaml
 kubectl kustomize ./overlays/prod --enable-alpha-plugins
 
@@ -261,12 +306,10 @@ kubectl kustomize ./overlays/prod --enable-alpha-plugins
 kubectl kustomize ./overlays/prod --load-restrictor=LoadRestrictionsNone
 
 # Common errors / Часто встречающиеся ошибки:
-# - "accumulating resources: accumulation err='accumulating resources from '../../base': ..."
-#   → Check base path is correct / Проверьте правильность пути к base
-# - "no matches for kind ..."
-#   → Ensure resources exist in base / Убедитесь что ресурсы существуют в base
-# - "multiple matches for ..."
-#   → Patches target must be unique / Цель патча должна быть уникальной
+# - "accumulating resources: ..." → Check base path is correct / Проверьте путь к base
+# - "no matches for kind ..." → Ensure resources exist in base / Ресурсы должны быть в base
+# - "multiple matches for ..." → Patches target must be unique / Цель патча уникальна
 
 # View all resources / Просмотр всех ресурсов
 kubectl kustomize ./overlays/prod | grep -E "^(kind|metadata):"
+```

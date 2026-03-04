@@ -9,183 +9,262 @@ Order: 1
 - [tcpdump — Network Packet Capture](#-tcpdump--network-packet-capture)
 - [lsof — List Open Files](#-lsof--list-open-files)
 - [ltrace — Library Call Tracing](#-ltrace--library-call-tracing)
+- [Performance Impact](#performance-impact)
+- [Common strace Filters](#common-strace-filters)
 - [Troubleshooting Workflows](#-troubleshooting-workflows--рабочие-процессы)
 - [Real-World Examples](#-real-world-examples--примеры-из-практики)
+- [Best Practices](#-best-practices--лучшие-практики)
 
 ---
 
 # 🔎 strace — System Call Tracing
 
 ### Basic Usage / Базовое использование
+```bash
 strace <COMMAND>                              # Trace command / Трассировать команду
 strace ls -la                                 # Trace ls command / Трассировать команду ls
 strace -p <PID>                               # Attach to running process / Подключиться к процессу
 strace -p <PID> -f                            # Follow child processes / Следовать за дочерними процессами
+```
 
 ### Output Options / Опции вывода
+```bash
 strace -o trace.txt <COMMAND>                 # Save to file / Сохранить в файл
 strace -o trace.txt -f -tt -T -s 200 -p <PID> # Detailed trace / Детальная трассировка
 # -f: follow forks / следовать за fork
 # -tt: timestamps with microseconds / временные метки с микросекундами
 # -T: show time spent in calls / показать время вызовов
 # -s 200: string size limit / лимит размера строки
+```
 
 ### Filter by Syscall / Фильтр по сисколам
+```bash
 strace -e trace=open,read,write <COMMAND>     # Trace specific calls / Трассировать конкретные вызовы
 strace -e trace=network -p <PID>              # Network syscalls / Сетевые сисколы
 strace -e trace=file -p <PID>                 # File operations / Файловые операции
 strace -e trace=process -p <PID>              # Process operations / Операции процессов
 strace -e trace=signal -p <PID>               # Signal handling / Обработка сигналов
 strace -e trace=ipc -p <PID>                  # IPC operations / IPC операции
+```
 
 ### Statistics / Статистика
+```bash
 strace -c <COMMAND>                           # Summary statistics / Сводная статистика
 strace -c -p <PID>                            # Count syscalls / Подсчитать сисколы
 strace -c -S time <COMMAND>                   # Sort by time / Сортировать по времени
 strace -c -S calls <COMMAND>                  # Sort by call count / Сортировать по числу вызовов
+```
 
 ### Advanced / Продвинутое
+```bash
 strace -e trace=open,openat -e signal=none <COMMAND>  # Open calls, no signals / Вызовы open, без сигналов
 strace -y -p <PID>                            # Show file descriptor paths / Показать пути дескрипторов
 strace -k -p <PID>                            # Show stack traces / Показать stack traces
 strace -r <COMMAND>                           # Relative timestamps / Относительные метки времени
+```
 
 ---
 
 # 📊 perf — Performance Analysis
 
 ### Installation / Установка
+```bash
 sudo apt install linux-tools-common linux-tools-$(uname -r)  # Debian/Ubuntu
 sudo dnf install perf                         # RHEL/Fedora
+```
 
 ### Top CPU Consumers / Топ потребителей CPU
+```bash
 sudo perf top                                 # Live CPU hot spots / «Горячие точки» CPU
 sudo perf top -p <PID>                        # Top for specific process / Top для конкретного процесса
 sudo perf top -g                              # Call graph / Граф вызовов
+```
 
 ### Record and Report / Запись и отчёт
+```bash
 sudo perf record -g -- <COMMAND>              # Record with call graph / Записать с графом вызовов
 sudo perf record -g -p <PID>                  # Record process / Записать процесс
 sudo perf record -g -a -- sleep 10            # Record all CPUs for 10s / Записать все CPU 10с
 sudo perf report                              # View report / Просмотр отчёта
 sudo perf report --stdio                      # Text report / Текстовый отчёт
+```
 
 ### CPU Profiling / Профилирование CPU
+```bash
 sudo perf stat <COMMAND>                      # Performance statistics / Статистика производительности
 sudo perf stat -p <PID>                       # Stats for process / Статистика для процесса
 sudo perf stat -a -- sleep 5                  # System-wide for 5s / Для всей системы 5с
 sudo perf stat -e cpu-cycles,instructions <COMMAND>  # Specific events / Конкретные события
+```
 
 ### Flame Graphs / Flame графы
+```bash
 sudo perf record -F 99 -a -g -- sleep 30      # Record for 30s / Записать 30с
 sudo perf script > out.perf                   # Export data / Экспортировать данные
 # Generate flame graph with flamegraph.pl / Генерировать flame граф с flamegraph.pl
 stackcollapse-perf.pl out.perf | flamegraph.pl > perf.svg
+```
 
 ### List Available Events / Список доступных событий
+```bash
 perf list                                     # List all events / Список всех событий
 perf list cache                               # Cache events / События кэша
 perf list hw                                  # Hardware events / Аппаратные события
 perf list sw                                  # Software events / Программные события
+```
 
 ---
 
 # 📡 tcpdump — Network Packet Capture
 
 ### Basic Capture / Базовый захват
+```bash
 sudo tcpdump                                  # Capture all interfaces / Захват всех интерфейсов
 sudo tcpdump -i eth0                          # Capture specific interface / Захват конкретного интерфейса
 sudo tcpdump -i any                           # Capture all interfaces / Захват всех интерфейсов
 sudo tcpdump -n                               # No DNS resolution / Без DNS разрешения
 sudo tcpdump -nn                              # No DNS/port resolution / Без DNS/портов
+```
 
 ### Protocol Filters / Фильтры протоколов
+```bash
 sudo tcpdump tcp                              # TCP packets only / Только TCP пакеты
 sudo tcpdump udp                              # UDP packets only / Только UDP пакеты
 sudo tcpdump icmp                             # ICMP packets only / Только ICMP пакеты
 sudo tcpdump arp                              # ARP packets only / Только ARP пакеты
+```
 
 ### Port Filters / Фильтры портов
+```bash
 sudo tcpdump port 80                          # HTTP traffic / HTTP трафик
 sudo tcpdump port 443                         # HTTPS traffic / HTTPS трафик
 sudo tcpdump tcp port 22                      # SSH traffic / SSH трафик
 sudo tcpdump 'tcp port 80 or tcp port 443'    # HTTP or HTTPS / HTTP или HTTPS
 sudo tcpdump portrange 8000-9000              # Port range / Диапазон портов
+```
 
 ### Host Filters / Фильтры хостов
+```bash
 sudo tcpdump host <IP>                        # Specific host / Конкретный хост
 sudo tcpdump src <IP>                         # Source IP / IP источника
 sudo tcpdump dst <IP>                         # Destination IP / IP назначения
 sudo tcpdump net 192.168.1.0/24               # Network / Сеть
+```
 
 ### Output Options / Опции вывода
+```bash
 sudo tcpdump -w capture.pcap                  # Write to file / Записать в файл
 sudo tcpdump -r capture.pcap                  # Read from file / Читать из файла
 sudo tcpdump -A                               # ASCII output / ASCII вывод
 sudo tcpdump -X                               # Hex and ASCII / Hex и ASCII
 sudo tcpdump -s 0                             # Capture full packets / Захват полных пакетов
 sudo tcpdump -s0 -A -i any host <IP>          # Full packets ASCII / Полные пакеты ASCII
+```
 
 ### Advanced Filters / Продвинутые фильтры
+```bash
 sudo tcpdump -n -i eth0 tcp port 443          # HTTPS on eth0 / HTTPS на eth0
 sudo tcpdump -A -s0 -i any host 10.0.0.5      # Full packets host filter / Полные пакеты фильтр хоста
 sudo tcpdump 'tcp[tcpflags] & (tcp-syn) != 0' # SYN packets / SYN пакеты
 sudo tcpdump 'tcp[tcpflags] & (tcp-rst) != 0' # RST packets / RST пакеты
 sudo tcpdump -c 100                           # Capture 100 packets / Захватить 100 пакетов
 sudo tcpdump -nn -vv -c 50 port 53            # DNS queries verbose / DNS запросы подробно
+```
 
 ### Combine Filters / Комбинирование фильтров
+```bash
 sudo tcpdump 'host <IP> and port 80'          # Host and port / Хост и порт
 sudo tcpdump 'src <IP> and dst port 443'      # Source IP and dest port / IP источника и порт назначения
 sudo tcpdump 'tcp and not port 22'            # TCP except SSH / TCP кроме SSH
 sudo tcpdump '(tcp port 80 or tcp port 443) and host <IP>'  # HTTP/HTTPS to host / HTTP/HTTPS к хосту
+```
 
 ---
 
 # 📂 lsof — List Open Files
 
 ### Basic Usage / Базовое использование
+```bash
 lsof                                          # List all open files / Список всех открытых файлов
 lsof -u <USER>                                # Files opened by user / Файлы открытые пользователем
 lsof -p <PID>                                 # Files opened by process / Файлы открытые процессом
 lsof <FILE>                                   # Processes using file / Процессы использующие файл
+```
 
 ### Network Connections / Сетевые соединения
+```bash
 lsof -i                                       # All network connections / Все сетевые соединения
 lsof -i :80                                   # Port 80 connections / Соединения порта 80
 lsof -i tcp                                   # TCP connections / TCP соединения
 lsof -i udp                                   # UDP connections / UDP соединения
 lsof -i tcp:22                                # SSH connections / SSH соединения
 lsof -i @<IP>                                 # Connections to IP / Соединения к IP
+```
 
 ### Process Information / Информация о процессах
+```bash
 lsof -c nginx                                 # Files by command / Файлы по команде
 lsof -t -c nginx                              # PIDs only / Только PID
 lsof -a -u <USER> -i                          # User network files / Сетевые файлы пользователя
 lsof -a -p <PID> -i                           # Process network files / Сетевые файлы процесса
+```
 
 ### Filesystem / Файловая система
+```bash
 lsof +D /path/to/dir                          # All files in directory / Все файлы в директории
 lsof +d /path/to/dir                          # Files in directory (no recurse) / Файлы в директории (без рекурсии)
 lsof /mnt                                     # What's using mount / Что использует монтирование
+```
 
 ### Common Patterns / Распространённые шаблоны
+```bash
 lsof -i :80 | grep LISTEN                     # Who's listening on 80 / Кто слушает порт 80
 lsof -nP -iTCP -sTCP:LISTEN                   # All listening TCP / Все слушающие TCP
 lsof -nP -i4TCP -sTCP:ESTABLISHED             # Established IPv4 TCP / Установленные IPv4 TCP
 lsof -u ^root                                 # Not root / Не root
 lsof -i -u <USER>                             # User network activity / Сетевая активность пользователя
+```
 
 ---
 
 # 🔬 ltrace — Library Call Tracing
 
+```bash
 ltrace <COMMAND>                              # Trace library calls / Трассировать библиотечные вызовы
 ltrace -p <PID>                               # Attach to process / Подключиться к процессу
 ltrace -c <COMMAND>                           # Count calls / Подсчитать вызовы
 ltrace -o trace.txt <COMMAND>                 # Save to file / Сохранить в файл
 ltrace -e malloc,free <COMMAND>               # Trace specific calls / Трассировать конкретные вызовы
 ltrace -f <COMMAND>                           # Follow forks / Следовать за fork
+```
+
+---
+
+## Performance Impact
+
+> [!WARNING]
+> Tracing tools have significant performance impact on the traced process. Use with care in production.
+> Инструменты трассировки значительно влияют на производительность процесса. Используйте осторожно в продакшене.
+
+| Tool | Impact (EN / RU) | Notes |
+|------|-----------------|-------|
+| **strace** | HIGH (2-100x slowdown) / Высокое (замедление в 2-100 раз) | Intercepts every syscall |
+| **perf** | LOW (1-5% overhead) / Низкое (нагрузка 1-5%) | Sampling-based, minimal overhead |
+| **tcpdump** | MEDIUM / Среднее | Depends on traffic volume |
+| **lsof** | MINIMAL / Минимальное | Point-in-time snapshot |
+| **ltrace** | HIGH / Высокое | Similar to strace |
+
+---
+
+## Common strace Filters
+
+| Filter | Description (EN / RU) |
+|--------|----------------------|
+| `-e trace=network` | Socket operations / Операции сокетов |
+| `-e trace=file` | File operations / Файловые операции |
+| `-e trace=process` | Fork/exec/wait / Fork/exec/wait |
+| `-e trace=signal` | Signal handling / Обработка сигналов |
+| `-e trace=ipc` | IPC (SHM, semaphores, msg queues) / IPC (разделяемая память, семафоры, очереди сообщений) |
 
 ---
 
@@ -293,24 +372,13 @@ sudo tcpdump -i any -nn -s0 -X 'tcp port 443'
 ltrace -e SSL_* -p <PID>
 ```
 
+---
+
 # 💡 Best Practices / Лучшие практики
-# Use -c for quick syscall overview / Используйте -c для быстрого обзора сисколов
-# Filter strace output to reduce noise / Фильтруйте вывод strace для уменьшения шума
-# Use perf for CPU profiling, not strace / Используйте perf для профилирования CPU, не strace
-# tcpdump -nn to avoid DNS delays / tcpdump -nn для избежания задержек DNS
-# lsof for quick connection overview / lsof для быстрого обзора соединений
-# Always use -p to attach to running process / Всегда используйте -p для подключения к процессу
 
-# 🔧 Performance Impact / Влияние на производительность
-# strace: HIGH (2-100x slowdown) / Высокое (замедление в 2-100 раз)
-# perf: LOW (1-5% overhead) / Низкое (нагрузка 1-5%)
-# tcpdump: MEDIUM (depends on traffic) / Среднее (зависит от трафика)
-# lsof: MINIMAL / Минимальное
-# ltrace: HIGH (similar to strace) / Высокое (похоже на strace)
-
-# 📋 Common strace Filters / Распространённые фильтры strace
-# -e trace=network — Socket operations / Операции сокетов
-# -e trace=file — File operations / Файловые операции
-# -e trace=process — Fork/exec/wait / Fork/exec/wait
-# -e trace=signal — Signal handling / Обработка сигналов
-# -e trace=ipc — IPC (SHM, semaphores, msg queues) / IPC (разделяемая память, семафоры, очереди сообщений)
+- Use `-c` for quick syscall overview / Используйте `-c` для быстрого обзора сисколов
+- Filter strace output to reduce noise / Фильтруйте вывод strace для уменьшения шума
+- Use perf for CPU profiling, not strace / Используйте perf для профилирования CPU, не strace
+- `tcpdump -nn` to avoid DNS delays / `tcpdump -nn` для избежания задержек DNS
+- `lsof` for quick connection overview / `lsof` для быстрого обзора соединений
+- Always use `-p` to attach to running process / Всегда используйте `-p` для подключения к процессу

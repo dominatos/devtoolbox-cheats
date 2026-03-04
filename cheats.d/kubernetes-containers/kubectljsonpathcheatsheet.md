@@ -15,16 +15,19 @@ Order: 2
 
 ## Basic JSONPath Queries
 
+```bash
 kubectl get pods -o jsonpath='{.items[*].status.podIP}'                            # All pod IPs / Все IP подов
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'        # Names one per line / Имена по одному в строке
 kubectl get secret my -o jsonpath='{.data.password}' | base64 -d                   # Decode secret field / Декодировать поле секрета
 kubectl get pods -o jsonpath='{.items[0].metadata.name}'                           # First pod name / Имя первого pod-а
 kubectl get svc -o jsonpath='{.items[*].spec.clusterIP}'                           # All service IPs / Все IP сервисов
+```
 
 ---
 
 ## Resource Filtering
 
+```bash
 # Get pods by phase / Получить pod-ы по фазе
 kubectl get pods -o jsonpath='{.items[?(@.status.phase=="Running")].metadata.name}'
 
@@ -36,11 +39,13 @@ kubectl get svc -o jsonpath='{.items[?(@.spec.type=="LoadBalancer")].metadata.na
 
 # Get pods without ready status / Получить pod-ы без статуса ready
 kubectl get pods -o jsonpath='{.items[?(@.status.conditions[?(@.type=="Ready")].status!="True")].metadata.name}'
+```
 
 ---
 
 ## Node Information
 
+```bash
 # Node names and kubelet versions / Имена узлов и версии kubelet
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.nodeInfo.kubeletVersion}{"\n"}{end}'
 
@@ -55,11 +60,13 @@ kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP
 
 # Node OS information / Информация об ОС узла
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.nodeInfo.osImage}{"\n"}{end}'
+```
 
 ---
 
 ## Container & Image Queries
 
+```bash
 # Deployment → images / Деплой → образы
 kubectl get deploy -o jsonpath='{range .items[*]}{.metadata.name}{" -> "}{.spec.template.spec.containers[*].image}{"\n"}{end}'
 
@@ -74,11 +81,13 @@ kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{range .spe
 
 # Pod image pull policy / Политика загрузки образов pod-ов
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[*].imagePullPolicy}{"\n"}{end}'
+```
 
 ---
 
 ## Custom Columns
 
+```bash
 # Custom columns for pods / Кастомные колонки для pod-ов
 kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:.status.phase,IP:.status.podIP,NODE:.spec.nodeName
 
@@ -90,11 +99,13 @@ kubectl get deploy -o custom-columns=NAME:.metadata.name,REPLICAS:.spec.replicas
 
 # Services with type and IPs / Сервисы с типом и IP
 kubectl get svc -o custom-columns=NAME:.metadata.name,TYPE:.spec.type,CLUSTER-IP:.spec.clusterIP,EXTERNAL-IP:.status.loadBalancer.ingress[0].ip
+```
 
 ---
 
 ## Troubleshooting JSONPath
 
+```bash
 # Pretty print JSON structure / Вывод структуры JSON
 kubectl get pod POD -o json | jq .
 
@@ -112,3 +123,4 @@ kubectl get pods -o json | jq '.items[] | select(.status.phase=="Running") | .me
 
 # Use grep/awk with JSONPath / Использование grep/awk с JSONPath
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\n"}{end}' | grep Running
+```

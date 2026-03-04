@@ -141,7 +141,7 @@ echo mntr | nc <HOST> 2181
 ```bash
 systemctl start zookeeper   # Start / Запуск
 systemctl stop zookeeper    # Stop / Остановка
-systemctl reboot zookeeper  # Restart / Рестарт
+systemctl restart zookeeper # Restart / Рестарт
 tail -f /opt/zookeeper/logs/zookeeper-*.out # Logs / Логи
 ```
 

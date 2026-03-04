@@ -19,33 +19,41 @@ Order: 7
 
 ### Container Management
 
+```bash
 podman ps -a                                   # List containers / Список контейнеров
 podman run -d --name app -p 8080:80 nginx      # Run container / Запуск контейнера
 podman start app                               # Start container / Запустить контейнер
 podman stop app                                # Stop container / Остановить контейнер
 podman restart app                             # Restart container / Перезапустить контейнер
 podman rm app                                  # Remove container / Удалить контейнер
+```
 
 ### Logs & Inspection
 
+```bash
 podman logs -f app                             # Follow logs / Следить за логами
 podman logs --tail=100 app                     # Last 100 lines / Последние 100 строк
 podman inspect app                             # Inspect container / Информация о контейнере
 podman stats                                   # Resource usage / Использование ресурсов
 podman top app                                 # Container processes / Процессы контейнера
+```
 
 ### Execute & Attach
 
+```bash
 podman exec -it app /bin/sh                    # Shell in container / Оболочка в контейнере
 podman attach app                              # Attach to container / Подключиться к контейнеру
+```
 
 ### Image Management
 
+```bash
 podman images                                  # List images / Список образов
 podman pull nginx                              # Pull image / Скачать образ
 podman push myimg:tag                          # Push image / Отправить образ
 podman rmi nginx                               # Remove image / Удалить образ
 podman build -t myimg:tag .                    # Build image / Собрать образ
+```
 
 ---
 
@@ -53,19 +61,25 @@ podman build -t myimg:tag .                    # Build image / Собрать о
 
 ### User Setup
 
+```bash
 podman system migrate                          # Migrate to rootless / Миграция в rootless
 loginctl enable-linger <USER>                  # Enable user lingering / Включить user lingering
+```
 
 ### Rootless Commands
 
+```bash
 podman run --rm -it alpine                     # Run as user / Запуск от пользователя
 podman system reset                            # Reset rootless storage / Сбросить rootless storage
 podman info | grep -i root                     # Check root/rootless / Проверить root/rootless
+```
 
 ### Port Mapping (Rootless)
 
+```bash
 podman run -d -p 8080:80 nginx                 # Port ≥ 1024 / Порт ≥ 1024
 sudo sysctl net.ipv4.ip_unprivileged_port_start=80  # Allow ports < 1024 / Разрешить порты < 1024
+```
 
 ---
 
@@ -73,22 +87,28 @@ sudo sysctl net.ipv4.ip_unprivileged_port_start=80  # Allow ports < 1024 / Ра�
 
 ### Pod Management
 
+```bash
 podman pod create --name mypod -p 8080:80      # Create pod / Создать pod
 podman pod list                                # List pods / Список pod-ов
 podman pod ps                                  # Running pods / Запущенные pod-ы
 podman pod start mypod                         # Start pod / Запустить pod
 podman pod stop mypod                          # Stop pod / Остановить pod
 podman pod rm mypod                            # Remove pod / Удалить pod
+```
 
 ### Add Containers to Pod
 
+```bash
 podman run -d --pod mypod nginx                # Add nginx to pod / Добавить nginx в pod
 podman run -d --pod mypod redis                # Add redis to pod / Добавить redis в pod
+```
 
 ### Generate Kubernetes YAML
 
+```bash
 podman generate kube mypod > mypod.yaml        # Generate K8s YAML / Сгенерировать K8s YAML
 podman play kube mypod.yaml                    # Deploy from YAML / Развернуть из YAML
+```
 
 ---
 
@@ -96,18 +116,22 @@ podman play kube mypod.yaml                    # Deploy from YAML / Развер
 
 ### Generate Systemd Unit
 
+```bash
 podman generate systemd --new --name app > ~/.config/systemd/user/app.service  # User service / Пользовательский сервис
 systemctl --user daemon-reload                 # Reload systemd / Перезагрузить systemd
 systemctl --user enable app                    # Enable on boot / Включить автозапуск
 systemctl --user start app                     # Start service / Запустить сервис
 systemctl --user status app                    # Check status / Проверить статус
+```
 
 ### System-wide Service (Root)
 
+```bash
 podman generate systemd --new --name app > /etc/systemd/system/app.service  # System service / Системный сервис
 systemctl daemon-reload                        # Reload systemd / Перезагрузить systemd
 systemctl enable app                           # Enable on boot / Включить автозапуск
 systemctl start app                            # Start service / Запустить сервис
+```
 
 ---
 
@@ -195,39 +219,49 @@ runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
 timeout: 10
 debug: false
+```
 
 ### Network Management
 
 #### Podman Networks
 
+```bash
 podman network ls                              # List networks / Список сетей
 podman network create mynet                    # Create network / Создать сеть
 podman network inspect mynet                   # Inspect network / Информация о сети
 podman network rm mynet                        # Remove network / Удалить сеть
+```
 
 #### nerdctl Networks
 
+```bash
 nerdctl network ls                             # List networks / Список сетей
 nerdctl network create mynet                   # Create network / Создать сеть
 nerdctl network inspect mynet                  # Inspect network / Информация о сети
+```
 
 ### Volume Management
 
 #### Podman Volumes
 
+```bash
 podman volume ls                               # List volumes / Список volumes
 podman volume create myvol                     # Create volume / Создать volume
 podman volume inspect myvol                    # Inspect volume / Информация о volume
 podman volume rm myvol                         # Remove volume / Удалить volume
+```
 
 #### nerdctl Volumes
 
+```bash
 nerdctl volume ls                              # List volumes / Список volumes
 nerdctl volume create myvol                    # Create volume / Создать volume
 nerdctl volume inspect myvol                   # Inspect volume / Информация о volume
+```
 
 ### Troubleshooting
 
+```bash
 # Check Podman version / Проверка версии Podman
 podman --version
 
@@ -243,27 +277,34 @@ crictl version
 
 # Podman events / События Podman
 podman events
+```
 
-# Reset Podman storage (WARNING: deletes all data) / Сброс хранилища Podman (ВНИМАНИЕ: удаляет все данные)
+> [!CAUTION]
+> `podman system reset` permanently deletes ALL containers, images, and volumes. Use with extreme care.
+> `podman system reset` безвозвратно удаляет ВСЕ контейнеры, образы и тома.
+
+```bash
+# Reset Podman storage / Сброс хранилища Podman
 podman system reset
 
 # Cleanup unused resources / Очистка неиспользуемых ресурсов
 podman system prune -af
 nerdctl system prune -af
+```
 
 ### Performance & Differences vs Docker
 
-# Podman advantages / Преимущества Podman:
-# - Rootless by default / Rootless по умолчанию
-# - Daemonless architecture / Архитектура без демона
-# - Native systemd integration / Нативная интеграция с systemd
-# - Pod support (like K8s) / Поддержка pod-ов (как в K8s)
+**Podman advantages / Преимущества Podman:**
+- Rootless by default / Rootless по умолчанию
+- Daemonless architecture / Архитектура без демона
+- Native systemd integration / Нативная интеграция с systemd
+- Pod support (like K8s) / Поддержка pod-ов (как в K8s)
 
-# nerdctl advantages / Преимущества nerdctl:
-# - Docker-compatible CLI / Docker-совместимый CLI
-# - Native BuildKit support / Нативная поддержка BuildKit
-# - Kubernetes namespace awareness / Осведомлённость о namespace Kubernetes
-# - Lazy image pulling / Ленивая загрузка образов
+**nerdctl advantages / Преимущества nerdctl:**
+- Docker-compatible CLI / Docker-совместимый CLI
+- Native BuildKit support / Нативная поддержка BuildKit
+- Kubernetes namespace awareness / Осведомлённость о namespace Kubernetes
+- Lazy image pulling / Ленивая загрузка образов
 
 ---
 

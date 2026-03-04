@@ -24,14 +24,22 @@ Order: 7
 
 ## 1. Service Management / Управление сервисом
 
+### Default Ports / Стандартные порты
+
+| Port | Description (EN / RU) |
+|------|----------------------|
+| 8080 | Web UI / Веб-интерфейс |
+| 50000 | Agent (JNLP) connection / Подключение агентов |
+
 ### Systemd / Systemd
 
 `/etc/systemd/system/jenkins.service`
 
 ```bash
-systemctl start jenkins
-systemctl stop jenkins
-systemctl status jenkins
+systemctl start jenkins   # Start / Запуск
+systemctl stop jenkins    # Stop / Остановка
+systemctl restart jenkins # Restart / Перезапуск
+systemctl status jenkins  # Status / Статус
 ```
 
 ### Logs / Логи
@@ -83,6 +91,10 @@ instance.setSecurityRealm(hudson.security.SecurityRealm.NO_AUTHENTICATION)
 instance.setAuthorizationStrategy(hudson.security.AuthorizationStrategy.UNSECURED)
 instance.save()
 ```
+
+> [!CAUTION]
+> This completely disables authentication. Use only as a last resort when locked out. Re-enable security immediately after access is restored.
+> Это полностью отключает аутентификацию. Используйте только как крайнюю меру.
 
 ---
 

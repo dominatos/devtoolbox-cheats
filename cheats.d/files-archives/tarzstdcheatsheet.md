@@ -72,14 +72,18 @@ tar -cv <DIR>/ | pv | zstd -T0 -o <ARCHIVE>.tar.zst  # Show progress (requires p
 ---
 
 # 💡 Best Practices / Лучшие практики
-# Use --zstd for GNU tar 1.31+ / Используйте --zstd для GNU tar 1.31+
-# Use -T0 for multi-core compression / Используйте -T0 для многоядерного сжатия
-# Level 3 is good balance / Уровень 3 - хороший баланс
-# Level 19 for archival / Уровень 19 для архивирования
-# Zstd is faster than gzip/bzip2 / Zstd быстрее чем gzip/bzip2
 
-# 📋 Quick Comparison / Быстрое сравнение
-# .tar.gz   — gzip (slower, widely compatible) / gzip (медленнее, широко совместим)
-# .tar.bz2  — bzip2 (slow, good compression) / bzip2 (медленный, хорошее сжатие)
-# .tar.xz   — xz (very slow, best compression) / xz (очень медленный, лучшее сжатие)
-# .tar.zst  — zstd (FAST, great compression) / zstd (БЫСТРЫЙ, отличное сжатие)
+- Use `--zstd` for GNU tar 1.31+ / Используйте `--zstd` для GNU tar 1.31+
+- Use `-T0` for multi-core compression / Используйте `-T0` для многоядерного сжатия
+- Level 3 is a good balance / Уровень 3 — хороший баланс
+- Level 19 for archival storage / Уровень 19 для архивирования
+- Zstd is faster than gzip/bzip2 / Zstd быстрее чем gzip/bzip2
+
+## Quick Comparison / Быстрое сравнение
+
+| Format | Description (EN / RU) |
+|--------|----------------------|
+| `.tar.gz` | gzip (slower, widely compatible) / gzip (медленнее, широко совместим) |
+| `.tar.bz2` | bzip2 (slow, good compression) / bzip2 (медленный, хорошее сжатие) |
+| `.tar.xz` | xz (very slow, best compression) / xz (очень медленный, лучшее сжатие) |
+| `.tar.zst` | zstd (FAST, great compression) / zstd (БЫСТРЫЙ, отличное сжатие) |

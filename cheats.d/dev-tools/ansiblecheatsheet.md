@@ -18,6 +18,8 @@ Order: 5
 3. [Ansible Galaxy](#ansible-galaxy--ansible-galaxy)
 4. [Ansible Vault](#ansible-vault--ansible-vault-шифрование)
 5. [Configuration](#configuration--конфигурация)
+6. [Sysadmin Basics](#sysadmin-basics)
+7. [Logrotate Configuration](#logrotate-configuration)
 
 ---
 
@@ -107,12 +109,20 @@ ansible-vault decrypt secrets.yml
 
 # Run playbook with vault / Запуск плейбука с vault
 ansible-playbook site.yml --ask-vault-pass
+
+# Use vault password file / Использовать файл с паролем vault
+ansible-playbook site.yml --vault-password-file ~/.vault_pass
 ```
+
+> [!WARNING]
+> Never commit vault passwords to version control. Use `--vault-password-file` pointing to a file excluded in `.gitignore`.
+> Никогда не коммитьте пароли vault в систему контроля версий.
 
 ---
 
 ## 5. Configuration / Конфигурация
-File: `/etc/ansible/ansible.cfg` or `./ansible.cfg`
+
+`/etc/ansible/ansible.cfg` or `./ansible.cfg`
 
 ```ini
 [defaults]
@@ -121,3 +131,55 @@ remote_user = <USER>
 host_key_checking = False
 private_key_file = ~/.ssh/id_rsa
 ```
+
+---
+
+## Sysadmin Basics
+
+### Default Paths / Стандартные пути
+
+| Path | Description (EN / RU) |
+|------|----------------------|
+| `/etc/ansible/ansible.cfg` | System-wide config / Глобальная конфигурация |
+| `~/.ansible.cfg` | User config / Пользовательская конфигурация |
+| `./ansible.cfg` | Project config (highest priority) / Проектная конфигурация (наивысший приоритет) |
+| `/etc/ansible/hosts` | Default inventory / Инвентарь по умолчанию |
+| `~/.ansible/` | Cache, plugins, roles / Кэш, плагины, роли |
+
+### Default Ports / Стандартные порты
+
+| Port | Protocol | Description (EN / RU) |
+|------|----------|----------------------|
+| 22 | SSH | Default connection method / Метод подключения по умолчанию |
+| 5986 | WinRM (HTTPS) | Windows hosts / Хосты Windows |
+
+### Useful Diagnostic Commands / Полезные команды диагностики
+```bash
+ansible --version                              # Show version / Показать версию
+ansible all -m setup -i hosts                  # Gather facts / Собрать факты
+ansible all -m ping -i hosts                   # Connectivity check / Проверка связи
+ansible-config dump --only-changed             # Show changed config / Показать изменённую конфигурацию
+```
+
+---
+
+## Logrotate Configuration
+
+`/etc/logrotate.d/ansible`
+
+```conf
+/var/log/ansible/*.log {
+    weekly
+    rotate 4
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 root root
+}
+```
+
+> [!NOTE]
+> Ansible does not log by default. Enable logging by setting `log_path` in `ansible.cfg`:
+> `log_path = /var/log/ansible/ansible.log`
+> Ansible не логирует по умолчанию. Включите логирование через `log_path` в `ansible.cfg`.

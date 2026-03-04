@@ -258,23 +258,30 @@ tar --zstd -tvf archive.tar.zst
 ```
 
 # 💡 Best Practices / Лучшие практики
-# Use zstd for modern Linux systems / Используйте zstd для современных Linux систем
-# Use zip for Windows compatibility / Используйте zip для совместимости с Windows
-# Use 7z for maximum compression / Используйте 7z для максимального сжатия
-# Always test archives after creation / Всегда тестируйте архивы после создания
-# Use -T0 with zstd for parallel compression / Используйте -T0 с zstd для параллельного сжатия
-# Encrypt sensitive archives / Шифруйте чувствительные архивы
 
-# 🔧 Compression Levels / Уровни сжатия
-# zstd: 1-19 (default 3) / zstd: 1-19 (по умолчанию 3)
-# 7z: 0-9 (default 5) / 7z: 0-9 (по умолчанию 5)
-# zip: 0-9 (default 6) / zip: 0-9 (по умолчанию 6)
-# gzip: 1-9 (default 6) / gzip: 1-9 (по умолчанию 6)
+- Use zstd for modern Linux systems / Используйте zstd для современных Linux систем
+- Use zip for Windows compatibility / Используйте zip для совместимости с Windows
+- Use 7z for maximum compression / Используйте 7z для максимального сжатия
+- Always test archives after creation / Всегда тестируйте архивы после создания
+- Use `-T0` with zstd for parallel compression / Используйте `-T0` с zstd для параллельного сжатия
+- Encrypt sensitive archives / Шифруйте чувствительные архивы
 
-# 📋 Default Extensions / Расширения по умолчанию
-# .zip — ZIP archives / ZIP архивы
-# .7z — 7-Zip archives / 7-Zip архивы
-# .zst — ZSTD compressed / Сжатые ZSTD
-# .tar.zst — TAR with ZSTD / TAR с ZSTD
-# .tar.gz — TAR with gzip / TAR с gzip
-# .tar.xz — TAR with xz / TAR с xz
+## Compression Levels / Уровни сжатия
+
+| Tool | Levels | Default |
+|------|--------|---------|
+| zstd | 1–19 | 3 |
+| 7z | 0–9 | 5 |
+| zip | 0–9 | 6 |
+| gzip | 1–9 | 6 |
+
+## Default Extensions / Расширения по умолчанию
+
+| Extension | Description (EN / RU) |
+|-----------|----------------------|
+| `.zip` | ZIP archives / ZIP архивы |
+| `.7z` | 7-Zip archives / 7-Zip архивы |
+| `.zst` | ZSTD compressed / Сжатые ZSTD |
+| `.tar.zst` | TAR with ZSTD / TAR с ZSTD |
+| `.tar.gz` | TAR with gzip / TAR с gzip |
+| `.tar.xz` | TAR with xz / TAR с xz |

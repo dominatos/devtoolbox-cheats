@@ -168,15 +168,19 @@ tar -cvvf archive.tar folder/                  # Extra verbose / Дополни�
 tar -xvf archive.tar --checkpoint=100          # Show progress every 100 records / Прогресс каждые 100 записей
 tar -czf archive.tar.gz --totals folder/       # Show statistics / Показать статистику
 
-# 🌟 Real-World Examples / Примеры из практики
+### Real-World Examples / Примеры из практики
+```bash
 tar -czf /backup/web-$(date +%Y%m%d).tar.gz --exclude='*.log' /var/www  # Daily web backup / Ежедневный бэкап веб-сервера
 tar -czf - /etc | ssh <USER>@<BACKUP_HOST> "cat > /backups/etc-$(date +%Y%m%d).tar.gz"  # Remote etc backup / Удалённый бэкап /etc
 find /var/log -name "*.log" -mtime +30 -print0 | tar -czf old-logs.tar.gz --null -T -  # Archive old logs / Архивировать старые логи
 tar -czpf home-backup.tar.gz --exclude-caches-all ~/<USER>  # Home directory backup / Бэкап домашнего каталога
 tar -czf - bigfolder/ | gpg -c > encrypted-backup.tar.gz.gpg  # Encrypted backup / Шифрованный бэкап
 tar -czf code-$(date +%Y%m%d).tar.gz --exclude-vcs --exclude='node_modules' ~/projects  # Code backup / Бэкап кода
+```
 
-# 💡 Performance Tips / Советы по производительности
+### Performance Tips / Советы по производительности
+```bash
 tar -czf - folder/ | pigz > archive.tar.gz     # Use pigz for parallel compression / pigz для параллельного сжатия
 tar -I zstd -cf archive.tar.zst folder/        # Zstandard for fast compression / Zstandard для быстрого сжатия
 tar -czf archive.tar.gz --use-compress-program=pigz folder/  # Specify compressor / Указать компрессор
+```
