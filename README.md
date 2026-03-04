@@ -173,6 +173,7 @@ sudo dnf install zenity xclip fzf bat pandoc
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
+./install.sh
 ```
 
 #### 3. Run Manually or Add to Panel
@@ -233,6 +234,7 @@ sudo pacman -S zenity xclip fzf bat pandoc
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
+./install.sh
 ```
 
 #### 3. Add to Panel
@@ -421,6 +423,7 @@ sudo pacman -S fzf bat wl-clipboard pandoc wofi
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
+./install.sh
 ```
 
 #### 3. Add Keybinding
@@ -563,17 +566,6 @@ mysql -u root -p -e "SHOW DATABASES;"
 
 # Create database
 mysql -u root -p -e "CREATE DATABASE mydb;"
-```
-
-## User Management
-
-```bash
-# Create user
-CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
-
-# Grant privileges
-GRANT ALL PRIVILEGES ON mydb.* TO 'newuser'@'localhost';
-```
 ```
 
 ### Metadata Fields
