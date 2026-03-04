@@ -44,13 +44,28 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# ─── Deploy cheats.d (universal, all DEs) ────────────────────────────────────
+install_cheats() {
+    local cheats_src="$SCRIPT_DIR/cheats.d"
+
+    echo ""
+    echo "📂 Deploying cheatsheets..."
+
+    if [ -d "$cheats_src" ]; then
+        mkdir -p "$HOME/cheats.d"
+        cp -r "$cheats_src/." "$HOME/cheats.d/"
+        echo "  ✅ Cheats deployed → ~/cheats.d"
+    else
+        echo "  ⚠️  cheats.d not found: $cheats_src"
+    fi
+}
+
 # ─── Argos / GNOME detection ─────────────────────────────────────────────────
 # Argos is detected if the ~/.config/argos directory exists OR the argos
 # gnome-shell extension is loaded.
 install_argos() {
     local argos_dir="$HOME/.config/argos"
     local script_src="$SCRIPT_DIR/devtoolbox-cheats.30s.sh"
-    local cheats_src="$SCRIPT_DIR/cheats.d"
 
     echo "🐚 Installing Argos variant..."
     mkdir -p "$argos_dir"
@@ -61,14 +76,6 @@ install_argos() {
         echo "  ✅ Script installed → $argos_dir/devtoolbox-cheats.30s.sh"
     else
         echo "  ⚠️  Script not found: $script_src"
-    fi
-
-    if [ -d "$cheats_src" ]; then
-        mkdir -p "$HOME/cheats.d"
-        cp -r "$cheats_src/." "$HOME/cheats.d/"
-        echo "  ✅ Cheats deployed → ~/cheats.d"
-    else
-        echo "  ⚠️  cheats.d not found: $cheats_src"
     fi
 
     echo "  ℹ️  Restart Argos (or toggle the extension) to reload the menu."
@@ -410,6 +417,9 @@ install_updater() {
     echo "     cheats-updater update   — Download latest cheatsheets"
     echo "     cheats-updater list     — List all official cheatsheets"
 }
+
+# ─── Deploy cheats (always, for every DE) ────────────────────────────────────
+install_cheats
 
 # ─── DE routing ──────────────────────────────────────────────────────────────
 INSTALLED=0
