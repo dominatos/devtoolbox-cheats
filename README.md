@@ -99,14 +99,11 @@ sudo dnf install zenity xclip fzf bat pandoc
 sudo pacman -S zenity xclip fzf bat pandoc
 ```
 
-#### 3. Clone and Link
+#### 3. Clone and Install
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
-chmod +x devtoolbox-cheats.30s.sh
-mv devtoolbox-cheats.30s.sh ~/.config/argos/
-mv cheats.d/ ~/cheats.d/
-
+./install.sh
 ```
 
 #### 4. Restart Argos
@@ -126,12 +123,7 @@ Disable and re-enable the Argos extension, or press `Alt+F2` → `r` → `Enter`
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
 
-# Install for Plasma 6 (recommended)
-cd kde-widget-plasma6
-./install.sh
-
-# OR Install for Plasma 5
-cd kde-widget-plasma5
+# Run universal installer (auto-detects Plasma version)
 ./install.sh
 ```
 
@@ -187,7 +179,7 @@ cd devtoolbox-cheats
 
 **Run manually:**
 ```bash
-./devtoolbox-cheats.30s.sh menu
+devtoolbox-cheats-menu menu
 ```
 
 **Add to panel (XFCE):**
@@ -195,7 +187,7 @@ cd devtoolbox-cheats
 2. Right-click panel → Add New Items → "Generic Monitor"
 3. Right-click the new monitor → Properties:
    - **Label:** 🗒️ (or leave blank)
-   - **Command:** `~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu`
+   - **Command:** `devtoolbox-cheats-menu menu`
    - **Period (s):** 30
 
 **Add to panel (MATE):**
@@ -204,7 +196,7 @@ cd devtoolbox-cheats
 3. Configure properties:
    - **Type:** Application
    - **Name:** DevToolbox Cheats
-   - **Command:** `~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu`
+   - **Command:** `devtoolbox-cheats-menu menu`
    - **Icon:** 🗒️ (click to select icon)
 
 **Add to panel (Cinnamon):**
@@ -212,7 +204,7 @@ cd devtoolbox-cheats
 2. Select a category (e.g., Accessories) → "New Item"
 3. Configure properties:
    - **Name:** DevToolbox Cheats
-   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
+   - **Command:** `devtoolbox-cheats-menu menu`
    - **Icon:** 🗒️ (click to select icon)
 4. Save and close the menu editor.
 5. Open the Cinnamon Menu, search for "DevToolbox Cheats", right-click it, and select "Add to panel".
@@ -251,8 +243,8 @@ cd devtoolbox-cheats
 3. Right-click the Custom command widget → Configure
 4. Click "+" to add new launcher:
    - **Name:** DevToolbox Cheats
-   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
-   - **Click command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
+   - **Command:** `devtoolbox-cheats-menu menu`
+   - **Click command:** `devtoolbox-cheats-menu menu`
    - **Icon:** Click to browse and select a suitable icon (e.g., accessories-text-editor)
 5. Click OK and close
 
@@ -262,24 +254,11 @@ cd devtoolbox-cheats
 3. Click "Application Launch Bar" → Preferences
 4. Click "+" to add application:
    - Browse to create desktop file or add command:
-   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
+   - **Command:** `devtoolbox-cheats-menu menu`
 5. Close preferences
 
 **Or use desktop shortcut:**
-```bash
-cat > ~/Desktop/DevToolbox-Cheats.desktop <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DevToolbox Cheats
-Comment=Quick access to command cheatsheets
-Exec=bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'
-Icon=accessories-text-editor
-Terminal=false
-Categories=Utility;
-EOF
-chmod +x ~/Desktop/DevToolbox-Cheats.desktop
-```
+The installer automatically creates an application shortcut. Open your application launcher and search for **DevToolbox Cheats**.
 
 **Result:** Clicking launches dialog menu with all cheats
 
@@ -297,51 +276,17 @@ sudo apt install zenity xclip fzf bat pandoc
 sudo pacman -S zenity xclip fzf bat pandoc
 ```
 
-#### 2. Clone Repository
+#### 3. Install and Launch
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
+./install.sh
 ```
 
-#### 3. Add to Panel
-
-**Using Budgie Menu:**
-1. Open Budgie Menu → Right-click → "Edit Applications"
-2. Navigate to "Accessories" or "Development" category
-3. Click "New Item":
-   - **Name:** DevToolbox Cheats
-   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
-   - **Icon:** Click to select (e.g., accessories-text-editor)
-4. Save and close
-
-**Using Quick Launch:**
-1. Right-click Budgie panel → "Add Applets"
-2. Find "QuickNote" or use "Icon Task List"
-3. Or create desktop launcher:
-
-```bash
-mkdir -p ~/.local/share/applications
-cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DevToolbox Cheats
-Comment=Quick access to command cheatsheets
-Exec=bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'
-Icon=accessories-text-editor
-Terminal=false
-Categories=Utility;Development;
-EOF
-chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
-```
-
-4. Open Budgie Menu, search "DevToolbox", drag to Favorites or panel
-
-**Or use Plank (dock):**
-```bash
-# Right-click any icon in Plank dock → Preferences
-# Drag the .desktop file from ~/.local/share/applications to the dock
-```
+**Find in Budgie Menu:**
+1. Open Budgie Menu and type "DevToolbox"
+2. Drag the shortcut to your Favorites or panel.
+3. Optional: Right-click any icon in Plank dock → Preferences, and drag from the applications menu.
 
 **Result:** Clicking launches dialog menu with zenity interface
 
@@ -356,30 +301,11 @@ chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
 sudo apt install zenity xclip fzf bat pandoc
 ```
 
-#### 2. Clone Repository
+#### 3. Install and Launch
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
-```
-
-#### 3. Add to Applications Menu
-
-**Create application launcher:**
-```bash
-mkdir -p ~/.local/share/applications
-cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DevToolbox Cheats
-Comment=Quick access to command cheatsheets
-Exec=bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'
-Icon=accessories-text-editor
-Terminal=false
-Categories=Utility;Development;
-Keywords=cheat;cheatsheet;command;reference;
-EOF
-chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
+./install.sh
 ```
 
 #### 4. Add to Dock
@@ -393,7 +319,7 @@ chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
 1. Open System Settings → Keyboard → Shortcuts → Custom
 2. Click "+" to add:
    - **Name:** DevToolbox Cheats
-   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
+   - **Command:** `devtoolbox-cheats-menu menu`
    - **Shortcut:** Press keys (e.g., `Super+C`)
 
 **Result:** Elegant zenity dialog matching elementary OS design language
@@ -412,29 +338,11 @@ sudo apt install zenity xclip fzf bat pandoc
 sudo pacman -S zenity xclip fzf bat pandoc
 ```
 
-#### 2. Clone Repository
+#### 3. Install and Launch
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
-```
-
-#### 3. Add to Launcher
-
-**Create application entry:**
-```bash
-mkdir -p ~/.local/share/applications
-cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DevToolbox Cheats
-Comment=Quick access to command cheatsheets
-Exec=bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'
-Icon=accessories-text-editor
-Terminal=false
-Categories=Utility;Development;
-EOF
-chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
+./install.sh
 ```
 
 #### 4. Add to Dock or Control Center
@@ -448,7 +356,7 @@ chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
 1. Open Control Center → Keyboard and Language → Shortcuts → Custom Shortcuts
 2. Click "+" to add:
    - **Name:** DevToolbox Cheats  
-   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
+   - **Command:** `devtoolbox-cheats-menu menu`
    - **Shortcut:** Click "None" and press keys (e.g., `Ctrl+Alt+C`)
 
 **Result:** Beautiful dialog matching Deepin's aesthetic with blur effects
@@ -466,29 +374,11 @@ sudo apt install zenity fzf bat pandoc wl-clipboard
 # Cosmic uses Wayland by default
 ```
 
-#### 2. Clone Repository
+#### 3. Install and Launch
 ```bash
 git clone https://github.com/dominatos/devtoolbox-cheats.git
 cd devtoolbox-cheats
-```
-
-#### 3. Add to Cosmic Launcher
-
-**Create application entry:**
-```bash
-mkdir -p ~/.local/share/applications
-cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DevToolbox Cheats
-Comment=Quick access to command cheatsheets
-Exec=bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'
-Icon=accessories-text-editor
-Terminal=false
-Categories=Utility;Development;
-EOF
-chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
+./install.sh
 ```
 
 #### 4. Add Keyboard Shortcut
@@ -496,7 +386,7 @@ chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
 1. Open Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts
 2. Click "+" to add:
    - **Name:** DevToolbox Cheats
-   - **Command:** `bash -c '~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'`
+   - **Command:** `devtoolbox-cheats-menu menu`
    - **Shortcut:** Press keys (e.g., `Super+C`)
 
 **Or add to Cosmic Dock:**
@@ -537,35 +427,35 @@ cd devtoolbox-cheats
 
 **i3 config (`~/.config/i3/config`):**
 ```bash
-bindsym $mod+c exec --no-startup-id ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
+bindsym $mod+c exec --no-startup-id devtoolbox-cheats-menu menu
 ```
 
 **sway config (`~/.config/sway/config`):**
 ```bash
-bindsym $mod+c exec ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
+bindsym $mod+c exec devtoolbox-cheats-menu menu
 ```
 
 **bspwm config (`~/.config/sxhkd/sxhkdrc`):**
 ```bash
 super + c
-    ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
+    devtoolbox-cheats-menu menu
 ```
 
 **hyprland config (`~/.config/hypr/hyprland.conf`):**
 ```bash
-bind = SUPER, C, exec, ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
+bind = SUPER, C, exec, devtoolbox-cheats-menu menu
 ```
 
 **awesome wm config (`~/.config/awesome/rc.lua`):**
 ```lua
 awful.key({ modkey }, "c",
-    function () awful.spawn.with_shell("~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu") end,
+    function () awful.spawn.with_shell("devtoolbox-cheats-menu menu") end,
     {description = "open devtoolbox cheats", group = "launcher"})
 ```
 
 **dwm config (`config.h` - requires recompile):**
 ```c
-static const char *cheatcmd[] = { "/bin/sh", "-c", "~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu", NULL };
+static const char *cheatcmd[] = { "/bin/sh", "-c", "devtoolbox-cheats-menu menu", NULL };
 { MODKEY, XK_c, spawn, {.v = cheatcmd } },
 ```
 
@@ -574,16 +464,16 @@ static const char *cheatcmd[] = { "/bin/sh", "-c", "~/devtoolbox-cheats/devtoolb
 **rofi (X11):**
 ```bash
 # Add this alias to ~/.bashrc or ~/.zshrc
-alias cheats='~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'
+alias cheats='devtoolbox-cheats-menu menu'
 
 # Or integrate directly with rofi
-bindsym $mod+c exec "rofi -show run -run-command 'bash -c ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu'"
+bindsym $mod+c exec "rofi -show run -run-command 'bash -c devtoolbox-cheats-menu menu'"
 ```
 
 **wofi (Wayland):**
 ```bash
 # Add to sway/hyprland config
-bindsym $mod+c exec ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu | wofi --dmenu
+bindsym $mod+c exec devtoolbox-cheats-menu menu | wofi --dmenu
 ```
 
 **Result:** Opens dialog menu (if zenity/rofi installed) or FZF terminal search
@@ -762,7 +652,7 @@ Icon: network-server
 
 ```bash
 # Direct FZF search
-./devtoolbox-cheats.30s.sh fzfSearch
+devtoolbox-cheats-menu fzfSearch
 
 # Or from menu → FZF Search Commands
 ```
@@ -808,7 +698,7 @@ Right-click widget → Configure:
 
 **Add to i3/sway config:**
 ```bash
-bindsym $mod+c exec ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
+bindsym $mod+c exec devtoolbox-cheats-menu menu
 ```
 
 **Add to polybar:**
@@ -816,14 +706,14 @@ bindsym $mod+c exec ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
 [module/devtoolbox]
 type = custom/script
 exec = echo "🗒️"
-click-left = ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
+click-left = devtoolbox-cheats-menu menu
 ```
 
 **Add to waybar:**
 ```json
 "custom/devtoolbox": {
   "format": "🗒️ {}",
-  "on-click": "~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu"
+  "on-click": "devtoolbox-cheats-menu menu"
 }
 ```
 
@@ -995,14 +885,11 @@ sudo apt install alacritty        # Cosmic/modern compositors
 
 **Solution:**
 ```bash
-# Make sure script is executable
-chmod +x ~/devtoolbox-cheats/devtoolbox-cheats.30s.sh
+# Verify the script is in your PATH and executable
+devtoolbox-cheats-menu menu
 
 # Update desktop database
 update-desktop-database ~/.local/share/applications
-
-# Test script manually first
-~/devtoolbox-cheats/devtoolbox-cheats.30s.sh menu
 ```
 
 ---
@@ -1099,58 +986,7 @@ Pull requests welcome! Please:
 
 ## 📝 Changelog
 
-### v1.1 (2026-03-04)
-
-**Universal Installer:**
-- ✅ Unified `install.sh` — single installer for all 12+ desktop environments
-- ✅ Auto-detection for GNOME, KDE, XFCE, MATE, Cinnamon, LXQt, LXDE, Budgie, Pantheon, Deepin, Cosmic, Tiling WMs
-- ✅ Per-DE panel integration instructions printed after install
-- ✅ Universal `cheats.d` deployment to `~/cheats.d` for all DEs
-
-**Auto-Updater:**
-- ✅ New `cheats-updater.sh` — check, list, and update cheatsheets from upstream
-- ✅ Smart diff — only overwrites changed files; custom cheatsheets never touched
-- ✅ Automatic backups before every update
-- ✅ systemd daily timer for automatic updates
-- ✅ Installed to `~/.local/bin/` (PATH-accessible)
-
-**Cheatsheet Library:**
-- ✅ 130+ cheatsheets organized in 17 categories
-- ✅ Refactored and standardized formatting across all cheatsheets
-- ✅ Proper fenced code blocks, consistent headers, improved readability
-
----
-
-### v1.0 Beta (2026-02-23)
-
-**Universal Support:**
-- ✅ GNOME Argos integration
-- ✅ KDE Plasma 5 & 6 native widgets
-- ✅ XFCE/MATE/Cinnamon dialog menus
-- ✅ LXQt/LXDE lightweight support
-- ✅ Budgie/Pantheon/Deepin modern DEs
-- ✅ Cosmic (Pop!_OS 2025) support
-- ✅ Tiling WM support (i3, sway, bspwm, hyprland, awesome, dwm)
-- ✅ Auto-detection with smart fallbacks
-
-**Performance:**
-- ✅ Smart caching: <100ms load time
-- ✅ Category toggle optimization: <10ms (KDE widget)
-- ✅ Auto cache invalidation on file changes
-
-**KDE Widget Features:**
-- ✅ Editor auto-detection (16+ editors)
-- ✅ Editor dropdown with ✓ marks
-- ✅ Auto-fallback when editor missing
-- ✅ Safe install/uninstall (no crashes in VMs)
-
-**Universal Script Features:**
-- ✅ Cross-DE dialog abstraction layer
-- ✅ Terminal detection (15+ terminals)
-- ✅ FZF search with syntax highlighting
-- ✅ Copy/Open/Export functions
-- ✅ PDF export with pandoc
-- ✅ Wayland clipboard support (wl-clipboard)
+Please see [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ---
 
