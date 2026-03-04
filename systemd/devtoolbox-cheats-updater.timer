@@ -1,0 +1,11 @@
+[Unit]
+Description=DevToolbox Cheats Updater — weekly check timer
+
+[Timer]
+# Run once a week (Monday 09:00), randomized ±2h to avoid thundering herd
+OnCalendar=Mon *-*-* 09:00:00
+RandomizedDelaySec=7200
+Persistent=true
+
+[Install]
+WantedBy=timers.target

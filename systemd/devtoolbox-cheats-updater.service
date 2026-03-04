@@ -1,0 +1,16 @@
+[Unit]
+Description=DevToolbox Cheats Updater — check for cheatsheet updates
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/devtoolbox-cheats/cheats-updater.sh check
+# Adjust path above if your repo is elsewhere
+
+# Notifications require access to the user's D-Bus session
+Environment=DISPLAY=:0
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
+
+[Install]
+WantedBy=default.target

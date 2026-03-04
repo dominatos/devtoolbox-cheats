@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-cheats_dir="../cheats.d"
-readme="../README.md"
+cheats_dir="/home/sviatoslav/devtoolbox-cheats/cheats.d"
+readme="/home/sviatoslav/devtoolbox-cheats/README.md"
 
 missing=0
 
 while IFS= read -r cheat; do
-    rel_path="${cheat#../}"  # strip leading ../
+    rel_path="${cheat#$cheats_dir/}"
     if ! grep -qF "$rel_path" "$readme"; then
         echo "Missing in README: $rel_path"
         missing=$((missing+1))
