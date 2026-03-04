@@ -149,85 +149,15 @@ detect_de() {
     echo "unknown"
 }
 
-# ─── Install script & icon to generic paths ──────────────────────────────────
-install_generic_app() {
-    local install_bin="$HOME/.local/bin"
-    local script_dest="$install_bin/devtoolbox-cheats-menu"
-    local script_src="$SCRIPT_DIR/devtoolbox-cheats.30s.sh"
-
-    local icons_dir="$HOME/.local/share/icons"
-    local icon_dest="$icons_dir/devtoolbox-cheats.png"
-    local icon_src="$SCRIPT_DIR/docs/img/icons8-test-cheating-48.png"
-
-    echo ""
-    echo "⚙️ Installing core script and icon..."
-    
-    mkdir -p "$install_bin"
-    if [ -f "$script_src" ]; then
-        cp "$script_src" "$script_dest"
-        chmod +x "$script_dest"
-        echo "  ✅ Script installed to: $script_dest"
-    fi
-
-    mkdir -p "$icons_dir"
-    if [ -f "$icon_src" ]; then
-        cp "$icon_src" "$icon_dest"
-        echo "  ✅ Icon installed to: $icon_dest"
-    fi
-
-    if ! echo "$PATH" | grep -q "$install_bin"; then
-        echo "  ⚠️  $install_bin is not in your PATH"
-        echo "     Add to your shell rc: export PATH=\"\$HOME/.local/bin:\$PATH\""
-    fi
-}
-
-# ─── Universal Desktop Entry ─────────────────────────────────────────────────
-install_desktop_entry() {
-    local apps_dir="$HOME/.local/share/applications"
-    local desktop_file="$apps_dir/devtoolbox-cheats.desktop"
-    local script_path="$HOME/.local/bin/devtoolbox-cheats-menu"
-    local icon_path="$HOME/.local/share/icons/devtoolbox-cheats.png"
-
-    echo ""
-    echo "🌟 Creating Desktop Entry..."
-    mkdir -p "$apps_dir"
-
-    cat <<DESK > "$desktop_file"
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DevToolbox Cheats
-Comment=Quick access to command cheatsheets
-Exec=bash -c '$script_path menu'
-Icon=$icon_path
-Terminal=false
-Categories=Utility;Development;
-Keywords=cheat;cheatsheet;command;reference;
-DESK
-
-    chmod +x "$desktop_file"
-    echo "  ✅ Desktop entry created at $desktop_file"
-    
-    # Update desktop database
-    if command -v update-desktop-database &>/dev/null; then
-        update-desktop-database "$apps_dir" 2>/dev/null || true
-    elif command -v xdg-desktop-menu &>/dev/null; then
-        xdg-desktop-menu forceupdate --mode user 2>/dev/null || true
-    fi
-}
-
 # ─── Per-DE widget installation guide ────────────────────────────────────────
 print_de_instructions() {
     local de="$1"
-    local script_path="$HOME/.local/bin/devtoolbox-cheats-menu"
-    local icon_path="$HOME/.local/share/icons/devtoolbox-cheats.png"
+    local script_path="$SCRIPT_DIR/devtoolbox-cheats.30s.sh"
+    local icon_path="$SCRIPT_DIR/docs/img/icons8-test-cheating-48.png"
 
     echo ""
     echo "──────────────────────────────────────────────────────────"
-    echo "  ✅ A universal application shortcut has been created!"
-    echo "     Open your application launcher (e.g., press Super) and search for 'DevToolbox Cheats'."
-    echo "──────────────────────────────────────────────────────────"
-    echo "  📋 How to add DevToolbox Cheats to your panel / dock"
+    echo "  📋 How to add DevToolbox Cheats to your panel / launcher"
     echo "──────────────────────────────────────────────────────────"
     echo "  Script path : $script_path"
     echo "  Icon path   : $icon_path"
@@ -278,24 +208,104 @@ print_de_instructions() {
             echo "  2. Select 'Application Launch Bar' → Add → Preferences"
             echo "  3. Click '+' and set:"
             echo "       Command : bash -c '$script_path menu'"
+            echo "  Or create a desktop shortcut:"
+            cat <<EOF
+     cat > ~/Desktop/DevToolbox-Cheats.desktop <<DESK
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DevToolbox Cheats
+Comment=Quick access to command cheatsheets
+Exec=bash -c '$script_path menu'
+Icon=$icon_path
+Terminal=false
+Categories=Utility;
+DESK
+     chmod +x ~/Desktop/DevToolbox-Cheats.desktop
+EOF
             ;;
         budgie)
             echo "  🟡 Budgie — Application launcher"
-            echo "  1. Open Budgie Menu, search 'DevToolbox', drag to Favorites or panel."
+            echo "  1. Create a .desktop entry:"
+            echo "     mkdir -p ~/.local/share/applications"
+            cat <<EOF
+     cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<DESK
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DevToolbox Cheats
+Comment=Quick access to command cheatsheets
+Exec=bash -c '$script_path menu'
+Icon=$icon_path
+Terminal=false
+Categories=Utility;Development;
+DESK
+     chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
+EOF
+            echo "  2. Open Budgie Menu, search 'DevToolbox', drag to Favorites or panel."
             ;;
         pantheon)
             echo "  🔷 Pantheon (elementary OS) — Application launcher"
-            echo "  1. Press Super to open Applications, search 'DevToolbox Cheats',"
+            echo "  1. Create a .desktop entry:"
+            cat <<EOF
+     mkdir -p ~/.local/share/applications
+     cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<DESK
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DevToolbox Cheats
+Comment=Quick access to command cheatsheets
+Exec=bash -c '$script_path menu'
+Icon=$icon_path
+Terminal=false
+Categories=Utility;Development;
+Keywords=cheat;cheatsheet;command;reference;
+DESK
+     chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
+EOF
+            echo "  2. Press Super to open Applications, search 'DevToolbox Cheats',"
             echo "     right-click → 'Add to Dock'."
             ;;
         deepin)
             echo "  🔵 Deepin — Application launcher"
-            echo "  1. Open Launcher, find 'DevToolbox Cheats',"
+            echo "  1. Create a .desktop entry:"
+            cat <<EOF
+     mkdir -p ~/.local/share/applications
+     cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<DESK
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DevToolbox Cheats
+Comment=Quick access to command cheatsheets
+Exec=bash -c '$script_path menu'
+Icon=$icon_path
+Terminal=false
+Categories=Utility;Development;
+DESK
+     chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
+EOF
+            echo "  2. Open Launcher, find 'DevToolbox Cheats',"
             echo "     right-click → 'Send to Desktop' or 'Pin to Dock'."
             ;;
         cosmic)
             echo "  🚀 Cosmic (Pop!_OS) — Launcher"
-            echo "  1. Press Super+/ to open Cosmic Launcher, search 'DevToolbox Cheats',"
+            echo "  1. Create a .desktop entry:"
+            cat <<EOF
+     mkdir -p ~/.local/share/applications
+     cat > ~/.local/share/applications/devtoolbox-cheats.desktop <<DESK
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DevToolbox Cheats
+Comment=Quick access to command cheatsheets
+Exec=bash -c '$script_path menu'
+Icon=$icon_path
+Terminal=false
+Categories=Utility;Development;
+DESK
+     chmod +x ~/.local/share/applications/devtoolbox-cheats.desktop
+EOF
+            echo "  2. Press Super+/ to open Cosmic Launcher, search 'DevToolbox Cheats',"
             echo "     right-click → 'Pin to Dock'."
             echo "  Or add a keyboard shortcut:"
             echo "     Settings → Keyboard → Custom Shortcuts → '+'"
@@ -330,7 +340,6 @@ print_de_instructions() {
             echo "  🟠 GNOME — Argos extension not detected."
             echo "  Install Argos from https://extensions.gnome.org/extension/1176/argos/"
             echo "  or https://github.com/p-e-w/argos, then re-run this installer."
-            echo "  (Note: You can still use the universal app shortcut from your launcher)"
             echo ""
             echo "  Alternatively, add a keyboard shortcut:"
             echo "    Settings → Keyboard → Custom Shortcuts → '+'"
@@ -411,12 +420,6 @@ install_updater() {
 
 # ─── Deploy cheats (always, for every DE) ────────────────────────────────────
 install_cheats
-
-# ─── Install generic app ─────────────────────────────────────────────────────
-install_generic_app
-
-# ─── Universal Desktop Entry ─────────────────────────────────────────────────
-install_desktop_entry
 
 # ─── DE routing ──────────────────────────────────────────────────────────────
 INSTALLED=0
