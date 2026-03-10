@@ -315,36 +315,41 @@ for jail in $(sudo fail2ban-client status | grep "Jail list" | sed 's/.*://; s/,
 done > banned-ips.txt
 ```
 
-# 💡 Best Practices / Лучшие практики
-# Use jail.local instead of modifying jail.conf / Используйте jail.local вместо изменения jail.conf
-# Whitelist your own IPs / Внесите свои IP в белый список
-# Start with conservative maxretry / Начните с консервативного maxretry
-# Monitor logs regularly / Регулярно мониторьте логи
-# Test filters before deploying / Тестируйте фильтры перед развёртыванием
-# Set reasonable ban times / Устанавливайте разумные времена бана
-# Enable recidive jail for repeat offenders / Включите jail recidive для рецидивистов
+## 💡 Best Practices / Лучшие практики
 
-# 🔧 Configuration Files / Файлы конфигурации
-```bash
-# /etc/fail2ban/fail2ban.conf — Main config / Основная конфигурация
-# /etc/fail2ban/jail.conf — Default jails / Jails по умолчанию
-# /etc/fail2ban/jail.local — Local overrides / Локальные переопределения
-# /etc/fail2ban/filter.d/ — Filter definitions / Определения фильтров
-# /etc/fail2ban/action.d/ — Action definitions / Определения действий
-```
+- Use `jail.local` instead of modifying `jail.conf` / Используйте `jail.local` вместо изменения `jail.conf`
+- Whitelist your own IPs / Внесите свои IP в белый список
+- Start with conservative maxretry / Начните с консервативного maxretry
+- Monitor logs regularly / Регулярно мониторьте логи
+- Test filters before deploying / Тестируйте фильтры перед развёртыванием
+- Set reasonable ban times / Устанавливайте разумные времена бана
+- Enable recidive jail for repeat offenders / Включите jail recidive для рецидивистов
 
-# 📋 Common Jails / Распространённые jails
-```bash
-# sshd — SSH protection / Защита SSH, apache-auth — Apache authentication / Аутентификация Apache
-# nginx-limit-req — Nginx rate limiting / Ограничение скорости Nginx
-# mysqld-auth — MySQL protection / Защита MySQL, postfix — Mail server protection / Защита почтового сервера
-# recidive — Repeat offender jail / Jail для рецидивистов
-```
+## 🔧 Configuration Files / Файлы конфигурации
 
-# ⚠️ Important Notes / Важные примечания
-# Always whitelist your own IPs / Всегда вносите свои IP в белый список
-# Test configuration before reloading / Тестируйте конфигурацию перед перезагрузкой
-# Monitor for false positives / Мониторьте на ложные срабатывания
-# Fail2ban requires iptables or nftables / Fail2ban требует iptables или nftables
-# Ban time -1 means permanent ban / Время бана -1 означает постоянный бан
-```
+| File | Description (EN / RU) |
+|------|----------------------|
+| `/etc/fail2ban/fail2ban.conf` | Main config / Основная конфигурация |
+| `/etc/fail2ban/jail.conf` | Default jails / Jails по умолчанию |
+| `/etc/fail2ban/jail.local` | Local overrides / Локальные переопределения |
+| `/etc/fail2ban/filter.d/` | Filter definitions / Определения фильтров |
+| `/etc/fail2ban/action.d/` | Action definitions / Определения действий |
+
+## 📋 Common Jails / Распространённые jails
+
+| Jail | Description (EN / RU) |
+|------|----------------------|
+| `sshd` | SSH protection / Защита SSH |
+| `apache-auth` | Apache authentication / Аутентификация Apache |
+| `nginx-limit-req` | Nginx rate limiting / Ограничение скорости Nginx |
+| `mysqld-auth` | MySQL protection / Защита MySQL |
+| `postfix` | Mail server protection / Защита почтового сервера |
+| `recidive` | Repeat offender jail / Jail для рецидивистов |
+
+## ⚠️ Important Notes / Важные примечания
+
+- Always whitelist your own IPs / Всегда вносите свои IP в белый список
+- Test configuration before reloading / Тестируйте конфигурацию перед перезагрузкой
+- Monitor for false positives / Мониторьте на ложные срабатывания
+- Fail2ban requires iptables or nftables / Fail2ban требует iptables или nftables
+- Ban time -1 means permanent ban / Время бана -1 означает постоянный бан

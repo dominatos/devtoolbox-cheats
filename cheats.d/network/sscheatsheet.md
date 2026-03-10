@@ -235,40 +235,45 @@ sudo ss -tunlp | grep -v '127.0.0.1\|::1'
 sudo ss -tunlp | grep -v 'users:'
 ```
 
-# 💡 Best Practices / Лучшие практики
-# Use -n for faster output (no DNS resolution) / Используйте -n для быстрого вывода (без DNS разрешения)
-# Use sudo for process info (-p option) / Используйте sudo для информации о процессах (опция -p)
-# ss is faster than netstat / ss быстрее чем netstat
-# Use filters for large servers / Используйте фильтры для больших серверов
-# Watch for TIME_WAIT buildup / Следите за накоплением TIME_WAIT
-# Check listening services regularly / Регулярно проверяйте слушающие сервисы
+## 💡 Best Practices / Лучшие практики
 
-# 🔧 Common Options / Распространённые опции
-```bash
-# -t: TCP sockets / TCP сокеты, -u: UDP sockets / UDP сокеты
-# -l: Listening sockets / Слушающие сокеты, -a: All sockets / Все сокеты
-# -n: Numeric (no name resolution) / Числовой (без разрешения имён)
-# -p: Show processes / Показать процессы, -e: Extended info / Расширенная информация
-# -m: Memory info / Информация о памяти, -o: Timer info / Информация о таймере
-```
+- Use `-n` for faster output (no DNS resolution) / Используйте `-n` для быстрого вывода (без DNS разрешения)
+- Use `sudo` for process info (`-p` option) / Используйте `sudo` для информации о процессах (опция `-p`)
+- `ss` is faster than `netstat` / `ss` быстрее чем `netstat`
+- Use filters for large servers / Используйте фильтры для больших серверов
+- Watch for TIME_WAIT buildup / Следите за накоплением TIME_WAIT
+- Check listening services regularly / Регулярно проверяйте слушающие сервисы
 
-# 📋 Socket States / Состояния сокетов
-```bash
-# ESTABLISHED — Active connection / Активное соединение
-# LISTEN — Listening for connections / Слушает соединения
-# TIME-WAIT — Waiting after close / Ожидание после закрытия
-# SYN-SENT — Connection attempt / Попытка соединения
-# SYN-RECV — Connection being established / Соединение устанавливается
-# FIN-WAIT-1 — Connection closing / Соединение закрывается
-# FIN-WAIT-2 — Connection almost closed / Соединение почти закрыто
-# CLOSE-WAIT — Waiting for close / Ожидание закрытия
-# CLOSING — Closing connection / Закрытие соединения
-# LAST-ACK — Waiting for ACK / Ожидание ACK
-```
+## 🔧 Common Options / Распространённые опции
 
-# ⚠️ Important Notes / Важные примечания
-# ss replaces netstat / ss заменяет netstat
-# Requires iproute2 package / Требует пакет iproute2
-# Some options require root / Некоторые опции требуют root
-# Filters use double quotes / Фильтры используют двойные кавычки
-```
+| Option | Description (EN / RU) |
+|--------|----------------------|
+| `-t` / `-u` | TCP / UDP sockets / сокеты |
+| `-l` / `-a` | Listening / All sockets / Слушающие / Все сокеты |
+| `-n` | Numeric (no name resolution) / Числовой (без разрешения имён) |
+| `-p` | Show processes / Показать процессы |
+| `-e` | Extended info / Расширенная информация |
+| `-m` | Memory info / Информация о памяти |
+| `-o` | Timer info / Информация о таймере |
+
+## 📋 Socket States / Состояния сокетов
+
+| State | Description (EN / RU) |
+|-------|----------------------|
+| `ESTABLISHED` | Active connection / Активное соединение |
+| `LISTEN` | Listening for connections / Слушает соединения |
+| `TIME-WAIT` | Waiting after close / Ожидание после закрытия |
+| `SYN-SENT` | Connection attempt / Попытка соединения |
+| `SYN-RECV` | Connection being established / Соединение устанавливается |
+| `FIN-WAIT-1` | Connection closing / Соединение закрывается |
+| `FIN-WAIT-2` | Connection almost closed / Соединение почти закрыто |
+| `CLOSE-WAIT` | Waiting for close / Ожидание закрытия |
+| `CLOSING` | Closing connection / Закрытие соединения |
+| `LAST-ACK` | Waiting for ACK / Ожидание ACK |
+
+## ⚠️ Important Notes / Важные примечания
+
+- `ss` replaces `netstat` / `ss` заменяет `netstat`
+- Requires `iproute2` package / Требует пакет `iproute2`
+- Some options require root / Некоторые опции требуют root
+- Filters use double quotes / Фильтры используют двойные кавычки

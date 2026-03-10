@@ -309,35 +309,40 @@ sudo ufw insert 1 deny from <ATTACKER_IP>
 sudo ufw insert 1 deny from 192.168.100.0/24
 ```
 
-# 💡 Best Practices / Лучшие практики
-# Always allow SSH before enabling UFW / Всегда разрешайте SSH перед включением UFW
-# Use 'limit' for SSH to prevent brute force / Используйте 'limit' для SSH для предотвращения brute force
-# Set default policies first / Сначала устанавливайте политики по умолчанию
-# Use numbered rules for easier deletion / Используйте пронумерованные правила для упрощения удаления
-# Enable logging for security audits / Включайте логирование для аудита безопасности
-# Test rules before deploying to production / Тестируйте правила перед развёртыванием в продакшене
+## 💡 Best Practices / Лучшие практики
 
-# 🔧 Configuration Files / Файлы конфигурации
-```bash
-# /etc/ufw/ufw.conf — Main config / Основная конфигурация
-# /etc/ufw/before.rules — Rules processed first / Правила обрабатываемые первыми
-# /etc/ufw/after.rules — Rules processed last / Правила обрабатываемые последними
-# /etc/default/ufw — Default settings / Настройки по умолчанию
-# /etc/ufw/applications.d/ — Application profiles / Профили приложений
-# /var/log/ufw.log — UFW log file / Файл логов UFW
-```
+- Always allow SSH before enabling UFW / Всегда разрешайте SSH перед включением UFW
+- Use `limit` for SSH to prevent brute force / Используйте `limit` для SSH для предотвращения brute force
+- Set default policies first / Сначала устанавливайте политики по умолчанию
+- Use numbered rules for easier deletion / Используйте пронумерованные правила для упрощения удаления
+- Enable logging for security audits / Включайте логирование для аудита безопасности
+- Test rules before deploying to production / Тестируйте правила перед развёртыванием в продакшене
 
-# 📋 Common Ports / Распространённые порты
-```bash
-# 22 — SSH, 80 — HTTP, 443 — HTTPS, 25 — SMTP, 53 — DNS
-# 3306 — MySQL, 5432 — PostgreSQL, 6379 — Redis, 27017 — MongoDB
-# 8080 — Alternative HTTP / Альтернативный HTTP
-```
+## 🔧 Configuration Files / Файлы конфигурации
 
-# ⚠️ Important Notes / Важные примечания
-# UFW is frontend for iptables / UFW это фронтенд для iptables
-# Changes take effect immediately / Изменения вступают в силу немедленно
-# Always test SSH access after enabling / Всегда тестируйте SSH доступ после включения
-# Use 'reject' for informative denial / Используйте 'reject' для информативного отказа
-# Use 'deny' for silent drop / Используйте 'deny' для тихого отбрасывания
-```
+| File | Description (EN / RU) |
+|------|----------------------|
+| `/etc/ufw/ufw.conf` | Main config / Основная конфигурация |
+| `/etc/ufw/before.rules` | Rules processed first / Правила обрабатываемые первыми |
+| `/etc/ufw/after.rules` | Rules processed last / Правила обрабатываемые последними |
+| `/etc/default/ufw` | Default settings / Настройки по умолчанию |
+| `/etc/ufw/applications.d/` | Application profiles / Профили приложений |
+| `/var/log/ufw.log` | UFW log file / Файл логов UFW |
+
+## 📋 Common Ports / Распространённые порты
+
+| Port | Service | Port | Service |
+|------|---------|------|---------|
+| 22 | SSH | 3306 | MySQL |
+| 80 | HTTP | 5432 | PostgreSQL |
+| 443 | HTTPS | 6379 | Redis |
+| 25 | SMTP | 27017 | MongoDB |
+| 53 | DNS | 8080 | Alt HTTP |
+
+## ⚠️ Important Notes / Важные примечания
+
+- UFW is a frontend for iptables / UFW это фронтенд для iptables
+- Changes take effect immediately / Изменения вступают в силу немедленно
+- Always test SSH access after enabling / Всегда тестируйте SSH доступ после включения
+- Use `reject` for informative denial / Используйте `reject` для информативного отказа
+- Use `deny` for silent drop / Используйте `deny` для тихого отбрасывания

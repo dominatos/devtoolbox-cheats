@@ -336,11 +336,16 @@ mongosh --eval 'db.adminCommand( { getParameter: 1, featureCompatibilityVersion:
 # 2. Backup Config / Бэкап конфига
 cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
 
-# 3. Stop & Update Repo / Остановить и обновить репо
+# 3. Stop Service / Остановить сервис
 systemctl stop mongod
-```bash
-# Add/Update /etc/yum.repos.d/mongodb-org-6.0.repo
-# Добавьте/Обновите /etc/yum.repos.d/mongodb-org-6.0.repo
+```
+
+### Repo Configuration / Конфигурация репозитория
+
+`/etc/yum.repos.d/mongodb-org-6.0.repo`
+
+```ini
+[mongodb-org-6.0]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/6.0/x86_64/
 gpgcheck=1
@@ -348,9 +353,12 @@ enabled=1
 gpgkey=https://pgp.mongodb.com/server-6.0.asc
 ```
 
+```bash
 # 4. Install / Установить
-# Debian/Ubuntu: apt-get update && apt-get install -y mongodb-org
-# RHEL/AlmaLinux: dnf install -y mongodb-org
+# Debian/Ubuntu:
+apt-get update && apt-get install -y mongodb-org
+# RHEL/AlmaLinux:
+dnf install -y mongodb-org
 
 # 5. Start & Verify / Запустить и проверить
 systemctl start mongod
@@ -544,8 +552,9 @@ db.createView(
 
 
 
-# Practice Exercises / Задания для практики
+## Practice Exercises / Задания для практики
 
+```javascript
 // ## 📋 FIND (Filtering) / Фильтрация
 
 // ### Level 1: Basics / Уровень 1: Базовые
@@ -703,11 +712,17 @@ db.createView(
 //   // ... (Add more if needed / Добавьте больше при необходимости)
 // ];
 // db.users.insertMany(sampleData);
+```
 
-# Configuration Snippets / Примеры Конфигурации
+---
 
-// mongod.conf
-/*
+## Configuration Snippets / Примеры Конфигурации
+
+### mongod.conf
+
+`/etc/mongod.conf`
+
+```yaml
 storage:
   dbPath: /var/lib/mongo
 systemLog:
@@ -721,10 +736,11 @@ security:
   keyFile: /etc/mongod.key
 replication:
   replSetName: "<REPLICA_SET_NAME>"
-*/
+```
 
-# insertusers.js for testing:
+### insertusers.js / Тестовые данные
 
+```javascript
 const sampleData = [
   {
     name: "Anna",
@@ -1830,6 +1846,7 @@ const sampleData = [
 
 printjson(db.users2.insertMany(sampleData));
 print("Script ha inserito 100 users nel db users2");
+```
 
 ---
 

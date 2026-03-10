@@ -1125,6 +1125,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🔑 SSH Keys & Access Management](cheats.d/security-crypto/ssh_keys_cheatsheet.md)
 - [🔐 OpenSSL — CSR with SAN](cheats.d/security-crypto/opensslsancsrcheatsheet.md)
 - [🔐 pass — Password Store](cheats.d/security-crypto/passcheatsheet.md)
+- [🍯 SSH Honeypot & CrowdSec](cheats.d/security-crypto/ssh_honeypot_crowdsec.md)
 
 ### Storage & FS
 - [💿 ACL — Access Control Lists](cheats.d/storage-fs/aclcheatsheet.md)

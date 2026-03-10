@@ -232,35 +232,38 @@ Host tunnel
 autossh -M 0 -N tunnel
 ```
 
-# 💡 Best Practices / Лучшие практики
-# Always use -M 0 (disable monitoring port) / Всегда используйте -M 0 (отключить порт мониторинга)
-# Set ServerAliveInterval for reliability / Устанавливайте ServerAliveInterval для надёжности
-# Use systemd for persistent tunnels / Используйте systemd для постоянных туннелей
-# Use SSH config for cleaner commands / Используйте SSH config для чистых команд
-# Set ExitOnForwardFailure=yes for critical tunnels / Устанавливайте ExitOnForwardFailure=yes для критических туннелей
+## 💡 Best Practices / Лучшие практики
 
-# 🔧 SSH Config Options / Опции SSH Config
-```bash
-# ServerAliveInterval — Keepalive interval / Интервал keepalive
-# ServerAliveCountMax — Max failed keepalives / Макс неудачных keepalive
-# ExitOnForwardFailure — Exit if forwarding fails / Выйти если переадресация не удалась
-# LocalForward — Local port forward / Локальная переадресация
-# RemoteForward — Remote port forward / Удалённая переадресация
-# DynamicForward — SOCKS proxy / SOCKS прокси
-```
+- Always use `-M 0` (disable monitoring port) / Всегда используйте `-M 0` (отключить порт мониторинга)
+- Set `ServerAliveInterval` for reliability / Устанавливайте `ServerAliveInterval` для надёжности
+- Use systemd for persistent tunnels / Используйте systemd для постоянных туннелей
+- Use SSH config for cleaner commands / Используйте SSH config для чистых команд
+- Set `ExitOnForwardFailure=yes` for critical tunnels / Устанавливайте `ExitOnForwardFailure=yes` для критических туннелей
 
-# 📋 Common Use Cases / Распространённые случаи использования
-```bash
-# Database access — -L 3306:localhost:3306
-# Web preview — -R 8080:localhost:3000
-# SOCKS proxy — -D 1080
-# Reverse shell — -R 2222:localhost:22
-# VNC access — -L 5900:localhost:5900
-```
+## 🔧 SSH Config Options / Опции SSH Config
 
-# ⚠️ Security Notes / Заметки по безопасности
-# Only bind to localhost when possible / Привязывайтесь только к localhost когда возможно
-# Use SSH keys instead of passwords / Используйте SSH ключи вместо паролей
-# Restrict port forwarding in sshd_config if needed / Ограничьте переадресацию портов в sshd_config если нужно
-# Monitor for unauthorized tunnels / Мониторьте на несанкционированные туннели
-```
+| Option | Description (EN / RU) |
+|--------|----------------------|
+| `ServerAliveInterval` | Keepalive interval / Интервал keepalive |
+| `ServerAliveCountMax` | Max failed keepalives / Макс неудачных keepalive |
+| `ExitOnForwardFailure` | Exit if forwarding fails / Выйти если переадресация не удалась |
+| `LocalForward` | Local port forward / Локальная переадресация |
+| `RemoteForward` | Remote port forward / Удалённая переадресация |
+| `DynamicForward` | SOCKS proxy / SOCKS прокси |
+
+## 📋 Common Use Cases / Распространённые случаи использования
+
+| Use Case | Flag |
+|----------|------|
+| Database access | `-L 3306:localhost:3306` |
+| Web preview | `-R 8080:localhost:3000` |
+| SOCKS proxy | `-D 1080` |
+| Reverse shell | `-R 2222:localhost:22` |
+| VNC access | `-L 5900:localhost:5900` |
+
+## ⚠️ Security Notes / Заметки по безопасности
+
+- Only bind to localhost when possible / Привязывайтесь только к localhost когда возможно
+- Use SSH keys instead of passwords / Используйте SSH ключи вместо паролей
+- Restrict port forwarding in `sshd_config` if needed / Ограничьте переадресацию портов в `sshd_config` если нужно
+- Monitor for unauthorized tunnels / Мониторьте на несанкционированные туннели

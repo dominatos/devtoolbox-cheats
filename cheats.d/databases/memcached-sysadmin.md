@@ -278,16 +278,36 @@ Memcached простой, быстрый и опасный при неправи
 
 ---
 
-## Further topics / Дальнейшие темы
+## Further Topics / Дальнейшие темы
 
 - Memcached vs Redis (benchmarks)
 - PHP / Java integration
 - Monitoring with Prometheus
 - Real incident analysis
 
-Если хочешь:
-- 🔹 сделать **версию под собес**
-- 🔹 добавить **diagram / ASCII-архитектуру**
-- 🔹 или оформить как **wiki / DokuWiki**
+---
 
-Скажи формат — допилю.
+## 12. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/memcached`
+
+```conf
+/var/log/memcached.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 memcache adm
+    postrotate
+        /bin/kill -HUP $(cat /var/run/memcached/memcached.pid 2>/dev/null) 2>/dev/null || true
+    endscript
+}
+```
+
+> [!NOTE]
+> Memcached logs minimally by default. Enable verbose logging with `-vv` flag if needed.
+> Memcached по умолчанию логирует минимально. Включите подробное логирование флагом `-vv` при необходимости.
+
+---

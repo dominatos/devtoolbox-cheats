@@ -19,7 +19,7 @@ Order: 4
 
 ---
 
-## 1) 📦 Installation & Configuration / Установка и Настройка
+## 1. 📦 Installation & Configuration / Установка и Настройка
 
 ### Install / Установка
 
@@ -38,10 +38,10 @@ docker run opensearchproject/opensearch:3.7.0 # Run in Docker / Запуск в 
 vm.max_map_count = 262144
 vm.swappiness = 1
 fs.file-max = 262144
-```
 
 # Apply sysctl / Применить sysctl
 sysctl --system
+```
 
 ```bash
 # /etc/security/limits.d/99-opensearch.conf
@@ -53,9 +53,11 @@ opensearch soft memlock unlimited
 opensearch hard memlock unlimited
 ```
 
-# Systemd override (systemctl edit opensearch)
+### Systemd Override / Systemd Переопределение
 
-```bash
+`systemctl edit opensearch`
+
+```ini
 [Service]
 LimitNOFILE=65536
 LimitNPROC=4096
@@ -64,7 +66,7 @@ LimitMEMLOCK=infinity
 
 ---
 
-## 2) ⚙️ Cluster Management / Управление Кластером
+## 2. ⚙️ Cluster Management / Управление Кластером
 
 ```bash
 curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/                                   # Ping cluster (version) / Пинг кластера (версия)
@@ -87,7 +89,7 @@ curl -s localhost:9200/_cat/shards?v | grep os-data-1 || echo "empty"
 
 ---
 
-## 3) 🗂️ Index Management / Управление Индексами
+## 3. 🗂️ Index Management / Управление Индексами
 
 ### Basics / Основы
 
@@ -150,7 +152,7 @@ curl -u 'admin:<PASSWORD>' -X POST "http://localhost:9200/_aliases" -H 'Content-
 
 ---
 
-## 4) 📄 Document Management / Управление Документами
+## 4. 📄 Document Management / Управление Документами
 
 ### CRUD
 
@@ -194,7 +196,7 @@ curl -sS -u 'admin:<PASSWORD>' -X POST http://localhost:9200/_bulk \
 
 ---
 
-## 5) 💾 Backup & Restore / Бэкап и Восстановление
+## 5. 💾 Backup & Restore / Бэкап и Восстановление
 
 ### Snapshot Repository / Репозиторий
 
@@ -288,7 +290,7 @@ sudo mount -a                                                       # Mount / П
 
 ---
 
-## 6) 🔐 Security / Безопасность
+## 6. 🔐 Security / Безопасность
 
 ### User Management / Управление пользователями
 
@@ -330,7 +332,7 @@ OPENSEARCH_JAVA_HOME=/usr/share/opensearch/jdk /usr/share/opensearch/plugins/ope
 
 ---
 
-## 7) 🐧 Sysadmin Operations / Сисадминские Операции
+## 7. 🐧 Sysadmin Operations / Сисадминские Операции
 
 ### Service & Logs / Сервис и Логи
 
@@ -399,7 +401,7 @@ firewall-cmd --reload
 
 ---
 
-## 8) 🛠️ Tools / Инструменты
+## 8. 🛠️ Tools / Инструменты
 
 ### cURL Toolbox
 

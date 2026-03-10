@@ -235,36 +235,42 @@ ip route show
 ip neigh show
 ```
 
-# 💡 Best Practices / Лучшие практики
-# Use -brief for quick overview / Используйте -brief для быстрого обзора
-# Use -4 or -6 to filter by IP version / Используйте -4 или -6 для фильтрации по версии IP
-# Changes with ip are temporary (lost on reboot) / Изменения с ip временные (теряются при перезагрузке)
-# Use netplan/networkd for persistent config / Используйте netplan/networkd для постоянной конфигурации
-# Use ip instead of deprecated ifconfig / Используйте ip вместо устаревшего ifconfig
-# Monitor with ip -timestamp monitor / Мониторьте с ip -timestamp monitor
+## 💡 Best Practices / Лучшие практики
 
-# 🔧 Common Subcommands / Распространённые подкоманды
-```bash
-# ip addr: Address management / Управление адресами
-# ip link: Link management / Управление ссылками
-# ip route: Routing / Маршрутизация
-# ip neigh: Neighbor/ARP / Соседи/ARP
-# ip tunnel: Tunnels / Туннели
-# ip rule: Policy routing / Политическая маршрутизация
-# ip monitor: Monitor changes / Мониторить изменения
-```
+- Use `-brief` for quick overview / Используйте `-brief` для быстрого обзора
+- Use `-4` or `-6` to filter by IP version / Используйте `-4` или `-6` для фильтрации по версии IP
+- Changes with ip are temporary (lost on reboot) / Изменения с ip временные (теряются при перезагрузке)
+- Use netplan/networkd for persistent config / Используйте netplan/networkd для постоянной конфигурации
+- Use `ip` instead of deprecated `ifconfig` / Используйте `ip` вместо устаревшего `ifconfig`
+- Monitor with `ip -timestamp monitor` / Мониторьте с `ip -timestamp monitor`
 
-# 📋 Useful Options / Полезные опции
-```bash
-# -4: IPv4 only / Только IPv4, -6: IPv6 only / Только IPv6
-# -brief: Brief output / Краткий вывод, -s: Statistics / Статистика
-# -d: Details / Детали, -timestamp: Add timestamps / Добавить временные метки
-# -json: JSON output / JSON вывод
-```
+## 🔧 Common Subcommands / Распространённые подкоманды
 
-# ⚠️ Important Notes / Важные примечания
-# ip is part of iproute2 package / ip часть пакета iproute2
-# Changes are not persistent / Изменения не постоянные
-# Use NetworkManager or netplan for persistence / Используйте NetworkManager или netplan для постоянства
-# ip replaces ifconfig, route, arp / ip заменяет ifconfig, route, arp
-```
+| Subcommand | Description (EN / RU) |
+|------------|----------------------|
+| `ip addr` | Address management / Управление адресами |
+| `ip link` | Link management / Управление ссылками |
+| `ip route` | Routing / Маршрутизация |
+| `ip neigh` | Neighbor/ARP / Соседи/ARP |
+| `ip tunnel` | Tunnels / Туннели |
+| `ip rule` | Policy routing / Политическая маршрутизация |
+| `ip monitor` | Monitor changes / Мониторить изменения |
+
+## 📋 Useful Options / Полезные опции
+
+| Option | Description (EN / RU) |
+|--------|----------------------|
+| `-4` | IPv4 only / Только IPv4 |
+| `-6` | IPv6 only / Только IPv6 |
+| `-brief` | Brief output / Краткий вывод |
+| `-s` | Statistics / Статистика |
+| `-d` | Details / Детали |
+| `-timestamp` | Add timestamps / Добавить временные метки |
+| `-json` | JSON output / JSON вывод |
+
+## ⚠️ Important Notes / Важные примечания
+
+- `ip` is part of iproute2 package / `ip` часть пакета iproute2
+- Changes are not persistent / Изменения не постоянные
+- Use NetworkManager or netplan for persistence / Используйте NetworkManager или netplan для постоянства
+- `ip` replaces `ifconfig`, `route`, `arp` / `ip` заменяет `ifconfig`, `route`, `arp`

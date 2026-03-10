@@ -314,32 +314,35 @@ nmap -p 6443,10250,10255 <K8S_NODE>
 nmap -p 10250 --script=banner <K8S_NODE>
 ```
 
-# 💡 Best Practices / Лучшие практики
-# Use -Pn for hosts behind firewall / Используйте -Pn для хостов за фаерволом
-# Start with -T4 for reasonable speed / Начните с -T4 для разумной скорости
-# Use -sV only when needed / Используйте -sV только когда нужно
-# Save scans with -oA for later analysis / Сохраняйте сканирования с -oA для последующего анализа
-# Use nc for quick port checks / Используйте nc для быстрых проверок портов
+## 💡 Best Practices / Лучшие практики
 
-# 🔧 Common nmap Scan Types / Распространённые типы сканирования nmap
-```bash
-# -sS: SYN scan (default) / SYN сканирование (по умолчанию)
-# -sT: TCP connect scan / TCP connect сканирование
-# -sU: UDP scan (slow) / UDP сканирование (медленное)
-# -sV: Version detection / Определение версии
-# -O: OS detection / Определение ОС
-# -A: Aggressive (OS, version, scripts, traceroute) / Агрессивное
-```
+- Use `-Pn` for hosts behind firewall / Используйте `-Pn` для хостов за фаерволом
+- Start with `-T4` for reasonable speed / Начните с `-T4` для разумной скорости
+- Use `-sV` only when needed / Используйте `-sV` только когда нужно
+- Save scans with `-oA` for later analysis / Сохраняйте сканирования с `-oA` для последующего анализа
+- Use `nc` for quick port checks / Используйте `nc` для быстрых проверок портов
 
-# 📋 netcat Variants / Варианты netcat
-```bash
-# nc: Traditional netcat / Традиционный netcat
-# ncat: Nmap netcat (with SSL support) / Nmap netcat (с поддержкой SSL)
-# socat: Advanced netcat alternative / Продвинутая альтернатива netcat
-```
+## 🔧 Common nmap Scan Types / Распространённые типы сканирования nmap
 
-# ⚠️ Legal Warning / Юридическое предупреждение
-# Only scan networks you have permission to scan / Сканируйте только сети на которые у вас есть разрешение
-# Unauthorized scanning may be illegal / Несанкционированное сканирование может быть незаконным
-# Always get written permission first / Всегда получайте письменное разрешение сначала
-```
+| Scan | Description (EN / RU) |
+|------|----------------------|
+| `-sS` | SYN scan (default) / SYN сканирование (по умолчанию) |
+| `-sT` | TCP connect scan / TCP connect сканирование |
+| `-sU` | UDP scan (slow) / UDP сканирование (медленное) |
+| `-sV` | Version detection / Определение версии |
+| `-O` | OS detection / Определение ОС |
+| `-A` | Aggressive (OS, version, scripts, traceroute) / Агрессивное |
+
+## 📋 netcat Variants / Варианты netcat
+
+| Variant | Description (EN / RU) |
+|---------|----------------------|
+| `nc` | Traditional netcat / Традиционный netcat |
+| `ncat` | Nmap netcat (with SSL support) / Nmap netcat (с поддержкой SSL) |
+| `socat` | Advanced netcat alternative / Продвинутая альтернатива netcat |
+
+## ⚠️ Legal Warning / Юридическое предупреждение
+
+- Only scan networks you have permission to scan / Сканируйте только сети на которые у вас есть разрешение
+- Unauthorized scanning may be illegal / Несанкционированное сканирование может быть незаконным
+- Always get written permission first / Всегда получайте письменное разрешение сначала
