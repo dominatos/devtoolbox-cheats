@@ -1001,6 +1001,7 @@ Please see [CHANGELOG.md](CHANGELOG.md) for release history.
 - 🔎 **Diagnostics**
 - ☁️ **Cloud**
 - 📈 **Monitoring**
+- 🔧 **Infrastructure Management**
 - 🖥️ **Virtualization**
 
 
@@ -1029,6 +1030,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [📚 Linux Basics — Cheatsheet](cheats.d/basics/linuxbasicscheatsheet.md)
 
 ### Cloud
+- [☁️ Apache CloudStack](cheats.d/cloud/cloudstackcheatsheet.md)
 - [☁️ OpenStack](cheats.d/cloud/openstackcheatsheet.md)
 
 ### Databases
@@ -1074,9 +1076,19 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [☸️ OpenShift (OCP)](cheats.d/kubernetes-containers/openshiftcheatsheet.md)
 - [🫙 Podman / nerdctl — Commands](cheats.d/kubernetes-containers/podmannerdctlcheatsheet.md)
 
+### Infrastructure Management
+- [🤖 AWX (Ansible Tower)](cheats.d/infrastructure-mgmt/awxcheatsheet.md)
+- [🔧 Uyuni](cheats.d/infrastructure-mgmt/uyunicheatsheet.md)
+
 ### Monitoring
+- [🧠 Cerebro (Elasticsearch Admin)](cheats.d/monitoring/cerebrocheatsheet.md)
 - [📈 CheckMK](cheats.d/monitoring/checkmkcheatsheet.md)
+- [✅ Checkmk Agent](cheats.d/monitoring/checkmkagentcheatsheet.md)
+- [📊 Filebeat](cheats.d/monitoring/filebeatcheatsheet.md)
 - [📈 Nagios Core](cheats.d/monitoring/nagioscheatsheet.md)
+- [📡 SNMPD](cheats.d/monitoring/snmpdcheatsheet.md)
+- [📈 Telegraf](cheats.d/monitoring/telegrafcheatsheet.md)
+- [📈 VictoriaMetrics](cheats.d/monitoring/victoriametricscheatsheet.md)
 - [📈 Zabbix Server](cheats.d/monitoring/zabbixcheatsheet.md)
 
 ### Network
@@ -1117,6 +1129,8 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [📦 AppImage — Portable Apps](cheats.d/package-managers/appimagecheatsheet.md)
 
 ### Security & Crypto
+- [🛡️ AIDE — File Integrity Checker](cheats.d/security-crypto/aidecheatsheet.md)
+- [🔬 Cerbero Suite — File Analysis & RE](cheats.d/security-crypto/cerberocheatsheet.md)
 - [🛡️ CrowdSec — Intrusion Prevention](cheats.d/security-crypto/crowdseccheatsheet.md)
 - [🔐 GPG / age — Encryption](cheats.d/security-crypto/gpgagecheatsheet.md)
 - [🔐 htpasswd — Basic Auth](cheats.d/security-crypto/htpasswdcheatsheet.md)

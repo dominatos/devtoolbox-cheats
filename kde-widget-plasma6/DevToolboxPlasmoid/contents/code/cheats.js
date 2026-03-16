@@ -23,7 +23,8 @@ var GROUP_ICONS = {
     "Misc": "preferences-other",
     "Diagnostics": "utilities-log-viewer",
     "Cloud": "cloud-shape",
-    "Monitoring": "utilities-energy-monitor"
+    "Monitoring": "utilities-energy-monitor",
+    "Infrastructure Management": "preferences-system-network"
 };
 
 /**

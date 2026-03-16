@@ -115,6 +115,30 @@ sudo apt purge htop                           # Remove + purge conf / Удали
 sudo apt autoremove                           # Remove unused deps / Удалить неисп. зависимости
 apt search nginx                              # Search package / Поиск пакета
 apt show nginx                                # Package info / Информация о пакете
+do-release-upgrade                            # Upgrade to next Ubuntu release / Обновить до след. версии Ubuntu
+```
+
+### Debconf & GRUB Disk Configuration / Debconf и настройка диска GRUB
+
+```bash
+# Show GRUB install device configuration / Показать конфигурацию установки GRUB
+debconf-show grub-pc | grep install_devices
+
+# Change GRUB install device (e.g. /dev/sda→sdb) / Изменить диск установки GRUB
+echo "grub-pc grub-pc/install_devices multiselect /dev/sdb" | debconf-set-selections
+
+# Verify change / Проверить изменение
+debconf-show grub-pc | grep install_devices
+```
+
+> [!WARNING]
+> Wrong GRUB install device = unbootable system after kernel update. Always verify with `debconf-show grub-pc` after disk changes. / Неверный диск GRUB = незагружаемая система после обновления ядра.
+
+### Ubuntu Minimal / Cloud Images / Ubuntu Minimal / Облачные образы
+
+```bash
+# Restore man pages and docs on minimal/cloud installs / Восстановить man-страницы на облачных образах
+unminimize
 ```
 
 ---
@@ -155,6 +179,7 @@ df -h                                         # Disk usage / Использов�
 du -sh *                                      # Dir sizes / Размеры папок
 lsb_release -a                                # Distro info / Информация о дистрибутиве
 cat /etc/os-release                           # OS info / Информация об ОС
+lscpu                                         # CPU info / Информация о CPU
 ```
 
 ---
