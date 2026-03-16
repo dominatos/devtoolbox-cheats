@@ -1002,6 +1002,7 @@ Please see [CHANGELOG.md](CHANGELOG.md) for release history.
 - ☁️ **Cloud**
 - 📈 **Monitoring**
 - 🔧 **Infrastructure Management**
+- 🪪 **Identity Management**
 - 🖥️ **Virtualization**
 
 
@@ -1079,6 +1080,9 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 ### Infrastructure Management
 - [🤖 AWX (Ansible Tower)](cheats.d/infrastructure-mgmt/awxcheatsheet.md)
 - [🔧 Uyuni](cheats.d/infrastructure-mgmt/uyunicheatsheet.md)
+
+### Identity Management
+- [🪪 adcli (Active Directory CLI)](cheats.d/identity-management/adclicheatsheet.md)
 
 ### Monitoring
 - [🧠 Cerebro (Elasticsearch Admin)](cheats.d/monitoring/cerebrocheatsheet.md)

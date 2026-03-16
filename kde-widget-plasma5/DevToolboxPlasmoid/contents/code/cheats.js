@@ -24,7 +24,8 @@ var GROUP_ICONS = {
     "Diagnostics": "utilities-log-viewer",
     "Cloud": "cloud-shape",
     "Monitoring": "utilities-energy-monitor",
-    "Infrastructure Management": "preferences-system-network"
+    "Infrastructure Management": "preferences-system-network",
+    "Identity Management": "resource-group"
 };
 
 

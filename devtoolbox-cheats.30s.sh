@@ -41,6 +41,7 @@ declare -A GROUP_ICON=(
   ["Monitoring"]="📈"
   ["Cloud"]="☁️"
   ["Infrastructure Management"]="🔧"
+  ["Identity Management"]="🪪"
 )
 
 
