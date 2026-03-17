@@ -585,6 +585,22 @@ server_tokens off;                                       # Hide nginx version
 - backup backend / резервный backend
 - monitoring ready / мониторинг готов
 
+
+
+---
+
+
+### 3️⃣6️⃣ Nginx heal status page
+
+
+
+```nginx
+    location /server_status {
+        stub_status;                                     # Enable status module / Включить модуль статуса
+        allow 127.0.0.1;                                 # Allow localhost / Разрешить локалхост
+        deny all;                                        # Deny everyone else / Запретить остальным
+    }
+```
 ---
 
 ## Tips / Советы
