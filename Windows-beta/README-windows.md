@@ -10,6 +10,16 @@ Because Windows doesn't natively support Bash and Linux dialog tools cleanly in 
 
 We provide a PowerShell script that interactively installs AutoHotkey (if missing), copies the cheatsheets to your user directory, configures the necessary paths, compiles the executable, and automatically adds it to your startup folder.
 
+### Fast Track: One-Liner Installation
+If you already have `git` and just want to get up and running instantly, open a standard **PowerShell** window *(do **not** run as Administrator)* and paste this exact command:
+```powershell
+git clone https://github.com/dominatos/devtoolbox-cheats.git; cd devtoolbox-cheats\Windows-beta; powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1
+```
+*(After running it, skip straight to step 3 below!)*
+
+---
+### Or Follow Step-by-Step:
+
 ### 1. Clone the Repository
 If you haven't already, run `git clone` to get a local copy of the `devtoolbox-cheats` repository to your Windows machine:
 ```cmd
@@ -27,7 +37,7 @@ git clone https://github.com/dominatos/devtoolbox-cheats.git
    ```powershell
    powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1
    ```
-4. **AutoHotkey Installation:** During the process, an AutoHotkey installer window will appear. Follow the interactive prompts (Express Installation is recommended). 
+3. **AutoHotkey Installation:** During the process, an AutoHotkey installer window will appear. Follow the interactive prompts (Express Installation is recommended). 
    > **IMPORTANT:** When the installation is completely done, make sure to click **Exit** on the AutoHotkey window so the deployment script can resume!
 
 Once the script completes, the `cheats.exe` application will automatically launch and place itself in your system tray. It has also been added to your Windows startup folder automatically (`shell:startup`), so it will run continuously on boot!
