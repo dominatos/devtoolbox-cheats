@@ -53,6 +53,7 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 - **LXQt / LXDE** - Lightweight dialog menus
 - **Budgie / Pantheon / Deepin** - Dialog-based menus with auto-detection
 - **Tiling WMs** - Terminal-based with FZF (i3, sway, bspwm, hyprland)
+- **Windows( (Beta)** - Native tray application via AutoHotkey ([View Guide](Windows-beta/README-windows.md))
 - **Auto-Detection** - Detects your DE and adapts automatically
 
 ### 🚀 Performance
@@ -80,6 +81,27 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 ## 📦 Installation
 
 ### Choose Your Desktop Environment
+
+<details>
+<summary><b>🪟 Windows (Native Tray App)</b></summary>
+
+DevToolbox Cheats is fully supported on Windows using an automated PowerShell installer and AutoHotkey.
+
+See the dedicated **[Windows Setup Guide](Windows/README-windows.md)** for full details.
+
+#### Quick Automated Install
+1. Open **PowerShell** as **Administrator**.
+2. Navigate to the repository's `Windows-beta` directory:
+   ```powershell
+   cd "C:\path\to\devtoolbox-cheats\Windows-beta"
+   ```
+3. Run the installer:
+   ```powershell
+   .\install-devtoolbox.ps1
+   ```
+4. Double-click the generated `cheats.exe` to run the app.
+
+</details>
 
 <details>
 <summary><b>🟠 GNOME (Argos Extension)</b></summary>
@@ -1203,7 +1225,7 @@ MIT License - See LICENSE file
 
 ## 🙏 Credits
 
-- **Developer:** Sviatoslav Fedorenko ([@dominatos](https://github.com/dominatos))
+- **Developer:** Sviatoslav ([@dominatos](https://github.com/dominatos))
 - **Inspired by:** DevHints, tldr, cheat.sh, Argos
 - **Icons:** Noto Color Emoji
 - **Tested on:** GNOME, KDE Plasma, XFCE, MATE, Cinnamon, LXQt, Budgie, Pantheon, i3, sway

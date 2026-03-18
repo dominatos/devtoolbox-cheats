@@ -383,17 +383,18 @@ install_updater() {
     # Install systemd user timer
     if [ -d "$systemd_dir" ] && [ -f "$systemd_dir/devtoolbox-cheats-updater.service" ]; then
         mkdir -p "$user_systemd"
-        ln -sf "$systemd_dir/devtoolbox-cheats-updater.service" "$user_systemd/"
-        ln -sf "$systemd_dir/devtoolbox-cheats-updater.timer"   "$user_systemd/"
+        cp "$systemd_dir/devtoolbox-cheats-updater.service" "$user_systemd/"
+        cp "$systemd_dir/devtoolbox-cheats-updater.timer"   "$user_systemd/"
+        echo "  ✅ Systemd units copied to: $user_systemd"
 
-        # Reload and enable timer
-        if systemctl --user daemon-reload 2>/dev/null; then
+        # Reload and enable timer if systemd is active
+        if command -v systemctl >/dev/null 2>&1 && systemctl --user daemon-reload >/dev/null 2>&1; then
             systemctl --user enable --now devtoolbox-cheats-updater.timer 2>/dev/null && \
                 echo "  ✅ Systemd daily timer enabled" || \
                 echo "  ⚠️  Could not enable timer (try: systemctl --user enable --now devtoolbox-cheats-updater.timer)"
         else
-            echo "  ⚠️  systemctl --user not available in this session"
-            echo "     Run manually after login:"
+            echo "  ⚠️  systemctl --user not available or not responding"
+            echo "     To enable auto-updates manually later:"
             echo "       systemctl --user daemon-reload"
             echo "       systemctl --user enable --now devtoolbox-cheats-updater.timer"
         fi

@@ -451,7 +451,7 @@ meta_val() {
   # Read first 80 lines, remove BOM, handle CRLF, look for Key: Value
   sed '1s/^\xEF\xBB\xBF//' "$f" | head -n 80 \
     | tr -d '\r' \
-    | grep -i -m1 "^[[:space:]]*$key[[:space:]]*:" \
+    | grep -i -m1 "^[[:space:]]*${key}[[:space:]]*:" \
     | sed -E 's/^[[:space:]]*[^:]+:[[:space:]]*//'
 }
 
