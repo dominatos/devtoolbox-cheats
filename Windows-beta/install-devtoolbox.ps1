@@ -7,19 +7,6 @@
     updates the configuration in 'cheats.ahk', and compiles it.
 #>
 
-# Check for Administrator privileges
-Write-Host "Checking for Administrator privileges..."
-$currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-$isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
-if (-not $isAdmin) {
-    Write-Warning "This script must be run as an Administrator to install AutoHotkey."
-    Write-Warning "Please right-click Windows PowerShell, select 'Run as Administrator', and execute this script again."
-    Write-Host "Press any key to exit..."
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    exit 1
-}
-
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $BaseDir = Split-Path -Parent $ScriptDir
 $SourceCheatsDir = Join-Path $BaseDir "cheats.d"
@@ -30,9 +17,11 @@ $DestCheatsDir = Join-Path $UserProfileDir "cheats.d"
 Write-Host "`n[1/4] Installing AutoHotkey..."
 $AhkInstaller = Join-Path $ScriptDir "AutoHotkey_1.1.37.02_setup.exe"
 if (Test-Path $AhkInstaller) {
-    Write-Host "Found AutoHotkey installer. Running silently..."
-    Start-Process -FilePath $AhkInstaller -ArgumentList "/S" -Wait
-    Write-Host "AutoHotkey installed."
+    Write-Host "Found AutoHotkey installer. An installation window will pop up soon."
+    Write-Host "Please follow the on-screen instructions to install it (Express Installation is recommended)."
+    Write-Host "Waiting for you to finish the installation..."
+    Start-Process -FilePath $AhkInstaller -Wait
+    Write-Host "AutoHotkey installation finished."
 } else {
     Write-Warning "Could not find AutoHotkey_1.1.37.02_setup.exe in $ScriptDir"
     Write-Warning "You will need to install AutoHotkey manually."
@@ -77,6 +66,11 @@ if (Test-Path $AhkCompiler) {
     
     if (Test-Path $OutputFile) {
         Write-Host "Compilation successful! Executable is ready at: $OutputFile" -ForegroundColor Green
+        
+        Write-Host "`n[5/5] Adding to Startup..."
+        $StartupFolder = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs\Startup"
+        Copy-Item -Path $OutputFile -Destination $StartupFolder -Force
+        Write-Host "Successfully copied cheats.exe to startup folder." -ForegroundColor Green
     } else {
         Write-Warning "Compilation failed or output not found."
     }
@@ -87,8 +81,8 @@ if (Test-Path $AhkCompiler) {
 Write-Host "`n=============================================="
 Write-Host "             INSTALLATION COMPLETE            "
 Write-Host "=============================================="
-Write-Host "You can now start DevToolbox Cheats by running cheats.exe"
-Write-Host "Tip: Copy cheats.exe to shell:startup to run it automatically."
+Write-Host "You can now start DevToolbox Cheats by double-clicking cheats.exe"
+Write-Host "It has also been added to your startup folder and will run automatically on boot!"
 Write-Host "Press any key to exit..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 exit 0

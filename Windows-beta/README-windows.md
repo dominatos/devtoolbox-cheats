@@ -1,57 +1,78 @@
-# 🪟 DevToolbox Cheats - Windows Setup
+# 🪟 DevToolbox Cheats - Windows Setup Guide
 
-This directory contains everything needed to run **devtoolbox-cheats** on Windows using [AutoHotkey](https://www.autohotkey.com/). 
+Welcome! This guide will help you install and run **devtoolbox-cheats** on your Windows computer.
 
-Because Windows doesn't natively support Bash and Linux dialog tools cleanly in the tray, we use an AutoHotkey script (`cheats.ahk`) to create a native Windows system tray menu that opens the markdown cheatsheets in your default text editor.
+Since Windows works a bit differently than Linux or Mac, we use a tool called **[AutoHotkey](https://www.autohotkey.com/)** to create a handy menu in your system tray (the area near your clock). This menu will let you quickly open your cheatsheets in your default text editor (like Notepad).
 
 ---
 
-## 🚀 Quick Automated Installation
+## 🚀 Automatic Setup (Recommended for beginners)
 
-We provide a PowerShell script that installs AutoHotkey silently, copies the cheatsheets, configures your specific user path, and compiles the executable for you.
+We have created an automated installer that does all the hard work for you. It installs what you need and sets up your files.
 
-1. Open **PowerShell** as Administrator. You can do this by opening the Start menu, typing `PowerShell`, right-clicking it, and selecting **Run as Administrator**.
-2. Navigate to this directory (where you cloned/downloaded the repo):
+### Step 1: Open PowerShell
+1. Click your Windows **Start menu** (the Windows icon in the bottom left).
+2. Type the word `PowerShell`.
+3. Click on **Windows PowerShell** in the search results to open it.
+
+### Step 2: Run the Installer
+Next, we need to tell PowerShell to run our setup file.
+1. Find the folder where you downloaded these files. Click on the address bar at the top of your folder window to see the path, right-click, and select **Copy**. (It might look something like `C:\Users\YourName\Downloads\devtoolbox-cheats\Windows-beta`).
+2. In the blue PowerShell window, type `cd` (which means "change directory"), press **Space**, and then paste the path to your folder inside quote marks. Press **Enter**.
+   *Example:*
    ```powershell
    cd "C:\path\to\devtoolbox-cheats\Windows-beta"
    ```
-3. Run the installer script:
+3. Now, type the following command exactly as it is and press **Enter**:
    ```powershell
-   .\install-devtoolbox.ps1
+   powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1
    ```
-   > **Note:** If you get an execution policy error, run this first: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` or run directly  `powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1`
+   *(Don't worry about the complex text—it just tells your computer it's safe to run our installer!)*
 
-Once the script completes, you will have a `cheats.exe` file. Double-click it to start the tray application. You can optionally move this `.exe` file into your Startup folder (`Win + R`, type `shell:startup`) to run it automatically on boot!
+### Step 3: Install AutoHotkey
+While the PowerShell script is running, an **AutoHotkey** installation window will automatically pop up.
+- Click **Yes** if Windows asks for permission.
+- Click **Express Installation** when the setup window appears.
+- Once it finishes installing, return to your PowerShell window and it will automatically continue!
+
+### Step 4: Start the App!
+When the text stops moving in the PowerShell window and you see "INSTALLATION COMPLETE", you are done! You can close PowerShell.
+Look inside your `Windows-beta` folder again. You should now see a new application file named **cheats.exe** (it usually has a green square icon with a white "H").
+- **Double-click `cheats.exe`** to start it.
+- Check your system tray (bottom-right of your screen, near the volume and Wi-Fi icons; you might need to click the `^` arrow to see hidden icons). You will see a new green "H" icon. Right-click it to safely access your cheatsheets!
+
+**Note:** The setup script automatically adds the app to your Windows Startup folder, so it will run on its own from now on when you turn on your PC!
 
 ---
 
-## 🛠 Manual Installation
+## 🛠 Manual Setup (If the automatic setup fails)
 
-If you prefer to set it up manually, or if the automated script fails, follow these steps:
+If the steps above didn't work or you prefer doing things manually, you can set it up in a few easy steps:
 
 ### 1. Install AutoHotkey
-Run the included installer executable (`AutoHotkey_1.1.37.02_setup.exe`) and proceed with the default installation or download from official website. Please note that it is tested only on v1 of autohotkey.
+Find the file named `AutoHotkey_1.1.37.02_setup.exe` in this folder and double-click it. You can also download it directly from the **[official AutoHotkey website](https://www.autohotkey.com/)**. Follow the simple on-screen instructions to install it. Just click "Express Installation" when asked.
 
-### 2. Copy the Cheatsheets
-Copy the `cheats.d` folder from the root of this project to your Windows User directory.
-Your User directory is usually `C:\Users\YourUsername\`.
-You should end up with a folder at `C:\Users\YourUsername\cheats.d\`.
+### 2. Copy the Cheatsheets Folder
+1. Go back to the main `devtoolbox-cheats` folder (one folder up).
+2. Right-click the folder named `cheats.d` and select **Copy**.
+3. Go to your personal User folder. This is usually `C:\Users\YourName\`.
+4. Right-click an empty space and select **Paste**. You should now see the `cheats.d` folder sitting there.
 
-### 3. Update the Script Paths
-Open `cheats.ahk` in a text editor (like Notepad or VS Code).
-At the top of the file, locate these two lines:
-```autohotkey
-CHEATS_DIR = C:\Users\<USER>\cheats.d
-LOG_FILE = C:\Users\<USER>\cheats_debug.log
-```
-Replace `<USER>` with your actual Windows username. Save the file.
+### 3. Edit the Settings
+1. Go back into this `Windows-beta` folder.
+2. Right-click the file named `cheats.ahk` and select **Open with... > Notepad**.
+3. Near the top, you will see these lines:
+   ```text
+   CHEATS_DIR = C:\Users\<USER>\cheats.d
+   LOG_FILE = C:\Users\<USER>\cheats_debug.log
+   ```
+4. Change `<USER>` to your actual Windows username. *(For example: `C:\Users\John\cheats.d`)*
+5. Click **File > Save**, then close Notepad.
 
-### 4. Compile the Script
-1. Find `cheats.ahk` in the File Explorer.
-2. Right-click on `cheats.ahk` and select **Compile Script**.
-   *(If you don't see this option, find and run `Ahk2Exe.exe` from your AutoHotkey installation folder, usually `C:\Program Files\AutoHotkey\Compiler\`).*
-3. This process will generate a native Windows application called `cheats.exe` in the same folder.
+### 4. Create the App
+1. Right-click on that same `cheats.ahk` file and choose **Compile Script**.
+2. Wait a second, and a new `cheats.exe` file will appear right next to it! *(If you don't see "Compile Script", double check that AutoHotkey is fully installed).*
 
-### 5. Run & Auto-Start
-- **To run immediately:** Double-click `cheats.exe`. You will see a new icon in your system tray (near the clock). Right-click it to access your cheatsheets!
-- **To run on boot:** Hold the `Windows Key` and press `R` to open the Run dialog. Type `shell:startup` and press Enter. Copy (or create a shortcut to) `cheats.exe` into this Startup folder.
+### 5. Run It
+- Double-click `cheats.exe` to run it right now. It will appear in your system tray (bottom right).
+- **To make it start automatically every time you start your computer:** Press the **Windows Key** and **R** together, type `shell:startup`, and press **Enter**. A new folder will open. Drag or copy your `cheats.exe` file into this startup folder!
