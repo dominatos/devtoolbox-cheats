@@ -13,9 +13,8 @@ We provide a PowerShell script that interactively installs AutoHotkey (if missin
 ### 1. Clone the Repository
 If you haven't already, run `git clone` to get a local copy of the `devtoolbox-cheats` repository to your Windows machine:
 ```cmd
-git clone https://github.com/sviatoslav/devtoolbox-cheats.git
+git clone https://github.com/dominatos/devtoolbox-cheats.git
 ```
-*(Replace the URL with your actual Git path if different).*
 
 ### 2. Run the Installer
 1. Open up a standard **PowerShell** window.
