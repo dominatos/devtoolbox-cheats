@@ -19,6 +19,7 @@ $AhkInstaller = Join-Path $ScriptDir "AutoHotkey_1.1.37.02_setup.exe"
 if (Test-Path $AhkInstaller) {
     Write-Host "Found AutoHotkey installer. An installation window will pop up soon."
     Write-Host "Please follow the on-screen instructions to install it (Express Installation is recommended)."
+    Write-Host "IMPORTANT: When it finishes, you MUST click 'Exit' on the AutoHotkey window so this setup can continue!" -ForegroundColor DarkYellow
     Write-Host "Waiting for you to finish the installation..."
     Start-Process -FilePath $AhkInstaller -Wait
     Write-Host "AutoHotkey installation finished."
@@ -71,6 +72,11 @@ if (Test-Path $AhkCompiler) {
         $StartupFolder = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs\Startup"
         Copy-Item -Path $OutputFile -Destination $StartupFolder -Force
         Write-Host "Successfully copied cheats.exe to startup folder." -ForegroundColor Green
+        
+        Write-Host "`n[6/6] Starting DevToolbox Cheats..."
+        $StartupExe = Join-Path $StartupFolder "cheats.exe"
+        Start-Process -FilePath $StartupExe
+        Write-Host "App is running! Check your system tray for the green 'H' icon." -ForegroundColor Green
     } else {
         Write-Warning "Compilation failed or output not found."
     }
@@ -81,7 +87,7 @@ if (Test-Path $AhkCompiler) {
 Write-Host "`n=============================================="
 Write-Host "             INSTALLATION COMPLETE            "
 Write-Host "=============================================="
-Write-Host "You can now start DevToolbox Cheats by double-clicking cheats.exe"
+Write-Host "DevToolbox Cheats is now running! Check your system tray (bottom right)."
 Write-Host "It has also been added to your startup folder and will run automatically on boot!"
 Write-Host "Press any key to exit..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

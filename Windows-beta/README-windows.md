@@ -33,15 +33,14 @@ Next, we need to tell PowerShell to run our setup file.
 While the PowerShell script is running, an **AutoHotkey** installation window will automatically pop up.
 - Click **Yes** if Windows asks for permission.
 - Click **Express Installation** when the setup window appears.
-- Once it finishes installing, return to your PowerShell window and it will automatically continue!
+- **IMPORTANT:** When the installation is completely done, make sure to click **Exit** on the AutoHotkey window! This tells the PowerShell script it can continue.
 
-### Step 4: Start the App!
-When the text stops moving in the PowerShell window and you see "INSTALLATION COMPLETE", you are done! You can close PowerShell.
-Look inside your `Windows-beta` folder again. You should now see a new application file named **cheats.exe** (it usually has a green square icon with a white "H").
-- **Double-click `cheats.exe`** to start it.
+### Step 4: You are done!
+When you see "INSTALLATION COMPLETE" in the PowerShell window, you can close it!
+The setup script will **automatically start DevToolbox Cheats for you** right away!
 - Check your system tray (bottom-right of your screen, near the volume and Wi-Fi icons; you might need to click the `^` arrow to see hidden icons). You will see a new green "H" icon. Right-click it to safely access your cheatsheets!
 
-**Note:** The setup script automatically adds the app to your Windows Startup folder, so it will run on its own from now on when you turn on your PC!
+**Note:** The setup script also completely automates making it run on boot. It has already been added to your Windows Startup folder!
 
 ---
 
