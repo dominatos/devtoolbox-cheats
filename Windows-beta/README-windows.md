@@ -18,6 +18,7 @@ git clone https://github.com/dominatos/devtoolbox-cheats.git
 
 ### 2. Run the Installer
 1. Open up a standard **PowerShell** window.
+   *(Do **not** run as Administrator! If you run it as an Administrator, the script will incorrectly install the cheatsheets and auto-start shortcuts to the `Administrator` user profile instead of your own).*
 2. Navigate to the Windows directory of the cloned repository:
    ```powershell
    cd "C:\path\to\devtoolbox-cheats\Windows-beta"
