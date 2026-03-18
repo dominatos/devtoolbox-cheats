@@ -19,7 +19,7 @@ We provide a PowerShell script that installs AutoHotkey silently, copies the che
    ```powershell
    .\install-devtoolbox.ps1
    ```
-   > **Note:** If you get an execution policy error, run this first: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+   > **Note:** If you get an execution policy error, run this first: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` or run directly  `powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1`
 
 Once the script completes, you will have a `cheats.exe` file. Double-click it to start the tray application. You can optionally move this `.exe` file into your Startup folder (`Win + R`, type `shell:startup`) to run it automatically on boot!
 
