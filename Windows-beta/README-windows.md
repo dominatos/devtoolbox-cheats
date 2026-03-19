@@ -66,13 +66,7 @@ Run the included installer executable (`AutoHotkey_1.1.37.02_setup.exe`), or dow
 Copy the `cheats.d` folder from the root of this project to your Windows User directory.
 You should end up with a folder at `C:\Users\YourUsername\cheats.d\`.
 
-### 3. Update the Script Paths
-Open `cheats.ahk` in a text editor (like Notepad or VS Code). At the top of the file, locate these two lines:
-```autohotkey
-CHEATS_DIR = C:\Users\<USER>\cheats.d
-LOG_FILE = C:\Users\<USER>\cheats_debug.log
-```
-Replace `<USER>` with your actual Windows username. Save the file.
+The script now automatically detects your Windows user profile path, so no manual editing is required!
 
 3. This process will generate a native Windows executable called `cheats.exe` in the same folder.
 

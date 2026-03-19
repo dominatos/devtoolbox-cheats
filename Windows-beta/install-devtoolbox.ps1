@@ -55,10 +55,9 @@ $AhkFile = Join-Path $ScriptDir "cheats.ahk"
 if (Test-Path $AhkFile) {
     $AhkContent = Get-Content -Path $AhkFile
     
-    # Replace the generic <USER> with the actual Windows username
-    $AhkContent = $AhkContent -replace "<USER>", $env:USERNAME
+    $AhkContent = Get-Content -Path $AhkFile -Raw
     
-    # Force UTF8 with BOM so AutoHotkey compiler parses special characters perfectly
+    # Save with UTF8 BOM
     Set-Content -Path $AhkFile -Value $AhkContent -Encoding UTF8
     Write-Host "Paths updated to point to $UserProfileDir."
 } else {
