@@ -51,7 +51,8 @@ if (Test-Path $AhkFile) {
     # Replace the generic <USER> with the actual Windows username
     $AhkContent = $AhkContent -replace "<USER>", $env:USERNAME
     
-    Set-Content -Path $AhkFile -Value $AhkContent
+    # Force UTF8 with BOM so AutoHotkey compiler parses special characters perfectly
+    Set-Content -Path $AhkFile -Value $AhkContent -Encoding UTF8
     Write-Host "Paths updated to point to $UserProfileDir."
 } else {
     Write-Warning "Could not find cheats.ahk at $AhkFile."
