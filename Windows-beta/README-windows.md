@@ -74,11 +74,14 @@ LOG_FILE = C:\Users\<USER>\cheats_debug.log
 ```
 Replace `<USER>` with your actual Windows username. Save the file.
 
-### 4. Compile the Script
-1. Find `cheats.ahk` in the File Explorer.
-2. Right-click on `cheats.ahk` and select **Compile Script**.
-   *(If you don't see this option, run `Ahk2Exe.exe` from your AutoHotkey compiler folder, usually `C:\Program Files\AutoHotkey\Compiler\`).*
 3. This process will generate a native Windows executable called `cheats.exe` in the same folder.
+
+> [!IMPORTANT]
+> **Technical Note: Encoding (BOM)**
+> If you see artifacts like `â€”` in your menu after compiling manually, it means the file was saved as "UTF-8" instead of **"UTF-8 with BOM"**. 
+> - **Notepad++ Fix:** Open `cheats.ahk`, click the **Encoding** menu, select ** convert to UTF-8 with BOM**, and save.
+> - **VS Code Fix:** Open the file, click "UTF-8" in the bottom status bar, select "Save with Encoding", and choose "UTF-8 with BOM".
+> - **AutoHotkey v1** requires this BOM to correctly interpret special characters like em-dashes and symbols.
 
 ### 5. Run & Auto-Start
 - **To run immediately:** Double-click `cheats.exe` or `cheats.ahk`. You will see a new **Gear icon** in your system tray. Right-click it to access your cheatsheets.

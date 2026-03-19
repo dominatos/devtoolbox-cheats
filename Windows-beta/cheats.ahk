@@ -2,6 +2,7 @@
 #SingleInstance Force
 #Persistent
 SetWorkingDir %A_ScriptDir%
+;@Ahk2Exe-SetMainIcon imageres.dll, 109
 
 CHEATS_DIR = C:\Users\<USER>\cheats.d
 LOG_FILE = C:\Users\<USER>\cheats_debug.log
@@ -371,7 +372,6 @@ Menu, Tray, Icon, Open cheats folder, shell32.dll, 4
 Menu, Tray, Add, Exit, ExitApp
 Menu, Tray, Icon, Exit, shell32.dll, 28
 
-Menu, Tray, Icon, shell32.dll, 77
 
 FileAppend, All menus built`n, %LOG_FILE%
 return
