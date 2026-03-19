@@ -38,6 +38,13 @@ if (Test-Path $SourceCheatsDir) {
         Copy-Item -Path $SourceCheatsDir -Destination $DestCheatsDir -Recurse -Force
     }
     Write-Host "Successfully copied cheatsheets."
+    
+    # Copy bundled icon if it exists
+    $BundledIcon = Join-Path $ScriptDir "icon.ico"
+    if (Test-Path $BundledIcon) {
+        Copy-Item -Path $BundledIcon -Destination $DestCheatsDir -Force
+        Write-Host "Deployed bundled icon to $DestCheatsDir."
+    }
 } else {
     Write-Warning "Could not find source cheats.d at $SourceCheatsDir. Ensure this folder is complete."
 }

@@ -83,6 +83,12 @@ Replace `<USER>` with your actual Windows username. Save the file.
 > - **VS Code Fix:** Open the file, click "UTF-8" in the bottom status bar, select "Save with Encoding", and choose "UTF-8 with BOM".
 > - **AutoHotkey v1** requires this BOM to correctly interpret special characters like em-dashes and symbols.
 
+### ❓ Customizing the Tray Icon
+You can use your own `.ico` file! 
+1. Rename your icon file to `icon.ico`.
+2. Place it inside your **`cheats.d`** folder (the one in your User directory).
+3. The script will automatically detect it and use it on the next launch.
+
 ### 5. Run & Auto-Start
 - **To run immediately:** Double-click `cheats.exe` or `cheats.ahk`. You will see a new **Gear icon** in your system tray. Right-click it to access your cheatsheets.
 - **To run on boot:** Hold the `Windows Key` and press `R` to open the Run dialog. Type `shell:startup` and press Enter. Copy **both** `cheats.exe` and `cheats.ahk` into this Startup folder for maximum reliability.

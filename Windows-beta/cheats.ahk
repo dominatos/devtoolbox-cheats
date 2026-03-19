@@ -13,7 +13,14 @@ FileAppend, Script started`n, %LOG_FILE%
 
 ; ============= Tray Setup =============
 Menu, Tray, Tip, Dev Toolbox Cheats
-Menu, Tray, Icon, imageres.dll, 110 ; Updated gear icon for the tray
+
+; Check for custom icon in cheats.d, fallback to system icon if missing
+CustomIcon := CHEATS_DIR . "\icon.ico"
+if FileExist(CustomIcon) {
+    Menu, Tray, Icon, %CustomIcon%
+} else {
+    Menu, Tray, Icon, imageres.dll, 110 ; Default gear icon
+}
 
 ; ============= Backups & S3 =============
 Menu, BackupsS3, Add, s3cmd — S3 CLI, OpenFile
@@ -328,49 +335,49 @@ Menu, WebServers, Add, WebLogic Server, OpenFile
 Menu, WebServers, Icon, WebLogic Server, imageres.dll, 11
 
 ; ============= Main Tray Menu =============
-Menu, Tray, Add, Backups & S3, :BackupsS3
-Menu, Tray, Icon, Backups & S3, imageres.dll, 165
-Menu, Tray, Add, Basics, :Basics
-Menu, Tray, Icon, Basics, imageres.dll, 110
-Menu, Tray, Add, Cloud, :Cloud
-Menu, Tray, Icon, Cloud, imageres.dll, 165
-Menu, Tray, Add, Databases, :Databases
-Menu, Tray, Icon, Databases, imageres.dll, 13
-Menu, Tray, Add, Dev & Tools, :DevTools
-Menu, Tray, Icon, Dev & Tools, imageres.dll, 117
-Menu, Tray, Add, Diagnostics, :Diagnostics
-Menu, Tray, Icon, Diagnostics, shell32.dll, 247
-Menu, Tray, Add, Files & Archives, :FilesArchives
-Menu, Tray, Icon, Files & Archives, shell32.dll, 257
-Menu, Tray, Add, Identity Management, :IdentityMgmt
-Menu, Tray, Icon, Identity Management, shell32.dll, 269
-Menu, Tray, Add, Infrastructure Management, :InfraMgmt
-Menu, Tray, Icon, Infrastructure Management, imageres.dll, 110
-Menu, Tray, Add, Kubernetes & Containers, :K8s
-Menu, Tray, Icon, Kubernetes & Containers, imageres.dll, 10
-Menu, Tray, Add, Monitoring, :Monitoring
-Menu, Tray, Icon, Monitoring, imageres.dll, 116
-Menu, Tray, Add, Network, :Network
-Menu, Tray, Icon, Network, shell32.dll, 18
-Menu, Tray, Add, Package Managers, :PkgMgr
-Menu, Tray, Icon, Package Managers, shell32.dll, 264
-Menu, Tray, Add, Security & Crypto, :Security
-Menu, Tray, Icon, Security & Crypto, shell32.dll, 48
-Menu, Tray, Add, Storage & FS, :StorageFS
-Menu, Tray, Icon, Storage & FS, shell32.dll, 9
-Menu, Tray, Add, System & Logs, :SysLogs
-Menu, Tray, Icon, System & Logs, imageres.dll, 110
-Menu, Tray, Add, Text & Parsing, :TextParsing
-Menu, Tray, Icon, Text & Parsing, shell32.dll, 151
-Menu, Tray, Add, Virtualization, :Virtualization
-Menu, Tray, Icon, Virtualization, imageres.dll, 10
-Menu, Tray, Add, Web Servers, :WebServers
-Menu, Tray, Icon, Web Servers, imageres.dll, 11
+Menu, Tray, Add, 💾 Backups & S3, :BackupsS3
+Menu, Tray, Icon, 💾 Backups & S3, imageres.dll, 165
+Menu, Tray, Add, 🐧 Basics, :Basics
+Menu, Tray, Icon, 🐧 Basics, imageres.dll, 110
+Menu, Tray, Add, ☁️ Cloud, :Cloud
+Menu, Tray, Icon, ☁️ Cloud, imageres.dll, 165
+Menu, Tray, Add, 🗄️ Databases, :Databases
+Menu, Tray, Icon, 🗄️ Databases, imageres.dll, 13
+Menu, Tray, Add, 🛠️ Dev & Tools, :DevTools
+Menu, Tray, Icon, 🛠️ Dev & Tools, imageres.dll, 117
+Menu, Tray, Add, 🔍 Diagnostics, :Diagnostics
+Menu, Tray, Icon, 🔍 Diagnostics, shell32.dll, 247
+Menu, Tray, Add, 📁 Files & Archives, :FilesArchives
+Menu, Tray, Icon, 📁 Files & Archives, shell32.dll, 257
+Menu, Tray, Add, 🔑 Identity Management, :IdentityMgmt
+Menu, Tray, Icon, 🔑 Identity Management, shell32.dll, 269
+Menu, Tray, Add, 🏗️ Infrastructure Management, :InfraMgmt
+Menu, Tray, Icon, 🏗️ Infrastructure Management, imageres.dll, 110
+Menu, Tray, Add, ☸️ Kubernetes & Containers, :K8s
+Menu, Tray, Icon, ☸️ Kubernetes & Containers, imageres.dll, 10
+Menu, Tray, Add, 📈 Monitoring, :Monitoring
+Menu, Tray, Icon, 📈 Monitoring, imageres.dll, 116
+Menu, Tray, Add, 🌐 Network, :Network
+Menu, Tray, Icon, 🌐 Network, shell32.dll, 18
+Menu, Tray, Add, 📦 Package Managers, :PkgMgr
+Menu, Tray, Icon, 📦 Package Managers, shell32.dll, 264
+Menu, Tray, Add, 🔒 Security & Crypto, :Security
+Menu, Tray, Icon, 🔒 Security & Crypto, shell32.dll, 48
+Menu, Tray, Add, 💽 Storage & FS, :StorageFS
+Menu, Tray, Icon, 💽 Storage & FS, shell32.dll, 9
+Menu, Tray, Add, 📋 System & Logs, :SysLogs
+Menu, Tray, Icon, 📋 System & Logs, imageres.dll, 110
+Menu, Tray, Add, 📝 Text & Parsing, :TextParsing
+Menu, Tray, Icon, 📝 Text & Parsing, shell32.dll, 151
+Menu, Tray, Add, 💻 Virtualization, :Virtualization
+Menu, Tray, Icon, 💻 Virtualization, imageres.dll, 10
+Menu, Tray, Add, 🌍 Web Servers, :WebServers
+Menu, Tray, Icon, 🌍 Web Servers, imageres.dll, 11
 Menu, Tray, Add,
-Menu, Tray, Add, Open cheats folder, OpenFolder
-Menu, Tray, Icon, Open cheats folder, shell32.dll, 4
-Menu, Tray, Add, Exit, ExitApp
-Menu, Tray, Icon, Exit, shell32.dll, 28
+Menu, Tray, Add, 📂 Open cheats folder, OpenFolder
+Menu, Tray, Icon, 📂 Open cheats folder, shell32.dll, 4
+Menu, Tray, Add, ❌ Exit, ExitApp
+Menu, Tray, Icon, ❌ Exit, shell32.dll, 28
 
 
 FileAppend, All menus built`n, %LOG_FILE%
