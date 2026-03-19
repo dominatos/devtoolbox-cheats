@@ -4,6 +4,8 @@ This directory contains everything needed to run **devtoolbox-cheats** on Window
 
 Because Windows doesn't natively support Bash and Linux dialog tools cleanly in the tray, we use an AutoHotkey script (`cheats.ahk`) to create a native Windows system tray menu that opens the markdown cheatsheets in your default text editor.
 
+![Windows Tray Menu](screenshot-windows.jpg)
+
 ---
 
 ## 🚀 Quick Automated Installation

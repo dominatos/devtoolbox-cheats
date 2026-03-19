@@ -42,6 +42,10 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 <img src="docs/img/zenity-general.png" alt="Main menu">
 <img src="docs/img/cat-zenity.png" alt="Sub menu">
 </details>
+<details>
+<summary>Screenshots from Windows (Native Tray App)</summary>
+<img src="Windows-beta/screenshot-windows.jpg" alt="Windows Tray Menu">
+</details>
 
 
 ## ✨ Features
