@@ -40,7 +40,18 @@ git clone https://github.com/dominatos/devtoolbox-cheats.git
 3. **AutoHotkey Installation:** During the process, an AutoHotkey installer window will appear. Follow the interactive prompts (Express Installation is recommended). 
    > **IMPORTANT:** When the installation is completely done, make sure to click **Exit** on the AutoHotkey window so the deployment script can resume!
 
-Once the script completes, the `cheats.exe` application will automatically launch and place itself in your system tray. It has also been added to your Windows startup folder automatically (`shell:startup`), so it will run continuously on boot!
+Once the script completes, the DevToolbox Cheats application will automatically launch and place itself in your system tray. It has also been added to your Windows startup folder automatically (`shell:startup`) using a **dual-file strategy** (`cheats.exe` + `cheats.ahk`) for maximum reliability because Windows Defender may occasionally flag the compiled `cheats.exe` as `Trojan:Script/Wacatac.H!ml`.
+
+> [!NOTE]
+> We now use a professional **Gear icon** in the tray instead of the default "H" icon.
+
+---
+
+## 🛡️ Antivirus & False Positives (Wacatac)
+
+Windows Defender may occasionally flag the compiled `cheats.exe` as `Trojan:Script/Wacatac.H!ml`. 
+- **This is a safe false positive.** It occurs because AutoHotkey's compilation process bundles a script with an interpreter, which heuristic scanners sometimes find suspicious. 
+- **Our Solution:** To ensure the tool remains functional even if your antivirus deletes the EXE, our installer automatically copies the original `.ahk` script to your startup folder as well. Windows will run the script directly using the installed AutoHotkey interpreter, which is almost never flagged by antivirus software.
 
 ---
 
@@ -70,5 +81,14 @@ Replace `<USER>` with your actual Windows username. Save the file.
 3. This process will generate a native Windows executable called `cheats.exe` in the same folder.
 
 ### 5. Run & Auto-Start
-- **To run immediately:** Double-click `cheats.exe`. You will see a new green "H" icon in your system tray. Right-click it to access your cheatsheets.
-- **To run on boot:** Hold the `Windows Key` and press `R` to open the Run dialog. Type `shell:startup` and press Enter. Copy (or create a shortcut to) `cheats.exe` into this Startup folder.
+- **To run immediately:** Double-click `cheats.exe` or `cheats.ahk`. You will see a new **Gear icon** in your system tray. Right-click it to access your cheatsheets.
+- **To run on boot:** Hold the `Windows Key` and press `R` to open the Run dialog. Type `shell:startup` and press Enter. Copy **both** `cheats.exe` and `cheats.ahk` into this Startup folder for maximum reliability.
+
+---
+
+## ❓ Troubleshooting: Duplicate Icons
+If you see **two Gear icons** in your system tray after a reboot, it means both the EXE and the AHK script were launched. 
+1. Right-click the duplicate icons and select **Exit** for both.
+2. Open your startup folder (`shell:startup`).
+3. Delete one of the files—preferably the `.exe` if it was the one being flagged by your antivirus.
+4. Restart the remaining file.

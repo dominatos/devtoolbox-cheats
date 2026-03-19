@@ -12,6 +12,7 @@ FileAppend, Script started`n, %LOG_FILE%
 
 ; ============= Tray Setup =============
 Menu, Tray, Tip, Dev Toolbox Cheats
+Menu, Tray, Icon, imageres.dll, 109 ; Gear icon for the tray
 
 ; ============= Backups & S3 =============
 Menu, BackupsS3, Add, s3cmd — S3 CLI, OpenFile
@@ -23,9 +24,9 @@ Menu, BackupsS3, Icon, Restic Backup, imageres.dll, 165
 
 ; ============= Basics =============
 Menu, Basics, Add, Linux Basics — Cheatsheet, OpenFile
-Menu, Basics, Icon, Linux Basics — Cheatsheet, shell32.dll, 24
+Menu, Basics, Icon, Linux Basics — Cheatsheet, imageres.dll, 109
 Menu, Basics, Add, Linux Basics 2 — Cheatsheet, OpenFile
-Menu, Basics, Icon, Linux Basics 2 — Cheatsheet, shell32.dll, 24
+Menu, Basics, Icon, Linux Basics 2 — Cheatsheet, imageres.dll, 109
 
 ; ============= Cloud =============
 Menu, Cloud, Add, AWS CLI, OpenFile
@@ -329,7 +330,7 @@ Menu, WebServers, Icon, WebLogic Server, imageres.dll, 11
 Menu, Tray, Add, Backups & S3, :BackupsS3
 Menu, Tray, Icon, Backups & S3, imageres.dll, 165
 Menu, Tray, Add, Basics, :Basics
-Menu, Tray, Icon, Basics, shell32.dll, 24
+Menu, Tray, Icon, Basics, imageres.dll, 109
 Menu, Tray, Add, Cloud, :Cloud
 Menu, Tray, Icon, Cloud, imageres.dll, 165
 Menu, Tray, Add, Databases, :Databases

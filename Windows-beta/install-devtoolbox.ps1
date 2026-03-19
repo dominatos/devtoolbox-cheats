@@ -69,17 +69,27 @@ if (Test-Path $AhkCompiler) {
     if (Test-Path $OutputFile) {
         Write-Host "Compilation successful! Executable is ready at: $OutputFile" -ForegroundColor Green
         
-        Write-Host "`n[5/5] Adding to Startup..."
+        Write-Host "`n[5/6] Adding to Startup (Dual-Strategy)..."
         $StartupFolder = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs\Startup"
+        
+        # Copy both EXE and AHK for maximum reliability (redundancy against AV deletions)
         Copy-Item -Path $OutputFile -Destination $StartupFolder -Force
-        Write-Host "Successfully copied cheats.exe to startup folder." -ForegroundColor Green
+        Copy-Item -Path $AhkFile -Destination $StartupFolder -Force
+        
+        Write-Host "Successfully added both cheats.exe and cheats.ahk to startup folder." -ForegroundColor Green
         
         Write-Host "`n[6/6] Starting DevToolbox Cheats..."
         $StartupExe = Join-Path $StartupFolder "cheats.exe"
         Start-Process -FilePath $StartupExe
-        Write-Host "App is running! Check your system tray for the green 'H' icon." -ForegroundColor Green
+        Write-Host "App is running! Check your system tray for the Gear icon." -ForegroundColor Green
+        
+        Write-Host "`nNOTE: If you see TWO Gear icons in the tray, it means BOTH the EXE and AHK started." -ForegroundColor Yellow
+        Write-Host "You should manually delete one of them (the .exe if it gets flagged) from your startup folder." -ForegroundColor Yellow
     } else {
-        Write-Warning "Compilation failed or output not found."
+        Write-Warning "Compilation failed or output not found. Proceeding with AHK script startup only."
+        $StartupFolder = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs\Startup"
+        Copy-Item -Path $AhkFile -Destination $StartupFolder -Force
+        Start-Process -FilePath (Join-Path $StartupFolder "cheats.ahk")
     }
 } else {
     Write-Warning "AutoHotkey compiler not found at $AhkCompiler. You can compile it manually by right-clicking cheats.ahk and selecting 'Compile Script'."
