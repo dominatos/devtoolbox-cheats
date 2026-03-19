@@ -2,7 +2,7 @@
 #SingleInstance Force
 #Persistent
 SetWorkingDir %A_ScriptDir%
-;@Ahk2Exe-SetMainIcon imageres.dll, 109
+;@Ahk2Exe-SetMainIcon imageres.dll, 110
 
 CHEATS_DIR = C:\Users\<USER>\cheats.d
 LOG_FILE = C:\Users\<USER>\cheats_debug.log
@@ -13,7 +13,7 @@ FileAppend, Script started`n, %LOG_FILE%
 
 ; ============= Tray Setup =============
 Menu, Tray, Tip, Dev Toolbox Cheats
-Menu, Tray, Icon, imageres.dll, 109 ; Gear icon for the tray
+Menu, Tray, Icon, imageres.dll, 110 ; Updated gear icon for the tray
 
 ; ============= Backups & S3 =============
 Menu, BackupsS3, Add, s3cmd — S3 CLI, OpenFile
@@ -25,9 +25,9 @@ Menu, BackupsS3, Icon, Restic Backup, imageres.dll, 165
 
 ; ============= Basics =============
 Menu, Basics, Add, Linux Basics — Cheatsheet, OpenFile
-Menu, Basics, Icon, Linux Basics — Cheatsheet, imageres.dll, 109
+Menu, Basics, Icon, Linux Basics — Cheatsheet, imageres.dll, 110
 Menu, Basics, Add, Linux Basics 2 — Cheatsheet, OpenFile
-Menu, Basics, Icon, Linux Basics 2 — Cheatsheet, imageres.dll, 109
+Menu, Basics, Icon, Linux Basics 2 — Cheatsheet, imageres.dll, 110
 
 ; ============= Cloud =============
 Menu, Cloud, Add, AWS CLI, OpenFile
@@ -103,9 +103,9 @@ Menu, IdentityMgmt, Icon, AD CLI, shell32.dll, 269
 
 ; ============= Infrastructure Management =============
 Menu, InfraMgmt, Add, AWX, OpenFile
-Menu, InfraMgmt, Icon, AWX, imageres.dll, 109
+Menu, InfraMgmt, Icon, AWX, imageres.dll, 110
 Menu, InfraMgmt, Add, Uyuni, OpenFile
-Menu, InfraMgmt, Icon, Uyuni, imageres.dll, 109
+Menu, InfraMgmt, Icon, Uyuni, imageres.dll, 110
 
 ; ============= Kubernetes & Containers =============
 Menu, K8s, Add, Docker, OpenFile
@@ -255,33 +255,33 @@ Menu, StorageFS, Icon, SMART && mdadm RAID, shell32.dll, 9
 
 ; ============= System & Logs =============
 Menu, SysLogs, Add, cron / at — Commands, OpenFile
-Menu, SysLogs, Icon, cron / at — Commands, imageres.dll, 109
+Menu, SysLogs, Icon, cron / at — Commands, imageres.dll, 110
 Menu, SysLogs, Add, date && timedatectl, OpenFile
-Menu, SysLogs, Icon, date && timedatectl, imageres.dll, 109
+Menu, SysLogs, Icon, date && timedatectl, imageres.dll, 110
 Menu, SysLogs, Add, du/df/lsof/ps, OpenFile
-Menu, SysLogs, Icon, du/df/lsof/ps, imageres.dll, 109
+Menu, SysLogs, Icon, du/df/lsof/ps, imageres.dll, 110
 Menu, SysLogs, Add, ionice && nice, OpenFile
-Menu, SysLogs, Icon, ionice && nice, imageres.dll, 109
+Menu, SysLogs, Icon, ionice && nice, imageres.dll, 110
 Menu, SysLogs, Add, journalctl — Basics, OpenFile
-Menu, SysLogs, Icon, journalctl — Basics, imageres.dll, 109
+Menu, SysLogs, Icon, journalctl — Basics, imageres.dll, 110
 Menu, SysLogs, Add, journalctl — Systemd Journal, OpenFile
-Menu, SysLogs, Icon, journalctl — Systemd Journal, imageres.dll, 109
+Menu, SysLogs, Icon, journalctl — Systemd Journal, imageres.dll, 110
 Menu, SysLogs, Add, Kernel-panic RHEL, OpenFile
-Menu, SysLogs, Icon, Kernel-panic RHEL, imageres.dll, 109
+Menu, SysLogs, Icon, Kernel-panic RHEL, imageres.dll, 110
 Menu, SysLogs, Add, Kibana, OpenFile
-Menu, SysLogs, Icon, Kibana, imageres.dll, 109
+Menu, SysLogs, Icon, Kibana, imageres.dll, 110
 Menu, SysLogs, Add, logrotate, OpenFile
-Menu, SysLogs, Icon, logrotate, imageres.dll, 109
+Menu, SysLogs, Icon, logrotate, imageres.dll, 110
 Menu, SysLogs, Add, Ubuntu VPS Optimization, OpenFile
-Menu, SysLogs, Icon, Ubuntu VPS Optimization, imageres.dll, 109
+Menu, SysLogs, Icon, Ubuntu VPS Optimization, imageres.dll, 110
 Menu, SysLogs, Add, SELinux && AppArmor, OpenFile
-Menu, SysLogs, Icon, SELinux && AppArmor, imageres.dll, 109
+Menu, SysLogs, Icon, SELinux && AppArmor, imageres.dll, 110
 Menu, SysLogs, Add, systemctl — Commands, OpenFile
-Menu, SysLogs, Icon, systemctl — Commands, imageres.dll, 109
+Menu, SysLogs, Icon, systemctl — Commands, imageres.dll, 110
 Menu, SysLogs, Add, systemd Timers, OpenFile
-Menu, SysLogs, Icon, systemd Timers, imageres.dll, 109
+Menu, SysLogs, Icon, systemd Timers, imageres.dll, 110
 Menu, SysLogs, Add, systemd unit template, OpenFile
-Menu, SysLogs, Icon, systemd unit template, imageres.dll, 109
+Menu, SysLogs, Icon, systemd unit template, imageres.dll, 110
 
 ; ============= Text & Parsing =============
 Menu, TextParsing, Add, AWK — Commands, OpenFile
@@ -331,7 +331,7 @@ Menu, WebServers, Icon, WebLogic Server, imageres.dll, 11
 Menu, Tray, Add, Backups & S3, :BackupsS3
 Menu, Tray, Icon, Backups & S3, imageres.dll, 165
 Menu, Tray, Add, Basics, :Basics
-Menu, Tray, Icon, Basics, imageres.dll, 109
+Menu, Tray, Icon, Basics, imageres.dll, 110
 Menu, Tray, Add, Cloud, :Cloud
 Menu, Tray, Icon, Cloud, imageres.dll, 165
 Menu, Tray, Add, Databases, :Databases
@@ -345,7 +345,7 @@ Menu, Tray, Icon, Files & Archives, shell32.dll, 257
 Menu, Tray, Add, Identity Management, :IdentityMgmt
 Menu, Tray, Icon, Identity Management, shell32.dll, 269
 Menu, Tray, Add, Infrastructure Management, :InfraMgmt
-Menu, Tray, Icon, Infrastructure Management, imageres.dll, 109
+Menu, Tray, Icon, Infrastructure Management, imageres.dll, 110
 Menu, Tray, Add, Kubernetes & Containers, :K8s
 Menu, Tray, Icon, Kubernetes & Containers, imageres.dll, 10
 Menu, Tray, Add, Monitoring, :Monitoring
@@ -359,7 +359,7 @@ Menu, Tray, Icon, Security & Crypto, shell32.dll, 48
 Menu, Tray, Add, Storage & FS, :StorageFS
 Menu, Tray, Icon, Storage & FS, shell32.dll, 9
 Menu, Tray, Add, System & Logs, :SysLogs
-Menu, Tray, Icon, System & Logs, imageres.dll, 109
+Menu, Tray, Icon, System & Logs, imageres.dll, 110
 Menu, Tray, Add, Text & Parsing, :TextParsing
 Menu, Tray, Icon, Text & Parsing, shell32.dll, 151
 Menu, Tray, Add, Virtualization, :Virtualization
