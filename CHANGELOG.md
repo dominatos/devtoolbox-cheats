@@ -1,4 +1,6 @@
-# 📝 Changelog
+### v1.3 (2026-03-20)
+**New Cheatsheets:**
+- ✅ Added comprehensive **Commvault v11 (Simpana)** cheatsheet with enterprise backup strategies, data streams configuration, and low-impact backup manuals.
 
 ### v1.2 (2026-03-20)
 **Windows Search Implementation:**
