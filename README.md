@@ -1110,6 +1110,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 
 ### Identity Management
 - [🪪 adcli (Active Directory CLI)](cheats.d/identity-management/adclicheatsheet.md)
+- [🪪 Keycloak — Identity Management](cheats.d/identity-management/keycloak.md)
 
 ### Monitoring
 - [🧠 Cerebro (Elasticsearch Admin)](cheats.d/monitoring/cerebrocheatsheet.md)
