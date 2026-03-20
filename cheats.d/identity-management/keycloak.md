@@ -10,6 +10,8 @@ Keycloak is an open-source Identity and Access Management (IAM) solution based o
 ## Table of Contents / Оглавление
 - [Dev vs Prod Comparison / Сравнение Dev и Prod](#dev-vs-prod-comparison--сравнение-dev-и-prod)
 - [Production Runbook: Installation / Руководство по установке](#production-runbook-installation--руководство-по-установке)
+- [Production Runbook: Realm Configuration (UI) / Настройка реалма (в браузере)](#production-runbook-realm-configuration-ui--настройка-реалма-в-браузере)
+- [Tomcat Integration / Интеграция с Tomcat](#tomcat-integration--интеграция-с-tomcat)
 - [Installation & Configuration / Установка и конфигурация](#installation--configuration--установка-и-конфигурация)
 - [Core Management / Основное управление](#core-management--основное-управление)
 - [Sysadmin Operations / Системное администрирование](#sysadmin-operations--системное-администрирование)
@@ -111,6 +113,62 @@ WantedBy=multi-user.target
 
 > [!IMPORTANT]
 > **Why use Optimized build?** Keycloak Quarkus performs heavy lifting during the `build` phase to reduce startup time and memory footprint. Always run `kc.sh build` before deploying to production.
+
+---
+
+## Production Runbook: Realm Configuration (UI) / Настройка реалма (в браузере)
+
+### 1. Create a Realm / Создание реалма
+1. Login to Admin Console at `https://<HOST>:8443/admin/`.
+2. Click the **Master** dropdown (top-left) -> **Create Realm**.
+3. Name: `my-realm` -> **Create**.
+
+### 2. Create a Client (Tomcat) / Создание клиента
+1. Navigate to **Clients** -> **Create client**.
+2. **Client ID:** `tomcat-app`.
+3. **Client Protocol:** `openid-connect`.
+4. **Access Type:** `confidential` (requires secret) / `public`.
+5. **Valid Redirect URIs:** `http://<TOMCAT_HOST>:8080/*`.
+6. **Web Origins:** `*` (or your domain).
+7. Save and go to **Credentials** tab to get the **Client Secret**.
+
+### 3. Create a User / Создание пользователя
+1. Navigate to **Users** -> **Add user**.
+2. Username: `john_doe` -> **Create**.
+3. **Credentials** tab -> **Set password** -> Disable **Temporary**.
+
+---
+
+## Tomcat Integration / Интеграция с Tomcat
+
+### Configuration Details / Детали конфигурации
+To integrate Tomcat with Keycloak, use the `keycloak.json` file or configure the `KeycloakAuthenticatorValve` in `context.xml`.
+
+`/var/lib/tomcat/webapps/<APP>/WEB-INF/keycloak.json`
+
+```json
+{
+  "realm": "my-realm",
+  "auth-server-url": "https://<KEYCLOAK_HOST>:8443/",
+  "ssl-required": "external",
+  "resource": "tomcat-app",
+  "credentials": {
+    "secret": "<SECRET_KEY>"
+  },
+  "confidential-port": 8443
+}
+```
+
+### Installation Steps / Шаги установки
+```bash
+# 1. Download Keycloak Tomcat Adapter / Скачайте адаптер
+# 2. Extract into $TOMCAT_HOME/lib / Распакуйте в lib
+# 3. Add Keycloak Valve to META-INF/context.xml / Добавьте клапан в context.xml
+```
+
+```xml
+<Valve className="org.keycloak.adapters.tomcat.KeycloakAuthenticatorValve"/>
+```
 
 ---
 
