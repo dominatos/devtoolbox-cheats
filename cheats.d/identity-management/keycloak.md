@@ -9,6 +9,7 @@ Keycloak is an open-source Identity and Access Management (IAM) solution based o
 
 ## Table of Contents / Оглавление
 - [Dev vs Prod Comparison / Сравнение Dev и Prod](#dev-vs-prod-comparison--сравнение-dev-и-prod)
+- [Production Runbook: Installation / Руководство по установке](#production-runbook-installation--руководство-по-установке)
 - [Installation & Configuration / Установка и конфигурация](#installation--configuration--установка-и-конфигурация)
 - [Core Management / Основное управление](#core-management--основное-управление)
 - [Sysadmin Operations / Системное администрирование](#sysadmin-operations--системное-администрирование)
@@ -16,6 +17,85 @@ Keycloak is an open-source Identity and Access Management (IAM) solution based o
 - [Backup & Restore / Резервное копирование и восстановление](#backup--restore--резервное-копирование-и-восстановление)
 - [Optimization / Оптимизация](#optimization--оптимизация)
 - [Troubleshooting / Исправление неполадок](#troubleshooting--исправление-неполадок)
+
+---
+
+## Production Runbook: Installation / Руководство по установке
+
+### 1. Prerequisites / Предварительные требования
+```bash
+# Install Java 17 (Required for modern Keycloak) / Установите Java 17
+sudo apt update && sudo apt install openjdk-17-jdk -y  # Debian/Ubuntu
+sudo dnf install java-17-openjdk-devel -y             # RHEL/Fedora
+```
+
+### 2. Database Backup/Setup / Настройка базы данных
+> [!IMPORTANT]
+> Use a production-grade database like PostgreSQL.
+
+```bash
+# PostgreSQL Setup / Настройка PostgreSQL
+sudo -u postgres psql <<EOF
+CREATE DATABASE keycloak;
+CREATE USER <USER> WITH ENCRYPTED PASSWORD '<PASSWORD>';
+GRANT ALL PRIVILEGES ON DATABASE keycloak TO <USER>;
+EOF
+```
+
+### 3. Basic Installation / Базовая установка
+```bash
+# Create user and download / Создайте пользователя и скачайте
+sudo useradd -m -d /opt/keycloak -s /sbin/nologin keycloak
+curl -L https://github.com/keycloak/keycloak/releases/download/<VERSION>/keycloak-<VERSION>.tar.gz -o keycloak.tar.gz
+sudo tar -xvzf keycloak.tar.gz -C /opt/keycloak --strip-components=1
+sudo chown -R keycloak: /opt/keycloak
+```
+
+### 4. Initial Configuration / Первоначальная конфигурация
+`/opt/keycloak/conf/keycloak.conf`
+
+```properties
+db=postgres
+db-url=jdbc:postgresql://<HOST>:5432/keycloak
+db-username=<USER>
+db-password=<PASSWORD>
+hostname=<HOST>
+http-enabled=false
+https-certificate-file=/etc/letsencrypt/live/<HOST>/fullchain.pem
+https-certificate-key-file=/etc/letsencrypt/live/<HOST>/privkey.pem
+```
+
+### 5. Build and Admin Setup / Сборка и создание админа
+```bash
+# Build optimized image / Сборка оптимизированного образа
+sudo -u keycloak /opt/keycloak/bin/kc.sh build
+
+# Create initial admin user (Env variables) / Создание первого админа
+export KC_BOOTSTRAP_ADMIN_USERNAME=<USER>
+export KC_BOOTSTRAP_ADMIN_PASSWORD=<PASSWORD>
+sudo -u keycloak /opt/keycloak/bin/kc.sh start --optimized
+```
+
+### 6. Systemd Integration / Интеграция с Systemd
+`/etc/systemd/system/keycloak.service`
+
+```ini
+[Unit]
+Description=Keycloak Identity Management
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=keycloak
+Group=keycloak
+WorkingDirectory=/opt/keycloak
+ExecStart=/opt/keycloak/bin/kc.sh start --optimized
+Restart=on-failure
+Environment=JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+[Install]
+WantedBy=multi-user.target
+```
 
 ---
 
