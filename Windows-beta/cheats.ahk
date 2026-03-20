@@ -54,6 +54,11 @@ IndexCheats()
 BuildMenus()
 
 FileAppend, All menus built dynamically`n, %LOG_FILE%
+
+; ============= Hotkeys =============
+; Ctrl+Shift+S to show search
+^+s::GoSub, ShowSearchGui
+
 return
 
 ; ============= Logic =============
@@ -139,6 +144,7 @@ BuildMenus() {
     }
     
     Menu, Tray, Add
+    Menu, Tray, Add, % Chr(0x1F50D) . " Search cheats (Ctrl+Shift+S)", ShowSearchGui
     Menu, Tray, Add, % Chr(0x1F4C2) . " Open cheats folder", OpenFolder
     Menu, Tray, Add, % Chr(0x274C) . " Exit", ExitApp
 }
@@ -173,4 +179,59 @@ return
 
 ExitApp:
     ExitApp
+return
+
+; ============= Search GUI =============
+
+ShowSearchGui:
+    Gui, Search:New, +AlwaysOnTop +Resize, Search Cheats
+    Gui, Search:Font, s11, Segoe UI
+    Gui, Search:Add, Text,, Type to search (Title or Group):
+    Gui, Search:Add, Edit, vSearchQuery gUpdateSearch w500
+    Gui, Search:Add, ListView, vSearchResult r20 w500 gSelectResult +Grid, Icon|Title|Group
+    Gui, Search:Add, Button, x-100 y-100 Default gSelectResult, OK ; Hidden default button for Enter key
+    
+    ; Populate initially
+    UpdateSearch()
+    
+    Gui, Search:Show
+return
+
+UpdateSearch() {
+    global CHEATS_DATA
+    Gui, Search:Default
+    GuiControlGet, SearchQuery
+    
+    LV_Delete()
+    GuiControl, -Redraw, SearchResult
+    for index, cheat in CHEATS_DATA {
+        if (SearchQuery = "" 
+            || InStr(cheat.title, SearchQuery) 
+            || InStr(cheat.group, SearchQuery)) {
+            LV_Add("", cheat.icon, cheat.title, cheat.group)
+        }
+    }
+    LV_ModifyCol(1, "AutoHdr")
+    LV_ModifyCol(2, "AutoHdr")
+    LV_ModifyCol(3, "AutoHdr")
+    GuiControl, +Redraw, SearchResult
+}
+
+SelectResult:
+    if (A_GuiEvent = "DoubleClick" || (A_GuiEvent = "Normal" && GetKeyState("Enter", "P"))) {
+        LV_GetText(selTitle, A_EventInfo, 2)
+        LV_GetText(selGroup, A_EventInfo, 3)
+        
+        for index, cheat in CHEATS_DATA {
+            if (cheat.title = selTitle && cheat.group = selGroup) {
+                Run, % cheat.path
+                Gui, Search:Hide
+                break
+            }
+        }
+    }
+return
+
+SearchGuiEscape:
+    Gui, Search:Hide
 return

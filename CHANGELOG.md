@@ -1,5 +1,12 @@
 # 📝 Changelog
 
+### v1.2 (2026-03-20)
+**Windows Search Implementation:**
+- ✅ Native Search GUI for Windows version
+- ✅ Real-time filtering by Title and Group
+- ✅ Global hotkey `Ctrl+Shift+S` to trigger search
+- ✅ Updated Windows documentation with search usage
+
 ### v1.1.1 (2026-03-04)
 
 **Documentation Updates:**
