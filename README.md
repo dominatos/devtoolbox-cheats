@@ -1068,6 +1068,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🔎 OpenSearch — Cheatsheet](cheats.d/databases/opensearchcheatsheet.md)
 - [🗃️ Oracle Database](cheats.d/databases/oraclecheatsheet.md)
 - [🗃️ PostgreSQL — psql/pg_dump](cheats.d/databases/postgrescheatsheet.md)
+- [🔀 ProxySQL — MySQL Proxy](cheats.d/databases/proxysqlcheatsheet.md)
 - [🗃️ Redis — Production Cheatsheet](cheats.d/databases/redis_prod_cheatsheet.md)
 - [🗃️ SQLite](cheats.d/databases/sqlitecheatsheet.md)
 
