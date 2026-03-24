@@ -1067,10 +1067,12 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🗃️ MySQL/MariaDB](cheats.d/databases/mysqlcheatsheet.md)
 - [🔎 OpenSearch — Cheatsheet](cheats.d/databases/opensearchcheatsheet.md)
 - [🗃️ Oracle Database](cheats.d/databases/oraclecheatsheet.md)
+- [🐬 Percona XtraDB Cluster (PXC)](cheats.d/databases/percona-xtradb-cluster.md)
 - [🗃️ PostgreSQL — psql/pg_dump](cheats.d/databases/postgrescheatsheet.md)
 - [🔀 ProxySQL — MySQL Proxy](cheats.d/databases/proxysqlcheatsheet.md)
 - [🗃️ Redis — Production Cheatsheet](cheats.d/databases/redis_prod_cheatsheet.md)
 - [🗃️ SQLite](cheats.d/databases/sqlitecheatsheet.md)
+- [🐬 MySQL Galera Cluster](cheats.d/databases/mysqlgaleracheatsheet.md)
 
 ### Dev & Tools
 - [🛠️ Ansible](cheats.d/dev-tools/ansiblecheatsheet.md)
@@ -1084,6 +1086,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🐍 Python — venv/pip/pipx](cheats.d/dev-tools/pythontoolscheatsheet.md)
 - [🛠️ Terraform](cheats.d/dev-tools/terraformcheatsheet.md)
 - [🧷 tmux — Commands](cheats.d/dev-tools/tmuxcheatsheet.md)
+- [🔍 Meld (Merge & Diff)](cheats.d/dev-tools/meldcheatsheet.md)
 
 ### Diagnostics
 - [🔍 strace / perf / tcpdump — Commands](cheats.d/diagnostics/diagcheatsheet.md)
@@ -1108,6 +1111,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 ### Infrastructure Management
 - [🤖 AWX (Ansible Tower)](cheats.d/infrastructure-mgmt/awxcheatsheet.md)
 - [🔧 Uyuni](cheats.d/infrastructure-mgmt/uyunicheatsheet.md)
+- [🫀 Pacemaker & Corosync HA](cheats.d/infrastructure-mgmt/pacemakerhacheatsheet.md)
 
 ### Identity Management
 - [🪪 adcli (Active Directory CLI)](cheats.d/identity-management/adclicheatsheet.md)
@@ -1219,6 +1223,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🌐 Nginx — Cheatsheet](cheats.d/web-servers/nginxcheatsheet.md)
 - [🌐 WebLogic Server](cheats.d/web-servers/weblogiccheatsheet.md)
 - [🐱 Tomcat — Cheatsheet](cheats.d/web-servers/tomcatcheatsheet.md)
+- [🦅 WildFly (JBoss)](cheats.d/web-servers/wildflycheatsheet.md)
 
 ### Virtualization
 - [🖥️ KVM / QEMU — Virtualization](cheats.d/virtualization/kvmcheatsheet.md)
