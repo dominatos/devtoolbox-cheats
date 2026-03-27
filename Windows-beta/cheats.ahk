@@ -146,6 +146,8 @@ BuildMenus() {
     Menu, Tray, Add
     Menu, Tray, Add, % Chr(0x1F50D) . " Search cheats (Ctrl+Shift+S)", ShowSearchGui
     Menu, Tray, Add, % Chr(0x1F4C2) . " Open cheats folder", OpenFolder
+    Menu, Tray, Add, % Chr(0x1F310) . " Online Version", OpenOnlineVersion
+    Menu, Tray, Add, % Chr(0x1F419) . " GitHub Repository", OpenGitHub
     Menu, Tray, Add, % Chr(0x274C) . " Exit", ExitApp
 }
 
@@ -175,6 +177,14 @@ return
 
 OpenFolder:
     Run, %CHEATS_DIR%
+return
+
+OpenOnlineVersion:
+    Run, https://cheats.alteron.net/
+return
+
+OpenGitHub:
+    Run, https://github.com/dominatos/devtoolbox-cheats/
 return
 
 ExitApp:
