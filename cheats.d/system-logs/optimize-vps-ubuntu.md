@@ -3,11 +3,23 @@ Group: System & Logs
 Icon: 🖥️
 Order: 7
 
-# 🖥️ Ubuntu VPS Optimization Cheatsheet
+# Ubuntu VPS Optimization
 
-> **Context:** Quick guide to free disk space, reduce RAM/CPU usage, and improve security on a headless Ubuntu 22.04+ VPS (web/DB/Docker stacks). / Краткое руководство по освобождению места, снижению нагрузки и повышению безопасности headless VPS Ubuntu 22.04+.
-> **Role:** Sysadmin / DevOps
-> **OS:** Ubuntu 22.04 / 24.04 (headless server)
+Quick guide to free disk space, reduce RAM/CPU usage, and improve security on a headless Ubuntu 22.04+ VPS running web/DB/Docker stacks. These optimizations are particularly effective for small VPS instances (1–4 GB RAM) where every megabyte counts.
+
+**What this covers / Что охватывает:**
+- Removing unused packages (GPU drivers, snapd, language packs)
+- Disabling unnecessary services (GPU manager, VM tools, power management)
+- Verifying improvements with monitoring tools
+
+**When to apply / Когда применять:**
+- After provisioning a new VPS
+- When migrating from a desktop-oriented image to a server role
+- When disk space or RAM is critically low
+
+> [!IMPORTANT]
+> These optimizations target **headless servers only**. Do not apply GPU removal or service disabling on desktop systems or VMs that need graphical output.
+> Эти оптимизации только для **headless серверов**. Не применяйте на десктопах.
 
 ---
 
@@ -69,9 +81,11 @@ sudo systemctl daemon-reload                    # Reload systemd / Переза�
 
 ```bash
 # GPU / VM / Power management — not needed on headless VPS
+# GPU / ВМ / Управление питанием — не нужны на headless VPS
 sudo systemctl disable --now gpu-manager switcheroo-control thermald power-profiles-daemon speech-dispatcherd
 
 # VM tools / Ubuntu extras — disable if not needed
+# Утилиты ВМ / Ubuntu экстра — отключить если не нужны
 sudo systemctl disable --now open-vm-tools lxd-agent pollinate ubuntu-advantage
 ```
 
@@ -133,3 +147,12 @@ sudo reboot                                   # Reboot to apply changes / Пер
 - Keep `sshd` running — losing SSH access locks you out. / Не отключайте `sshd`.
 - Run `systemd-analyze blame` to find slow boot services. / Найдите медленные сервисы через `systemd-analyze blame`.
 - Document disabled services for future reference. / Документируйте отключённые сервисы.
+
+---
+
+## Documentation Links
+
+- **Ubuntu Server Guide:** https://ubuntu.com/server/docs
+- **systemd-analyze(1):** https://man7.org/linux/man-pages/man1/systemd-analyze.1.html
+- **deborphan:** https://packages.debian.org/deborphan
+- **ArchWiki — Improving Performance:** https://wiki.archlinux.org/title/Improving_performance

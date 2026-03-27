@@ -5,7 +5,10 @@ Order: 5
 
 # Ansible Cheatsheet
 
-> **Context:** Ansible is an open-source software provisioning, configuration management, and application-deployment tool. / Ansible - это open-source инструмент для провижининга ПО, управления конфигурацией и деплоя.
+> **Description:** Ansible is an open-source agentless automation tool for software provisioning, configuration management, and application deployment. It uses SSH and YAML-based playbooks — no agent installation required on target hosts. Created by Michael DeHaan (2012), now maintained by Red Hat.
+> Ansible — это open-source безагентный инструмент автоматизации для провижининга ПО, управления конфигурацией и деплоя. Использует SSH и YAML-плейбуки — не требует установки агентов на целевых хостах.
+
+> **Status:** Actively maintained by Red Hat. Alternatives: **SaltStack** (agent-based, faster at scale), **Puppet** (agent-based, declarative), **Chef** (Ruby-based). **Ansible Semaphore** provides a modern web UI.
 > **Role:** DevOps / Sysadmin
 > **Version:** 2.9+
 
@@ -183,3 +186,12 @@ ansible-config dump --only-changed             # Show changed config / Пока�
 > Ansible does not log by default. Enable logging by setting `log_path` in `ansible.cfg`:
 > `log_path = /var/log/ansible/ansible.log`
 > Ansible не логирует по умолчанию. Включите логирование через `log_path` в `ansible.cfg`.
+
+---
+
+## Official Documentation / Официальная документация
+
+- **Ansible:** https://docs.ansible.com/
+- **Ansible Galaxy (Roles):** https://galaxy.ansible.com/
+- **Ansible Vault:** https://docs.ansible.com/ansible/latest/vault_guide/
+- **Ansible Semaphore (Web UI):** https://semaphoreui.com/

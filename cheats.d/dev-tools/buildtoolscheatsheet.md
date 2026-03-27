@@ -3,6 +3,16 @@ Group: Dev & Tools
 Icon: 🛠️
 Order: 5
 
+# Build Tools Cheatsheet — Make / CMake / Meson / Ninja
+
+> **Description:** A collection of Linux/UNIX build systems used to compile software from source code. **Make** (1976) is the classic UNIX build tool using `Makefile` rules. **CMake** (2000) is a cross-platform meta-build system that generates Makefiles or Ninja files. **Meson** (2013) is a modern, fast meta-build system focused on simplicity. **Ninja** (2012) is a low-level build executor designed for speed, typically used as a backend for CMake or Meson.
+> Сборник систем сборки Linux/UNIX для компиляции ПО из исходного кода. **Make** — классический инструмент UNIX. **CMake** — кроссплатформенная мета-система сборки. **Meson** — современная быстрая мета-система сборки. **Ninja** — низкоуровневый сборщик для скорости.
+
+> **Status:** All actively maintained and widely used. CMake is the de facto standard for C/C++ projects. Meson is gaining traction in GNOME/freedesktop ecosystem.
+> **Role:** Developer / Build Engineer
+
+---
+
 ## Table of Contents
 - [Make](#-make--традиционная-сборка)
 - [CMake](#-cmake--современная-сборка)
@@ -393,3 +403,13 @@ docker run --rm -v $(pwd):/src -w /src ubuntu:22.04 bash -c "apt update && apt i
 > [!WARNING]
 > `sudo make install` installs system-wide and may overwrite system files. Prefer `--prefix=$HOME/.local` for testing.
 > `sudo make install` устанавливает глобально и может перезаписать системные файлы. Используйте `--prefix=$HOME/.local` для тестирования.
+
+---
+
+## Official Documentation / Официальная документация
+
+- **GNU Make:** https://www.gnu.org/software/make/manual/
+- **CMake:** https://cmake.org/documentation/
+- **Meson:** https://mesonbuild.com/Manual.html
+- **Ninja:** https://ninja-build.org/manual.html
+- **GNU Autotools:** https://www.gnu.org/software/automake/manual/

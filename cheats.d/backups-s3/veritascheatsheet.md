@@ -3,10 +3,8 @@ Group: Backups & S3
 Icon: 🗄️
 Order: 8
 
-> **Context:** Veritas InfoScale (formerly Storage Foundation) provides enterprise-grade HA storage management, clustering, and disaster recovery for Linux and Unix systems.
-> - **VxVM (Veritas Volume Manager):** Manages physical disks, disk groups, volumes, mirrors.
-> - **VxFS (Veritas File System):** Online-resizable filesystem with integrated snapshot support.
-> - **Role:** Storage Admin / Sysadmin
+> **Veritas InfoScale** (formerly Storage Foundation) provides enterprise-grade HA storage management, clustering, and disaster recovery for Linux and Unix systems. Key components include **VxVM** (Volume Manager) for disk, volume, and mirror management, and **VxFS** (File System) for online-resizable filesystems with integrated snapshot support. InfoScale is a legacy enterprise product; modern alternatives include **LVM + ext4/XFS** (built into Linux), **ZFS**, and **Btrfs** for volume/filesystem management.
+> / **Veritas InfoScale** (ранее Storage Foundation) — корпоративная платформа управления хранилищем, кластеризации и аварийного восстановления. Включает **VxVM** (Volume Manager) и **VxFS** (File System). Современные альтернативы: **LVM + ext4/XFS**, **ZFS**, **Btrfs**.
 
 ## Table of Contents
 - [Architecture Overview](#architecture-overview)
@@ -188,6 +186,23 @@ vxconfigd -m enable                             # Start enabled / Запусти
 /var/log/messages          # System messages (Linux) / Системные сообщения
 /var/vx/vxdmp.log          # DMP multipath log / Лог многопутевания DMP
 /var/adm/vx/                # VxVM messages / Сообщения VxVM
+```
+
+### Logrotate / Logrotate
+
+`/etc/logrotate.d/veritas`
+
+```
+/var/vx/*.log
+/var/adm/vx/*.log {
+    daily
+    rotate 30
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 root root
+}
 ```
 
 ---

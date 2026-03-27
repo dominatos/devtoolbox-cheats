@@ -19,6 +19,7 @@ Order: 9
 4. [Security](#4-security)
 5. [Troubleshooting & Tools](#5-troubleshooting--tools)
 6. [Logrotate Configuration](#6-logrotate-configuration)
+7. [Documentation Links](#7-documentation-links)
 
 ---
 
@@ -366,5 +367,16 @@ aide --init --verbose=20 2>&1 | tail -f
     create 640 root root
 }
 ```
+
+
+---
+
+## 7. Documentation Links
+
+- [AIDE Official Website](https://aide.github.io/)
+- [AIDE GitHub Repository](https://github.com/aide/aide)
+- [AIDE Manual](https://aide.github.io/doc/)
+- [AIDE Configuration Reference](https://aide.github.io/doc/configuration.html)
+- [RHEL AIDE Guide](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/checking-integrity-with-aide_security-hardening)
 
 ---

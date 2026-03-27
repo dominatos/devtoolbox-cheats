@@ -3,6 +3,12 @@ Group: Network
 Icon: 🔁
 Order: 15
 
+# iptables → nftables Translation Guide
+
+This cheatsheet provides a side-by-side translation reference for migrating firewall rules from `iptables` to `nftables`. It covers table management, chain operations, NAT, connection tracking, and advanced matching patterns with equivalent commands in both syntaxes.
+
+📚 **Official Docs / Официальная документация:** [Moving from iptables to nftables](https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_iptables_to_nftables)
+
 ## Table of Contents
 - [Translation Basics](#-translation-basics--основы-перевода)
 - [Basic Rules](#-basic-rules--базовые-правила)
@@ -14,7 +20,7 @@ Order: 15
 
 ---
 
-# 📘 Translation Basics / Основы перевода
+## 📘 Translation Basics / Основы перевода
 
 ### Key Differences / Ключевые отличия
 ```bash
@@ -38,7 +44,7 @@ Order: 15
 
 ---
 
-# 🔧 Basic Rules / Базовые правила
+## 🔧 Basic Rules / Базовые правила
 
 ### Allow SSH / Разрешить SSH
 ```bash
@@ -80,7 +86,7 @@ nft add rule inet filter input drop
 
 ---
 
-# ⛓️ Chain Management / Управление цепочками
+## ⛓️ Chain Management / Управление цепочками
 
 ### Default Policy / Политика по умолчанию
 ```bash
@@ -117,7 +123,7 @@ nft insert rule inet filter input position 0 tcp dport 22 accept
 
 ---
 
-# 🔀 NAT Rules / Правила NAT
+## 🔀 NAT Rules / Правила NAT
 
 ### SNAT (Source NAT) / SNAT (NAT источника)
 ```bash
@@ -157,7 +163,7 @@ nft add rule inet nat prerouting tcp dport 80 redirect to :8080
 
 ---
 
-# 🔗 Connection Tracking / Отслеживание соединений
+## 🔗 Connection Tracking / Отслеживание соединений
 
 ### Allow Established/Related / Разрешить established/related
 ```bash
@@ -188,7 +194,7 @@ nft add rule inet filter input ct state new tcp dport 22 accept
 
 ---
 
-# 🎯 Advanced Matching / Расширенное сопоставление
+## 🎯 Advanced Matching / Расширенное сопоставление
 
 ### Match Source IP / Сопоставить IP источника
 ```bash
@@ -310,7 +316,7 @@ systemctl start nftables
 
 ---
 
-# 🔄 Complete Example Comparison / Полный пример сравнения
+## 🔄 Complete Example Comparison / Полный пример сравнения
 
 ### iptables Ruleset / Набор правил iptables
 ```bash
@@ -341,7 +347,7 @@ nft add rule inet filter input tcp dport { 80, 443 } accept
 nft add rule inet filter input drop
 ```
 
-# 💡 Best Practices / Лучшие практики
+## 💡 Best Practices / Лучшие практики
 # Use iptables-translate for initial migration / Используйте iptables-translate для начальной миграции
 # Test nftables rules before disabling iptables / Тестируйте правила nftables перед отключением iptables
 # Use inet family for dual-stack (IPv4+IPv6) / Используйте семейство inet для dual-stack
@@ -349,14 +355,14 @@ nft add rule inet filter input drop
 # Use sets for multiple IPs/ports efficiently / Используйте наборы для эффективной работы с несколькими IP/портами
 # Document migration for rollback / Документируйте миграцию для отката
 
-# 🔧 Configuration Files / Файлы конфигурации
+## 🔧 Configuration Files / Файлы конфигурации
 ```bash
 # /etc/nftables.conf                        — Main nftables configuration / Основная конфигурация nftables
 # /tmp/iptables-backup.rules                — iptables backup / Резервная копия iptables
 # /tmp/nftables.conf                        — Translated nftables config / Переведённая конфигурация nftables
 ```
 
-# 📋 Quick Reference Chart / Краткая справочная таблица
+## 📋 Quick Reference Chart / Краткая справочная таблица
 ```bash
 # iptables -A         → nft add rule
 # iptables -I         → nft insert rule

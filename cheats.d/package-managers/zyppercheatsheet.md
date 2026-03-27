@@ -4,18 +4,27 @@ Icon: 🟢
 Order: 4
 
 ## Table of Contents
+- [Description](#description)
 - [Configuration](#-configuration--конфигурация)
 - [Core Management](#-core-management--основное-управление)
 - [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
 - [Troubleshooting](#-troubleshooting--устранение-неполадок)
 - [Comparison: Update vs Dup](#-comparison-update-vs-dup)
 - [Security](#-security--безопасность)
+- [Documentation Links](#-documentation-links)
 
 ---
 
 # 🟢 Zypper Cheatsheet (OpenSUSE/SLES)
 
-Zypper is the command-line interface for ZYpp, the package management library for OpenSUSE and SUSE Linux Enterprise. / Zypper — это интерфейс командной строки для ZYpp, библиотеки управления пакетами для OpenSUSE и SLES.
+## Description
+
+**Zypper** is the command-line interface for the ZYpp package management library, used by OpenSUSE (Tumbleweed and Leap) and SUSE Linux Enterprise Server (SLES). It provides powerful dependency resolution, pattern-based installations, and excellent integration with Btrfs snapshots via Snapper for automatic rollback capability. / **Zypper** — командный интерфейс для библиотеки управления пакетами ZYpp, используемый OpenSUSE и SLES. Обеспечивает мощное разрешение зависимостей и интеграцию со снапшотами Btrfs.
+
+**Status:** Actively maintained. Zypper is the standard tool for both OpenSUSE Tumbleweed (rolling release) and OpenSUSE Leap / SLES (stable releases). Notably unique for its interactive conflict resolution and Snapper integration. / **Статус:** Активно поддерживается. Уникален интерактивным разрешением конфликтов и интеграцией Snapper.
+
+**Default Ports:** N/A (local tool)  
+**Package Format:** `.rpm`
 
 ---
 
@@ -145,3 +154,13 @@ Zypper separates "patches" from "updates". / Zypper разделяет "патч
 sudo zypper list-updates -t patch             # List security patches / Список патчей безопасности
 sudo zypper patch --category security         # Install only security patches / Установить только патчи безопасности
 ```
+
+---
+
+## 📚 Documentation Links
+
+- **Zypper Manual:** https://en.opensuse.org/SDB:Zypper_manual
+- **openSUSE Reference — Software Management:** https://doc.opensuse.org/documentation/leap/reference/html/book-reference/cha-sw-cl.html
+- **SLES Package Management:** https://documentation.suse.com/sles/15-SP5/html/SLES-all/cha-sw-cl.html
+- **openSUSE Wiki — Package Management:** https://en.opensuse.org/Package_management
+- **Snapper (Btrfs Snapshots):** https://en.opensuse.org/openSUSE:Snapper_Tutorial

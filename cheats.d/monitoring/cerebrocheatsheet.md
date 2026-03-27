@@ -5,10 +5,13 @@ Order: 9
 
 # Cerebro (Elasticsearch Admin) Sysadmin Cheatsheet
 
-> **Context:** Cerebro is an open-source web administration tool for Elasticsearch clusters. It provides a visual interface for cluster monitoring, index management, and node operations. It is the successor to the deprecated Elasticsearch Kopf plugin. / Cerebro — веб-инструмент администрирования кластеров Elasticsearch с открытым исходным кодом. Визуальный интерфейс для мониторинга кластера, управления индексами и операций с узлами.
-> **Role:** Sysadmin / Search Engineer / DevOps
-> **Version:** Cerebro 0.9.x
-> **Default Port:** `9000` (Cerebro UI)
+> **Cerebro** is an open-source web administration tool for Elasticsearch clusters, developed by Leonardo Menezes. It is the successor to the deprecated **Elasticsearch Kopf** plugin. Cerebro provides a visual interface for cluster monitoring, index management, node operations, and REST API queries.
+>
+> **Common use cases / Типичные сценарии:** Elasticsearch cluster health monitoring, index management (create, delete, open/close), shard visualization, alias management, template editing, snapshot management, REST API exploration.
+>
+> **Status / Статус:** Cerebro is still functional but **no longer actively maintained** (last release 0.9.4 in 2021). Modern alternatives include **Kibana** (official Elastic UI with full management), **Elasticsearch Head** (Chrome extension), **ElasticVue** (modern Vue.js-based UI), **OpenSearch Dashboards** (for OpenSearch clusters).
+>
+> **Default port / Порт по умолчанию:** `9000/tcp` (Cerebro UI)
 
 ---
 
@@ -132,7 +135,7 @@ systemctl enable --now cerebro
 
 ### Web UI Access / Доступ к веб-интерфейсу
 
-```
+```bash
 http://<HOST>:9000    # Cerebro dashboard / Панель Cerebro
 ```
 
@@ -190,8 +193,8 @@ systemctl status cerebro     # Check status / Проверить статус
 
 ### Important Paths / Важные пути
 
-| Path | Description |
-|------|-------------|
+| Path | Description / Описание |
+|------|------------------------|
 | `/opt/cerebro/` | Cerebro installation directory / Каталог установки |
 | `/opt/cerebro/conf/application.conf` | Main configuration / Основной конфиг |
 | `/opt/cerebro/logs/` | Application logs / Логи приложения |
@@ -235,8 +238,9 @@ firewall-cmd --reload
 
 ### Reverse Proxy with TLS / Обратный прокси с TLS
 
+`/etc/nginx/conf.d/cerebro.conf`
+
 ```nginx
-# /etc/nginx/conf.d/cerebro.conf
 server {
     listen 443 ssl;
     server_name cerebro.<DOMAIN>;
@@ -288,7 +292,7 @@ jcmd $(pgrep -f cerebro) VM.heap_info 2>/dev/null
 
 #### 3. Cluster Shows Red/Yellow Status / Кластер показывает статус Red/Yellow
 
-This is an Elasticsearch issue, not Cerebro. Use Cerebro's UI to diagnose:
+This is an Elasticsearch issue, not Cerebro. Use Cerebro's UI to diagnose: / Это проблема Elasticsearch, не Cerebro. Используйте Cerebro для диагностики:
 
 ```bash
 # In Cerebro REST tab / В REST-интерфейсе Cerebro
@@ -320,5 +324,15 @@ GET /_cluster/allocation/explain
     create 640 cerebro cerebro
 }
 ```
+
+---
+
+## Documentation Links / Ссылки на документацию
+
+- **GitHub Repository:** https://github.com/lmenezes/cerebro
+- **Releases:** https://github.com/lmenezes/cerebro/releases
+- **Docker Hub:** https://hub.docker.com/r/lmenezes/cerebro
+- **Alternative — ElasticVue:** https://elasticvue.com/
+- **Alternative — Kibana:** https://www.elastic.co/kibana
 
 ---

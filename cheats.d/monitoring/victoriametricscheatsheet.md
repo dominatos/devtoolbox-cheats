@@ -5,10 +5,13 @@ Order: 8
 
 # VictoriaMetrics Sysadmin Cheatsheet
 
-> **Context:** VictoriaMetrics is an open-source, high-performance time series database and monitoring solution. It is compatible with Prometheus and can serve as a long-term storage backend. / VictoriaMetrics — высокопроизводительная TSDB с открытым исходным кодом, совместимая с Prometheus. Может служить как долгосрочное хранилище метрик.
-> **Role:** Sysadmin / DevOps / SRE
-> **Version:** VictoriaMetrics 1.99+
-> **Default Ports:** Single-node: `8428` | vmselect: `8481` | vminsert: `8480` | vmstorage: `8482` | vmui: `8428/vmui` | vmagent: `8429`
+> **VictoriaMetrics** is an open-source, high-performance time series database (TSDB) and monitoring solution developed by VictoriaMetrics Inc. First released in 2018, it is designed as a cost-effective, scalable, long-term storage backend for Prometheus and other monitoring systems. VictoriaMetrics uses an advanced compression algorithm achieving ~0.4 bytes per data point.
+>
+> **Common use cases / Типичные сценарии:** Long-term Prometheus metrics storage, high-cardinality metrics handling, Grafana data source, multi-tenant metrics platform, Prometheus federation replacement, IoT metrics collection, cost-effective alternative to commercial TSDBs.
+>
+> **Status / Статус:** Actively developed and rapidly growing in adoption. VictoriaMetrics is a modern, high-performance alternative to Prometheus TSDB. Alternatives include **Prometheus** (reference implementation, limited retention), **Thanos** (Prometheus HA + long-term), **Cortex/Mimir** (Grafana Labs, horizontally scalable), **InfluxDB** (general-purpose TSDB), **TimescaleDB** (PostgreSQL-based TSDB).
+>
+> **Default ports / Порты по умолчанию:** Single-node: `8428` | vmselect: `8481` | vminsert: `8480` | vmstorage: `8482` | vmui: `8428/vmui` | vmagent: `8429`
 
 ---
 
@@ -33,6 +36,9 @@ Order: 8
 | Single-node | `victoria-metrics` | Up to millions of metrics/sec, simple setup / Простая настройка, до миллионов метрик/с |
 | Cluster | `vminsert` + `vmstorage` + `vmselect` | Horizontal scaling, high availability / Горизонтальное масштабирование, HA |
 | vmagent | `vmagent` (standalone) | Prometheus-compatible scraper/forwarder / Prometheus-совместимый сборщик |
+
+> [!NOTE]
+> **Single-node vs Cluster:** Start with single-node. It handles up to 10M+ metrics/sec on modern hardware. Only use cluster mode when you need horizontal scaling or multi-tenancy. / Начинайте с single-node. Он обрабатывает до 10M+ метрик/с. Кластер нужен только для горизонтального масштабирования или мультитенантности.
 
 ### Install Single-Node / Установка single-node
 
@@ -155,7 +161,7 @@ WantedBy=multi-user.target
 
 ### Web UI & API / Веб-интерфейс и API
 
-```
+```bash
 http://<HOST>:8428/vmui       # Built-in query UI / Встроенный UI запросов
 http://<HOST>:8428/metrics    # Internal metrics / Внутренние метрики
 http://<HOST>:8428/targets    # Scrape targets / Цели сбора
@@ -205,7 +211,7 @@ curl -s "http://<HOST>:8428/api/v1/export/csv?format=__name__,__value__,__timest
 | Rollup functions / Функции свёртки | Limited | `rollup()`, `rollup_rate()`, `rollup_delta()` |
 | Keep metric names / Сохранение имён | No / Нет | `keep_metric_names` modifier |
 | Label manipulation / Манипуляция метками | `label_replace` | `label_set`, `label_del`, `label_copy` + more |
-| Default lookbehind / Okno по умолчанию | Must specify / Указывать обязательно | Auto from scrape interval / Автоматически из интервала сбора |
+| Default lookbehind / Окно по умолчанию | Must specify / Указывать обязательно | Auto from scrape interval / Автоматически из интервала сбора |
 | Subqueries / Подзапросы | Limited | Full support / Полная поддержка |
 
 ---
@@ -224,8 +230,8 @@ systemctl status victoria-metrics     # Check status / Проверить ста
 
 ### Important Paths / Важные пути
 
-| Path | Description |
-|------|-------------|
+| Path | Description / Описание |
+|------|------------------------|
 | `/usr/local/bin/victoria-metrics` | Main binary / Основной бинарник |
 | `/usr/local/bin/vmagent` | Agent binary / Бинарник агента |
 | `/var/lib/victoria-metrics/` | Data storage / Хранилище данных |
@@ -327,6 +333,21 @@ vmrestore -src=fs:///backup/victoria-metrics/ \
 systemctl start victoria-metrics
 ```
 
+### Backup to S3 / Бэкап в S3
+
+```bash
+# Backup to S3 / Бэкап в AWS S3
+vmbackup -storageDataPath=/var/lib/victoria-metrics \
+  -snapshot.createURL=http://localhost:8428/snapshot/create \
+  -dst=s3://<BUCKET>/victoria-metrics/
+
+# Backup to S3-compatible (MinIO) / Бэкап в S3-совместимое хранилище
+vmbackup -storageDataPath=/var/lib/victoria-metrics \
+  -snapshot.createURL=http://localhost:8428/snapshot/create \
+  -dst=s3://<BUCKET>/victoria-metrics/ \
+  -customS3Endpoint=http://<MINIO_HOST>:9000
+```
+
 ---
 
 ## 6. Troubleshooting & Tools
@@ -360,11 +381,14 @@ curl -s http://<HOST>:8428/api/v1/status/top_queries | jq .
 du -sh /var/lib/victoria-metrics/data/
 
 # Reduce retention / Уменьшить срок хранения
-# Change -retentionPeriod flag и restart
+# Change -retentionPeriod flag and restart / Изменить флаг и перезапустить
 
 # Force merge to reclaim space / Принудительное слияние для освобождения места
 curl -s http://<HOST>:8428/internal/force_merge
 ```
+
+> [!WARNING]
+> `force_merge` is a CPU-intensive operation. Run during maintenance windows. / `force_merge` — ресурсоёмкая операция. Запускайте в окно обслуживания.
 
 ### Health Check / Проверка работоспособности
 
@@ -403,5 +427,19 @@ curl -s http://<HOST>:8428/metrics | grep vm_rows_inserted_total
     endscript
 }
 ```
+
+---
+
+## Documentation Links / Ссылки на документацию
+
+- **Official Documentation:** https://docs.victoriametrics.com/
+- **Single-node Guide:** https://docs.victoriametrics.com/single-server-victoriametrics/
+- **Cluster Guide:** https://docs.victoriametrics.com/cluster-victoriametrics/
+- **vmagent:** https://docs.victoriametrics.com/vmagent/
+- **vmauth:** https://docs.victoriametrics.com/vmauth/
+- **vmbackup/vmrestore:** https://docs.victoriametrics.com/vmbackup/
+- **MetricsQL:** https://docs.victoriametrics.com/metricsql/
+- **GitHub:** https://github.com/VictoriaMetrics/VictoriaMetrics
+- **Community Slack:** https://slack.victoriametrics.com/
 
 ---

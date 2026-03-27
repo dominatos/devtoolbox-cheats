@@ -7,17 +7,55 @@ Order: 6
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#installation--configuration)
-2. [Core Management](#core-management)
-3. [Backends & Hostgroups](#backends--hostgroups)
-4. [Query Rules & Routing](#query-rules--routing)
-5. [Connection Pooling](#connection-pooling)
-6. [Sysadmin Operations](#sysadmin-operations)
-7. [Security](#security)
-8. [Monitoring & Stats](#monitoring--stats)
-9. [Backup & Restore](#backup--restore)
-10. [Troubleshooting & Tools](#troubleshooting--tools)
-11. [Logrotate Configuration](#logrotate-configuration)
+1. [Description](#description)
+2. [Installation & Configuration](#installation--configuration)
+3. [Core Management](#core-management)
+4. [Backends & Hostgroups](#backends--hostgroups)
+5. [Query Rules & Routing](#query-rules--routing)
+6. [Connection Pooling](#connection-pooling)
+7. [Sysadmin Operations](#sysadmin-operations)
+8. [Security](#security)
+9. [Monitoring & Stats](#monitoring--stats)
+10. [Backup & Restore](#backup--restore)
+11. [Troubleshooting & Tools](#troubleshooting--tools)
+12. [Logrotate Configuration](#logrotate-configuration)
+
+---
+
+## Description
+
+### What is ProxySQL / Что такое ProxySQL
+
+**ProxySQL** is a high-performance, open-source MySQL protocol-aware proxy. It sits between application servers and MySQL/MariaDB/Percona backends, providing intelligent query routing, connection pooling, query caching, and real-time traffic management — all without application code changes.
+
+**ProxySQL** — высокопроизводительный, открытый прокси-сервер с поддержкой протокола MySQL. Он располагается между серверами приложений и бэкендами MySQL/MariaDB/Percona, обеспечивая интеллектуальную маршрутизацию запросов, пул соединений, кэширование запросов и управление трафиком в реальном времени — без изменения кода приложений.
+
+### Common Use Cases / Типичные сценарии использования
+
+| Use Case / Сценарий | Description / Описание |
+|---|---|
+| **Read/Write Splitting** | Route `SELECT` to replicas, writes to primary / Направление `SELECT` на реплики, записей — на мастер |
+| **Connection Pooling** | Multiplex thousands of app connections into fewer backend connections / Мультиплексирование тысяч соединений |
+| **Query Caching** | Cache read-heavy queries to reduce backend load / Кэширование часто читаемых запросов |
+| **Failover & HA** | Automatic detection of primary/replica topology changes / Автоматическое обнаружение смены топологии |
+| **Query Firewall** | Block/rewrite dangerous queries before they reach backends / Блокировка/перезапись опасных запросов |
+| **Zero-Downtime Maintenance** | Graceful drain of backends for patching / Плавный вывод backend для обслуживания |
+| **Galera/PXC Support** | Native support for Galera and Percona XtraDB Cluster / Нативная поддержка Galera и PXC |
+
+### Current Status / Текущий статус
+
+ProxySQL is actively maintained and widely used in production. **ProxySQL 2.x** is the current stable branch (as of 2025). It is the de facto standard for MySQL-protocol proxying in the open-source ecosystem.
+
+ProxySQL активно поддерживается и широко используется в production. **ProxySQL 2.x** — текущая стабильная ветка (по состоянию на 2025 год). Это де-факто стандарт для проксирования MySQL-протокола в open-source экосистеме.
+
+### Alternatives / Альтернативы
+
+| Tool / Инструмент | Type / Тип | Notes / Примечания |
+|---|---|---|
+| **MySQL Router** | Official MySQL proxy | Part of MySQL InnoDB Cluster, simpler but less flexible / Часть MySQL InnoDB Cluster |
+| **MaxScale** (MariaDB) | Advanced proxy | Feature-rich but BSL-licensed / Функциональный, но с BSL-лицензией |
+| **HAProxy** | TCP/HTTP load balancer | Layer 4 only for MySQL — no query-level routing or caching / Только L4 для MySQL |
+| **Vitess** | Database orchestrator | For massive horizontal sharding (YouTube-scale) / Для горизонтального шардинга |
 
 ---
 
@@ -145,7 +183,7 @@ mysql -h 127.0.0.1 -P 6033 -u <APP_USER> -p<APP_PASSWORD>      # Connect as app 
 ProxySQL uses a **3-layer config model** / ProxySQL использует **3 уровня конфигурации**:
 
 | Layer / Уровень | Description / Описание | Persistence / Сохранение |
-|-----------------|------------------------|--------------------------|
+|-----------------|------------------------|--------------------------| 
 | **RUNTIME** | Active in-memory config / Активная конфигурация в памяти | Lost on restart / Сбрасывается при рестарте |
 | **MEMORY** | Staging area (edited via Admin SQL) / Промежуточный слой | Lost on restart / Сбрасывается при рестарте |
 | **DISK** | Persisted to SQLite DB / Сохранено в SQLite | Survives restart / Переживает рестарт |
@@ -179,6 +217,16 @@ Hostgroups are logical groups of MySQL servers. Traffic is routed to a hostgroup
 |---|---|
 | `10` | Writer / Primary — writes go here / Запись — сюда идут записи |
 | `20` | Reader / Replica — reads go here / Чтение — сюда идут чтения |
+
+### Load Balancing Algorithms / Алгоритмы балансировки нагрузки
+
+ProxySQL distributes traffic within a hostgroup based on **server weight**:
+
+| Algorithm / Алгоритм | Description / Описание | Best For / Лучше всего для |
+|---|---|---|
+| **Weight-based round-robin** | Default — requests distributed proportionally by `weight` / Запросы распределяются пропорционально `weight` | Most workloads / Большинство рабочих нагрузок |
+| **Latency-aware routing** | Enabled via `mysql-default_max_latency_ms` — avoids high-latency backends / Избегает backend с высокой задержкой | Geo-distributed replicas / Географически распределённые реплики |
+| **Max connections per backend** | `max_connections` per server — prevents overloading a single node / Лимит соединений на сервер | Mixed-capacity clusters / Кластеры с разной мощностью |
 
 ### Managing MySQL Servers / Управление MySQL серверами
 
@@ -243,6 +291,21 @@ VALUES (10, 30, 20, 40, 1, 2, 100);
 LOAD MYSQL SERVERS TO RUNTIME;
 SAVE MYSQL SERVERS TO DISK;
 ```
+
+### Health Check Types / Типы проверки здоровья
+
+ProxySQL uses **active health checks** to monitor backend servers:
+
+| Check Type / Тип проверки | What it Monitors / Что проверяет | Interval Variable / Переменная интервала |
+|---|---|---|
+| **Connect check** | TCP connectivity to backend / TCP-соединение к backend | `mysql-monitor_connect_interval` |
+| **Ping check** | MySQL protocol ping / Протокольный пинг MySQL | `mysql-monitor_ping_interval` |
+| **Read-only check** | `read_only` global variable — topology detection / Определение топологии | `mysql-monitor_read_only_interval` |
+| **Replication lag** | `Seconds_Behind_Master` — for lag-aware routing / Задержка репликации | `mysql-monitor_replication_lag_interval` |
+| **Galera check** | `wsrep_*` status variables / Статусные переменные кластера | `mysql-monitor_galera_healthcheck_interval` |
+
+> [!NOTE]
+> All health checks require a dedicated **monitor user** on every backend (see [Security](#security) section). ProxySQL **shuns** backends that fail consecutive checks automatically.
 
 ---
 

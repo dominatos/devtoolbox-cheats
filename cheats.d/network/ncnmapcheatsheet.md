@@ -3,6 +3,12 @@ Group: Network
 Icon: 🔌
 Order: 4
 
+# nc / nmap — Network Reconnaissance & Port Testing
+
+`nc` (netcat) is a versatile networking utility for reading/writing data across TCP/UDP connections — often called the "Swiss Army knife" of networking. `nmap` (Network Mapper) is the industry-standard tool for network discovery and security auditing. Together they cover port scanning, service detection, file transfer, and vulnerability assessment.
+
+📚 **Official Docs / Официальная документация:** [nmap.org](https://nmap.org/docs.html) · [ncat(1)](https://nmap.org/ncat/guide/)
+
 ## Table of Contents
 - [netcat — Swiss Army Knife](#-netcat--swiss-army-knife)
 - [nmap — Port Scanner](#-nmap--port-scanner)
@@ -13,7 +19,7 @@ Order: 4
 
 ---
 
-# 🔌 netcat — Swiss Army Knife
+## 🔌 netcat — Swiss Army Knife
 
 ### Port Testing / Проверка портов
 ```bash
@@ -69,7 +75,7 @@ nc -l 8080 < /tmp/fifo | nc <TARGET> 80 > /tmp/fifo  # Proxy to target / Про�
 
 ---
 
-# 🔍 nmap — Port Scanner
+## 🔍 nmap — Port Scanner
 
 ### Basic Scanning / Базовое сканирование
 ```bash
@@ -126,7 +132,7 @@ nmap -PA22,80,443 <HOST>                      # TCP ACK ping / TCP ACK ping
 
 ---
 
-# 🔬 Advanced Scanning / Продвинутое сканирование
+## 🔬 Advanced Scanning / Продвинутое сканирование
 
 ### Firewall Evasion / Обход фаервола
 ```bash
@@ -154,7 +160,7 @@ nmap --excludefile exclude.txt                # Exclude from file / Исключ
 
 ---
 
-# 📜 NSE Scripts / Скрипты NSE
+## 📜 NSE Scripts / Скрипты NSE
 
 ### Script Categories / Категории скриптов
 ```bash
@@ -186,7 +192,7 @@ nmap --script-help=http-*                     # List HTTP scripts / Список
 
 ---
 
-# 🐛 Troubleshooting / Устранение неполадок
+## 🐛 Troubleshooting / Устранение неполадок
 
 ### Verbose & Debug / Подробный и отладочный
 ```bash
@@ -210,7 +216,7 @@ nmap -6 fe80::1                               # Link-local / Локальный 
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples / Примеры из практики
 
 ### Network Discovery / Обнаружение сети
 ```bash

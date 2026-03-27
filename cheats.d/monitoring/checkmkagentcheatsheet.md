@@ -5,10 +5,13 @@ Order: 7
 
 # Checkmk Agent (check_mk_agent) Sysadmin Cheatsheet
 
-> **Context:** The Checkmk Agent is a lightweight monitoring agent installed on target hosts. It collects system metrics and exposes them to the Checkmk monitoring server via TCP port 6556 or the Agent Controller (TLS/pull/push). / Checkmk Agent — легковесный агент мониторинга. Собирает метрики и предоставляет их серверу Checkmk через TCP 6556 или Agent Controller.
-> **Role:** Sysadmin / Monitoring Engineer
-> **Version:** Checkmk 2.2+ / 2.3 (Agent Controller)
-> **Default Port:** TCP `6556` (agent), TCP `8000` (Agent Controller registration)
+> **Checkmk Agent** is a lightweight monitoring agent installed on target hosts to collect system metrics and expose them to the Checkmk monitoring server. Starting with version 2.1, the agent includes the **Agent Controller** (`cmk-agent-ctl`) which provides TLS-encrypted communication, replacing the legacy xinetd-based plain TCP transport.
+>
+> **Common use cases / Типичные сценарии:** System metrics collection (CPU, memory, disk, processes), custom local checks, plugin-based monitoring (Oracle, MySQL, Docker, etc.), file integrity monitoring, certificate expiration checks.
+>
+> **Status / Статус:** Actively maintained as part of the Checkmk ecosystem. The Agent Controller (Go-based) is the recommended deployment method for Checkmk 2.2+. Legacy xinetd mode is deprecated but still supported.
+>
+> **Default ports / Порты по умолчанию:** `6556/tcp` (agent data), `8000/tcp` (Agent Controller registration)
 
 ---
 
@@ -53,6 +56,9 @@ chmod +x /usr/lib/check_mk_agent/plugins/cmk-update-agent
 | Legacy (xinetd) | Plain TCP on port 6556 / Простой TCP на порту 6556 | 1.x, 2.0 |
 | Agent Controller (pull) | TLS-encrypted, server pulls / TLS, сервер запрашивает | 2.1+ |
 | Agent Controller (push) | TLS-encrypted, agent pushes / TLS, агент отправляет | 2.2+ |
+
+> [!NOTE]
+> **Pull vs Push:** Pull mode requires the server to initiate connections (firewall must allow inbound 6556 on agent). Push mode has the agent initiate connections to the server (useful behind NAT/firewalls). / Pull — сервер инициирует подключение. Push — агент отправляет данные сам (удобно за NAT).
 
 ### Register Agent with Controller / Регистрация агента через Controller
 
@@ -243,8 +249,8 @@ systemctl restart xinetd
 
 ### Important Paths / Важные пути
 
-| Path | Description |
-|------|-------------|
+| Path | Description / Описание |
+|------|------------------------|
 | `/usr/bin/check_mk_agent` | Agent binary / Исполняемый файл агента |
 | `/etc/check_mk/` | Agent configuration / Конфигурация агента |
 | `/etc/check_mk/mrpe.cfg` | MRPE (Nagios plugin wrapper) config / Конфиг MRPE |
@@ -382,5 +388,16 @@ cat /var/log/cmk-agent-ctl.log
     create 640 root root
 }
 ```
+
+---
+
+## Documentation Links / Ссылки на документацию
+
+- **Agent Installation (Linux):** https://docs.checkmk.com/latest/en/agent_linux.html
+- **Agent Controller:** https://docs.checkmk.com/latest/en/agent_linux.html#agent_controller
+- **Local Checks:** https://docs.checkmk.com/latest/en/localchecks.html
+- **Agent Plugins:** https://docs.checkmk.com/latest/en/agent_linux.html#plugins
+- **MRPE (Nagios Plugin Wrapper):** https://docs.checkmk.com/latest/en/agent_linux.html#mrpe
+- **Agent Bakery (Enterprise):** https://docs.checkmk.com/latest/en/wato_monitoringagents.html
 
 ---

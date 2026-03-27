@@ -1,15 +1,29 @@
-Title: ☸️ KUBECTL — JSONPath
+---
+Title: KUBECTL — JSONPath
 Group: Kubernetes & Containers
 Icon: ☸️
 Order: 2
+---
+
+# ☸️ KUBECTL — JSONPath Queries
+
+**Description / Описание:**
+JSONPath is a query language for JSON data, integrated into `kubectl` via the `-o jsonpath` output format. It enables precise extraction of specific fields from Kubernetes resources without resorting to `jq` or `grep`. JSONPath is essential for automation scripts, CI/CD pipelines, and quick cluster inspection. Combined with `custom-columns`, it provides powerful tabular output directly from the Kubernetes API.
+
+> [!NOTE]
+> **When to use:** JSONPath is built into `kubectl` and requires no additional tools. For complex filtering and transformation, consider combining with **jq** or using `kubectl -o json | jq`. / **Когда использовать:** JSONPath встроен в `kubectl`. Для сложной фильтрации комбинируйте с **jq**.
+
+---
 
 ## Table of Contents
+
 - [Basic JSONPath Queries](#basic-jsonpath-queries)
 - [Resource Filtering](#resource-filtering)
 - [Node Information](#node-information)
 - [Container & Image Queries](#container--image-queries)
 - [Custom Columns](#custom-columns)
 - [Troubleshooting JSONPath](#troubleshooting-jsonpath)
+- [Documentation Links](#documentation-links)
 
 ---
 
@@ -124,3 +138,15 @@ kubectl get pods -o json | jq '.items[] | select(.status.phase=="Running") | .me
 # Use grep/awk with JSONPath / Использование grep/awk с JSONPath
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\n"}{end}' | grep Running
 ```
+
+> [!TIP]
+> Use `kubectl get <resource> -o json | jq .` first to explore the JSON structure, then build your JSONPath query. / Используйте `kubectl get <ресурс> -o json | jq .` для изучения структуры JSON перед составлением JSONPath-запроса.
+
+---
+
+## Documentation Links
+
+- **Kubernetes JSONPath Support:** [https://kubernetes.io/docs/reference/kubectl/jsonpath/](https://kubernetes.io/docs/reference/kubectl/jsonpath/)
+- **kubectl Output Formatting:** [https://kubernetes.io/docs/reference/kubectl/#output-options](https://kubernetes.io/docs/reference/kubectl/#output-options)
+- **JSONPath Specification:** [https://goessner.net/articles/JsonPath/](https://goessner.net/articles/JsonPath/)
+- **jq Manual (complementary tool):** [https://jqlang.github.io/jq/manual/](https://jqlang.github.io/jq/manual/)

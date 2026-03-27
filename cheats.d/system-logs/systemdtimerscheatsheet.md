@@ -3,11 +3,21 @@ Group: System & Logs
 Icon: 🕰️
 Order: 4
 
-# 🕰️ systemd Timers — Scheduled Tasks Cheatsheet
+# systemd Timers — Scheduled Tasks
 
-> **Context:** systemd timers are the modern replacement for cron, offering calendar-based and monotonic scheduling with logging via journald. / Таймеры systemd — современная замена cron с журналированием через journald.
-> **Role:** Sysadmin / DevOps
-> **Location:** `/etc/systemd/system/` (admin) or `/lib/systemd/system/` (packages)
+**systemd timers** are the modern replacement for cron jobs, offering calendar-based and monotonic scheduling with full integration into the systemd ecosystem. Each timer triggers a corresponding `.service` unit, with output logged via journald.
+
+**Advantages over cron / Преимущества перед cron:**
+- **Journald integration** — all output logged automatically, queryable via `journalctl -u <service>`
+- **Dependency support** — `After=`, `Requires=`, integration with network/mount targets
+- **Persistent flag** — automatically runs missed jobs if system was off
+- **RandomizedDelaySec** — spreads load across time window
+- **Resource control** — cgroups limits, sandboxing via `[Service]` directives
+- **Easy testing** — `systemd-analyze calendar` validates expressions before deployment
+
+**When to use cron vs timers / Когда использовать cron vs таймеры:**
+- Use **systemd timers** for new setups, complex dependencies, resource limits
+- Use **cron** for simple one-liners, legacy compatibility, or minimal systems without systemd
 
 ---
 
@@ -50,13 +60,11 @@ journalctl -u my.service                      # Service logs / Логи серв
 ```ini
 [Unit]
 Description=Run my service daily
-Requires=my.service
 
 [Timer]
-OnCalendar=daily
-OnCalendar=*-*-* 03:00:00            # Every day at 3 AM / Каждый день в 3:00
-Persistent=true                       # Run if missed / Запустить если пропущено
-RandomizedDelaySec=30min              # Random delay / Случайная задержка
+OnCalendar=*-*-* 03:00:00                     # Every day at 3 AM / Каждый день в 3:00
+Persistent=true                               # Run if missed / Запустить если пропущено
+RandomizedDelaySec=30min                      # Random delay / Случайная задержка
 
 [Install]
 WantedBy=timers.target
@@ -333,15 +341,12 @@ ExecStartPost=/bin/systemctl reload nginx
 > [!NOTE]
 > Common issues: Timer running but service not starting → check `Requires=`. Missed jobs not running → add `Persistent=true`. Wrong timezone → check `timedatectl`. / Частые проблемы: таймер работает но сервис нет → проверьте `Requires=`.
 
-## 📋 Timer Options Reference / Справочник опций таймера
+---
 
-```text
-OnCalendar          — Calendar-based scheduling / По календарю
-OnBootSec           — After boot / После загрузки
-OnStartupSec        — After systemd start / После запуска systemd
-OnUnitActiveSec     — After last activation / После активации
-OnUnitInactiveSec   — After last deactivation / После деактивации
-Persistent          — Run missed jobs / Запускать пропущенные
-RandomizedDelaySec  — Random delay / Случайная задержка
-AccuracySec         — Accuracy (default 1min) / Точность
-```
+## Documentation Links
+
+- **systemd.timer(5):** https://man7.org/linux/man-pages/man5/systemd.timer.5.html
+- **systemd.time(7):** https://man7.org/linux/man-pages/man7/systemd.time.7.html
+- **systemd-analyze(1):** https://man7.org/linux/man-pages/man1/systemd-analyze.1.html
+- **ArchWiki — Timers:** https://wiki.archlinux.org/title/Systemd/Timers
+- **Red Hat — systemd Timers:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/managing-system-services-with-systemctl_configuring-basic-system-settings#creating-and-managing-timer-units_managing-system-services-with-systemctl

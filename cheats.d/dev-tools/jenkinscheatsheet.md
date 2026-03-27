@@ -5,7 +5,10 @@ Order: 7
 
 # Jenkins Sysadmin Cheatsheet
 
-> **Context:** Jenkins is an open source automation server. / Jenkins - это open source сервер автоматизации.
+> **Description:** Jenkins is an open-source automation server for building, testing, and deploying software. It supports 1800+ plugins for integration with virtually any tool in the CI/CD toolchain. Written in Java, it runs as a standalone servlet or in containers.
+> Jenkins — это open-source сервер автоматизации для сборки, тестирования и деплоя ПО. Поддерживает 1800+ плагинов для интеграции с любым инструментом CI/CD.
+
+> **Status:** Actively maintained. Alternatives: **GitHub Actions** (SaaS, GitHub-native), **GitLab CI/CD** (built-in), **Drone CI** (container-native), **Woodpecker CI** (Drone fork, FOSS), **Tekton** (Kubernetes-native).
 > **Role:** DevOps / Build Engineer
 > **URL:** `http://<HOST>:8080`
 
@@ -177,3 +180,9 @@ If locked out, edit `$JENKINS_HOME/config.xml` and change `<useSecurity>true</us
 
 ---
 
+## Official Documentation / Официальная документация
+
+- **Jenkins:** https://www.jenkins.io/doc/
+- **Jenkins Pipeline Syntax:** https://www.jenkins.io/doc/book/pipeline/syntax/
+- **Jenkins Plugins Index:** https://plugins.jenkins.io/
+- **Jenkins CLI:** https://www.jenkins.io/doc/book/managing/cli/

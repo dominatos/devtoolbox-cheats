@@ -4,18 +4,24 @@ Icon: 📦
 Order: 5
 
 ## Table of Contents
+- [Description](#description)
 - [Configuration](#-configuration--конфигурация)
 - [Core Management](#-core-management--основное-управление)
 - [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
 - [Troubleshooting](#-troubleshooting--устранение-неполадок)
 - [Comparison: Confinement Modes](#-comparison-confinement-modes)
 - [Security](#-security--безопасность)
+- [Documentation Links](#-documentation-links)
 
 ---
 
 # 📦 Snap Cheatsheet (Universal Packages)
 
-Snap is a software deployment and package management system developed by Canonical. Snaps are self-contained applications with all their dependencies. / Snap — это система развертывания ПО и управления пакетами, разработанная Canonical. Snap-пакеты — это автономные приложения со всеми зависимостями.
+## Description
+
+**Snap** is a software deployment and package management system developed by **Canonical** (the company behind Ubuntu). Snap packages ("snaps") are self-contained applications bundled with all their dependencies into a single SquashFS image, providing cross-distribution compatibility and automatic updates. / **Snap** — система развертывания ПО, разработанная Canonical. Snap-пакеты — автономные приложения со всеми зависимостями.
+
+**Status:** Actively maintained. Snap is the default package format for server applications on Ubuntu (e.g., LXD, MicroK8s). However, it is **controversial** in the community due to its centralized Snap Store (no third-party repositories), forced auto-updates, and slower startup times from SquashFS mounting. Some distributions (Linux Mint, Fedora) have chosen to not include Snap by default. **Alternative:** Flatpak is the main competitor for desktop applications. / **Статус:** Активно поддерживается. Является спорным из-за централизованного хранилища и принудительных обновлений. **Альтернатива:** Flatpak.
 
 ---
 
@@ -146,3 +152,13 @@ Check current mode:
 ```bash
 snap list <PACKAGE>                           # Check notes column / Проверить колонку заметок
 ```
+
+---
+
+## 📚 Documentation Links
+
+- **Snapcraft Documentation:** https://snapcraft.io/docs
+- **Snap Store:** https://snapcraft.io/store
+- **Ubuntu Core — Snaps:** https://ubuntu.com/core/docs/snaps-in-ubuntu-core
+- **Snap Confinement:** https://snapcraft.io/docs/snap-confinement
+- **Snap Interfaces:** https://snapcraft.io/docs/supported-interfaces

@@ -3,12 +3,21 @@ Group: System & Logs
 Icon: 🌀
 Order: 6
 
-# 🌀 logrotate — Log Management Cheatsheet
+# logrotate — Log Rotation & Management
 
-> **Context:** logrotate automates log file rotation, compression, removal, and mailing. Runs daily via cron/systemd timer. / logrotate автоматизирует ротацию, сжатие, удаление и отправку почтой файлов логов.
-> **Role:** Sysadmin / DevOps
-> **Config:** `/etc/logrotate.conf` (main), `/etc/logrotate.d/` (per-application)
-> **Status:** `/var/lib/logrotate/status`
+**logrotate** is a system utility for automating the rotation, compression, removal, and mailing of log files. It prevents log files from consuming all available disk space and is essential for maintaining healthy servers.
+
+**How it works / Как работает:**
+logrotate runs periodically (usually daily) via cron (`/etc/cron.daily/logrotate`) or a systemd timer (`logrotate.timer`). It reads its configuration and rotates logs that match the defined criteria (age, size, or both).
+
+**Key features / Ключевые возможности:**
+- **Time-based rotation** — daily, weekly, monthly, yearly
+- **Size-based rotation** — rotate when file exceeds a threshold
+- **Compression** — gzip (default), xz, bzip2
+- **Pre/post-rotate scripts** — reload services, cleanup, notifications
+- **copytruncate** — for applications that can't reopen log files
+
+logrotate is part of virtually all Linux distributions and has been the standard log management tool for decades. For journald-managed logs, rotation is handled by `journald.conf` instead.
 
 ---
 
@@ -90,6 +99,7 @@ nocreate                                      # Don't create new file / Не с�
 missingok                                     # OK if file missing / ОК если файл отсутствует
 notifempty                                    # Don't rotate if empty / Не ротировать если пусто
 sharedscripts                                 # Run scripts once / Запустить скрипты один раз
+dateext                                       # Add date to rotated filename / Добавить дату к имени
 ```
 
 ### copytruncate vs create / Сравнение
@@ -310,6 +320,17 @@ sharedscripts                                 # Run scripts once / Запуст�
 
 ---
 
+## Default Paths / Пути по умолчанию
+
+| Path | Purpose (EN) | Назначение (RU) |
+| :--- | :--- | :--- |
+| `/etc/logrotate.conf` | Main configuration | Основная конфигурация |
+| `/etc/logrotate.d/` | Per-app configs | Конфигурации приложений |
+| `/var/lib/logrotate/status` | Rotation status/state | Статус ротации |
+| `/etc/cron.daily/logrotate` | Cron trigger (traditional) | Запуск через cron |
+
+---
+
 ## 💡 Best Practices / Лучшие практики
 
 - Use **size limits** to prevent disk full situations. / Используйте ограничения размера.
@@ -323,15 +344,11 @@ sharedscripts                                 # Run scripts once / Запуст�
 > [!NOTE]
 > logrotate runs via cron (typically `/etc/cron.daily/logrotate`) or a systemd timer (`logrotate.timer`). Check which method your system uses. / logrotate запускается через cron или systemd таймер.
 
-## 📋 Quick Reference / Быстрый справочник
+---
 
-```text
-/etc/logrotate.conf          — Main config / Основная конфигурация
-/etc/logrotate.d/            — Per-app configs / Конфигурации приложений
-/var/lib/logrotate/status    — Rotation status / Статус ротации
-daily | weekly | monthly     — Rotation frequency / Частота ротации
-rotate N                     — Keep N files / Хранить N файлов
-compress                     — Compress logs / Сжимать логи
-create PERM USER GROUP       — Create new file / Создать новый файл
-copytruncate                 — For apps that can't reopen / Для несигнальных приложений
-```
+## Documentation Links
+
+- **logrotate(8):** https://man7.org/linux/man-pages/man8/logrotate.8.html
+- **logrotate on GitHub:** https://github.com/logrotate/logrotate
+- **ArchWiki — Logrotate:** https://wiki.archlinux.org/title/Logrotate
+- **Red Hat — Managing Log Files:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/assembly_troubleshooting-problems-using-log-files_configuring-basic-system-settings

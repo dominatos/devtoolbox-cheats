@@ -5,7 +5,9 @@ Order: 2
 
 # Apache CloudStack Sysadmin Cheatsheet
 
-> **Context:** Apache CloudStack is an open-source IaaS cloud computing platform that manages and orchestrates pools of storage, network, and compute resources to build public/private cloud infrastructure. / Apache CloudStack — платформа IaaS с открытым исходным кодом для управления хранилищами, сетями и вычислительными ресурсами.
+> **Apache CloudStack** is an open-source IaaS cloud computing platform that manages and orchestrates pools of storage, network, and compute resources to build public and private cloud infrastructure. It supports KVM, VMware vSphere, and XenServer/XCP-ng hypervisors. CloudStack is known for its simpler deployment and operations compared to OpenStack, making it popular with service providers and enterprises that need a turnkey cloud platform. It is actively developed under the Apache Software Foundation. **Alternatives:** OpenStack (more modular, larger community), VMware vCloud (commercial), Proxmox VE (simpler, single-node focus), Harvester (Kubernetes-native).
+> / **Apache CloudStack** — платформа IaaS с открытым исходным кодом для управления хранилищами, сетями и вычислительными ресурсами. Поддерживает KVM, VMware и XenServer. Проще в развёртывании, чем OpenStack. Активно развивается под Apache Software Foundation.
+
 > **Role:** Sysadmin / Cloud Engineer
 > **Version:** 4.18.x / 4.19.x
 > **Default Ports:** Management UI: `8080` (HTTP), `8443` (HTTPS) | Agent: `8250` | MySQL: `3306` | System VM: `8443`
@@ -133,12 +135,13 @@ systemctl restart libvirtd
 
 ### Web UI Access / Доступ к веб-интерфейсу
 
-```
+```bash
 http://<HOST>:8080/client         # Management UI / Панель управления
 https://<HOST>:8443/client        # HTTPS Management UI
 ```
 
-Default credentials: `admin` / `password` (change immediately!)
+> [!WARNING]
+> Default credentials: `admin` / `password` — change immediately after first login! / Учётные данные по умолчанию: `admin` / `password` — смените сразу после первого входа!
 
 ### CloudMonkey CLI / CLI CloudMonkey
 

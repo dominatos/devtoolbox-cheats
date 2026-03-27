@@ -3,6 +3,12 @@ Group: Network
 Icon: 🔁
 Order: 10
 
+# autossh — Resilient SSH Tunnels
+
+`autossh` is a program to start an SSH session and monitor it, automatically restarting the SSH session if it drops. It is commonly used for maintaining persistent SSH tunnels (port forwarding) across unreliable networks. It wraps the standard `ssh` command and adds automatic reconnection logic.
+
+📚 **Official Docs / Официальная документация:** [autossh(1)](https://www.harding.motd.ca/autossh/)
+
 ## Table of Contents
 - [Basic Tunneling](#-basic-tunneling--базовое-туннелирование)
 - [Persistent Tunnels](#-persistent-tunnels--постоянные-туннели)
@@ -12,7 +18,7 @@ Order: 10
 
 ---
 
-# 🔧 Basic Tunneling / Базовое туннелирование
+## 🔧 Basic Tunneling / Базовое туннелирование
 
 ### Local Port Forwarding / Локальная переадресация портов
 ```bash
@@ -37,7 +43,7 @@ autossh -M 0 -N -D 0.0.0.0:1080 <USER>@<HOST>  # SOCKS proxy on all interfaces /
 
 ---
 
-# 🔄 Persistent Tunnels / Постоянные туннели
+## 🔄 Persistent Tunnels / Постоянные туннели
 
 ### Monitoring Options / Опции мониторинга
 ```bash
@@ -59,7 +65,7 @@ autossh -M 0 -N -o "ExitOnForwardFailure=yes" -L 8080:localhost:80 <USER>@<HOST>
 
 ---
 
-# 📊 Monitoring & Debugging / Мониторинг и отладка
+## 📊 Monitoring & Debugging / Мониторинг и отладка
 
 ### Verbose Mode / Подробный режим
 ```bash
@@ -84,7 +90,7 @@ ss -tlnp | grep 8080                          # Alternative / Альтернат
 
 ---
 
-# 🔧 Systemd Integration / Интеграция с systemd
+## 🔧 Systemd Integration / Интеграция с systemd
 
 ### Create Systemd Service / Создать Systemd сервис
 ```ini
@@ -116,7 +122,7 @@ sudo journalctl -u autossh-tunnel -f          # Follow logs / Следовать
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples / Примеры из практики
 
 ### Database Access / Доступ к базе данных
 ```bash

@@ -3,6 +3,9 @@ Group: Backups & S3
 Icon: 🗄️
 Order: 7
 
+> **Veeam Agent for Linux** is a free/commercial backup agent that provides image-level (bare metal), volume-level, and file-level backups for physical and cloud Linux machines. It supports local, network (SMB/NFS), and Veeam Backup & Replication repository targets. Veeam is actively developed and widely used in enterprise environments alongside VMware/Hyper-V virtual infrastructure backup.
+> / **Veeam Agent for Linux** — бесплатный/коммерческий агент резервного копирования для физических и облачных Linux-машин. Поддерживает полные образы, тома и файловые бэкапы. Широко используется в корпоративных средах.
+
 ## Table of Contents
 - [Installation](#installation)
 - [Job Configuration](#job-configuration)
@@ -240,6 +243,22 @@ journalctl -u veeamservice                      # Service journal / Журнал
 /etc/veeam/          # Configuration directory / Директория конфигурации
 /var/lib/veeam/      # Data directory / Директория данных
 /var/log/veeam/      # Log directory / Директория логов
+```
+
+### Logrotate / Logrotate
+
+`/etc/logrotate.d/veeam`
+
+```
+/var/log/veeam/*.log {
+    daily
+    rotate 30
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 root root
+}
 ```
 
 ---

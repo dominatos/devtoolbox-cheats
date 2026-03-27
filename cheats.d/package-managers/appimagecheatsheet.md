@@ -4,16 +4,22 @@ Icon: 📦
 Order: 7
 
 ## Table of Contents
+- [Description](#description)
 - [Core Management](#-core-management--основное-управление)
 - [Advanced Operations](#-advanced-operations--продвинутые-операции)
 - [Comparison: AppImage vs Others](#-comparison-appimage-vs-others)
 - [Troubleshooting](#-troubleshooting--устранение-неполадок)
+- [Documentation Links](#-documentation-links)
 
 ---
 
 # 📦 AppImage Cheatsheet (Portable Apps)
 
-AppImage is a format for distributing portable software on Linux without needing superuser permissions to install. / AppImage — это формат для распространения портативного ПО на Linux без необходимости прав суперпользователя для установки.
+## Description
+
+**AppImage** is a format for distributing portable software on Linux without needing superuser permissions to install. Each AppImage is a single self-contained file that bundles the application and all its dependencies. Just download, make executable, and run — no installation, no root access required. / **AppImage** — формат для распространения портативного ПО на Linux без необходимости прав суперпользователя. Каждый AppImage — один самодостаточный файл.
+
+**Status:** Actively maintained but less popular than Flatpak/Snap for new projects. AppImage has no centralized store or automatic updates (though AppImageUpdate exists). It remains useful for distributing portable tools, one-off applications, and software that needs to run across many distro versions without modification. **Alternatives:** Flatpak (sandboxed desktop apps), Snap (universal packages with auto-updates). / **Статус:** Активно поддерживается, но менее популярен чем Flatpak/Snap. **Альтернативы:** Flatpak, Snap.
 
 ---
 
@@ -109,3 +115,13 @@ Since AppImages are not sandboxed, use Firejail for security. / Поскольк
 ```bash
 firejail ./<FILE>.AppImage                    # Run in sandbox / Запустить в песочнице
 ```
+
+---
+
+## 📚 Documentation Links
+
+- **AppImage Official:** https://appimage.org/
+- **AppImage Documentation:** https://docs.appimage.org/
+- **AppImageHub (Directory):** https://www.appimagehub.com/
+- **AppImageLauncher:** https://github.com/TheAssassin/AppImageLauncher
+- **AppImageUpdate:** https://github.com/AppImage/AppImageUpdate

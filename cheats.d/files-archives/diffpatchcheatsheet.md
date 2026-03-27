@@ -3,17 +3,65 @@ Group: Files & Archives
 Icon: 🔁
 Order: 4
 
-## Table of Contents
-- [diff — Compare Files](#-diff--compare-files)
-- [patch — Apply Changes](#-patch--apply-changes)
-- [Directory Comparison](#-directory-comparison--сравнение-каталогов)
-- [Git-Style Diffs](#-git-style-diffs--diff-в-стиле-git)
-- [Advanced Usage](#-advanced-usage--продвинутое-использование)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
+## Description
+
+**diff** and **patch** are fundamental UNIX utilities for comparing files and applying changes. `diff` computes the differences between two files or directories and outputs them in various formats. `patch` reads a diff output (a "patch file") and applies those changes to the original file.
+
+**Что это:** `diff` и `patch` — базовые UNIX-утилиты для сравнения файлов и применения изменений. `diff` вычисляет различия между двумя файлами или каталогами. `patch` читает вывод diff ("файл патча") и применяет эти изменения к оригиналу.
+
+**Common use cases / Типичные случаи использования:**
+- Code review and collaborative development / Ревью кода и совместная разработка
+- Configuration management across servers / Управление конфигурацией между серверами
+- Security auditing (detecting unauthorized changes) / Аудит безопасности (обнаружение несанкционированных изменений)
+- Software distribution via patches / Распространение ПО через патчи
+- Backup verification / Проверка резервных копий
+
+**Status / Статус:** ✅ Actively maintained, universally available on all UNIX/Linux systems. Part of POSIX standard. No modern replacement needed — `diff` and `patch` remain the foundation for version control and change management.
 
 ---
 
-# 🔍 diff — Compare Files
+## Table of Contents
+- [Installation](#installation)
+- [diff — Compare Files](#diff--compare-files)
+- [patch — Apply Changes](#patch--apply-changes)
+- [Directory Comparison](#directory-comparison)
+- [Git-Style Diffs](#git-style-diffs)
+- [Advanced Usage](#advanced-usage)
+- [Real-World Examples](#real-world-examples)
+- [Best Practices](#best-practices)
+- [Documentation Links](#documentation-links)
+
+---
+
+## Installation
+
+### Install diff & patch / Установка diff и patch
+
+> [!NOTE]
+> `diff` and `patch` are part of GNU diffutils and are pre-installed on virtually all Linux distributions.
+> `diff` и `patch` входят в состав GNU diffutils и предустановлены практически во всех дистрибутивах Linux.
+
+```bash
+# Verify installation / Проверить установку
+diff --version                                 # Show diff version / Версия diff
+patch --version                                # Show patch version / Версия patch
+
+# Install if missing / Установить если отсутствует
+sudo apt install diffutils patch               # Debian/Ubuntu
+sudo dnf install diffutils patch               # RHEL/Fedora
+sudo pacman -S diffutils patch                 # Arch Linux
+```
+
+### Install Enhanced Tools / Установка улучшенных инструментов
+```bash
+sudo apt install colordiff diffstat            # Colored diff + statistics / Цветной diff + статистика
+sudo apt install meld                          # GUI diff/merge tool / GUI инструмент diff/merge
+sudo apt install wdiff                         # Word-level diff / Diff на уровне слов
+```
+
+---
+
+## diff — Compare Files
 
 ### Basic Comparison / Базовое сравнение
 ```bash
@@ -26,6 +74,11 @@ diff -b file1.txt file2.txt                   # Ignore blank lines / Игнор�
 ```
 
 ### Output Formats / Форматы вывода
+
+The unified format (`-u`) is the most widely used and recommended for patches and code review. Context format (`-c`) provides more surrounding context. Side-by-side (`-y`) is best for visual comparison in a terminal.
+
+Унифицированный формат (`-u`) — самый распространённый и рекомендуемый для патчей и ревью кода. Контекстный формат (`-c`) предоставляет больше окружающего контекста. Бок о бок (`-y`) лучше всего подходит для визуального сравнения в терминале.
+
 ```bash
 diff -u file1.txt file2.txt                   # Unified format (recommended) / Унифицированный формат (рекомендуется)
 diff -c file1.txt file2.txt                   # Context format / Контекстный формат
@@ -33,6 +86,16 @@ diff -y file1.txt file2.txt                   # Side-by-side / Бок о бок
 diff -y -W 200 file1.txt file2.txt            # Side-by-side wide / Бок о бок широко
 diff --normal file1.txt file2.txt             # Normal format / Нормальный формат
 ```
+
+### Output Format Comparison / Сравнение форматов вывода
+
+| Format | Flag | Description (EN / RU) | Best For / Лучше для |
+|--------|------|-----------------------|----------------------|
+| Unified | `-u` | Shows `+`/`-` with context lines / Показывает `+`/`-` с контекстом | Patches, code review / Патчи, ревью кода |
+| Context | `-c` | Extended context with `!` markers / Расширенный контекст с маркерами `!` | Detailed review / Детальный обзор |
+| Side-by-side | `-y` | Two columns / Два столбца | Visual comparison / Визуальное сравнение |
+| Normal | (default) | Line ranges with `<`/`>` / Диапазоны строк с `<`/`>` | Scripts, legacy tools / Скрипты, устаревшие инструменты |
+| Brief | `-q` | Only reports if files differ / Только сообщает о различиях | Quick checks / Быстрая проверка |
 
 ### Save to Patch File / Сохранить в файл патча
 ```bash
@@ -45,11 +108,12 @@ diff -u file1.txt file2.txt | tee change.patch  # Save and display / Сохра�
 ```bash
 diff --color=always file1.txt file2.txt       # Colored diff / Цветной diff
 diff --color=auto file1.txt file2.txt         # Auto color / Авто цвет
+colordiff file1.txt file2.txt                 # Using colordiff (requires package) / С помощью colordiff
 ```
 
 ---
 
-# 🔧 patch — Apply Changes
+## patch — Apply Changes
 
 ### Basic Patching / Базовое применение патчей
 ```bash
@@ -71,6 +135,10 @@ patch -b -V numbered file.txt < change.patch  # Numbered backups / Нумеро�
 > Always use `--dry-run` before applying patches in production to verify they apply cleanly.
 > Всегда используйте `--dry-run` перед применением патчей в продакшене.
 
+> [!WARNING]
+> Applying patches without backup (`-b`) in production can make rollback difficult if the patch fails partially.
+> Применение патчей без резервной копии (`-b`) в продакшене может затруднить откат при частичном сбое.
+
 ### Interactive & Verbose / Интерактивный и подробный
 ```bash
 patch -i change.patch                         # Read from file / Читать из файла
@@ -84,9 +152,21 @@ cd /path/to/project                           # Change to project / Перейт
 patch -p1 < /path/to/changes.patch            # Apply patch / Применить патч
 ```
 
+### Patch Strip Level Explanation / Объяснение уровней strip патча
+
+The `-pN` flag strips `N` leading path components from file paths in the patch. This is critical when the patch was generated in a different directory context.
+
+Флаг `-pN` убирает `N` начальных компонентов пути из путей файлов в патче. Это критически важно когда патч был сгенерирован в другом контексте каталогов.
+
+| Level | Description (EN / RU) | Example / Пример |
+|-------|----------------------|-------------------|
+| `-p0` | Apply at current directory / Применить в текущей директории | `a/src/file.c` → `a/src/file.c` |
+| `-p1` | Strip top-level directory (most common) / Убрать верхний каталог | `a/src/file.c` → `src/file.c` |
+| `-p2` | Strip two levels / Убрать два уровня | `a/src/file.c` → `file.c` |
+
 ---
 
-# 📂 Directory Comparison / Сравнение каталогов
+## Directory Comparison
 
 ### Recursive Comparison / Рекурсивное сравнение
 ```bash
@@ -112,7 +192,7 @@ diff -qr dir1/ dir2/ | grep "differ$"         # Files that differ / Различ
 
 ---
 
-# 🔀 Git-Style Diffs / Diff в стиле Git
+## Git-Style Diffs
 
 ### Git Diff Format / Формат Git diff
 ```bash
@@ -139,7 +219,7 @@ git am < email.patch                          # Apply mail format / Примен
 
 ---
 
-# 🔬 Advanced Usage / Продвинутое использование
+## Advanced Usage
 
 ### Ignore Specific Changes / Игнорировать конкретные изменения
 ```bash
@@ -161,6 +241,7 @@ diff -C 3 file1.txt file2.txt                 # 3 lines context format / 3 ст�
 diff --brief file1.bin file2.bin              # Binary comparison / Бинарное сравнение
 cmp file1.bin file2.bin                       # Byte-by-byte comparison / Побайтовое сравнение
 cmp -l file1.bin file2.bin                    # List all differences / Список всех различий
+xxd file1.bin > /tmp/hex1.txt && xxd file2.bin > /tmp/hex2.txt && diff /tmp/hex1.txt /tmp/hex2.txt  # Hex diff / Hex сравнение
 ```
 
 ### Diff Statistics / Статистика diff
@@ -171,7 +252,7 @@ diff -u file1.txt file2.txt | wc -l           # Count diff lines / Подсчи�
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## Real-World Examples
 
 ### Compare Configuration Files / Сравнение файлов конфигурации
 ```bash
@@ -179,8 +260,8 @@ diff -u file1.txt file2.txt | wc -l           # Count diff lines / Подсчи�
 diff -u /etc/nginx/nginx.conf.backup /etc/nginx/nginx.conf > nginx.patch
 
 # Apply to another server / Применить на другом сервере
-scp nginx.patch <USER>@<SERVER>:/tmp/
-ssh <USER>@<SERVER> "cd /etc/nginx && sudo patch -p0 < /tmp/nginx.patch"
+scp nginx.patch <USER>@<HOST>:/tmp/
+ssh <USER>@<HOST> "cd /etc/nginx && sudo patch -p0 < /tmp/nginx.patch"
 ```
 
 ### Sync Directory Changes / Синхронизация изменений каталогов
@@ -195,6 +276,10 @@ patch -p1 < website.patch
 # Verify / Проверить
 patch --dry-run -p1 < website.patch
 ```
+
+> [!CAUTION]
+> Always test patches on staging before applying to production web directories. A broken patch can cause website downtime.
+> Всегда тестируйте патчи на staging перед применением к продакшен веб-каталогам. Сломанный патч может вызвать простой сайта.
 
 ### Code Review Workflow / Процесс ревью кода
 ```bash
@@ -271,25 +356,27 @@ diff -qr /tmp/c1 /tmp/c2
 ### Multi-Server Consistency / Согласованность между серверами
 ```bash
 # Check config consistency / Проверить согласованность конфигурации
-for server in server1 server2 server3; do
-  ssh $server "cat /etc/app/config.yml" > config.$server
+for server in <HOST1> <HOST2> <HOST3>; do
+  ssh <USER>@$server "cat /etc/app/config.yml" > config.$server
 done
-diff -u config.server1 config.server2
-diff -u config.server1 config.server3
+diff -u config.<HOST1> config.<HOST2>
+diff -u config.<HOST1> config.<HOST3>
 ```
 
 ---
 
-# 💡 Best Practices / Лучшие практики
+## Best Practices
 
-- Always use `-u` for unified format / Всегда используйте `-u` для унифицированного формата
-- Test patches with `--dry-run` / Тестируйте патчи с `--dry-run`
-- Backup files before patching / Делайте резервные копии перед применением патчей
+### General Recommendations / Общие рекомендации
+
+- Always use `-u` for unified format — it's the standard for patches / Всегда используйте `-u` для унифицированного формата
+- Test patches with `--dry-run` before applying / Тестируйте патчи с `--dry-run` перед применением
+- Backup files before patching (`patch -b`) / Делайте резервные копии перед применением патчей
 - Use `-p1` for most patch applications / Используйте `-p1` для большинства применений патчей
 - Exclude version control dirs (`.git`, `.svn`) / Исключайте каталоги контроля версий
 - Document patches with descriptive names / Документируйте патчи описательными именами
 
-## Useful diff Options / Полезные опции diff
+### Useful diff Options / Полезные опции diff
 
 | Option | Description (EN / RU) |
 |--------|----------------------|
@@ -301,19 +388,26 @@ diff -u config.server1 config.server3
 | `-i` | Ignore case / Игнорировать регистр |
 | `-w` | Ignore whitespace / Игнорировать пробелы |
 
-## Patch Levels / Уровни патчей
+### Alternative Tools / Альтернативные инструменты
 
-| Level | Description (EN / RU) |
-|-------|----------------------|
-| `-p0` | Apply at current directory / Применить в текущей директории |
-| `-p1` | Strip top-level directory (most common) / Убрать верхний каталог |
-| `-p2` | Strip two levels / Убрать два уровня |
+| Tool | Description (EN / RU) | Use Case / Применение |
+|------|----------------------|----------------------|
+| `vimdiff` | Visual diff editor / Визуальный diff редактор | Terminal-based merge / Слияние в терминале |
+| `meld` | GUI diff tool / GUI инструмент diff | Visual file/dir comparison / Визуальное сравнение файлов |
+| `kompare` | KDE diff tool / KDE инструмент diff | KDE desktop integration / Интеграция с KDE |
+| `colordiff` | Colored diff / Цветной diff | Better terminal readability / Читаемость в терминале |
+| `delta` | Modern diff viewer / Современный просмотрщик diff | Git pager, syntax highlighting / Git pager, подсветка синтаксиса |
+| `difftastic` | Structural diff / Структурный diff | Language-aware comparison / Сравнение с учётом языка |
+| `wdiff` | Word-level diff / Diff по словам | Document comparison / Сравнение документов |
 
-## Alternative Tools / Альтернативные инструменты
+---
 
-| Tool | Description (EN / RU) |
-|------|----------------------|
-| `vimdiff` | Visual diff editor / Визуальный diff редактор |
-| `meld` | GUI diff tool / GUI инструмент diff |
-| `kompare` | KDE diff tool / KDE инструмент diff |
-| `colordiff` | Colored diff / Цветной diff |
+## Documentation Links
+
+- **GNU Diffutils Manual:** https://www.gnu.org/software/diffutils/manual/
+- **diff man page:** `man diff` or https://man7.org/linux/man-pages/man1/diff.1.html
+- **patch man page:** `man patch` or https://man7.org/linux/man-pages/man1/patch.1.html
+- **cmp man page:** `man cmp` or https://man7.org/linux/man-pages/man1/cmp.1.html
+- **GNU Diffutils source:** https://savannah.gnu.org/projects/diffutils
+- **Git diff documentation:** https://git-scm.com/docs/git-diff
+- **Git apply documentation:** https://git-scm.com/docs/git-apply

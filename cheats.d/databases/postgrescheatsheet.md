@@ -5,6 +5,16 @@ Order: 1
 
 ---
 
+> **PostgreSQL** (often called "Postgres") is a powerful, open-source, object-relational database system with over 35 years of active development. It is known for its reliability, feature robustness, extensibility, and standards compliance (SQL:2023).
+>
+> **Common use cases / Типичные сценарии:** Enterprise applications, geospatial data (PostGIS), time-series data (TimescaleDB), financial systems, analytics/OLAP, web applications, data warehousing.
+>
+> **Status / Статус:** Actively developed (current stable: 17.x). PostgreSQL is widely considered the most advanced open-source RDBMS. Managed cloud options: **AWS RDS/Aurora**, **Google Cloud SQL**, **Azure Database for PostgreSQL**, **Supabase**, **Neon** (serverless). For distributed SQL: **CockroachDB**, **YugabyteDB**, **Citus** (PostgreSQL extension for sharding).
+>
+> **Default port / Порт по умолчанию:** `5432/tcp`
+
+---
+
 ## 📚 Table of Contents / Содержание
 
 1. [Installation & Configuration](#installation--configuration--установка-и-настройка)

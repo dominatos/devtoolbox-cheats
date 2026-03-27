@@ -5,7 +5,19 @@ Order: 3
 
 # Disk Growth — Cloud/VM Expansion
 
-Comprehensive guide to expanding disks, partitions, and filesystems on cloud VMs, bare metal, and hypervisors.
+**Disk growth (online disk expansion)** is the process of increasing disk, partition, and filesystem sizes on running systems — typically in cloud VMs, hypervisors, or bare-metal servers. This is one of the most common sysadmin operations in cloud environments where storage needs grow dynamically.
+
+The workflow follows a strict layer-by-layer approach: **disk → partition → (LVM) → filesystem**. Each layer must be expanded in order. Skipping a layer (e.g., trying to resize a filesystem without growing the partition first) will fail.
+
+**Key tools / Основные инструменты:**
+- `growpart` — automatically grows a partition to fill available space
+- `resize2fs` — resizes ext2/ext3/ext4 filesystems
+- `xfs_growfs` — grows XFS filesystems (grow only, no shrink)
+- `pvresize` / `lvextend` — LVM physical and logical volume management
+- `parted` — manual partition management
+
+📚 **Official Docs / Официальная документация:**
+[growpart(1)](https://manpages.debian.org/testing/cloud-guest-utils/growpart.1.en.html) · [resize2fs(8)](https://man7.org/linux/man-pages/man8/resize2fs.8.html) · [xfs_growfs(8)](https://man7.org/linux/man-pages/man8/xfs_growfs.8.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html)
 
 ## Table of Contents
 - [Partition Growth](#partition-growth)
@@ -46,6 +58,14 @@ sudo parted /dev/sda                          # Enter parted / Войти в par
 # (parted) print                              # Show partitions / Показать разделы
 # (parted) resizepart 1 100%                  # Resize to 100% / Изменить до 100%
 # (parted) quit                               # Exit / Выйти
+```
+
+### Install growpart / Установка growpart
+
+```bash
+sudo apt install cloud-guest-utils            # Debian/Ubuntu
+sudo dnf install cloud-utils-growpart         # RHEL/Fedora/CentOS
+sudo pacman -S cloud-guest-utils              # Arch Linux
 ```
 
 ---
@@ -122,6 +142,10 @@ sudo lvextend -L +10G /dev/vg0/lv_root && sudo resize2fs /dev/vg0/lv_root  # EXT
 sudo lvextend -L +10G /dev/vg0/lv_root && sudo xfs_growfs /mount  # XFS manual / XFS вручную
 ```
 
+> [!TIP]
+> Use `lvextend -r` to automatically resize the filesystem along with the LV — this is the safest and most convenient method.
+> Используйте `lvextend -r` для автоматического изменения ФС вместе с LV — это самый безопасный и удобный метод.
+
 ### Complete LVM Workflow / Полный процесс LVM
 
 ```bash
@@ -159,6 +183,10 @@ sudo resize2fs /dev/xvda1                     # For EXT4 / Для EXT4
 sudo xfs_growfs /                             # For XFS / Для XFS
 ```
 
+> [!NOTE]
+> AWS EBS volume modification can take several minutes. Monitor progress in EC2 console under "Volumes" → "State" column. The volume must be in `optimizing` or `completed` state before resizing on the OS level.
+> Модификация тома EBS может занять несколько минут. Следите за прогрессом в консоли EC2.
+
 ### Google Cloud Platform (GCP)
 
 ```bash
@@ -178,6 +206,10 @@ sudo growpart /dev/sda 1
 sudo resize2fs /dev/sda1                      # For EXT4 / Для EXT4
 sudo xfs_growfs /                             # For XFS / Для XFS
 ```
+
+> [!NOTE]
+> Azure may require stopping and deallocating the VM before resizing the OS disk. Data disks can be resized while the VM is running.
+> Azure может потребовать остановки и деаллокации ВМ перед изменением размера диска ОС.
 
 ### DigitalOcean
 
@@ -216,6 +248,18 @@ sudo partx -u /dev/sda                        # Update kernel partition table / 
 sudo pvscan                                   # Scan for PVs / Сканировать PV
 sudo vgscan                                   # Scan for VGs / Сканировать VG
 sudo lvscan                                   # Scan for LVs / Сканировать LV
+```
+
+### "NOCHANGE" from growpart / growpart возвращает "NOCHANGE"
+
+```bash
+# This means the partition already uses all available space
+# Это означает, что раздел уже использует всё доступное пространство
+lsblk                                         # Verify disk size vs partition size / Проверить размер диска vs раздела
+
+# If disk was resized but kernel doesn't see it:
+# Если диск был увеличен, но ядро не видит:
+echo 1 > /sys/class/block/sda/device/rescan   # Rescan SCSI device / Пересканировать SCSI устройство
 ```
 
 ### Verify Growth / Проверка расширения
@@ -345,6 +389,11 @@ sudo mount /dev/sda1 /
 > - **Document** growth operations — track disk changes for audit trails.
 > - **Monitor** disk usage after resize with `df -h`.
 
+> [!WARNING]
+> - Never shrink XFS — it does not support shrinking at all.
+> - Never run `e2fsck` on a mounted filesystem — it will corrupt data.
+> - `growpart` requires free space **after** the target partition — if another partition follows, you must move or delete it first.
+
 ---
 
 ## Filesystem Resize Comparison / Сравнение возможностей изменения размера ФС
@@ -363,11 +412,12 @@ sudo mount /dev/sda1 /
 ## Typical Growth Workflow / Типичный процесс расширения
 
 1. **Increase disk size** in hypervisor/cloud console / Увеличить размер диска в гипервизоре/облаке
-2. **`growpart`** to expand partition / расширение раздела
-3. **`pvresize`** (if LVM) / если LVM
-4. **`lvextend`** (if LVM) / если LVM
-5. **`resize2fs` / `xfs_growfs`** to expand filesystem / расширение ФС
-6. **`df -h`** to verify / проверка
+2. **Rescan** (if needed): `echo 1 > /sys/class/block/sda/device/rescan`
+3. **`growpart`** to expand partition / расширение раздела
+4. **`pvresize`** (if LVM) / если LVM
+5. **`lvextend`** (if LVM) / если LVM
+6. **`resize2fs` / `xfs_growfs`** to expand filesystem / расширение ФС
+7. **`df -h`** to verify / проверка
 
 > [!NOTE]
 > Some cloud providers (e.g., GCP) auto-resize the filesystem on reboot. Always verify with `df -h`.
@@ -375,4 +425,14 @@ sudo mount /dev/sda1 /
 
 ---
 
-*End of Disk Growth Cheat Sheet*
+## Documentation Links
+
+- **growpart:** https://manpages.debian.org/testing/cloud-guest-utils/growpart.1.en.html
+- **resize2fs(8):** https://man7.org/linux/man-pages/man8/resize2fs.8.html
+- **xfs_growfs(8):** https://man7.org/linux/man-pages/man8/xfs_growfs.8.html
+- **parted(8):** https://man7.org/linux/man-pages/man8/parted.8.html
+- **lvextend(8):** https://man7.org/linux/man-pages/man8/lvextend.8.html
+- **pvresize(8):** https://man7.org/linux/man-pages/man8/pvresize.8.html
+- **AWS — Extend EBS Volume:** https://docs.aws.amazon.com/ebs/latest/userguide/recognize-expanded-volume-linux.html
+- **GCP — Resize Disk:** https://cloud.google.com/compute/docs/disks/resize-persistent-disk
+- **Azure — Expand OS Disk:** https://learn.microsoft.com/en-us/azure/virtual-machines/linux/expand-disks

@@ -3,13 +3,21 @@ Group: Dev & Tools
 Icon: 🔍
 Order: 18
 
+# Meld Cheatsheet — Visual Diff & Merge Tool
+
+> **Description:** Meld is a free, open-source visual diff and merge tool for files, directories, and version-controlled projects. It provides two- and three-way comparison with syntax highlighting and real-time merge editing. Built with GTK, it integrates natively with GNOME but works on any Linux desktop.
+> Meld — это бесплатный визуальный инструмент сравнения и слияния файлов, директорий и проектов с контролем версий. Поддерживает 2- и 3-стороннее сравнение.
+
+> **Status:** Actively maintained. Alternatives include **KDiff3** (KDE-native, 3-way merge), **Beyond Compare** (commercial, cross-platform), **vimdiff** (terminal-based), and **VS Code** built-in diff.
+> **Role:** Developer / Sysadmin
+
 ---
 
 ## 📚 Table of Contents / Содержание
 
 1. [Installation / Установка](#installation--установка)
 2. [Basic CLI Usage / Основы CLI](#basic-cli-usage--основы-cli)
-3. [Version Control Integration / Интеграция с GitSVN](#version-control-integration--интеграция-с-gitsvn)
+3. [Version Control Integration / Интеграция с Git/SVN](#version-control-integration--интеграция-с-gitsvn)
 4. [Keyboard Shortcuts / Горячие клавиши](#keyboard-shortcuts--горячие-клавиши)
 5. [Directory Comparison / Сравнение директорий](#directory-comparison--сравнение-директорий)
 
@@ -34,6 +42,7 @@ brew install --cask meld
 ## Basic CLI Usage / Основы CLI
 
 Meld is primarily a GUI tool, but passing arguments from the command line is the most common way to launch it.
+Meld — это прежде всего GUI-инструмент, но запуск из командной строки — самый частый способ использования.
 
 ```bash
 # Compare two files (2-way diff) / Сравнение двух файлов
@@ -52,6 +61,7 @@ meld
 ### Auto-Merge Flag / Флаг авто-слияния
 
 If you want Meld to automatically merge non-conflicting changes when comparing three files (usually in a VCS conflict scenario):
+Если вы хотите, чтобы Meld автоматически сливал бесконфликтные изменения при сравнении трёх файлов:
 
 ```bash
 # Typical auto-merge syntax / Синтаксис авто-слияния
@@ -96,6 +106,17 @@ git mergetool
 
 > [!TIP]
 > When resolving conflicts in a 3-way merge window, the middle pane is usually the final output file where you should combine changes. Left is usually LOCAL (your branch), Right is usually REMOTE (incoming branch).
+> При разрешении конфликтов в 3-стороннем окне, средняя панель — это обычно итоговый файл. Слева — LOCAL (ваша ветка), справа — REMOTE (входящая ветка).
+
+### Diff Tool Comparison / Сравнение инструментов сравнения
+
+| Tool | Type | Description (EN / RU) | Best For |
+|------|------|----------------------|----------|
+| **Meld** | GUI (GTK) | Visual 2/3-way diff & merge / Визуальное 2/3-стороннее сравнение | GNOME users, directory diffs |
+| **KDiff3** | GUI (Qt) | 3-way merge with auto-merge / 3-стороннее слияние с авто-слиянием | KDE users, complex merges |
+| **vimdiff** | Terminal | Vim-based inline diff / Vim-based построчное сравнение | Terminal-only environments |
+| **Beyond Compare** | GUI (commercial) | Advanced file/folder comparison / Продвинутое сравнение файлов/папок | Professional use, cross-platform |
+| **VS Code** | Editor | Built-in diff view / Встроенный просмотр различий | Developers already using VS Code |
 
 ---
 
@@ -117,6 +138,7 @@ git mergetool
 ## Directory Comparison / Сравнение директорий
 
 Meld can compare entire folder structures.
+Meld может сравнивать целые структуры папок.
 
 ```bash
 # Compare two directories / Сравнить две директории
@@ -130,6 +152,16 @@ meld /path/to/dir1 /path/to/dir2 /path/to/dir3
 
 By default, Meld filters out some file types (object files, binaries).
 You can toggle custom text filters via `Preferences -> Text Filters`.
+По умолчанию Meld фильтрует некоторые типы файлов (объектные файлы, бинарники). Вы можете настроить текстовые фильтры через `Preferences -> Text Filters`.
 
 > [!NOTE]
 > In directory view, files colored **blue** are new/modified, **green** are identical, **red** are missing.
+> В директорийном режиме файлы: **синие** — новые/изменённые, **зелёные** — идентичные, **красные** — отсутствующие.
+
+---
+
+## Official Documentation / Официальная документация
+
+- **Meld:** https://meldmerge.org/
+- **Meld Help:** https://meldmerge.org/help/
+- **Git Diff/Merge Tools:** https://git-scm.com/docs/git-difftool

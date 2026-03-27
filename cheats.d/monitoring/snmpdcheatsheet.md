@@ -5,10 +5,13 @@ Order: 4
 
 # SNMPD (Net-SNMP Agent) Sysadmin Cheatsheet
 
-> **Context:** snmpd is the SNMP (Simple Network Management Protocol) agent daemon from the Net-SNMP suite. It exposes system metrics and allows remote monitoring by NMS platforms (Zabbix, Nagios, LibreNMS, etc.). / snmpd — демон SNMP-агента из пакета Net-SNMP. Предоставляет системные метрики для удалённого мониторинга через NMS.
-> **Role:** Sysadmin / Network Engineer
-> **Version:** Net-SNMP 5.9+
-> **Default Port:** UDP `161` (agent), UDP `162` (trap receiver)
+> **SNMPD** (Net-SNMP Agent) is the SNMP daemon from the Net-SNMP suite. SNMP (Simple Network Management Protocol) was first defined in RFC 1157 (1990) and has been a foundational protocol for network monitoring ever since. The snmpd agent exposes system metrics via a standardized MIB tree, allowing remote monitoring by NMS platforms.
+>
+> **Common use cases / Типичные сценарии:** Network device monitoring (routers, switches, firewalls), server system metrics collection (CPU, memory, disk, interfaces), integration with NMS platforms (Zabbix, Nagios, LibreNMS, Checkmk, Cacti), hardware monitoring (IPMI via SNMP), printer/UPS monitoring.
+>
+> **Status / Статус:** SNMP is a mature, well-established standard. Net-SNMP is actively maintained. While SNMP remains essential for network devices, modern server monitoring often uses agent-based solutions (**Zabbix Agent**, **node_exporter**, **Telegraf**) for richer metrics. SNMP is still the primary protocol for monitoring network infrastructure.
+>
+> **Default ports / Порты по умолчанию:** `161/udp` (agent queries), `162/udp` (trap receiver)
 
 ---
 
@@ -188,12 +191,21 @@ authCommunity log,execute,net <COMMUNITY_STRING>
 doNotLogTraps no
 ```
 
+### Important Paths / Важные пути
+
+| Path | Description / Описание |
+|------|------------------------|
+| `/etc/snmp/snmpd.conf` | Agent configuration / Конфигурация агента |
+| `/etc/snmp/snmptrapd.conf` | Trap receiver configuration / Конфигурация приёмника трапов |
+| `/var/log/snmpd.log` | Agent log (if configured) / Лог агента |
+| `/usr/share/snmp/mibs/` | MIB files / Файлы MIB |
+
 ### Firewall Configuration / Настройка фаервола
 
 ```bash
 # Allow SNMP agent / Разрешить SNMP-агент
-firewall-cmd --permanent --add-port=161/udp   # SNMP queries
-firewall-cmd --permanent --add-port=162/udp   # SNMP traps
+firewall-cmd --permanent --add-port=161/udp   # SNMP queries / Запросы SNMP
+firewall-cmd --permanent --add-port=162/udp   # SNMP traps / Трапы SNMP
 firewall-cmd --reload
 ```
 
@@ -316,5 +328,16 @@ snmpwalk -v2c -c <COMMUNITY_STRING> -d <HOST> sysDescr.0
     create 640 root root
 }
 ```
+
+---
+
+## Documentation Links / Ссылки на документацию
+
+- **Net-SNMP Official Site:** http://www.net-snmp.org/
+- **Net-SNMP Documentation:** http://www.net-snmp.org/docs/man/
+- **SNMPv3 Configuration:** http://www.net-snmp.org/wiki/index.php/TUT:snmpv3
+- **snmpd.conf Manual:** http://www.net-snmp.org/docs/man/snmpd.conf.html
+- **OID Repository:** http://www.oid-info.com/
+- **GitHub:** https://github.com/net-snmp/net-snmp
 
 ---

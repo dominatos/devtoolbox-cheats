@@ -3,6 +3,12 @@ Group: Network
 Icon: 🌐
 Order: 3
 
+# ip — Network Configuration Utility
+
+`ip` is the primary command-line tool from the `iproute2` package for configuring network interfaces, routing, tunnels, and ARP entries on Linux. It replaces the legacy `ifconfig`, `route`, and `arp` commands, providing a unified and more powerful interface.
+
+📚 **Official Docs / Официальная документация:** [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html)
+
 ## Table of Contents
 - [Address Management](#-address-management--управление-адресами)
 - [Link Management](#-link-management--управление-ссылками)
@@ -13,7 +19,7 @@ Order: 3
 
 ---
 
-# 📍 Address Management / Управление адресами
+## 📍 Address Management / Управление адресами
 
 ### Show Addresses / Показать адреса
 ```bash
@@ -40,7 +46,7 @@ sudo ip addr flush dev eth0                   # Remove all addresses / Удал�
 
 ---
 
-# 🔗 Link Management / Управление ссылками
+## 🔗 Link Management / Управление ссылками
 
 ### Show Links / Показать ссылки
 ```bash
@@ -75,7 +81,7 @@ sudo ip link delete br0 type bridge           # Delete bridge / Удалить b
 
 ---
 
-# 🗺️ Routing / Маршрутизация
+## 🗺️ Routing / Маршрутизация
 
 ### Show Routes / Показать маршруты
 ```bash
@@ -103,7 +109,7 @@ sudo ip route flush cache                     # Flush routing cache / Очист
 
 ---
 
-# 🏘️ Neighbor (ARP/NDP) / Соседи
+## 🏘️ Neighbor (ARP/NDP) / Соседи
 
 ### Show Neighbors / Показать соседей
 ```bash
@@ -122,7 +128,7 @@ sudo ip neigh flush dev eth0                  # Flush neighbors / Очистит
 
 ---
 
-# 🚇 Tunnels & VLANs / Туннели и VLAN
+## 🚇 Tunnels & VLANs / Туннели и VLAN
 
 ### VLANs
 ```bash
@@ -147,7 +153,7 @@ sudo ip link set vxlan0 up
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples / Примеры из практики
 
 ### Basic Network Setup / Базовая настройка сети
 ```bash

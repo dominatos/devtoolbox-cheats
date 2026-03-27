@@ -3,6 +3,9 @@ Group: Backups & S3
 Icon: 🗄️
 Order: 8
 
+> **Filesystem snapshots** (LVM, ZFS, Btrfs) provide instant point-in-time copies of data at the block or extent level using Copy-on-Write (CoW) technology. They are used for consistent backups of running databases, quick rollbacks before risky changes, and disaster recovery. Snapshots are not a replacement for off-site backups — they protect against logical errors but not hardware failures. All three technologies are actively maintained and widely used in production.
+> / **Снапшоты файловых систем** (LVM, ZFS, Btrfs) обеспечивают мгновенные копии данных на уровне блоков с использованием Copy-on-Write (CoW). Используются для консистентных бэкапов работающих баз данных, быстрых откатов и аварийного восстановления. Снапшоты не заменяют внешние резервные копии.
+
 ## Table of Contents
 - [Technology Comparison](#technology-comparison)
 - [LVM Snapshots](#lvm-snapshots)

@@ -5,10 +5,13 @@ Order: 6
 
 # Telegraf Sysadmin Cheatsheet
 
-> **Context:** Telegraf is an open-source, plugin-driven server agent from InfluxData for collecting, processing, aggregating, and writing metrics. It supports 300+ input/output plugins. / Telegraf — агент с открытым исходным кодом от InfluxData для сбора, обработки и записи метрик. Поддерживает 300+ плагинов ввода/вывода.
-> **Role:** Sysadmin / DevOps / SRE
-> **Version:** Telegraf 1.29+
-> **Default Ports:** None (outbound agent) | InfluxDB: `8086` | Prometheus: `9273` (metrics endpoint)
+> **Telegraf** is an open-source, plugin-driven server agent from InfluxData for collecting, processing, aggregating, and writing metrics. First released in 2015, it is part of the TICK stack (Telegraf, InfluxDB, Chronograf, Kapacitor) and supports 300+ input/output plugins.
+>
+> **Common use cases / Типичные сценарии:** System metrics collection (CPU, memory, disk, network), application monitoring (MySQL, PostgreSQL, Redis, Nginx), SNMP polling, Docker/Kubernetes metrics, cloud metrics (AWS CloudWatch, Azure Monitor), custom script execution, Prometheus metrics scraping.
+>
+> **Status / Статус:** Actively developed by InfluxData. Telegraf is one of the most versatile metrics collection agents. Alternatives include **Prometheus node_exporter** (Prometheus ecosystem), **Grafana Alloy** (Grafana LGTM stack), **collectd** (legacy, C-based), **Vector** (Rust-based, high-performance), **vmagent** (VictoriaMetrics ecosystem).
+>
+> **Default ports / Порты по умолчанию:** None (outbound agent) | InfluxDB: `8086` | Prometheus metrics endpoint: `9273`
 
 ---
 
@@ -181,8 +184,8 @@ systemctl status telegraf     # Check status / Проверить статус
 
 ### Important Paths / Важные пути
 
-| Path | Description |
-|------|-------------|
+| Path | Description / Описание |
+|------|------------------------|
 | `/etc/telegraf/telegraf.conf` | Main configuration / Основной конфиг |
 | `/etc/telegraf/telegraf.d/` | Drop-in config fragments / Фрагменты конфигов |
 | `/var/log/telegraf/` | Telegraf logs / Логи Telegraf |
@@ -285,5 +288,16 @@ telegraf --config /etc/telegraf/telegraf.conf --debug 2>&1 | grep "took"
     endscript
 }
 ```
+
+---
+
+## Documentation Links / Ссылки на документацию
+
+- **Official Documentation:** https://docs.influxdata.com/telegraf/
+- **Plugin Directory:** https://docs.influxdata.com/telegraf/latest/plugins/
+- **Configuration Guide:** https://docs.influxdata.com/telegraf/latest/configuration/
+- **Telegraf Downloads:** https://www.influxdata.com/downloads/
+- **GitHub:** https://github.com/influxdata/telegraf
+- **Community Forum:** https://community.influxdata.com/
 
 ---

@@ -5,6 +5,16 @@ Order: 4
 
 ---
 
+> **OpenSearch** is an open-source, community-driven search and analytics suite derived from Elasticsearch 7.10 and Kibana 7.10 (forked by AWS in 2021 after Elastic changed to SSPL license). It provides full-text search, log analytics, observability, and security analytics capabilities.
+>
+> **Common use cases / Типичные сценарии:** Log aggregation and analysis (ELK/EFK replacement), full-text search engines, application performance monitoring (APM), security information and event management (SIEM), observability.
+>
+> **Status / Статус:** Actively developed under Apache 2.0 license (truly open-source). Current stable: 2.x. Alternatives: **Elasticsearch** (original, SSPL/Elastic License), **Zinc** (lightweight Go alternative), **Meilisearch** (developer-friendly search), **Typesense** (typo-tolerant search). OpenSearch Dashboards replaces Kibana.
+>
+> **Default ports / Порты по умолчанию:** `9200` (REST API), `9300` (Transport/inter-node)
+
+---
+
 ## 📚 Table of Contents / Содержание
 
 1. [Installation & Configuration / Установка и Настройка](#1-installation--configuration--установка-и-настройка)
@@ -19,7 +29,7 @@ Order: 4
 
 ---
 
-## 1. 📦 Installation & Configuration / Установка и Настройка
+## Installation & Configuration
 
 ### Install / Установка
 
@@ -66,7 +76,7 @@ LimitMEMLOCK=infinity
 
 ---
 
-## 2. ⚙️ Cluster Management / Управление Кластером
+## Cluster Management
 
 ```bash
 curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/                                   # Ping cluster (version) / Пинг кластера (версия)
@@ -89,7 +99,7 @@ curl -s localhost:9200/_cat/shards?v | grep os-data-1 || echo "empty"
 
 ---
 
-## 3. 🗂️ Index Management / Управление Индексами
+## Index Management
 
 ### Basics / Основы
 
@@ -152,7 +162,7 @@ curl -u 'admin:<PASSWORD>' -X POST "http://localhost:9200/_aliases" -H 'Content-
 
 ---
 
-## 4. 📄 Document Management / Управление Документами
+## Document Management
 
 ### CRUD
 
@@ -196,7 +206,7 @@ curl -sS -u 'admin:<PASSWORD>' -X POST http://localhost:9200/_bulk \
 
 ---
 
-## 5. 💾 Backup & Restore / Бэкап и Восстановление
+## Backup & Restore
 
 ### Snapshot Repository / Репозиторий
 
@@ -290,7 +300,7 @@ sudo mount -a                                                       # Mount / П
 
 ---
 
-## 6. 🔐 Security / Безопасность
+## Security
 
 ### User Management / Управление пользователями
 
@@ -332,7 +342,7 @@ OPENSEARCH_JAVA_HOME=/usr/share/opensearch/jdk /usr/share/opensearch/plugins/ope
 
 ---
 
-## 7. 🐧 Sysadmin Operations / Сисадминские Операции
+## Sysadmin Operations
 
 ### Service & Logs / Сервис и Логи
 
@@ -401,7 +411,7 @@ firewall-cmd --reload
 
 ---
 
-## 8. 🛠️ Tools / Инструменты
+## Tools
 
 ### cURL Toolbox
 
@@ -431,7 +441,7 @@ elasticdump --input=data.json --output=https://admin:<PASSWORD>@target:9200/my-i
 
 ---
 
-## 9. Logrotate Configuration / Конфигурация Logrotate
+## Logrotate Configuration
 
 ```bash
 /etc/logrotate.d/opensearch

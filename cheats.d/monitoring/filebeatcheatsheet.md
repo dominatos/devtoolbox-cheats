@@ -5,10 +5,13 @@ Order: 5
 
 # Filebeat Sysadmin Cheatsheet
 
-> **Context:** Filebeat is a lightweight log shipper from the Elastic Stack (ELK). It monitors log files, collects log events, and forwards them to Elasticsearch, Logstash, or other outputs. / Filebeat — легковесный шиппер логов из стека Elastic (ELK). Мониторит лог-файлы, собирает события и пересылает в Elasticsearch, Logstash и другие приёмники.
-> **Role:** Sysadmin / DevOps / SRE
-> **Version:** 8.x
-> **Default Port:** None (outbound only) | Elasticsearch: `9200` | Logstash: `5044` | Kibana: `5601`
+> **Filebeat** is a lightweight log shipper from the Elastic Stack (ELK/Elastic), originally developed by Elastic. It monitors log files, collects log events, and forwards them to Elasticsearch, Logstash, Kafka, or other outputs. Filebeat uses a backpressure-sensitive protocol to handle spikes in data volume.
+>
+> **Common use cases / Типичные сценарии:** Centralized log collection, syslog/auth log forwarding, application log shipping, multiline log parsing (Java stack traces), container log collection, compliance log aggregation.
+>
+> **Status / Статус:** Actively developed as part of the Elastic Stack. Filebeat is the recommended log shipper for Elasticsearch/OpenSearch pipelines. Alternatives include **Fluent Bit** (lightweight, CNCF), **Fluentd** (plugin-rich, CNCF), **Vector** (Rust-based, high-performance by Datadog), **Promtail** (for Loki/Grafana stack), **rsyslog/syslog-ng** (traditional syslog).
+>
+> **Default ports / Порты по умолчанию:** None (outbound only) | Elasticsearch: `9200` | Logstash: `5044` | Kibana: `5601`
 
 ---
 
@@ -113,12 +116,15 @@ processors:
 ### Output Comparison / Сравнение выходов
 
 | Output | Use Case / Применение | Buffering / Буферизация | Notes / Примечания |
-|--------|----------------------|------------------------|--------------------|
+|--------|----------------------|------------------------|-------------------|
 | Elasticsearch | Direct indexing / Прямая индексация | Yes | Simplest setup / Самый простой |
 | Logstash | Complex processing / Сложная обработка | Yes (Logstash) | Transformation, enrichment / Трансформация |
 | Kafka | High-volume buffering / Высоконагруженная буферизация | Yes (Kafka) | Best for large-scale / Для больших объёмов |
 | Redis | Lightweight buffer / Лёгкий буфер | Yes (Redis) | Legacy, use Kafka instead / Устаревший |
 | File | Local storage / Локальное хранение | No | Debug/testing / Отладка/тест |
+
+> [!NOTE]
+> **filestream vs log input:** The `filestream` input (introduced in 7.16) is the recommended replacement for the legacy `log` input. It provides better file tracking, native fingerprinting, and improved performance. / `filestream` — рекомендуемая замена для устаревшего `log` input.
 
 ---
 
@@ -186,8 +192,8 @@ systemctl status filebeat     # Check status / Проверить статус
 
 ### Important Paths / Важные пути
 
-| Path | Description |
-|------|-------------|
+| Path | Description / Описание |
+|------|------------------------|
 | `/etc/filebeat/filebeat.yml` | Main configuration / Основной конфиг |
 | `/etc/filebeat/modules.d/` | Module configurations / Конфиги модулей |
 | `/var/lib/filebeat/` | Data and registry / Данные и реестр |
@@ -296,5 +302,16 @@ systemctl start filebeat
 
 > [!TIP]
 > Filebeat manages its own log rotation via `logging.files.rotateeverybytes` and `logging.files.keepfiles` in `filebeat.yml`. External logrotate is optional. / Filebeat управляет ротацией через `logging.files.rotateeverybytes`. Внешний logrotate опционален.
+
+---
+
+## Documentation Links / Ссылки на документацию
+
+- **Official Documentation:** https://www.elastic.co/guide/en/beats/filebeat/current/index.html
+- **Filebeat Modules:** https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-modules.html
+- **Filebeat Configuration:** https://www.elastic.co/guide/en/beats/filebeat/current/configuring-howto-filebeat.html
+- **Filestream Input:** https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-input-filestream.html
+- **Beats Downloads:** https://www.elastic.co/downloads/beats/filebeat
+- **GitHub:** https://github.com/elastic/beats
 
 ---

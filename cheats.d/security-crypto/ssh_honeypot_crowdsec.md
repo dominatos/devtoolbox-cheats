@@ -3,39 +3,61 @@ Group: Security & Crypto
 Icon: 🍯
 Order: 99
 
+# SSH Honeypot + CrowdSec Sysadmin Cheatsheet
+
+> **Context:** This guide covers deploying a Cowrie SSH honeypot on port 22 while moving the real SSH service to a non-standard port. Cowrie emulates a vulnerable SSH server, logging attacker commands and credentials. Combined with CrowdSec, attacking IPs are automatically banned via firewall rules and optionally shared with the community blocklist. / Руководство по развёртыванию SSH-ловушки Cowrie на порту 22 с переносом реального SSH на нестандартный порт. Cowrie эмулирует уязвимый SSH-сервер, логируя команды и пароли атакующих. В связке с CrowdSec атакующие IP автоматически банятся.
+> **Role:** Security Engineer / Sysadmin
+> **See also:** [CrowdSec](crowdseccheatsheet.md), [SSH Keys](ssh_keys_cheatsheet.md)
+
 ---
 
 ## 📚 Table of Contents / Содержание
 
-1. [Overview](#overview--обзор)
-2. [Install Docker](#1-install-docker--установка-docker)
-3. [Move Real SSH to Port 2222](#2-move-real-ssh-to-port-2222--перенос-ssh-на-порт-2222)
-4. [Install Cowrie Honeypot](#3-install-cowrie-honeypot--установка-cowrie)
-5. [Save Honeypot Logs](#4-save-honeypot-logs--сохранение-логов)
-6. [Install CrowdSec](#5-install-crowdsec--установка-crowdsec)
-7. [Install Cowrie Parser](#6-install-cowrie-parser--установка-парсера-cowrie)
-8. [Community Integration](#7-community-integration--интеграция-с-сообществом)
-9. [Web Dashboard](#8-web-dashboard--веб-панель)
-10. [GeoIP Visualization](#9-geoip-visualization--визуализация-geoip)
-11. [Verify Detection & Firewall](#10-verify-detection--firewall--проверка-обнаружения-и-файрвола)
-12. [Architecture](#architecture--архитектура)
-13. [Useful Commands](#useful-commands--полезные-команды)
-14. [Cowrie Log Analysis Script](#cowrie-log-analysis-script--скрипт-анализа-логов-cowrie)
+1. [Overview](#1-overview)
+2. [Install Docker](#2-install-docker)
+3. [Move Real SSH to Port 2222](#3-move-real-ssh-to-port-2222)
+4. [Install Cowrie Honeypot](#4-install-cowrie-honeypot)
+5. [Save Honeypot Logs](#5-save-honeypot-logs)
+6. [Install CrowdSec](#6-install-crowdsec)
+7. [Install Cowrie Parser](#7-install-cowrie-parser)
+8. [Community Integration](#8-community-integration)
+9. [Web Dashboard](#9-web-dashboard)
+10. [Verify Detection & Firewall](#10-verify-detection--firewall)
+11. [Cowrie Log Analysis Script](#11-cowrie-log-analysis-script)
+12. [Documentation Links](#12-documentation-links)
 
 ---
 
-## Overview / Обзор
+## 1. Overview
 
 > **Goal / Цель:**
 > - Real SSH runs on port **2222** / Реальный SSH работает на порту **2222**
 > - Port **22** becomes a **Cowrie honeypot** / Порт **22** становится **ловушкой Cowrie**
 > - **CrowdSec** automatically bans attacking IPs / **CrowdSec** автоматически банит атакующие IP
-> - Logs saved and optionally sent to CrowdSec community blocklist / Логи сохраняются и опционально отправляются в CrowdSec
+> - Logs saved and optionally sent to CrowdSec community blocklist / Логи сохраняются и отправляются в CrowdSec
 > - Optional web dashboard and GeoIP visualization / Опциональная веб-панель и визуализация GeoIP
+
+### Architecture / Архитектура
+
+```text
+Internet
+   |
+   v
+Port 22  ---> Cowrie Honeypot ---> Logs & GeoIP Dashboard
+   |
+   v
+CrowdSec detection
+   |
+   v
+Firewall ban & optional Community feed
+
+Real admin access:
+Port 2222 ---> OpenSSH
+```
 
 ---
 
-## 1. Install Docker / Установка Docker
+## 2. Install Docker
 
 ```bash
 sudo apt update                                           # Update packages / Обновить пакеты
@@ -46,7 +68,7 @@ docker --version                                          # Verify install / П�
 
 ---
 
-## 2. Move Real SSH to Port 2222 / Перенос SSH на порт 2222
+## 3. Move Real SSH to Port 2222
 
 > [!CAUTION]
 > Open firewall for the new SSH port **before** disconnecting from the current session!
@@ -70,7 +92,7 @@ ssh <USER>@<HOST> -p 2222                                 # Test login / Тес�
 
 ---
 
-## 3. Install Cowrie Honeypot / Установка Cowrie
+## 4. Install Cowrie Honeypot
 
 ```bash
 docker pull cowrie/cowrie                                  # Pull image / Скачать образ
@@ -83,7 +105,7 @@ docker ps                                                 # Check container / П
 
 ---
 
-## 4. Save Honeypot Logs / Сохранение логов
+## 5. Save Honeypot Logs
 
 ```bash
 # Run with persistent logs / Запуск с постоянными логами
@@ -98,18 +120,18 @@ ls /opt/cowrie/log                                        # Access logs / Дос
 
 ---
 
-## 5. Install CrowdSec / Установка CrowdSec
+## 6. Install CrowdSec
 
 ```bash
 curl -s https://install.crowdsec.net | sudo sh            # Add repo / Добавить репозиторий
 sudo apt install -y crowdsec                              # Install CrowdSec / Установить CrowdSec
-sudo apt install -y crowdsec-firewall-bouncer-iptables    # Install firewall bouncer / Установить bouncer
+sudo apt install -y crowdsec-firewall-bouncer-iptables    # Install bouncer / Установить bouncer
 sudo systemctl status crowdsec                            # Check status / Проверить статус
 ```
 
 ---
 
-## 6. Install Cowrie Parser / Установка парсера Cowrie
+## 7. Install Cowrie Parser
 
 ```bash
 sudo cscli collections install crowdsecurity/cowrie       # Install collection / Установить коллекцию
@@ -118,9 +140,7 @@ sudo systemctl restart crowdsec                           # Restart CrowdSec / �
 
 ---
 
-## 7. Community Integration / Интеграция с сообществом
-
-Enable LAPI and push decisions to community blocklist. / Включите LAPI и отправляйте решения в общий блоклист.
+## 8. Community Integration
 
 ```bash
 sudo cscli hub update                                     # Update hub / Обновить хаб
@@ -129,7 +149,7 @@ sudo cscli hub install crowdsecurity/lapi                  # Install LAPI / Ус
 
 ---
 
-## 8. Web Dashboard / Веб-панель
+## 9. Web Dashboard
 
 ```bash
 docker run -d -p 8080:8080 \
@@ -140,16 +160,13 @@ docker run -d -p 8080:8080 \
 
 Access / Доступ: `http://<HOST>:8080`
 
----
-
-## 9. GeoIP Visualization / Визуализация GeoIP
-
-Use Python script or Kibana to parse `/opt/cowrie/log/cowrie.json` and plot IPs on map.
-Используйте Python-скрипт или Kibana для парсинга `/opt/cowrie/log/cowrie.json` и отображения IP на карте.
+> [!TIP]
+> Use Python script or Kibana to parse `/opt/cowrie/log/cowrie.json` and plot IPs on a GeoIP map.
+> Используйте Python-скрипт или Kibana для парсинга логов и отображения IP на карте.
 
 ---
 
-## 10. Verify Detection & Firewall / Проверка обнаружения и файрвола
+## 10. Verify Detection & Firewall
 
 ```bash
 sudo cscli decisions list                                  # Active bans / Активные баны
@@ -159,29 +176,7 @@ sudo iptables -L -n                                        # Firewall rules / П
 sudo cscli bouncers list                                   # Registered bouncers / Зарегистрированные bouncer'ы
 ```
 
----
-
-## Architecture / Архитектура
-
-```text
-Internet
-   |
-   v
-Port 22  ---> Cowrie Honeypot ---> Logs & GeoIP Dashboard
-   |
-   v
-CrowdSec detection
-   |
-   v
-Firewall ban & optional Community feed
-
-Real admin access:
-Port 2222 ---> OpenSSH
-```
-
----
-
-## Useful Commands / Полезные команды
+### Useful Commands / Полезные команды
 
 ```bash
 sudo cscli alerts list -o human                            # Top attackers / Топ атакующих
@@ -191,7 +186,7 @@ sudo cscli scenarios list                                  # List scenarios / С
 
 ---
 
-## Cowrie Log Analysis Script / Скрипт анализа логов Cowrie
+## 11. Cowrie Log Analysis Script
 
 ### watch_cowrie_commands.py
 
@@ -199,22 +194,17 @@ sudo cscli scenarios list                                  # List scenarios / С
 #!/usr/bin/env python3
 """Watch Cowrie Honeypot Commands.
 
-This script reads Cowrie logs and prints the top commands
-entered by attacking IPs.
-Скрипт читает логи Cowrie и выводит топ команд, вводимых атакующими IP.
+Reads Cowrie logs and prints top commands entered by attacking IPs.
+Скрипт читает логи Cowrie и выводит топ команд атакующих IP.
 """
 
 import json
 from pathlib import Path
 from collections import Counter
 
-# Path to Cowrie logs / Путь к логам Cowrie
-log_dir = Path("/opt/cowrie/log")
-
-# Counter for commands / Счётчик команд
+log_dir = Path("/opt/cowrie/log")              # Path to Cowrie logs / Путь к логам
 commands = Counter()
 
-# Parse all log files / Парсинг всех лог-файлов
 for log_file in log_dir.glob("cowrie.json*"):
     with log_file.open() as f:
         for line in f:
@@ -227,10 +217,19 @@ for log_file in log_dir.glob("cowrie.json*"):
             except json.JSONDecodeError:
                 continue
 
-# Display top 10 commands / Показать топ-10 команд
 print("\nTop 10 commands by attacking IPs:\n")
 for (ip, cmd), count in commands.most_common(10):
     print(f"{ip}: {cmd} ({count} times)")
 ```
+
+---
+
+## 12. Documentation Links
+
+- [Cowrie SSH Honeypot GitHub](https://github.com/cowrie/cowrie)
+- [Cowrie Documentation](https://cowrie.readthedocs.io/)
+- [CrowdSec Documentation](https://docs.crowdsec.net/)
+- [CrowdSec Cowrie Collection](https://hub.crowdsec.net/author/crowdsecurity/collections/cowrie)
+- [Docker Documentation](https://docs.docker.com/)
 
 ---

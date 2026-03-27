@@ -5,6 +5,16 @@ Order: 7
 
 ---
 
+> **Percona XtraDB Cluster (PXC)** is a free, open-source, enterprise-grade MySQL clustering solution by Percona. It integrates Percona Server for MySQL with the Galera library for synchronous multi-master replication. PXC provides high availability, strong data consistency, and transparent application failover.
+>
+> **Common use cases / Типичные сценарии:** High-availability MySQL deployments, multi-master write clusters, financial and e-commerce applications requiring zero data loss, geographic redundancy.
+>
+> **Status / Статус:** Actively developed (current stable: PXC 8.0). PXC is the recommended Percona solution for MySQL HA. Alternatives: **MariaDB Galera Cluster** (MariaDB-based), **MySQL Group Replication / InnoDB Cluster** (Oracle's native HA), **AWS Aurora** (managed MySQL-compatible), **Vitess** (horizontal scaling for MySQL). See also the [MySQL Galera Cluster cheatsheet](mysqlgaleracheatsheet.md) for generic Galera operations.
+>
+> **Default ports / Порты по умолчанию:** `3306` (MySQL), `4567` (Galera), `4568` (IST), `4444` (SST)
+
+---
+
 ## 📚 Table of Contents / Содержание
 
 1. [Installation & Configuration](#installation--configuration)

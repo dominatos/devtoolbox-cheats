@@ -3,20 +3,31 @@ Group: Security & Crypto
 Icon: 🔐
 Order: 3
 
-## Table of Contents
-- [Basics & Overview](#-basics--overview--основы-и-обзор)
-- [Configuration File](#-configuration-file--файл-конфигурации)
-- [Generating CSR](#-generating-csr--создание-csr)
-- [Verification](#-verification--проверка)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Best Practices](#-best-practices--лучшие-практики)
+# OpenSSL SAN CSR Sysadmin Cheatsheet
+
+> **Context:** Subject Alternative Name (SAN) allows a single SSL/TLS certificate to secure multiple domain names and/or IP addresses. This cheatsheet covers creating OpenSSL configuration files for SAN-enabled Certificate Signing Requests (CSRs), which are required by all modern CAs and browsers. Since 2017 Chrome and other browsers require SAN — the CN field alone is no longer sufficient. / SAN позволяет одному SSL/TLS сертификату защищать несколько доменных имён и/или IP-адресов. С 2017 года браузеры требуют SAN — поле CN больше недостаточно.
+> **Role:** Sysadmin / Security Engineer
+> **See also:** [OpenSSL Commands](opensslcheatsheet.md)
 
 ---
 
-# 📘 Basics & Overview / Основы и обзор
+## 📚 Table of Contents / Содержание
+
+1. [Basics & Overview](#1-basics--overview)
+2. [Configuration File](#2-configuration-file)
+3. [Generating CSR](#3-generating-csr)
+4. [Verification](#4-verification)
+5. [Real-World Examples](#5-real-world-examples)
+6. [Best Practices](#6-best-practices)
+7. [Documentation Links](#7-documentation-links)
+
+---
+
+## 1. Basics & Overview
 
 ### What is SAN? / Что такое SAN?
-**Subject Alternative Name (SAN)** allows a single certificate to secure multiple domain names.  
+
+**Subject Alternative Name (SAN)** allows a single certificate to secure multiple domain names.
 **Альтернативное имя субъекта (SAN)** позволяет одному сертификату защищать несколько доменных имён.
 
 **Common Use Cases / Типичные случаи использования:**
@@ -24,11 +35,32 @@ Order: 3
 - Wildcard + specific domains / Wildcard + конкретные домены
 - IPs + domains (less common) / IP + домены (реже)
 
+### Common DN Fields / Распространённые поля DN
+
+| Field | Description (EN / RU) |
+|-------|----------------------|
+| `C` | Country (2-letter code) / Страна (2-буквенный код) |
+| `ST` | State or Province / Штат или область |
+| `L` | Locality (city) / Город |
+| `O` | Organization / Организация |
+| `OU` | Organizational Unit / Подразделение |
+| `CN` | Common Name (primary domain) / Основное имя (основной домен) |
+
+### File Types / Типы файлов
+
+| File | Description (EN / RU) |
+|------|----------------------|
+| `openssl-san.cnf` | SAN configuration / Конфигурация SAN |
+| `<DOMAIN>.key` | Private key / Приватный ключ |
+| `<DOMAIN>.csr` | Certificate signing request / Запрос на подпись сертификата |
+| `<DOMAIN>.crt` | Signed certificate / Подписанный сертификат |
+
 ---
 
-# 📄 Configuration File / Файл конфигурации
+## 2. Configuration File
 
 ### Basic SAN Configuration / Базовая конфигурация SAN
+
 `openssl-san.cnf`
 
 ```ini
@@ -57,6 +89,7 @@ DNS.4 = mail.<DOMAIN>
 ```
 
 ### Example Configuration / Пример конфигурации
+
 `openssl-san.cnf`
 
 ```ini
@@ -85,6 +118,7 @@ DNS.4 = *.example.com              # Wildcard / Wildcard
 ```
 
 ### With IP Addresses / С IP-адресами
+
 ```ini
 [alt_names]
 DNS.1 = example.com
@@ -95,9 +129,10 @@ IP.2  = <ANOTHER_IP>
 
 ---
 
-# 🔑 Generating CSR / Создание CSR
+## 3. Generating CSR
 
 ### Generate New Key + CSR / Создать новый ключ + CSR
+
 ```bash
 openssl req -new -newkey rsa:2048 -nodes \
   -keyout <KEYFILE>.pem \
@@ -105,7 +140,8 @@ openssl req -new -newkey rsa:2048 -nodes \
   -config openssl-san.cnf
 ```
 
-### Generate CSR from Existing Key / Создать CSR из существующего ключа
+### Generate CSR from Existing Key / CSR из существующего ключа
+
 ```bash
 openssl req -new -key <EXISTING_KEY>.pem \
   -out <CSR_FILE>.pem \
@@ -113,6 +149,7 @@ openssl req -new -key <EXISTING_KEY>.pem \
 ```
 
 ### Generate 4096-bit Key / Создать ключ 4096-бит
+
 ```bash
 openssl req -new -newkey rsa:4096 -nodes \
   -keyout <KEYFILE>.pem \
@@ -121,6 +158,7 @@ openssl req -new -newkey rsa:4096 -nodes \
 ```
 
 ### Generate ECC Key (Modern) / Создать ECC ключ (современный)
+
 ```bash
 openssl req -new -newkey ec:<(openssl ecparam -name prime256v1) -nodes \
   -keyout <KEYFILE>.pem \
@@ -134,25 +172,29 @@ openssl req -new -newkey ec:<(openssl ecparam -name prime256v1) -nodes \
 
 ---
 
-# ✅ Verification / Проверка
+## 4. Verification
 
 ### View CSR Details / Просмотр деталей CSR
+
 ```bash
 openssl req -text -noout -in <CSR_FILE>.pem  # View CSR / Просмотр CSR
 openssl req -text -noout -in <CSR_FILE>.pem | grep -A1 "Subject Alternative Name"  # View SANs only / Только SANs
 ```
 
 ### Verify CSR Signature / Проверить подпись CSR
+
 ```bash
 openssl req -verify -in <CSR_FILE>.pem -noout  # Verify CSR / Проверить CSR
 ```
 
-### Extract Public Key from CSR / Извлечь публичный ключ из CSR
+### Extract Public Key from CSR / Извлечь публичный ключ
+
 ```bash
 openssl req -in <CSR_FILE>.pem -pubkey -noout  # Extract public key / Извлечь публичный ключ
 ```
 
 ### View Private Key / Просмотр приватного ключа
+
 ```bash
 openssl rsa -in <KEYFILE>.pem -text -noout  # View RSA key / Просмотр RSA ключа
 openssl ec -in <KEYFILE>.pem -text -noout   # View EC key / Просмотр EC ключа
@@ -160,11 +202,11 @@ openssl ec -in <KEYFILE>.pem -text -noout   # View EC key / Просмотр EC 
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## 5. Real-World Examples
 
 ### Web Server with Multiple Subdomains / Веб-сервер с несколькими поддоменами
+
 ```bash
-# Create configuration / Создать конфигурацию
 cat > openssl-san.cnf <<EOF
 [req]
 default_bits       = 2048
@@ -191,17 +233,16 @@ DNS.4 = app.example.com
 DNS.5 = admin.example.com
 EOF
 
-# Generate key and CSR / Создать ключ и CSR
 openssl req -new -newkey rsa:2048 -nodes \
   -keyout example.com.key \
   -out example.com.csr \
   -config openssl-san.cnf
 
-# Verify SANs / Проверить SANs
 openssl req -text -noout -in example.com.csr | grep -A1 "Subject Alternative Name"
 ```
 
 ### Microservices with Internal IPs / Микросервисы с внутренними IP
+
 ```bash
 # Create config with IPs / Создать конфиг с IP
 cat > openssl-san-internal.cnf <<EOF
@@ -237,8 +278,8 @@ openssl req -new -newkey rsa:2048 -nodes \
 ```
 
 ### Self-Signed Certificate with SAN / Самоподписанный сертификат с SAN
+
 ```bash
-# Generate self-signed cert with SANs / Создать самоподписанный сертификат с SANs
 openssl req -x509 -newkey rsa:2048 -nodes \
   -keyout selfsigned.key \
   -out selfsigned.crt \
@@ -246,13 +287,12 @@ openssl req -x509 -newkey rsa:2048 -nodes \
   -config openssl-san.cnf \
   -extensions req_ext
 
-# Verify certificate SANs / Проверить SANs сертификата
 openssl x509 -in selfsigned.crt -text -noout | grep -A1 "Subject Alternative Name"
 ```
 
 ### Wildcard + Specific Domains / Wildcard + конкретные домены
+
 ```bash
-# Config with wildcard / Конфиг с wildcard
 cat > openssl-san-wildcard.cnf <<EOF
 [req]
 default_bits       = 2048
@@ -272,12 +312,11 @@ CN = *.example.com
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1 = *.example.com              # Wildcard for all subdomains / Wildcard для всех поддоменов
-DNS.2 = example.com                # Apex domain / Основной домен
-DNS.3 = *.api.example.com          # Nested wildcard / Вложенный wildcard
+DNS.1 = *.example.com
+DNS.2 = example.com
+DNS.3 = *.api.example.com
 EOF
 
-# Generate / Создать
 openssl req -new -newkey rsa:2048 -nodes \
   -keyout wildcard.key \
   -out wildcard.csr \
@@ -286,32 +325,24 @@ openssl req -new -newkey rsa:2048 -nodes \
 
 ---
 
-# 💡 Best Practices / Лучшие практики
+## 6. Best Practices
 
 - Always include the CN in SANs / Всегда включайте CN в SANs
-- Use SHA-256 or higher for hashing / Используйте SHA-256 или выше для хеширования
-- Consider ECC keys for better performance / Рассмотрите ECC ключи для лучшей производительности
+- Use SHA-256 or higher for hashing / Используйте SHA-256 или выше
+- Consider ECC keys for better performance / Рассмотрите ECC ключи
 - Keep private keys secure (`chmod 600`) / Храните приватные ключи безопасно
-- Use 2048-bit minimum for RSA / Используйте минимум 2048-бит для RSA
+- Use 2048-bit minimum for RSA / Минимум 2048-бит для RSA
 - Test SANs before submitting to CA / Тестируйте SANs перед отправкой в CA
-- Keep backup of `.key` and `.csr` files / Храните резервные копии `.key` и `.csr` файлов
+- Keep backup of `.key` and `.csr` files / Храните резервные копии
 
-## File Types / Типы файлов
+---
 
-| File | Description (EN / RU) |
-|------|----------------------|
-| `openssl-san.cnf` | SAN configuration / Конфигурация SAN |
-| `<DOMAIN>.key` | Private key / Приватный ключ |
-| `<DOMAIN>.csr` | Certificate signing request / Запрос на подпись сертификата |
-| `<DOMAIN>.crt` | Signed certificate / Подписанный сертификат |
+## 7. Documentation Links
 
-## Common DN Fields / Распространённые поля DN
+- [OpenSSL req Manual](https://www.openssl.org/docs/man3.0/man1/openssl-req.html)
+- [OpenSSL x509v3_config (SAN)](https://www.openssl.org/docs/man3.0/man5/x509v3_config.html)
+- [OpenSSL Cookbook (free)](https://www.feistyduck.com/library/openssl-cookbook/)
+- [Mozilla SSL Configuration Generator](https://ssl-config.mozilla.org/)
+- [Let's Encrypt Documentation](https://letsencrypt.org/docs/)
 
-| Field | Description (EN / RU) |
-|-------|----------------------|
-| `C` | Country (2-letter code) / Страна (2-буквенный код) |
-| `ST` | State or Province / Штат или область |
-| `L` | Locality (city) / Город |
-| `O` | Organization / Организация |
-| `OU` | Organizational Unit / Подразделение |
-| `CN` | Common Name (primary domain) / Основное имя (основной домен) |
+---

@@ -1,20 +1,27 @@
 Title: 🖧 resolvectl — DNS Resolution Management
 Group: Network
 Icon: 🖧
-Order: 999
+Order: 19
+
+# resolvectl — systemd-resolved DNS Management
+
+`resolvectl` is the command-line tool for managing `systemd-resolved`, the systemd DNS resolver service. It provides DNS query, cache management, per-link DNS configuration, DNSSEC validation, and DNS-over-TLS support.
+
+📚 **Official Docs / Официальная документация:** [systemd-resolved(8)](https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html)
 
 ## Table of Contents
-- [Basics & Status](#-basics--status--основы-и-статус)
-- [DNS Queries](#-dns-queries--dns-запросы)
-- [Link Configuration](#-link-configuration--настройка-интерфейсов)
-- [DNSSEC & DNS-over-TLS](#-dnssec--dns-over-tls--dnssec-и-dns-поверх-tls)
-- [mDNS & LLMNR](#-mdns--llmnr--mdns-и-llmnr)
-- [Service Management](#-service-management--управление-сервисом)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
+- [Basics & Status](#basics--status)
+- [DNS Queries](#dns-queries)
+- [Link Configuration](#link-configuration)
+- [DNSSEC & DNS-over-TLS](#dnssec--dns-over-tls)
+- [mDNS & LLMNR](#mdns--llmnr)
+- [Service Management](#service-management)
+- [Real-World Examples](#real-world-examples)
+- [Reference Tables](#reference-tables)
 
 ---
 
-# 📘 Basics & Status / Основы и статус
+## Basics & Status
 
 ### Status Commands / Команды статуса
 ```bash
@@ -35,7 +42,7 @@ resolvectl reset-server-features         # Forget probed DNS server features / �
 
 ---
 
-# 🔍 DNS Queries / DNS-запросы
+## DNS Queries
 
 ### Basic Queries / Базовые запросы
 ```bash
@@ -85,7 +92,7 @@ resolvectl service _https._tcp.example.com
 
 ---
 
-# 🔧 Link Configuration / Настройка интерфейсов
+## Link Configuration
 
 ### DNS Servers / DNS-серверы
 ```bash
@@ -117,7 +124,7 @@ resolvectl reload                        # Reload resolved configuration / Пе�
 
 ---
 
-# 🔐 DNSSEC & DNS-over-TLS / DNSSEC и DNS-поверх-TLS
+## DNSSEC & DNS-over-TLS
 
 ### DNSSEC Configuration / Настройка DNSSEC
 ```bash
@@ -142,7 +149,7 @@ resolvectl dnsovertls <INTERFACE> no     # Disable DNS-over-TLS / Отключи
 
 ---
 
-# 🌐 mDNS & LLMNR / mDNS и LLMNR
+## mDNS & LLMNR
 
 ### LLMNR Configuration / Настройка LLMNR
 ```bash
@@ -165,9 +172,9 @@ resolvectl service _workstation._tcp.local  # Discover LAN services / Обнар
 
 ---
 
-# 🔄 Service Management / Управление сервисом
+## Service Management
 
-### SystemD Service / Сервис SystemD
+### systemd Service / Сервис systemd
 ```bash
 systemctl status systemd-resolved        # Check resolver service state / Проверить состояние службы резолвера
 sudo systemctl restart systemd-resolved  # Restart resolver service / Перезапустить службу резолвера
@@ -189,7 +196,7 @@ resolvectl hosts                         # Show static hosts in memory / Пок�
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## Real-World Examples
 
 ### Configure Custom DNS / Настроить пользовательский DNS
 ```bash
@@ -269,22 +276,25 @@ resolvectl query _ipp._tcp.local
 
 ---
 
-# 💡 Best Practices / Лучшие практики
-# Use DNS-over-TLS for privacy / Используйте DoT для приватности
-# Enable DNSSEC in allow-downgrade mode / Включайте DNSSEC в режиме allow-downgrade
-# Use split DNS for VPN connections / Используйте разделённый DNS для VPN-соединений
-# Flush cache after DNS changes / Очищайте кэш после изменения DNS
-# Monitor with resolvectl statistics / Мониторьте с помощью resolvectl statistics
-# Disable mDNS/LLMNR on untrusted networks / Отключайте mDNS/LLMNR в недоверенных сетях
+## Reference Tables
 
-# 🔧 Configuration Files / Файлы конфигурации
-# /etc/systemd/resolved.conf               — Main configuration / Основная конфигурация
-# /run/systemd/resolve/resolv.conf          — Managed resolv.conf / Управляемый resolv.conf
-# /run/systemd/resolve/stub-resolv.conf     — Stub resolver / Заглушка резолвера
-# /etc/resolv.conf                          — System resolver config / Системная конфигурация резолвера
+### Configuration Files / Файлы конфигурации
 
-# 📋 Common DNS Servers / Распространённые DNS-серверы
-# Cloudflare: 1.1.1.1, 1.0.0.1
-# Google: 8.8.8.8, 8.8.4.4
-# Quad9: 9.9.9.9, 149.112.112.112
-# OpenDNS: 208.67.222.222, 208.67.220.220
+| File | Description (EN / RU) |
+| :--- | :--- |
+| `/etc/systemd/resolved.conf` | Main configuration / Основная конфигурация |
+| `/run/systemd/resolve/resolv.conf` | Managed resolv.conf / Управляемый resolv.conf |
+| `/run/systemd/resolve/stub-resolv.conf` | Stub resolver / Заглушка резолвера |
+| `/etc/resolv.conf` | System resolver config / Системная конфигурация резолвера |
+
+### Common DNS Servers / Распространённые DNS-серверы
+
+| Provider | Primary | Secondary |
+| :--- | :--- | :--- |
+| **Cloudflare** | 1.1.1.1 | 1.0.0.1 |
+| **Google** | 8.8.8.8 | 8.8.4.4 |
+| **Quad9** | 9.9.9.9 | 149.112.112.112 |
+| **OpenDNS** | 208.67.222.222 | 208.67.220.220 |
+
+> [!TIP]
+> Use DNS-over-TLS for privacy. Enable DNSSEC in `allow-downgrade` mode for compatibility. Use split DNS for VPN connections. Disable mDNS/LLMNR on untrusted networks. / Используйте DoT для приватности. Включайте DNSSEC в режиме `allow-downgrade` для совместимости. Отключайте mDNS/LLMNR в недоверенных сетях.

@@ -23,6 +23,7 @@ Order: 10
 6. [Memory Forensics](#6-memory-forensics)
 7. [Scripting & Automation](#7-scripting--automation)
 8. [Troubleshooting & Tools](#8-troubleshooting--tools)
+9. [Documentation Links](#9-documentation-links)
 
 ---
 
@@ -459,5 +460,15 @@ CerberoSuite --batch /path/to/directory --output /path/to/report.json
 
 > [!TIP]
 > Cerbero Suite can handle millions of files in a single project. For large-scale investigations, use batch mode and filter by file type to focus analysis. / Cerbero Suite может обрабатывать миллионы файлов в одном проекте. Для масштабных расследований используйте пакетный режим.
+
+---
+
+## 9. Documentation Links
+
+- [Cerbero Suite Official Website](https://cerbero.io/)
+- [Cerbero Suite Documentation](https://docs.cerbero.io/)
+- [Cerbero Suite Python SDK](https://docs.cerbero.io/sdk/)
+- [YARA Official Documentation](https://yara.readthedocs.io/)
+- [VirusTotal (YARA rules sharing)](https://www.virustotal.com/)
 
 ---

@@ -4,17 +4,26 @@ Icon: 🟢
 Order: 3
 
 ## Table of Contents
+- [Description](#description)
 - [Configuration](#-configuration--конфигурация)
 - [Core Management](#-core-management--основное-управление)
 - [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
 - [Troubleshooting](#-troubleshooting--устранение-неполадок)
 - [Security & Verification](#-security--verification--безопасность-и-проверка)
+- [Documentation Links](#-documentation-links)
 
 ---
 
 # 🟢 Pacman Cheatsheet (Arch Linux)
 
-Pacman is the package manager for Arch Linux and its derivatives (Manjaro, EndeavourOS). It uses simple compressed tar archives for packages and maintains a text-based package database. / Pacman — это менеджер пакетов для Arch Linux и его производных. Он использует простые сжатые tar-архивы и текстовую базу данных пакетов.
+## Description
+
+**Pacman** is the package manager for Arch Linux and its derivatives (Manjaro, EndeavourOS, Garuda Linux). It uses simple compressed tar archives (`.pkg.tar.zst`) for packages and maintains a text-based package database. Designed for the rolling release model, pacman keeps the entire system up to date with a single command. / **Pacman** — менеджер пакетов для Arch Linux и его производных. Использует сжатые tar-архивы и текстовую базу данных пакетов.
+
+**Status:** Actively maintained. Pacman is the core tool of the Arch ecosystem and is tightly integrated with the AUR (Arch User Repository) via helpers like `yay` and `paru`. / **Статус:** Активно поддерживается. Ядро экосистемы Arch, интегрирован с AUR.
+
+**Default Ports:** N/A (local tool)  
+**Package Format:** `.pkg.tar.zst`
 
 ---
 
@@ -142,3 +151,13 @@ Check for modified configuration files (`.pacnew`). / Проверка изме�
 ```bash
 sudo pacdiff                                  # Manage pacnew files / Управление файлами pacnew
 ```
+
+---
+
+## 📚 Documentation Links
+
+- **Arch Wiki — Pacman:** https://wiki.archlinux.org/title/Pacman
+- **Pacman Man Page:** https://man.archlinux.org/man/pacman.8
+- **Arch Wiki — AUR:** https://wiki.archlinux.org/title/Arch_User_Repository
+- **Pacman Tips & Tricks:** https://wiki.archlinux.org/title/Pacman/Tips_and_tricks
+- **Pacman Rosetta (cross-distro):** https://wiki.archlinux.org/title/Pacman/Rosetta

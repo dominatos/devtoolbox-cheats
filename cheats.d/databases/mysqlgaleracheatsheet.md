@@ -5,6 +5,16 @@ Order: 15
 
 ---
 
+> **MySQL Galera Cluster** is a synchronous multi-master replication plugin for MySQL/MariaDB based on the Galera library. It provides true multi-master topology with synchronous replication, automatic node provisioning, and automatic membership control.
+>
+> **Common use cases / Типичные сценарии:** High-availability MySQL clusters, multi-master write setups, geographic redundancy, zero-downtime deployments.
+>
+> **Status / Статус:** Actively maintained. Galera is available as a standalone plugin for MySQL, built into **MariaDB Galera Cluster**, and as part of **Percona XtraDB Cluster (PXC)**. For managed solutions, consider **AWS Aurora** (MySQL-compatible) or **Google Cloud SQL** with HA. See also the dedicated [Percona XtraDB Cluster cheatsheet](percona-xtradb-cluster.md) for PXC-specific operations.
+>
+> **Default ports / Порты по умолчанию:** `3306` (MySQL), `4567` (Galera replication), `4568` (IST), `4444` (SST)
+
+---
+
 ## 📚 Table of Contents / Содержание
 
 1. [Installation & Configuration](#installation--configuration)
@@ -80,7 +90,7 @@ innodb_flush_log_at_trx_commit=0
 ```
 
 > [!IMPORTANT]
-> `wsrep_cluster_name` must be **indentical** on all nodes. `binlog_format` must be `ROW` to ensure replication consistency. 
+> `wsrep_cluster_name` must be **identical** on all nodes. `binlog_format` must be `ROW` to ensure replication consistency. 
 
 ### SST Method Comparison / Сравнение методов SST
 

@@ -3,10 +3,26 @@ Group: System & Logs
 Icon: 🛡️
 Order: 7
 
-# 🛡️ SELinux & AppArmor — Security Modules Cheatsheet
+# SELinux & AppArmor — Mandatory Access Control
 
-> **Context:** Mandatory Access Control (MAC) security modules for Linux. SELinux is default on RHEL/CentOS/Fedora; AppArmor is default on Ubuntu/Debian/SUSE. / Модули обязательного контроля доступа (MAC) для Linux.
-> **Role:** Sysadmin / DevOps
+**SELinux** (Security-Enhanced Linux) and **AppArmor** (Application Armor) are Linux Security Modules (LSM) that implement **Mandatory Access Control (MAC)**. Unlike traditional Unix permissions (DAC — Discretionary Access Control), MAC policies are enforced by the kernel regardless of file ownership.
+
+**SELinux** uses label-based security — every file, process, and port has a security context (label). Access is allowed/denied based on policy rules matching these labels. Default on RHEL/CentOS/Fedora/AlmaLinux.
+
+**AppArmor** uses path-based profiles — each application has a profile defining which files/capabilities it can access. Simpler to configure than SELinux. Default on Ubuntu/Debian/SUSE.
+
+**Why MAC matters / Зачем нужен MAC:**
+- Limits blast radius of compromised services (e.g., a hacked nginx can't read `/etc/shadow`)
+- Prevents privilege escalation even if an attacker gets shell access
+- Required for security compliance (PCI-DSS, HIPAA, SOC2)
+
+| Feature | SELinux | AppArmor |
+| :--- | :--- | :--- |
+| **Approach** | Label-based | Path-based |
+| **Default on** | RHEL, CentOS, Fedora | Ubuntu, Debian, SUSE |
+| **Complexity** | Higher | Lower |
+| **Granularity** | Very fine-grained | Good for most cases |
+| **Toolchain** | `semanage`, `restorecon`, `audit2allow` | `aa-genprof`, `aa-logprof`, `aa-status` |
 
 ---
 
@@ -64,7 +80,6 @@ sudo reboot
 ls -Z /path/to/file                           # File context / Контекст файла
 ps -eZ                                        # Process contexts / Контексты процессов
 id -Z                                         # User context / Контекст пользователя
-netstat -Z                                    # Network contexts / Контексты сети
 ss -Z                                         # Socket contexts / Контексты сокетов
 ```
 
@@ -294,16 +309,28 @@ sudo chcon -Rt svirt_sandbox_file_t /path/to/volume
 > [!IMPORTANT]
 > Rebooting is required after changing SELinux between `disabled` and `enforcing`/`permissive`. / Перезагрузка требуется при переключении SELinux между `disabled` и `enforcing`/`permissive`.
 
-## 📋 Configuration Files / Файлы конфигурации
+---
 
-```text
-SELinux:
-  /etc/selinux/config             — Main config / Основная конфигурация
-  /var/log/audit/audit.log        — Audit log / Лог аудита
-  /etc/selinux/targeted/          — Policy files / Файлы политик
+## Configuration Files / Файлы конфигурации
 
-AppArmor:
-  /etc/apparmor.d/                — Profiles / Профили
-  /var/log/syslog                 — AppArmor log / Лог AppArmor
-  /sys/kernel/security/apparmor/  — Runtime / Время выполнения
-```
+| Path | Purpose (EN) | Назначение (RU) |
+| :--- | :--- | :--- |
+| `/etc/selinux/config` | SELinux main config | Основная конфигурация SELinux |
+| `/var/log/audit/audit.log` | SELinux audit log | Лог аудита SELinux |
+| `/etc/selinux/targeted/` | SELinux policy files | Файлы политик SELinux |
+| `/etc/apparmor.d/` | AppArmor profiles | Профили AppArmor |
+| `/var/log/syslog` | AppArmor log (Debian) | Лог AppArmor (Debian) |
+| `/sys/kernel/security/apparmor/` | AppArmor runtime | Runtime AppArmor |
+
+---
+
+## Documentation Links
+
+- **SELinux Project:** https://selinuxproject.org/
+- **Red Hat — SELinux Guide:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/index
+- **AppArmor Wiki:** https://gitlab.com/apparmor/apparmor/-/wikis/home
+- **Ubuntu — AppArmor:** https://ubuntu.com/server/docs/apparmor
+- **ArchWiki — SELinux:** https://wiki.archlinux.org/title/SELinux
+- **ArchWiki — AppArmor:** https://wiki.archlinux.org/title/AppArmor
+- **semanage(8):** https://man7.org/linux/man-pages/man8/semanage.8.html
+- **restorecon(8):** https://man7.org/linux/man-pages/man8/restorecon.8.html

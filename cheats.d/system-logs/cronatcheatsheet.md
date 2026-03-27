@@ -3,11 +3,23 @@ Group: System & Logs
 Icon: ⏰
 Order: 8
 
-# ⏰ cron / at — Scheduled Tasks Cheatsheet
+# cron / at — Scheduled Tasks
 
-> **Context:** cron and at are Linux schedulers for recurring and one-shot tasks. / cron и at — планировщики задач Linux для повторяющихся и одноразовых заданий.
-> **Role:** Sysadmin / DevOps
-> **Tools:** crontab, cron, at, atq, atrm, anacron, flock, timeout
+**cron** is the standard Unix/Linux job scheduler for executing recurring tasks at specified times. **at** schedules one-time commands for future execution. Together, they form the foundation of task automation on Linux servers.
+
+**Key components / Ключевые компоненты:**
+- **crontab** — per-user cron schedule editor (`crontab -e`)
+- **cron daemon** (`crond`/`cron`) — background service that executes scheduled jobs
+- **anacron** — runs missed cron jobs on systems that aren't always on (laptops, desktops)
+- **at** — one-shot job scheduler (run command at a specific future time)
+- **flock** — file lock to prevent overlapping cron job executions
+- **timeout** — enforce maximum runtime for commands
+
+**Modern alternative / Современная альтернатива:**
+**systemd timers** offer calendar-based scheduling with journald logging, dependency management, and better error handling. See the [systemd Timers cheatsheet](systemdtimerscheatsheet.md). However, cron remains ubiquitous and is simpler for basic scheduling.
+
+📚 **Official Docs / Официальная документация:**
+[crontab(5)](https://man7.org/linux/man-pages/man5/crontab.5.html) · [crontab(1)](https://man7.org/linux/man-pages/man1/crontab.1.html) · [at(1)](https://man7.org/linux/man-pages/man1/at.1.html) · [anacron(8)](https://man7.org/linux/man-pages/man8/anacron.8.html) · [flock(1)](https://man7.org/linux/man-pages/man1/flock.1.html)
 
 ---
 
@@ -44,6 +56,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 
 > [!WARNING]
 > `crontab -r` removes **all** cron entries for the user without confirmation. Use `crontab -l > backup` first.
+> `crontab -r` удаляет **все** задания cron без подтверждения. Сначала сделайте `crontab -l > backup`.
 > ```bash
 > crontab -r                                    # DANGER: remove all cron entries / ОПАСНО: удалить все задания cron
 > crontab -u <USER> -r                          # DANGER: remove another user's crontab / ОПАСНО: удалить crontab другого пользователя
@@ -156,7 +169,7 @@ HOME=/var/lib/myapp                             # Set HOME to app directory / Н
 USER=<USER>                                     # Expose USER for scripts / Задать USER для использования в скриптах
 LOGNAME=<USER>                                  # Expose LOGNAME for mail/logs / Указать LOGNAME для почты и логов
 MAILTO=                                         # Disable email for all jobs / Отключить почтовые уведомления
-MAILTO=admin@example.com                        # Per-job email recipient / Указать получателя почты для задач
+MAILTO=<EMAIL>                                  # Per-job email recipient / Указать получателя почты для задач
 ```
 
 ### Timezone Overrides / Переопределение часового пояса
@@ -240,6 +253,7 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 
 > [!IMPORTANT]
 > In crontab, the `%` character is treated as a newline — always escape it with `\%`.
+> В crontab символ `%` интерпретируется как перенос строки — всегда экранируйте как `\%`.
 
 ### Syslog Integration / Интеграция с syslog
 
@@ -297,10 +311,11 @@ START_HOURS_RANGE=6-22                           # Anacron: run only 06–22 / �
 
 ```bash
 anacron -fn                                      # Force run now, no timestamps / Принудительный запуск без отметок времени
-MAILTO=admin@example.com anacron -s              # Mail results when serialized / Отправлять почту при последовательном запуске
+MAILTO=<EMAIL> anacron -s                        # Mail results when serialized / Отправлять почту при последовательном запуске
 ```
 
-> **Note:** Anacron is designed for systems that are not running 24/7 (laptops, desktops). It ensures missed jobs run after system resumes. / Anacron предназначен для систем, которые не работают 24/7. Он гарантирует запуск пропущенных заданий после включения.
+> [!NOTE]
+> Anacron is designed for systems that are not running 24/7 (laptops, desktops). It ensures missed jobs run after system resumes. / Anacron предназначен для систем, которые не работают 24/7. Он гарантирует запуск пропущенных заданий после включения.
 
 ---
 
@@ -349,7 +364,8 @@ echo <USER> > /etc/cron.allow                   # Allow only specific user / Р�
 echo baduser >> /etc/cron.deny                  # Deny a specific user / Запретить конкретного пользователя
 ```
 
-> **Note:** If `cron.allow` exists, only listed users can use cron. If neither file exists, all users have access (some distros allow root only). / Если `cron.allow` существует, только перечисленные пользователи могут использовать cron.
+> [!NOTE]
+> If `cron.allow` exists, only listed users can use cron. If neither file exists, all users have access (some distros allow root only). / Если `cron.allow` существует, только перечисленные пользователи могут использовать cron.
 
 ---
 
@@ -414,7 +430,7 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 
 ```bash
 */15 * * * * /usr/bin/curl -fsS https://<HOST>/health || /usr/bin/logger --tag health "FAIL"  # HTTP healthcheck / HTTP-проверка
-*/5 * * * * /usr/bin/curl -fsS https://status.example.com | grep -q "OK" || /opt/notify.sh  # Status endpoint check / Проверять статус-эндпоинт
+*/5 * * * * /usr/bin/curl -fsS https://<HOST>/status | grep -q "OK" || /opt/notify.sh  # Status endpoint check / Проверять статус-эндпоинт
 */30 * * * * /usr/bin/df -h | /usr/bin/logger --tag disk-usage          # Log disk usage / Логировать использование дисков
 */5 * * * * /usr/bin/kubectl get nodes | /usr/bin/logger --tag k8s      # Kubernetes nodes snapshot / Снимок списка нод K8s
 0 12 * * * /usr/bin/chronyc tracking | /usr/bin/logger --tag time-sync  # Log NTP status / Логировать синхронизацию времени
@@ -448,14 +464,14 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 ### Timezone-Aware / Учёт часового пояса
 
 ```bash
-CRON_TZ=UTC 55 23 * * * /usr/bin/rsync -a /data/ backup@<HOST>:/data_utc  # Run in UTC before day end / В UTC за 5 мин до полуночи
+CRON_TZ=UTC 55 23 * * * /usr/bin/rsync -a /data/ <USER>@<HOST>:/data_utc  # Run in UTC before day end / В UTC за 5 мин до полуночи
 TZ=UTC 0 9 * * MON /usr/bin/bash -lc '/opt/report_utc.sh'            # Weekly report in UTC / Еженедельный отчёт в 09:00 UTC
 ```
 
 ### Email Notifications / Уведомления по почте
 
 ```bash
-0 0 * * * echo "test" | /usr/bin/mail -s "Cron test" admin@example.com  # Send test email / Отправить тестовую почту
+0 0 * * * echo "test" | /usr/bin/mail -s "Cron test" <EMAIL>          # Send test email / Отправить тестовую почту
 ```
 
 ---
@@ -516,13 +532,12 @@ journalctl -u crond                             # Review crond logs (RHEL) / Л�
 
 ---
 
-## 📋 Quick Reference / Быстрый справочник
+## Documentation Links
 
-```text
-crontab -e          — Edit crontab / Редактировать crontab
-crontab -l          — List entries / Показать задания
-crontab -r          — Remove all (DANGER!) / Удалить все (ОПАСНО!)
-at now + 5 min      — One-shot job / Одноразовая задача
-flock -n LOCK CMD   — No-overlap run / Запуск без наложений
-timeout 300 CMD     — Kill after 5 min / Убить через 5 минут
-```
+- **crontab(5):** https://man7.org/linux/man-pages/man5/crontab.5.html
+- **crontab(1):** https://man7.org/linux/man-pages/man1/crontab.1.html
+- **at(1):** https://man7.org/linux/man-pages/man1/at.1.html
+- **anacron(8):** https://man7.org/linux/man-pages/man8/anacron.8.html
+- **flock(1):** https://man7.org/linux/man-pages/man1/flock.1.html
+- **ArchWiki — Cron:** https://wiki.archlinux.org/title/Cron
+- **crontab.guru:** https://crontab.guru/

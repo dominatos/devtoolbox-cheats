@@ -3,6 +3,18 @@ Group: Databases
 Icon: 🍃
 Order: 5
 
+---
+
+> **MongoDB** is an open-source, document-oriented NoSQL database that stores data in flexible, JSON-like BSON documents. It is designed for high availability, horizontal scalability (sharding), and developer productivity.
+>
+> **Common use cases / Типичные сценарии:** Content management, real-time analytics, IoT data, catalogs, mobile/web applications, event logging, user profiles.
+>
+> **Status / Статус:** Actively developed (current stable: 8.x). In 2023, MongoDB changed its license to SSPL, which led to community forks. Open-source alternatives: **FerretDB** (PostgreSQL backend, MongoDB API-compatible), **Amazon DocumentDB** (AWS managed, MongoDB-compatible). For on-premise, **Percona Server for MongoDB** provides enhanced enterprise features with open-source licensing.
+>
+> **Default port / Порт по умолчанию:** `27017/tcp`
+
+---
+
 # 🍃 MongoDB — Cheatsheet
 
 ## 📚 Table of Contents / Содержание
@@ -40,7 +52,7 @@ db.stats()                                                                      
 db.<COLLECTION>.stats()                                                             # Collection stats / Статистика коллекции
 ```
 
-## CRUD Operations / Операции CRUD
+## CRUD Operations
 
 ```bash
 db.items.insertOne({name:"item1", qty:10})                                          # Insert document / Вставить документ
@@ -50,7 +62,7 @@ db.items.deleteOne({name:"item1"})                                              
 db.items.createIndex({name:1}, {unique:true})                                       # Create Index / Создать индекс
 ```
 
-## Data Management / Управление данными
+## Data Management
 
 ```bash
 mongoexport --uri="mongodb://<USER>:<PASSWORD>@localhost/mydb" \
@@ -62,7 +74,7 @@ mongodump --uri="mongodb://<USER>:<PASSWORD>@localhost/" -o dump/               
 mongorestore --uri="mongodb://<USER>:<PASSWORD>@localhost/" dump/                   # Restore from dump / Восстановление из дампа
 ```
 
-## Administration / Администрирование
+## Administration
 
 ```bash
 sudo systemctl status mongod                                                        # Service status / Статус сервиса
@@ -120,7 +132,7 @@ db.printSlaveReplicationInfo()                                                  
 use local; db.oplog.rs.stats();                                                     # Oplog collection stats / Статистика коллекции Oplog
 ```
 
-## Profiling & Performance / Профилирование и Производительность
+## Profiling & Performance
 
 ```bash
 db.getProfilingStatus()                                                             # Get current status / Текущий статус
@@ -149,7 +161,7 @@ setParameter:
   auditAuthorizationSuccess: true
 ```
 
-## Sysadmin Toolkit / Инструменты Сисадмина
+## Sysadmin Toolkit
 
 ### 🩺 Diagnostics & Operations / Диагностика и Операции
 
@@ -178,7 +190,7 @@ db.runCommand({ compact: "<COLLECTION>" })                                      
 
 
 
-## Percona Upgrade Guide / Руководство по обновлению Percona
+## Percona Upgrade Guide
 
 > [!WARNING]
 > Always backup both data and configuration before upgrading.
@@ -320,7 +332,7 @@ mongosh --eval 'db.adminCommand( { setFeatureCompatibilityVersion: "8.0",  confi
 ```
 
 
-## MongoDB Community Upgrade Guide / Руководство по обновлению MongoDB Community
+## MongoDB Community Upgrade Guide
 
 > [!WARNING]
 > Always backup both data and configuration before upgrading.
@@ -420,7 +432,7 @@ mongosh --eval 'db.version()'
 mongosh --eval 'db.adminCommand({setFeatureCompatibilityVersion: "8.0", confirm: true})'
 ```
 
-## Advanced Cheatsheet - Queries / Продвинутая шпаргалка - Запросы
+## Advanced Cheatsheet - Queries
 
 ### 📄 Search / Поиск
 
@@ -552,7 +564,7 @@ db.createView(
 
 
 
-## Practice Exercises / Задания для практики
+## Practice Exercises
 
 ```javascript
 // ## 📋 FIND (Filtering) / Фильтрация
@@ -716,7 +728,7 @@ db.createView(
 
 ---
 
-## Configuration Snippets / Примеры Конфигурации
+## Configuration Snippets
 
 ### mongod.conf
 
@@ -1850,7 +1862,7 @@ print("Script ha inserito 100 users nel db users2");
 
 ---
 
-## Logrotate Configuration / Конфигурация Logrotate
+## Logrotate Configuration
 
 `/etc/logrotate.d/mongodb`
 

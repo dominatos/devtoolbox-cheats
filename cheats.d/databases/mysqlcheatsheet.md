@@ -5,6 +5,16 @@ Order: 2
 
 ---
 
+> **MySQL** is the world's most popular open-source relational database, acquired by Oracle Corporation in 2010. **MariaDB** is a community-driven fork of MySQL created by the original developer Michael Widenius, offering enhanced performance and additional storage engines.
+>
+> **Common use cases / Типичные сценарии:** Web applications (LAMP/LEMP stack), content management (WordPress, Drupal), e-commerce, SaaS platforms, embedded databases.
+>
+> **Status / Статус:** Both MySQL (8.x/9.x) and MariaDB (11.x) are actively developed. MySQL remains the most widely deployed RDBMS. Modern alternatives for advanced workloads: **PostgreSQL** (advanced features, extensibility), **CockroachDB** (distributed SQL), **TiDB** (MySQL-compatible, distributed). MySQL Cluster (NDB) is for high-availability in-memory workloads.
+>
+> **Default port / Порт по умолчанию:** `3306/tcp`
+
+---
+
 ## 📚 Table of Contents / Содержание
 
 1. [Installation & Configuration](#installation--configuration--установка-и-настройка)

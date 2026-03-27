@@ -5,289 +5,301 @@ Order: 99
 
 ---
 
+> **Memcached** is a free, open-source, high-performance, distributed in-memory key–value cache system. It was originally developed by Brad Fitzpatrick for LiveJournal in 2003. Memcached is designed to reduce database load by caching data and objects in RAM.
+>
+> **Common use cases / Типичные сценарии:** Database query result caching, session storage (risky — no persistence), rate limiting, page fragment caching, API response caching.
+>
+> **Status / Статус:** Memcached is still actively maintained but is considered a legacy caching solution for most new projects. Modern alternatives include **Redis** (richer data structures, persistence, pub/sub), **Valkey** (open-source Redis fork), **KeyDB** (multi-threaded Redis fork). Memcached remains relevant for ultra-simple, high-throughput caching scenarios where its simplicity is an advantage.
+>
+> **Default port / Порт по умолчанию:** `11211/tcp` (also `11211/udp` — should be disabled in production)
+
+---
+
 ## 📚 Table of Contents / Содержание
 
-1. [What is Memcached](#1-what-is-memcached--что-такое-memcached)
-2. [Architecture](#2-architecture--архитектура)
-3. [Common Use Cases](#3-common-use-cases--типичные-сценарии)
-4. [Installation](#4-installation--установка)
-5. [Configuration](#5-configuration--конфигурация)
-6. [Security](#6-security--безопасность)
-7. [Monitoring](#7-monitoring--мониторинг)
-8. [Performance & Tuning](#8-performance--tuning--производительность-и-тюнинг)
-9. [Common Problems](#9-common-problems--типичные-проблемы)
-10. [Interview Questions](#10-interview-questions--вопросы-на-собеседовании)
-11. [Summary](#11-summary--итог)
+1. [Architecture](#architecture)
+2. [Installation & Configuration](#installation--configuration)
+3. [Core Management](#core-management)
+4. [Sysadmin Operations](#sysadmin-operations)
+5. [Security](#security)
+6. [Monitoring & Performance](#monitoring--performance)
+7. [Troubleshooting & Tools](#troubleshooting--tools)
+8. [Logrotate Configuration](#logrotate-configuration)
 
 ---
 
-# Memcached for System Administrators  
-# Memcached для системных администраторов
+## Architecture
 
----
-
-## 1. What is Memcached / Что такое Memcached
-
-**EN:**  
-Memcached is a high-performance, in-memory **key–value cache**.  
-It stores data in RAM to reduce database load and speed up applications.
-
-Key properties:
-- In-memory only
-- No persistence
-- No replication
-- No authentication
-- Very fast, very simple
-
-**RU:**  
-Memcached — это высокопроизводительный **in-memory key–value кэш**.  
-Используется для снижения нагрузки на БД и ускорения приложений.
-
-Ключевые свойства:
-- Хранение только в RAM
-- Нет персистентности
-- Нет репликации
-- Нет аутентификации
-- Максимально быстрый и простой
-
-⚠ **Never store critical data in Memcached**  
-⚠ **Никогда не храни критичные данные**
-
----
-
-## 2. Architecture / Архитектура
+### Key Properties / Ключевые свойства
 
 **EN:**
-- Client–server model
-- Access via TCP or UDP
-- Each instance is standalone
-- Clustering is handled by the application, not Memcached
+- In-memory only — no persistence
+- No replication — each instance is standalone
+- No authentication (by default)
+- Very fast, very simple
+- Client–server model via TCP or UDP
+- Clustering handled by the application, not Memcached
 
 **RU:**
-- Клиент–серверная модель
-- Доступ по TCP или UDP
-- Каждый инстанс — отдельный
+- Хранение только в RAM — нет персистентности
+- Нет репликации — каждый инстанс отдельный
+- Нет аутентификации (по умолчанию)
+- Максимально быстрый и простой
+- Клиент–серверная модель по TCP или UDP
 - Кластеризация реализуется на стороне приложения
 
-❗ Multiple servers ≠ cluster  
-❗ Несколько серверов ≠ кластер
+> [!WARNING]
+> Multiple Memcached servers ≠ cluster. Data distribution is handled by client-side consistent hashing.
+> Несколько серверов Memcached ≠ кластер. Распределение данных происходит на стороне клиента.
+
+> [!CAUTION]
+> Never store critical data in Memcached. A restart erases all data — this is expected behavior.
+> Никогда не храните критичные данные в Memcached. Рестарт стирает все данные — это нормальное поведение.
+
+### Memcached vs Redis Comparison / Сравнение Memcached и Redis
+
+| Feature / Особенность | Memcached | Redis |
+|----------------------|-----------|-------|
+| Data structures / Структуры данных | Key–value only / Только ключ–значение | Strings, lists, sets, hashes, streams, etc. |
+| Persistence / Персистентность | No / Нет | RDB, AOF, both |
+| Replication / Репликация | No / Нет | Master–replica, Sentinel, Cluster |
+| Authentication / Аутентификация | No (SASL optional) / Нет | `requirepass`, ACL (6.0+) |
+| Max value size / Макс. размер значения | 1MB (default) | 512MB |
+| Multi-threaded / Многопоточный | Yes / Да | Single-threaded (I/O threads in 6.0+) |
+| Best for / Лучше для | Simple high-throughput caching / Простой высокопроизводительный кэш | Feature-rich caching, queues, storage / Кэш с функциями, очереди |
 
 ---
 
-## 3. Common Use Cases / Типичные сценарии
+## Installation & Configuration
 
-### 3.1 Database query caching  
-### Кэширование запросов к БД
+### Package Installation / Установка пакетов
+
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install -y memcached libmemcached-tools        # Install Memcached / Установка Memcached
+
+# RHEL/AlmaLinux/Rocky
+sudo dnf install -y memcached libmemcached                                 # Install Memcached / Установка Memcached
+```
+
+### Quick Test / Быстрый тест
+
+```bash
+echo "stats" | nc localhost 11211                                          # Check if Memcached responds / Проверить ответ Memcached
+```
+
+### Configuration / Конфигурация
+
+`/etc/memcached.conf` (Ubuntu/Debian)  
+`/etc/sysconfig/memcached` (RHEL-based)
+
+```bash
+-m 512                                                                     # Memory limit in MB / Лимит памяти
+-p 11211                                                                   # Port / Порт
+-l 127.0.0.1                                                              # Bind address (CRITICAL) / Адрес привязки
+-u memcache                                                                # Run as user / Пользователь
+-c 1024                                                                    # Max connections / Макс. соединений
+-U 0                                                                       # Disable UDP (security) / Отключить UDP (безопасность)
+```
+
+> [!CAUTION]
+> Setting `-l 0.0.0.0` exposes Memcached to the internet with **no authentication**. Memcached was used in massive UDP DDoS amplification attacks (1.35 Tbps attack on GitHub in 2018).
+> Установка `-l 0.0.0.0` открывает Memcached в интернет **без аутентификации**. Memcached использовался в масштабных DDoS-атаках.
+
+### Default Ports / Порты по умолчанию
+
+| Port / Порт | Purpose / Назначение |
+|-------------|----------------------|
+| `11211/tcp` | Memcached client connections / Клиентские подключения |
+| `11211/udp` | Memcached UDP (disable in production!) / UDP (отключить в продакшене!) |
+
+---
+
+## Core Management
+
+### Common Use Cases / Типичные сценарии использования
+
+#### Database Query Caching / Кэширование запросов к БД
 
 ```text
 key: user:123:profile
 ttl: 300
 ```
 
-### 3.2 Session storage (risky)  
-### Хранение сессий (рискованно)
+#### Session Storage (risky) / Хранение сессий (рискованно)
 
-- Often used in PHP legacy apps
-- Memcached restart = user logout
+- Often used in PHP legacy apps / Часто используется в PHP legacy приложениях
+- Memcached restart = user logout / Рестарт Memcached = разлогин пользователя
 
-### 3.3 Rate limiting  
-### Ограничение запросов
+#### Rate Limiting / Ограничение запросов
 
-- Counter + TTL
-- Simple but effective
+- Counter + TTL pattern / Паттерн счётчик + TTL
+- Simple but effective / Просто, но эффективно
 
 ---
 
-## 4. Installation / Установка
+## Sysadmin Operations
 
-### Ubuntu / Debian
+### Service Control / Управление сервисом
 
 ```bash
-apt install memcached libmemcached-tools
+sudo systemctl start memcached                                             # Start service / Запустить сервис
+sudo systemctl stop memcached                                              # Stop service / Остановить сервис
+sudo systemctl restart memcached                                           # Restart service / Перезапустить сервис
+sudo systemctl status memcached                                            # Service status / Статус сервиса
+sudo systemctl enable memcached                                            # Enable on boot / Включить автозапуск
 ```
 
-### Check service / Проверка сервиса
+### Log Locations / Расположение логов
+
+| Type / Тип | Path / Путь |
+|------------|-------------|
+| Log File / Лог | `/var/log/memcached.log` (if configured with `-v` or `-vv`) |
+| PID File / Файл PID | `/var/run/memcached/memcached.pid` |
 
 ```bash
-systemctl status memcached
+sudo journalctl -u memcached -f                                            # Follow service logs / Следить за логами
 ```
 
-### Quick test / Быстрый тест
+### Network & Firewall / Сеть и файрвол
 
 ```bash
-echo "stats" | nc localhost 11211
+# Default port: 11211 / Порт по умолчанию: 11211
+
+# UFW / UFW
+sudo ufw allow 11211/tcp                                                   # Allow Memcached TCP / Разрешить TCP
+# Do NOT allow 11211/udp in production! / НЕ разрешайте UDP в продакшене!
+
+# firewalld / firewalld
+sudo firewall-cmd --permanent --add-port=11211/tcp && sudo firewall-cmd --reload
 ```
 
 ---
 
-## 5. Configuration / Конфигурация
+## Security
 
-Default config file:  
+> [!WARNING]
+> Memcached has **NO built-in authentication** by default. Security relies entirely on network-level access control.
+> Memcached **НЕ имеет встроенной аутентификации** по умолчанию. Безопасность полностью зависит от сетевого контроля.
 
-```bash
-/etc/memcached.conf
-```
+### Security Best Practices / Лучшие практики безопасности
 
-### Key parameters / Важные параметры
+- Bind only to `localhost` or private network / Привязывать только к `localhost` или приватной сети
+- Disable UDP (`-U 0`) / Отключить UDP
+- Protect with firewall / Закрывать файрволом
+- Use SASL authentication if available / Использовать SASL аутентификацию при возможности
+- Run as non-root user / Запускать от непривилегированного пользователя
 
-```bash
--m 512        # Memory limit in MB / Лимит памяти
--p 11211      # Port / Порт
--l 127.0.0.1  # Bind address (CRITICAL) / Адрес привязки
--u memcache   # Run as user / Пользователь
--c 1024       # Max connections / Макс. соединений
-```
-
-### ❌ Dangerous configuration / Опасная конфигурация
+### SASL Authentication (Optional) / Аутентификация SASL
 
 ```bash
--l 0.0.0.0
+# Enable SASL (requires memcached compiled with SASL support)
+# /etc/sasl2/memcached.conf
+mech_list: plain
+log_level: 5
+sasldb_path: /etc/sasl2/memcached-sasldb2
 ```
 
-**EN:** Exposes Memcached to the internet (no auth!)  
-**RU:** Открывает Memcached в интернет (без защиты!)
+```bash
+# Create SASL user / Создать пользователя SASL
+saslpasswd2 -a memcached -c -f /etc/sasl2/memcached-sasldb2 <USER>
+
+# Start with SASL / Запустить с SASL
+memcached -S                                                               # Enable SASL authentication / Включить SASL
+```
 
 ---
 
-## 6. Security / Безопасность
+## Monitoring & Performance
 
-**EN:**
-- Memcached has NO authentication
-- Never expose it publicly
-- Bind only to localhost or private network
-- Protect with firewall
-
-**RU:**
-- В Memcached НЕТ аутентификации
-- Никогда не публиковать наружу
-- Использовать localhost или private IP
-- Закрывать firewall’ом
-
-⚠ Memcached was used in massive UDP DDoS attacks  
-⚠ Memcached использовался в масштабных DDoS
-
----
-
-## 7. Monitoring / Мониторинг
-
-### View stats / Просмотр статистики
+### View Stats / Просмотр статистики
 
 ```bash
-memcached-tool localhost:11211 stats
+memcached-tool localhost:11211 stats                                       # Full stats / Полная статистика
+memcached-tool localhost:11211 display                                     # Slab stats / Статистика слабов
+echo "stats" | nc localhost 11211                                          # Raw stats via netcat / Статистика через netcat
+echo "stats slabs" | nc localhost 11211                                    # Slab allocator stats / Статистика аллокатора
+echo "stats items" | nc localhost 11211                                    # Item stats / Статистика элементов
 ```
 
-### Key metrics / Важные метрики
+### Key Metrics / Важные метрики
 
-| Metric | Meaning (EN) | Значение (RU) |
-|------|-------------|---------------|
-| get_hits | Cache hits | Попадания в кэш |
-| get_misses | Cache misses | Промахи |
-| evictions | Removed items | Вытеснения |
-| bytes | Used memory | Используемая RAM |
-| curr_items | Items count | Кол-во объектов |
+| Metric / Метрика | Meaning (EN) | Значение (RU) | Warning Threshold / Порог |
+|-----------------|-------------|---------------|--------------------------|
+| `get_hits` | Cache hits | Попадания в кэш | — |
+| `get_misses` | Cache misses | Промахи | High ratio = bad caching |
+| `evictions` | Removed items due to memory | Вытеснения из-за памяти | >0 = possible memory issue |
+| `bytes` | Used memory | Используемая RAM | Near `limit_maxbytes` |
+| `curr_items` | Current items count | Кол-во объектов | — |
+| `curr_connections` | Active connections | Активные подключения | Near `maxconns` |
 
 ### Interpretation / Интерпретация
 
-- High misses → bad caching strategy  
-- High evictions → not enough memory  
-- Memory near limit → risk of eviction storms  
+- **High misses** → bad caching strategy or TTL too low / Плохая стратегия кэширования
+- **High evictions** → not enough memory (`-m` too small) / Недостаточно памяти
+- **Memory near limit** → risk of eviction storms / Риск каскадных вытеснений
+
+### When NOT to Use Memcached / Когда НЕ стоит использовать
+
+- Persistence required / Нужна персистентность → **Use Redis**
+- Replication needed / Нужна репликация → **Use Redis**
+- Complex data structures / Сложные структуры данных → **Use Redis**
+- Transactions / Транзакции → **Use a proper DBMS**
 
 ---
 
-## 8. Performance & Tuning / Производительность и тюнинг
+## Troubleshooting & Tools
 
-**EN:** Memcached is best for:
-- Simple key–value data
-- Very high throughput
-- Minimal latency
-
-**RU:** Memcached подходит для:
-- Простых данных
-- Очень большого количества запросов
-- Минимальной задержки
-
-### When NOT to use Memcached  
-### Когда НЕ стоит использовать
-
-- Persistence required
-- Replication needed
-- Complex data structures
-- Transactions
-
-➡ Use Redis instead  
-➡ Используй Redis
-
----
-
-## 9. Common Problems / Типичные проблемы
-
-### Cache is ineffective  
-### Кэш не работает
+### Cache is Ineffective / Кэш не работает
 
 **Causes / Причины:**
-- TTL too low
-- Poor key design
-- Different keys per request
+- TTL too low / TTL слишком низкий
+- Poor key design / Плохой дизайн ключей
+- Different keys per request / Разные ключи на каждый запрос
+- Insufficient memory causing evictions / Недостаточно памяти
+
+```bash
+# Check hit ratio / Проверить процент попаданий
+echo "stats" | nc localhost 11211 | grep -E 'get_hits|get_misses'
+
+# Calculate hit rate: hits / (hits + misses) × 100%
+# Good: >90% / Хорошо: >90%
+```
+
+### Data Lost After Restart / Данные пропали после рестарта
+
+> [!NOTE]
+> This is expected behavior — Memcached is an in-memory cache with no persistence. If you need data to survive restarts, use Redis with persistence enabled.
+> Это нормальное поведение — Memcached хранит данные только в RAM.
+
+### Performance Degradation / Падение производительности
+
+- Not enough RAM (`-m` parameter) / Недостаточно RAM
+- High evictions / Много вытеснений
+- Memory contention with application / Конкуренция за память с приложением
+- Network issues / Сетевые проблемы
+
+```bash
+# Check eviction rate / Проверить частоту вытеснений
+echo "stats" | nc localhost 11211 | grep evictions
+
+# Monitor connections / Мониторинг подключений
+echo "stats" | nc localhost 11211 | grep curr_connections
+```
+
+### Interview Questions / Вопросы на собеседовании
+
+| Question / Вопрос | Answer / Ответ |
+|-------------------|----------------|
+| Does Memcached have persistence? | No — RAM only / Нет — только RAM |
+| Does it support replication? | No — each instance is standalone / Нет — каждый инстанс отдельный |
+| Is it secure by default? | No — no authentication / Нет — нет аутентификации |
+| Memcached vs Redis? | Redis = feature-rich data store; Memcached = simple fast cache |
+| How does Memcached cluster? | Client-side consistent hashing / Консистентное хеширование на клиенте |
 
 ---
 
-### Data lost after restart  
-### Данные пропали после рестарта
-
-✅ Expected behavior  
-✅ Это нормально
-
----
-
-### Performance degradation  
-### Падение производительности
-
-- Not enough RAM
-- High evictions
-- Memory contention with app
-
----
-
-## 10. Interview Questions / Вопросы на собеседовании
-
-**Q:** Does Memcached have persistence?  
-**A:** No
-
-**Q:** Does it support replication?  
-**A:** No
-
-**Q:** Is it secure by default?  
-**A:** No authentication
-
-**Q:** Memcached vs Redis?  
-**A:**  
-- Redis = data store  
-- Memcached = dumb cache
-
----
-
-## 11. Summary / Итог
-
-**EN:**  
-Memcached is simple, fast, and dangerous if misconfigured.  
-Every sysadmin must understand its limitations.
-
-**RU:**  
-Memcached простой, быстрый и опасный при неправильной настройке.  
-Сисадмин обязан понимать его ограничения.
-
----
-
-## Further Topics / Дальнейшие темы
-
-- Memcached vs Redis (benchmarks)
-- PHP / Java integration
-- Monitoring with Prometheus
-- Real incident analysis
-
----
-
-## 12. Logrotate Configuration / Конфигурация Logrotate
+## Logrotate Configuration
 
 `/etc/logrotate.d/memcached`
 
@@ -307,7 +319,7 @@ Memcached простой, быстрый и опасный при неправи
 ```
 
 > [!NOTE]
-> Memcached logs minimally by default. Enable verbose logging with `-vv` flag if needed.
-> Memcached по умолчанию логирует минимально. Включите подробное логирование флагом `-vv` при необходимости.
+> Memcached logs minimally by default. Enable verbose logging with `-v` (basic) or `-vv` (detailed) flag in the service configuration if needed.
+> Memcached по умолчанию логирует минимально. Включите подробное логирование флагом `-v` или `-vv` при необходимости.
 
 ---

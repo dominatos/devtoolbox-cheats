@@ -4,18 +4,27 @@ Icon: 📦
 Order: 2
 
 ## Table of Contents
+- [Description](#description)
 - [Configuration](#-configuration--конфигурация)
 - [Core Management](#-core-management--основное-управление)
 - [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
 - [Troubleshooting](#-troubleshooting--устранение-неполадок)
 - [Comparison: DNF vs YUM](#-comparison-dnf-vs-yum)
 - [Security](#-security--безопасность)
+- [Documentation Links](#-documentation-links)
 
 ---
 
 # 📦 DNF Cheatsheet (RHEL/Fedora/CentOS)
 
-Dandified YUM (DNF) is the next-generation version of the Yellowdog Updater, Modified (yum), a package manager for .rpm-based distributions. / Dandified YUM (DNF) — это следующее поколение Yellowdog Updater, Modified (yum), менеджера пакетов для дистрибутивов на базе .rpm.
+## Description
+
+**DNF (Dandified YUM)** is the next-generation package manager for RPM-based Linux distributions (Fedora, RHEL 8+, CentOS Stream, AlmaLinux, Rocky Linux). It replaced the legacy `yum` tool, offering faster dependency resolution (using libsolv), lower memory usage, and a stable documented API. / **DNF** — менеджер пакетов нового поколения для дистрибутивов на базе RPM. Он заменил устаревший `yum`, предлагая более быстрое разрешение зависимостей, меньшее использование памяти и стабильный API.
+
+**Status:** Actively maintained. **DNF5** (rewritten in C++) is the upcoming replacement, already available in Fedora 41+ as a technology preview and planned as default in future releases. On RHEL 7 and CentOS 7, `yum` is still the default. / **Статус:** Активно поддерживается. **DNF5** — следующее поколение, уже доступное в Fedora 41+.
+
+**Default Ports:** N/A (local tool)  
+**Package Format:** `.rpm`
 
 ---
 
@@ -173,3 +182,13 @@ Manage keys used to verify packages. / Управление ключами дл�
 rpm -qa gpg-pubkey*                           # List installed keys / Список установленных ключей
 sudo rpm --import <KEY_FILE>                  # Import key / Импортировать ключ
 ```
+
+---
+
+## 📚 Documentation Links
+
+- **DNF Documentation:** https://dnf.readthedocs.io/
+- **Fedora DNF Quick Docs:** https://docs.fedoraproject.org/en-US/quick-docs/dnf/
+- **DNF5 Project:** https://github.com/rpm-software-management/dnf5
+- **RPM Man Page:** https://man7.org/linux/man-pages/man8/rpm.8.html
+- **RHEL Package Management:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_software_with_the_dnf_tool/index

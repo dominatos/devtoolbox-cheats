@@ -3,6 +3,16 @@ Group: Dev & Tools
 Icon: 🧷
 Order: 6
 
+# tmux Cheatsheet — Terminal Multiplexer
+
+> **Description:** tmux (Terminal Multiplexer) is a command-line tool that allows you to create, manage, and navigate between multiple terminal sessions from a single window. Sessions persist after disconnection, making it essential for remote server management — SSH sessions survive connection drops.
+> tmux (Terminal Multiplexer) — это инструмент командной строки для создания и управления несколькими терминальными сессиями из одного окна. Сессии сохраняются после отключения, что делает его незаменимым для удалённого управления серверами.
+
+> **Status:** Actively maintained. Alternatives: **GNU Screen** (older, simpler), **Zellij** (modern Rust-based terminal workspace with built-in layouts), **byobu** (tmux/screen wrapper with enhanced UI).
+> **Role:** Developer / Sysadmin / DevOps
+
+---
+
 ## Table of Contents
 - [Basics & Installation](#-basics--installation--основы-и-установка)
 - [Session Management](#-session-management--управление-сессиями)
@@ -24,6 +34,15 @@ Order: 6
 
 **Main prefix key** / Главная клавиша префикса: `Ctrl+b`  
 All commands are executed after pressing prefix / Все команды вводятся после префикса.
+
+### tmux Components / Компоненты tmux
+
+| Component | Description (EN / RU) |
+|-----------|----------------------|
+| **Server** | Background process managing all sessions / Фоновый процесс управляющий всеми сессиями |
+| **Session** | A collection of windows / Набор окон |
+| **Window** | A full-screen tab within a session / Полноэкранная вкладка внутри сессии |
+| **Pane** | A split within a window / Разделение внутри окна |
 
 ### Installation / Установка
 ```bash
@@ -280,6 +299,20 @@ tmux attach -t shared
 tmux ls | grep -v attached | cut -d: -f1 | xargs -n1 tmux kill-session -t
 ```
 
+### Scripted Session Setup / Скриптовая настройка сессии
+```bash
+#!/bin/bash
+# Create a full development environment / Создать полное окружение разработки
+tmux new-session -d -s dev -n editor
+tmux send-keys -t dev:editor 'vim .' C-m
+tmux new-window -t dev -n server
+tmux send-keys -t dev:server 'npm run dev' C-m
+tmux new-window -t dev -n logs
+tmux send-keys -t dev:logs 'tail -f /var/log/app.log' C-m
+tmux select-window -t dev:editor
+tmux attach -t dev
+```
+
 ---
 
 # 💡 Useful Tips / Полезные советы
@@ -294,6 +327,15 @@ alias tn='tmux new -s'                   # Quick new session / Быстрое с
 alias tls='tmux ls'                      # Quick list / Быстрый список
 alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удаление
 ```
+
+### Terminal Multiplexer Comparison / Сравнение мультиплексоров
+
+| Tool | Description (EN / RU) | Best For |
+|------|----------------------|----------|
+| **tmux** | Feature-rich multiplexer / Функциональный мультиплексор | Power users, scripting |
+| **GNU Screen** | Classic multiplexer / Классический мультиплексор | Legacy systems, simplicity |
+| **Zellij** | Modern Rust-based workspace / Современный workspace на Rust | New users, built-in layouts |
+| **byobu** | tmux/screen wrapper / Обёртка для tmux/screen | Enhanced UI out of the box |
 
 ### Best Practices / Лучшие практики
 
@@ -317,3 +359,12 @@ alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удал�
 |------|----------------------|
 | `~/.tmux.conf` | User configuration / Пользовательская конфигурация |
 | `/etc/tmux.conf` | System-wide configuration / Системная конфигурация |
+
+---
+
+## Official Documentation / Официальная документация
+
+- **tmux:** https://github.com/tmux/tmux/wiki
+- **tmux Man Page:** `man tmux`
+- **Zellij (alternative):** https://zellij.dev/documentation/
+- **GNU Screen:** https://www.gnu.org/software/screen/manual/
