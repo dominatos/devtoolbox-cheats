@@ -1,13 +1,23 @@
-### v1.3 (2026-03-20)
-**New Cheatsheets:**
-- ✅ Added comprehensive **Commvault v11 (Simpana)** cheatsheet with enterprise backup strategies, data streams configuration, and low-impact backup manuals.
+### v1.4.0 (2026-03-27)
 
-### v1.2 (2026-03-20)
-**Windows Search Implementation:**
-- ✅ Native Search GUI for Windows version
-- ✅ Real-time filtering by Title and Group
-- ✅ Global hotkey `Ctrl+Shift+S` to trigger search
-- ✅ Updated Windows documentation with search usage
+**Windows Support (BETA):**
+- ✅ Introduced native Windows Tray Application using AutoHotkey with PowerShell installer.
+- ✅ Native Search GUI for Windows with real-time filtering by Title and Group.
+- ✅ Global hotkey `Ctrl+Shift+S` to trigger search on Windows.
+- ✅ Custom tray icon support and enhanced tray menu items with emojis.
+- ✅ Dual-file startup strategy for improved reliability against antivirus false positives.
+
+**New Cheatsheets & Categories:**
+- ✅ **New Categories:** Added **Identity Management** and **Infrastructure Management**.
+- ✅ **Databases/HA:** Added ProxySQL, MySQL Galera, Percona XtraDB Cluster, Pacemaker HA.
+- ✅ **Security/Identity:** Added Keycloak, adcli, SSH Honeypot & CrowdSec.
+- ✅ **Enterprise:** Added comprehensive Commvault v11 (Simpana) backup strategies.
+- ✅ **Infrastructure/Web:** Added WildFly, Meld, plus 11 additional cheatsheets across monitoring, security, and cloud.
+- ✅ **Updates:** Refined APT, HAProxy, and Nginx cheatsheets.
+
+**Documentation:**
+- ✅ Added Windows native tray app screenshots and setup instructions.
+- ✅ Updated repository README to reflect Windows support.
 
 ### v1.1.1 (2026-03-04)
 
