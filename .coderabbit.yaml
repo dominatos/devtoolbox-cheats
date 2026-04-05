@@ -1,0 +1,9 @@
+language: "en-US"
+reviews:
+  profile: "chill"        # or "assertive" for stricter reviews
+  request_changes_workflow: false
+  auto_review:
+    enabled: true
+    drafts: false         # skip draft PRs
+    base_branches:
+      - main

@@ -747,7 +747,9 @@ compactMenu() {
     "🔎 Search cheats" \
     "🚀 FZF Search Commands" \
     "📚 Browse all cheats" \
-    "📥 Export all (MD/PDF)") || exit 0
+    "📥 Export all (MD/PDF)" \
+    "🌐 Online Version" \
+    "🐙 GitHub Repository") || exit 0
   case "$choice" in
     "🔎 Search cheats") searchCheatsFS ;;
     "🚀 FZF Search Commands")
@@ -756,6 +758,8 @@ compactMenu() {
         ;;
     "📚 Browse all cheats") browseAllCheatsFS ;;
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
+    "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
+    "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
   esac
 }
 
@@ -769,6 +773,8 @@ standaloneMenu() {
     "🚀 FZF Search Commands" \
     "📚 Browse all cheats" \
     "📥 Export all (MD/PDF)" \
+    "🌐 Online Version" \
+    "🐙 GitHub Repository" \
     "⚙️ Settings") || exit 0
   
   case "$choice" in
@@ -783,6 +789,8 @@ standaloneMenu() {
         ;;
     "📚 Browse all cheats") browseAllCheatsFS ;;
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
+    "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
+    "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings") 
         info_dialog "Dev Toolbox Settings" \
           "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
@@ -825,6 +833,8 @@ if is_small_screen; then
   echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
   echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
   echo "---"
   echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
   echo "---"
@@ -833,6 +843,8 @@ else
   echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
   echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
 
   echo "---"
 

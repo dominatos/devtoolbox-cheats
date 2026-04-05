@@ -319,6 +319,22 @@ Item {
                 ToolTip.text: "Open interactive search"
                 ToolTip.visible: hovered
             }
+
+            PlasmaComponents.Button {
+                text: "Online"
+                icon.name: "applications-internet"
+                onClicked: Qt.openUrlExternally("https://cheats.alteron.net/")
+                ToolTip.text: "🌐 Open Online Version"
+                ToolTip.visible: hovered
+            }
+
+            PlasmaComponents.Button {
+                text: "GitHub"
+                icon.name: "vcs-normal"
+                onClicked: Qt.openUrlExternally("https://github.com/dominatos/devtoolbox-cheats/")
+                ToolTip.text: "🐙 Open GitHub Repository"
+                ToolTip.visible: hovered
+            }
         }
 
         PlasmaComponents.TextField {
