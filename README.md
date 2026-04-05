@@ -1271,3 +1271,4 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 **Made with ❤️ for the Linux community**
 
 [oss icon]: https://img.shields.io/badge/Open--Source-Software-blue.svg
+
