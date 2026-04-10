@@ -57,7 +57,7 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 - **LXQt / LXDE** - Lightweight dialog menus
 - **Budgie / Pantheon / Deepin** - Dialog-based menus with auto-detection
 - **Tiling WMs** - Terminal-based with FZF (i3, sway, bspwm, hyprland)
-- **Windows (BETA)** - Native tray application via AutoHotkey with **full autodiscovery & search support** ([View Guide](Windows-beta/README-windows.md))
+- **Windows (BETA)** - Native tray application via AutoHotkey with **full autodiscovery & search support** ([View Guide](https://github.com/dominatos/devtoolbox-cheats/blob/main/Windows-beta/README-windows.md))
 - **Auto-Detection** - Detects your DE and adapts automatically
 
 ### 🚀 Performance
@@ -91,7 +91,7 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 
 DevToolbox Cheats is fully supported on Windows using an automated PowerShell installer and AutoHotkey.
 
-See the dedicated **[Windows Setup Guide](Windows/README-windows.md)** for full details.
+See the dedicated **[Windows Setup Guide](https://github.com/dominatos/devtoolbox-cheats/blob/main/Windows-beta/README-windows.md)** for full details.
 
 #### Quick Automated Install
 1. Open **PowerShell** as **Administrator**.
