@@ -1,13 +1,18 @@
-Title: ⚡ Modern CLI — ripgrep/fd/bat/exa
+Title: ⚡ Modern CLI — ripgrep/fd/bat/eza
 Group: Text & Parsing
 Icon: ⚡
 Order: 10
+
+> **Modern CLI replacements** for classic Unix tools — all written in Rust for speed and safety. **ripgrep** (`rg`) replaces `grep`, **fd** replaces `find`, **bat** replaces `cat`, and **eza** (community fork of the unmaintained `exa`) replaces `ls`. These tools provide better defaults, colorized output, `.gitignore` awareness, and significantly faster performance. They are drop-in enhancements for daily sysadmin and developer workflows.
+
+> [!IMPORTANT]
+> **exa is unmaintained** since 2023. The actively maintained community fork is [**eza**](https://github.com/eza-community/eza). All examples below use `eza`.
 
 ## Table of Contents
 - [ripgrep — Fast Search](#-ripgrep--fast-search)
 - [fd — Fast Find](#-fd--fast-find)
 - [bat — Better Cat](#-bat--better-cat)
-- [exa — Better ls](#-exa--better-ls)
+- [eza — Better ls](#-eza--better-ls)
 - [Real-World Examples](#-real-world-examples--примеры-из-практики)
 - [Best Practices](#-best-practices--лучшие-практики)
 - [Aliases](#-aliases--алиасы)
@@ -146,46 +151,46 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"  # Use as man pager / Испо
 
 ---
 
-## 📊 exa — Better ls
+## 📊 eza — Better ls
 
 ### Basic Listing / Базовый список
 
 ```bash
-exa                                           # List files / Список файлов
-exa -l                                        # Long format / Длинный формат
-exa -la                                       # Long + all files / Длинный + все файлы
-exa -lh                                       # Long + human-readable / Длинный + удобочитаемый
+eza                                           # List files / Список файлов
+eza -l                                        # Long format / Длинный формат
+eza -la                                       # Long + all files / Длинный + все файлы
+eza -lh                                       # Long + human-readable / Длинный + удобочитаемый
 ```
 
 ### Tree View / Вид дерева
 
 ```bash
-exa --tree                                    # Tree view / Вид дерева
-exa --tree -L 2                               # Tree depth 2 / Глубина дерева 2
-exa --tree -I 'node_modules|.git'             # Tree with ignore / Дерево с игнорированием
+eza --tree                                    # Tree view / Вид дерева
+eza --tree -L 2                               # Tree depth 2 / Глубина дерева 2
+eza --tree -I 'node_modules|.git'             # Tree with ignore / Дерево с игнорированием
 ```
 
 ### Git Integration / Интеграция с Git
 
 ```bash
-exa -l --git                                  # Show git status / Показать git статус
-exa -l --git-ignore                           # Respect .gitignore / Учитывать .gitignore
+eza -l --git                                  # Show git status / Показать git статус
+eza -l --git-ignore                           # Respect .gitignore / Учитывать .gitignore
 ```
 
 ### Sorting / Сортировка
 
 ```bash
-exa -l --sort=modified                        # Sort by modification time / Сортировать по времени модификации
-exa -l --sort=size                            # Sort by size / Сортировать по размеру
-exa -l --sort=extension                       # Sort by extension / Сортировать по расширению
+eza -l --sort=modified                        # Sort by modification time / Сортировать по времени модификации
+eza -l --sort=size                            # Sort by size / Сортировать по размеру
+eza -l --sort=extension                       # Sort by extension / Сортировать по расширению
 ```
 
 ### Colors & Icons / Цвета и иконки
 
 ```bash
-exa -l --color=always                         # Force colors / Принудительно цвета
-exa -l --icons                                # Show icons / Показать иконки
-exa -l --color-scale                          # Color by size / Цвет по размеру
+eza -l --color=always                         # Force colors / Принудительно цвета
+eza -l --icons                                # Show icons / Показать иконки
+eza -l --color-scale                          # Color by size / Цвет по размеру
 ```
 
 ---
@@ -257,10 +262,10 @@ rg 'ERROR' /var/log/app.log | cut -d':' -f3 | sort | uniq -c
 rg 'pattern' --type-add 'tracked:include:$(git ls-files)'
 
 # Show modified files / Показать измененные файлы
-exa -l --git --git-ignore
+eza -l --git --git-ignore
 
 # Tree view of project / Вид дерева проекта
-exa --tree -L 3 -I 'node_modules|.git|dist'
+eza --tree -L 3 -I 'node_modules|.git|dist'
 ```
 
 ### System Administration / Системное администрирование
@@ -297,7 +302,7 @@ fd -t f | fzf --preview 'bat --color=always --line-range :50 {}'
 # Use ripgrep instead of grep for speed / Используйте ripgrep вместо grep для скорости
 # Use fd instead of find for simplicity / Используйте fd вместо find для простоты
 # Set bat as default pager / Установите bat как pager по умолчанию
-# Use exa aliases for enhanced ls / Используйте алиасы exa для улучшенного ls
+# Use eza aliases for enhanced ls / Используйте алиасы eza для улучшенного ls
 # Combine tools with fzf for interactivity / Комбинируйте инструменты с fzf для интерактивности
 # Use --hidden and -I carefully / Используйте --hidden и -I осторожно
 ```
@@ -309,10 +314,10 @@ fd -t f | fzf --preview 'bat --color=always --line-range :50 {}'
 ```bash
 alias cat='bat -p'
 alias catn='bat'
-alias ls='exa'
-alias ll='exa -l'
-alias la='exa -la'
-alias lt='exa --tree'
+alias ls='eza'
+alias ll='eza -l'
+alias la='eza -la'
+alias lt='eza --tree'
 alias grep='rg'
 alias find='fd'
 ```
@@ -326,7 +331,7 @@ alias find='fd'
 | `grep` | `ripgrep` (`rg`) | 10-100x faster / 10-100x быстрее |
 | `find` | `fd` | Simpler syntax, faster / Проще синтаксис, быстрее |
 | `cat` | `bat` | Syntax highlighting / Подсветка синтаксиса |
-| `ls` | `exa` | Colors, git integration / Цвета, интеграция с git |
+| `ls` | `eza` (was `exa`) | Colors, git integration / Цвета, интеграция с git |
 
 ---
 
@@ -334,15 +339,33 @@ alias find='fd'
 
 ```bash
 # Ubuntu/Debian
-apt install ripgrep fd-find bat exa
+sudo apt install ripgrep fd-find bat
+sudo apt install -t unstable eza         # or install from GitHub releases
 
 # Fedora
-dnf install ripgrep fd-find bat exa
+sudo dnf install ripgrep fd-find bat eza
+
+# Arch
+sudo pacman -S ripgrep fd bat eza
 
 # macOS
-brew install ripgrep fd bat exa
+brew install ripgrep fd bat eza
 ```
 
 > [!NOTE]
 > On Debian/Ubuntu `fd` may be installed as `fdfind`. Create a symlink: `ln -s $(which fdfind) ~/.local/bin/fd`
 > На Debian/Ubuntu `fd` может быть установлен как `fdfind`. Создайте симлинк: `ln -s $(which fdfind) ~/.local/bin/fd`
+
+> [!NOTE]
+> `exa` is **unmaintained** since 2023. Use [`eza`](https://github.com/eza-community/eza) — the actively maintained community fork with the same CLI interface.
+> `exa` **не поддерживается** с 2023. Используйте [`eza`](https://github.com/eza-community/eza) — активно поддерживаемый форк с тем же CLI-интерфейсом.
+
+---
+
+## 📚 Documentation / Документация
+
+- [ripgrep — GitHub](https://github.com/BurntSushi/ripgrep)
+- [fd — GitHub](https://github.com/sharkdp/fd)
+- [bat — GitHub](https://github.com/sharkdp/bat)
+- [eza — GitHub (maintained fork of exa)](https://github.com/eza-community/eza)
+- [exa — GitHub (unmaintained)](https://github.com/ogham/exa)

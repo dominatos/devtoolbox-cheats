@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🗃
 Order: 3
 
+> **find** — POSIX-standard utility for recursively searching the file system by name, type, size, time, permissions, and more. Part of GNU Findutils, pre-installed on all Linux distributions. `find` is the most powerful and flexible file-locating tool available in the shell. For simpler syntax and faster performance, consider the modern alternative [`fd`](https://github.com/sharkdp/fd) — but `find` remains the universal, scriptable standard.
+
 ## Table of Contents
 - [Basic Search](#-basic-search--базовый-поиск)
 - [By Type & Name](#-by-type--name--по-типу-и-имени)
@@ -135,3 +137,12 @@ find . -type f -newer file1 ! -newer file2     # Between two files / Между 
 find . -xtype l                                # Broken symlinks / Сломанные символические ссылки
 find . -perm /4000                             # Find SUID files / Найти SUID файлы
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [GNU Findutils Manual](https://www.gnu.org/software/findutils/manual/html_node/find_html/index.html)
+- [POSIX find specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/find.html)
+- [fd — modern alternative (GitHub)](https://github.com/sharkdp/fd)
+- `man find`

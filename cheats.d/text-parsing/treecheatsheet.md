@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🌲
 Order: 13
 
+> **tree** — a recursive directory listing program that produces a depth-indented, colorized tree of files. Not part of coreutils; requires separate installation on most systems. Commonly used for project overviews, documentation, and quick filesystem audits. Actively maintained; modern alternative: `exa --tree` / `eza --tree` provides similar functionality with git integration.
+
 ## Table of Contents
 - [Basic Usage](#-basic-usage--базовое-использование)
 - [Filters (Include/Exclude)](#-filters-includeexclude--фильтры-включениеисключение)
@@ -14,6 +16,7 @@ Order: 13
 - [HTML Output](#-html-output--html-вывод)
 - [Performance Tips](#-performance-tips--советы-по-производительности)
 - [Practical Recipes](#-practical-recipes--практические-рецепты)
+- [Installation](#%EF%B8%8F-installation--установка)
 
 ---
 
@@ -141,3 +144,32 @@ tree -t -r -L 2                          # Newest first within depth / Новы�
 tree -S -r -L 1                          # Largest first at top level / Самые большие сверху на верхнем уровне
 tree --fromfile list.txt                 # Read paths from file / Список путей из файла (по строкам)
 ```
+
+---
+
+## ⚙️ Installation / Установка
+
+```bash
+# Ubuntu/Debian
+sudo apt install tree
+
+# Fedora/RHEL
+sudo dnf install tree
+
+# Arch
+sudo pacman -S tree
+
+# macOS
+brew install tree
+
+# Check version / Проверить версию
+tree --version
+```
+
+---
+
+## 📚 Documentation / Документация
+
+- [tree — Source (Old Dominion University)](https://oldmanprogrammer.net/source.php?dir=projects/tree)
+- [tree — Wikipedia](https://en.wikipedia.org/wiki/Tree_(command))
+- `man tree`

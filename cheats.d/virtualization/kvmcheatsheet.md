@@ -3,11 +3,29 @@ Group: Virtualization
 Icon: 💻
 Order: 1
 
-# KVM / Libvirt — Virtualization Cheatsheet
+# 💻 KVM / Libvirt — Virtualization Cheatsheet
 
-KVM (Kernel-based Virtual Machine) is a Linux kernel module that turns Linux into a Type-1 hypervisor. **Libvirt** provides the management layer (`virsh`, `virt-manager`, `virt-install`) on top of KVM/QEMU. This cheatsheet covers day-to-day operations, template creation, and production best practices.
+## Description
+
+**KVM** (Kernel-based Virtual Machine) is a Linux kernel module that turns Linux into a **Type-1 (bare-metal) hypervisor**. Combined with **QEMU** for hardware emulation and **Libvirt** as the management API layer (`virsh`, `virt-manager`, `virt-install`), it forms the standard open-source virtualization stack for Linux servers.
+
+**Common use cases / Типичные сценарии:**
+- Production server virtualization / Виртуализация серверов в продакшене
+- Virtual machine templates and rapid provisioning / Шаблоны ВМ и быстрое развёртывание
+- Development and testing environments / Среды разработки и тестирования
+- Cloud infrastructure (OpenStack, oVirt) / Облачная инфраструктура
+- Network Function Virtualization (NFV) / Виртуализация сетевых функций
+- Live migration between hosts / Живая миграция между хостами
+
+> [!NOTE]
+> KVM is the most widely used Linux hypervisor and is the foundation of major cloud platforms (AWS, GCP, OpenStack, Proxmox). For desktop virtualization, **VirtualBox** and **VMware Workstation** offer simpler GUIs. For container-based workloads, **Docker/Podman** and **Kubernetes** are preferred. **Proxmox VE** provides a web-based management interface on top of KVM/QEMU. **oVirt** is the enterprise management platform (upstream of Red Hat Virtualization).
+> KVM — самый популярный гипервизор Linux, основа облачных платформ (AWS, GCP, OpenStack, Proxmox). Для десктопной виртуализации — **VirtualBox**, **VMware Workstation**. Для контейнеров — **Docker/Podman**, **Kubernetes**. **Proxmox VE** — веб-интерфейс для управления KVM.
+
+---
 
 ## Table of Contents
+
+- [Description](#description)
 - [Installation & Configuration](#installation--configuration)
 - [Core Management](#core-management)
 - [Storage Management](#storage-management)
@@ -18,6 +36,7 @@ KVM (Kernel-based Virtual Machine) is a Linux kernel module that turns Linux int
 - [Security](#security)
 - [Troubleshooting & Tools](#troubleshooting--tools)
 - [Comparison Tables](#comparison-tables)
+- [Documentation Links](#documentation-links)
 
 ---
 
@@ -493,3 +512,19 @@ virt-top                               # Real-time VM monitor / Монитори
 | **Bridge** | VMs on physical LAN / ВМ в физической сети | Production, server hosting |
 | **Isolated** | VMs talk only to each other / ВМ только между собой | Security testing, labs |
 | **macvtap** | Direct passthrough / Прямое подключение | High-performance networking |
+
+---
+
+## Documentation Links
+
+- [KVM Official Site](https://www.linux-kvm.org/)
+- [Libvirt Documentation](https://libvirt.org/docs.html)
+- [Libvirt — virsh Command Reference](https://libvirt.org/manpages/virsh.html)
+- [QEMU Documentation](https://www.qemu.org/docs/master/)
+- [virt-install Manual](https://man.archlinux.org/man/virt-install.1)
+- [virt-sysprep Manual](https://libguestfs.org/virt-sysprep.1.html)
+- [Red Hat — KVM/Libvirt Guide](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/)
+- [Proxmox VE Documentation](https://pve.proxmox.com/wiki/Main_Page)
+- [oVirt Documentation](https://www.ovirt.org/documentation/)
+
+---

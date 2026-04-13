@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: ✍️
 Order: 1
 
+> **Vim** (Vi IMproved) — the ubiquitous modal text editor, available on virtually every Unix/Linux system. Vim’s modal editing (Normal, Insert, Visual, Command) provides exceptional editing speed once mastered. It is the de facto standard for quick edits over SSH, config file changes, and emergency recovery. Actively maintained; the modern fork [**Neovim**](https://neovim.io/) (`nvim`) adds Lua scripting, built-in LSP, and async plugins while maintaining full Vim compatibility.
+
 ## Table of Contents
 - [Open / Save / Quit](#-open--save--quit--открытие--сохранение--выход)
 - [Modes](#-modes--режимы)
@@ -271,3 +273,13 @@ z= / zg / zw                                     # Suggestions / add / mark wron
 :set cursorline cursorcolumn                     # Highlight line/column / Подсветка строки/колонки
 :help {topic}                                    # Help / Справка
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [Vim Official Documentation](https://www.vim.org/docs.php)
+- [Vim Tips Wiki](https://vim.fandom.com/wiki/Vim_Tips_Wiki)
+- [Neovim Documentation](https://neovim.io/doc/)
+- [Learn Vim Progressively](https://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/)
+- `:help` (built-in Vim help system)

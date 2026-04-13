@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🌀
 Order: 12
 
+> **Bash Loops** — built-in shell constructs (`for`, `while`, `until`) for iterating over files, numbers, arrays, and command output. These are not standalone programs but fundamental parts of Bash (Bourne-Again SHell), the default shell on most Linux systems. Loops are essential for scripting automation, batch processing, retry logic, and monitoring. For complex orchestration, consider dedicated tools like `ansible` or `xargs --parallel`.
+
 ## Table of Contents
 - [FOR Loops](#-for-loops--циклы-for)
 - [WHILE Loops](#-while-loops--циклы-while)
@@ -425,3 +427,12 @@ while :; do
   esac
 done
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [Bash Reference Manual — Looping Constructs](https://www.gnu.org/software/bash/manual/html_node/Looping-Constructs.html)
+- [Bash Reference Manual (full)](https://www.gnu.org/software/bash/manual/bash.html)
+- [Advanced Bash-Scripting Guide — Loops](https://tldp.org/LDP/abs/html/loops1.html)
+- `help for` / `help while` / `help until` (Bash built-in help)

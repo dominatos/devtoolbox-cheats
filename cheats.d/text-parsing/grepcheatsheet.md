@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🔎
 Order: 2
 
+> **grep** (Global Regular Expression Print) — the quintessential text-search utility, part of every POSIX system. GNU grep supports Basic (BRE), Extended (ERE, `-E`), Fixed-string (`-F`), and Perl-compatible (PCRE, `-P`) regular expressions. It is the go-to tool for searching files, filtering logs, and building shell pipelines. For significantly faster recursive searches (10-100×), consider [`ripgrep` (rg)](https://github.com/BurntSushi/ripgrep) — but `grep` remains the universal standard.
+
 ## Table of Contents
 - [Quick Reference](#-quick-reference--краткая-справка)
 - [Basics](#-basics--основы)
@@ -168,3 +170,12 @@ grep -R -n --exclude-dir=.git --exclude-dir=node_modules 'pattern' .  # Skip hea
 grep -ri --include='*.log' 'error' .             # Recursive only in *.log / Рекурсивно только в *.log
 grep -r -c 'pattern' .                           # Count matches per file / Подсчёт совпадений на файл
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [GNU grep Manual](https://www.gnu.org/software/grep/manual/grep.html)
+- [POSIX grep specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/grep.html)
+- [ripgrep — modern alternative (GitHub)](https://github.com/BurntSushi/ripgrep)
+- `man grep`

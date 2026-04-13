@@ -1,18 +1,38 @@
-Title: 🦅 WildFly (JBoss)
+Title: 🦅 WildFly (JBoss) — Cheatsheet
 Group: Web Servers
 Icon: 🦅
 Order: 17
 
+# 🦅 WildFly (JBoss) — Cheatsheet
+
+## Description
+
+**WildFly** (formerly JBoss AS) is a free, open-source Jakarta EE application server developed by Red Hat. It is the upstream project for **JBoss EAP** (Enterprise Application Platform). WildFly provides a full Jakarta EE implementation including EJB, JPA, JMS (ActiveMQ Artemis), CDI, and more.
+
+**Common use cases / Типичные сценарии:**
+- Full Jakarta EE application server / Полный Jakarta EE сервер приложений
+- Enterprise Java deployments (EJB, JMS, JPA) / Корпоративные Java развертывания
+- Clustered/High-Availability Java applications / Кластерные Java приложения
+- Lightweight Java microservices (via WildFly Bootable JAR) / Легковесные микросервисы
+
+> [!NOTE]
+> WildFly is actively developed and is the **open-source upstream** for Red Hat's commercial **JBoss EAP**. Alternatives include **Apache Tomcat** (servlet container only), **Payara** (GlassFish fork), and **Open Liberty** (IBM). For microservices, consider **Quarkus** (also by Red Hat, built on WildFly components) or **Spring Boot**.
+> WildFly — open-source основа для коммерческого **JBoss EAP** от Red Hat. Альтернативы: **Tomcat** (только сервлеты), **Payara**, **Open Liberty**. Для микросервисов: **Quarkus** или **Spring Boot**.
+
 ---
 
-## 📚 Table of Contents / Содержание
+## Table of Contents
 
-1. [Installation & Configuration](#installation--configuration)
-2. [Operating Modes (Standalone vs Domain)](#operating-modes-standalone-vs-domain)
-3. [Service & Access Management](#service--access-management)
-4. [Deployment (jboss-cli)](#deployment-jboss-cli)
-5. [JVM Tuning & Performance](#jvm-tuning--performance)
-6. [Troubleshooting & Logs](#troubleshooting--logs)
+- [Description](#description)
+- [Installation & Configuration](#installation--configuration)
+- [Operating Modes](#operating-modes)
+- [Service & Access Management](#service--access-management)
+- [Deployment (jboss-cli)](#deployment-jboss-cli)
+- [JVM Tuning & Performance](#jvm-tuning--performance)
+- [Security](#security)
+- [Troubleshooting & Logs](#troubleshooting--logs)
+- [Logrotate Configuration](#logrotate-configuration)
+- [Documentation Links](#documentation-links)
 
 ---
 
@@ -41,11 +61,15 @@ Assuming WildFly is installed in `/opt/wildfly` (WILDFLY_HOME).
 
 ---
 
-## Operating Modes (Standalone vs Domain)
+## Operating Modes
 
-Wait, what's the difference?
-- **Standalone:** Single server instance. Simple, good for most basic apps.
-- **Domain:** Centrally managed cluster of WildFly instances (Host Controller + Domain Controller).
+WildFly supports two operating modes, each suited for different deployment scenarios:
+
+- **Standalone Mode:** Single server instance. Simple configuration, ideal for development, testing, and single-node production deployments.
+  **Standalone режим:** Один экземпляр сервера. Простая конфигурация, идеально для разработки и одиночных серверов.
+
+- **Domain Mode:** Centrally managed cluster of WildFly instances using a Host Controller and Domain Controller. Suited for multi-server enterprise environments.
+  **Domain режим:** Централизованно управляемый кластер через Host Controller и Domain Controller. Подходит для корпоративных многосерверных сред.
 
 ### Standalone Mode Configuration Profiles / Профили Standalone
 
@@ -55,7 +79,7 @@ Wait, what's the difference?
 |---------|---------------------|
 | `standalone.xml` | Default Java EE web profile (Servlet, JSP, EJB, JPA) |
 | `standalone-ha.xml` | High Availability (Clustering, JGroups, mod_cluster) |
-| `standalone-full.xml` | Full Java EE (adds Messaging - ActiveMQ Artemis) |
+| `standalone-full.xml` | Full Java EE (adds Messaging — ActiveMQ Artemis) |
 | `standalone-full-ha.xml` | Full Java EE + High Availability |
 
 ---
@@ -88,6 +112,7 @@ By default, WildFly binds to `127.0.0.1`. To allow external access:
 
 > [!WARNING]
 > Do NOT expose the management interface (`-bmanagement`) to the public internet. Restrict access via firewall to admin IPs only.
+> НЕ открывайте management-интерфейс (`-bmanagement`) в публичный интернет. Ограничьте доступ файрволом.
 
 ### Service Control (Systemd) / Управление сервисом
 
@@ -96,6 +121,7 @@ sudo systemctl start wildfly     # Start / Старт
 sudo systemctl stop wildfly      # Stop / Остановка
 sudo systemctl restart wildfly   # Restart / Перезапуск
 sudo systemctl status wildfly    # Status / Статус
+sudo systemctl enable wildfly    # Enable at boot / Автозапуск
 ```
 
 ---
@@ -104,6 +130,7 @@ sudo systemctl status wildfly    # Status / Статус
 
 > [!TIP]
 > The `jboss-cli.sh` is the most powerful tool for automating WildFly operations without restarting the server or editing XML files manually.
+> `jboss-cli.sh` — самый мощный инструмент для автоматизации операций WildFly без перезапуска.
 
 ### Connecting to CLI / Подключение к CLI
 
@@ -177,6 +204,45 @@ JAVA_OPTS="$JAVA_OPTS -Xlog:gc*:file=/opt/wildfly/standalone/log/gc.log:time,upt
 
 ---
 
+## Security
+
+### SSL/TLS Configuration / Конфигурация SSL/TLS
+
+```bash
+# Create keystore / Создать keystore
+keytool -genkey -alias wildfly -keyalg RSA -keysize 2048 \
+  -keystore /opt/wildfly/standalone/configuration/keystore.jks \
+  -storepass <PASSWORD>
+
+# Import certificate / Импортировать сертификат
+keytool -import -alias wildfly -file certificate.crt \
+  -keystore /opt/wildfly/standalone/configuration/keystore.jks \
+  -storepass <PASSWORD>
+```
+
+### Enable HTTPS via CLI / Включить HTTPS через CLI
+
+```bash
+# Configure Elytron SSL context / Настройка Elytron SSL
+/opt/wildfly/bin/jboss-cli.sh --connect << EOF
+/subsystem=elytron/key-store=httpsKS:add(path=keystore.jks,relative-to=jboss.server.config.dir,type=JKS,credential-reference={clear-text=<PASSWORD>})
+/subsystem=elytron/key-manager=httpsKM:add(key-store=httpsKS,credential-reference={clear-text=<PASSWORD>})
+/subsystem=elytron/server-ssl-context=httpsSSC:add(key-manager=httpsKM,protocols=[TLSv1.2,TLSv1.3])
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context,value=httpsSSC)
+reload
+EOF
+```
+
+### Security Best Practices / Лучшие практики безопасности
+
+- Remove the welcome-content handler in production / Удалите welcome-content в продакшене
+- Restrict management console to internal IPs / Ограничьте консоль управления внутренними IP
+- Use strong passwords for management users / Используйте сильные пароли
+- Enable HTTPS for all listeners / Включите HTTPS для всех листенеров
+- Keep WildFly and Java updated / Обновляйте WildFly и Java
+
+---
+
 ## Troubleshooting & Logs
 
 ### Log File Locations / Расположение логов
@@ -202,11 +268,70 @@ grep -i "ERROR" /opt/wildfly/standalone/log/server.log
 /opt/wildfly/bin/jboss-cli.sh --connect --command="/subsystem=logging/root-logger=ROOT:write-attribute(name=level,value=DEBUG)"
 ```
 
+### Thread Dump / Дамп потоков
+
+```bash
+# Get PID / Получить PID
+ps aux | grep wildfly
+
+# Generate thread dump / Создать дамп потоков
+kill -3 <PID>                                            # Output to server.log
+jstack <PID> > thread_dump.txt                          # Save to file / Сохранить в файл
+```
+
+### Heap Dump / Дамп кучи
+
+```bash
+# Generate heap dump / Создать дамп кучи
+jmap -dump:format=b,file=/tmp/heap_dump.bin <PID>
+
+# Analyze with Eclipse MAT or VisualVM
+# Анализ с помощью Eclipse MAT или VisualVM
+```
+
 ### Check Port Usage / Проверка занятых портов
 
 ```bash
-sudo ss -tlnp | grep java
+sudo ss -tlnp | grep java                               # Check Java ports / Проверить порты Java
+sudo netstat -tlnp | grep :8080                          # Check specific port / Проверить порт
 ```
 
 > [!CAUTION]
 > If WildFly fails to start due to `Address already in use`, verify no other Tomcat/JBoss instance is running on port `:8080`.
+> Если WildFly не запускается из-за `Address already in use`, убедитесь что другой Tomcat/JBoss не занимает порт `:8080`.
+
+---
+
+## Logrotate Configuration
+
+`/etc/logrotate.d/wildfly`
+
+```conf
+/opt/wildfly/standalone/log/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+```
+
+> [!WARNING]
+> Use `copytruncate` for WildFly logs as the JVM keeps file handles open.
+> Используйте `copytruncate` для логов WildFly, так как JVM держит файлы открытыми.
+
+---
+
+## Documentation Links
+
+- [WildFly Official Documentation](https://docs.wildfly.org/)
+- [WildFly Getting Started Guide](https://docs.wildfly.org/latest/Getting_Started_Guide.html)
+- [WildFly Admin Guide](https://docs.wildfly.org/latest/Admin_Guide.html)
+- [WildFly CLI (jboss-cli) Guide](https://docs.wildfly.org/latest/Admin_Guide.html#Command_Line_Interface)
+- [WildFly High Availability Guide](https://docs.wildfly.org/latest/High_Availability_Guide.html)
+- [WildFly GitHub Repository](https://github.com/wildfly/wildfly)
+- [JBoss EAP Documentation (Commercial)](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/)
+
+---

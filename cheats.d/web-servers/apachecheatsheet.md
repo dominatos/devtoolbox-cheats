@@ -5,8 +5,25 @@ Order: 2
 
 # 🪶 Apache HTTPD — Cheatsheet
 
+## Description
+
+**Apache HTTP Server (httpd)** is one of the most widely used open-source web servers in the world, maintained by the Apache Software Foundation. First released in 1995, it remains a cornerstone of the LAMP stack (Linux, Apache, MySQL, PHP).
+
+**Common use cases / Типичные сценарии:**
+- Serving static and dynamic web content / Раздача статического и динамического контента
+- Virtual hosting (multiple sites on one server) / Виртуальный хостинг
+- Reverse proxy and load balancing / Обратный прокси и балансировка нагрузки
+- `.htaccess`-based per-directory configuration / Децентрализованная настройка через `.htaccess`
+
+> [!NOTE]
+> Apache remains actively developed and widely deployed, but for high-concurrency reverse proxy/load balancing scenarios, **Nginx** and **Caddy** are often preferred due to their event-driven architecture. Apache excels in shared hosting and `.htaccess`-based workflows.
+> Apache активно развивается, но для высоконагруженных сценариев обратного прокси/балансировки предпочтительны **Nginx** и **Caddy**. Apache лучше подходит для shared-хостинга и `.htaccess`-конфигураций.
+
+---
+
 ## Table of Contents
 
+- [Description](#description)
 - [Installation & Configuration](#installation--configuration)
 - [Core Management](#core-management)
 - [Virtual Hosts](#virtual-hosts)
@@ -586,3 +603,13 @@ sudo a2ensite <SITE>.conf                                # Enable site / Вкл�
 
 ---
 
+## Documentation Links
+
+- [Apache HTTP Server Documentation](https://httpd.apache.org/docs/current/)
+- [Apache Module Index](https://httpd.apache.org/docs/current/mod/)
+- [Apache SSL/TLS HowTo](https://httpd.apache.org/docs/current/ssl/ssl_howto.html)
+- [Apache Virtual Host Examples](https://httpd.apache.org/docs/current/vhosts/examples.html)
+- [Apache Security Tips](https://httpd.apache.org/docs/current/misc/security_tips.html)
+- [Apache Performance Tuning](https://httpd.apache.org/docs/current/misc/perf-tuning.html)
+
+---

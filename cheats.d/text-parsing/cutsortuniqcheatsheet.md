@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🔪
 Order: 6
 
+> **cut**, **sort**, and **uniq** — the classic GNU Coreutils trio for columnar data extraction, line ordering, and deduplication. Pre-installed on every Linux distribution, these tools form the backbone of shell-based data pipelines. They are especially useful for quick log analysis, CSV processing, and frequency counting. No modern replacements needed — they are lightweight, POSIX-compliant, and actively maintained.
+
 ## Table of Contents
 - [CUT — Field Extraction](#-cut--field-extraction--cut--извлечение-полей)
 - [SORT — Sorting Lines](#-sort--sorting-lines--sort--сортировка-строк)
@@ -224,3 +226,12 @@ LC_ALL=C sort largefile.txt                     # Faster byte-order sort / Бы�
 # Распараллеливание для многоядерных систем
 sort --parallel=8 -S 4G largefile.txt           # 8 cores, 4GB buffer / 8 ядер, 4GB буфер
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [GNU Coreutils — cut](https://www.gnu.org/software/coreutils/manual/html_node/cut-invocation.html)
+- [GNU Coreutils — sort](https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html)
+- [GNU Coreutils — uniq](https://www.gnu.org/software/coreutils/manual/html_node/uniq-invocation.html)
+- `man cut` / `man sort` / `man uniq`

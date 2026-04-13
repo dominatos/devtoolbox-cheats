@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🔤
 Order: 7
 
+> **tr**, **head**, **tail**, and **watch** — essential Unix text and monitoring utilities. `tr` (translate characters), `head` (first N lines), and `tail` (last N lines, follow mode) are part of GNU Coreutils, pre-installed everywhere. `watch` (from `procps-ng`) repeatedly runs a command and displays output, ideal for real-time monitoring. All are production staples with no replacements needed; `tail -f` is the standard way to follow logs in real time.
+
 ## Table of Contents
 - [TR — Translate Characters](#-tr--translate-characters--tr--преобразование-символов)
 - [HEAD — First Lines](#-head--first-lines--head--первые-строки)
@@ -257,3 +259,13 @@ echo "Hello   World" | tr -s ' ' | tr ' ' '-'   # Normalize and replace spaces /
 # watch -p for better timing accuracy / watch -p для лучшей точности времени
 # tr -cd is faster than grep for character filtering / tr -cd быстрее grep для фильтрации символов
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [GNU Coreutils — tr](https://www.gnu.org/software/coreutils/manual/html_node/tr-invocation.html)
+- [GNU Coreutils — head](https://www.gnu.org/software/coreutils/manual/html_node/head-invocation.html)
+- [GNU Coreutils — tail](https://www.gnu.org/software/coreutils/manual/html_node/tail-invocation.html)
+- [procps-ng — watch (GitLab)](https://gitlab.com/procps-ng/procps)
+- `man tr` / `man head` / `man tail` / `man watch`

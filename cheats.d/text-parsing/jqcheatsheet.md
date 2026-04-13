@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🧩
 Order: 9
 
+> **jq** — a lightweight, command-line JSON processor written in C. It uses a functional, pipeline-oriented query language for slicing, filtering, mapping, and transforming structured JSON data. Widely used in CI/CD pipelines, API automation, Kubernetes/Docker scripting, and log analysis. Actively maintained; for YAML processing, use [`yq`](https://github.com/mikefarah/yq). Alternative: [`gojq`](https://github.com/itchyny/gojq) (Go reimplementation with YAML support).
+
 ## Table of Contents
 - [Basics](#-basics--основы)
 - [Selecting & Filtering](#-selecting--filtering--выбор-и-фильтрация)
@@ -175,3 +177,13 @@ jq 'type' file.json                            # Check data type / Провер�
 jq 'keys' file.json                            # List all keys / Список всех ключей
 jq 'paths' file.json                           # Show all paths / Показать все пути
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [jq Official Manual](https://jqlang.github.io/jq/manual/)
+- [jq — GitHub repository](https://github.com/jqlang/jq)
+- [jq Play — Online Playground](https://jqplay.org/)
+- [gojq — Go reimplementation](https://github.com/itchyny/gojq)
+- `man jq`

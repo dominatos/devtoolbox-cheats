@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: ✂️
 Order: 5
 
+> **sed** (Stream Editor) — a POSIX-standard, non-interactive text transformation tool. GNU sed is pre-installed on all Linux distributions and is the primary tool for in-place file editing, substitution, and line manipulation in shell scripts. Unlike `awk` (column-oriented), `sed` operates on lines and character patterns. There is no modern replacement — `sed` remains the irreplaceable core utility for stream-based text processing.
+
 ## Table of Contents
 - [Basic Substitution](#-basic-substitution--базовая-замена)
 - [Line Selection & Deletion](#-line-selection--deletion--выбор-и-удаление-строк)
@@ -128,3 +130,12 @@ sed -n 'n; p' file                             # Print even lines / Печать
 sed -n 'p; n' file                             # Print odd lines / Печать нечётных строк
 sed '5q' file                                  # Quit after line 5 / Выход после строки 5
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [GNU sed Manual](https://www.gnu.org/software/sed/manual/sed.html)
+- [POSIX sed specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sed.html)
+- [sed — Wikipedia](https://en.wikipedia.org/wiki/Sed)
+- `man sed`

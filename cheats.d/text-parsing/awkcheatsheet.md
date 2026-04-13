@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🦾
 Order: 4
 
+> **AWK** — pattern-scanning and text-processing language, part of POSIX and available on virtually every Unix/Linux system. GNU AWK (`gawk`) is the most common implementation. AWK excels at columnar data extraction, report generation, and one-liner transformations in shell pipelines. It remains a core sysadmin tool with no signs of deprecation; for heavier data work, consider `python` or `miller`.
+
 ## Table of Contents
 - [Basics](#-basics--основы)
 - [Field Separators](#-field-separators--разделители-полей)
@@ -133,3 +135,12 @@ awk '{$2 = $2 * 1.1; print}' file              # Modify and print / Измени
 awk 'NR % 2 == 0' file                         # Even-numbered lines / Чётные строки
 awk 'NR % 2 == 1' file                         # Odd-numbered lines / Нечётные строки
 ```
+
+---
+
+## 📚 Documentation / Документация
+
+- [GNU AWK User's Guide (gawk)](https://www.gnu.org/software/gawk/manual/gawk.html)
+- [POSIX awk specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html)
+- [AWK — Wikipedia](https://en.wikipedia.org/wiki/AWK)
+- `man awk` / `man gawk`

@@ -5,8 +5,25 @@ Order: 3
 
 # 🐱 Tomcat — Cheatsheet
 
+## Description
+
+**Apache Tomcat** is an open-source Java servlet container developed by the Apache Software Foundation. It implements Jakarta Servlet, Jakarta Server Pages (JSP), and WebSocket specifications. Tomcat is the de facto standard for deploying Java web applications (WAR/EAR files).
+
+**Common use cases / Типичные сценарии:**
+- Running Java web applications (Spring Boot, JSP, Servlets) / Запуск Java веб-приложений
+- WAR/EAR deployment container / Контейнер для деплоя WAR/EAR
+- Development and testing of Java EE / Jakarta EE apps / Разработка и тестирование Jakarta EE
+- Embedded servlet engine in Spring Boot / Встроенный сервлет-движок в Spring Boot
+
+> [!NOTE]
+> Tomcat remains the most popular Java servlet container. **Tomcat 10+** migrated to Jakarta EE (`jakarta.*` namespace). For full Java EE / Jakarta EE application server features (EJB, JMS, etc.), consider **WildFly** or **Payara**. For microservices, **Spring Boot embedded Tomcat** or **Quarkus** are modern alternatives.
+> Tomcat — самый популярный Java servlet-контейнер. **Tomcat 10+** перешёл на Jakarta EE. Для полного Java EE сервера используйте **WildFly** или **Payara**. Для микросервисов — **Spring Boot embedded** или **Quarkus**.
+
+---
+
 ## Table of Contents
 
+- [Description](#description)
 - [Installation & Configuration](#installation--configuration)
 - [Core Management](#core-management)
 - [Deployment](#deployment)
@@ -586,3 +603,14 @@ sudo rm -rf /var/lib/tomcat9/webapps/app*                # Undeploy / Удали
 
 ---
 
+## Documentation Links
+
+- [Apache Tomcat Documentation](https://tomcat.apache.org/tomcat-10.1-doc/index.html)
+- [Tomcat Configuration Reference](https://tomcat.apache.org/tomcat-10.1-doc/config/index.html)
+- [Tomcat Manager App HowTo](https://tomcat.apache.org/tomcat-10.1-doc/manager-howto.html)
+- [Tomcat SSL/TLS Configuration](https://tomcat.apache.org/tomcat-10.1-doc/ssl-howto.html)
+- [Tomcat JDBC Connection Pool](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html)
+- [Tomcat Security Considerations](https://tomcat.apache.org/tomcat-10.1-doc/security-howto.html)
+- [Tomcat 9 Documentation (LTS)](https://tomcat.apache.org/tomcat-9.0-doc/index.html)
+
+---

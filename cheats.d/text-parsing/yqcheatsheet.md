@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: 🧪
 Order: 8
 
+> **yq** — a portable, lightweight YAML/JSON/XML/CSV/TSV processor written in Go by Mike Farah. It uses jq-like syntax for querying, modifying, and converting structured data. Heavily used in Kubernetes/Helm workflows, CI/CD pipelines, and infrastructure-as-code. Actively maintained with frequent releases. Note: there are two tools named `yq` — this cheatsheet covers the Go version ([mikefarah/yq](https://github.com/mikefarah/yq)), not the Python wrapper ([kislyuk/yq](https://github.com/kislyuk/yq)).
+
 ## Table of Contents
 - [Basics](#-basics--основы)
 - [Reading & Querying](#-reading--querying--чтение-и-запросы)
@@ -16,6 +18,7 @@ Order: 8
 - [Advanced Techniques](#-advanced-techniques--продвинутые-техники)
 - [Tips & Tricks](#-tips--tricks--советы-и-хитрости)
 - [Validation & Debugging](#-validation--debugging--проверка-и-отладка)
+- [Installation](#%EF%B8%8F-installation--установка)
 
 ---
 
@@ -191,3 +194,39 @@ yq 'explode(.) | keys' file.yaml               # Show all keys / Показат�
 yq '.. | select(type == "!!null")' file.yaml   # Find null values / Найти null значения
 yq 'path(..)' file.yaml                        # Show all paths / Показать все пути
 ```
+
+---
+
+## ⚙️ Installation / Установка
+
+```bash
+# Ubuntu/Debian (snap)
+sudo snap install yq
+
+# Fedora
+sudo dnf install yq
+
+# Arch (AUR)
+yay -S yq-bin
+
+# macOS
+brew install yq
+
+# Binary (latest, any Linux)
+wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+
+# Check version / Проверить версию
+yq --version
+```
+
+> [!NOTE]
+> Make sure you have the Go version (`mikefarah/yq`) and not the Python wrapper (`kislyuk/yq`). Check with `yq --version` — the Go version outputs `yq (https://github.com/mikefarah/yq/) version v4.x.x`.
+
+---
+
+## 📚 Documentation / Документация
+
+- [yq — GitHub repository](https://github.com/mikefarah/yq)
+- [yq Operators Reference](https://mikefarah.gitbook.io/yq/operators)
+- [yq Usage Guide](https://mikefarah.gitbook.io/yq/)
+- `yq --help`

@@ -1210,7 +1210,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🔎 GREP — Commands](cheats.d/text-parsing/grepcheatsheet.md)
 - [🧩 JQ — Commands](cheats.d/text-parsing/jqcheatsheet.md)
 - [🌀 Bash — Loops](cheats.d/text-parsing/loopscheatsheet.md)
-- [⚡ modern-cli — ripgrep / fd / bat](cheats.d/text-parsing/modernclicheatsheet.md)
+- [⚡ modern-cli — ripgrep / fd / bat / eza](cheats.d/text-parsing/modernclicheatsheet.md)
 - [✂️ SED — Commands](cheats.d/text-parsing/sedcheatsheet.md)
 - [🌳 Tree — Cheatsheet](cheats.d/text-parsing/treecheatsheet.md)
 - [🔤 tr/head/tail/watch — Commands](cheats.d/text-parsing/trheadtailwatchcheatsheet.md)
@@ -1219,7 +1219,8 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 
 ### Web Servers
 - [🪶 Apache HTTPD — Cheatsheet](cheats.d/web-servers/apachecheatsheet.md)
-- [� HAProxy — Cheatsheet](cheats.d/web-servers/haproxycheatsheet.md)
+- [🔒 Caddy — Cheatsheet](cheats.d/web-servers/caddycheatsheet.md)
+- [🌀 HAProxy — Cheatsheet](cheats.d/web-servers/haproxycheatsheet.md)
 - [🌐 Nginx — Cheatsheet](cheats.d/web-servers/nginxcheatsheet.md)
 - [🌐 WebLogic Server](cheats.d/web-servers/weblogiccheatsheet.md)
 - [🐱 Tomcat — Cheatsheet](cheats.d/web-servers/tomcatcheatsheet.md)

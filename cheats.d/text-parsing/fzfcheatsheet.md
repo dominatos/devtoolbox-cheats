@@ -3,6 +3,8 @@ Group: Text & Parsing
 Icon: ⚡
 Order: 11
 
+> **fzf** (Fuzzy Finder) — a general-purpose, interactive command-line fuzzy finder written in Go by Junegunn Choi. It reads lines from stdin and provides an interactive, filterable selection interface. Commonly used for file navigation, command history search, process management, Git workflows, and as a building block for custom shell functions. Actively maintained with frequent releases; no known alternatives match its versatility.
+
 ## Table of Contents
 - [Basics](#-basics--основы)
 - [File & Directory Navigation](#-file--directory-navigation--навигация-по-файлам-и-каталогам)
@@ -17,6 +19,7 @@ Order: 11
 - [Color Schemes](#-color-schemes--цветовые-схемы)
 - [Search Modes](#-search-modes--режимы-поиска)
 - [Performance](#-performance--производительность)
+- [Installation](#%EF%B8%8F-installation--установка)
 
 ---
 
@@ -232,3 +235,40 @@ fzf --algo=v2                                      # Use v2 algorithm / Испо
 fzf --no-sort                                      # Don't sort results / Не сортировать результаты
 fzf --tiebreak=index                               # Tiebreaker strategy / Стратегия равенства
 ```
+
+---
+
+## ⚙️ Installation / Установка
+
+```bash
+# Ubuntu/Debian
+sudo apt install fzf
+
+# Fedora
+sudo dnf install fzf
+
+# Arch
+sudo pacman -S fzf
+
+# macOS
+brew install fzf
+
+# From Git (latest)
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+
+# Check version / Проверить версию
+fzf --version
+```
+
+> [!TIP]
+> After installing, source the shell integration for keybindings (`Ctrl-T`, `Ctrl-R`, `Alt-C`):
+> `source /usr/share/doc/fzf/examples/key-bindings.bash` (path varies by distro).
+
+---
+
+## 📚 Documentation / Документация
+
+- [fzf — GitHub repository](https://github.com/junegunn/fzf)
+- [fzf Wiki — Examples](https://github.com/junegunn/fzf/wiki/examples)
+- [fzf Wiki — Configuring](https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings)
+- `man fzf`
