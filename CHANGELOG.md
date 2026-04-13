@@ -1,3 +1,15 @@
+### v1.4.1 (2026-04-13)
+
+**Features:**
+- ✅ Add online and GitHub repository links to shell script and Plasma widgets
+- ✅ Configure CodeRabbit AI review settings
+
+**Documentation:**
+- ✅ Fix Windows Setup Guide links in README.md
+- ✅ Update installer command in README to include execution policy bypass
+
+---
+
 ### v1.4.0 (2026-03-27)
 
 **Windows Support (BETA):**
