@@ -101,7 +101,7 @@ See the dedicated **[Windows Setup Guide](https://github.com/dominatos/devtoolbo
    ```
 3. Run the installer:
    ```powershell
-   .\install-devtoolbox.ps1
+   powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1
    ```
 4. Double-click the generated `cheats.exe` to run the app.
 
