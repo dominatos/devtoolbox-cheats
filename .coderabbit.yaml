@@ -9,7 +9,9 @@ reviews:
   review_status: true
   review_details: true
   collapse_walkthrough: false
-
+  auto_review:
+    enabled: true
+    drafts: false
   path_filters:
     - "**"
     - "!**/.git/**"
@@ -47,10 +49,6 @@ reviews:
     - path: "**/*.{yml,yaml}"
       instructions: |
         Review CI/CD and config files for correctness, unnecessary complexity, broken paths, and insecure defaults.
-
-auto_review:
-  enabled: true
-  drafts: false
 
 chat:
   auto_reply: true
