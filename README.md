@@ -72,6 +72,39 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 - **Open in Editor** - Launch any editor (auto-detected or custom)
 - **Export** - Save individual or all cheats to Markdown/PDF
 - **FZF Integration** - Powerful fuzzy search in terminal with syntax highlighting
+- **TLDR Generation** - Compile authored Markdown cheats into external TLDR pages
+
+### 🔧 Generated Outputs
+- **Source of Truth** - Authored cheats remain in `~/cheats.d`
+- **Native TLDR Staging Output** - Generated TLDR pages go to `~/cheats.d-gen/tldr/pages/common`
+- **External NAVI Path Reserved** - Planned NAVI output path is `~/cheats.d-gen/navi`
+- **TLDR Cache Install** - Generated pages are also copied into `~/.cache/tldr/pages/common` by default
+- **Runtime Isolation** - Generated outputs stay outside `CHEATS_DIR`, so Argos, KDE, dialog DEs, and terminal mode are unaffected
+
+### 🛠️ TLDR Generator
+```bash
+# Generate native TLDR pages and merge them into the local tldr cache
+./generate-tldr.sh
+
+# Preview without writing files
+./generate-tldr.sh --dry-run
+
+# Verify staging output and cache pages are current
+./generate-tldr.sh --check
+
+# Skip cache installation and only populate the staging tree
+./generate-tldr.sh --no-cache-install
+
+# Replace existing cached TLDR pages instead of merging into them
+./generate-tldr.sh --overwrite-existing
+```
+
+After generation, test a page with the regular client:
+
+```bash
+tldr grep
+tldr openssl
+```
 
 ### 🎨 Smart Features (KDE Widget)
 - **Editor Auto-Detection** - Scans for 16+ popular editors
