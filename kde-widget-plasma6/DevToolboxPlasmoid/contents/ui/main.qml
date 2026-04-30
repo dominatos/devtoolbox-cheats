@@ -1,26 +1,28 @@
 /*
- * Main UI entry point for DevToolbox Cheats Plasmoid
+ * Main UI entry point for DevToolbox Cheats Plasmoid (Plasma 6)
  */
 
-import QtQuick 2.15
-import org.kde.plasma.plasmoid 2.0
+import QtQuick
+import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
 
-Item {
+PlasmoidItem {
     id: root
 
-    // Plasmoid preferred representation (Compact/Full)
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
+    Plasmoid.status: PlasmaCore.Types.ActiveStatus
 
-    // Define representations
-    Plasmoid.compactRepresentation: CompactRepresentation {}
-    Plasmoid.fullRepresentation: FullRepresentation {}
+    // Show compact (icon) in panel; clicking expands to full popup
+    preferredRepresentation: compactRepresentation
 
-    // Configuration properties shortcut
-    property string cheatsDir: plasmoid.configuration.cheatsDir
-    property string cacheFile: plasmoid.configuration.cacheFile
-    property string preferredEditor: plasmoid.configuration.preferredEditor
+    compactRepresentation: CompactRepresentation {}
+    fullRepresentation: FullRepresentation {}
+
+    toolTipMainText: "DevToolbox Cheats"
+    toolTipSubText: "Click to search and copy cheatsheets"
 
     Component.onCompleted: {
-        console.log("DevToolbox Cheats widget loaded");
+        console.log("[DevToolbox] main.qml loaded successfully");
+        console.log("[DevToolbox] Plasmoid.title =", Plasmoid.title);
+        console.log("[DevToolbox] Plasmoid.icon =", Plasmoid.icon);
     }
 }

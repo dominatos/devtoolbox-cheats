@@ -3,28 +3,44 @@ Group: Storage & FS
 Icon: 💿
 Order: 2
 
-# Partition & Mount Sysadmin Cheatsheet
+# Partition & Mount — Linux Disk Management
 
-> **Context:** Linux disk partitioning and mounting operations. / Операции с разделами и монтированием в Linux.
-> **Role:** Sysadmin / DevOps
-> **Tools:** lsblk, blkid, parted, fdisk, mkfs, mount
+**Partitioning and mounting** are fundamental Linux disk operations. Partitioning divides a physical disk into logical sections, while mounting makes a filesystem accessible at a specific directory in the filesystem hierarchy. These are core skills for any Linux sysadmin.
+
+**Key concepts / Ключевые понятия:**
+- **Partition table** — metadata structure defining partition layout (MBR or GPT)
+- **Filesystem** — data structure that organizes files on a partition (ext4, XFS, Btrfs, etc.)
+- **Mount point** — a directory where a filesystem is attached to the directory tree
+- **fstab** — the configuration file defining permanent mount entries
+
+**Key tools / Основные инструменты:**
+- `lsblk` / `blkid` — device and filesystem information
+- `parted` — GPT/MBR partition management (scriptable)
+- `fdisk` — classic MBR partition management (interactive)
+- `mkfs` — filesystem creation
+- `mount` / `umount` — filesystem mounting
+
+📚 **Official Docs / Официальная документация:**
+[mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) · [fstab(5)](https://man7.org/linux/man-pages/man5/fstab.5.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html) · [fdisk(8)](https://man7.org/linux/man-pages/man8/fdisk.8.html) · [mkfs(8)](https://man7.org/linux/man-pages/man8/mkfs.8.html)
+
+## Table of Contents
+- [Disk Information](#disk-information)
+- [Partitioning](#partitioning)
+- [Formatting](#formatting)
+- [Mounting](#mounting)
+- [fstab Management](#fstab-management)
+- [Troubleshooting](#troubleshooting)
+- [Filesystem Types Comparison](#filesystem-types-comparison)
+- [Partition Table Comparison](#partition-table-comparison)
+- [Best Practices](#best-practices)
+- [Default Paths](#default-paths)
 
 ---
 
-## 📚 Table of Contents / Содержание
-
-1. [Disk Information](#disk-information--информация-о-дисках)
-2. [Partitioning](#partitioning--разметка)
-3. [Formatting](#formatting--форматирование)
-4. [Mounting](#mounting--монтирование)
-5. [fstab Management](#fstab-management--управление-fstab)
-6. [Troubleshooting](#troubleshooting--устранение-неполадок)
-
----
-
-## 1. Disk Information / Информация о дисках
+## Disk Information / Информация о дисках
 
 ### List Block Devices / Список блочных устройств
+
 ```bash
 lsblk                                     # Tree view of devices / Дерево устройств
 lsblk -f                                  # With filesystems / С файловыми системами
@@ -32,6 +48,7 @@ lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID   # Custom columns / Выборочны�
 ```
 
 ### Device Info / Информация об устройствах
+
 ```bash
 blkid                                     # UUID and FS types / UUID и типы ФС
 blkid /dev/sdb1                           # Specific device / Конкретное устройство
@@ -40,6 +57,7 @@ sudo parted -l                            # All disks info / Информаци�
 ```
 
 ### Disk Usage / Использование дисков
+
 ```bash
 df -h                                     # Mounted filesystems / Смонтированные ФС
 df -hT                                    # With filesystem type / С типом ФС
@@ -48,9 +66,10 @@ lsblk -d -o NAME,SIZE,MODEL               # Physical disks / Физически�
 
 ---
 
-## 2. Partitioning / Разметка
+## Partitioning / Разметка
 
 ### GPT Partitioning (parted) / GPT разметка
+
 ```bash
 # Create GPT table and partition / Создать GPT таблицу и раздел
 sudo parted /dev/sdb -- mklabel gpt
@@ -61,7 +80,12 @@ sudo parted /dev/sdb -- mkpart primary ext4 1MiB 50%
 sudo parted /dev/sdb -- mkpart primary xfs 50% 100%
 ```
 
+> [!TIP]
+> Starting at `1MiB` instead of `0%` ensures proper alignment for SSDs and modern drives. Misaligned partitions can cause up to 50% performance degradation on SSDs.
+> Начало с `1MiB` вместо `0%` обеспечивает правильное выравнивание для SSD. Невыровненные разделы могут вызвать падение производительности SSD до 50%.
+
 ### MBR Partitioning (fdisk) / MBR разметка
+
 ```bash
 sudo fdisk /dev/sdb                       # Interactive mode / Интерактивный режим
 # Commands: n=new, d=delete, p=print, w=write, q=quit
@@ -69,6 +93,7 @@ sudo fdisk /dev/sdb                       # Interactive mode / Интеракт�
 ```
 
 ### Partition Info / Информация о разделах
+
 ```bash
 sudo parted /dev/sdb print                # Show partitions / Показать разделы
 sudo fdisk -l /dev/sdb                    # Partition table / Таблица разделов
@@ -77,9 +102,10 @@ cat /proc/partitions                      # Kernel view / Вид ядра
 
 ---
 
-## 3. Formatting / Форматирование
+## Formatting / Форматирование
 
 ### Create Filesystems / Создание файловых систем
+
 ```bash
 sudo mkfs.ext4 /dev/sdb1                  # ext4 filesystem / ФС ext4
 sudo mkfs.xfs /dev/sdb1                   # XFS filesystem / ФС XFS
@@ -88,13 +114,24 @@ sudo mkfs.vfat -F 32 /dev/sdb1            # FAT32 (USB/EFI) / FAT32 (USB/EFI)
 ```
 
 ### Filesystem Options / Опции форматирования
+
 ```bash
 sudo mkfs.ext4 -L "DATA" /dev/sdb1        # With label / С меткой
 sudo mkfs.xfs -L "BACKUP" /dev/sdb1       # XFS with label / XFS с меткой
 sudo mkfs.ext4 -j /dev/sdb1               # With journaling / С журналированием
+sudo mkfs.ext4 -m 1 /dev/sdb1             # Reserve 1% (instead of 5%) / Зарезервировать 1% (вместо 5%)
 ```
 
+> [!TIP]
+> By default, `mkfs.ext4` reserves 5% of space for root. On large data volumes, reduce this with `-m 1` (1%) or `-m 0` (0%) to avoid wasting space.
+> По умолчанию `mkfs.ext4` резервирует 5% для root. На больших томах уменьшите с `-m 1` (1%) или `-m 0` (0%).
+
 ### Check/Repair Filesystems / Проверка/Восстановление ФС
+
+> [!WARNING]
+> Filesystem must be **unmounted** before running `fsck` or `xfs_repair`. Running on a mounted filesystem can cause **data corruption**.
+> Файловая система должна быть **размонтирована** перед запуском `fsck` или `xfs_repair`. Работа на смонтированной ФС может вызвать **повреждение данных**.
+
 ```bash
 sudo fsck /dev/sdb1                       # Check filesystem / Проверить ФС
 sudo fsck.ext4 -f /dev/sdb1               # Force check ext4 / Принудительная проверка
@@ -103,9 +140,10 @@ sudo xfs_repair /dev/sdb1                 # Repair XFS / Восстановит�
 
 ---
 
-## 4. Mounting / Монтирование
+## Mounting / Монтирование
 
 ### Basic Mount / Базовое монтирование
+
 ```bash
 sudo mkdir -p /mnt/disk                   # Create mount point / Создать точку монтирования
 sudo mount /dev/sdb1 /mnt/disk            # Mount device / Смонтировать устройство
@@ -113,6 +151,7 @@ sudo mount -t xfs /dev/sdb1 /mnt/disk     # Specify FS type / Указать т�
 ```
 
 ### Mount Options / Опции монтирования
+
 ```bash
 sudo mount -o ro /dev/sdb1 /mnt/disk      # Read-only / Только чтение
 sudo mount -o noexec /dev/sdb1 /mnt/disk  # No executables / Без исполняемых
@@ -120,6 +159,7 @@ sudo mount -o rw,noatime /dev/sdb1 /mnt/disk  # Read-write, no atime / RW, бе�
 ```
 
 ### Mount by UUID / Монтирование по UUID
+
 ```bash
 # Get UUID / Получить UUID
 blkid /dev/sdb1
@@ -129,13 +169,19 @@ sudo mount UUID="<UUID>" /mnt/disk
 ```
 
 ### Unmount / Размонтирование
+
 ```bash
 sudo umount /mnt/disk                     # Unmount by path / Размонтировать по пути
 sudo umount /dev/sdb1                     # Unmount by device / Размонтировать по устройству
 sudo umount -l /mnt/disk                  # Lazy unmount / Отложенное размонтирование
 ```
 
+> [!NOTE]
+> Lazy unmount (`-l`) detaches the filesystem immediately but cleans up when it's no longer in use. Useful when processes are still accessing files.
+> Отложенное размонтирование (`-l`) сразу отключает ФС, но очищает, когда она больше не используется. Полезно, когда процессы всё ещё работают с файлами.
+
 ### Check Mounted / Проверка смонтированных
+
 ```bash
 mount | grep sdb                          # Find mounted / Найти смонтированные
 findmnt                                   # Tree of mounts / Дерево монтирования
@@ -144,15 +190,19 @@ findmnt /mnt/disk                         # Check specific / Проверить 
 
 ---
 
-## 5. fstab Management / Управление fstab
+## fstab Management / Управление fstab
+
+`/etc/fstab`
 
 ### fstab Format / Формат fstab
+
 ```bash
 # Format: <device> <mount> <type> <options> <dump> <pass>
 # Формат: <устройство> <точка> <тип> <опции> <dump> <pass>
 ```
 
 ### Add to fstab / Добавить в fstab
+
 ```bash
 # By device / По устройству
 echo '/dev/sdb1 /mnt/disk xfs defaults 0 0' | sudo tee -a /etc/fstab
@@ -165,16 +215,34 @@ echo 'LABEL=DATA /mnt/disk ext4 defaults 0 2' | sudo tee -a /etc/fstab
 ```
 
 ### Common fstab Options / Типичные опции fstab
-```text
-defaults    — rw,suid,dev,exec,auto,nouser,async
-noatime     — Don't update access time / Не обновлять время доступа
-nofail      — Don't fail boot if missing / Не прерывать загрузку если отсутствует
-ro          — Read-only / Только чтение
-noexec      — No executables / Без исполняемых файлов
-_netdev     — Network device (wait for network) / Сетевое устройство
-```
+
+| Option | Description (EN) | Описание (RU) |
+| :--- | :--- | :--- |
+| `defaults` | `rw,suid,dev,exec,auto,nouser,async` | Опции по умолчанию |
+| `noatime` | Don't update access time | Не обновлять время доступа |
+| `nofail` | Don't fail boot if missing | Не прерывать загрузку если отсутствует |
+| `ro` | Read-only | Только чтение |
+| `noexec` | No executables | Без исполняемых файлов |
+| `nosuid` | Ignore setuid/setgid bits | Игнорировать биты setuid/setgid |
+| `_netdev` | Network device (wait for network) | Сетевое устройство |
+| `discard` | Enable TRIM for SSDs | Включить TRIM для SSD |
+
+### fstab dump and pass fields / Поля dump и pass
+
+| Field | Value | Description (EN) | Описание (RU) |
+| :--- | :--- | :--- | :--- |
+| **dump** | `0` | Don't backup with dump | Не бэкапить |
+| **dump** | `1` | Backup with dump | Бэкапить |
+| **pass** | `0` | Don't fsck at boot | Не проверять при загрузке |
+| **pass** | `1` | fsck first (root only) | Проверять первым (только root) |
+| **pass** | `2` | fsck after root | Проверять после root |
 
 ### Test fstab / Тестирование fstab
+
+> [!TIP]
+> Always test fstab changes with `mount -fav` before rebooting. A bad fstab entry can prevent the system from booting.
+> Всегда тестируйте изменения fstab с `mount -fav` перед перезагрузкой. Некорректная запись может помешать загрузке системы.
+
 ```bash
 sudo mount -a                             # Mount all from fstab / Смонтировать всё из fstab
 sudo mount -fav                           # Fake mount (test) / Тестовое монтирование
@@ -183,9 +251,14 @@ findmnt --verify                          # Verify fstab syntax / Провери
 
 ---
 
-## 6. Troubleshooting / Устранение неполадок
+## Troubleshooting / Устранение неполадок
 
 ### Device Busy / Устройство занято
+
+> [!CAUTION]
+> `fuser -km` will **kill all processes** using the mount point. Use with extreme caution in production.
+> `fuser -km` **убьёт все процессы**, использующие точку монтирования. Используйте с крайней осторожностью в продакшене.
+
 ```bash
 lsof +D /mnt/disk                         # What's using mount / Что использует точку
 fuser -mv /mnt/disk                       # Processes using mount / Процессы на точке
@@ -193,6 +266,7 @@ sudo fuser -km /mnt/disk                  # Kill processes / Убить проц
 ```
 
 ### Mount Errors / Ошибки монтирования
+
 ```bash
 dmesg | tail -20                          # Kernel messages / Сообщения ядра
 journalctl -xe                            # Systemd journal / Журнал systemd
@@ -200,28 +274,86 @@ sudo mount -v /dev/sdb1 /mnt/disk         # Verbose mount / Подробный �
 ```
 
 ### Refresh Partition Table / Обновить таблицу разделов
+
 ```bash
 sudo partprobe /dev/sdb                   # Re-read partitions / Перечитать разделы
 sudo blockdev --rereadpt /dev/sdb         # Alternative method / Альтернативный метод
 ```
 
+### Wrong Filesystem Type / Неверный тип ФС
+
+```bash
+# "mount: wrong fs type, bad option, bad superblock"
+# Check actual filesystem type / Проверить фактический тип ФС
+blkid /dev/sdb1
+# Then specify correct type / Затем укажите правильный тип
+sudo mount -t ext4 /dev/sdb1 /mnt/disk
+```
+
 ---
 
-# 💡 Best Practices / Лучшие практики
-# Use UUID in fstab for stability / Используйте UUID в fstab для стабильности
-# Add nofail option for non-critical mounts / Добавьте nofail для некритичных точек
-# Use XFS for large files, ext4 for general use / XFS для больших файлов, ext4 для общего использования
-# Always backup fstab before editing / Всегда делайте бэкап fstab перед редактированием
-# Test fstab changes with mount -a before reboot / Тестируйте изменения fstab перед перезагрузкой
+## Filesystem Types Comparison / Сравнение типов ФС
 
-# 📋 Common Filesystem Types / Распространённые типы ФС
-# ext4   — Linux default, journaling / Linux по умолчанию, журналирование
-# xfs    — High-performance, large files / Высокопроизводительная, большие файлы
-# btrfs  — Copy-on-write, snapshots / Копирование при записи, снапшоты
-# vfat   — FAT32, USB compatibility / FAT32, совместимость с USB
-# ntfs   — Windows NTFS (ntfs-3g) / Windows NTFS
+| Filesystem | Journaling | Max File Size | Shrinkable | Best For (EN) | Лучше для (RU) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **ext4** | ✅ Yes | 16 TiB | ✅ Offline | General purpose, Linux default | Общее назначение, Linux по умолчанию |
+| **XFS** | ✅ Yes | 8 EiB | ❌ No | Large files, high-performance | Большие файлы, высокая производительность |
+| **Btrfs** | ✅ CoW | 16 EiB | ✅ Online | Snapshots, advanced features | Снапшоты, продвинутые возможности |
+| **FAT32** | ❌ No | 4 GiB | N/A | USB, EFI, cross-platform | USB, EFI, кроссплатформенность |
+| **NTFS** | ✅ Yes | 16 EiB | N/A | Windows compatibility (ntfs-3g) | Совместимость с Windows |
+| **exFAT** | ❌ No | 16 EiB | N/A | Large USB drives, SDXC cards | Большие USB, SDXC карты |
 
-# 🔧 Default Paths / Пути по умолчанию
-# /etc/fstab                — Filesystem table / Таблица ФС
-# /mnt/                     — Temporary mounts / Временные монтирования
-# /media/                   — Removable media / Съёмные носители
+---
+
+## Partition Table Comparison / Сравнение таблиц разделов
+
+| Feature | MBR (DOS) | GPT |
+| :--- | :--- | :--- |
+| **Max disk size** | 2 TiB | 9.4 ZiB |
+| **Max partitions** | 4 primary (15 with extended) | 128 |
+| **Boot mode** | BIOS (Legacy) | UEFI |
+| **Redundancy** | Single copy | Backup copy at end of disk |
+| **Checksum** | ❌ No | ✅ CRC32 |
+| **Compatibility** | Universal | Modern systems (2010+) |
+| **Best for** | Legacy systems, small disks | Modern systems, large disks |
+
+---
+
+## Best Practices / Лучшие практики
+
+> [!IMPORTANT]
+> - Use **UUID in fstab** for stability — device names can change between reboots.
+> - Add **`nofail`** option for non-critical mounts to prevent boot failures.
+> - Use **XFS** for large files, **ext4** for general use, **Btrfs** for snapshots.
+> - Always **backup fstab** before editing: `cp /etc/fstab /etc/fstab.bak`
+> - **Test** fstab changes with `mount -a` before rebooting.
+> - Use **`noatime`** for better performance on SSDs and busy filesystems.
+> - Add **`discard`** mount option for SSD TRIM support, or use periodic `fstrim`.
+
+---
+
+## Default Paths / Пути по умолчанию
+
+| Path | Purpose (EN) | Назначение (RU) |
+| :--- | :--- | :--- |
+| `/etc/fstab` | Filesystem table | Таблица файловых систем |
+| `/mnt/` | Temporary mounts | Временные монтирования |
+| `/media/` | Removable media (auto-mount) | Съёмные носители (автомонтирование) |
+| `/proc/partitions` | Kernel partition list | Список разделов ядра |
+| `/proc/mounts` | Currently mounted filesystems | Текущие смонтированные ФС |
+| `/dev/disk/by-uuid/` | Disk device symlinks by UUID | Ссылки на устройства по UUID |
+| `/dev/disk/by-label/` | Disk device symlinks by label | Ссылки на устройства по метке |
+
+---
+
+## Documentation Links
+
+- **mount(8):** https://man7.org/linux/man-pages/man8/mount.8.html
+- **fstab(5):** https://man7.org/linux/man-pages/man5/fstab.5.html
+- **parted(8):** https://man7.org/linux/man-pages/man8/parted.8.html
+- **fdisk(8):** https://man7.org/linux/man-pages/man8/fdisk.8.html
+- **mkfs(8):** https://man7.org/linux/man-pages/man8/mkfs.8.html
+- **blkid(8):** https://man7.org/linux/man-pages/man8/blkid.8.html
+- **ArchWiki — File systems:** https://wiki.archlinux.org/title/File_systems
+- **ArchWiki — fstab:** https://wiki.archlinux.org/title/Fstab
+- **Red Hat — Managing Storage:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/managing_file_systems/index

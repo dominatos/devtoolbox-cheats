@@ -3,51 +3,78 @@ Group: System & Logs
 Icon: 🕰️
 Order: 4
 
-## Table of Contents
-- [Timer Basics](#-timer-basics--основы-таймеров)
-- [Creating Timers](#-creating-timers--создание-таймеров)
-- [Management](#-management--управление)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
+# systemd Timers — Scheduled Tasks
+
+**systemd timers** are the modern replacement for cron jobs, offering calendar-based and monotonic scheduling with full integration into the systemd ecosystem. Each timer triggers a corresponding `.service` unit, with output logged via journald.
+
+**Advantages over cron / Преимущества перед cron:**
+- **Journald integration** — all output logged automatically, queryable via `journalctl -u <service>`
+- **Dependency support** — `After=`, `Requires=`, integration with network/mount targets
+- **Persistent flag** — automatically runs missed jobs if system was off
+- **RandomizedDelaySec** — spreads load across time window
+- **Resource control** — cgroups limits, sandboxing via `[Service]` directives
+- **Easy testing** — `systemd-analyze calendar` validates expressions before deployment
+
+**When to use cron vs timers / Когда использовать cron vs таймеры:**
+- Use **systemd timers** for new setups, complex dependencies, resource limits
+- Use **cron** for simple one-liners, legacy compatibility, or minimal systems without systemd
 
 ---
 
-# 🔧 Timer Basics / Основы таймеров
+## 📚 Table of Contents / Содержание
+
+1. [Timer Basics](#timer-basics)
+2. [Creating Timers](#creating-timers)
+3. [Management](#management)
+4. [Real-World Examples](#real-world-examples)
+
+---
+
+## Timer Basics
 
 ### List Timers / Список таймеров
+
+```bash
 systemctl list-timers                         # List active timers / Список активных таймеров
 systemctl list-timers --all                   # List all timers / Список всех таймеров
 systemctl list-timers --state=failed          # Failed timers / Неудавшиеся таймеры
+```
 
 ### Timer Status / Статус таймера
+
+```bash
 systemctl status my.timer                     # Show timer status / Показать статус таймера
 systemctl show my.timer                       # Detailed timer properties / Подробные свойства таймера
 journalctl -u my.timer                        # Timer logs / Логи таймера
 journalctl -u my.service                      # Service logs / Логи сервиса
+```
 
 ---
 
-# 📝 Creating Timers / Создание таймеров
+## Creating Timers
 
 ### Timer Unit File / Файл таймера
+
+`/etc/systemd/system/my.timer`
+
 ```ini
-# /etc/systemd/system/my.timer
 [Unit]
 Description=Run my service daily
-Requires=my.service
 
 [Timer]
-OnCalendar=daily
-OnCalendar=*-*-* 03:00:00            # Every day at 3 AM / Каждый день в 3:00
-Persistent=true                       # Run if missed / Запустить если пропущено
-RandomizedDelaySec=30min              # Random delay / Случайная задержка
+OnCalendar=*-*-* 03:00:00                     # Every day at 3 AM / Каждый день в 3:00
+Persistent=true                               # Run if missed / Запустить если пропущено
+RandomizedDelaySec=30min                      # Random delay / Случайная задержка
 
 [Install]
 WantedBy=timers.target
 ```
 
 ### Service Unit File / Файл сервиса
+
+`/etc/systemd/system/my.service`
+
 ```ini
-# /etc/systemd/system/my.service
 [Unit]
 Description=My backup job
 
@@ -59,6 +86,7 @@ Group=backup
 ```
 
 ### OnCalendar Formats / Форматы OnCalendar
+
 ```bash
 OnCalendar=hourly                             # Every hour / Каждый час
 OnCalendar=daily                              # Daily at midnight / Ежедневно в полночь
@@ -72,6 +100,7 @@ OnCalendar=*-*-01 02:00:00                    # 1st of month at 2 AM / 1-го ч
 ```
 
 ### Monotonic Timers / Монотонные таймеры
+
 ```ini
 OnBootSec=15min                               # 15 min after boot / 15 мин после загрузки
 OnUnitActiveSec=1h                            # 1 hour after last activation / 1 час после последней активации
@@ -79,31 +108,72 @@ OnUnitInactiveSec=30min                       # 30 min after last deactivation /
 OnStartupSec=5min                             # 5 min after systemd started / 5 мин после запуска systemd
 ```
 
+### Timer Type Comparison / Сравнение типов таймеров
+
+| Timer Type | Description (EN / RU) | Use Case / Когда использовать |
+| :--- | :--- | :--- |
+| `OnCalendar` | Calendar-based (like cron) / По календарю | Backups at 3 AM, monthly tasks |
+| `OnBootSec` | After system boot / После загрузки | Post-boot warmup, checks |
+| `OnUnitActiveSec` | After last activation / После активации | Recurring polling intervals |
+| `OnStartupSec` | After systemd starts / После запуска systemd | Similar to OnBootSec |
+
 ---
 
-# 🛠️ Management / Управление
+## Management
 
 ### Enable & Start / Включить и запустить
+
+```bash
 sudo systemctl daemon-reload                  # Reload systemd / Перезагрузить systemd
 sudo systemctl enable my.timer                # Enable timer / Включить таймер
 sudo systemctl start my.timer                 # Start timer / Запустить таймер
 sudo systemctl enable --now my.timer          # Enable and start / Включить и запустить
+```
 
 ### Control / Управление
+
+```bash
 sudo systemctl stop my.timer                  # Stop timer / Остановить таймер
 sudo systemctl disable my.timer               # Disable timer / Отключить таймер
 sudo systemctl restart my.timer               # Restart timer / Перезапустить таймер
+```
 
 ### Trigger Manually / Запустить вручную
+
+```bash
 sudo systemctl start my.service               # Run service now / Запустить сервис сейчас
+```
+
+### Verify Timer Schedule / Проверить расписание таймера
+
+```bash
+# Check next run time / Проверить следующий запуск
+systemd-analyze calendar '*-*-* 03:00:00'
+
+# Test timer expression / Тестировать выражение таймера
+systemd-analyze calendar 'Mon,Wed,Fri 10:00'
+
+# Show timer next run / Показать следующий запуск таймера
+systemctl list-timers backup.timer
+```
+
+### Parse Calendar Specs / Разобрать спецификации календаря
+
+```bash
+systemd-analyze calendar daily                # Parse 'daily' / Разобрать 'daily'
+systemd-analyze calendar hourly               # Parse 'hourly' / Разобрать 'hourly'
+systemd-analyze calendar 'Mon *-*-* 10:00'    # Parse expression / Разобрать выражение
+```
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## Real-World Examples
 
 ### Daily Backup / Ежедневное резервное копирование
+
+`/etc/systemd/system/backup.timer`
+
 ```ini
-# /etc/systemd/system/backup.timer
 [Unit]
 Description=Daily backup at 3 AM
 
@@ -115,8 +185,9 @@ Persistent=true
 WantedBy=timers.target
 ```
 
+`/etc/systemd/system/backup.service`
+
 ```ini
-# /etc/systemd/system/backup.service
 [Unit]
 Description=Backup script
 
@@ -133,8 +204,10 @@ sudo systemctl enable --now backup.timer
 ```
 
 ### Hourly Log Rotation / Ежечасная ротация логов
+
+`/etc/systemd/system/logrotate.timer`
+
 ```ini
-# /etc/systemd/system/logrotate.timer
 [Unit]
 Description=Hourly log rotation
 
@@ -146,8 +219,9 @@ Persistent=true
 WantedBy=timers.target
 ```
 
+`/etc/systemd/system/logrotate.service`
+
 ```ini
-# /etc/systemd/system/logrotate.service
 [Unit]
 Description=Rotate logs
 
@@ -157,8 +231,10 @@ ExecStart=/usr/sbin/logrotate /etc/logrotate.conf
 ```
 
 ### Cleanup Old Files Every Week / Очистка старых файлов раз в неделю
+
+`/etc/systemd/system/cleanup.timer`
+
 ```ini
-# /etc/systemd/system/cleanup.timer
 [Unit]
 Description=Weekly cleanup
 
@@ -178,8 +254,10 @@ find /var/log -name "*.log.gz" -mtime +30 -delete
 ```
 
 ### Database Backup Every 6 Hours / Резервное копирование БД каждые 6 часов
+
+`/etc/systemd/system/db-backup.timer`
+
 ```ini
-# /etc/systemd/system/db-backup.timer
 [Unit]
 Description=Database backup every 6 hours
 
@@ -191,8 +269,9 @@ Persistent=true
 WantedBy=timers.target
 ```
 
+`/etc/systemd/system/db-backup.service`
+
 ```ini
-# /etc/systemd/system/db-backup.service
 [Unit]
 Description=Backup PostgreSQL database
 
@@ -204,8 +283,10 @@ Environment="PGPASSWORD=<PASSWORD>"
 ```
 
 ### Monitor Service Every 5 Minutes / Мониторинг сервиса каждые 5 минут
+
+`/etc/systemd/system/monitor.timer`
+
 ```ini
-# /etc/systemd/system/monitor.timer
 [Unit]
 Description=Monitor service every 5 minutes
 
@@ -218,8 +299,10 @@ WantedBy=timers.target
 ```
 
 ### Certificate Renewal Daily / Обновление сертификатов ежедневно
+
+`/etc/systemd/system/certbot.timer`
+
 ```ini
-# /etc/systemd/system/certbot.timer
 [Unit]
 Description=Certbot renewal
 
@@ -232,8 +315,9 @@ Persistent=true
 WantedBy=timers.target
 ```
 
+`/etc/systemd/system/certbot.service`
+
 ```ini
-# /etc/systemd/system/certbot.service
 [Unit]
 Description=Certbot renewal service
 
@@ -243,41 +327,26 @@ ExecStart=/usr/bin/certbot renew --quiet
 ExecStartPost=/bin/systemctl reload nginx
 ```
 
-### Verify Timer Schedule / Проверить расписание таймера
-```bash
-# Check next run time / Проверить следующий запуск
-systemd-analyze calendar '*-*-* 03:00:00'
+---
 
-# Test timer expression / Тестировать выражение таймера
-systemd-analyze calendar 'Mon,Wed,Fri 10:00'
+## 💡 Best Practices / Лучшие практики
 
-# Show timer next run / Показать следующий запуск таймера
-systemctl list-timers backup.timer
-```
+- Use `Persistent=true` to run missed jobs. / Используйте `Persistent=true` для пропущенных задач.
+- Use `RandomizedDelaySec` to spread load. / Используйте `RandomizedDelaySec` для распределения нагрузки.
+- Always create **both** `.timer` and `.service` files. / Всегда создавайте оба файла.
+- Test with `systemd-analyze calendar`. / Тестируйте с `systemd-analyze calendar`.
+- Use `Type=oneshot` for service units. / Используйте `Type=oneshot` для сервисных юнитов.
+- Check logs with `journalctl -u <service>`. / Проверяйте логи через journalctl.
 
-# 💡 Best Practices / Лучшие практики
-# Use Persistent=true to run missed jobs / Используйте Persistent=true для запуска пропущенных задач
-# Use RandomizedDelaySec to spread load / Используйте RandomizedDelaySec для распределения нагрузки
-# Always create both .timer and .service / Всегда создавайте оба .timer и .service
-# Test with systemd-analyze calendar / Тестируйте с systemd-analyze calendar
-# Use Type=oneshot for service units / Используйте Type=oneshot для сервисных юнитов
-# Check logs with journalctl / Проверяйте логи с journalctl
+> [!NOTE]
+> Common issues: Timer running but service not starting → check `Requires=`. Missed jobs not running → add `Persistent=true`. Wrong timezone → check `timedatectl`. / Частые проблемы: таймер работает но сервис нет → проверьте `Requires=`.
 
-# 🔧 Timer Options / Опции таймера
-# OnCalendar: Calendar-based scheduling / Расписание по календарю
-# OnBootSec: After boot / После загрузки
-# OnStartupSec: After systemd start / После запуска systemd
-# OnUnitActiveSec: After last activation / После последней активации
-# Persistent: Run missed jobs / Запускать пропущенные задачи
-# RandomizedDelaySec: Random delay / Случайная задержка
-# AccuracySec: Accuracy / Точность
+---
 
-# 📋 systemd-analyze Calendar / Анализ календаря
-systemd-analyze calendar daily                # Parse 'daily' / Разобрать 'daily'
-systemd-analyze calendar hourly               # Parse 'hourly' / Разобрать 'hourly'
-systemd-analyze calendar 'Mon *-*-* 10:00'    # Parse expression / Разобрать выражение
+## Documentation Links
 
-# ⚠️ Common Issues / Распространённые проблемы
-# Timer running but service not: Check Requires= / Таймер работает но сервис нет: Проверьте Requires=
-# Missed jobs not running: Add Persistent=true / Пропущенные задачи не запускаются: Добавьте Persistent=true
-# Wrong timezone: Check timedatectl / Неправильный часовой пояс: Проверьте timedatectl
+- **systemd.timer(5):** https://man7.org/linux/man-pages/man5/systemd.timer.5.html
+- **systemd.time(7):** https://man7.org/linux/man-pages/man7/systemd.time.7.html
+- **systemd-analyze(1):** https://man7.org/linux/man-pages/man1/systemd-analyze.1.html
+- **ArchWiki — Timers:** https://wiki.archlinux.org/title/Systemd/Timers
+- **Red Hat — systemd Timers:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/managing-system-services-with-systemctl_configuring-basic-system-settings#creating-and-managing-timer-units_managing-system-services-with-systemctl

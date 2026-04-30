@@ -38,6 +38,45 @@ else
 fi
 
 echo ""
+echo "📦 Installing dependencies..."
+# fzf, bat, zenity, wl-clipboard, xclip, libnotify, fontconfig
+if command -v apt &>/dev/null; then
+    echo "  → Detected apt (Debian/Ubuntu)"
+    sudo apt install -y \
+        fonts-noto-color-emoji \
+        fzf bat \
+        zenity \
+        wl-clipboard xclip \
+        libnotify-bin \
+        fontconfig
+elif command -v dnf &>/dev/null; then
+    echo "  → Detected dnf (RHEL/Rocky/AlmaLinux)"
+    sudo dnf install -y \
+        google-noto-emoji-color-fonts \
+        fzf bat \
+        zenity \
+        wl-clipboard xclip \
+        libnotify \
+        fontconfig
+elif command -v pacman &>/dev/null; then
+    echo "  → Detected pacman (Arch)"
+    sudo pacman -S --noconfirm \
+        noto-fonts-emoji \
+        fzf bat \
+        zenity \
+        wl-clipboard xclip \
+        libnotify \
+        fontconfig
+else
+    echo "  ⚠️  No supported package manager found (apt/dnf/pacman)."
+    echo "     Please install manually: fzf bat zenity wl-clipboard xclip libnotify fontconfig"
+fi
+
+echo ""
+echo "🔤 Refreshing font cache..."
+fc-cache -f -v
+
+echo ""
 echo "✅ Installation complete!"
 echo "You can now add 'DevToolbox Cheats' to your panel or desktop."
 echo "You may need to logout/login or restart Plasma to see the new widget."

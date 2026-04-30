@@ -1,0 +1,15 @@
+[Unit]
+Description=Update devtoolbox-cheats cheatsheets
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/cheats-updater update
+Environment=CHEATS_DIR=%h/cheats.d
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=%h/cheats.d %h/.local/share/devtoolbox-cheats
+PrivateTmp=true
