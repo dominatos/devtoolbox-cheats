@@ -3,6 +3,12 @@ Group: Network
 Icon: 🔁
 Order: 10
 
+# autossh — Resilient SSH Tunnels
+
+`autossh` is a program to start an SSH session and monitor it, automatically restarting the SSH session if it drops. It is commonly used for maintaining persistent SSH tunnels (port forwarding) across unreliable networks. It wraps the standard `ssh` command and adds automatic reconnection logic.
+
+📚 **Official Docs / Официальная документация:** [autossh(1)](https://www.harding.motd.ca/autossh/)
+
 ## Table of Contents
 - [Basic Tunneling](#-basic-tunneling--базовое-туннелирование)
 - [Persistent Tunnels](#-persistent-tunnels--постоянные-туннели)
@@ -12,61 +18,79 @@ Order: 10
 
 ---
 
-# 🔧 Basic Tunneling / Базовое туннелирование
+## 🔧 Basic Tunneling / Базовое туннелирование
 
 ### Local Port Forwarding / Локальная переадресация портов
+```bash
 autossh -M 0 -N -L 8080:127.0.0.1:80 <USER>@<HOST>  # Forward local 8080→remote 80 / Переслать локальный 8080→удалённый 80
 autossh -M 0 -N -L 3306:localhost:3306 <USER>@<HOST>  # MySQL tunnel / MySQL туннель
 autossh -M 0 -N -L 5432:localhost:5432 <USER>@<HOST>  # PostgreSQL tunnel / PostgreSQL туннель
 autossh -M 0 -N -L 0.0.0.0:8080:localhost:80 <USER>@<HOST>  # Bind to all interfaces / Привязать ко всем интерфейсам
+```
 
 ### Remote Port Forwarding / Удалённая переадресация портов
+```bash
 autossh -M 0 -N -R 2222:127.0.0.1:22 <USER>@<HOST>  # Forward remote 2222→local 22 / Переслать удалённый 2222→локальный 22
 autossh -M 0 -N -R 8080:localhost:80 <USER>@<HOST>  # Expose local web server / Выставить локальный веб сервер
 autossh -M 0 -N -R 0.0.0.0:9000:localhost:9000 <USER>@<HOST>  # Bind to all remote interfaces / Привязать ко всем удалённым интерфейсам
+```
 
 ### Dynamic Port Forwarding (SOCKS) / Динамическая переадресация (SOCKS)
+```bash
 autossh -M 0 -N -D 1080 <USER>@<HOST>          # SOCKS proxy on port 1080 / SOCKS прокси на порту 1080
 autossh -M 0 -N -D 0.0.0.0:1080 <USER>@<HOST>  # SOCKS proxy on all interfaces / SOCKS прокси на всех интерфейсах
+```
 
 ---
 
-# 🔄 Persistent Tunnels / Постоянные туннели
+## 🔄 Persistent Tunnels / Постоянные туннели
 
 ### Monitoring Options / Опции мониторинга
+```bash
 autossh -M 0 -N -L 8080:localhost:80 <USER>@<HOST>  # Disable monitoring port (recommended) / Отключить порт мониторинга (рекомендуется)
 autossh -M 20000 -N -L 8080:localhost:80 <USER>@<HOST>  # Use monitoring port 20000 / Использовать порт мониторинга 20000
+```
 
 ### ServerAliveInterval / Интервал проверки сервера
+```bash
 autossh -M 0 -N -o "ServerAliveInterval=30" -o "ServerAliveCountMax=3" -L 8080:localhost:80 <USER>@<HOST>
 # Check every 30s, fail after 3 attempts / Проверять каждые 30с, упасть после 3 попыток
+```
 
 ### ExitOnForwardFailure / Выход при ошибке переадресации
+```bash
 autossh -M 0 -N -o "ExitOnForwardFailure=yes" -L 8080:localhost:80 <USER>@<HOST>
 # Exit if port forwarding fails / Выйти если переадресация порта не удалась
+```
 
 ---
 
-# 📊 Monitoring & Debugging / Мониторинг и отладка
+## 📊 Monitoring & Debugging / Мониторинг и отладка
 
 ### Verbose Mode / Подробный режим
+```bash
 autossh -M 0 -N -v -L 8080:localhost:80 <USER>@<HOST>  # Verbose / Подробный
 autossh -M 0 -N -vv -L 8080:localhost:80 <USER>@<HOST>  # Very verbose / Очень подробный
+```
 
 ### Environment Variables / Переменные окружения
+```bash
 export AUTOSSH_DEBUG=1                        # Enable debug / Включить отладку
 export AUTOSSH_LOGFILE=/var/log/autossh.log   # Log to file / Логировать в файл
 export AUTOSSH_POLL=60                        # Poll interval / Интервал опроса
 export AUTOSSH_GATETIME=0                     # No wait before first connection / Не ждать перед первым соединением
+```
 
 ### Check Connection / Проверить соединение
+```bash
 ps aux | grep autossh                         # Check if running / Проверить работает ли
 netstat -tlnp | grep 8080                     # Check port / Проверить порт
 ss -tlnp | grep 8080                          # Alternative / Альтернатива
+```
 
 ---
 
-# 🔧 Systemd Integration / Интеграция с systemd
+## 🔧 Systemd Integration / Интеграция с systemd
 
 ### Create Systemd Service / Создать Systemd сервис
 ```ini
@@ -98,7 +122,7 @@ sudo journalctl -u autossh-tunnel -f          # Follow logs / Следовать
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples / Примеры из практики
 
 ### Database Access / Доступ к базе данных
 ```bash
@@ -214,31 +238,38 @@ Host tunnel
 autossh -M 0 -N tunnel
 ```
 
-# 💡 Best Practices / Лучшие практики
-# Always use -M 0 (disable monitoring port) / Всегда используйте -M 0 (отключить порт мониторинга)
-# Set ServerAliveInterval for reliability / Устанавливайте ServerAliveInterval для надёжности
-# Use systemd for persistent tunnels / Используйте systemd для постоянных туннелей
-# Use SSH config for cleaner commands / Используйте SSH config для чистых команд
-# Set ExitOnForwardFailure=yes for critical tunnels / Устанавливайте ExitOnForwardFailure=yes для критических туннелей
-# Monitor logs with journalctl / Мониторьте логи с journalctl
+## 💡 Best Practices / Лучшие практики
 
-# 🔧 SSH Config Options / Опции SSH Config
-# ServerAliveInterval — Keepalive interval / Интервал keepalive
-# ServerAliveCountMax — Max failed keepalives / Макс неудачных keepalive
-# ExitOnForwardFailure — Exit if forwarding fails / Выйти если переадресация не удалась
-# LocalForward — Local port forward / Локальная переадресация
-# RemoteForward — Remote port forward / Удалённая переадресация
-# DynamicForward — SOCKS proxy / SOCKS прокси
+- Always use `-M 0` (disable monitoring port) / Всегда используйте `-M 0` (отключить порт мониторинга)
+- Set `ServerAliveInterval` for reliability / Устанавливайте `ServerAliveInterval` для надёжности
+- Use systemd for persistent tunnels / Используйте systemd для постоянных туннелей
+- Use SSH config for cleaner commands / Используйте SSH config для чистых команд
+- Set `ExitOnForwardFailure=yes` for critical tunnels / Устанавливайте `ExitOnForwardFailure=yes` для критических туннелей
 
-# 📋 Common Use Cases / Распространённые случаи использования
-# Database access — -L 3306:localhost:3306
-# Web preview — -R 8080:localhost:3000
-# SOCKS proxy — -D 1080
-# Reverse shell — -R 2222:localhost:22
-# VNC access — -L 5900:localhost:5900
+## 🔧 SSH Config Options / Опции SSH Config
 
-# ⚠️ Security Notes / Заметки по безопасности
-# Only bind to localhost when possible / Привязывайтесь только к localhost когда возможно
-# Use SSH keys instead of passwords / Используйте SSH ключи вместо паролей
-# Restrict port forwarding in sshd_config if needed / Ограничьте переадресацию портов в sshd_config если нужно
-# Monitor for unauthorized tunnels / Мониторьте на несанкционированные туннели
+| Option | Description (EN / RU) |
+|--------|----------------------|
+| `ServerAliveInterval` | Keepalive interval / Интервал keepalive |
+| `ServerAliveCountMax` | Max failed keepalives / Макс неудачных keepalive |
+| `ExitOnForwardFailure` | Exit if forwarding fails / Выйти если переадресация не удалась |
+| `LocalForward` | Local port forward / Локальная переадресация |
+| `RemoteForward` | Remote port forward / Удалённая переадресация |
+| `DynamicForward` | SOCKS proxy / SOCKS прокси |
+
+## 📋 Common Use Cases / Распространённые случаи использования
+
+| Use Case | Flag |
+|----------|------|
+| Database access | `-L 3306:localhost:3306` |
+| Web preview | `-R 8080:localhost:3000` |
+| SOCKS proxy | `-D 1080` |
+| Reverse shell | `-R 2222:localhost:22` |
+| VNC access | `-L 5900:localhost:5900` |
+
+## ⚠️ Security Notes / Заметки по безопасности
+
+- Only bind to localhost when possible / Привязывайтесь только к localhost когда возможно
+- Use SSH keys instead of passwords / Используйте SSH ключи вместо паролей
+- Restrict port forwarding in `sshd_config` if needed / Ограничьте переадресацию портов в `sshd_config` если нужно
+- Monitor for unauthorized tunnels / Мониторьте на несанкционированные туннели

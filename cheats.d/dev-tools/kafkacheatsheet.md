@@ -5,7 +5,10 @@ Order: 9
 
 # Kafka Sysadmin Cheatsheet
 
-> **Context:** Apache Kafka is a distributed event streaming platform. / Apache Kafka - это распределенная платформа потоковой передачи событий.
+> **Description:** Apache Kafka is a distributed event streaming platform capable of handling trillions of events per day. Originally developed at LinkedIn (2011), it is now used for real-time data pipelines, event sourcing, log aggregation, and stream processing. Kafka 3.3+ supports KRaft mode (no Zookeeper dependency).
+> Apache Kafka — это распределённая платформа потоковой передачи событий, способная обрабатывать триллионы событий в день. Kafka 3.3+ поддерживает режим KRaft (без зависимости от Zookeeper).
+
+> **Status:** Actively maintained by Apache/Confluent. Alternatives: **Apache Pulsar** (multi-tenancy, tiered storage), **RabbitMQ** (traditional message broker), **NATS** (lightweight, cloud-native), **Amazon Kinesis** (AWS-managed).
 > **Role:** Sysadmin / DevOps
 > **Version:** 2.8+ (Zookeeper/KRaft modes noted where applicable)
 
@@ -19,6 +22,7 @@ Order: 9
 4. [Security](#security--безопасность)
 5. [Backup & Restore](#backup--restore--резервное-копирование-и-восстановление)
 6. [Troubleshooting & Tools](#troubleshooting--tools--устранение-неполадок-и-инструменты)
+7. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
 
 ---
 
@@ -243,3 +247,35 @@ tar -czf kafka_data_backup_$(date +%F).tar.gz /var/lib/kafka/data
 > [!WARNING]
 > Keep `delete.topic.enable=true` with caution in production!
 > Будьте осторожны с `delete.topic.enable=true` в продакшене!
+
+---
+
+## 7. Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/kafka`
+
+```conf
+/opt/kafka/logs/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+```
+
+> [!NOTE]
+> Kafka manages data log rotation internally via `log.retention.hours` in `server.properties`.
+> Kafka управляет ротацией логов данных через `log.retention.hours` в `server.properties`.
+
+---
+
+## Official Documentation / Официальная документация
+
+- **Apache Kafka:** https://kafka.apache.org/documentation/
+- **Kafka Quickstart:** https://kafka.apache.org/quickstart
+- **KRaft Mode:** https://kafka.apache.org/documentation/#kraft
+- **Confluent Platform:** https://docs.confluent.io/
+- **kcat (kafkacat):** https://github.com/edenhill/kcat

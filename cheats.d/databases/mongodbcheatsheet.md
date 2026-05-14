@@ -3,25 +3,68 @@ Group: Databases
 Icon: 🍃
 Order: 5
 
-# Connect / Подключение
+---
+
+> **MongoDB** is an open-source, document-oriented NoSQL database that stores data in flexible, JSON-like BSON documents. It is designed for high availability, horizontal scalability (sharding), and developer productivity.
+>
+> **Common use cases / Типичные сценарии:** Content management, real-time analytics, IoT data, catalogs, mobile/web applications, event logging, user profiles.
+>
+> **Status / Статус:** Actively developed (current stable: 8.x). In 2023, MongoDB changed its license to SSPL, which led to community forks. Open-source alternatives: **FerretDB** (PostgreSQL backend, MongoDB API-compatible), **Amazon DocumentDB** (AWS managed, MongoDB-compatible). For on-premise, **Percona Server for MongoDB** provides enhanced enterprise features with open-source licensing.
+>
+> **Default port / Порт по умолчанию:** `27017/tcp`
+
+---
+
+# 🍃 MongoDB — Cheatsheet
+
+## 📚 Table of Contents / Содержание
+
+1. [Connection & Basics](#connect--подключение)
+2. [CRUD Operations](#crud-operations--операции-crud)
+3. [Data Management](#data-management--управление-данными)
+4. [Administration](#administration--администрирование)
+5. [Replica Set Management](#replica-set-management--управление-репликами)
+6. [Profiling & Performance](#profiling--performance--профилирование-и-производительность)
+7. [Sysadmin Toolkit](#sysadmin-toolkit--инструменты-сисадмина)
+8. [Percona Upgrade Guide](#percona-upgrade-guide--руководство-по-обновлению-percona)
+9. [MongoDB Community Upgrade Guide](#mongodb-community-upgrade-guide--руководство-по-обновлению-mongodb-community)
+10. [Advanced Queries](#advanced-cheatsheet---queries--продвинутая-шпаргалка---запросы)
+11. [Practice Exercises](#practice-exercises--задания-для-практики)
+12. [Configuration](#configuration-snippets--примеры-конфигурации)
+13. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
+
+---
+
+## Connect / Подключение
+
+```bash
 mongosh "mongodb://<USER>:<PASSWORD>@localhost:27017/admin"                                # Connect with Auth / Подключение с авторизацией
 mongosh "mongodb://<USER>:<PASSWORD>@<NODE_1>:27017,<NODE_2>:27017/<DB>?replicaSet=<RS>"  # Connect to Replica Set / Подключение к реплике
+```
 
-# Basics / Основы
+## Basics / Основы
+
+```bash
 show dbs                                                                            # List DBs / Список баз
 use <DB_NAME>                                                                       # Switch DB / Перейти на базу
 show collections                                                                    # List collections / Список коллекций
 db.stats()                                                                          # DB stats / Статистика базы
 db.<COLLECTION>.stats()                                                             # Collection stats / Статистика коллекции
+```
 
-# CRUD Operations / Операции CRUD
+## CRUD Operations
+
+```bash
 db.items.insertOne({name:"item1", qty:10})                                          # Insert document / Вставить документ
 db.items.find({qty:{$gt:5}}).limit(5)                                               # Find with filter / Поиск с фильтром
 db.items.updateOne({name:"item1"}, {$set:{qty:15}})                                 # Update document / Обновить документ
 db.items.deleteOne({name:"item1"})                                                  # Delete document / Удалить документ
 db.items.createIndex({name:1}, {unique:true})                                       # Create Index / Создать индекс
+```
 
-# Data Management / Управление данными
+## Data Management
+
+```bash
 mongoexport --uri="mongodb://<USER>:<PASSWORD>@localhost/mydb" \
   --collection=items --out=items.json                                               # Export to JSON / Экспорт в JSON
 mongoimport --uri="mongodb://<USER>:<PASSWORD>@localhost/mydb" \
@@ -29,23 +72,35 @@ mongoimport --uri="mongodb://<USER>:<PASSWORD>@localhost/mydb" \
 
 mongodump --uri="mongodb://<USER>:<PASSWORD>@localhost/" -o dump/                   # Dump all databases / Дамп всех баз
 mongorestore --uri="mongodb://<USER>:<PASSWORD>@localhost/" dump/                   # Restore from dump / Восстановление из дампа
+```
 
-# Administration / Администрирование
+## Administration
+
+```bash
 sudo systemctl status mongod                                                        # Service status / Статус сервиса
 sudo journalctl -u mongod -f                                                        # Follow logs / Логи в реальном времени
+```
 
-// Create Admin User / Создать администратора
+### Create Admin User / Создать администратора
+
+```bash
 use admin;
 db.createUser({
   user: "<USER>",
   pwd: "<PASSWORD>",
   roles: [{ role: "root", db: "admin" }]
 });
+```
 
-// Change Password / Сменить пароль
+### Change Password / Сменить пароль
+
+```bash
 db.updateUser("<USER>", { pwd: "<NEW_PASSWORD>" });
+```
 
-// Replica Set Initiation / Инициализация Replica Set
+### Replica Set Initiation / Инициализация Replica Set
+
+```bash
 rs.initiate({
    _id : "rs0",
    members: [
@@ -54,8 +109,11 @@ rs.initiate({
       { _id: 2, host: "<NODE_3>:27017" }
    ]
 });
+```
 
-// Replica Set Management / Управление Репликами
+### Replica Set Management / Управление Репликами
+
+```bash
 rs.status()                                                                         # Replica set status / Статус реплики
 rs.conf()                                                                           # Replica set config / Конфигурация реплики
 rs.isMaster()                                                                       # Check master status / Проверка мастера
@@ -63,24 +121,34 @@ rs.stepDown()                                                                   
 rs.syncFrom("<HOST>:<PORT>")                                                        # Force sync source / Принудительная синхронизация с узла
 rs.add("<HOST>:<PORT>")                                                             # Add member / Добавить узел
 rs.remove("<HOST>:<PORT>")                                                          # Remove member / Удалить узел
+```
 
-// Oplog & Replication Info / Oplog и Инфо о репликации
+### Oplog & Replication Info / Oplog и Инфо о репликации
+
+```bash
 db.getReplicationInfo()                                                             # Oplog size & time window / Размер и время Oplog
 db.printReplicationInfo()                                                           # Formatted replication info / Инфо о репликации (формат)
 db.printSlaveReplicationInfo()                                                      # Replication lag info / Инфо о лаге репликации
 use local; db.oplog.rs.stats();                                                     # Oplog collection stats / Статистика коллекции Oplog
+```
 
-# Profiling & Performance / Профилирование и Производительность
+## Profiling & Performance
+
+```bash
 db.getProfilingStatus()                                                             # Get current status / Текущий статус
 db.setProfilingLevel(1, { slowms: 100 })                                            # Profile slow ops > 100ms / Логировать медленные > 100мс
 db.setProfilingLevel(2)                                                             # Profile ALL operations / Логировать ВСЕ операции
 db.setProfilingLevel(0)                                                             # Disable profiling / Отключить профилирование
 db.system.profile.find({ millis: { $gt: 500 } }).sort({ ts: -1 })                   # Find slow queries > 500ms / Найти запросы > 500мс
 db.system.profile.find({ ns: "mydb.users" }).limit(5).sort({ ts: -1 })             # Queries for collection / Запросы к коллекции
-[un manual](https://hevodata.com/learn/mongodb-profiler/)
+```
 
-# Audit Log Configuration (mongod.conf) / Настройка Аудита
-/*
+
+### Audit Log Configuration / Настройка Аудита
+
+`/etc/mongod.conf`
+
+```bash
 auditLog:
   destination: file
   format: JSON
@@ -91,31 +159,284 @@ auditLog:
   ]}}'
 setParameter:
   auditAuthorizationSuccess: true
-*/
+```
 
-# Sysadmin Toolkit / Инструменты Сисадмина
+## Sysadmin Toolkit
 
-// 🩺 Diagnostics & Operations / Диагностика и Операции
+### 🩺 Diagnostics & Operations / Диагностика и Операции
+
+```bash
 db.currentOp()                                                                      # List active operations / Список активных операций
 db.currentOp({ "secs_running": { $gt: 5 } })                                        # Ops running > 5s / Операции длительностью > 5с
 db.killOp(<opid>)                                                                   # Kill operation / Убить операцию (по opid)
 db.serverStatus().connections                                                       # Connection stats / Статистика соединений
 db.runCommand({ serverStatus: 1 }).asserts                                          # Assertions info / Инфо об ошибках (asserts)
+```
 
-// 📉 External Monitoring Tools / Внешний Мониторинг
-// Run in terminal / Запускать в терминале:
-// mongostat --uri="mongodb://<USER>:<PASS>@localhost" --rowcount=20 1              # Live stats (1s interval) / Живая статистика
-// mongotop --uri="mongodb://<USER>:<PASS>@localhost" 1                             # Collection I/O stats / Статистика I/O коллекций
+### 📉 External Monitoring Tools / Внешний Мониторинг
 
-// 🧹 Maintenance / Обслуживание
+```bash
+mongostat --uri="mongodb://<USER>:<PASS>@localhost" --rowcount=20 1              # Live stats (1s interval) / Живая статистика
+mongotop --uri="mongodb://<USER>:<PASS>@localhost" 1                             # Collection I/O stats / Статистика I/O коллекций
+```
+
+### 🧹 Maintenance / Обслуживание
+
+```bash
 db.adminCommand({ logRotate: 1 })                                                   # Rotate logs / Ротация логов
 db.runCommand({ compact: "<COLLECTION>" })                                          # Compact collection / Сжатие коллекции (block!)
 // db.repairDatabase()                                                              # Repair DB (Blocking!) / Восстановление БД (Блок!)
+```
 
 
-# Advanced Cheatsheet - Queries / Продвинутая шпаргалка - Запросы
 
-// 📄 Search / Поиск
+## Percona Upgrade Guide
+
+> [!WARNING]
+> Always backup both data and configuration before upgrading.
+> Всегда делайте резервную копию данных и конфигурации перед обновлением.
+
+## 5 --> 6 Upgrade / Обновление 5 --> 6
+
+```bash
+# 1. Check Feature Compatibility Version (FCV)
+# 1. Проверить Feature Compatibility Version (FCV)
+mongosh --eval 'db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )'
+
+# 2. Backup Config
+# 2. Бэкап конфига
+cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
+
+# 3. Stop Service & Update Package
+# 3. Остановить сервис и обновить пакет
+systemctl stop mongod.service 
+dnf update percona-server-mongodb
+
+# 4. Restart Service
+# 4. Перезапустить сервис
+systemctl restart mongod
+
+# 5. Verify FCV (Should still show "5.0")
+# 5. Проверить FCV (Должно все еще показывать "5.0")
+mongosh --eval 'db.adminCommand({getParameter:1, featureCompatibilityVersion:1})'
+
+# 6. Switch to New Release Stream
+# 6. Переключиться на новый поток релизов
+systemctl stop mongod
+percona-release enable psmdb-60 release  
+
+# 7. Install New Version
+# 7. Установить новую версию
+dnf install percona-server-mongodb
+
+# 8. Start & Check Status
+# 8. Запустить и проверить статус
+systemctl start mongod
+systemctl status mongod
+
+# 9. Set FCV to 6.0
+# 9. Установить FCV в 6.0
+mongosh --eval 'db.adminCommand({setFeatureCompatibilityVersion: "6.0"})'
+
+# 10. all in one command:
+systemctl stop mongod.service && yum install percona-server-mongodb-server -y && systemctl start mongod.service && systemctl status mongod.service
+```
+
+## 6 --> 7 Upgrade / Обновление 6 --> 7
+
+```bash
+# 1. Check FCV
+# 1. Проверить FCV
+mongosh --eval 'db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )'
+
+# 2. Backup Config
+# 2. Бэкап конфига
+cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
+
+# 3. Stop & Update
+# 3. Остановить и обновить
+systemctl stop mongod.service 
+dnf update percona-server-mongodb
+
+# 4. Restart
+# 4. Перезапустить
+systemctl restart mongod
+
+# 5. Verify FCV (Should still show "6.0")
+# 5. Проверить FCV (Должно все еще показывать "6.0")
+mongosh --eval 'db.adminCommand({getParameter:1, featureCompatibilityVersion:1})'
+
+# 6. Switch Stream
+# 6. Переключить поток
+systemctl stop mongod
+percona-release enable psmdb-70 release  
+
+# 7. Install
+# 7. Установить
+dnf install percona-server-mongodb
+
+# 8. Start & Status
+# 8. Запустить и статус
+systemctl start mongod
+systemctl status mongod
+
+# 9. Set FCV to 7.0 (Requires confirmation)
+# 9. Установить FCV в 7.0 (Требует подтверждения)
+mongosh --eval 'db.adminCommand( { setFeatureCompatibilityVersion: "7.0" , confirm: true } )'
+
+# 10. all in one command:
+systemctl stop mongod.service && yum install percona-server-mongodb-server -y && systemctl start mongod.service && systemctl status mongod.service
+```
+
+## 7 --> 8 Upgrade / Обновление 7 --> 8
+
+```bash
+# 1. Check FCV
+# 1. Проверить FCV
+mongosh --eval 'db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )'
+
+# 2. Backup Config
+# 2. Бэкап конфига
+cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
+
+# 3. Stop & Update
+# 3. Остановить и обновить
+systemctl stop mongod.service 
+dnf update percona-server-mongodb
+
+# 4. Restart
+# 4. Перезапустить
+systemctl restart mongod
+
+# 5. Verify FCV (Should still show "7.0")
+# 5. Проверить FCV (Должно все еще показывать "7.0")
+mongosh --eval 'db.adminCommand({getParameter:1, featureCompatibilityVersion:1})'
+
+# 6. Switch Stream
+# 6. Переключить поток
+systemctl stop mongod
+percona-release enable psmdb-80 release  
+
+# 7. Install
+# 7. Установить
+dnf install percona-server-mongodb
+
+# 8. Start & Status
+# 8. Запустить и статус
+systemctl start mongod
+systemctl status mongod
+
+# 9. Set FCV to 8.0 (Requires confirmation)
+# 9. Установить FCV в 8.0 (Требует подтверждения)
+mongosh --eval 'db.adminCommand( { setFeatureCompatibilityVersion: "8.0",  confirm: true } )'
+```
+
+
+## MongoDB Community Upgrade Guide
+
+> [!WARNING]
+> Always backup both data and configuration before upgrading.
+> Всегда делайте резервную копию данных и конфигурации перед обновлением.
+> [Official documentation](https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-red-hat/)
+
+## 5 --> 6 Upgrade / Обновление 5 --> 6
+
+```bash
+# 1. Check FCV / Проверить FCV
+mongosh --eval 'db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )'
+
+# 2. Backup Config / Бэкап конфига
+cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
+
+# 3. Stop Service / Остановить сервис
+systemctl stop mongod
+```
+
+### Repo Configuration / Конфигурация репозитория
+
+`/etc/yum.repos.d/mongodb-org-6.0.repo`
+
+```ini
+[mongodb-org-6.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/6.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://pgp.mongodb.com/server-6.0.asc
+```
+
+```bash
+# 4. Install / Установить
+# Debian/Ubuntu:
+apt-get update && apt-get install -y mongodb-org
+# RHEL/AlmaLinux:
+dnf install -y mongodb-org
+
+# 5. Start & Verify / Запустить и проверить
+systemctl start mongod
+mongosh --eval 'db.version()'
+
+# 6. Set FCV to 6.0 / Установить FCV в 6.0
+mongosh --eval 'db.adminCommand({setFeatureCompatibilityVersion: "6.0"})'
+```
+
+## 6 --> 7 Upgrade / Обновление 6 --> 7
+
+```bash
+# 1. Check FCV / Проверить FCV
+mongosh --eval 'db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )'
+
+# 2. Backup Config / Бэкап конфига
+cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
+
+# 3. Stop & Update Repo / Остановить и обновить репо
+systemctl stop mongod
+# Add/Update /etc/apt/sources.list.d/mongodb-org-7.0.list or /etc/yum.repos.d/mongodb-org-7.0.repo
+# Добавьте/Обновите /etc/apt/sources.list.d/mongodb-org-7.0.list или /etc/yum.repos.d/mongodb-org-7.0.repo
+
+# 4. Install / Установить
+# Debian/Ubuntu: apt-get update && apt-get install -y mongodb-org
+# RHEL/AlmaLinux: dnf install -y mongodb-org
+
+# 5. Start & Verify / Запустить и проверить
+systemctl start mongod
+mongosh --eval 'db.version()'
+
+# 6. Set FCV to 7.0 / Установить FCV в 7.0
+mongosh --eval 'db.adminCommand({setFeatureCompatibilityVersion: "7.0", confirm: true})'
+```
+
+## 7 --> 8 Upgrade / Обновление 7 --> 8
+
+```bash
+# 1. Check FCV / Проверить FCV
+mongosh --eval 'db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )'
+
+# 2. Backup Config / Бэкап конфига
+cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
+
+# 3. Stop & Update Repo / Остановить и обновить репо
+systemctl stop mongod
+# Add/Update /etc/apt/sources.list.d/mongodb-org-8.0.list or /etc/yum.repos.d/mongodb-org-8.0.repo
+# Добавьте/Обновите /etc/apt/sources.list.d/mongodb-org-8.0.list или /etc/yum.repos.d/mongodb-org-8.0.repo
+
+# 4. Install / Установить
+# Debian/Ubuntu: apt-get update && apt-get install -y mongodb-org
+# RHEL/AlmaLinux: dnf install -y mongodb-org
+
+# 5. Start & Verify / Запустить и проверить
+systemctl start mongod
+mongosh --eval 'db.version()'
+
+# 6. Set FCV to 8.0 / Установить FCV в 8.0
+mongosh --eval 'db.adminCommand({setFeatureCompatibilityVersion: "8.0", confirm: true})'
+```
+
+## Advanced Cheatsheet - Queries
+
+### 📄 Search / Поиск
+
+```bash
 db.users.find({ age: { $gt: 25 } })                                                 # Age > 25 / Возраст > 25
 db.users.find({ languages: "english" })                                             # Array contains "english" / Массив содержит "english"
 db.users.find({ age: { $gte: 18, $lte: 25 } })                                      # 18 <= Age <= 25 / Возраст от 18 до 25
@@ -126,50 +447,72 @@ db.users.find({ phone: { $eq: null } })                                         
 db.users.find({ age: { $ne: 30 } })                                                 # Age != 30 / Возраст не 30
 db.users.find({ $or: [{ languages: "english" }, { languages: "french" }] })         # OR condition / ИЛИ
 db.users.find({ email: { $exists: true } })                                         # Field exists / Поле существует
+```
 
-// Array & Embedded / Массивы и Вложенность
+### Array & Embedded / Массивы и Вложенность
+
+```bash
 db.users.find({ "skills.level": { $in: ["base", "advanced"] } })                    # Nested field Match / Поиск по вложенному полю
 db.users.find({ tags: { $all: ["admin", "active"] } })                              # Array constraints all / Массив содержит все значения
 db.users.find({ $expr: { $eq: [ { $size: "$languages" }, 2 ] } })                   # Array size = 2 / Размер массива = 2
+```
 
-// ➕ Insert / Вставка
+### ➕ Insert / Вставка
+
+```bash
 db.users.insertOne({ name: "Anna", age: 22 })
 db.users.insertMany([{ name: "Luca", age: 30 }, { name: "Tom", age: 25 }])
+```
 
-// 🔁 Update / Обновление
+### 🔁 Update / Обновление
+
+```bash
 db.users.updateOne({ name: "Tom" }, { $set: { age: 30 } })                          # Set field / Установить поле
 db.users.updateOne({ name: "Tom" }, { $inc: { age: 1 } })                           # Increment / Увеличить значение
 db.users.updateOne({ name: "Tom" }, { $push: { languages: "spanish" } })            # Add to array / Добавить в массив
 db.users.updateMany({ "skills.level": "advanced" }, { $inc: { salary: 100 } })      # Update multiple / Обновить множественные
+```
 
-// ❌ Delete / Удаление
+### ❌ Delete / Удаление
+
+```bash
 db.users.deleteMany({ email: { $exists: false } })                                  # Delete if missing email / Удалить если нет email
+```
 
-# Real-world Scenarios (Sanitized) / Примеры из практики
+---
 
-// ElasticDump Migration / Миграция ElasticDump
-// Export Data / Экспорт данных
+## Real-world Scenarios / Примеры из практики
+
+### ElasticDump Migration / Миграция ElasticDump
+
+```bash
+# Export Data / Экспорт данных
 NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump \
     --input=http://<SOURCE_IP>:9200/<INDEX> \
     --output=<INDEX>.json --type=data
 
-// Export Settings / Экспорт настроек
+# Export Settings / Экспорт настроек
 NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump \
     --input=http://<SOURCE_IP>:9200/<INDEX> \
     --output=<INDEX>-settings.json --type=settings
 
-// Import Data / Импорт данных
+# Import Data / Импорт данных
 NODE_TLS_REJECT_UNAUTHORIZED=0 elasticdump \
     --output=http://<DEST_IP>:9200/<INDEX> \
     --input=<INDEX>.json --type=data
 
-// Mongodump Specific / Специфичный дамп
+# Mongodump Specific / Специфичный дамп
 mongodump --uri="mongodb://<ADMIN>:<PASS>@<NODE_1>:27017,<NODE_2>:27017/?replicaSet=<RS>" \
     --db=<DB_NAME> --collection=<COLL> --out=dump/
+```
+
+### Create Views / Создание представлений
+
+```javascript
 
 db.createView(
-  "fasc_chiusi_view",     // The name of your "soft link"
-  "fasc",                 // The source collection
+  "fasc_chiusi_view",     // View name / Имя представления
+  "fasc",                 // Source collection / Исходная коллекция
   [ 
     { $match: { "customFields_Frontespizio_o_DataChiusura_ld": { $exists: true } } },
     { $project: { _id: 1, customFields_Frontespizio_o_DataChiusura_ld: 1 } }
@@ -184,36 +527,26 @@ db.createView(
       $project: {
         _id: 1,
         statoFascicolo: 1,
-
         tipologia_cod: { $ifNull: ["$tipologia_cod", "$tipologia.cod"] },
-
         tipoFascicolo: {
           $ifNull: [
             "$tipologia.descrizione",
             { $ifNull: ["$tipologia_descrizione", "$tipologia.cod"] }
           ]
         },
-
         dataChiusura: 1,
         dataInizioAssegnazione: 1,
         numeroFascicolo: 1,
-
-
         customFields_Frontespizio_o_DataChiusuraArchiviazioneFascicolo_ld:
           "$customFields.Frontespizio_o.DataChiusura_ld",
-
         customFields_nomegruppo0_o_DataChiusuraArchiviazioneFascicolo_ld:
           "$customFields.nomegruppo0_o.DataChiusuraArchiviazioneFascicolo_ld",
-
         customFields_nomegruppo0_o_datadepositoricorso_ld:
           "$customFields.nomegruppo0_o.datadepositoricorso_ld",
-
         customFields_Frontespizio_o_DataDepositoRicorso_ld:
           "$customFields.Frontespizio_o.DataDepositoRicorso_ld",
-
         customFields_nomegruppo0_o_DataDepositoRicorso_ld_1:
           "$customFields.nomegruppo0_o.DataDepositoRicorso_ld_1",
-
         dataChiusura_ld: {
           $ifNull: [
             "$customFields.Frontespizio_o.DataChiusura_ld",
@@ -224,12 +557,16 @@ db.createView(
     }
   ]
 )
+```
+
+---
 
 
 
 
-# Practice Exercises / Задания для практики
+## Practice Exercises
 
+```javascript
 // ## 📋 FIND (Filtering) / Фильтрация
 
 // ### Level 1: Basics / Уровень 1: Базовые
@@ -387,11 +724,17 @@ db.createView(
 //   // ... (Add more if needed / Добавьте больше при необходимости)
 // ];
 // db.users.insertMany(sampleData);
+```
 
-# Configuration Snippets / Примеры Конфигурации
+---
 
-// mongod.conf
-/*
+## Configuration Snippets
+
+### mongod.conf
+
+`/etc/mongod.conf`
+
+```yaml
 storage:
   dbPath: /var/lib/mongo
 systemLog:
@@ -405,10 +748,11 @@ security:
   keyFile: /etc/mongod.key
 replication:
   replSetName: "<REPLICA_SET_NAME>"
-*/
+```
 
-# insertusers.js for testing:
+### insertusers.js / Тестовые данные
 
+```javascript
 const sampleData = [
   {
     name: "Anna",
@@ -1514,4 +1858,34 @@ const sampleData = [
 
 printjson(db.users2.insertMany(sampleData));
 print("Script ha inserito 100 users nel db users2");
+```
+
+---
+
+## Logrotate Configuration
+
+`/etc/logrotate.d/mongodb`
+
+```conf
+/var/log/mongodb/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 mongodb mongodb
+    sharedscripts
+    postrotate
+        /bin/kill -SIGUSR1 $(cat /var/lib/mongodb/mongod.lock 2>/dev/null) 2>/dev/null || true
+    endscript
+}
+```
+
+> [!NOTE]
+> MongoDB rotates logs automatically with `logRotate` command: `db.adminCommand({ logRotate: 1 })`
+> MongoDB ротирует логи автоматически командой: `db.adminCommand({ logRotate: 1 })`
+
+---
+
 

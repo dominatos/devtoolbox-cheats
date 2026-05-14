@@ -1,24 +1,36 @@
-Title: 🗃️ MySQL/MariaDB
+Title: 🗃️ MySQL/MariaDB & Cluster
 Group: Databases
 Icon: 🗃️
 Order: 2
 
 ---
 
-## 📚 Table of Contents / Содержание
-
-1. [Installation & Configuration](#installation--configuration--установка-и-настройка)
-2. [Core Management](#core-management--управление)
-3. [Sysadmin Operations](#sysadmin-operations--операции-сисадмина)
-4. [Security](#security--безопасность)
-5. [Backup & Restore](#backup--restore--бэкап-и-восстановление)
-6. [Troubleshooting](#troubleshooting--устранение-проблем)
+> **MySQL** is the world's most popular open-source relational database, acquired by Oracle Corporation in 2010. **MariaDB** is a community-driven fork of MySQL created by the original developer Michael Widenius, offering enhanced performance and additional storage engines.
+>
+> **Common use cases / Типичные сценарии:** Web applications (LAMP/LEMP stack), content management (WordPress, Drupal), e-commerce, SaaS platforms, embedded databases.
+>
+> **Status / Статус:** Both MySQL (8.x/9.x) and MariaDB (11.x) are actively developed. MySQL remains the most widely deployed RDBMS. Modern alternatives for advanced workloads: **PostgreSQL** (advanced features, extensibility), **CockroachDB** (distributed SQL), **TiDB** (MySQL-compatible, distributed). MySQL Cluster (NDB) is for high-availability in-memory workloads.
+>
+> **Default port / Порт по умолчанию:** `3306/tcp`
 
 ---
 
-## Installation & Configuration / Установка и Настройка
+## 📚 Table of Contents / Содержание
 
-### Install / Установка
+1. [Installation & Configuration](#installation--configuration--установка-и-настройка)
+2. [MySQL Cluster Setup](#mysql-cluster-setup--установка-и-настройка-mysql-cluster)
+3. [Core Management](#core-management--управление)
+4. [Sysadmin Operations](#sysadmin-operations--операции-сисадмина)
+5. [Security](#security--безопасность)
+6. [Backup & Restore](#backup--restore--бэкап-и-восстановление)
+7. [Troubleshooting & Tools](#troubleshooting--tools--устранение-проблем-и-инструменты)
+8. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
+
+---
+
+## Installation & Configuration / Установка и настройка
+
+### Package Installation / Установка пакетов
 
 ```bash
 # Ubuntu/Debian
@@ -36,19 +48,16 @@ sudo dnf install -y mariadb-server                                        # Inst
 sudo mysql_secure_installation                                            # Secure installation wizard / Мастер безопасной установки
 ```
 
-### Configuration / Конфигурация
+### Configuration Files / Файлы конфигурации
 
-```bash
-# Main config file / Основной файл конфигурации
-/etc/mysql/my.cnf                                                         # Debian/Ubuntu
-/etc/my.cnf                                                               # RHEL/CentOS/AlmaLinux
+| OS / ОС | Main Config Path / Основной путь |
+|---------|---------------------------------|
+| Ubuntu/Debian | `/etc/mysql/my.cnf` |
+| RHEL-based | `/etc/my.cnf` |
+| Custom Configs | `/etc/mysql/mysql.conf.d/` or `/etc/my.cnf.d/` |
 
-# Config directory / Директория конфигураций
-/etc/mysql/mysql.conf.d/                                                  # Ubuntu/Debian
-/etc/my.cnf.d/                                                            # RHEL-based
-```
-
-**Common settings / Основные настройки:**
+### Common Settings / Основные настройки
+`/etc/mysql/my.cnf` or `/etc/my.cnf`
 
 ```ini
 [mysqld]
@@ -59,6 +68,119 @@ innodb_buffer_pool_size = 1G                # InnoDB buffer pool / Буфер In
 slow_query_log = 1                          # Enable slow query log / Включить лог медленных запросов
 slow_query_log_file = /var/log/mysql/slow.log
 long_query_time = 2                         # Queries > 2s logged / Запросы > 2с логируются
+```
+
+### Storage Engines Comparison / Сравнение движков хранилищ
+
+| Feature / Особенность | InnoDB | MyISAM | NDB (Cluster) |
+|----------------------|--------|--------|---------------|
+| Transactions / Транзакции | Yes / Да | No / Нет | Yes / Да |
+| Locking / Блокировки | Row-level / Строки | Table-level / Таблицы | Row-level / Строки |
+| High Availability / Отказоустойчивость | Manual / Ручная | No / Нет | Native / Нативная |
+| Main Use Case / Применение | General purpose / Общее | Read-heavy / Чтение | High-load HA / Высокая доступность |
+
+---
+
+## MySQL Cluster Setup / Установка и настройка MySQL Cluster
+
+**MySQL Cluster** — это высокодоступная база данных с синхронной репликацией и in-memory хранением данных.
+
+### Architecture Components / Компоненты архитектуры
+
+- **Management Node (MGM)** – Controls cluster, configuration, and node status / Контролирует кластер и состояние нод.
+- **Data Node (NDBD)** – Stores data, multiple nodes for replication / Хранит данные, репликация.
+- **SQL Node (mysqld)** – Standard MySQL server for application connections / Обычный MySQL для приложений.
+
+### Proposed Architecture / Пример архитектуры
+
+| Role / Роль | IP | Node ID |
+|-------------|----|---------|
+| Management (MGM) | `<IP_MGM>` | 1 |
+| Data Node 1 | `<IP_DATA_1>` | 2 |
+| Data Node 2 | `<IP_DATA_2>` | 3 |
+| SQL Node | `<IP_SQL>` | 4 |
+
+### Installation / Установка
+
+#### Ubuntu/Debian:
+```bash
+sudo apt update
+sudo apt install mysql-cluster-community-management-server \
+                 mysql-cluster-community-data-node \
+                 mysql-client                                             # Install Cluster packages / Установка пакетов кластера
+```
+
+#### RHEL/CentOS/AlmaLinux:
+```bash
+sudo dnf install https://repo.mysql.com/mysql80-community-release-el9-3.noarch.rpm
+sudo dnf module disable mysql
+sudo dnf install mysql-cluster-community-management-server \
+                 mysql-cluster-community-data-node \
+                 mysql-cluster-community-client                           # Install Cluster packages / Установка пакетов кластера
+```
+
+### Configuration: Management Node / Настройка Management Node
+`/var/lib/mysql-cluster/config.ini`
+
+```ini
+[NDBD DEFAULT]
+NoOfReplicas=2
+
+[MYSQLD DEFAULT]
+ServerPort=3306
+
+[MANAGEMENT]
+HostName=<IP_MGM>
+NodeId=1
+
+[NDBD]
+HostName=<IP_DATA_1>
+NodeId=2
+
+[NDBD]
+HostName=<IP_DATA_2>
+NodeId=3
+
+[MYSQLD]
+HostName=<IP_SQL>
+NodeId=4
+```
+
+### Runbook: Starting the Cluster / Запуск кластера
+
+1. **Start Management Node / Запуск MGM:**
+   ```bash
+   sudo ndb_mgmd -f /var/lib/mysql-cluster/config.ini --initial           # Initial start / Первый запуск
+   sudo systemctl enable ndb_mgmd && sudo systemctl start ndb_mgmd       # Enable and start / Включить и запустить
+   ```
+
+2. **Start Data Nodes (on <IP_DATA_1>, <IP_DATA_2>) / Запуск Data нод:**
+   `/etc/my.cnf`
+   ```ini
+   [mysqld]
+   ndbcluster
+   [NDBD]
+   connect-string=<IP_MGM>
+   ```
+   ```bash
+   sudo ndbd                                                              # Start data node / Запуск data ноды
+   ```
+
+3. **Start SQL Node / Запуск SQL ноды:**
+   `/etc/my.cnf`
+   ```ini
+   [mysqld]
+   ndbcluster
+   ndb-connectstring=<IP_MGM>                                             # Connect to MGM IP / Подключение к MGM
+   ```
+   ```bash
+   sudo systemctl enable mysql && sudo systemctl start mysql             # Start MySQL / Запуск MySQL
+   ```
+
+### Verify Status / Проверка статуса
+
+```bash
+ndb_mgm -e show                                                           # Show cluster status / Показать статус кластера
 ```
 
 ---
@@ -73,49 +195,33 @@ mysql -h <HOST> -u <USER> -p<PASSWORD> <DB>                               # Conn
 mysql --socket=/var/run/mysqld/mysqld.sock -u <USER> -p                  # Connect via socket / Через сокет
 ```
 
-### Database Operations / Операции с базами
+### Database & Table Operations / Операции с БД и таблицами
 
 ```sql
 SHOW DATABASES;                                                           -- List databases / Список баз
 CREATE DATABASE <DB_NAME>;                                                -- Create database / Создать базу
 USE <DB_NAME>;                                                            -- Switch to database / Переключиться на базу
-DROP DATABASE <DB_NAME>;                                                  -- Delete database / Удалить базу
-SHOW TABLES;                                                              -- List tables in current DB / Список таблиц
-DESCRIBE <TABLE>;                                                         -- Show table structure / Структура таблицы
-SHOW CREATE TABLE <TABLE>;                                                -- Show CREATE statement / Показать CREATE
-```
-
-### Table Operations / Операции с таблицами
-
-```sql
-CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100)); -- Create table / Создать таблицу
-ALTER TABLE <TABLE> ADD COLUMN <COL> VARCHAR(50);                         -- Add column / Добавить колонку
-ALTER TABLE <TABLE> DROP COLUMN <COL>;                                    -- Drop column / Удалить колонку
+SHOW TABLES;                                                              -- List tables / Список таблиц
+DESCRIBE <TABLE>;                                                         -- Table structure / Структура таблицы
+SHOW CREATE TABLE <TABLE>;                                                -- CREATE statement / Показать SQL создания
 DROP TABLE <TABLE>;                                                        -- Delete table / Удалить таблицу
-TRUNCATE TABLE <TABLE>;                                                    -- Empty table / Очистить таблицу
 ```
 
-### CRUD Operations / Операции CRUD
+### Working with Cluster Tables / Работа с таблицами в кластере
+
+> [!IMPORTANT]
+> All cluster tables must use `ENGINE=NDBCLUSTER`.
 
 ```sql
-INSERT INTO users (name) VALUES ('Alice');                                -- Insert row / Вставить строку
-SELECT * FROM users WHERE name = 'Alice';                                 -- Select rows / Выбрать строки
-UPDATE users SET name = 'Bob' WHERE id = 1;                               -- Update row / Обновить строку
-DELETE FROM users WHERE id = 1;                                           -- Delete row / Удалить строку
-```
-
-### Indexes / Индексы
-
-```sql
-CREATE INDEX idx_name ON users(name);                                     -- Create index / Создать индекс
-CREATE UNIQUE INDEX idx_email ON users(email);                            -- Unique index / Уникальный индекс
-SHOW INDEX FROM <TABLE>;                                                  -- Show indexes / Показать индексы
-DROP INDEX idx_name ON users;                                             -- Drop index / Удалить индекс
+CREATE TABLE users (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(50)
+) ENGINE=NDBCLUSTER;                                                      -- Create cluster table / Создать таблицу в кластере
 ```
 
 ---
 
-## Sysadmin Operations / Операции Сисадмина
+## Sysadmin Operations / Операции сисадмина
 
 ### Service Control / Управление сервисом
 
@@ -127,47 +233,36 @@ sudo systemctl status mysql                                               # Serv
 sudo systemctl enable mysql                                               # Enable on boot / Включить автозапуск
 ```
 
-### Logs / Логи
+### Runbook: Emergency Restart / Экстренный перезапуск
+
+> [!CAUTION]
+> Restarting in production can drop active connections. Always check load first.
 
 ```bash
-sudo tail -f /var/log/mysql/error.log                                     # Error log / Лог ошибок
-sudo tail -f /var/log/mysql/slow.log                                      # Slow query log / Лог медленных запросов
-sudo journalctl -u mysql -f                                               # Systemd logs / Логи systemd
-grep "ERROR" /var/log/mysql/error.log                                     # Find errors / Найти ошибки
+# 1. Check current load / Проверить текущую нагрузку
+mysqladmin -u <USER> -p status
+# 2. Graceful restart / Обычный перезапуск
+sudo systemctl restart mysql
+# 3. If stuck, force kill (Extreme cases) / Если завис - принудительно (Экстрим)
+sudo killall -9 mysqld
+sudo systemctl start mysql
 ```
 
-### Important Paths / Важные пути
+### Logs & Paths / Логи и пути
+
+| Type / Тип | Path / Путь |
+|------------|-------------|
+| Data Directory / Данные | `/var/lib/mysql/` |
+| Error Log / Ошибки | `/var/log/mysql/error.log` |
+| Slow Query Log / Медленные | `/var/log/mysql/slow.log` |
+| Unix Socket / Сокет | `/var/run/mysqld/mysqld.sock` |
+
+### Network & Firewall / Сеть и Файрвол
 
 ```bash
-/var/lib/mysql/                                                           # Data directory / Директория данных
-/etc/mysql/my.cnf                                                         # Main config / Основной конфиг
-/var/log/mysql/                                                           # Logs directory / Директория логов
-/var/run/mysqld/mysqld.sock                                               # Unix socket / Unix-сокет
-```
-
-### Default Port / Порт по умолчанию
-
-```
-3306/tcp                                                                  # MySQL/MariaDB default port / Порт по умолчанию
-```
-
-### Firewall / Файрвол
-
-```bash
-sudo firewall-cmd --permanent --add-service=mysql                         # Open MySQL port / Открыть порт MySQL
-sudo firewall-cmd --reload                                                # Reload firewall / Перезагрузить файрвол
+# Default Port: 3306 / Порт по умолчанию: 3306
 sudo ufw allow 3306/tcp                                                   # UFW: allow MySQL / UFW: разрешить MySQL
-```
-
-### Performance / Производительность
-
-```sql
-SHOW PROCESSLIST;                                                         -- Active connections / Активные подключения
-SHOW FULL PROCESSLIST;                                                    -- Detailed processlist / Подробный список
-KILL <PROCESS_ID>;                                                        -- Kill query / Убить запрос
-SHOW STATUS;                                                              -- Server status / Статус сервера
-SHOW VARIABLES;                                                           -- Server variables / Переменные сервера
-SHOW ENGINE INNODB STATUS\G                                               -- InnoDB status / Статус InnoDB
+sudo firewall-cmd --permanent --add-service=mysql && sudo firewall-cmd --reload # RHEL Firewall
 ```
 
 ---
@@ -177,138 +272,103 @@ SHOW ENGINE INNODB STATUS\G                                               -- Inn
 ### User Management / Управление пользователями
 
 ```sql
-CREATE USER '<USER>'@'localhost' IDENTIFIED BY '<PASSWORD>';              -- Create user / Создать пользователя
-CREATE USER '<USER>'@'%' IDENTIFIED BY '<PASSWORD>';                      -- User from any host / С любого хоста
-DROP USER '<USER>'@'localhost';                                           -- Delete user / Удалить пользователя
-RENAME USER '<OLD_USER>'@'localhost' TO '<NEW_USER>'@'localhost';         -- Rename user / Переименовать
+CREATE USER '<USER>'@'localhost' IDENTIFIED BY '<PASSWORD>';              -- Create local user / Создать локального пользователя
+CREATE USER '<USER>'@'%' IDENTIFIED BY '<PASSWORD>';                      -- Remote user / Удаленный пользователь
+GRANT ALL PRIVILEGES ON <DB>.* TO '<USER>'@'localhost';                   -- Grant access / Выдать права
+REVOKE ALL PRIVILEGES ON <DB>.* FROM '<USER>'@'localhost';                -- Revoke access / Отозвать права
+SHOW GRANTS FOR '<USER>'@'localhost';                                     -- Show grants / Показать права
+FLUSH PRIVILEGES;                                                         -- Reload / Перезагрузить права
 ```
 
-### Password Management / Управление паролями
+### Runbook: Reset Root Password / Сброс пароля Root
 
-```sql
-SET PASSWORD FOR '<USER>'@'localhost' = PASSWORD('<NEW_PASSWORD>');       -- Change password (old syntax) / Сменить пароль
-ALTER USER '<USER>'@'localhost' IDENTIFIED BY '<NEW_PASSWORD>';           -- Change password (new syntax) / Новый синтаксис
-```
-
-### Permissions / Права доступа
-
-```sql
-GRANT ALL PRIVILEGES ON <DB>.* TO '<USER>'@'localhost';                   -- Grant all on DB / Все права на базу
-GRANT SELECT, INSERT ON <DB>.<TABLE> TO '<USER>'@'localhost';             -- Specific privileges / Конкретные права
-GRANT ALL PRIVILEGES ON *.* TO '<USER>'@'%' WITH GRANT OPTION;            -- Admin user / Администратор
-REVOKE ALL PRIVILEGES ON <DB>.* FROM '<USER>'@'localhost';                -- Revoke privileges / Отозвать права
-SHOW GRANTS FOR '<USER>'@'localhost';                                     -- Show user grants / Показать права
-FLUSH PRIVILEGES;                                                         -- Reload privileges / Перезагрузить права
+```bash
+# 1. Stop service / Остановить сервис
+sudo systemctl stop mysql
+# 2. Start in bypass mode / Запустить без проверки прав
+sudo mysqld_safe --skip-grant-tables &
+# 3. Connect and reset / Подключиться и сбросить
+mysql -u root
+# SQL commands:
+# FLUSH PRIVILEGES;
+# ALTER USER 'root'@'localhost' IDENTIFIED BY '<NEW_PASSWORD>';
+# FLUSH PRIVILEGES;
+# 4. Restart normally / Перезапустить нормально
+sudo systemctl restart mysql # Note: may need to kill mysqld_safe process first
 ```
 
 ---
 
-## Backup & Restore / Бэкап и Восстановление
+## Backup & Restore / Бэкап и восстановление
 
-### mysqldump
+### Backup Methods Comparison / Сравнение методов бэкапа
+
+| Method / Метод | Tools / Инструменты | Advantages / Плюсы | Disadvantages / Минусы |
+|----------------|-------------------|--------------------|------------------------|
+| Logical / Логический | `mysqldump` | Human-readable, portable / Понятный, переносимый | Slow for large DBs / Медленно для больших БД |
+| Physical / Физический | `tar`, `cp`, `XtraBackup` | Very fast / Очень быстро | Less portable / Менее переносимый |
+| Cluster Backup | `ndb_mgm` (START BACKUP) | Consistent cluster state / Консистентный для кластера | Requires NDB / Только для NDB |
+
+### mysqldump Samples / Примеры mysqldump
 
 ```bash
-# Dump single database / Дамп одной базы
-mysqldump -h <HOST> -u <USER> -p <DB> > dump.sql                          # Dump to SQL / Дамп в SQL
-mysqldump -h <HOST> -u <USER> -p <DB> | gzip > dump.sql.gz                # Dump to gzip / Дамп в gzip
-
-# Dump all databases / Дамп всех баз
-mysqldump -h <HOST> -u <USER> -p --all-databases > all_dbs.sql            # All databases / Все базы
-mysqldump -h <HOST> -u <USER> -p --all-databases | gzip > all_dbs.sql.gz  # All databases gzipped / Все базы сжатые
-
-# Dump with additional options / Дамп с доп. опциями
-mysqldump -h <HOST> -u <USER> -p <DB> \
-  --single-transaction \
-  --routines \
-  --triggers \
-  --events > dump_full.sql                                                # Complete dump / Полный дамп
-
-# Dump specific table / Дамп конкретной таблицы
-mysqldump -h <HOST> -u <USER> -p <DB> <TABLE> > table_dump.sql            # Table dump / Дамп таблицы
+mysqldump -u <USER> -p <DB> > dump.sql                                    # Dump DB / Дамп одной базы
+mysqldump -u <USER> -p --all-databases | gzip > all_dbs.sql.gz            # All DBs gzipped / Все базы сжатые
 ```
 
 ### Restore / Восстановление
 
 ```bash
-mysql -h <HOST> -u <USER> -p <DB> < dump.sql                              # Restore from SQL / Восстановить из SQL
-gunzip < dump.sql.gz | mysql -h <HOST> -u <USER> -p <DB>                  # Restore from gzip / Из gzip
-mysql -h <HOST> -u <USER> -p --one-database <DB> < all_dbs.sql            # Restore one DB from all / Одну базу из всех
-```
-
-### Physical Backup / Физический бэкап
-
-```bash
-# Stop MySQL before physical backup / Остановите MySQL перед физическим бэкапом
-sudo systemctl stop mysql                                                 # Stop MySQL / Остановить MySQL
-sudo tar -czf mysql_backup.tar.gz /var/lib/mysql/                         # Backup data dir / Бэкап директории данных
-sudo systemctl start mysql                                                # Start MySQL / Запустить MySQL
-
-# Restore physical backup / Восстановление физического бэкапа
-sudo systemctl stop mysql                                                 # Stop MySQL / Остановить MySQL
-sudo rm -rf /var/lib/mysql/*                                              # Clear data dir / Очистить директорию
-sudo tar -xzf mysql_backup.tar.gz -C /                                    # Extract backup / Распаковать бэкап
-sudo chown -R mysql:mysql /var/lib/mysql/                                 # Fix permissions / Исправить права
-sudo systemctl start mysql                                                # Start MySQL / Запустить MySQL
+mysql -u <USER> -p <DB> < dump.sql                                        # Restore from SQL / Восстановить из SQL
+gunzip < dump.sql.gz | mysql -u <USER> -p <DB>                            # Restore from gzip / Из gzip
 ```
 
 ---
 
-## Troubleshooting / Устранение проблем
-
-### Common Issues / Частые проблемы
-
-**Can't connect to MySQL server / Не могу подключиться:**
-
-```bash
-sudo systemctl status mysql                                               # Check if running / Проверить запущен ли
-sudo netstat -tuln | grep 3306                                            # Check if listening / Проверить прослушивание
-sudo tail -f /var/log/mysql/error.log                                     # Check error log / Проверить лог ошибок
-```
-
-**Access denied for user / Доступ запрещен:**
-
-```bash
-# Reset root password / Сброс пароля root
-sudo systemctl stop mysql
-sudo mysqld_safe --skip-grant-tables &
-mysql -u root
-# Then run: FLUSH PRIVILEGES; ALTER USER 'root'@'localhost' IDENTIFIED BY '<NEW_PASSWORD>'; FLUSH PRIVILEGES;
-sudo systemctl restart mysql
-```
-
-### Slow Query Analysis / Анализ медленных запросов
-
-```bash
-sudo mysqldumpslow /var/log/mysql/slow.log                                # Analyze slow log / Анализ медленных запросов
-```
-
-```sql
-EXPLAIN SELECT * FROM users WHERE name = 'Alice';                         -- Explain query plan / План выполнения запроса
-SHOW PROFILE FOR QUERY 1;                                                 -- Query profiling / Профилирование запроса
-```
-
-### Database Maintenance / Обслуживание базы
-
-```sql
-OPTIMIZE TABLE <TABLE>;                                                   -- Optimize table / Оптимизировать таблицу
-REPAIR TABLE <TABLE>;                                                     -- Repair table / Восстановить таблицу
-ANALYZE TABLE <TABLE>;                                                    -- Analyze table / Анализировать таблицу
-CHECK TABLE <TABLE>;                                                      -- Check table / Проверить таблицу
-```
+## Troubleshooting & Tools / Устранение проблем и инструменты
 
 ### Monitoring / Мониторинг
 
+```sql
+SHOW FULL PROCESSLIST;                                                    -- View active queries / Просмотр активных запросов
+KILL <PROCESS_ID>;                                                        -- Terminate query / Принудительно завершить запрос
+SHOW STATUS;                                                              -- Global server status / Общий статус сервера
+SHOW ENGINE INNODB STATUS\G                                               -- Detailed InnoDB status / Подробный статус InnoDB
+```
+
+### Performance Analysis / Анализ производительности
+
 ```bash
-mysqladmin -u <USER> -p status                                            # Server status / Статус сервера
-mysqladmin -u <USER> -p extended-status                                   # Extended status / Расширенный статус
-mysqladmin -u <USER> -p processlist                                       # Process list / Список процессов
-mysqladmin -u <USER> -p variables                                         # Server variables / Переменные сервера
+sudo mysqldumpslow /var/log/mysql/slow.log                                # Analyze slow queries / Анализ медленных запросов
 ```
 
 ```sql
-SELECT * FROM information_schema.processlist;                             -- Current queries / Текущие запросы
-SELECT table_schema AS 'Database', 
-       ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)'
-FROM information_schema.tables 
-GROUP BY table_schema;                                                    -- Database sizes / Размеры баз
+EXPLAIN SELECT * FROM users WHERE name = '<USER>';                        -- Query execution plan / План выполнения запроса
+ANALYZE TABLE <TABLE>;                                                    -- Update statistics / Обновить статистику
+OPTIMIZE TABLE <TABLE>;                                                   -- Rebuild table index / Перестроить индекс таблицы
 ```
+
+---
+
+## Logrotate Configuration / Конфигурация Logrotate
+
+`/etc/logrotate.d/mysql`
+
+```conf
+/var/log/mysql/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 mysql adm
+    sharedscripts
+    postrotate
+        /usr/bin/mysqladmin flush-logs > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+> [!TIP]
+> Use `mysqladmin flush-logs` to rotate binary logs: `mysqladmin -u root -p flush-logs`

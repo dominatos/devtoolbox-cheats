@@ -23,39 +23,34 @@ var GROUP_ICONS = {
     "Misc": "preferences-other",
     "Diagnostics": "utilities-log-viewer",
     "Cloud": "cloud-shape",
-    "Monitoring": "utilities-energy-monitor"
+    "Monitoring": "utilities-energy-monitor",
+    "Infrastructure Management": "preferences-system-network",
+    "Identity Management": "resource-group"
 };
 
-// ... (existing code snippet skip) ...
+/**
+ * Plasma 6 Shield: Backslash-escape every non-alphanumeric character (except space)
+ * to survive the DataSource whitelist stripping in Plasma 6.
+ * The DataSource strips characters like / | $ _ = ; & [ ] before execution.
+ * By escaping them, they survive the stripping AND the shell then interprets them correctly.
+ */
+function plasmaShield(str) {
+    if (!str) return "";
+    return str.replace(/([^a-zA-Z0-9 ])/g, "\\$1");
+}
 
 // Build command to index cheats (using shell for performance)
-// We retain the bash logic for indexing because it's faster and reliable on Linux
-function getIndexCommand(cheatsDir, cacheFile) {
-    // Robust indexing command wrapped in bash
-    // We iterate over files and extract metadata one by one.
+// We use a helper script to avoid complex escaping issues in Plasma 6
+function getIndexCommand(cheatsDir, cacheFile, scriptPath) {
+    // Simple debug log path
+    var debugLog = "/tmp/devtoolbox-debug.log";
 
-    var debugLog = "/home/sviatoslav/Downloads/devtoolbox-kde/devtoolbox-cheats-beta/kde-widget-plasma6/debug.log";
+    // Construct the command to call the helper script
+    // We point to the absolute path of indexer.sh provided by the QML
+    var finalCmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\"";
 
-    var script = "{ " +
-        "searchDir=\"" + cheatsDir + "\"; " +
-        "echo \"Search Dir: $searchDir\" > " + debugLog + "; " +
-        "[ -d \"$searchDir\" ] || echo 'Directory not found!' >> " + debugLog + "; " +
-        "find -L \"$searchDir\" -type f -name '*.md' | while read -r f; do " +
-        "  title=$(grep -i -m1 '^Title:' \"$f\" | sed -E 's/^[Tt][Ii][Tt][Ll][Ee]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  group=$(grep -i -m1 '^Group:' \"$f\" | sed -E 's/^[Gg][Rr][Oo][Uu][Pp]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  icon=$(grep -i -m1 '^Icon:' \"$f\" | sed -E 's/^[Ii][Cc][Oo][Nn]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  order=$(grep -i -m1 '^Order:' \"$f\" | sed -E 's/^[Oo][Rr][Dd][Ee][Rr]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
-        "  [ -z \"$title\" ] && title=$(basename \"$f\" .md); " +
-        "  [ -z \"$group\" ] && group=\"Misc\"; " +
-        "  [ -z \"$order\" ] && order=9999; " +
-        "  res=\"$f|$title|$group|$icon|$order\"; " +
-        "  echo \"$res\"; " +
-        "  echo \"$res\" >> " + debugLog + "; " +
-        "done; }";
-
-    var safeScript = script.replace(/'/g, "'\\''");
-    // Force UTF-8 locale to ensure emojis are output correctly
-    return "env LC_ALL=C.UTF-8 bash -c '" + safeScript + "'";
+    // Apply the Plasma 6 Shield to survive the journey
+    return plasmaShield(finalCmd);
 }
 
 // Parse the output of the index command
@@ -88,9 +83,6 @@ function parseIndexOutput(output) {
             };
         }
 
-        // If the group itself doesn't have an icon yet, but the cheat has one, 
-        // valid mainly if index provides group icon separately, but here we just use defaults.
-
         groupsMap[group].cheats.push({
             path: path,
             title: title,
@@ -119,22 +111,53 @@ function parseIndexOutput(output) {
 // vs an emoji or other text.
 function isIconName(str) {
     if (!str) return false;
-    // Allow standard icon names: "git", "network-wired", "go-next", "c++" (escaped as needed)
-    // Rejects spaces, emojis (multibyte), etc.
-    // Note: '+' is used in some icons like 'c++' or 'zoom-in+'
     return /^[a-zA-Z0-9\.\-_+]+$/.test(str);
 }
 
 function getExportMarkdownCommand(cheatsDir, outputFile) {
-    // Generate command to concat all cheats
-    // We reuse the logic: iterate, cat, strip frontmatter
-
-    var cmd = "rm -f '" + outputFile + "'; " +
-        "echo '# Dev Toolbox Cheatsheet' > '" + outputFile + "'; " +
-        "find '" + cheatsDir + "' -type f -name '*.md' | sort | while read f; do " +
-        "  echo '' >> '" + outputFile + "'; " +
-        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> '" + outputFile + "'; " +
+    var script = "rm -f \"" + outputFile + "\"; " +
+        "echo \"# Dev Toolbox Cheatsheet\" > \"" + outputFile + "\"; " +
+        "find \"" + cheatsDir + "\" -type f -name '*.md' | sort | while read f; do " +
+        "  echo '' >> \"" + outputFile + "\"; " +
+        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> \"" + outputFile + "\"; " +
         "done";
 
-    return cmd;
+    var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+    return plasmaShield("bash -c \"" + escapedScript + "\"");
+}
+
+// Export a single cheatsheet (front-matter stripped) to outputFile
+function getExportCheatCommand(cheatPath, outputFile) {
+    var script = "sed '1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}' " +
+        "\"" + cheatPath + "\" > \"" + outputFile + "\" && " +
+        "notify-send 'DevToolbox' 'Exported to " + outputFile + "'";
+
+    var escapedScript = script.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+    return plasmaShield("bash -c \"" + escapedScript + "\"");
+}
+
+// Build command to launch fzf search in a terminal.
+function getFzfSearchCommand(cheatsDir, editor) {
+    var safeEditor = editor || "code";
+    var inner =
+        "if ! command -v fzf >/dev/null 2>&1; then " +
+        "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
+        "read -rp 'Press enter to exit...'; exit 1; fi; " +
+        "selected=$(grep -rnH --include='*.md' . \"" + cheatsDir + "\" 2>/dev/null | " +
+        "fzf --delimiter : " +
+        "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
+        "--preview-window 'right:60%' " +
+        "--header 'Type to search all cheats... Enter to open.' " +
+        "--bind 'enter:accept') || exit 0; " +
+        "[ -z \"$selected\" ] && exit 0; " +
+        "file=$(echo \"$selected\" | cut -d: -f1); " +
+        "line=$(echo \"$selected\" | cut -d: -f2); " +
+        "if command -v \"" + safeEditor + "\" >/dev/null 2>&1; then " +
+        "\"" + safeEditor + "\" -g \"$file:$line\"; " +
+        "else " +
+        "${EDITOR:-nano} +\"$line\" \"$file\"; " +
+        "fi";
+
+    var escapedScript = inner.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\$/g, "\\$");
+    return plasmaShield("bash -c \"" + escapedScript + "\"");
 }

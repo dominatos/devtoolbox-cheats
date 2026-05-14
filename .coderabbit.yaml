@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "en-US"
+early_access: false
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  review_details: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "**"
+    - "!**/.git/**"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/.next/**"
+    - "!**/vendor/**"
+    - "!**/*.lock"
+    - "!**/*.min.css"
+    - "!**/*.min.js"
+    - "!cheats.d/**"
+
+  path_instructions:
+    - path: "**/*.sh"
+      instructions: |
+        Focus on shell-script correctness, portability, quoting, safe use of rm/cp/mv/find/xargs, error handling, idempotency, and dependency checks.
+        Flag risky assumptions about filesystem layout, missing set -euo pipefail where appropriate, unsafe command substitution, and weak installer/uninstaller rollback behavior.
+        Pay extra attention to install/update/export scripts and any operations that modify user files, desktop entries, or widget installation paths.
+
+    - path: "**/*.{qml,js}"
+      instructions: |
+        Review KDE/Plasma widget code for maintainability, compatibility assumptions, UI state handling, broken bindings, and performance issues.
+        Flag deprecated Plasma API usage, weak fallback logic, and brittle coupling between UI and configuration.
+
+    - path: "**/*.{json,desktop,in,service}"
+      instructions: |
+        Review metadata, packaging, and service definitions for correctness, compatibility, naming consistency, and safe defaults.
+
+    - path: "**/*.md"
+      instructions: |
+        Review documentation for clarity, setup accuracy, copy-paste safety, dependency correctness, and stale instructions.
+        Flag mismatches between documented install steps and actual scripts.
+
+    - path: "**/*.{yml,yaml}"
+      instructions: |
+        Review CI/CD and config files for correctness, unnecessary complexity, broken paths, and insecure defaults.
+
+chat:
+  auto_reply: true

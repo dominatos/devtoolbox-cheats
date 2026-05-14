@@ -18,284 +18,372 @@ Order: 11
 
 ## Installation & Authentication
 
-### Install
+### Install / Установить
 
-# Linux
+```bash
+# Linux amd64 / Linux amd64
 wget https://aka.ms/downloadazcopy-v10-linux
 tar -xvf downloadazcopy-v10-linux
 mv azcopy_linux_amd64_*/azcopy /usr/local/bin/
 chmod +x /usr/local/bin/azcopy
 
-azcopy --version                               # Check version / Проверить версию
+azcopy --version                                # Verify install / Проверить установку
+```
 
-### Authentication
+### Authentication Methods / Методы аутентификации
 
-#### SAS Token
+| Method | Description / Описание | Best For |
+|--------|------------------------|----------|
+| SAS Token | URL-scoped time-limited token | Scripts, CI/CD |
+| Azure AD (interactive) | Login via browser | Manual use |
+| Service Principal | App registration | Automated jobs |
+| Managed Identity | No credentials in code | Azure VMs / AKS |
 
-export AZCOPY_SPA_CLIENT_SECRET=<SAS_TOKEN>    # Use SAS token / Использовать SAS токен
-# Or pass in URL / Или передать в URL
+#### SAS Token / SAS токен
+
+```bash
+# Pass SAS token in URL / Передать SAS токен в URL
 azcopy copy file.txt "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>?<SAS_TOKEN>"
+```
 
-#### Azure AD
+#### Azure AD Interactive / Интерактивный вход через Azure AD
 
-azcopy login                                   # Interactive login / Интерактивный вход
-azcopy login --tenant-id <TENANT_ID>           # Specific tenant / Конкретный tenant
+```bash
+azcopy login                                    # Interactive login / Интерактивный вход
+azcopy login --tenant-id <TENANT_ID>            # Specific tenant / Конкретный tenant
+```
 
-#### Managed Identity
+#### Managed Identity / Managed Identity
 
-azcopy login --identity                        # System-assigned identity / Системная идентичность
-azcopy login --identity --identity-client-id <CLIENT_ID> # User-assigned / Пользовательская
+```bash
+azcopy login --identity                         # System-assigned identity / Системная идентичность
+azcopy login --identity --identity-client-id <CLIENT_ID>  # User-assigned / Пользовательская
+```
 
-### Logout
-
-azcopy logout                                  # Logout / Выход
+```bash
+azcopy logout                                   # Logout / Выход
+```
 
 ---
 
 ## Copy Operations
 
-### Upload
+### Upload / Загрузить
 
-azcopy copy file.txt "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" # Upload file / Загрузить файл
-azcopy copy "/data/*" "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" # Upload directory / Загрузить директорию
-azcopy copy "/data" "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" --recursive # Recursive upload / Рекурсивная загрузка
+```bash
+# Single file / Один файл
+azcopy copy file.txt "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/"
 
-### Download
+# Directory (recursive) / Директория (рекурсивно)
+azcopy copy "/data" "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" --recursive
+```
 
-azcopy copy "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/file .txt" . # Download file / Скачать файл
-azcopy copy "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/*" /restore # Download directory / Скачать директорию
-azcopy copy "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>" /restore --recursive # Recursive download / Рекурсивное скачивание
+### Download / Скачать
 
-### Copy Between Storage Accounts
+```bash
+# Single file / Один файл
+azcopy copy "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/file.txt" .
 
+# Directory / Директория
+azcopy copy "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>" /restore --recursive
+```
+
+### Copy Between Storage Accounts / Копировать между аккаунтами
+
+```bash
 azcopy copy \
   "https://<SRC_ACCOUNT>.blob.core.windows.net/<CONTAINER>/*" \
   "https://<DST_ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --recursive                                  # Copy between accounts / Копировать между аккаунтами
+  --recursive                                   # Server-side copy / Копирование на стороне сервера
+```
+
+> [!TIP]
+> Server-side copy between storage accounts does not consume local bandwidth — data moves directly in Azure.
 
 ---
 
 ## Sync Operations
 
-### Sync Local → Azure
+### Sync Local → Azure / Синхронизация в Azure
 
-azcopy sync /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" # Sync to Azure / Синхронизация в Azure
-azcopy sync /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" --delete-destination=true # Delete removed files / Удалить удалённые файлы
+```bash
+azcopy sync /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/"
+azcopy sync /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
+  --delete-destination=true                     # Delete removed files / Удалить удалённые файлы
+```
 
-### Sync Azure → Local
+### Sync Azure → Local / Синхронизация из Azure
 
-azcopy sync "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" /restore # Sync from Azure / Синхронизация из Azure
+```bash
+azcopy sync "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" /restore
+```
 
-### Advanced Sync
+### Advanced Sync / Расширенная синхронизация
+
+```bash
+azcopy sync /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
+  --exclude-pattern "*.tmp;*.log"               # Exclude patterns / Исключить паттерны
 
 azcopy sync /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --exclude-pattern "*.tmp;*.log"              # With excludes / С исключениями
+  --include-pattern "*.jpg;*.png"               # Include only images / Только изображения
 
 azcopy sync /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --include-pattern "*.jpg;*.png"              # Include only images / Только изображения
+  --dry-run                                     # Preview changes / Предпросмотр изменений
+```
 
 ---
 
 ## Storage Tiers
 
-### Available Tiers
+### Tier Comparison / Сравнение уровней
 
-# Hot — Frequent access / Частый доступ
-# Cool — Infrequent access / Нечастый доступ
-# Archive — Long-term storage / Долгосрочное хранилище
+| Tier | Access Frequency | Min Duration | Storage Cost | Access Cost |
+|------|-----------------|--------------|-------------|-------------|
+| **Hot** | Frequent / Частый | None | High / Высокая | Low / Низкая |
+| **Cool** | ~1×/month / ~1×/месяц | 30 days | Medium / Средняя | Medium / Средняя |
+| **Cold** | ~1×/quarter / ~1×/квартал | 90 days | Low / Низкая | High / Высокая |
+| **Archive** | Rarely / Редко | 180 days | Very low / Очень низкая | Very high + rehydration delay |
 
-### Set Tier on Upload
+### Set Tier on Upload / Установить уровень при загрузке
+
+```bash
+azcopy copy file.txt "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
+  --blob-type BlockBlob --block-blob-tier Hot   # Hot tier / Hot уровень
 
 azcopy copy file.txt "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --blob-type BlockBlob \
-  --block-blob-tier Hot                        # Upload to Hot tier / Загрузить в Hot tier
+  --block-blob-tier Cool                        # Cool tier / Cool уровень
 
 azcopy copy file.txt "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --block-blob-tier Cool                       # Upload to Cool tier / Загрузить в Cool tier
-
-azcopy copy file.txt "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --block-blob-tier Archive                    # Upload to Archive tier / Загрузить в Archive tier
+  --block-blob-tier Archive                     # Archive tier / Archive уровень
+```
 
 ---
 
 ## Blob Lifecycle
 
-### Lifecycle Policy (via Azure CLI)
+### Install Azure CLI / Установить Azure CLI
 
-# Install Azure CLI / Установить Azure CLI
-curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+```bash
+curl -sL https://aka.ms/InstallAzureCLIDeb | bash  # Install Azure CLI / Установить Azure CLI
+az login                                            # Log in / Войти
+```
 
-# Create lifecycle policy / Создать политику lifecycle
+### Create Lifecycle Policy / Создать политику lifecycle
+
+```bash
 az storage account management-policy create \
   --account-name <ACCOUNT> \
   --policy @policy.json \
   --resource-group <RESOURCE_GROUP>
+```
 
-#### policy.json Example
+`/tmp/policy.json`
 
+```json
 {
   "rules": [
     {
       "enabled": true,
-      "name": "moveToCool",
+      "name": "autoTierAndDelete",
       "type": "Lifecycle",
       "definition": {
         "actions": {
           "baseBlob": {
-            "tierToCool": {
-              "daysAfterModificationGreaterThan": 30
-            },
-            "tierToArchive": {
-              "daysAfterModificationGreaterThan": 90
-            },
-            "delete": {
-              "daysAfterModificationGreaterThan": 365
-            }
+            "tierToCool":    { "daysAfterModificationGreaterThan": 30  },
+            "tierToArchive": { "daysAfterModificationGreaterThan": 90  },
+            "delete":        { "daysAfterModificationGreaterThan": 365 }
           }
         },
-        "filters": {
-          "blobTypes": ["blockBlob"]
-        }
+        "filters": { "blobTypes": ["blockBlob"] }
       }
     }
   ]
 }
+```
 
 ---
 
 ## Performance Tuning
 
-### Concurrency & Parallelism
+### Concurrency & Parallelism / Параллелизм
 
+```bash
 azcopy copy /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --recursive \
-  --cap-mbps 100                               # Limit bandwidth to 100 Mbps / Ограничить до 100 Мбит/с
+  --recursive --cap-mbps 100                    # Limit to 100 Mbps / Ограничить до 100 Мбит/с
+```
 
-### Block Size
+### Block Size / Размер блока
 
+```bash
 azcopy copy /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --block-size-mb 16                           # 16MB blocks / Блоки по 16МБ
+  --block-size-mb 16                            # 16 MB blocks / Блоки по 16 МБ
+```
 
-### Performance Settings
+### Performance Environment Variables / Переменные производительности
 
-export AZCOPY_CONCURRENCY_VALUE=32             # 32 concurrent operations / 32 параллельных операции
-export AZCOPY_BUFFER_GB=4                      # 4GB buffer / Буфер 4ГБ
+```bash
+export AZCOPY_CONCURRENCY_VALUE=32              # 32 concurrent operations / 32 параллельных
+export AZCOPY_BUFFER_GB=4                       # 4 GB buffer / Буфер 4 ГБ
+```
 
 ---
 
 ## Benchmark Mode
 
+```bash
+# Benchmark upload / Тест производительности загрузки
 azcopy bench "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --file-count 100 \
-  --size-per-file 10M                          # Benchmark upload / Тест загрузки
+  --file-count 100 --size-per-file 10M
 
+# Benchmark download / Тест скачивания
 azcopy bench "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --mode Download \
-  --file-count 100                             # Benchmark download / Тест скачивания
+  --mode Download --file-count 100
+```
 
 ---
 
 ## Sysadmin Operations
 
-### Automated Backup Script
+### Automated Backup Script / Автоматический скрипт бэкапа
 
+`/usr/local/bin/azure-backup.sh`
+
+```bash
 #!/bin/bash
-# /usr/local/bin/azure-backup.sh
+# Azure Blob daily backup using Managed Identity
+# / Ежедневный бэкап в Azure Blob с Managed Identity
+
+set -euo pipefail
 
 ACCOUNT="<ACCOUNT>"
 CONTAINER="<CONTAINER>"
 SOURCE="/data"
 DATE=$(date +%Y%m%d)
+LOG="/var/log/azure-backup.log"
 
-# Login with managed identity / Вход с managed identity
-azcopy login --identity
+echo "$(date): Starting Azure backup → $CONTAINER/backups/$DATE/" >> "$LOG"
 
-# Sync to Azure / Синхронизация в Azure
-azcopy sync $SOURCE "https://$ACCOUNT.blob.core.windows.net/$CONTAINER/backups/$DATE/" \
+azcopy login --identity                         # Authenticate via Managed Identity
+
+azcopy sync "$SOURCE" \
+  "https://$ACCOUNT.blob.core.windows.net/$CONTAINER/backups/$DATE/" \
   --delete-destination=true \
-  --block-blob-tier Cool
+  --block-blob-tier Cool >> "$LOG" 2>&1
 
-# Log completion / Лог завершения
-echo "$(date): Backup completed" >> /var/log/azure-backup.log
+echo "$(date): Azure backup complete." >> "$LOG"
+```
 
-### Systemd Service
+```bash
+chmod +x /usr/local/bin/azure-backup.sh
+```
 
-#### /etc/systemd/system/azure-backup.service
+### Systemd Service / Systemd-сервис
 
+`/etc/systemd/system/azure-backup.service`
+
+```ini
 [Unit]
 Description=Azure Blob Backup
 After=network.target
+Wants=network-online.target
 
 [Service]
 Type=oneshot
+Environment="AZCOPY_LOG_LOCATION=/var/log/azcopy"
+Environment="AZCOPY_CONCURRENCY_VALUE=16"
 ExecStart=/usr/local/bin/azure-backup.sh
-StandardOutput=journal
-StandardError=journal
+StandardOutput=append:/var/log/azure-backup.log
+StandardError=append:/var/log/azure-backup.log
 
 [Install]
 WantedBy=multi-user.target
+```
 
-#### /etc/systemd/system/azure-backup.timer
+### Systemd Timer / Systemd-таймер
 
+`/etc/systemd/system/azure-backup.timer`
+
+```ini
 [Unit]
 Description=Azure Backup Timer
 Requires=azure-backup.service
 
 [Timer]
-OnCalendar=daily
+OnCalendar=*-*-* 02:00:00
 Persistent=true
+RandomizedDelaySec=15m
 
 [Install]
 WantedBy=timers.target
+```
 
-### Environment Variables
+```bash
+systemctl daemon-reload                         # Reload systemd / Перезагрузить systemd
+systemctl enable azure-backup.timer             # Enable / Включить
+systemctl start azure-backup.timer              # Start / Запустить
+systemctl status azure-backup.timer             # Check status / Проверить статус
+```
 
-export AZCOPY_LOG_LOCATION=/var/log/azcopy     # Log location / Расположение логов
-export AZCOPY_JOB_PLAN_LOCATION=/var/azcopy/plans # Job plan location / Расположение планов задач
-export AZCOPY_CONCURRENCY_VALUE=16             # Concurrency / Параллелизм
-export AZCOPY_BUFFER_GB=2                      # Buffer size / Размер буфера
+### Configuration Paths / Пути конфигурации
 
-### Configuration
+```bash
+~/.azcopy/                                      # User config dir / Директория конфигурации
+export AZCOPY_LOG_LOCATION=/var/log/azcopy      # Log dir / Директория логов
+export AZCOPY_JOB_PLAN_LOCATION=/var/azcopy/plans  # Job plans / Планы задач
+```
 
-~/.azcopy/                                     # Config directory / Директория конфигурации
+### Logrotate / Logrotate
+
+`/etc/logrotate.d/azure-backup`
+
+```
+/var/log/azure-backup.log
+/var/log/azcopy/*.log {
+    daily
+    rotate 30
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 640 root root
+}
+```
 
 ---
 
 ## Troubleshooting
 
-### Common Errors
+### Common Errors / Распространённые ошибки
 
-# "Failed to perform copy command" / "Не удалось выполнить команду копирования"
-azcopy login                                   # Re-authenticate / Переаутентификация
-# Check SAS token expiration / Проверить срок действия SAS токена
+```bash
+# Error: "Failed to perform copy" — re-authenticate
+azcopy login                                    # Re-login / Переаутентификация
+# Check SAS token expiration in URL / Проверить срок действия SAS токена
 
-# "403 Forbidden" / "403 Запрещено"
-# Check storage account permissions / Проверить права доступа к учётной записи хранилища
-# Verify firewall rules / Проверить правила файрвола
+# Error: "403 Forbidden"
+# Check storage account firewall rules / Проверить правила брандмауэра
+# Verify IAM role: "Storage Blob Data Contributor" / Проверить роль IAM
 
 # Slow transfers / Медленные передачи
-export AZCOPY_CONCURRENCY_VALUE=32             # Increase concurrency / Увеличить параллелизм
-azcopy copy /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" --cap-mbps 0 # Remove bandwidth limit / Убрать ограничение пропускной способности
-
-### Resume Failed Jobs
-
-azcopy jobs list                               # List jobs / Список задач
-azcopy jobs show <JOB_ID>                      # Show job details / Показать детали задачи
-azcopy jobs resume <JOB_ID>                    # Resume job / Возобновить задачу
-azcopy jobs remove <JOB_ID>                    # Remove job / Удалить задачу
-
-### Dry Run
-
+export AZCOPY_CONCURRENCY_VALUE=32
 azcopy copy /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --dry-run                                    # Simulate operation / Симуляция операции
+  --cap-mbps 0                                  # Remove bandwidth cap / Убрать ограничение
+```
 
-### Debug & Logging
+### Resume Failed Jobs / Возобновление прерванных задач
 
+```bash
+azcopy jobs list                                # List jobs / Список задач
+azcopy jobs show <JOB_ID>                       # Job details / Детали задачи
+azcopy jobs resume <JOB_ID>                     # Resume / Возобновить
+azcopy jobs remove <JOB_ID>                     # Remove / Удалить
+```
+
+### Debug & Logging / Отладка и логи
+
+```bash
 azcopy copy /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
-  --log-level=DEBUG                            # Debug logging / Отладочные логи
-
-tail -f ~/.azcopy/*.log                        # View logs / Просмотр логов
-
-### Performance Analysis
-
-azcopy jobs show <JOB_ID> --with-status=All    # Show all file statuses / Показать все статусы файлов
+  --log-level=DEBUG                             # Debug logging / Отладочные логи
+tail -f ~/.azcopy/*.log                         # View live logs / Просмотр логов
+azcopy jobs show <JOB_ID> --with-status=All     # All file statuses / Все статусы файлов
+```
