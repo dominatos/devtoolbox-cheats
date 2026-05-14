@@ -1106,6 +1106,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🗃️ Redis — Production Cheatsheet](cheats.d/databases/redis_prod_cheatsheet.md)
 - [🗃️ SQLite](cheats.d/databases/sqlitecheatsheet.md)
 - [🐬 MySQL Galera Cluster](cheats.d/databases/mysqlgaleracheatsheet.md)
+- [🗄️ PMM — Disaster Recovery](cheats.d/databases/PMM_Disaster_Recovery_Cheat_Sheet.md)
 
 ### Dev & Tools
 - [🛠️ Ansible](cheats.d/dev-tools/ansiblecheatsheet.md)
@@ -1120,6 +1121,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🛠️ Terraform](cheats.d/dev-tools/terraformcheatsheet.md)
 - [🧷 tmux — Commands](cheats.d/dev-tools/tmuxcheatsheet.md)
 - [🔍 Meld (Merge & Diff)](cheats.d/dev-tools/meldcheatsheet.md)
+- [🛠️ Debezium CDC — Sysadmin](cheats.d/dev-tools/debezium_cdc_sysadmin_cheatsheet_markdown.md)
 
 ### Diagnostics
 - [🔍 strace / perf / tcpdump — Commands](cheats.d/diagnostics/diagcheatsheet.md)
@@ -1234,6 +1236,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🛠 systemctl — Commands](cheats.d/system-logs/systemctlcheatsheet.md)
 - [🕰️ systemd timers — Basics](cheats.d/system-logs/systemdtimerscheatsheet.md)
 - [🧩 systemd unit — template](cheats.d/system-logs/systemdunittemplate.md)
+- [💾 Swap — Management](cheats.d/system-logs/swap_cheatsheet_pro.md)
 
 ### Text & Parsing
 - [🦾 AWK — Commands](cheats.d/text-parsing/awkcheatsheet.md)
