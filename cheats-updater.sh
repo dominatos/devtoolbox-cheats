@@ -6,7 +6,8 @@ readonly VERSION="1.0.0"
 readonly UPSTREAM_URL="https://github.com/dominatos/devtoolbox-cheats.git"
 readonly BRANCH="main"
 readonly CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
-readonly TEMP_DIR="/tmp/devtoolbox-cheats-$$"
+TEMP_DIR="$(mktemp -d /tmp/devtoolbox-cheats-XXXXXX)"
+readonly TEMP_DIR
 
 # Colors
 if [[ -t 1 ]]; then
@@ -22,7 +23,7 @@ log_warn()  { echo -e "${C_YELLOW}[WARN]${C_RESET} $*" >&2; }
 log_error() { echo -e "${C_RED}[ERROR]${C_RESET} $*" >&2; }
 
 cleanup() {
-    [[ -d "$TEMP_DIR" ]] && rm -rf "$TEMP_DIR"
+    [[ -n "${TEMP_DIR:-}" && -d "$TEMP_DIR" ]] && rm -rf "$TEMP_DIR"
 }
 trap cleanup EXIT
 
@@ -69,7 +70,7 @@ cmd_check() {
     
     # Check official files for updates (process substitution to avoid subshell)
     while IFS= read -r remote_file; do
-        local rel_path="${remote_file#${TEMP_DIR}/cheats.d/}"
+        local rel_path="${remote_file#"${TEMP_DIR}"/cheats.d/}"
         local local_file="${CHEATS_DIR}/${rel_path}"
         
         if [[ ! -f "$local_file" ]]; then
@@ -85,7 +86,7 @@ cmd_check() {
     
     # Check for custom user files (process substitution to avoid subshell)
     while IFS= read -r local_file; do
-        local rel_path="${local_file#${CHEATS_DIR}/}"
+        local rel_path="${local_file#"${CHEATS_DIR}"/}"
         if [[ ! -v official_files["$rel_path"] ]]; then
             echo "  ${C_BLUE}? ${rel_path}${C_RESET} (custom)"
             ((custom++)) || true
@@ -121,7 +122,8 @@ cmd_update() {
     clone_repo
     
     # Create backup
-    local backup_dir="${HOME}/.local/share/devtoolbox-cheats/backups/$(date +%Y-%m-%d-%H%M%S)"
+    local backup_dir
+    backup_dir="${HOME}/.local/share/devtoolbox-cheats/backups/$(date +%Y-%m-%d-%H%M%S)"
     if [[ -d "$CHEATS_DIR" ]]; then
         log_info "Creating backup..."
         mkdir -p "$backup_dir"
@@ -141,7 +143,7 @@ cmd_update() {
     
     # Process each file
     for remote_file in "${remote_files[@]}"; do
-        local rel_path="${remote_file#${TEMP_DIR}/cheats.d/}"
+        local rel_path="${remote_file#"${TEMP_DIR}"/cheats.d/}"
         local local_file="${CHEATS_DIR}/${rel_path}"
         local local_dir
         local_dir="$(dirname "$local_file")"
@@ -202,7 +204,7 @@ EOF
 }
 
 # Check dependencies
-for cmd in git find cp; do
+for cmd in git find cp cmp; do
     if ! command -v "$cmd" &>/dev/null; then
         log_error "Required command: ${cmd}"
         exit 1

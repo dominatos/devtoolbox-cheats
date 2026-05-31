@@ -8,3 +8,9 @@ Windows/cheats.exe
 .codex
 docs/tldr-plan.md
 .vscode/extensions.json
+review.md
+.gitignore
+tofix.md
+tofix-helper.py
+tofix-helper.md
+__pycache__/tofix-helper.cpython-312.pyc
