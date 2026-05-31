@@ -24,6 +24,7 @@ reviews:
     - "!**/*.min.css"
     - "!**/*.min.js"
     - "!**/cheats.d/**"
+    - "!cheats.d/**"
 
   path_instructions:
     - path: "**/*.sh"
