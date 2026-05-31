@@ -13,17 +13,16 @@ reviews:
     enabled: true
     drafts: false
   path_filters:
-
-    - !**/.git/**
-    - !**/node_modules/**
-    - !**/dist/**
-    - !**/build/**
-    - !**/.next/**
-    - !**/vendor/**
-    - !**/*.lock
-    - !**/*.min.css
-    - !**/*.min.js
-    - !**/cheats.d/**
+    - "!**/.git/**"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/.next/**"
+    - "!**/vendor/**"
+    - "!**/*.lock"
+    - "!**/*.min.css"
+    - "!**/*.min.js"
+    - "!**/cheats.d/**"
 
 
   path_instructions:
