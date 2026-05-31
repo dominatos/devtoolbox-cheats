@@ -62,6 +62,64 @@
 - ✅ Added Windows native tray app screenshots and setup instructions.
 - ✅ Updated repository README to reflect Windows support.
 
+### v1.3.2 (2026-03-24)
+
+**New Cheatsheets:**
+- ✅ Added WildFly application server cheatsheet.
+- ✅ Added MySQL Galera Cluster cheatsheet.
+- ✅ Added Percona XtraDB Cluster cheatsheet.
+- ✅ Added Meld (merge & diff) cheatsheet.
+- ✅ Added Pacemaker HA cheatsheet.
+- ✅ Added ProxySQL cheatsheet.
+
+**Documentation:**
+- ✅ Updated HAProxy cheatsheet with corrections and new content.
+- ✅ Updated APT cheatsheet content.
+
+---
+
+### v1.3.1 (2026-03-20)
+
+**New Cheatsheets:**
+- ✅ Added Keycloak identity management cheatsheet.
+- ✅ Added Commvault v11 (Simpana) enterprise backup strategies cheatsheet.
+
+**Windows (BETA) — Tray App Improvements:**
+- ✅ Implemented native Search GUI with global hotkey `Ctrl+Shift+S` and real-time filtering.
+- ✅ Automated user profile path detection — no manual path editing required.
+- ✅ Custom tray icon support: place `icon.ico` in `cheats.d` to override.
+- ✅ Enhanced tray menu items with emoji group icons.
+- ✅ Professional Gear icon in tray (replaces default "H").
+- ✅ Dual-file startup strategy (`cheats.exe` + `cheats.ahk`) for antivirus resilience.
+- ✅ UTF-8 BOM encoding enforced on script save to prevent garbled characters.
+- ✅ Removed obsolete installation script and icon browser utility.
+
+---
+
+### v1.3.0 (2026-03-18)
+
+**Windows Support (BETA — Initial Release):**
+- ✅ Introduced native Windows tray application via AutoHotkey (`cheats.ahk`).
+- ✅ Automated PowerShell installer (`install-devtoolbox.ps1`).
+- ✅ Auto-discovery of cheatsheets from `%USERPROFILE%\cheats.d`.
+- ✅ Auto-start on login via Windows Startup folder.
+- ✅ Documented ExecutionPolicy bypass and Administrator warning.
+
+---
+
+### v1.2.0 (2026-03-10)
+
+**New Cheatsheets & Categories:**
+- ✅ Added **Identity Management** category with adcli cheatsheet.
+- ✅ Added **Infrastructure Management** category with 11 new cheatsheets across monitoring, security, and cloud.
+- ✅ Added SSH Honeypot & CrowdSec security cheatsheet.
+
+**Documentation:**
+- ✅ Updated Nginx cheatsheet.
+- ✅ Updated README with new categories and cheatsheet links.
+
+---
+
 ### v1.1.1 (2026-03-04)
 
 **Documentation Updates:**
