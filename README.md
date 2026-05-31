@@ -127,7 +127,7 @@ DevToolbox Cheats is fully supported on Windows using an automated PowerShell in
 See the dedicated **[Windows Setup Guide](https://github.com/dominatos/devtoolbox-cheats/blob/main/Windows-beta/README-windows.md)** for full details.
 
 #### Quick Automated Install
-1. Open **PowerShell** as **Administrator**.
+1. Open **PowerShell** (do not run as Administrator).
 2. Navigate to the repository's `Windows-beta` directory:
    ```powershell
    cd "C:\path\to\devtoolbox-cheats\Windows-beta"
@@ -796,7 +796,7 @@ cheats-updater list
 
 ### Automatic Daily Updates (systemd)
 
-The installer sets up a **systemd user timer** that runs `cheats-updater.sh update` once per day.
+The installer sets up a **systemd user timer** that runs `%h/.local/bin/cheats-updater update` once per day.
 
 ```bash
 # Check timer status
@@ -818,6 +818,10 @@ systemctl --user enable --now devtoolbox-cheats-updater.timer
 ### Manual Setup (if not using install.sh)
 
 ```bash
+# Symlink the executable to PATH
+mkdir -p ~/.local/bin
+ln -sf ~/devtoolbox-cheats/cheats-updater.sh ~/.local/bin/cheats-updater
+
 # Symlink units and enable timer
 mkdir -p ~/.config/systemd/user
 ln -sf ~/devtoolbox-cheats/systemd/devtoolbox-cheats-updater.service ~/.config/systemd/user/
@@ -1115,8 +1119,8 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🛠️ Build — Make/CMake](cheats.d/dev-tools/buildtoolscheatsheet.md)
 - [🧬 Git — Advanced](cheats.d/dev-tools/gitadvancedcheatsheet.md)
 - [🧬 Git — Basics](cheats.d/dev-tools/gitcheatsheet.md)
-- [�️ Jenkins CI/CD](cheats.d/dev-tools/jenkinscheatsheet.md)
-- [�🟢 Node — nvm/npm/yarn](cheats.d/dev-tools/nodetoolscheatsheet.md)
+- [🛠️ Jenkins CI/CD](cheats.d/dev-tools/jenkinscheatsheet.md)
+- [🟢 Node — nvm/npm/yarn](cheats.d/dev-tools/nodetoolscheatsheet.md)
 - [🐍 Python — venv/pip/pipx](cheats.d/dev-tools/pythontoolscheatsheet.md)
 - [🛠️ Terraform](cheats.d/dev-tools/terraformcheatsheet.md)
 - [🧷 tmux — Commands](cheats.d/dev-tools/tmuxcheatsheet.md)

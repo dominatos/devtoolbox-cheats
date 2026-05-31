@@ -72,7 +72,8 @@ You should end up with a folder at `C:\Users\YourUsername\cheats.d\`.
 
 The script now automatically detects your Windows user profile path, so no manual editing is required!
 
-3. This process will generate a native Windows executable called `cheats.exe` in the same folder.
+### 3. Compile the Executable
+Open `cheats.ahk` with the AutoHotkey compiler (`Ahk2Exe`) to compile it. This process will generate a native Windows executable called `cheats.exe` in the same folder. Alternatively, you can just run `cheats.ahk` directly with AutoHotkey without compiling.
 
 > [!IMPORTANT]
 > **Technical Note: Encoding (BOM)**

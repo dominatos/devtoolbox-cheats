@@ -1,3 +1,5 @@
+# Changelog
+
 ### v1.4.1 (2026-04-13)
 
 **Features:**
