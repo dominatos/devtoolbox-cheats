@@ -1,5 +1,34 @@
 # Changelog
 
+### v1.4.2 (2026-05-31)
+
+**Security / Stability:**
+- ✅ Fix predictable `/tmp` path in `cheats-updater.sh` — replaced with `mktemp -d` (prevents race conditions)
+- ✅ Add `cmp` to dependency check in `cheats-updater.sh` to fail fast when missing
+
+**Windows Installer (`install-devtoolbox.ps1`):**
+- ✅ Default to deploying `cheats.ahk` (script mode) instead of compiled EXE — avoids Windows Defender false positives
+- ✅ Add optional `-CompileExe` flag for users who prefer a compiled executable
+- ✅ Add AutoHotkey v1 version check — aborts with a clear message if only v2 is installed
+- ✅ Auto-download latest AutoHotkey v1 installer from GitHub releases; bundled EXE used as offline fallback
+- ✅ Abort installer if run as Administrator (prevents wrong-profile installation)
+- ✅ Fix duplicate tray icon bug — only one startup entry registered
+
+**Documentation:**
+- ✅ Fix Windows install guide to not instruct users to run as Administrator
+- ✅ Update `README-windows.md` to reflect AHK-first default and `-CompileExe` option
+- ✅ Fix broken mojibake characters in README.md cheatsheet list
+- ✅ Update systemd/updater docs to match actual deployed unit and binary path
+- ✅ Add missing `# Changelog` heading to `CHANGELOG.md`
+- ✅ Fix manual Windows install guide to include the compile step
+- ✅ Fix `.gitignore` entry for `Windows-beta/cheats.exe`
+
+**Code Quality:**
+- ✅ Fix all ShellCheck warnings in `cheats-updater.sh` (SC2155, SC2295)
+- ✅ Fix AHK menu collision bug — `MENU_MAP` now keyed by position index, not label
+
+---
+
 ### v1.4.1 (2026-04-13)
 
 **Features:**

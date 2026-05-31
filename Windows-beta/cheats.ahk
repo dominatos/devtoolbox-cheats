@@ -134,7 +134,7 @@ BuildMenus() {
                 label := cheat.icon . " " . label
                 
             Menu, %safeGroupName%, Add, %label%, OpenFile
-            MENU_MAP[safeGroupName . "|" . label] := cheat.path
+            MENU_MAP[safeGroupName . "|" . j] := cheat.path
         }
         
         ; Add to Tray Menu
@@ -168,8 +168,8 @@ SortCheats(ByRef cheats) {
 
 OpenFile:
     menuName := A_ThisMenu
-    itemName := A_ThisMenuItem
-    path := MENU_MAP[menuName . "|" . itemName]
+    itemPos := A_ThisMenuItemPos
+    path := MENU_MAP[menuName . "|" . itemPos]
     if (path != "") {
         Run, %path%
     }
