@@ -97,7 +97,7 @@ version: '3.8'
 
 services:
   pmm-server:
-    image: percona/pmm-server:3
+    image: percona/pmm-server:3.5.0
     container_name: pmm-server
     restart: always
     ports:
@@ -250,15 +250,25 @@ docker compose up -d                                       # Start PMM / Зап�
 #!/bin/bash
 BACKUP_DIR="/backup/pmm"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_FILE="$BACKUP_DIR/pmm-backup-$TIMESTAMP.tar.gz"
 mkdir -p "$BACKUP_DIR"
 
-docker run --rm \
+if docker run --rm \
   -v pmm-data:/data \
   -v "$BACKUP_DIR":/backup \
-  alpine tar czf "/backup/pmm-backup-$TIMESTAMP.tar.gz" /data
+  alpine tar czf "/backup/pmm-backup-$TIMESTAMP.tar.gz" /data; then
 
-find "$BACKUP_DIR" -name "*.tar.gz" -mtime +7 -delete     # Retain 7 days / Хранить 7 дней
-echo "✅ PMM backup: pmm-backup-$TIMESTAMP.tar.gz"
+  if [ -s "$BACKUP_FILE" ] && tar -tzf "$BACKUP_FILE" >/dev/null 2>&1; then
+    find "$BACKUP_DIR" -name "*.tar.gz" -mtime +7 -delete     # Retain 7 days / Хранить 7 дней
+    echo "✅ PMM backup successful: $BACKUP_FILE"
+  else
+    echo "❌ Backup validation failed. Archive is empty or corrupt."
+    exit 1
+  fi
+else
+  echo "❌ Docker tar command failed."
+  exit 1
+fi
 ```
 
 **Cron:**

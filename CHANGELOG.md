@@ -1,6 +1,6 @@
 # Changelog
 
-### v1.4.2 (2026-05-31)
+## v1.4.2 (2026-05-31)
 
 **Security / Stability:**
 - ✅ Fix predictable `/tmp` path in `cheats-updater.sh` — replaced with `mktemp -d` (prevents race conditions)
@@ -29,7 +29,7 @@
 
 ---
 
-### v1.4.1 (2026-04-13)
+## v1.4.1 (2026-04-13)
 
 **Features:**
 - ✅ Add online and GitHub repository links to shell script and Plasma widgets
@@ -41,7 +41,7 @@
 
 ---
 
-### v1.4.0 (2026-03-27)
+## v1.4.0 (2026-03-27)
 
 **Windows Support (BETA):**
 - ✅ Introduced native Windows Tray Application using AutoHotkey with PowerShell installer.
@@ -62,7 +62,7 @@
 - ✅ Added Windows native tray app screenshots and setup instructions.
 - ✅ Updated repository README to reflect Windows support.
 
-### v1.3.2 (2026-03-24)
+## v1.3.2 (2026-03-24)
 
 **New Cheatsheets:**
 - ✅ Added WildFly application server cheatsheet.
@@ -78,7 +78,7 @@
 
 ---
 
-### v1.3.1 (2026-03-20)
+## v1.3.1 (2026-03-20)
 
 **New Cheatsheets:**
 - ✅ Added Keycloak identity management cheatsheet.
@@ -96,7 +96,7 @@
 
 ---
 
-### v1.3.0 (2026-03-18)
+## v1.3.0 (2026-03-18)
 
 **Windows Support (BETA — Initial Release):**
 - ✅ Introduced native Windows tray application via AutoHotkey (`cheats.ahk`).
@@ -107,7 +107,7 @@
 
 ---
 
-### v1.2.0 (2026-03-10)
+## v1.2.0 (2026-03-10)
 
 **New Cheatsheets & Categories:**
 - ✅ Added **Identity Management** category with adcli cheatsheet.
@@ -120,7 +120,7 @@
 
 ---
 
-### v1.1.1 (2026-03-04)
+## v1.1.1 (2026-03-04)
 
 **Documentation Updates:**
 - ✅ Simplified manual `.desktop` creation instructions for all Desktop Environments (Cosmic, Budgie, Deepin, etc.)
@@ -129,7 +129,7 @@
 
 ---
 
-### v1.1 (2026-03-04)
+## v1.1 (2026-03-04)
 
 **Universal Installer:**
 - ✅ Unified `install.sh` — single installer for all 12+ desktop environments
@@ -151,7 +151,7 @@
 
 ---
 
-### v1.0 Beta (2026-02-23)
+## v1.0 Beta (2026-02-23)
 
 **Universal Support:**
 - ✅ GNOME Argos integration
