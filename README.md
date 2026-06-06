@@ -669,9 +669,16 @@ Icon: network-server
    - 🔎 Search cheats
    - 🚀 FZF Search Commands
    - 📥 Export all (MD/PDF)
-   - **Categories** (expandable)
+   - **Categories** (auto-adaptive layout — see below)
 3. Click cheat name to copy & view
 4. Content copied to clipboard automatically
+
+**Auto-adaptive category layout:**
+
+The menu dynamically calculates how many category groups can safely fit on screen.
+- If categories exceed the safe limit (e.g. 19 groups on 1080p), they are grouped under **📂 Browse by Category ▶** to prevent submenus from being clipped off-screen.
+- On larger screens (≥1440p with fewer categories) categories are listed directly at the top level.
+- On small screens (≤1368×768) the compact flat menu is shown instead.
 
 ### KDE Widget
 
@@ -735,6 +742,18 @@ export DEVTOOLBOX_DE=kde     # kde, gnome, xfce, lxqt, budgie, terminal
 # Set preferred viewers (space-separated, tried in order)
 export CHEAT_VIEWERS="code zenity"
 ```
+
+### GNOME Argos: Adaptive Menu Layout
+
+The Argos menu automatically adapts to your screen resolution and number of cheatsheet categories:
+
+| Screen | Categories ≤ threshold | Categories > threshold |
+|--------|------------------------|------------------------|
+| ≥1440p | Expanded (categories at top level) | Collapsed (📂 Browse by Category) |
+| 1080p  | Expanded | **Collapsed** (19 groups trigger this) |
+| ≤768p  | Compact flat menu (no inline categories) | Same |
+
+The threshold is calculated as: `(screen_height − 30px panel) / 28px per item × 60%`
 
 ### KDE Widget Settings
 

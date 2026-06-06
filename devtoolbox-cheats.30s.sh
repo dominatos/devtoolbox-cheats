@@ -20,6 +20,14 @@ fi
 CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-beta.idx}"
 CHEATS_REBUILD=1 # Set to 1 to force a cache rebuild on every run (useful for debugging)
 
+# === Argos drill-down navigation state ===
+# Stores the currently selected category for the Argos inline drill-down menu.
+# Uses XDG_RUNTIME_DIR (cleared on logout/reboot) so stale state never persists across sessions.
+ARGOS_CAT_STATE="${XDG_RUNTIME_DIR:-/tmp}/devtoolbox-argos-cat.state"
+# TTL in seconds: state auto-expires so reopening the widget resets to the category list.
+# Default 60s = at most 2 Argos refresh cycles (script refreshes every 30s).
+ARGOS_CAT_TTL="${ARGOS_CAT_TTL:-60}"
+
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.
 declare -A GROUP_ICON=(
@@ -413,6 +421,64 @@ is_small_screen() {
   dims="$(get_screen_dims)"
   w="${dims%x*}"; h="${dims#*x}"
   (( w <= 1368 || h <= 768 ))
+}
+
+# Calculates the maximum number of top-level category groups that can safely
+# fit in an Argos dropdown without submenus being clipped off-screen.
+#
+# Strategy:
+#   usable_height = screen_height - panel_height (30px GNOME top bar)
+#   max_total_items = usable_height / item_height (28px conservative estimate)
+#   overhead = fixed utility lines + separators + footer (10 items)
+#   max_groups = (max_total_items - overhead) * 60 / 100
+#              (60% factor reserves screen real estate for submenu rendering)
+#
+# Examples:
+#   1080p → (1050/28 - 10) * 60/100 ≈ 16  (19 groups > 16 → collapse)
+#   1440p → (1410/28 - 10) * 60/100 ≈ 24  (19 groups < 24 → expand)
+#   768p  → handled by is_small_screen() before this is reached
+calc_max_argos_groups() {
+  local dims w h
+  dims="$(get_screen_dims)"
+  w="${dims%x*}"; h="${dims#*x}"
+  local panel_height=30
+  local item_height=28
+  local overhead=10
+  local usable=$(( h - panel_height ))
+  local max_total=$(( usable / item_height ))
+  local max_groups=$(( (max_total - overhead) * 60 / 100 ))
+  # Always allow at least 5 groups to avoid degenerate collapse on odd resolutions
+  [[ $max_groups -lt 5 ]] && max_groups=5
+  echo "$max_groups"
+}
+
+# --- Argos drill-down state helpers ---
+
+# Write current category to state file (b64-encoded content for safety).
+argos_set_category() {
+  printf '%s' "$1" > "$ARGOS_CAT_STATE"
+}
+
+# Delete state file — returns to category list on next render.
+argos_clear_category() {
+  rm -f "$ARGOS_CAT_STATE"
+}
+
+# Read current category from state file, respecting ARGOS_CAT_TTL.
+# Prints the category name if the state is still valid; empty string if expired or missing.
+# Auto-deletes the state file when TTL is exceeded.
+argos_get_category() {
+  [[ -f "$ARGOS_CAT_STATE" ]] || { printf ''; return; }
+  local mtime now age
+  mtime="$(stat -c '%Y' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  now="$(date +%s)"
+  age=$(( now - mtime ))
+  if (( age > ARGOS_CAT_TTL )); then
+    rm -f "$ARGOS_CAT_STATE"
+    printf ''
+    return
+  fi
+  cat "$ARGOS_CAT_STATE"
 }
 
 # Displays a text popup using DE-aware dialog.
@@ -810,6 +876,25 @@ case "${1:-}" in
   compactMenu)         compactMenu ; exit 0 ;;
   standaloneMenu)      standaloneMenu ; exit 0 ;;
   menu)                standaloneMenu ; exit 0 ;;  # Alias for easy invocation
+  browseDeep_Cheats)
+    # param2 = base64-encoded group name (handles & spaces and special chars safely)
+    _grp="$(printf '%s' "${2:-}" | b64dec 2>/dev/null || true)"
+    ensure_cache
+    browseDeep_Cheats "$_grp"
+    exit 0
+    ;;
+  setCategory)
+    # Drill-down: write selected category to state file.
+    # param2 = base64-encoded group name.
+    _grp="$(printf '%s' "${2:-}" | b64dec 2>/dev/null || true)"
+    argos_set_category "$_grp"
+    exit 0
+    ;;
+  clearCategory)
+    # Drill-down: clear state file so next render returns to category list.
+    argos_clear_category
+    exit 0
+    ;;
 esac
 
 # ============= DE Detection for Menu Rendering =============
@@ -823,49 +908,91 @@ if [[ "$CURRENT_DE" != "gnome" ]]; then
 fi
 
 # ============= MENU RENDER (Argos stdout) =============
-echo "🗒️ Cheatsheet"
-echo "---"
-
 ensure_cache
 
-if is_small_screen; then
-  echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-  echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
-  echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-  echo "---"
-  echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
-  echo "---"
-else
-  # Quick actions (always useful)
-  echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-  echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+# Check drill-down state (TTL-aware: auto-expires after ARGOS_CAT_TTL seconds)
+_drill_cat="$(argos_get_category)"
 
+if [[ -n "$_drill_cat" ]]; then
+  # ===== DRILL-DOWN MODE =====
+  # A category was selected. Show its cheats inline as top-level items.
+  # Panel icon changes to the selected category name so the user knows where they are.
+  _drill_gi="${GROUP_ICON[$_drill_cat]:-🧩}"
+  echo "$_drill_gi $_drill_cat"
   echo "---"
-
-  # Groups
-  # Get list of unique groups from cache
-  mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
-for g in "${groups[@]}"; do
-  [[ -z "$g" ]] && continue
-  gi="${GROUP_ICON[$g]:-🧩}"
-  echo "$gi $g"
-
-  # Read matching cheats for this group
+  # Back button — clears state, next render returns to category list
+  echo "◀ All categories | bash='$SCRIPT_PATH' param1=clearCategory terminal=false"
+  echo "---"
+  # Render all cheats for this category as native top-level Argos items
   while IFS=$'\t' read -r file title group icon order; do
-    [[ "$group" != "$g" ]] && continue
     label="$(compose_label "$title" "$icon")"
     enc="$(printf '%s' "$file" | b64enc)"
-    echo "-- $label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false"
-  done < <(awk -F'\t' -v gg="$g" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
+    echo "$label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false"
+  done < <(awk -F'\t' -v gg="$_drill_cat" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
            | sort -t$'\t' -k5,5n -k2,2f \
            | awk -F'\t' '{printf "%s\t%s\t%s\t%s\t%s\n",$1,$2,$3,$4,$5}')
-done
+
+else
+  # ===== NORMAL MODE =====
+  echo "🗒️ Cheatsheet"
+  echo "---"
+
+  if is_small_screen; then
+    echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+    echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+    echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
+    echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+    echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+    echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+    echo "---"
+    echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+    echo "---"
+  else
+    # Quick actions (always useful)
+    echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+    echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+    echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+    echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+    echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+
+    echo "---"
+
+    # Get list of unique groups from cache
+    mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
+
+    # --- Auto-adaptive layout ---
+    # Calculate the safe maximum number of top-level groups for this screen.
+    # If group count exceeds the safe limit, show categories as clickable -- items
+    # that trigger drill-down (setCategory) instead of inline submenus.
+    max_groups="$(calc_max_argos_groups)"
+
+    if (( ${#groups[@]} > max_groups )); then
+      # COLLAPSED mode: one top-level entry + clickable -- per category
+      # Clicking a category writes state file and triggers drill-down on next render.
+      echo "📂 Browse by Category"
+      for g in "${groups[@]}"; do
+        [[ -z "$g" ]] && continue
+        gi="${GROUP_ICON[$g]:-🧩}"
+        enc_g="$(printf '%s' "$g" | b64enc)"
+        echo "-- $gi $g | bash='$SCRIPT_PATH' param1=setCategory param2='$enc_g' terminal=false"
+      done
+    else
+      # EXPANDED mode: categories at top level with inline -- cheats (original behavior)
+      for g in "${groups[@]}"; do
+        [[ -z "$g" ]] && continue
+        gi="${GROUP_ICON[$g]:-🧩}"
+        echo "$gi $g"
+        while IFS=$'\t' read -r file title group icon order; do
+          label="$(compose_label "$title" "$icon")"
+          enc="$(printf '%s' "$file" | b64enc)"
+          echo "-- $label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false"
+        done < <(awk -F'\t' -v gg="$g" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
+                 | sort -t$'\t' -k5,5n -k2,2f \
+                 | awk -F'\t' '{printf "%s\t%s\t%s\t%s\t%s\n",$1,$2,$3,$4,$5}')
+      done
+    fi
+
+  fi
 
 fi
 
