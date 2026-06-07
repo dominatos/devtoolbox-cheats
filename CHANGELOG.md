@@ -1,6 +1,20 @@
 # Changelog
 
+## v1.4.3 (2026-06-06)
+
+**GNOME Argos — Auto-Adaptive Menu Layout:**
+- ✅ Fix: categories with submenus were invisible on 1080p screens — GNOME Shell clipped submenus when the dropdown exceeded screen height
+- ✅ Add `calc_max_argos_groups()` function — dynamically calculates the safe maximum number of top-level category groups based on screen resolution
+- ✅ Collapsed mode: when group count exceeds the screen-safe threshold (e.g. 19 groups on 1080p), all categories are nested under **📂 Browse by Category** with `----` third-level submenu items — ensuring submenus always have room to render
+- ✅ Expanded mode: original behavior preserved when screen is large enough (e.g. ≥1440p with current group count)
+- ✅ Formula: `(screen_height − 30px) / 28px × 60%` — the 60% factor reserves vertical space for submenu rendering
+- ✅ No new external dependencies — reuses existing `get_screen_dims()`
+- ✅ No impact on KDE, XFCE, dialog-based, or terminal DE paths
+
+---
+
 ## v1.4.2 (2026-05-31)
+
 
 **Security / Stability:**
 - ✅ Fix predictable `/tmp` path in `cheats-updater.sh` — replaced with `mktemp -d` (prevents race conditions)
