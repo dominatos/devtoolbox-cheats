@@ -34,14 +34,25 @@ if ((Test-Path $LogFile) -and (Get-Item $LogFile).Length -gt $MaxLogBytes) {
 try {
     $null = New-Item -Path $LockFile -Value $PID -ErrorAction Stop
 } catch {
-    $lockAge = (Get-Date) - (Get-Item $LockFile).LastWriteTime
-    if ($lockAge.TotalMinutes -lt 30) {
-        Write-UpdateLog "Skipped: Another update is already running (lock age: $([int]$lockAge.TotalMinutes) min)."
-        exit 0
+    $creationError = $_
+    if (Test-Path $LockFile) {
+        try {
+            $lockAge = (Get-Date) - (Get-Item $LockFile -ErrorAction Stop).LastWriteTime
+            if ($lockAge.TotalMinutes -lt 30) {
+                Write-UpdateLog "Skipped: Another update is already running (lock age: $([int]$lockAge.TotalMinutes) min)."
+                exit 0
+            }
+            Write-UpdateLog "Removing stale lock file (age: $([int]$lockAge.TotalMinutes) min)."
+            Remove-Item $LockFile -Force -ErrorAction Stop
+            $null = New-Item -Path $LockFile -Value $PID -ErrorAction Stop
+        } catch {
+            Write-UpdateLog "Error: Could not re-create lock file after stale removal or access failed: $_"
+            exit 1
+        }
+    } else {
+        Write-UpdateLog "Error: Failed to create lock file for unexpected reason: $creationError"
+        exit 1
     }
-    Write-UpdateLog "Removing stale lock file (age: $([int]$lockAge.TotalMinutes) min)."
-    Remove-Item $LockFile -Force
-    $null = New-Item -Path $LockFile -Value $PID -ErrorAction SilentlyContinue
 }
 
 # -- Connectivity check --------------------------------------------------------

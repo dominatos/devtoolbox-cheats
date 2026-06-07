@@ -284,29 +284,35 @@ if ($existingTask) {
             $UpdaterScriptDest = Join-Path $InstallDir "update-cheats.ps1"
             $UpdaterLauncherDest = Join-Path $InstallDir "update-launcher.vbs"
 
+            $UpdaterCopySuccess = $false
             try {
                 if (-not (Test-Path $InstallDir)) {
                     New-Item -ItemType Directory -Path $InstallDir -Force -ErrorAction Stop | Out-Null
                 }
                 Copy-Item -Path $UpdaterScriptSource -Destination $UpdaterScriptDest -Force -ErrorAction Stop
                 Copy-Item -Path $UpdaterLauncherSource -Destination $UpdaterLauncherDest -Force -ErrorAction Stop
+                $UpdaterCopySuccess = $true
             } catch {
                 Write-Warning "  Failed to copy updater scripts: $_"
             }
 
-            # Register Scheduled Task
-            try {
-                $Action = New-ScheduledTaskAction -Execute "wscript.exe" -Argument "`"$UpdaterLauncherDest`""
-                $Trigger = New-ScheduledTaskTrigger -Daily -At 12:00PM
-                $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
+            if ($UpdaterCopySuccess) {
+                # Register Scheduled Task
+                try {
+                    $Action = New-ScheduledTaskAction -Execute "wscript.exe" -Argument "`"$UpdaterLauncherDest`""
+                    $Trigger = New-ScheduledTaskTrigger -Daily -At 12:00PM
+                    $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
 
-                Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings -Description "Daily background updater for DevToolbox Cheats" -Force | Out-Null
+                    Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings -Description "Daily background updater for DevToolbox Cheats" -Force | Out-Null
 
-                Write-Host "  Scheduled task '$TaskName' created successfully." -ForegroundColor Green
-                $UpdaterEnabled = $true
-            } catch {
-                Write-Warning "  Failed to register scheduled task: $_"
-                Write-Warning "  You can run update-cheats.ps1 manually to update cheatsheets."
+                    Write-Host "  Scheduled task '$TaskName' created successfully." -ForegroundColor Green
+                    $UpdaterEnabled = $true
+                } catch {
+                    Write-Warning "  Failed to register scheduled task: $_"
+                    Write-Warning "  You can run update-cheats.ps1 manually to update cheatsheets."
+                }
+            } else {
+                Write-Warning "  Skipping scheduled task creation because updater scripts could not be copied."
             }
         } else {
             Write-Warning "  Updater scripts not found in $ScriptDir. Skipping task creation."
