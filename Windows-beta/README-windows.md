@@ -69,6 +69,9 @@ The script will:
 - Copy cheatsheets and deploy `cheats.ahk` to your Startup folder
 - Launch the app immediately — look for the **Gear icon** in your system tray
 
+> [!NOTE]
+> The first run may take a minute to build the initial cache of categories and cheatsheets.
+
 #### 3. (Optional) Compile to EXE
 
 If you prefer a compiled `.exe`, pass the `-CompileExe` flag:
@@ -84,12 +87,45 @@ powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1 -CompileEx
 
 ---
 
+## 🔄 Updating DevToolbox
+
+**Automatic Updates**: During installation, the script will ask if you want to set up an automatic daily updater. If you agree, Windows Task Scheduler will silently download and apply new cheatsheets every day at noon without any popups!
+- The updater launcher (`update-launcher.vbs`) targets `%LOCALAPPDATA%\devtoolbox-cheats\update-cheats.ps1`.
+- The installer automatically copies the updater scripts into `%LOCALAPPDATA%\devtoolbox-cheats\`.
+- The updater script (`update-cheats.ps1`) reads and writes cheatsheets from `%USERPROFILE%\cheats.d`.
+- Update logs are written to `%USERPROFILE%\cheats_updater.log` for troubleshooting.
+
+If you skipped that step or prefer to update manually, you can just re-run the installer. The installer will safely overwrite the old files in your `~\cheats.d` folder without breaking your setup.
+
+**Method 1: If you cloned with Git**
+1. Open PowerShell and navigate to your cloned repository.
+2. Pull the latest updates:
+
+   ```powershell
+   git pull
+   ```
+
+3. Run the installer again:
+
+   ```powershell
+   powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1
+   ```
+
+**Method 2: If you don't have Git installed**
+1. Download the latest source code `.zip` from the GitHub repository.
+2. Extract the `.zip` and open the new `Windows-beta` folder in PowerShell.
+3. Run the installer again (just like your first installation).
+
+*(Note: If you created your own custom cheatsheets directly in `~\cheats.d`, they are safe! The installer only overwrites files that share the exact same name as the official ones).*
+
+---
+
 ## 🛡️ Antivirus & False Positives (Wacatac)
 
 Windows Defender may flag a compiled `cheats.exe` as `Trojan:Script/Wacatac.H!ml`.
 
 - **This is a safe false positive.** AutoHotkey's compiler bundles a script with an interpreter; heuristic scanners sometimes flag this pattern.
-- **Default behaviour:** The installer deploys `cheats.ahk` to your Startup folder and runs it through the AutoHotkey interpreter. This approach is **never flagged** by antivirus software.
+- **Default behaviour:** The installer deploys `cheats.ahk` to your Startup folder and runs it through the AutoHotkey interpreter. This approach has avoided false positives in testing and is less likely to trigger Defender than the compiled `cheats.exe`.
 - **If you used `-CompileExe`** and Defender removes the `.exe`: re-run the installer without that flag to switch back to the `.ahk` startup mode.
 
 ---

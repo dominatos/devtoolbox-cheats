@@ -101,7 +101,10 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://<HOST>:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # DEV ONLY: Use 3 for production
+
+> [!WARNING]
+> The `KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1` setting is for single-node development only. Production environments must run at least 3 brokers and set topic replication factors to 3.
 
   connect:
     image: debezium/connect:2.6
@@ -394,6 +397,9 @@ ssl.keystore.location=/etc/kafka/secrets/kafka.keystore.jks
 ssl.keystore.password=<PASSWORD>
 ```
 
+> [!CAUTION]
+> Storing `ssl.truststore.password` and `ssl.keystore.password` in plaintext is unsafe in production. Replace inline passwords with provider-based secret lookups using Kafka Connect secrets management (`config.providers`), HashiCorp Vault, or Kubernetes Secrets.
+
 ### Generate Java Keystore / Создание Java Keystore
 
 ```bash
@@ -442,10 +448,10 @@ curl http://<HOST>:8083/connectors/<CONNECTOR>/config \
 ### Backup Kafka Topics / Бэкап топиков Kafka
 
 > [!CAUTION]
-> Kafka backup consistency depends on replication and topic retention.
-> Консистентность бэкапа Kafka зависит от репликации и retention.
+> Using `tar` on `/var/lib/kafka/data` while Kafka is running can produce inconsistent snapshots. Filesystem backups should only be used when Kafka is stopped or quiesced. For production, rely on Kafka replication, use MirrorMaker2 for cross-cluster/topic replication, or use Kafka-aware backup tools that support consistent snapshots.
 
 ```bash
+# ONLY WHEN KAFKA IS STOPPED / ТОЛЬКО ПРИ ОСТАНОВЛЕННОМ KAFKA
 tar czf kafka-data-backup.tar.gz /var/lib/kafka/data/      # Backup Kafka data / Бэкап данных Kafka
 ```
 
