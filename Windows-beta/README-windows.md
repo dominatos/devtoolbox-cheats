@@ -69,6 +69,9 @@ The script will:
 - Copy cheatsheets and deploy `cheats.ahk` to your Startup folder
 - Launch the app immediately — look for the **Gear icon** in your system tray
 
+> [!NOTE]
+> The first run may take a minute to build the initial cache of categories and cheatsheets.
+
 #### 3. (Optional) Compile to EXE
 
 If you prefer a compiled `.exe`, pass the `-CompileExe` flag:

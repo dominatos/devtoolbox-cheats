@@ -346,6 +346,8 @@ if ($UpdaterEnabled) {
     Write-Host "Auto-update  : Disabled (re-run installer to enable)"
 }
 Write-Host ""
+Write-Host "Note         : The first run may take a minute to build the cache of categories and cheatsheets." -ForegroundColor Yellow
+Write-Host ""
 Write-Host "Press any key to exit..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 exit 0
