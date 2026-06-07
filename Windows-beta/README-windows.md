@@ -87,16 +87,23 @@ powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1 -CompileEx
 ## 🔄 Updating DevToolbox
 
 **Automatic Updates**: During installation, the script will ask if you want to set up an automatic daily updater. If you agree, Windows Task Scheduler will silently download and apply new cheatsheets every day at noon without any popups!
+- The updater launcher (`update-launcher.vbs`) targets `%LOCALAPPDATA%\devtoolbox-cheats\update-cheats.ps1`.
+- The installer automatically copies the updater scripts into `%LOCALAPPDATA%\devtoolbox-cheats\`.
+- The updater script (`update-cheats.ps1`) reads and writes cheatsheets from `%USERPROFILE%\cheats.d`.
+- Update logs are written to `%USERPROFILE%\cheats_updater.log` for troubleshooting.
 
 If you skipped that step or prefer to update manually, you can just re-run the installer. The installer will safely overwrite the old files in your `~\cheats.d` folder without breaking your setup.
 
 **Method 1: If you cloned with Git**
 1. Open PowerShell and navigate to your cloned repository.
 2. Pull the latest updates:
+
    ```powershell
    git pull
    ```
+
 3. Run the installer again:
+
    ```powershell
    powershell.exe -ExecutionPolicy Bypass -File .\install-devtoolbox.ps1
    ```
@@ -105,6 +112,7 @@ If you skipped that step or prefer to update manually, you can just re-run the i
 1. Download the latest source code `.zip` from the GitHub repository.
 2. Extract the `.zip` and open the new `Windows-beta` folder in PowerShell.
 3. Run the installer again (just like your first installation).
+
 *(Note: If you created your own custom cheatsheets directly in `~\cheats.d`, they are safe! The installer only overwrites files that share the exact same name as the official ones).*
 
 ---

@@ -67,27 +67,7 @@ function Assert-AhkV1Version($exePath) {
 }
 
 function Download-AhkV1Installer($destPath) {
-    # Try to resolve the latest v1.x release from GitHub releases API
-    $latestUrl = $null
-    try {
-        Write-Host "  Querying GitHub for the latest AutoHotkey v1 release..."
-        $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/AutoHotkey/AutoHotkey/releases" `
-                                      -Headers @{ "User-Agent" = "devtoolbox-cheats-installer" } `
-                                      -TimeoutSec 10
-        # Find the latest tag that starts with "v1."
-        $v1release = $releases | Where-Object { $_.tag_name -match '^v1\.' } | Select-Object -First 1
-        if ($v1release) {
-            $asset = $v1release.assets | Where-Object { $_.name -match '_setup\.exe$' } | Select-Object -First 1
-            if ($asset) {
-                $latestUrl = $asset.browser_download_url
-                Write-Host "  Found latest v1 release: $($v1release.tag_name)"
-            }
-        }
-    } catch {
-        Write-Host "  GitHub API unavailable, using known-good fallback URL."
-    }
-
-    $downloadUrl = if ($latestUrl) { $latestUrl } else { $AhkFallbackUrl }
+    $downloadUrl = $AhkFallbackUrl
 
     try {
         Write-Host "  Downloading from: $downloadUrl"
