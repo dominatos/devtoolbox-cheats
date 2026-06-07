@@ -22,7 +22,7 @@ function Write-UpdateLog($Message) {
     Add-Content -Path $LogFile -Value "[$timestamp] $Message" -ErrorAction SilentlyContinue
 }
 
-# -- Log rotation: trim to last 512 KB if oversized ----------------------------
+# -- Log rotation: trim to last 200 lines if oversized -------------------------
 if ((Test-Path $LogFile) -and (Get-Item $LogFile).Length -gt $MaxLogBytes) {
     try {
         $lines = Get-Content $LogFile -Tail 200

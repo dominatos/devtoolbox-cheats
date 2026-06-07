@@ -281,15 +281,18 @@ if ($existingTask) {
         $UpdaterLauncherSource = Join-Path $ScriptDir "update-launcher.vbs"
 
         if ((Test-Path $UpdaterScriptSource) -and (Test-Path $UpdaterLauncherSource)) {
-            if (-not (Test-Path $InstallDir)) {
-                New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
-            }
-
             $UpdaterScriptDest = Join-Path $InstallDir "update-cheats.ps1"
             $UpdaterLauncherDest = Join-Path $InstallDir "update-launcher.vbs"
 
-            Copy-Item -Path $UpdaterScriptSource -Destination $UpdaterScriptDest -Force
-            Copy-Item -Path $UpdaterLauncherSource -Destination $UpdaterLauncherDest -Force
+            try {
+                if (-not (Test-Path $InstallDir)) {
+                    New-Item -ItemType Directory -Path $InstallDir -Force -ErrorAction Stop | Out-Null
+                }
+                Copy-Item -Path $UpdaterScriptSource -Destination $UpdaterScriptDest -Force -ErrorAction Stop
+                Copy-Item -Path $UpdaterLauncherSource -Destination $UpdaterLauncherDest -Force -ErrorAction Stop
+            } catch {
+                Write-Warning "  Failed to copy updater scripts: $_"
+            }
 
             # Register Scheduled Task
             try {
