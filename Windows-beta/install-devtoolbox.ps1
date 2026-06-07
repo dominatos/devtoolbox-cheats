@@ -46,6 +46,9 @@ $InstallDir      = Join-Path $env:LOCALAPPDATA "devtoolbox-cheats"
 $AhkFallbackVersion = "1.1.37.02"
 $AhkFallbackUrl     = "https://github.com/AutoHotkey/AutoHotkey/releases/download/v$AhkFallbackVersion/AutoHotkey_${AhkFallbackVersion}_setup.exe"
 $AhkBundled         = Join-Path $ScriptDir "AutoHotkey_${AhkFallbackVersion}_setup.exe"
+# SHA-256 of the official AutoHotkey v1.1.37.02 setup.exe from GitHub releases
+# Verified against: https://github.com/AutoHotkey/AutoHotkey/releases/tag/v1.1.37.02
+$AhkExpectedHash    = "49a48e879f7480238d2fe17520ac19afe83685aac0b886719f9e1eac818b75cc"
 
 function Get-AhkV1Exe {
     $candidates = @(
@@ -92,19 +95,16 @@ function Download-AhkV1Installer($destPath) {
         Invoke-WebRequest -Uri $downloadUrl -OutFile $destPath -UseBasicParsing -TimeoutSec 60
         Write-Host "  Download complete." -ForegroundColor Green
         
-        Write-Host "  Verifying Authenticode signature..."
-        $sig = Get-AuthenticodeSignature $destPath
-        if ($sig.Status -ne 'Valid') {
-            Write-Warning "Signature validation failed. File may be tampered or corrupted."
+        Write-Host "  Verifying SHA-256 hash..."
+        $fileHash = (Get-FileHash -Path $destPath -Algorithm SHA256).Hash.ToLower()
+        if ($fileHash -ne $AhkExpectedHash) {
+            Write-Warning "SHA-256 mismatch! Expected: $AhkExpectedHash"
+            Write-Warning "                      Got: $fileHash"
+            Write-Warning "File may be tampered or corrupted."
             Remove-Item $destPath -Force
             return $false
         }
-        if ($sig.SignerCertificate.Subject -notmatch "Lexikos") {
-            Write-Warning "Publisher does not match expected 'Lexikos'. Found: $($sig.SignerCertificate.Subject)"
-            Remove-Item $destPath -Force
-            return $false
-        }
-        Write-Host "  Signature is valid." -ForegroundColor Green
+        Write-Host "  SHA-256 hash verified." -ForegroundColor Green
         return $true
     } catch {
         Write-Host "  Download failed: $_"
@@ -151,9 +151,11 @@ if ($AhkExe) {
 
     Write-Host ""
     
-    $sig = Get-AuthenticodeSignature $installerPath
-    if ($sig.Status -ne 'Valid' -or $sig.SignerCertificate.Subject -notmatch "Lexikos") {
-        Write-Warning "Installer signature validation failed before execution. Aborting."
+    $fileHash = (Get-FileHash -Path $installerPath -Algorithm SHA256).Hash.ToLower()
+    if ($fileHash -ne $AhkExpectedHash) {
+        Write-Warning "Installer SHA-256 hash mismatch before execution. Aborting."
+        Write-Warning "Expected: $AhkExpectedHash"
+        Write-Warning "     Got: $fileHash"
         exit 1
     }
 
