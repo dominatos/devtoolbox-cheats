@@ -7,12 +7,14 @@
     All output is logged to %USERPROFILE%\cheats_updater.log.
 #>
 $ErrorActionPreference = "Stop"
+$ProgressPreference    = "SilentlyContinue"   # Prevent Invoke-WebRequest from hanging in hidden sessions
 
 $CheatsDir   = "$env:USERPROFILE\cheats.d"
 $RepoZipUrl  = "https://github.com/dominatos/devtoolbox-cheats/archive/refs/heads/main.zip"
 $TempDir     = Join-Path $env:TEMP "devtoolbox-cheats-update-$PID"
 $ZipFile     = Join-Path $env:TEMP "devtoolbox-main-$PID.zip"
 $LogFile     = "$env:USERPROFILE\cheats_updater.log"
+$LockFile    = Join-Path $env:TEMP "devtoolbox-update.lock"
 $MaxLogBytes = 512KB
 
 function Write-Log($Message) {
@@ -28,11 +30,24 @@ if ((Test-Path $LogFile) -and (Get-Item $LogFile).Length -gt $MaxLogBytes) {
     } catch { }
 }
 
+# -- Lock file: prevent overlapping runs ---------------------------------------
+if (Test-Path $LockFile) {
+    $lockAge = (Get-Date) - (Get-Item $LockFile).LastWriteTime
+    if ($lockAge.TotalMinutes -lt 30) {
+        Write-Log "Skipped: Another update is already running (lock age: $([int]$lockAge.TotalMinutes) min)."
+        exit 0
+    }
+    Write-Log "Removing stale lock file (age: $([int]$lockAge.TotalMinutes) min)."
+    Remove-Item $LockFile -Force
+}
+Set-Content -Path $LockFile -Value $PID -ErrorAction SilentlyContinue
+
 # -- Connectivity check --------------------------------------------------------
 try {
     $null = [System.Net.Dns]::GetHostAddresses("github.com")
 } catch {
     Write-Log "Skipped: No network connectivity to github.com."
+    if (Test-Path $LockFile) { Remove-Item $LockFile -Force -ErrorAction SilentlyContinue }
     exit 0
 }
 
@@ -47,6 +62,7 @@ try {
     Write-Log "Downloading latest cheatsheets..."
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest -Uri $RepoZipUrl -OutFile $ZipFile -UseBasicParsing -TimeoutSec 60
+    Write-Log "Download complete ($([math]::Round((Get-Item $ZipFile).Length / 1KB)) KB)."
 
     # Validate downloaded file is non-empty
     if (-not (Test-Path $ZipFile) -or (Get-Item $ZipFile).Length -eq 0) {
@@ -74,6 +90,15 @@ try {
         New-Item -ItemType Directory -Path $CheatsDir -Force | Out-Null
     }
 
+    # Pre-create all subdirectories from source to work around PowerShell 5.1
+    # Copy-Item -Recurse bug where deleted destination subdirectories are not recreated
+    Get-ChildItem -Path $SourceCheats -Directory -Recurse | ForEach-Object {
+        $targetDir = Join-Path $CheatsDir $_.FullName.Substring($SourceCheats.Length)
+        if (-not (Test-Path $targetDir)) {
+            New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+        }
+    }
+
     Write-Log "Copying $fileCount files to $CheatsDir..."
     Copy-Item -Path "$SourceCheats\*" -Destination $CheatsDir -Recurse -Force
     Write-Log "Update successful ($fileCount files)."
@@ -82,7 +107,8 @@ try {
     Write-Log "Update failed: $_"
     exit 1
 } finally {
-    # Cleanup temp files regardless of success/failure
+    # Cleanup temp files and lock regardless of success/failure
     if (Test-Path $TempDir) { Remove-Item $TempDir -Recurse -Force -ErrorAction SilentlyContinue }
     if (Test-Path $ZipFile) { Remove-Item $ZipFile -Force -ErrorAction SilentlyContinue }
+    if (Test-Path $LockFile) { Remove-Item $LockFile -Force -ErrorAction SilentlyContinue }
 }
