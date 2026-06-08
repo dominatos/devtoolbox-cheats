@@ -841,11 +841,11 @@ if is_small_screen; then
 else
   # Functions submenu — nested to save top-level space for cheatsheet categories
   echo "🛠 Functions"
+  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
   echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
   echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
   echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
   echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
   echo "---"
   # Groups
