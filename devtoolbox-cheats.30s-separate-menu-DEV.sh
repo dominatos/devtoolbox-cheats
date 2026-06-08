@@ -18,7 +18,7 @@ fi
 # Cache file to store indexed cheatsheet metadata.
 # This speeds up menu generation by avoiding re-reading all files every time.
 CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-beta.idx}"
-CHEATS_REBUILD=1 # Set to 1 to force a cache rebuild on every run (useful for debugging)
+CHEATS_REBUILD=0 # Set to 1 to force a cache rebuild on every run (useful for debugging)
 
 # === Argos drill-down navigation state ===
 # Stores the currently selected category for the Argos inline drill-down menu.
@@ -56,8 +56,7 @@ declare -A GROUP_ICON=(
 )
 
 
-CHEAT_VIEWERS="${CHEAT_VIEWERS:-code zenity}"
-CHEAT_VIEWERS="code antigravity windsurf zenity"
+CHEAT_VIEWERS="${CHEAT_VIEWERS:-code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity}"
 export PATH="/usr/local/bin:/usr/bin:$PATH"
 SCRIPT_PATH="$(realpath -s "$0")"
 
@@ -845,6 +844,16 @@ fzfSearch() {
 # ============= Compact menu dialog ============
 # Dialog for when screen space is limited or requested directly
 compactMenu() {
+  ensure_cache
+
+  # Build dynamic category list from cache
+  local cat_items=()
+  while IFS= read -r g; do
+    [[ -z "$g" ]] && continue
+    local gi="${GROUP_ICON[$g]:-🧩}"
+    cat_items+=("$gi $g")
+  done < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
+
   local choice
   choice=$(list_dialog "Dev Toolbox (Compact)" "Action" \
     "🔎 Search cheats" \
@@ -852,7 +861,10 @@ compactMenu() {
     "📚 Browse all cheats" \
     "📥 Export all (MD/PDF)" \
     "🌐 Online Version" \
-    "🐙 GitHub Repository") || exit 0
+    "🐙 GitHub Repository" \
+    "⚙️ Settings" \
+    "── Categories ──" \
+    "${cat_items[@]}") || exit 0
   case "$choice" in
     "🔎 Search cheats") searchCheatsFS ;;
     "🚀 FZF Search Commands")
@@ -863,6 +875,17 @@ compactMenu() {
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
     "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
+    "⚙️ Settings")
+        info_dialog "Dev Toolbox Settings" \
+          "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
+        compactMenu
+        ;;
+    "── Categories ──") compactMenu ;;  # Divider — no-op, re-show menu
+    *)
+        # Category selected — extract group name (remove leading icon + space)
+        local group_name="${choice#* }"
+        browseDeep_Cheats "$group_name"
+        ;;
   esac
 }
 
@@ -870,6 +893,15 @@ compactMenu() {
 # For non-GNOME DEs or direct terminal invocation
 standaloneMenu() {
   ensure_cache
+
+  # Build dynamic category list from cache
+  local cat_items=()
+  while IFS= read -r g; do
+    [[ -z "$g" ]] && continue
+    local gi="${GROUP_ICON[$g]:-🧩}"
+    cat_items+=("$gi $g")
+  done < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
+
   local choice
   choice=$(list_dialog "🗒️ Dev Toolbox" "Action" \
     "🔎 Search cheats" \
@@ -878,8 +910,10 @@ standaloneMenu() {
     "📥 Export all (MD/PDF)" \
     "🌐 Online Version" \
     "🐙 GitHub Repository" \
-    "⚙️ Settings") || exit 0
-  
+    "⚙️ Settings" \
+    "── Categories ──" \
+    "${cat_items[@]}") || exit 0
+
   case "$choice" in
     "🔎 Search cheats") searchCheatsFS ;;
     "🚀 FZF Search Commands")
@@ -894,12 +928,23 @@ standaloneMenu() {
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
     "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
-    "⚙️ Settings") 
+    "⚙️ Settings")
         info_dialog "Dev Toolbox Settings" \
           "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
         standaloneMenu
         ;;
+    "── Categories ──") standaloneMenu ;;  # Divider — no-op, re-show menu
+    *)
+        # Category selected — extract group name (remove leading icon + space)
+        local group_name="${choice#* }"
+        browseDeep_Cheats "$group_name"
+        ;;
   esac
+}
+
+showSettings() {
+  info_dialog "Dev Toolbox Settings" \
+    "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
 }
 
 # ============= Argos param dispatch ============
@@ -914,6 +959,7 @@ case "${1:-}" in
   fzfSearch)           fzfSearch ; exit 0 ;;
   browseAllCheatsFS)   browseAllCheatsFS ; exit 0 ;;
   exportAllCheatsFS)   exportAllCheatsFS ; exit 0 ;;
+  showSettings)        showSettings ; exit 0 ;;
   compactMenu)         compactMenu ; exit 0 ;;
   standaloneMenu)      standaloneMenu ; exit 0 ;;
   menu)                standaloneMenu ; exit 0 ;;  # Alias for easy invocation
