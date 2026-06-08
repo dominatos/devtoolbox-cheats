@@ -667,9 +667,7 @@ Icon: network-server
 
 1. **Click 🗒️ icon** in top panel
 2. Dropdown menu appears with:
-   - 🔎 Search cheats
-   - 🚀 FZF Search Commands
-   - 📥 Export all (MD/PDF)
+   - 🛠 DevToolbox Functions (Submenu containing Search, Export, Settings, etc.)
    - **Categories** (auto-adaptive layout — see below)
 3. Click cheat name to copy & view
 4. Content copied to clipboard automatically
@@ -703,8 +701,15 @@ The menu dynamically calculates how many category groups can safely fit on scree
    - 🚀 FZF Search Commands
    - 📚 Browse all cheats
    - 📥 Export all (MD/PDF)
+   - 🌐 Online Version
+   - 🐙 GitHub Repository
+   - ⚙️ Settings
+   - ── Categories ──
+   - 📚 Basics
+   - 📡 Network
+   - ... (all your categories listed directly)
 3. **Search:** Type query → select from results
-4. **Browse:** Select category → select cheat
+4. **Browse:** Select a category directly from the list → select cheat
 5. **FZF:** Opens terminal with fuzzy search
 
 ### Terminal / FZF Search
@@ -741,7 +746,7 @@ export CHEATS_REBUILD=1
 export DEVTOOLBOX_DE=kde     # kde, gnome, xfce, lxqt, budgie, terminal
 
 # Set preferred viewers (space-separated, tried in order)
-export CHEAT_VIEWERS="code zenity"
+export CHEAT_VIEWERS="code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity"
 ```
 
 ### GNOME Argos: Adaptive Menu Layout

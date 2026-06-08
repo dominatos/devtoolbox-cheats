@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.4.8 (2026-06-08)
+
+**Codebase & Documentation Alignment:**
+- ✅ `README.md`: Updated 'Usage' instructions to accurately reflect the new GNOME Argos `🛠 DevToolbox Functions` submenu introduced in v1.4.4.
+- ✅ `README.md`: Updated the 'Other DEs (Dialog Menu)' section to document the inline categories and new buttons added in v1.4.5.
+- ✅ Fix: The `CHEAT_VIEWERS` environment variable couldn't be overridden by the user because its value was hardcoded inside the script. This bug is now fixed, and it properly respects custom overrides while defaulting to a much larger list of popular editors: `"code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity"`.
+
+---
+
 ## v1.4.7 (2026-06-08)
 
 **Installation:**

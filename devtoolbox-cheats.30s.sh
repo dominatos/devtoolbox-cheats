@@ -45,8 +45,7 @@ declare -A GROUP_ICON=(
 )
 
 
-CHEAT_VIEWERS="${CHEAT_VIEWERS:-code zenity}"
-CHEAT_VIEWERS="code antigravity windsurf zenity"
+CHEAT_VIEWERS="${CHEAT_VIEWERS:-code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity}"
 export PATH="/usr/local/bin:/usr/bin:$PATH"
 SCRIPT_PATH="$(realpath -s "$0")"
 
