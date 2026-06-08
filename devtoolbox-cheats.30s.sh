@@ -18,7 +18,7 @@ fi
 # Cache file to store indexed cheatsheet metadata.
 # This speeds up menu generation by avoiding re-reading all files every time.
 CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-beta.idx}"
-CHEATS_REBUILD=0 # Set to 1 to force a cache rebuild on every run (useful for debugging)
+CHEATS_REBUILD="" # Set to any non-empty value (e.g. CHEATS_REBUILD=1) to force a cache rebuild
 
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.

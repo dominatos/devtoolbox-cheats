@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.4.9 (2026-06-08)
+
+**Performance — Cache Fixes (DEV script + production script):**
+- ✅ Fix critical bug: `CHEATS_REBUILD=0` was treated as truthy by `[[ -n ... ]]`, causing a full re-index of all 158 cheatsheets on **every** script invocation. Changed to `CHEATS_REBUILD=""` so the cache is correctly used. Fixed in both `devtoolbox-cheats.30s-separate-menu-DEV.sh` and `devtoolbox-cheats.30s.sh`.
+- ✅ Add `_CACHE_CHECKED` per-process guard in `ensure_cache()` (DEV script): eliminates redundant `find` mtime scans when multiple action functions call `ensure_cache()` in the same shell invocation (e.g. `standaloneMenu` → `browseAllCheatsFS`).
+- ✅ Cache `get_screen_dims()` result in `_SCREEN_DIMS_CACHED` (DEV script): `xdpyinfo`/`xrandr` is now queried at most once per run instead of on every `list_dialog()` and `text_dialog()` call.
+- ✅ Cache `base64` flag detection at startup in `_B64ENC_FLAG` (DEV script): eliminates `base64 --help | grep` subprocess pair spawned on every `b64enc()` call (was called once per cheatsheet in Argos render loop, 158×/run).
+- ✅ Remove redundant identity `awk` passthrough in `argos_category_lines()` and Argos expanded-mode render loop (DEV script): the second `awk` was reading and re-printing the same TSV unchanged.
+
+---
+
 ## v1.4.8 (2026-06-08)
 
 **Codebase & Documentation Alignment:**
