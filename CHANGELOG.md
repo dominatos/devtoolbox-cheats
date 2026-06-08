@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.4.5 (2026-06-08)
+
+**Dialog menus — Inline Category Listing:**
+- ✅ `standaloneMenu()`: categories are now listed inline directly after functional buttons — no extra click needed to browse cheatsheets
+- ✅ `compactMenu()`: same inline category listing added
+- ✅ Both menus: added `"── Categories ──"` label divider between functional buttons and category list
+- ✅ `compactMenu()`: added `⚙️ Settings` button (previously only in `standaloneMenu()`)
+- ✅ Argos `🛠 DevToolbox Functions` submenu: added `⚙️ Settings` entry (launches `standaloneMenu`)
+- ✅ Clicking a category calls `browseDeep_Cheats()` directly — reduces navigation from 3 clicks to 2
+- ✅ `"── Categories ──"` divider is a no-op (re-shows the menu if clicked)
+- ✅ `browseAllCheatsFS()` function and `📚 Browse all cheats` menu item are preserved unchanged
+- ✅ No impact on GNOME Argos menu layout, KDE widget, or DE detection logic
+
+---
+
 ## v1.4.4 (2026-06-08)
 
 **GNOME Argos — Functions Submenu:**
