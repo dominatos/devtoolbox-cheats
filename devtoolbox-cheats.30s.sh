@@ -18,7 +18,7 @@ fi
 # Cache file to store indexed cheatsheet metadata.
 # This speeds up menu generation by avoiding re-reading all files every time.
 CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-beta.idx}"
-CHEATS_REBUILD=1 # Set to 1 to force a cache rebuild on every run (useful for debugging)
+CHEATS_REBUILD=0 # Set to 1 to force a cache rebuild on every run (useful for debugging)
 
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.
@@ -840,6 +840,12 @@ standaloneMenu() {
   esac
 }
 
+# Action: Show the Settings info dialog directly (used by Argos Settings menu entry)
+showSettings() {
+  info_dialog "Dev Toolbox Settings" \
+    "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
+}
+
 # ============= Argos param dispatch ============
 # Handles arguments passed when clicking on menu items
 case "${1:-}" in
@@ -848,6 +854,7 @@ case "${1:-}" in
   fzfSearch)           fzfSearch ; exit 0 ;;
   browseAllCheatsFS)   browseAllCheatsFS ; exit 0 ;;
   exportAllCheatsFS)   exportAllCheatsFS ; exit 0 ;;
+  showSettings)        showSettings ; exit 0 ;;
   compactMenu)         compactMenu ; exit 0 ;;
   standaloneMenu)      standaloneMenu ; exit 0 ;;
   menu)                standaloneMenu ; exit 0 ;;  # Alias for easy invocation
@@ -878,15 +885,15 @@ if is_small_screen; then
   echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
   echo "---"
   echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
-  echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
-  echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
+  echo "🐙 Edit this script     | bash='code $SCRIPT_PATH' terminal=false"
+  echo "🐙 Go to Argos folder   | bash='doublecmd $HOME/.config/argos/' terminal=false"
   echo "---"
 else
   # Functions submenu — nested to save top-level space for cheatsheet categories
   echo "🛠 DevToolbox Functions"
   echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
   echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
-  echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=standaloneMenu terminal=false"
+  echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
   echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
   echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"

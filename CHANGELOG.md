@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.6 (2026-06-08)
+
+**Bug fixes:**
+- ✅ Fix: Argos `⚙️ Settings` entry in `🛠 DevToolbox Functions` submenu now shows the Settings info dialog correctly — previously it opened the full `standaloneMenu()` instead
+- ✅ Add dedicated `showSettings()` function + `showSettings` dispatch action so the info dialog can be triggered directly from Argos without launching the full navigation menu
+- ✅ Fix: `CHEATS_REBUILD=1` → `0` — the debug flag was left hardcoded, causing a full cheatsheet re-index on **every** script invocation; menus are now fast (cache is rebuilt only when `.md` files change)
+- ✅ Fix: Argos small-screen layout accidentally nested 'Edit this script' and 'Go to Argos folder' as a submenu under 'Open compact menu'. Removed `--` prefix to render them as top-level items.
+
+---
+
 ## v1.4.5 (2026-06-08)
 
 **Dialog menus — Inline Category Listing:**
