@@ -839,15 +839,15 @@ if is_small_screen; then
   echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
   echo "---"
 else
-  # Quick actions (always useful)
-  echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-  echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  #echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  #echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-
-  #echo "---"
-
+  # Functions submenu — nested to save top-level space for cheatsheet categories
+  echo "🛠 Functions"
+  echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+  echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+  echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+  echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+  echo "---"
   # Groups
   # Get list of unique groups from cache
   mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)

@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.4 (2026-06-08)
+
+**GNOME Argos — Functions Submenu:**
+- ✅ Normal-screen layout: moved all 6 functional buttons (Compact Menu, Search, FZF Search, Export, Online Version, GitHub) into a collapsible `🛠 Functions` submenu
+- ✅ Functions submenu appears before cheatsheet category groups — reclaims top-level Argos dropdown space for categories
+- ✅ Small-screen layout is unchanged (existing behavior preserved)
+- ✅ No impact on KDE, XFCE, dialog-based, or terminal DE paths
+
+---
+
 ## v1.4.3 (2026-06-06)
 
 **GNOME Argos — Auto-Adaptive Menu Layout:**
