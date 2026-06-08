@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.10 (2026-06-08)
+
+**Development & Testing:**
+- ✅ Isolate cache files for the DEV script (`devtoolbox-cheats.30s-separate-menu-DEV.sh`). The DEV script now writes to `~/.cache/devtoolbox-cheats-dev.idx` and `~/.cache/devtoolbox-cheats-argos-dev/` to ensure it never interferes with or pollutes the production script's cache.
+
+---
+
 ## v1.4.9 (2026-06-08)
 
 **Performance — Cache Fixes (DEV script + production script):**

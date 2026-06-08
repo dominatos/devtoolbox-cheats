@@ -17,7 +17,7 @@ fi
 
 # Cache file to store indexed cheatsheet metadata.
 # This speeds up menu generation by avoiding re-reading all files every time.
-CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-beta.idx}"
+CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-dev.idx}"
 CHEATS_REBUILD="" # Set to any non-empty value (e.g. CHEATS_REBUILD=1) to force a cache rebuild
 
 # === Argos drill-down navigation state ===
@@ -29,7 +29,7 @@ ARGOS_CAT_STATE="${XDG_RUNTIME_DIR:-/tmp}/devtoolbox-argos-cat.state"
 ARGOS_CAT_TTL="${ARGOS_CAT_TTL:-60}"
 # Per-category Argos output cache directory.
 # Each category's cheat list is cached as a text file and reused until CHEATS_CACHE changes.
-ARGOS_CAT_CACHE_DIR="${HOME}/.cache/devtoolbox-cheats-argos"
+ARGOS_CAT_CACHE_DIR="${HOME}/.cache/devtoolbox-cheats-argos-dev"
 
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.
