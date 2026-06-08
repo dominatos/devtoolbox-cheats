@@ -823,7 +823,7 @@ if [[ "$CURRENT_DE" != "gnome" ]]; then
 fi
 
 # ============= MENU RENDER (Argos stdout) =============
-echo "🗒️ Cheatsheet"
+echo "🗒️ Cheatsheets"
 echo "---"
 
 ensure_cache
@@ -837,16 +837,20 @@ if is_small_screen; then
   echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
   echo "---"
   echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+  echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
+  echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
   echo "---"
 else
   # Functions submenu — nested to save top-level space for cheatsheet categories
-  echo "🛠 Functions"
+  echo "🛠 DevToolbox Functions"
   echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
   echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
   echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
   echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
   echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+  echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
+  echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
   echo "---"
   # Groups
   # Get list of unique groups from cache
@@ -870,8 +874,6 @@ done
 fi
 
 #echo "---"
-#echo " Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
-#echo " Edit this script | bash='code $SCRIPT_PATH' terminal=false"
 
 # coded by Sviatoslav https://github.com/dominatos
 #echo "---"
