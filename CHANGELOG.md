@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.7 (2026-06-08)
+
+**Installation:**
+- ✅ `install.sh`: The GNOME Argos installer now also deploys `devtools.1m.sh` to provide an additional tools menu panel
+- ✅ Documentation: Added a note about the new DevTools menu to the Argos section in `README.md`
+
+---
+
 ## v1.4.6 (2026-06-08)
 
 **Bug fixes:**

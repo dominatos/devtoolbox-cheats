@@ -168,7 +168,8 @@ cd devtoolbox-cheats
 #### 4. Restart Argos
 Disable and re-enable the Argos extension, or press `Alt+F2` → `r` → `Enter`
 
-**Result:** 🗒️ icon appears in your top panel with dropdown menu
+**Result:** 🗒️ icon appears in your top panel with dropdown menu.
+*(Note: The installer also adds `devtools.1m.sh` to provide an additional tools menu in your panel).*
 
 </details>
 

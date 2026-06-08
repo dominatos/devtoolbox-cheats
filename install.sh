@@ -66,6 +66,7 @@ install_cheats() {
 install_argos() {
     local argos_dir="$HOME/.config/argos"
     local script_src="$SCRIPT_DIR/devtoolbox-cheats.30s.sh"
+    local devtools_src="$SCRIPT_DIR/devtools.1m.sh"
 
     echo "🐚 Installing Argos variant..."
     mkdir -p "$argos_dir"
@@ -76,6 +77,14 @@ install_argos() {
         echo "  ✅ Script installed → $argos_dir/devtoolbox-cheats.30s.sh"
     else
         echo "  ⚠️  Script not found: $script_src"
+    fi
+
+    if [ -f "$devtools_src" ]; then
+        cp "$devtools_src" "$argos_dir/"
+        chmod +x "$argos_dir/devtools.1m.sh"
+        echo "  ✅ DevTools script installed → $argos_dir/devtools.1m.sh"
+    else
+        echo "  ⚠️  DevTools script not found: $devtools_src"
     fi
 
     echo "  ℹ️  Restart Argos (or toggle the extension) to reload the menu."
