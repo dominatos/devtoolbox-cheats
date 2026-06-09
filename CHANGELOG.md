@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.12 (2026-06-09)
+
+**Development & Alignment:**
+- ✅ Synchronized the Argos menu structure in `devtoolbox-cheats.30s-separate-menu-DEV.sh` with the production script: added the `🛠 DevToolbox Functions` submenu, fixed panel button text to "🗒️ Cheatsheets", and removed collapsed/expanded logic so categories are always flat while preserving the drill-down `setCategory` action.
+
+---
+
 ## v1.4.11 (2026-06-09)
 
 **Development & Installation:**

@@ -1035,7 +1035,7 @@ if [[ -n "$_drill_cat" ]]; then
 
 else
   # ===== NORMAL MODE =====
-  echo "🗒️ Cheatsheet"
+  echo "🗒️ Cheatsheets"
   echo "---"
 
   if is_small_screen; then
@@ -1047,60 +1047,39 @@ else
     echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
     echo "---"
     echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+    echo "🐙 Edit this script     | bash='code $SCRIPT_PATH' terminal=false"
+    echo "🐙 Go to Argos folder   | bash='doublecmd $HOME/.config/argos/' terminal=false"
     echo "---"
   else
-    # Quick actions (always useful)
-    echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-    echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-    echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-    echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-    echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-
+    # Functions submenu — nested to save top-level space for cheatsheet categories
+    echo "🛠 DevToolbox Functions"
+    echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+    echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+    echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
+    echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+    echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+    echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+    echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+    echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
+    echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
     echo "---"
-
-    # Get list of unique groups from cache
-    mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
-
-    # --- Auto-adaptive layout ---
-    # Calculate the safe maximum number of top-level groups for this screen.
-    # If group count exceeds the safe limit, show categories as clickable -- items
-    # that trigger drill-down (setCategory) instead of inline submenus.
-    max_groups="$(calc_max_argos_groups)"
-
-    if (( ${#groups[@]} > max_groups )); then
-      # COLLAPSED mode: all categories shown directly at top level.
-      # Each category is a top-level clickable item that triggers drill-down (setCategory).
-      # No inline cheats shown here — cheats appear only after selecting a category.
-      # This fits on screen because the menu shows only ~19 category items, not 19+158 items.
-      for g in "${groups[@]}"; do
-        [[ -z "$g" ]] && continue
-        gi="${GROUP_ICON[$g]:-🧩}"
-        enc_g="$(printf '%s' "$g" | b64enc)"
-        echo "$gi $g | bash='$SCRIPT_PATH' param1=setCategory param2='$enc_g' terminal=false refresh=true"
-      done
-    else
-      # EXPANDED mode: categories at top level with inline -- cheats (original behavior)
-      for g in "${groups[@]}"; do
-        [[ -z "$g" ]] && continue
-        gi="${GROUP_ICON[$g]:-🧩}"
-        echo "$gi $g"
-        while IFS=$'\t' read -r file title group icon order; do
-          label="$(compose_label "$title" "$icon")"
-          enc="$(printf '%s' "$file" | b64enc)"
-          echo "-- $label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false"
-        done < <(awk -F'\t' -v gg="$g" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
-                 | sort -t$'\t' -k5,5n -k2,2f)
-      done
-    fi
-
   fi
+
+  # Get list of unique groups from cache
+  mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
+
+  # All categories shown directly at top level.
+  # Each category is a top-level clickable item that triggers drill-down (setCategory).
+  # No inline cheats shown here — cheats appear only after selecting a category.
+  for g in "${groups[@]}"; do
+    [[ -z "$g" ]] && continue
+    gi="${GROUP_ICON[$g]:-🧩}"
+    enc_g="$(printf '%s' "$g" | b64enc)"
+    echo "$gi $g | bash='$SCRIPT_PATH' param1=setCategory param2='$enc_g' terminal=false refresh=true"
+  done
 
 fi
 
-echo "---"
-echo " Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
-
-echo " Edit this script | bash='code $SCRIPT_PATH' terminal=false"
-
 # coded by Sviatoslav https://github.com/dominatos
 echo "---"
+
