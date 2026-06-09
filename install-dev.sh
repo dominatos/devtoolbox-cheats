@@ -108,12 +108,25 @@ install_single() {
   echo "  Installed   : $ARGOS_DIR/${dest_name}"
 }
 
-# Install all 4 variants with their distinct Argos filenames.
+# Install all variants with their distinct Argos filenames.
 install_all() {
+  local ICON_COUNT=${#VARIANTS[@]}
   echo ""
-  echo "🐚 Installing all 4 variants..."
+  echo "🐚 Installing all ${ICON_COUNT} variants..."
   echo ""
 
+  # Preflight check: ensure all source files exist and are readable
+  for entry in "${VARIANTS[@]}"; do
+    local src dest _label _desc
+    IFS='|' read -r src dest _label _desc <<< "$entry"
+    if [ ! -r "$SCRIPT_DIR/$src" ]; then
+      echo "  ✖ Error: Source file '$SCRIPT_DIR/$src' is missing or unreadable."
+      echo "  Aborting install."
+      exit 1
+    fi
+  done
+
+  # Perform installation
   for entry in "${VARIANTS[@]}"; do
     local src dest _label _desc
     IFS='|' read -r src dest _label _desc <<< "$entry"
@@ -121,7 +134,7 @@ install_all() {
   done
 
   echo ""
-  echo "  ℹ️  Restart Argos (or toggle the extension) to see all three icons."
+  echo "  ℹ️  Restart Argos (or toggle the extension) to see all ${ICON_COUNT} icons."
   echo ""
   echo "──────────────────────────────────────────────────────────────────"
   echo "  📂 All scripts installed into: $ARGOS_DIR/"
@@ -143,6 +156,9 @@ install_all() {
   echo ""
   echo "    Separate drill-down menu (DEV):"
   echo "      rm ~/.config/argos/devtoolbox-cheats-drilldown.30s.sh"
+  echo ""
+  echo "    Combined (all layouts):"
+  echo "      rm ~/.config/argos/devtoolbox-cheats-combined.30s.sh"
   echo ""
   echo "  After removing a file, Argos removes its icon automatically"
   echo "  (no restart needed — it just disappears on the next 30s refresh)."

@@ -690,7 +690,9 @@ showCheat() {
         ;;
       terminal)
         # Open in default terminal, display file / Открыть в терминале по умолчанию
-        run_in_terminal "cat '$file'" "$popup_title" && return 0
+        local escaped_file
+        printf -v escaped_file '%q' "$file"
+        run_in_terminal "cat $escaped_file" "$popup_title" && return 0
         ;;
       *)
         # Custom commands, if any

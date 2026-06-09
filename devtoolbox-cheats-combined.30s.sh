@@ -357,25 +357,27 @@ default_terminal() {
 run_in_terminal() {
   local cmd="$1" title="${2:-Dev Toolbox}"
   local term="$(default_terminal)"
+  local escaped_cmd
+  escaped_cmd=$(printf '%q' "$cmd")
   
   case "$term" in
-    gnome-terminal) gnome-terminal --title="$title" -- bash -c "$cmd; read -rp 'Press Enter...'" ;;
-    kgx)            kgx -- bash -c "$cmd; read -rp 'Press Enter...'" ;;
-    konsole)        konsole --hold -e bash -c "$cmd" ;;
-    yakuake)        konsole --hold -e bash -c "$cmd" ;;  # Fallback to konsole
-    xfce4-terminal) xfce4-terminal --hold --title="$title" -e "bash -c \"$cmd\"" ;;
-    mate-terminal)  mate-terminal --title="$title" -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
-    tilix)          tilix -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
-    terminator)     terminator -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
-    qterminal)      qterminal -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
-    lxterminal)     lxterminal --title="$title" -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
-    alacritty)      alacritty --hold -e bash -c "$cmd" ;;
-    kitty)          kitty --hold bash -c "$cmd" ;;
-    wezterm)        wezterm start -- bash -c "$cmd; read -rp 'Press Enter...'" ;;
-    foot)           foot bash -c "$cmd; read -rp 'Press Enter...'" ;;
-    st)             st -e bash -c "$cmd; read -rp 'Press Enter...'" ;;
-    urxvt|rxvt-unicode) urxvt -hold -e bash -c "$cmd" ;;
-    *)              xterm -hold -e bash -c "$cmd" ;;
+    gnome-terminal) gnome-terminal --title="$title" -- bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
+    kgx)            kgx -- bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
+    konsole)        konsole --hold -e bash -c "eval $escaped_cmd" ;;
+    yakuake)        konsole --hold -e bash -c "eval $escaped_cmd" ;;  # Fallback to konsole
+    xfce4-terminal) xfce4-terminal --hold --title="$title" -e "bash -c \"eval $escaped_cmd\"" ;;
+    mate-terminal)  mate-terminal --title="$title" -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
+    tilix)          tilix -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
+    terminator)     terminator -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
+    qterminal)      qterminal -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
+    lxterminal)     lxterminal --title="$title" -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
+    alacritty)      alacritty --hold -e bash -c "eval $escaped_cmd" ;;
+    kitty)          kitty --hold bash -c "eval $escaped_cmd" ;;
+    wezterm)        wezterm start -- bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
+    foot)           foot bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
+    st)             st -e bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
+    urxvt|rxvt-unicode) urxvt -hold -e bash -c "eval $escaped_cmd" ;;
+    *)              xterm -hold -e bash -c "eval $escaped_cmd" ;;
   esac
 }
 
@@ -748,7 +750,9 @@ showCheat() {
         ;;
       terminal)
         # Open in default terminal, display file / Открыть в терминале по умолчанию
-        run_in_terminal "cat '$file'" "$popup_title" && return 0
+        local escaped_file
+        printf -v escaped_file '%q' "$file"
+        run_in_terminal "cat $escaped_file" "$popup_title" && return 0
         ;;
       *)
         # Custom commands, if any
