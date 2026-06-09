@@ -59,11 +59,20 @@ function Get-AhkV1Exe {
     return ($candidates | Where-Object { Test-Path $_ } | Select-Object -First 1)
 }
 
-function Assert-AhkV1Version($exePath) {
+function Get-AhkVersion($exePath) {
     $rawVer = (Get-Item $exePath).VersionInfo.ProductVersion
-    # ProductVersion is typically "1.1.37.02" -- take the first token before any separator
-    $major = [int](($rawVer -replace '[^0-9.]','') -split '\.')[0]
-    return $major, $rawVer
+    if ([string]::IsNullOrWhiteSpace($rawVer)) {
+        return $null, $rawVer
+    }
+    
+    # ProductVersion is typically "1.1.37.02" -- sanitize and split
+    $tokens = ($rawVer -replace '[^0-9.]', '') -split '\.'
+    $major = 0
+    if ($tokens.Count -gt 0 -and [int]::TryParse($tokens[0], [ref]$major)) {
+        return $major, $rawVer
+    }
+    
+    return $null, $rawVer
 }
 
 function Download-AhkV1Installer($destPath) {
@@ -97,8 +106,8 @@ Write-Host "`n[1/5] Checking AutoHotkey v1 installation..."
 
 $AhkExe = Get-AhkV1Exe
 if ($AhkExe) {
-    $major, $rawVer = Assert-AhkV1Version $AhkExe
-    if ($major -ne 1) {
+    $major, $rawVer = Get-AhkVersion $AhkExe
+    if ($null -eq $major -or $major -ne 1) {
         Write-Warning "AutoHotkey v$rawVer detected, but cheats.ahk requires AutoHotkey v1.x."
         Write-Warning "Install v1 from: https://www.autohotkey.com/download/1.x/"
         Write-Warning "(v1 and v2 can coexist; the installer only requires that v1 is present.)"
@@ -156,8 +165,8 @@ if ($AhkExe) {
         Write-Warning "AutoHotkey still not detected after installation. Please install manually."
         exit 1
     }
-    $major, $rawVer = Assert-AhkV1Version $AhkExe
-    if ($major -ne 1) {
+    $major, $rawVer = Get-AhkVersion $AhkExe
+    if ($null -eq $major -or $major -ne 1) {
         Write-Warning "Detected AutoHotkey v$rawVer after install -- v1 is required."
         exit 1
     }
