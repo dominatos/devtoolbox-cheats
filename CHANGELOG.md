@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.11 (2026-06-09)
+
+**Development & Installation:**
+- ✅ Created `install-dev.sh`: an interactive Argos script installer allowing users to select between the standard, zenity-list, and drill-down DEV variants, including an option to install all three simultaneously under distinct filenames.
+- ✅ Synchronized the Argos menu structure in `devtoolbox-cheats.30s-zenity-cheatslist-DEV.sh` with the production script: added the `🛠 DevToolbox Functions` submenu, fixed panel button text, and removed collapsed/expanded logic so categories are always flat and open the zenity dialog directly.
+
+---
+
 ## v1.4.10 (2026-06-08)
 
 **Development & Testing:**

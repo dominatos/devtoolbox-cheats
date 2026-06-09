@@ -17,8 +17,8 @@ fi
 
 # Cache file to store indexed cheatsheet metadata.
 # This speeds up menu generation by avoiding re-reading all files every time.
-CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-beta.idx}"
-CHEATS_REBUILD=0 # Set to 1 to force a cache rebuild on every run (useful for debugging)
+CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-zenity-dev.idx}"
+CHEATS_REBUILD="" # Set to any non-empty value (e.g. CHEATS_REBUILD=1) to force a cache rebuild
 
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.
@@ -381,15 +381,24 @@ compose_label() {
 }
 
 # ============= Screen / Windows ============
+# Cache for screen dimensions — queried once per process invocation.
+_SCREEN_DIMS_CACHED=""
+
 # Detects screen dimensions to calculate appropriate window sizes for dialogs.
 get_screen_dims() {
+  # Return cached value if already detected this run
+  if [[ -n "$_SCREEN_DIMS_CACHED" ]]; then
+    echo "$_SCREEN_DIMS_CACHED"
+    return
+  fi
   local dims
   # Try xdpyinfo first (X11)
   dims="$(xdpyinfo 2>/dev/null | awk '/dimensions:/{print $2; exit}')"
   # Fallback to xrandr (X11/Wayland with XWayland)
   [[ -z "$dims" ]] && dims="$(xrandr --current 2>/dev/null | awk '/\*/{print $1; exit}')"
   # Default fallback if detection fails
-  echo "${dims:-1366x768}"
+  _SCREEN_DIMS_CACHED="${dims:-1366x768}"
+  echo "$_SCREEN_DIMS_CACHED"
 }
 
 # Calculates window size (80% width, 70% height) for Zenity dialogs.
@@ -450,13 +459,17 @@ popup() {
 }
 
 # ============= Base64 helpers (Argos params safe) ============
+# Detect base64 flag support once at startup (GNU coreutils uses -w0; macOS/BSD do not).
+# Storing the result avoids spawning 'base64 --help | grep' on every b64enc() call.
+if base64 --help 2>/dev/null | grep -q -- '-w'; then
+  _B64ENC_FLAG="-w0"
+else
+  _B64ENC_FLAG=""
+fi
+
 # Encodes string to base64, removing newlines for safe passing as arguments.
 b64enc() {
-  if base64 --help 2>/dev/null | grep -q -- '-w'; then
-    base64 -w0 | tr -d '\n' # GNU coreutils
-  else
-    base64 | tr -d '\n'     # macOS / BSD
-  fi
+  base64 ${_B64ENC_FLAG} | tr -d '\n'
 }
 
 # Decodes base64 string.
@@ -508,22 +521,30 @@ index_cheats() {
 }
 
 
+# Per-process guard: avoids redundant mtime scans when ensure_cache() is called
+# from multiple functions within the same shell invocation (e.g. standaloneMenu → browseAllCheatsFS).
+_CACHE_CHECKED=0
+
 # Ensures the cache exists and is up-to-date.
 ensure_cache() {
+  # Skip all checks if already verified in this process invocation
+  (( _CACHE_CHECKED )) && return
+
   # If forced rebuild, or cache empty, index immediately
-  if [[ -n "${CHEATS_REBUILD:-}" ]]; then index_cheats; return; fi
-  if [[ ! -s "$CHEATS_CACHE" ]]; then index_cheats; return; fi
+  if [[ -n "${CHEATS_REBUILD:-}" ]]; then index_cheats; _CACHE_CHECKED=1; return; fi
+  if [[ ! -s "$CHEATS_CACHE" ]]; then index_cheats; _CACHE_CHECKED=1; return; fi
   
   # Check if any cheatsheet file is newer than the cache file
   local latest_src mtime_cache
   latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 || true)"
-  [[ -z "$latest_src" ]] && return
+  [[ -z "$latest_src" ]] && { _CACHE_CHECKED=1; return; }
   
   mtime_cache="$(stat -c '%Y' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
   local latest_int="${latest_src%.*}"
   
   # If source file is newer, rebuild index
   if (( latest_int > mtime_cache )); then index_cheats; fi
+  _CACHE_CHECKED=1
 }
 
 # --- Replacement for strip_front_matter() ---
@@ -905,7 +926,7 @@ if [[ "$CURRENT_DE" != "gnome" ]]; then
 fi
 
 # ============= MENU RENDER (Argos stdout) =============
-echo "🗒️ Cheatsheet"
+echo "🗒️ Cheatsheets"
 echo "---"
 
 ensure_cache
@@ -919,62 +940,33 @@ if is_small_screen; then
   echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
   echo "---"
   echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+  echo "🐙 Edit this script     | bash='code $SCRIPT_PATH' terminal=false"
+  echo "🐙 Go to Argos folder   | bash='doublecmd $HOME/.config/argos/' terminal=false"
   echo "---"
 else
-  # Quick actions (always useful)
-  echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-  echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-
+  # Functions submenu — nested to save top-level space for cheatsheet categories
+  echo "🛠 DevToolbox Functions"
+  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+  echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
+  echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+  echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+  echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+  echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+  echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
+  echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
   echo "---"
-
-  # Get list of unique groups from cache
+  # Categories at root — each category opens zenity cheat list via browseDeep_Cheats
   mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
 
-  # --- Auto-adaptive layout ---
-  # Calculate the safe maximum number of top-level groups for this screen.
-  # If the group count exceeds that limit, nest all categories under a single
-  # "Browse by Category" submenu item so submenus are never clipped off-screen.
-  max_groups="$(calc_max_argos_groups)"
-
-  if (( ${#groups[@]} > max_groups )); then
-    # COLLAPSED mode: each category is a clickable -- item that opens browseDeep_Cheats
-    # (the zenity/dialog picker for that specific group).
-    # Argos does not support reliable 3-level (---- ) submenus: clicking a -- parent
-    # with ---- children collapses the menu immediately without rendering children.
-    # Solution: each -- item has a bash= action — no 3rd level needed.
-    echo "📂 Browse by Category"
-    for g in "${groups[@]}"; do
-      [[ -z "$g" ]] && continue
-      gi="${GROUP_ICON[$g]:-🧩}"
-      enc_g="$(printf '%s' "$g" | b64enc)"
-      echo "-- $gi $g | bash='$SCRIPT_PATH' param1=browseDeep_Cheats param2='$enc_g' terminal=false"
-    done
-  else
-    # EXPANDED mode: categories listed directly at top level (original behavior)
-    for g in "${groups[@]}"; do
-      [[ -z "$g" ]] && continue
-      gi="${GROUP_ICON[$g]:-🧩}"
-      echo "$gi $g"
-      # Read matching cheats for this group
-      while IFS=$'\t' read -r file title group icon order; do
-        label="$(compose_label "$title" "$icon")"
-        enc="$(printf '%s' "$file" | b64enc)"
-        echo "-- $label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false"
-      done < <(awk -F'\t' -v gg="$g" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
-               | sort -t$'\t' -k5,5n -k2,2f \
-               | awk -F'\t' '{printf "%s\t%s\t%s\t%s\t%s\n",$1,$2,$3,$4,$5}')
-    done
-  fi
+  for g in "${groups[@]}"; do
+    [[ -z "$g" ]] && continue
+    gi="${GROUP_ICON[$g]:-🧩}"
+    enc_g="$(printf '%s' "$g" | b64enc)"
+    echo "$gi $g | bash='$SCRIPT_PATH' param1=browseDeep_Cheats param2='$enc_g' terminal=false"
+  done
 
 fi
-
-echo "---"
-echo " Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
-
-echo " Edit this script | bash='code $SCRIPT_PATH' terminal=false"
 
 # coded by Sviatoslav https://github.com/dominatos
 echo "---"
