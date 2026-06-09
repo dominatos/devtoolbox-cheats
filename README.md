@@ -171,6 +171,13 @@ Disable and re-enable the Argos extension, or press `Alt+F2` → `r` → `Enter`
 **Result:** 🗒️ icon appears in your top panel with dropdown menu.
 *(Note: The installer also adds `devtools.1m.sh` to provide an additional tools menu in your panel).*
 
+#### 5. Alternative Layouts (Development Script)
+If you want to try alternative layouts or a combined script with an on-the-fly layout switcher, use the dev installer instead:
+```bash
+./install-dev.sh
+```
+You can choose from Standard, Zenity list, Drill-down, or the **Combined Layout** (recommended).
+
 </details>
 
 <details>
@@ -667,12 +674,20 @@ Icon: network-server
 
 1. **Click 🗒️ icon** in top panel
 2. Dropdown menu appears with:
-   - 🛠 DevToolbox Functions (Submenu containing Search, Export, Settings, etc.)
+   - 🛠 DevToolbox Functions (Submenu containing Search, Export, Settings, Layout Switcher, etc.)
    - **Categories** (auto-adaptive layout — see below)
 3. Click cheat name to copy & view
 4. Content copied to clipboard automatically
 
-**Auto-adaptive category layout:**
+**Argos Layout Options (Combined Script):**
+
+If you installed the **Combined (all layouts)** script via `./install-dev.sh`, you can switch layouts directly from the Argos menu (`🛠 DevToolbox Functions` → `🔄 Layout`) without editing any files.
+
+*   **Standard (default)**: Categories expand inline as native Argos submenus. Fastest for quick browsing without extra windows.
+*   **Zenity (dialog cheat list)**: Categories are shown at the root level. Clicking a category opens a popup Zenity dialog listing all cheats for that category. Excellent for small screens or when you prefer isolated windows.
+*   **Drill-down (category→cheats)**: Clicking a category replaces the entire Argos menu with that category's cheats inline. Click `◀ Back` to return to the category list.
+
+**Auto-adaptive category layout (Standard Mode):**
 
 The menu dynamically calculates how many category groups can safely fit on screen.
 - If categories exceed the safe limit (e.g. 19 groups on 1080p), they are grouped under **📂 Browse by Category ▶** to prevent submenus from being clipped off-screen.
