@@ -215,6 +215,6 @@ echo "-- 📝 Markdown → HTML    | bash='$SCRIPT_PATH' param1=mdToHtml termina
 echo "-- 🌍 IP Address         | bash='$SCRIPT_PATH' param1=getIP terminal=false"
 echo "-- 🌍 MAC Address        | bash='$SCRIPT_PATH' param1=getMAC terminal=false"
 echo "-- 💡 Snippet: JS fetch  | bash='$SCRIPT_PATH' param1=fetchSnippet terminal=false"
-echo "-- 💡 Snippet: curl + JWT| bash='$SCRIPT_PATH' param1=curlAuthSnippet terminal=false"
-echo "-- ⌨️ QWERTY → RU| bash='$SCRIPT_PATH' param1=layoutConvert terminal=false"
+echo "-- 💡 Snippet: curl + JWT | bash='$SCRIPT_PATH' param1=curlAuthSnippet terminal=false"
+echo "-- ⌨️ QWERTY → RU | bash='$SCRIPT_PATH' param1=layoutConvert terminal=false"
 echo "-- ⌨️ RU → QWERTY     | bash='$SCRIPT_PATH' param1=layoutReverse terminal=false"
