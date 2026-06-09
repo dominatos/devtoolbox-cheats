@@ -1028,18 +1028,11 @@ standaloneMenu() {
 
 # ============= Argos Layout Renderers =============
 
-# --- Shared: small-screen flat header (same for all 3 layouts) ---
+# --- Shared: small-screen header (same for all 3 layouts) ---
 _render_small_screen_header() {
-  echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+  local layout="$1"
+  _render_functions_submenu "$layout"
   echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
-  echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-  echo "---"
-  echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
-  echo "🐙 Edit this script     | bash='code $SCRIPT_PATH' terminal=false"
-  echo "🐙 Go to Argos folder   | bash='doublecmd $HOME/.config/argos/' terminal=false"
   echo "---"
 }
 
@@ -1078,7 +1071,7 @@ render_argos_standard() {
   echo "---"
 
   if is_small_screen; then
-    _render_small_screen_header
+    _render_small_screen_header "$layout"
   else
     _render_functions_submenu "$layout"
     # Groups — each is a top-level submenu; cheats listed as sub-items inline
@@ -1107,7 +1100,7 @@ render_argos_zenity() {
   echo "---"
 
   if is_small_screen; then
-    _render_small_screen_header
+    _render_small_screen_header "$layout"
   else
     _render_functions_submenu "$layout"
     # Categories at root — each category opens Zenity cheat list via browseDeep_Cheats
@@ -1148,7 +1141,7 @@ render_argos_drilldown() {
     echo "---"
 
     if is_small_screen; then
-      _render_small_screen_header
+      _render_small_screen_header "$layout"
     else
       _render_functions_submenu "$layout"
     fi
