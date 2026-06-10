@@ -667,9 +667,9 @@ argos_get_category() {
 # Each cheat line includes refresh=true so Argos re-renders after click.
 argos_category_lines() {
   local grp="$1"
-  local safe_name cat_cache line
-  safe_name="$(printf '%s' "$grp" | tr -cs 'a-zA-Z0-9' '_')"
-  cat_cache="${ARGOS_CAT_CACHE_DIR}/${safe_name}.lines"
+  local hash_sum cat_cache line
+  hash_sum="$(printf '%s' "$grp" | sha256sum | awk '{print $1}')"
+  cat_cache="${ARGOS_CAT_CACHE_DIR}/cat_${hash_sum}.lines"
 
   mkdir -p "$ARGOS_CAT_CACHE_DIR"
 
