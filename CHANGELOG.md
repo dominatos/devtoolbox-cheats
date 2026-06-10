@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.16 (2026-06-10)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: KDE Plasma 5 and 6 widget config menus (`configGeneral.qml`) now dynamically pull the version string directly from `metadata.json` (`plasmoid.metadata.version`), avoiding the need for sed-based script updates and ensuring a single source of truth.
+- ✅ Fix: Removed duplicate `v` prefix from the `generate-tldr.sh` output when displaying the `--version` or help menu.
+
+---
+
 ## v1.4.15 (2026-06-10)
 
 **Bug fixes & Adjustments:**
