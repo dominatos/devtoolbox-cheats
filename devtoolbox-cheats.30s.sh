@@ -42,8 +42,13 @@ DEVTOOLBOX_LAYOUT_CONF="${HOME}/.config/devtoolbox-cheats/layout.conf"
 
 # === Argos drill-down navigation state (used by drilldown layout only) ===
 # Stores the currently selected category for the Argos inline drill-down menu.
-# Uses XDG_RUNTIME_DIR (cleared on logout/reboot) so stale state never persists across sessions.
-ARGOS_CAT_STATE="${XDG_RUNTIME_DIR:-/tmp}/devtoolbox-argos-cat-combined.state"
+# Uses a private runtime directory so stale state never persists across sessions safely.
+if [[ -n "${XDG_RUNTIME_DIR:-}" ]]; then
+  ARGOS_RUNTIME_DIR="${XDG_RUNTIME_DIR}/devtoolbox-cheats"
+else
+  ARGOS_RUNTIME_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/devtoolbox-cheats/run"
+fi
+ARGOS_CAT_STATE="${ARGOS_RUNTIME_DIR}/argos-cat-combined.state"
 # TTL in seconds: state auto-expires so reopening the widget resets to the category list.
 # Default 60s = at most 2 Argos refresh cycles (script refreshes every 30s).
 ARGOS_CAT_TTL="${ARGOS_CAT_TTL:-60}"
@@ -635,7 +640,12 @@ setLayout() {
 
 # Write current category to state file.
 argos_set_category() {
-  printf '%s' "$1" > "$ARGOS_CAT_STATE"
+  mkdir -m 0700 -p "$ARGOS_RUNTIME_DIR" 2>/dev/null || true
+  local tmp_state
+  tmp_state="$(mktemp "${ARGOS_CAT_STATE}.XXXXXX")"
+  printf '%s' "$1" > "$tmp_state"
+  chmod 600 "$tmp_state" 2>/dev/null || true
+  mv -f "$tmp_state" "$ARGOS_CAT_STATE"
 }
 
 # Delete state file — returns to category list on next render.

@@ -11,6 +11,7 @@
 - ✅ Fix: `showSettings` now properly expands `\n` characters using `printf '%b'` so that the dialog doesn't display literal backslash-n sequences.
 - ✅ Fix: Category cache files are now written atomically using a temporary file and `mv`, preventing partial or corrupted cache files if generation is interrupted.
 - ✅ Fix: Category cache filenames are now generated using a collision-free `sha256sum` hash of the category name rather than a lossy alphanumeric normalization, preventing cache collisions between categories like `A+B` and `A/B`.
+- ✅ Security: `ARGOS_CAT_STATE` now uses a private per-user directory instead of falling back to `/tmp`, and state files are written atomically using a temporary file to prevent symlink attacks and clobbered files.
 
 ---
 
