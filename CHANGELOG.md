@@ -288,7 +288,7 @@
 
 ---
 
-## v1.0 Beta (2026-02-23)
+## v1.0-beta (2026-02-23)
 
 **Universal Support:**
 - ✅ GNOME Argos integration
