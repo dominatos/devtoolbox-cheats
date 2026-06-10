@@ -2,7 +2,7 @@
 # cheats-updater.sh - Update manager for devtoolbox-cheats
 set -euo pipefail
 
-readonly VERSION="1.0.0"
+readonly VERSION="v1.4.14"
 readonly UPSTREAM_URL="https://github.com/dominatos/devtoolbox-cheats.git"
 readonly BRANCH="main"
 readonly CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
@@ -177,7 +177,7 @@ cmd_update() {
 
 show_help() {
     cat <<EOF
-${C_BOLD}cheats-updater.sh${C_RESET} v${VERSION}
+${C_BOLD}cheats-updater.sh${C_RESET} ${VERSION}
 
 ${C_BOLD}USAGE${C_RESET}
     cheats-updater.sh <command>
@@ -216,6 +216,6 @@ case "${1:-}" in
     list)   cmd_list ;;
     update) cmd_update ;;
     -h|--help) show_help ;;
-    --version) echo "v${VERSION}"; exit 0 ;;
+    --version) echo "${VERSION}"; exit 0 ;;
     *) show_help; exit 1 ;;
 esac

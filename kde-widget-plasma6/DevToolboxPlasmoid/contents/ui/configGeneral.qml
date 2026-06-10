@@ -202,5 +202,12 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: "Cache:"
             text: "Rebuild cache on startup"
         }
+
+        Label {
+            text: "DevToolbox Cheats Version: v1.4.14"
+            font.pointSize: 9
+            opacity: 0.6
+            Kirigami.FormData.label: ""
+        }
     }
 }

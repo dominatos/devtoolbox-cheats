@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.14 (2026-06-10)
+
+**Bug fixes & Layout adjustments:**
+- ✅ Fix: Zenity and Yad dialogs now correctly display categories and cheatsheets containing ampersands (`&`). Previously, GTK's Pango markup parser would fail on unescaped ampersands, causing items like "Backups & S3" to disappear or create duplicated ghost rows.
+- ✅ Fix: Added `VERSION` variable tracking to all scripts and KDE widgets, which is now displayed in the Settings menu.
+
+---
+
 ## v1.4.13 (2026-06-10)
 
 **Bug fixes & Layout adjustments:**

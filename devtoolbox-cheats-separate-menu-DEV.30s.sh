@@ -3,6 +3,8 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
+VERSION="v1.4.14"
+
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
 # Defaults to $HOME/cheats.d if CHEATS_DIR is not set.
@@ -192,8 +194,8 @@ input_dialog() {
   
   case "$tool" in
     kdialog) kdialog --inputbox "$prompt" --title "$title" 2>/dev/null ;;
-    yad)     yad --entry --title="$title" --text="$prompt" --center 2>/dev/null ;;
-    zenity)  zenity --entry --title="$title" --text="$prompt" 2>/dev/null ;;
+    yad)     yad --entry --title="$title" --text="${prompt//&/&amp;}" --center 2>/dev/null ;;
+    zenity)  zenity --entry --title="$title" --text="${prompt//&/&amp;}" 2>/dev/null ;;
     *)       read -rp "$prompt: " reply; echo "$reply" ;;
   esac
 }
@@ -205,8 +207,8 @@ info_dialog() {
   
   case "$tool" in
     kdialog) kdialog --msgbox "$msg" --title "$title" 2>/dev/null ;;
-    yad)     yad --info --title="$title" --text="$msg" --center 2>/dev/null ;;
-    zenity)  zenity --info --title="$title" --text="$msg" 2>/dev/null ;;
+    yad)     yad --info --title="$title" --text="${msg//&/&amp;}" --center 2>/dev/null ;;
+    zenity)  zenity --info --title="$title" --text="${msg//&/&amp;}" 2>/dev/null ;;
     *)       echo -e "=== $title ===\n$msg"; read -rp "Press Enter to continue..." ;;
   esac
 }
@@ -235,16 +237,20 @@ list_dialog() {
       ;;
     yad)
       if [[ $# -gt 0 ]]; then
-        printf '%s\n' "$@" | yad --list --title="$title" --column="$col" --center --width="$w" --height="$h" 2>/dev/null | cut -d'|' -f1
+        local escaped_items=()
+        for item in "$@"; do escaped_items+=("${item//&/&amp;}"); done
+        printf '%s\n' "${escaped_items[@]}" | yad --list --title="$title" --column="$col" --center --width="$w" --height="$h" 2>/dev/null | cut -d'|' -f1 | sed 's/&amp;/\&/g'
       else
-        yad --list --title="$title" --column="$col" --center --width="$w" --height="$h" 2>/dev/null | cut -d'|' -f1
+        sed 's/&/\&amp;/g' | yad --list --title="$title" --column="$col" --center --width="$w" --height="$h" 2>/dev/null | cut -d'|' -f1 | sed 's/&amp;/\&/g'
       fi
       ;;
     zenity)
       if [[ $# -gt 0 ]]; then
-        printf '%s\n' "$@" | zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null
+        local escaped_items=()
+        for item in "$@"; do escaped_items+=("${item//&/&amp;}"); done
+        printf '%s\n' "${escaped_items[@]}" | zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null | sed 's/&amp;/\&/g'
       else
-        zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null
+        sed 's/&/\&amp;/g' | zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null | sed 's/&amp;/\&/g'
       fi
       ;;
     *)
@@ -898,8 +904,7 @@ compactMenu() {
     "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
-        info_dialog "Dev Toolbox Settings" \
-          "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
+        showSettings
         compactMenu
         ;;
     "── Categories ──") compactMenu ;;  # Divider — no-op, re-show menu
@@ -951,8 +956,7 @@ standaloneMenu() {
     "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
-        info_dialog "Dev Toolbox Settings" \
-          "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
+        showSettings
         standaloneMenu
         ;;
     "── Categories ──") standaloneMenu ;;  # Divider — no-op, re-show menu
@@ -965,8 +969,9 @@ standaloneMenu() {
 }
 
 showSettings() {
-  info_dialog "Dev Toolbox Settings" \
-    "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
+  local msg
+  printf -v msg '%b' "Version: $VERSION\nDetected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
+  info_dialog "Dev Toolbox Settings" "$msg"
 }
 
 # ============= Argos param dispatch ============

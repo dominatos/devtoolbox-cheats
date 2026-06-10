@@ -6,6 +6,8 @@
 
 set -euo pipefail
 
+VERSION="v1.4.14"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ARGOS_DIR="$HOME/.config/argos"
 TIMEOUT=30

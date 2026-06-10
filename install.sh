@@ -1,5 +1,8 @@
 #!/bin/bash
 set -euo pipefail
+
+VERSION="v1.4.14"
+
 print_header() {
   echo ""
   echo "╔══════════════════════════════════════════════════════════════╗"
