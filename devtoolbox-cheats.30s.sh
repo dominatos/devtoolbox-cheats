@@ -570,7 +570,7 @@ ensure_cache() {
   # Check if any cheatsheet file is newer than the cache file
   local latest_src mtime_cache
   latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 || true)"
-  [[ -z "$latest_src" ]] && { _CACHE_CHECKED=1; return; }
+  [[ -z "$latest_src" ]] && { index_cheats; _CACHE_CHECKED=1; return; }
   
   mtime_cache="$(stat -c '%Y' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
   local latest_int="${latest_src%.*}"
@@ -724,8 +724,10 @@ showCheat() {
   body="$(strip_front_matter < "$file")"
 
   # Copy to clipboard
-  copy <<< "$body"
-  notify "✅ Dev Toolbox" "$title (copied to clipboard)"
+  if [[ -n "$CLIPBOARD_COPY" ]]; then
+    copy <<< "$body"
+    notify "✅ Dev Toolbox" "$title (copied to clipboard)"
+  fi
 
   # Clear drill-down state so next Argos render returns to category list
   argos_clear_category
