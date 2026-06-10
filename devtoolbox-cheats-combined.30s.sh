@@ -706,9 +706,11 @@ showCheat() {
   if [[ -z "$file" || ! -f "$file" ]]; then
     rm -f "$CHEATS_CACHE" 2>/dev/null || true
     ensure_cache
-    local base found
+    local base found safe_base
     base="$(basename -- "$file")"
-    found="$(find "$CHEATS_DIR" -type f -name "$base" 2>/dev/null | head -n1 || true)"
+    # Escape glob metacharacters so find -name treats the pattern literally
+    safe_base="$(printf '%s' "$base" | sed 's/[][*?\\]/\\&/g')"
+    found="$(find "$CHEATS_DIR" -type f -name "$safe_base" 2>/dev/null | head -n1 || true)"
     [[ -n "$found" ]] && file="$found"
     [[ ! -f "$file" ]] && { notify "Dev Toolbox" "File not found: $file"; return 0; }
   fi
@@ -1054,8 +1056,8 @@ _render_functions_submenu() {
   echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
   echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-  echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
-  echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
+  echo "-- 🐙 Edit this script   | bash='code' param1='$SCRIPT_PATH' terminal=false"
+  echo "-- 🐙 Go to Argos folder | bash='doublecmd' param1='$HOME/.config/argos/' terminal=false"
   echo "-- ---"
   echo "-- 🔄 Layout"
   echo "-- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
