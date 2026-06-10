@@ -39,13 +39,5 @@ for metadata in "$ROOT_DIR"/kde-widget-plasma*/DevToolboxPlasmoid/metadata.json;
     fi
 done
 
-# 3. Update KDE configGeneral.qml
-echo "Updating KDE configGeneral.qml files..."
-for config in "$ROOT_DIR"/kde-widget-plasma*/DevToolboxPlasmoid/contents/ui/configGeneral.qml; do
-    if [[ -f "$config" ]]; then
-        echo "  -> $(echo "$config" | sed "s|$ROOT_DIR/||")"
-        sed -i -E "s/DevToolbox Cheats Version:[[:space:]]*v.*/DevToolbox Cheats Version: $escaped_v_version\"/" "$config"
-    fi
-done
 
 echo "Done! 🎉"

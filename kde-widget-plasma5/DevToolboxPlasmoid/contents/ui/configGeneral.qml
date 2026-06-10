@@ -200,7 +200,7 @@ Kirigami.FormLayout {
     }
 
     Label {
-        text: "DevToolbox Cheats Version: v1.4.15"
+        text: "DevToolbox Cheats Version: v" + plasmoid.metadata.version
         font.pointSize: 9
         opacity: 0.6
         Kirigami.FormData.label: ""

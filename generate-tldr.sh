@@ -23,7 +23,7 @@ stale_files=0
 
 usage() {
     cat <<EOF
-generate-tldr.sh v${VERSION}
+generate-tldr.sh ${VERSION}
 
 USAGE
     generate-tldr.sh [options]
@@ -154,7 +154,7 @@ parse_args() {
                 exit 0
                 ;;
             --version)
-                printf 'v%s\n' "$VERSION"
+                printf '%s\n' "$VERSION"
                 exit 0
                 ;;
             *)
