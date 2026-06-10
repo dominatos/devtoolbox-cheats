@@ -679,17 +679,23 @@ argos_category_lines() {
     return
   fi
 
-  # Generate, write to cache, and output simultaneously
-  : > "$cat_cache"
+  # Generate, write to temporary cache, and output simultaneously
+  local tmp_cache
+  tmp_cache="$(mktemp "${cat_cache}.XXXXXX")"
+  trap "rm -f '$tmp_cache' 2>/dev/null" EXIT
+
   while IFS=$'\t' read -r file title group icon order; do
     label="$(compose_label "$title" "$icon")"
     enc="$(printf '%s' "$file" | b64enc)"
     # refresh=true: Argos re-renders after click; showCheat dispatch clears state file
     line="$label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false refresh=true"
-    printf '%s\n' "$line" >> "$cat_cache"
+    printf '%s\n' "$line" >> "$tmp_cache"
     printf '%s\n' "$line"
   done < <(awk -F'\t' -v gg="$grp" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
            | sort -t$'\t' -k5,5n -k2,2f)
+
+  chmod 644 "$tmp_cache" 2>/dev/null || true
+  mv -f "$tmp_cache" "$cat_cache"
 }
 
 # ============= Actions ============
