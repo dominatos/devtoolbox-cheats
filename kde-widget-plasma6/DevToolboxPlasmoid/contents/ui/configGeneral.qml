@@ -204,7 +204,7 @@ KCM.SimpleKCM {
         }
 
         Label {
-            text: "DevToolbox Cheats Version: v1.4.14"
+            text: "DevToolbox Cheats Version: v1.4.15"
             font.pointSize: 9
             opacity: 0.6
             Kirigami.FormData.label: ""

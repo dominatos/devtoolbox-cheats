@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.4.14"
+VERSION="v1.4.15"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
@@ -847,7 +847,7 @@ fzfSearch() {
   selected=$(grep -rnH --include="*.md" "." "$CHEATS_DIR" 2>/dev/null | \
              fzf --delimiter : \
                  --preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' \
-                 --preview-window 'right:60%' \
+                 --preview-window=right:60% \
                  --header 'Start typing to search commands... Enter to open.' \
                  --bind 'enter:accept') || return 0
 

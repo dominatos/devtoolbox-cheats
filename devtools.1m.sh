@@ -21,7 +21,7 @@
 export PATH="/usr/local/bin:/usr/bin:$PATH"
 SCRIPT_PATH="$(realpath -s "$0")"
 
-VERSION="v1.4.14"
+VERSION="v1.4.15"
 
 # Detect clipboard method
 if command -v wl-copy >/dev/null && command -v wl-paste >/dev/null; then

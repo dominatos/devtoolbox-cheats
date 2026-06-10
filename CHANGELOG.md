@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.15 (2026-06-10)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: FZF search in KDE 5 and older fzf versions. The `--preview-window 'right:60%'` option was passed with an invalid trailing space due to a KDE 5 Javascript escaping bug, and older `fzf` versions rejected the syntax entirely. Replaced across the entire codebase with the universal `--preview-window=right:60%` syntax.
+
+---
+
 ## v1.4.14 (2026-06-10)
 
 **Bug fixes & Layout adjustments:**
