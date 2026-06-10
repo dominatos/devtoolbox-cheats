@@ -1,0 +1,8 @@
+{
+  "files": {
+    "ignore": [
+      "kde-widget-plasma5/**/*.js",
+      "kde-widget-plasma6/**/*.js"
+    ]
+  }
+}
