@@ -15,8 +15,9 @@ TIMEOUT=30
 # ARGOS_DEST_NAME must follow Argos convention: <name>.<interval>.sh
 VARIANTS=(
   "devtoolbox-cheats.30s.sh|devtoolbox-cheats.30s.sh|1) Standard (default)|Categories expand inline in the Argos panel menu with all cheats listed as sub-items. Fastest to browse, no extra windows."
-  "devtoolbox-cheats.30s-zenity-cheatslist-DEV.sh|devtoolbox-cheats-zenity.30s.sh|2) Zenity cheat list (DEV)|Categories shown at root level. Clicking a category opens a Zenity dialog window listing that category's cheats. Useful on small screens or when you prefer a separate window."
-  "devtoolbox-cheats.30s-separate-menu-DEV.sh|devtoolbox-cheats-drilldown.30s.sh|3) Separate drill-down menu (DEV)|Drill-down navigation with per-category Argos output cache. Clicking a category re-renders the Argos menu to show only that category's cheats inline. State expires after 60s."
+  "devtoolbox-cheats-zenity-cheatslist-DEV.30s.sh|devtoolbox-cheats-zenity.30s.sh|2) Zenity cheat list (DEV)|Categories shown at root level. Clicking a category opens a Zenity dialog window listing that category's cheats. Useful on small screens or when you prefer a separate window."
+  "devtoolbox-cheats-separate-menu-DEV.30s.sh|devtoolbox-cheats-drilldown.30s.sh|3) Separate drill-down menu (DEV)|Drill-down navigation with per-category Argos output cache. Clicking a category re-renders the Argos menu to show only that category's cheats inline. State expires after 60s."
+  "devtoolbox-cheats-combined.30s.sh|devtoolbox-cheats-combined.30s.sh|5) Combined (all layouts)|All 3 layouts in one script. Switch between Standard, Zenity, and Drill-down directly from the Argos menu (\u1f6e0 DevToolbox Functions \u2192 \ud83d\udd04 Layout) without editing files."
 )
 
 DEFAULT_VARIANT=0   # index into VARIANTS array (0-based)
@@ -45,11 +46,11 @@ print_variants() {
     echo ""
     (( i++ )) || true
   done
-  echo "    4) Install all 3 (try & compare)"
-  echo "      All three variants are installed under distinct filenames."
-  echo "      Each appears as a separate icon in the Argos panel."
-  echo "      Remove whichever you don't want afterwards (instructions shown after install)."
-  echo ""
+  echo "    4) Install all 4 (try & compare)"
+    echo "      All four variants are installed under distinct filenames."
+    echo "      Each appears as a separate icon in the Argos panel."
+    echo "      Remove whichever you don't want afterwards (instructions shown after install)."
+    echo ""
 }
 
 # Read a single character with a countdown timer.
@@ -107,12 +108,25 @@ install_single() {
   echo "  Installed   : $ARGOS_DIR/${dest_name}"
 }
 
-# Install all 3 variants with their distinct Argos filenames.
+# Install all variants with their distinct Argos filenames.
 install_all() {
+  local ICON_COUNT=${#VARIANTS[@]}
   echo ""
-  echo "🐚 Installing all 3 variants..."
+  echo "🐚 Installing all ${ICON_COUNT} variants..."
   echo ""
 
+  # Preflight check: ensure all source files exist and are readable
+  for entry in "${VARIANTS[@]}"; do
+    local src dest _label _desc
+    IFS='|' read -r src dest _label _desc <<< "$entry"
+    if [ ! -r "$SCRIPT_DIR/$src" ]; then
+      echo "  ✖ Error: Source file '$SCRIPT_DIR/$src' is missing or unreadable."
+      echo "  Aborting install."
+      exit 1
+    fi
+  done
+
+  # Perform installation
   for entry in "${VARIANTS[@]}"; do
     local src dest _label _desc
     IFS='|' read -r src dest _label _desc <<< "$entry"
@@ -120,7 +134,7 @@ install_all() {
   done
 
   echo ""
-  echo "  ℹ️  Restart Argos (or toggle the extension) to see all three icons."
+  echo "  ℹ️  Restart Argos (or toggle the extension) to see all ${ICON_COUNT} icons."
   echo ""
   echo "──────────────────────────────────────────────────────────────────"
   echo "  📂 All scripts installed into: $ARGOS_DIR/"
@@ -143,6 +157,9 @@ install_all() {
   echo "    Separate drill-down menu (DEV):"
   echo "      rm ~/.config/argos/devtoolbox-cheats-drilldown.30s.sh"
   echo ""
+  echo "    Combined (all layouts):"
+  echo "      rm ~/.config/argos/devtoolbox-cheats-combined.30s.sh"
+  echo ""
   echo "  After removing a file, Argos removes its icon automatically"
   echo "  (no restart needed — it just disappears on the next 30s refresh)."
   echo "──────────────────────────────────────────────────────────────────"
@@ -158,7 +175,7 @@ echo ""
 print_variants
 
 # Wait for user input with countdown
-read_with_timeout "Enter choice [1/2/3/4]" "$TIMEOUT"
+read_with_timeout "Enter choice [1/2/3/4/5]" "$TIMEOUT"
 choice="$REPLY"
 
 # Dispatch
@@ -172,6 +189,7 @@ case "$choice" in
     echo ""
     exit 0
     ;;
+  "5") selected=3 ;;
   "")
     echo "  ⏱  Timeout — installing default."
     selected=$DEFAULT_VARIANT

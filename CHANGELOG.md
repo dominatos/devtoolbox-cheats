@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.4.13 (2026-06-10)
+
+**Bug fixes & Layout adjustments:**
+- ✅ Fix: On small screens (≤1368×768), the drilldown layout now correctly hides inline categories and only shows the "Browse all cheats" dialog entry point, making it consistent with the standard and zenity layouts.
+- ✅ Fix: Changed Argos menu item syntax to use `param1` for passing script paths to `code` and `doublecmd`, preventing breakage when paths contain spaces.
+- ✅ Fix: Escaped glob metacharacters (`[`, `]`, `*`, `?`) when searching for cheatsheets by filename, ensuring files containing brackets or wildcards are matched correctly.
+- ✅ Fix: Notification "copied to clipboard" now conditionally triggers only if `CLIPBOARD_COPY` is set, with a fallback neutral message when missing.
+- ✅ Fix: `ensure_cache` now correctly rebuilds (clears) the cache instead of leaving it stale when all markdown files have been deleted.
+- ✅ Fix: `showSettings` now properly expands `\n` characters using `printf '%b'` so that the dialog doesn't display literal backslash-n sequences.
+- ✅ Fix: Category cache files are now written atomically using a temporary file and `mv`, preventing partial or corrupted cache files if generation is interrupted.
+- ✅ Fix: Category cache filenames are now generated using a collision-free `sha256sum` hash of the category name rather than a lossy alphanumeric normalization, preventing cache collisions between categories like `A+B` and `A/B`.
+- ✅ Security: `ARGOS_CAT_STATE` now uses a private per-user directory instead of falling back to `/tmp`, and state files are written atomically using a temporary file to prevent symlink attacks and clobbered files.
+
+---
+
 ## v1.4.12 (2026-06-09)
 
 **Development & Alignment:**

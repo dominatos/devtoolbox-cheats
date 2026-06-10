@@ -17,8 +17,19 @@ fi
 
 # Cache file to store indexed cheatsheet metadata.
 # This speeds up menu generation by avoiding re-reading all files every time.
-CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-zenity-dev.idx}"
+CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-dev.idx}"
 CHEATS_REBUILD="" # Set to any non-empty value (e.g. CHEATS_REBUILD=1) to force a cache rebuild
+
+# === Argos drill-down navigation state ===
+# Stores the currently selected category for the Argos inline drill-down menu.
+# Uses XDG_RUNTIME_DIR (cleared on logout/reboot) so stale state never persists across sessions.
+ARGOS_CAT_STATE="${XDG_RUNTIME_DIR:-/tmp}/devtoolbox-argos-cat.state"
+# TTL in seconds: state auto-expires so reopening the widget resets to the category list.
+# Default 60s = at most 2 Argos refresh cycles (script refreshes every 30s).
+ARGOS_CAT_TTL="${ARGOS_CAT_TTL:-60}"
+# Per-category Argos output cache directory.
+# Each category's cheat list is cached as a text file and reused until CHEATS_CACHE changes.
+ARGOS_CAT_CACHE_DIR="${HOME}/.cache/devtoolbox-cheats-argos-dev"
 
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.
@@ -452,6 +463,68 @@ calc_max_argos_groups() {
   echo "$max_groups"
 }
 
+# --- Argos drill-down state helpers ---
+
+# Write current category to state file (b64-encoded content for safety).
+argos_set_category() {
+  printf '%s' "$1" > "$ARGOS_CAT_STATE"
+}
+
+# Delete state file — returns to category list on next render.
+argos_clear_category() {
+  rm -f "$ARGOS_CAT_STATE"
+}
+
+# Read current category from state file, respecting ARGOS_CAT_TTL.
+# Prints the category name if the state is still valid; empty string if expired or missing.
+# Auto-deletes the state file when TTL is exceeded.
+argos_get_category() {
+  [[ -f "$ARGOS_CAT_STATE" ]] || { printf ''; return; }
+  local mtime now age
+  mtime="$(stat -c '%Y' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  now="$(date +%s)"
+  age=$(( now - mtime ))
+  if (( age > ARGOS_CAT_TTL )); then
+    rm -f "$ARGOS_CAT_STATE"
+    printf ''
+    return
+  fi
+  cat "$ARGOS_CAT_STATE"
+}
+
+# Returns pre-rendered Argos menu lines for a category's cheatsheets.
+# On first call (or after CHEATS_CACHE update) generates the lines and writes
+# them to a per-category cache file. Subsequent calls read the cache directly.
+# Cache is invalidated automatically when CHEATS_CACHE is newer than the cache file.
+# Each cheat line includes refresh=true so Argos re-renders (clears drill-down state)
+# after the user clicks a cheat item.
+argos_category_lines() {
+  local grp="$1"
+  local safe_name cat_cache line
+  safe_name="$(printf '%s' "$grp" | tr -cs 'a-zA-Z0-9' '_')"
+  cat_cache="${ARGOS_CAT_CACHE_DIR}/${safe_name}.lines"
+
+  mkdir -p "$ARGOS_CAT_CACHE_DIR"
+
+  # Serve from cache if it exists and is newer than the main cheatsheet index
+  if [[ -f "$cat_cache" && "$cat_cache" -nt "$CHEATS_CACHE" ]]; then
+    cat "$cat_cache"
+    return
+  fi
+
+  # Generate, write to cache, and output simultaneously
+  : > "$cat_cache"
+  while IFS=$'\t' read -r file title group icon order; do
+    label="$(compose_label "$title" "$icon")"
+    enc="$(printf '%s' "$file" | b64enc)"
+    # refresh=true: Argos re-renders after click; showCheat dispatch clears state file
+    line="$label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false refresh=true"
+    printf '%s\n' "$line" >> "$cat_cache"
+    printf '%s\n' "$line"
+  done < <(awk -F'\t' -v gg="$grp" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
+           | sort -t$'\t' -k5,5n -k2,2f)
+}
+
 # Displays a text popup using DE-aware dialog.
 # Now uses text_dialog() abstraction for cross-DE support.
 popup() {
@@ -617,7 +690,9 @@ showCheat() {
         ;;
       terminal)
         # Open in default terminal, display file / Открыть в терминале по умолчанию
-        run_in_terminal "cat '$file'" "$popup_title" && return 0
+        local escaped_file
+        printf -v escaped_file '%q' "$file"
+        run_in_terminal "cat $escaped_file" "$popup_title" && return 0
         ;;
       *)
         # Custom commands, if any
@@ -897,7 +972,11 @@ showSettings() {
 # ============= Argos param dispatch ============
 # Handles arguments passed when clicking on menu items
 case "${1:-}" in
-  showCheat)           showCheat "$@" ; exit 0 ;;
+  showCheat)
+    argos_clear_category  # Reset drill-down state so next open shows category list
+    showCheat "$@"
+    exit 0
+    ;;
   searchCheatsFS)      searchCheatsFS ; exit 0 ;;
   fzfSearch)           fzfSearch ; exit 0 ;;
   browseAllCheatsFS)   browseAllCheatsFS ; exit 0 ;;
@@ -913,6 +992,18 @@ case "${1:-}" in
     browseDeep_Cheats "$_grp"
     exit 0
     ;;
+  setCategory)
+    # Drill-down: write selected category to state file.
+    # param2 = base64-encoded group name.
+    _grp="$(printf '%s' "${2:-}" | b64dec 2>/dev/null || true)"
+    argos_set_category "$_grp"
+    exit 0
+    ;;
+  clearCategory)
+    # Drill-down: clear state file so next render returns to category list.
+    argos_clear_category
+    exit 0
+    ;;
 esac
 
 # ============= DE Detection for Menu Rendering =============
@@ -926,47 +1017,71 @@ if [[ "$CURRENT_DE" != "gnome" ]]; then
 fi
 
 # ============= MENU RENDER (Argos stdout) =============
-echo "🗒️ Cheatsheets"
-echo "---"
-
 ensure_cache
 
-if is_small_screen; then
-  echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-  echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
-  echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+# Check drill-down state (TTL-aware: auto-expires after ARGOS_CAT_TTL seconds)
+_drill_cat="$(argos_get_category)"
+
+if [[ -n "$_drill_cat" ]]; then
+  # ===== DRILL-DOWN MODE =====
+  # A category was selected. Show its cheats inline as top-level items.
+  # Panel icon changes to the selected category name so the user knows where they are.
+  _drill_gi="${GROUP_ICON[$_drill_cat]:-🧩}"
+  echo "$_drill_gi $_drill_cat"
   echo "---"
-  echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
-  echo "🐙 Edit this script     | bash='code $SCRIPT_PATH' terminal=false"
-  echo "🐙 Go to Argos folder   | bash='doublecmd $HOME/.config/argos/' terminal=false"
+  # Back button — clears state, next render returns to category list
+  echo "◀ All categories | bash='$SCRIPT_PATH' param1=clearCategory terminal=false refresh=true"
   echo "---"
+  # Render all cheats for this category via cache (generated once, reused on refresh)
+  argos_category_lines "$_drill_cat"
+
 else
-  # Functions submenu — nested to save top-level space for cheatsheet categories
-  echo "🛠 DevToolbox Functions"
-  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
-  echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
-  echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-  echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-  echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
-  echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
+  # ===== NORMAL MODE =====
+  echo "🗒️ Cheatsheets"
   echo "---"
-  # Categories at root — each category opens zenity cheat list via browseDeep_Cheats
+
+  if is_small_screen; then
+    echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+    echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+    echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
+    echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+    echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+    echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+    echo "---"
+    echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+    echo "🐙 Edit this script     | bash='code $SCRIPT_PATH' terminal=false"
+    echo "🐙 Go to Argos folder   | bash='doublecmd $HOME/.config/argos/' terminal=false"
+    echo "---"
+  else
+    # Functions submenu — nested to save top-level space for cheatsheet categories
+    echo "🛠 DevToolbox Functions"
+    echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+    echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+    echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
+    echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+    echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+    echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+    echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+    echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
+    echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
+    echo "---"
+  fi
+
+  # Get list of unique groups from cache
   mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
 
+  # All categories shown directly at top level.
+  # Each category is a top-level clickable item that triggers drill-down (setCategory).
+  # No inline cheats shown here — cheats appear only after selecting a category.
   for g in "${groups[@]}"; do
     [[ -z "$g" ]] && continue
     gi="${GROUP_ICON[$g]:-🧩}"
     enc_g="$(printf '%s' "$g" | b64enc)"
-    echo "$gi $g | bash='$SCRIPT_PATH' param1=browseDeep_Cheats param2='$enc_g' terminal=false"
+    echo "$gi $g | bash='$SCRIPT_PATH' param1=setCategory param2='$enc_g' terminal=false refresh=true"
   done
 
 fi
 
 # coded by Sviatoslav https://github.com/dominatos
 echo "---"
+

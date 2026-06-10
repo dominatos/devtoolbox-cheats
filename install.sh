@@ -1,6 +1,13 @@
 #!/bin/bash
-set -e
-
+set -euo pipefail
+print_header() {
+  echo ""
+  echo "╔══════════════════════════════════════════════════════════════╗"
+  echo "║        DevToolbox Cheats —  Script Installer           ║"
+  echo "╚══════════════════════════════════════════════════════════════╝"
+  echo ""
+}
+print_header
 echo "📦 Installing dependencies..."
 # Dependencies used by argos script + KDE widget:
 #   fzf        – fuzzy finder (search feature)

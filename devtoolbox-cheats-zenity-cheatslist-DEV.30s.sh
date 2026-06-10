@@ -1,21 +1,5 @@
 #!/usr/bin/env bash
-# devtoolbox-cheats-combined.30s.sh
 # coded by Sviatoslav https://github.com/dominatos
-#
-# Combined Argos cheatsheet script — all 3 layout modes in one file.
-# Switch layouts from the Argos menu (🛠 DevToolbox Functions → 🔄 Layout)
-# without editing any code.
-#
-# Layouts:
-#   standard   — categories expand inline as Argos submenus (default)
-#   zenity     — clicking a category opens a Zenity/dialog cheat list
-#   drilldown  — clicking a category re-renders the Argos menu to show
-#                only that category's cheats; ◀ Back returns to categories
-#
-# Layout preference is persisted in:
-#   ~/.config/devtoolbox-cheats/layout.conf
-# Override with env var: DEVTOOLBOX_LAYOUT=standard|zenity|drilldown
-
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
@@ -33,28 +17,8 @@ fi
 
 # Cache file to store indexed cheatsheet metadata.
 # This speeds up menu generation by avoiding re-reading all files every time.
-CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-combined.idx}"
+CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-zenity-dev.idx}"
 CHEATS_REBUILD="" # Set to any non-empty value (e.g. CHEATS_REBUILD=1) to force a cache rebuild
-
-# === Layout config ===
-# Persistent layout preference file (XDG-compliant).
-DEVTOOLBOX_LAYOUT_CONF="${HOME}/.config/devtoolbox-cheats/layout.conf"
-
-# === Argos drill-down navigation state (used by drilldown layout only) ===
-# Stores the currently selected category for the Argos inline drill-down menu.
-# Uses a private runtime directory so stale state never persists across sessions safely.
-if [[ -n "${XDG_RUNTIME_DIR:-}" ]]; then
-  ARGOS_RUNTIME_DIR="${XDG_RUNTIME_DIR}/devtoolbox-cheats"
-else
-  ARGOS_RUNTIME_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/devtoolbox-cheats/run"
-fi
-ARGOS_CAT_STATE="${ARGOS_RUNTIME_DIR}/argos-cat-combined.state"
-# TTL in seconds: state auto-expires so reopening the widget resets to the category list.
-# Default 60s = at most 2 Argos refresh cycles (script refreshes every 30s).
-ARGOS_CAT_TTL="${ARGOS_CAT_TTL:-60}"
-# Per-category Argos output cache directory (drilldown layout only).
-# Each category's cheat list is cached as a text file and reused until CHEATS_CACHE changes.
-ARGOS_CAT_CACHE_DIR="${HOME}/.cache/devtoolbox-cheats-argos-combined"
 
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.
@@ -362,27 +326,25 @@ default_terminal() {
 run_in_terminal() {
   local cmd="$1" title="${2:-Dev Toolbox}"
   local term="$(default_terminal)"
-  local escaped_cmd
-  escaped_cmd=$(printf '%q' "$cmd")
   
   case "$term" in
-    gnome-terminal) gnome-terminal --title="$title" -- bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
-    kgx)            kgx -- bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
-    konsole)        konsole --hold -e bash -c "eval $escaped_cmd" ;;
-    yakuake)        konsole --hold -e bash -c "eval $escaped_cmd" ;;  # Fallback to konsole
-    xfce4-terminal) xfce4-terminal --hold --title="$title" -e "bash -c \"eval $escaped_cmd\"" ;;
-    mate-terminal)  mate-terminal --title="$title" -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
-    tilix)          tilix -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
-    terminator)     terminator -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
-    qterminal)      qterminal -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
-    lxterminal)     lxterminal --title="$title" -e "bash -c \"eval $escaped_cmd; read -rp 'Press Enter...'\"" ;;
-    alacritty)      alacritty --hold -e bash -c "eval $escaped_cmd" ;;
-    kitty)          kitty --hold bash -c "eval $escaped_cmd" ;;
-    wezterm)        wezterm start -- bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
-    foot)           foot bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
-    st)             st -e bash -c "eval $escaped_cmd; read -rp 'Press Enter...'" ;;
-    urxvt|rxvt-unicode) urxvt -hold -e bash -c "eval $escaped_cmd" ;;
-    *)              xterm -hold -e bash -c "eval $escaped_cmd" ;;
+    gnome-terminal) gnome-terminal --title="$title" -- bash -c "$cmd; read -rp 'Press Enter...'" ;;
+    kgx)            kgx -- bash -c "$cmd; read -rp 'Press Enter...'" ;;
+    konsole)        konsole --hold -e bash -c "$cmd" ;;
+    yakuake)        konsole --hold -e bash -c "$cmd" ;;  # Fallback to konsole
+    xfce4-terminal) xfce4-terminal --hold --title="$title" -e "bash -c \"$cmd\"" ;;
+    mate-terminal)  mate-terminal --title="$title" -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
+    tilix)          tilix -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
+    terminator)     terminator -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
+    qterminal)      qterminal -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
+    lxterminal)     lxterminal --title="$title" -e "bash -c \"$cmd; read -rp 'Press Enter...'\"" ;;
+    alacritty)      alacritty --hold -e bash -c "$cmd" ;;
+    kitty)          kitty --hold bash -c "$cmd" ;;
+    wezterm)        wezterm start -- bash -c "$cmd; read -rp 'Press Enter...'" ;;
+    foot)           foot bash -c "$cmd; read -rp 'Press Enter...'" ;;
+    st)             st -e bash -c "$cmd; read -rp 'Press Enter...'" ;;
+    urxvt|rxvt-unicode) urxvt -hold -e bash -c "$cmd" ;;
+    *)              xterm -hold -e bash -c "$cmd" ;;
   esac
 }
 
@@ -560,7 +522,7 @@ index_cheats() {
 
 
 # Per-process guard: avoids redundant mtime scans when ensure_cache() is called
-# from multiple functions within the same shell invocation.
+# from multiple functions within the same shell invocation (e.g. standaloneMenu → browseAllCheatsFS).
 _CACHE_CHECKED=0
 
 # Ensures the cache exists and is up-to-date.
@@ -575,7 +537,7 @@ ensure_cache() {
   # Check if any cheatsheet file is newer than the cache file
   local latest_src mtime_cache
   latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 || true)"
-  [[ -z "$latest_src" ]] && { index_cheats; _CACHE_CHECKED=1; return; }
+  [[ -z "$latest_src" ]] && { _CACHE_CHECKED=1; return; }
   
   mtime_cache="$(stat -c '%Y' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
   local latest_int="${latest_src%.*}"
@@ -585,6 +547,7 @@ ensure_cache() {
   _CACHE_CHECKED=1
 }
 
+# --- Replacement for strip_front_matter() ---
 # Removes the YAML front-matter (Title, Group, etc.) from the display
 # so the user sees only the clean content.
 strip_front_matter() {
@@ -597,115 +560,6 @@ strip_front_matter() {
     }
     p
   ' | tr -d '\r'
-}
-
-# ============= Layout Config =============
-
-# Reads the persisted layout choice.
-# Priority: env var DEVTOOLBOX_LAYOUT > config file > default (standard)
-get_layout() {
-  # Env var override takes highest priority
-  if [[ -n "${DEVTOOLBOX_LAYOUT:-}" ]]; then
-    echo "$DEVTOOLBOX_LAYOUT"
-    return
-  fi
-  # Read from config file if it exists and is non-empty
-  if [[ -s "$DEVTOOLBOX_LAYOUT_CONF" ]]; then
-    local val
-    val="$(cat "$DEVTOOLBOX_LAYOUT_CONF" | tr -d '[:space:]')"
-    case "$val" in
-      standard|zenity|drilldown) echo "$val"; return ;;
-    esac
-  fi
-  # Default
-  echo "standard"
-}
-
-# Persists the chosen layout to the config file.
-# Called via Argos param dispatch: param1=setLayout param2=<layout>
-setLayout() {
-  local layout="${1:-standard}"
-  # Validate input — only known values accepted
-  case "$layout" in
-    standard|zenity|drilldown) ;;
-    *) layout="standard" ;;
-  esac
-  mkdir -p "$(dirname "$DEVTOOLBOX_LAYOUT_CONF")"
-  printf '%s\n' "$layout" > "$DEVTOOLBOX_LAYOUT_CONF"
-  # Also clear any active drill-down state so the next render starts clean
-  rm -f "$ARGOS_CAT_STATE" 2>/dev/null || true
-}
-
-# ============= Drill-down state helpers (drilldown layout only) ============
-
-# Write current category to state file.
-argos_set_category() {
-  mkdir -m 0700 -p "$ARGOS_RUNTIME_DIR" 2>/dev/null || true
-  local tmp_state
-  tmp_state="$(mktemp "${ARGOS_CAT_STATE}.XXXXXX")"
-  printf '%s' "$1" > "$tmp_state"
-  chmod 600 "$tmp_state" 2>/dev/null || true
-  mv -f "$tmp_state" "$ARGOS_CAT_STATE"
-}
-
-# Delete state file — returns to category list on next render.
-argos_clear_category() {
-  rm -f "$ARGOS_CAT_STATE"
-}
-
-# Read current category from state file, respecting ARGOS_CAT_TTL.
-# Prints the category name if the state is still valid; empty string if expired or missing.
-# Auto-deletes the state file when TTL is exceeded.
-argos_get_category() {
-  [[ -f "$ARGOS_CAT_STATE" ]] || { printf ''; return; }
-  local mtime now age
-  mtime="$(stat -c '%Y' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
-  now="$(date +%s)"
-  age=$(( now - mtime ))
-  if (( age > ARGOS_CAT_TTL )); then
-    rm -f "$ARGOS_CAT_STATE"
-    printf ''
-    return
-  fi
-  cat "$ARGOS_CAT_STATE"
-}
-
-# Returns pre-rendered Argos menu lines for a category's cheatsheets.
-# On first call (or after CHEATS_CACHE update) generates the lines and writes
-# them to a per-category cache file. Subsequent calls read the cache directly.
-# Cache is invalidated automatically when CHEATS_CACHE is newer than the cache file.
-# Each cheat line includes refresh=true so Argos re-renders after click.
-argos_category_lines() {
-  local grp="$1"
-  local hash_sum cat_cache line
-  hash_sum="$(printf '%s' "$grp" | sha256sum | awk '{print $1}')"
-  cat_cache="${ARGOS_CAT_CACHE_DIR}/cat_${hash_sum}.lines"
-
-  mkdir -p "$ARGOS_CAT_CACHE_DIR"
-
-  # Serve from cache if it exists and is newer than the main cheatsheet index
-  if [[ -f "$cat_cache" && "$cat_cache" -nt "$CHEATS_CACHE" ]]; then
-    cat "$cat_cache"
-    return
-  fi
-
-  # Generate, write to temporary cache, and output simultaneously
-  local tmp_cache
-  tmp_cache="$(mktemp "${cat_cache}.XXXXXX")"
-  trap "rm -f '$tmp_cache' 2>/dev/null" EXIT
-
-  while IFS=$'\t' read -r file title group icon order; do
-    label="$(compose_label "$title" "$icon")"
-    enc="$(printf '%s' "$file" | b64enc)"
-    # refresh=true: Argos re-renders after click; showCheat dispatch clears state file
-    line="$label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false refresh=true"
-    printf '%s\n' "$line" >> "$tmp_cache"
-    printf '%s\n' "$line"
-  done < <(awk -F'\t' -v gg="$grp" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
-           | sort -t$'\t' -k5,5n -k2,2f)
-
-  chmod 644 "$tmp_cache" 2>/dev/null || true
-  mv -f "$tmp_cache" "$cat_cache"
 }
 
 # ============= Actions ============
@@ -722,11 +576,9 @@ showCheat() {
   if [[ -z "$file" || ! -f "$file" ]]; then
     rm -f "$CHEATS_CACHE" 2>/dev/null || true
     ensure_cache
-    local base found safe_base
+    local base found
     base="$(basename -- "$file")"
-    # Escape glob metacharacters so find -name treats the pattern literally
-    safe_base="$(printf '%s' "$base" | sed 's/[][*?\\]/\\&/g')"
-    found="$(find "$CHEATS_DIR" -type f -name "$safe_base" 2>/dev/null | head -n1 || true)"
+    found="$(find "$CHEATS_DIR" -type f -name "$base" 2>/dev/null | head -n1 || true)"
     [[ -n "$found" ]] && file="$found"
     [[ ! -f "$file" ]] && { notify "Dev Toolbox" "File not found: $file"; return 0; }
   fi
@@ -740,15 +592,8 @@ showCheat() {
   body="$(strip_front_matter < "$file")"
 
   # Copy to clipboard
-  if [[ -n "$CLIPBOARD_COPY" ]]; then
-    copy <<< "$body"
-    notify "✅ Dev Toolbox" "$title (copied to clipboard)"
-  else
-    notify "✅ Dev Toolbox" "$title (displayed — no clipboard backend)"
-  fi
-
-  # Clear drill-down state so next Argos render returns to category list
-  argos_clear_category
+  copy <<<"$body"
+  notify "✅ Dev Toolbox" "$title (copied to clipboard)"
 
   # Compose popup title
   local popup_title="$title"
@@ -787,7 +632,7 @@ showCheat() {
 }
 
 
-# Action: Interactive search using dialog
+# Action: Interactive search using Zenity
 searchCheatsFS() {
   ensure_cache
   local q; q=$(input_dialog "🔎 Search cheats" "Type to filter...") || exit 0
@@ -812,12 +657,14 @@ searchCheatsFS() {
   showCheat _ "$(printf '%s' "$file" | b64enc)"
 }
 
+# Action: Browse all cheatsheets in a large list
 # Action: Browse cheatsheets (Hierarchical: Groups -> Cheats)
 browseAllCheatsFS() {
   ensure_cache
   
   # 1. Get unique groups with icons / Получить список групп с иконками
   local groups_list
+  # awk faster than cut+loop / awk быстрее чем cut+loop
   groups_list=$(awk -F'\t' '{print $3}' "$CHEATS_CACHE" | sort -u | while read -r g; do
     [[ -z "$g" ]] && continue
     icon="${GROUP_ICON[$g]:-🧩}"
@@ -885,6 +732,7 @@ exportAllCheatsFS() {
     echo "_Generated on $(date)_"
     echo ""
     # Sort by Group then Order, then print styled content
+    # Sort by Group then Order, then print styled content
     while IFS=$'\t' read -r file title group icon order; do
         [[ -z "$file" || ! -f "$file" ]] && continue
         echo "## $(compose_label "$title" "$icon")"
@@ -942,14 +790,6 @@ fzfSearch() {
   fi
 }
 
-# Action: Show Settings info dialog
-showSettings() {
-  local layout; layout="$(get_layout)"
-  local msg
-  printf -v msg '%b' "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF"
-  info_dialog "Dev Toolbox Settings" "$msg"
-}
-
 # ============= Compact menu dialog ============
 # Dialog for when screen space is limited or requested directly
 compactMenu() {
@@ -985,7 +825,8 @@ compactMenu() {
     "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
-        showSettings
+        info_dialog "Dev Toolbox Settings" \
+          "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
         compactMenu
         ;;
     "── Categories ──") compactMenu ;;  # Divider — no-op, re-show menu
@@ -1037,7 +878,8 @@ standaloneMenu() {
     "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
-        showSettings
+        info_dialog "Dev Toolbox Settings" \
+          "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
         standaloneMenu
         ;;
     "── Categories ──") standaloneMenu ;;  # Divider — no-op, re-show menu
@@ -1049,146 +891,15 @@ standaloneMenu() {
   esac
 }
 
-# ============= Argos Layout Renderers =============
-
-# --- Shared: small-screen header (same for all 3 layouts) ---
-_render_small_screen_header() {
-  local layout="$1"
-  _render_functions_submenu "$layout"
-  echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
-  echo "---"
-}
-
-# --- Shared: DevToolbox Functions submenu with layout switcher ---
-_render_functions_submenu() {
-  local layout="$1"
-  local check_std="" check_zen="" check_dd=""
-  case "$layout" in
-    zenity)    check_zen="✅ " ;;
-    drilldown) check_dd="✅ "  ;;
-    *)         check_std="✅ " ;;
-  esac
-
-  echo "🛠 DevToolbox Functions"
-  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
-  echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
-  echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
-  echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
-  echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
-  echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-  echo "-- 🐙 Edit this script   | bash='code' param1='$SCRIPT_PATH' terminal=false"
-  echo "-- 🐙 Go to Argos folder | bash='doublecmd' param1='$HOME/.config/argos/' terminal=false"
-  echo "-- ---"
-  echo "-- 🔄 Layout"
-  echo "-- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
-  echo "-- -- ${check_zen}Zenity (dialog cheat list)     | bash='$SCRIPT_PATH' param1=setLayout param2=zenity terminal=false refresh=true"
-  echo "-- -- ${check_dd}Drill-down (category→cheats)   | bash='$SCRIPT_PATH' param1=setLayout param2=drilldown terminal=false refresh=true"
-  echo "---"
-}
-
-# --- Layout 1: Standard — categories expand inline as Argos submenus ---
-render_argos_standard() {
-  local layout="$1"
-  echo "🗒️ Cheatsheets"
-  echo "---"
-
-  if is_small_screen; then
-    _render_small_screen_header "$layout"
-  else
-    _render_functions_submenu "$layout"
-    # Groups — each is a top-level submenu; cheats listed as sub-items inline
-    mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
-    for g in "${groups[@]}"; do
-      [[ -z "$g" ]] && continue
-      gi="${GROUP_ICON[$g]:-🧩}"
-      echo "$gi $g"
-      # Read matching cheats for this group
-      while IFS=$'\t' read -r file title group icon order; do
-        [[ "$group" != "$g" ]] && continue
-        label="$(compose_label "$title" "$icon")"
-        enc="$(printf '%s' "$file" | b64enc)"
-        echo "-- $label | bash='$SCRIPT_PATH' param1=showCheat param2='$enc' terminal=false"
-      done < <(awk -F'\t' -v gg="$g" '$3==gg{printf "%s\t%s\t%s\t%s\t%05d\n",$1,$2,$3,$4,$5}' "$CHEATS_CACHE" \
-               | sort -t$'\t' -k5,5n -k2,2f \
-               | awk -F'\t' '{printf "%s\t%s\t%s\t%s\t%s\n",$1,$2,$3,$4,$5}')
-    done
-  fi
-}
-
-# --- Layout 2: Zenity — clicking a category opens a Zenity/dialog cheat list ---
-render_argos_zenity() {
-  local layout="$1"
-  echo "🗒️ Cheatsheets"
-  echo "---"
-
-  if is_small_screen; then
-    _render_small_screen_header "$layout"
-  else
-    _render_functions_submenu "$layout"
-    # Categories at root — each category opens Zenity cheat list via browseDeep_Cheats
-    mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
-    for g in "${groups[@]}"; do
-      [[ -z "$g" ]] && continue
-      gi="${GROUP_ICON[$g]:-🧩}"
-      enc_g="$(printf '%s' "$g" | b64enc)"
-      echo "$gi $g | bash='$SCRIPT_PATH' param1=browseDeep_Cheats param2='$enc_g' terminal=false"
-    done
-  fi
-}
-
-# --- Layout 3: Drill-down — stateful per-category rendering ---
-render_argos_drilldown() {
-  local layout="$1"
-
-  # Check drill-down state (TTL-aware: auto-expires after ARGOS_CAT_TTL seconds)
-  local _drill_cat
-  _drill_cat="$(argos_get_category)"
-
-  if [[ -n "$_drill_cat" ]]; then
-    # ===== DRILL-DOWN MODE =====
-    # A category was selected. Show its cheats inline as top-level items.
-    # Panel icon changes to the selected category name so the user knows where they are.
-    local _drill_gi="${GROUP_ICON[$_drill_cat]:-🧩}"
-    echo "$_drill_gi $_drill_cat"
-    echo "---"
-    # Back button — clears state, next render returns to category list
-    echo "◀ All categories | bash='$SCRIPT_PATH' param1=clearCategory terminal=false refresh=true"
-    echo "---"
-    # Render all cheats for this category via cache (generated once, reused on refresh)
-    argos_category_lines "$_drill_cat"
-
-  else
-    # ===== NORMAL MODE =====
-    echo "🗒️ Cheatsheets"
-    echo "---"
-
-    if is_small_screen; then
-      _render_small_screen_header "$layout"
-    else
-      _render_functions_submenu "$layout"
-
-      # All categories shown directly at top level.
-      # Each category is a clickable item that triggers drill-down (setCategory).
-      mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
-      for g in "${groups[@]}"; do
-        [[ -z "$g" ]] && continue
-        gi="${GROUP_ICON[$g]:-🧩}"
-        enc_g="$(printf '%s' "$g" | b64enc)"
-        echo "$gi $g | bash='$SCRIPT_PATH' param1=setCategory param2='$enc_g' terminal=false refresh=true"
-      done
-    fi
-  fi
+showSettings() {
+  info_dialog "Dev Toolbox Settings" \
+    "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE"
 }
 
 # ============= Argos param dispatch ============
 # Handles arguments passed when clicking on menu items
 case "${1:-}" in
-  showCheat)
-    argos_clear_category  # Reset drill-down state so next open shows category list
-    showCheat "$@"
-    exit 0
-    ;;
+  showCheat)           showCheat "$@" ; exit 0 ;;
   searchCheatsFS)      searchCheatsFS ; exit 0 ;;
   fzfSearch)           fzfSearch ; exit 0 ;;
   browseAllCheatsFS)   browseAllCheatsFS ; exit 0 ;;
@@ -1198,27 +909,10 @@ case "${1:-}" in
   standaloneMenu)      standaloneMenu ; exit 0 ;;
   menu)                standaloneMenu ; exit 0 ;;  # Alias for easy invocation
   browseDeep_Cheats)
-    # param2 = base64-encoded group name (handles spaces and special chars safely)
+    # param2 = base64-encoded group name (handles & spaces and special chars safely)
     _grp="$(printf '%s' "${2:-}" | b64dec 2>/dev/null || true)"
     ensure_cache
     browseDeep_Cheats "$_grp"
-    exit 0
-    ;;
-  setLayout)
-    # param2 = layout name (standard|zenity|drilldown)
-    setLayout "${2:-}"
-    exit 0
-    ;;
-  setCategory)
-    # Drill-down: write selected category to state file.
-    # param2 = base64-encoded group name.
-    _grp="$(printf '%s' "${2:-}" | b64dec 2>/dev/null || true)"
-    argos_set_category "$_grp"
-    exit 0
-    ;;
-  clearCategory)
-    # Drill-down: clear state file so next render returns to category list.
-    argos_clear_category
     exit 0
     ;;
 esac
@@ -1234,15 +928,47 @@ if [[ "$CURRENT_DE" != "gnome" ]]; then
 fi
 
 # ============= MENU RENDER (Argos stdout) =============
+echo "🗒️ Cheatsheets"
+echo "---"
+
 ensure_cache
 
-_active_layout="$(get_layout)"
+if is_small_screen; then
+  echo "🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+  echo "🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+  echo "📚 Browse all cheats    | bash='$SCRIPT_PATH' param1=browseAllCheatsFS terminal=false"
+  echo "📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+  echo "🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+  echo "---"
+  echo "⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+  echo "🐙 Edit this script     | bash='code $SCRIPT_PATH' terminal=false"
+  echo "🐙 Go to Argos folder   | bash='doublecmd $HOME/.config/argos/' terminal=false"
+  echo "---"
+else
+  # Functions submenu — nested to save top-level space for cheatsheet categories
+  echo "🛠 DevToolbox Functions"
+  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
+  echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
+  echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
+  echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
+  echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
+  echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+  echo "-- 🐙 Edit this script   | bash='code $SCRIPT_PATH' terminal=false"
+  echo "-- 🐙 Go to Argos folder | bash='doublecmd $HOME/.config/argos/' terminal=false"
+  echo "---"
+  # Categories at root — each category opens zenity cheat list via browseDeep_Cheats
+  mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
 
-case "$_active_layout" in
-  zenity)    render_argos_zenity    "$_active_layout" ;;
-  drilldown) render_argos_drilldown "$_active_layout" ;;
-  *)         render_argos_standard  "$_active_layout" ;;
-esac
+  for g in "${groups[@]}"; do
+    [[ -z "$g" ]] && continue
+    gi="${GROUP_ICON[$g]:-🧩}"
+    enc_g="$(printf '%s' "$g" | b64enc)"
+    echo "$gi $g | bash='$SCRIPT_PATH' param1=browseDeep_Cheats param2='$enc_g' terminal=false"
+  done
+
+fi
 
 # coded by Sviatoslav https://github.com/dominatos
 echo "---"
