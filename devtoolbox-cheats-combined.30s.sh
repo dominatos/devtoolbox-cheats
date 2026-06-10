@@ -1144,17 +1144,17 @@ render_argos_drilldown() {
       _render_small_screen_header "$layout"
     else
       _render_functions_submenu "$layout"
-    fi
 
-    # All categories shown directly at top level.
-    # Each category is a clickable item that triggers drill-down (setCategory).
-    mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
-    for g in "${groups[@]}"; do
-      [[ -z "$g" ]] && continue
-      gi="${GROUP_ICON[$g]:-🧩}"
-      enc_g="$(printf '%s' "$g" | b64enc)"
-      echo "$gi $g | bash='$SCRIPT_PATH' param1=setCategory param2='$enc_g' terminal=false refresh=true"
-    done
+      # All categories shown directly at top level.
+      # Each category is a clickable item that triggers drill-down (setCategory).
+      mapfile -t groups < <(cut -f3 "$CHEATS_CACHE" | sed '/^$/d' | sort -fu)
+      for g in "${groups[@]}"; do
+        [[ -z "$g" ]] && continue
+        gi="${GROUP_ICON[$g]:-🧩}"
+        enc_g="$(printf '%s' "$g" | b64enc)"
+        echo "$gi $g | bash='$SCRIPT_PATH' param1=setCategory param2='$enc_g' terminal=false refresh=true"
+      done
+    fi
   fi
 }
 
