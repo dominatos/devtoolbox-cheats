@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # install-dev.sh — Interactive Argos script installer for devtoolbox-cheats
 # Asks the user which Argos variant to install, with a 30s timeout that
-# auto-selects the default (standard) variant if no input is given.
+# auto-selects the default (standard) variant if no input is given.1
 # coded by Sviatoslav https://github.com/dominatos
 
 set -euo pipefail
