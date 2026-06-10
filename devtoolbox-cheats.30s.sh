@@ -727,6 +727,8 @@ showCheat() {
   if [[ -n "$CLIPBOARD_COPY" ]]; then
     copy <<< "$body"
     notify "✅ Dev Toolbox" "$title (copied to clipboard)"
+  else
+    notify "✅ Dev Toolbox" "$title (displayed — no clipboard backend)"
   fi
 
   # Clear drill-down state so next Argos render returns to category list
@@ -927,8 +929,9 @@ fzfSearch() {
 # Action: Show Settings info dialog
 showSettings() {
   local layout; layout="$(get_layout)"
-  info_dialog "Dev Toolbox Settings" \
-    "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF"
+  local msg
+  printf -v msg '%b' "Detected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF"
+  info_dialog "Dev Toolbox Settings" "$msg"
 }
 
 # ============= Compact menu dialog ============

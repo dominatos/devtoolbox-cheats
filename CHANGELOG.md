@@ -6,8 +6,9 @@
 - ✅ Fix: On small screens (≤1368×768), the drilldown layout now correctly hides inline categories and only shows the "Browse all cheats" dialog entry point, making it consistent with the standard and zenity layouts.
 - ✅ Fix: Changed Argos menu item syntax to use `param1` for passing script paths to `code` and `doublecmd`, preventing breakage when paths contain spaces.
 - ✅ Fix: Escaped glob metacharacters (`[`, `]`, `*`, `?`) when searching for cheatsheets by filename, ensuring files containing brackets or wildcards are matched correctly.
-- ✅ Fix: Notification "copied to clipboard" now conditionally triggers only if `CLIPBOARD_COPY` is set.
+- ✅ Fix: Notification "copied to clipboard" now conditionally triggers only if `CLIPBOARD_COPY` is set, with a fallback neutral message when missing.
 - ✅ Fix: `ensure_cache` now correctly rebuilds (clears) the cache instead of leaving it stale when all markdown files have been deleted.
+- ✅ Fix: `showSettings` now properly expands `\n` characters using `printf '%b'` so that the dialog doesn't display literal backslash-n sequences.
 
 ---
 
