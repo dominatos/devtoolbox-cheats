@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="v1.4.17"
+VERSION="v1.4.18"
 
 print_header() {
   echo ""

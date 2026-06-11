@@ -94,7 +94,7 @@ Item {
         
         console.log("[DevToolbox] Copy command:", cmd);
         runCommand(cmd);
-        statusMessage = "✅ Copied to clipboard!";
+        plasmoid.rootItem.globalStatusMessage = "✅ Copied to clipboard!";
     }
 
     function openCheat(cheatPath) {
@@ -125,7 +125,7 @@ Item {
             file
         )
         runCommand(cmd)
-        statusMessage = "📥 Exporting all cheats..."
+        plasmoid.rootItem.globalStatusMessage = "📥 Exporting all cheats..."
     }
 
     function exportCheat(cheatPath, cheatTitle) {
@@ -138,7 +138,7 @@ Item {
         
         console.log("[DevToolbox] Export command:", cmd);
         runCommand(cmd)
-        statusMessage = "📥 Exported: " + safeName + ".md"
+        plasmoid.rootItem.globalStatusMessage = "📥 Exported: " + safeName + ".md"
     }
 
     function fzfSearch() {
@@ -166,7 +166,7 @@ Item {
         
         console.log("[DevToolbox] FZF command:", cmd);
         runCommand(cmd)
-        statusMessage = "🚀 Opening FZF search..."
+        plasmoid.rootItem.globalStatusMessage = "🚀 Opening FZF search..."
     }
 
     function toggleGroup(index) {
@@ -179,7 +179,7 @@ Item {
             
             // Also update main model if not filtering
             if (searchField.text === "") {
-                cheatsModel = filteredModel;
+                plasmoid.rootItem.globalCheatsModel = filteredModel;
             }
         }
     }
@@ -260,7 +260,7 @@ Item {
             Timer {
                 interval: 5000
                 running: statusMessage !== "" && statusMessage.indexOf("⚠️") === -1 && statusMessage.indexOf("❌") === -1
-                onTriggered: statusMessage = ""
+                onTriggered: plasmoid.rootItem.globalStatusMessage = ""
             }
         }
         

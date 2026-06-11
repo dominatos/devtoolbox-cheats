@@ -62,6 +62,8 @@ Item {
     function refreshCheats() {
         root.refreshCheats()
     }
+    function updateFilter() {
+        var query = searchField.text.toLowerCase()
         if (query === "") {
             filteredModel = cheatsModel
         } else {
@@ -98,7 +100,7 @@ Item {
                   "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' '" + safePath + "' | $APP";
 
         runCommand(copyCmd)
-        statusMessage = "✅ Copied to clipboard!"
+        root.globalStatusMessage = "✅ Copied to clipboard!"
     }
 
     function openCheat(cheatPath) {
@@ -114,7 +116,7 @@ Item {
             file
         )
         runCommand(cmd + " && notify-send 'DevToolbox' 'Exported to " + file + "'")
-        statusMessage = "Exporting..."
+        root.globalStatusMessage = "Exporting..."
     }
 
     // Export a single cheatsheet to ~/DevToolbox-<title>_<date>.md
@@ -123,7 +125,7 @@ Item {
         var outFile  = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
         var cmd = Cheats.getExportCheatCommand(cheatPath, outFile)
         runCommand(cmd)
-        statusMessage = "📥 Exported: " + safeName + ".md"
+        root.globalStatusMessage = "📥 Exported: " + safeName + ".md"
     }
 
     // Launch fzf grep search in a terminal window
@@ -141,7 +143,7 @@ Item {
             "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm). Install one first.'; " +
             "fi"
         runCommand("bash -c '" + termCmd.replace(/'/g, "'\\''" ) + "'")
-        statusMessage = "🚀 Opening FZF search..."
+        root.globalStatusMessage = "🚀 Opening FZF search..."
     }
 
     function toggleGroup(index) {
@@ -230,7 +232,7 @@ Item {
             Timer {
                 interval: 3000
                 running: statusMessage !== ""
-                onTriggered: statusMessage = ""
+                onTriggered: root.globalStatusMessage = ""
             }
         }
 

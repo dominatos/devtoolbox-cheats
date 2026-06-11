@@ -8,7 +8,7 @@
 import QtQuick 2.15
 import org.kde.plasma.plasmoid 2.0
 
-import "contents/code/cheats.js" as Cheats
+import "../code/cheats.js" as Cheats
 
 Item {
     id: root
@@ -52,6 +52,7 @@ Item {
                     if (stdout && stdout.indexOf('|') !== -1) {
                         processIndexOutput(stdout)
                     } else {
+                        root.globalCheatsModel = []
                         root.globalStatusMessage = "⚠️ No cheats found. Check ~/cheats.d directory."
                         root.globalIsLoading = false
                     }

@@ -1,12 +1,20 @@
 # Changelog
 
+## v1.4.18 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Preserved QML property bindings by updating global state (`plasmoid.rootItem`) instead of writing to bound local properties in Plasma 5/6 widgets.
+- ✅ Fix: Repaired a syntax issue with the filter function in Plasma 5 `FullRepresentation.qml`.
+- ✅ Fix: Updated import paths to correctly resolve relative locations (`../code/`) in `main.qml`.
+- ✅ Fix: Ensure the persistent cache is explicitly cleared if the indexer returns empty data, preventing stale entries from displaying.
+
 ## v1.4.17 (2026-06-11)
 
 **Performance — KDE Widget Caching & Instant Loading:**
-- ✅ Massive performance improvement for both Plasma 5 and Plasma 6 widgets. The widget now features **instantaneous 0ms popup loading**.
+- ✅ Massive performance improvement for both Plasma 5 and Plasma 6 widgets. The widget now features **virtually instantaneous popup loading**.
 - ✅ Moved data loading and index caching out of the ephemeral popup (`FullRepresentation.qml`) and into the persistent background root (`main.qml`).
-- ✅ The widget now fully loads and parses your cheatsheets into RAM when the Plasma shell starts, eliminating the need to spawn `/bin/bash` subprocesses and D-Bus transfers every single time you click the widget icon. The "Loading cheats..." spinner is now completely gone.
-- ✅ The "Refresh" button remains available if you add new `.md` files and want to manually trigger a re-index.
+- ✅ The widget now fully loads and parses your cheatsheets into RAM when the Plasma shell starts. The "Loading cheats..." spinner no longer appears on initial popup open because data is preloaded, eliminating the need to spawn `/bin/bash` subprocesses and D-Bus transfers every single time you click the widget icon.
+- ✅ The "Refresh" button remains available if you add new `.md` files and want to manually trigger a re-index. The `globalIsLoading` flag is set during `refreshCheats()`, so the spinner will correctly appear when a manual refresh is requested.
 
 ## v1.4.16 (2026-06-10)
 

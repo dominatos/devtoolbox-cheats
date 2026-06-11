@@ -10,7 +10,7 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasma5support as Plasma5Support
 
-import "contents/code/cheats.js" as Cheats
+import "../code/cheats.js" as Cheats
 
 PlasmoidItem {
     id: root
@@ -48,6 +48,7 @@ PlasmoidItem {
                     processIndexOutput(stdout)
                 } else {
                     console.log("[DevToolbox] Indexer returned no pipe chars. stderr:", stderr)
+                    root.globalCheatsModel = []
                     root.globalStatusMessage = stderr
                         ? "⚠️ Error: " + stderr.substring(0, 100)
                         : "⚠️ No cheats found. Check ~/cheats.d directory."
@@ -79,7 +80,7 @@ PlasmoidItem {
         root.globalStatusMessage = "Loading cheats..."
 
         if (scriptBasePath === "") {
-            scriptBasePath = Qt.resolvedUrl("contents/code/indexer.sh")
+            scriptBasePath = Qt.resolvedUrl("../code/indexer.sh")
                 .toString().replace("file://", "")
             console.log("[DevToolbox] Resolved indexer path:", scriptBasePath)
         }
