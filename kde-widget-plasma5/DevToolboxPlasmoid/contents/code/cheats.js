@@ -241,7 +241,7 @@ function getFzfSearchCommand(cheatsDir, editor) {
         "selected=\$(grep -rnH --include='*.md' . '" + safeDir + "' 2>/dev/null | " +
         "fzf --delimiter : " +
         "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
-        "--preview-window 'right:60%' " +
+        "--preview-window=right:60% " +
         "--header 'Type to search all cheats... Enter to open.' " +
         "--bind 'enter:accept') || exit 0; " +
         "[ -z \"\$selected\" ] && exit 0; " +
@@ -253,6 +253,6 @@ function getFzfSearchCommand(cheatsDir, editor) {
         "\${EDITOR:-nano} +\"\$line\" \"\$file\"; " +
         "fi";
     // Escape inner for embedding in outer single-quoted bash string
-    var safeInner = inner.replace(/'/g, "'\\'' ");
+    var safeInner = inner.replace(/'/g, "'\\''");
     return "bash -c '" + safeInner + "'";
 }

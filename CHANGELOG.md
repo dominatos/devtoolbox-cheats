@@ -1,5 +1,28 @@
 # Changelog
 
+## v1.4.16 (2026-06-10)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: KDE Plasma 5 and 6 widget config menus (`configGeneral.qml`) now dynamically pull the version string directly from `metadata.json` (`plasmoid.metadata.version`), avoiding the need for sed-based script updates and ensuring a single source of truth.
+- ✅ Fix: Removed duplicate `v` prefix from the `generate-tldr.sh` output when displaying the `--version` or help menu.
+
+---
+
+## v1.4.15 (2026-06-10)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: FZF search in KDE 5 and older fzf versions. The `--preview-window 'right:60%'` option was passed with an invalid trailing space due to a KDE 5 Javascript escaping bug, and older `fzf` versions rejected the syntax entirely. Replaced across the entire codebase with the universal `--preview-window=right:60%` syntax.
+
+---
+
+## v1.4.14 (2026-06-10)
+
+**Bug fixes & Layout adjustments:**
+- ✅ Fix: Zenity and Yad dialogs now correctly display categories and cheatsheets containing ampersands (`&`). Previously, GTK's Pango markup parser would fail on unescaped ampersands, causing items like "Backups & S3" to disappear or create duplicated ghost rows.
+- ✅ Fix: Added `VERSION` variable tracking to all scripts and KDE widgets, which is now displayed in the Settings menu.
+
+---
+
 ## v1.4.13 (2026-06-10)
 
 **Bug fixes & Layout adjustments:**
@@ -265,7 +288,7 @@
 
 ---
 
-## v1.0 Beta (2026-02-23)
+## v1.0-beta (2026-02-23)
 
 **Universal Support:**
 - ✅ GNOME Argos integration
