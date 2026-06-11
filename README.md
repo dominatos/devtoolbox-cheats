@@ -171,12 +171,7 @@ Disable and re-enable the Argos extension, or press `Alt+F2` → `r` → `Enter`
 **Result:** 🗒️ icon appears in your top panel with dropdown menu.
 *(Note: The installer also adds `devtools.1m.sh` to provide an additional tools menu in your panel).*
 
-#### 5. Alternative Layouts (Development Script)
-If you want to try alternative layouts or a combined script with an on-the-fly layout switcher, use the dev installer instead:
-```bash
-./install-dev.sh
-```
-You can choose from Standard, Zenity list, Drill-down, or the **Combined Layout** (recommended).
+
 
 </details>
 
@@ -679,9 +674,9 @@ Icon: network-server
 3. Click cheat name to copy & view
 4. Content copied to clipboard automatically
 
-**Argos Layout Options (Combined Script):**
+**Argos Layout Options:**
 
-If you installed the **Combined (all layouts)** script via `./install-dev.sh`, you can switch layouts directly from the Argos menu (`🛠 DevToolbox Functions` → `🔄 Layout`) without editing any files.
+You can switch layouts directly from the Argos menu (`🛠 DevToolbox Functions` → `🔄 Layout`) without editing any files.
 
 *   **Standard (default)**: Categories expand inline as native Argos submenus. Fastest for quick browsing without extra windows.
 *   **Zenity (dialog cheat list)**: Categories are shown at the root level. Clicking a category opens a popup Zenity dialog listing all cheats for that category. Excellent for small screens or when you prefer isolated windows.
