@@ -78,10 +78,17 @@ Item {
 
     function processIndexOutput(output) {
         console.log("[DevToolbox] Received index output (length=" + output.length + ")")
-        var parsed = Cheats.parseIndexOutput(output)
-        root.globalCheatsModel   = parsed
-        root.globalIsLoading     = false
-        root.globalStatusMessage = "Loaded " + countCheats(parsed) + " cheats."
+        try {
+            var parsed = Cheats.parseIndexOutput(output)
+            root.globalCheatsModel   = parsed
+            root.globalIsLoading     = false
+            root.globalStatusMessage = "Loaded " + countCheats(parsed) + " cheats."
+        } catch (e) {
+            console.error("[DevToolbox] Error parsing cheats:", e)
+            root.globalCheatsModel   = []
+            root.globalIsLoading     = false
+            root.globalStatusMessage = "⚠️ Error parsing cheats data."
+        }
     }
 
     function countCheats(groups) {

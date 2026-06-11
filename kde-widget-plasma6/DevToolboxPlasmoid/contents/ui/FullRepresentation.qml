@@ -144,11 +144,13 @@ Item {
     function fzfSearch() {
         // FIXED: Use simple helper script instead of complex escaping
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
-        var editor = configuredEditor
+        var configuredEditor = plasmoid.configuration.preferredEditor || ""
+        var editor = "code" // Ultimate fallback
         
-        // Use detected editor if configured one doesn't exist
-        if (detectedEditor !== "") {
+        // Prefer user configuration, then detected fallback, then "code"
+        if (configuredEditor !== "") {
+            editor = configuredEditor
+        } else if (detectedEditor !== "") {
             editor = detectedEditor
         }
         

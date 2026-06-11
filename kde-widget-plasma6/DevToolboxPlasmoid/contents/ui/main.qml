@@ -96,19 +96,26 @@ PlasmoidItem {
     }
 
     function processIndexOutput(output) {
-        var parsed = Cheats.parseIndexOutput(output)
-        for (var i = 0; i < parsed.length; i++) {
-            parsed[i].expanded = false
+        try {
+            var parsed = Cheats.parseIndexOutput(output)
+            for (var i = 0; i < parsed.length; i++) {
+                parsed[i].expanded = false
+            }
+            root.globalCheatsModel   = parsed
+            root.globalIsLoading     = false
+
+            var total = countCheats(parsed)
+            root.globalStatusMessage = total > 0
+                ? "✅ Loaded " + total + " cheats."
+                : "⚠️ No cheats found in ~/cheats.d"
+
+            console.log("[DevToolbox] Loaded", total, "cheats in", parsed.length, "groups.")
+        } catch (e) {
+            console.error("[DevToolbox] Error parsing cheats:", e)
+            root.globalCheatsModel   = []
+            root.globalIsLoading     = false
+            root.globalStatusMessage = "⚠️ Error parsing cheats data."
         }
-        root.globalCheatsModel   = parsed
-        root.globalIsLoading     = false
-
-        var total = countCheats(parsed)
-        root.globalStatusMessage = total > 0
-            ? "✅ Loaded " + total + " cheats."
-            : "⚠️ No cheats found in ~/cheats.d"
-
-        console.log("[DevToolbox] Loaded", total, "cheats in", parsed.length, "groups.")
     }
 
     function countCheats(groups) {

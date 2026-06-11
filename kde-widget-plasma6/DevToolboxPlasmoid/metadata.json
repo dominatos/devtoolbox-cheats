@@ -13,7 +13,7 @@
         "Id": "com.dominatos.devtoolboxcheats",
         "License": "MIT",
         "Name": "DevToolbox Cheats",
-        "Version": "1.4.19",
+        "Version": "1.4.20",
         "Website": "https://github.com/dominatos/devtoolbox-cheats"
     },
     "KPackageStructure": "Plasma/Applet"
