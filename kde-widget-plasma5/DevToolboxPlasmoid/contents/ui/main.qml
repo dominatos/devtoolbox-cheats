@@ -27,6 +27,7 @@ Item {
 
     // ─── Dynamic DataSource (Plasma 5/6 compatible creation) ─────────────────
     property var shSource: null
+    property string accumulatedStdout: ""
 
     function createDataSource() {
         try {
@@ -51,22 +52,28 @@ Item {
             shSource.newData.connect(function(sourceName, data) {
                 var stdout   = data["stdout"]    || ""
                 var stderr   = data["stderr"]    || ""
-                var exitCode = data["exit code"] || 0
-                if (shSource.connectedSources.indexOf(sourceName) !== -1) {
-                    if (stdout && stdout.indexOf('|') !== -1) {
-                        processIndexOutput(stdout)
-                    } else if (exitCode !== 0) {
-                        // Command failed — don't clobber cache, just show the error
+                var exitCode = data["exit code"]
+
+                if (stdout.length > 0) {
+                    accumulatedStdout += stdout
+                }
+
+                if (exitCode !== undefined && shSource.connectedSources.indexOf(sourceName) !== -1) {
+                    if (exitCode === 0) {
+                        if (accumulatedStdout.indexOf('|') !== -1) {
+                            processIndexOutput(accumulatedStdout)
+                        } else {
+                            if (stderr) console.error("[DevToolbox] Indexer warning (exit 0):", stderr)
+                            root.globalCheatsModel = []
+                            root.globalStatusMessage = "⚠️ No cheats found. Check " + plasmoid.configuration.cheatsDir + " directory."
+                            root.globalIsLoading = false
+                        }
+                    } else {
                         console.error("[DevToolbox] Indexer error (exit " + exitCode + "):", stderr)
                         root.globalStatusMessage = "⚠️ Indexer error: " + (stderr ? stderr.substring(0, 120) : "exit code " + exitCode)
                         root.globalIsLoading = false
-                    } else {
-                        if (stderr) console.error("[DevToolbox] Indexer warning (exit 0):", stderr)
-                        // Command succeeded but returned no data — genuinely empty
-                        root.globalCheatsModel = []
-                        root.globalStatusMessage = "⚠️ No cheats found. Check " + plasmoid.configuration.cheatsDir + " directory."
-                        root.globalIsLoading = false
                     }
+                    accumulatedStdout = ""
                     shSource.disconnectSource(sourceName)
                 }
             })

@@ -33,6 +33,8 @@ PlasmoidItem {
     property string globalStatusMessage:  ""
     property string scriptBasePath:       ""
 
+    property string accumulatedStdout: ""
+
     // ─── DataSource: indexer.sh ───────────────────────────────────────────────
     Plasma5Support.DataSource {
         id: shSource
@@ -43,12 +45,16 @@ PlasmoidItem {
             var stderr   = data["stderr"]  || ""
             var exitCode = data["exit code"]
 
+            if (stdout.length > 0) {
+                accumulatedStdout += stdout
+            }
+
             if (exitCode !== undefined && connectedSources.indexOf(sourceName) !== -1) {
                 if (exitCode === 0) {
-                    if (stdout.length > 0 && stdout.indexOf('|') !== -1) {
-                        processIndexOutput(stdout)
+                    if (accumulatedStdout.indexOf('|') !== -1) {
+                        processIndexOutput(accumulatedStdout)
                     } else {
-                        console.log("[DevToolbox] Indexer returned no pipe chars. stderr:", stderr)
+                        console.log("[DevToolbox] Indexer returned no pipe chars.")
                         root.globalCheatsModel = []
                         root.globalStatusMessage = "⚠️ No cheats found. Check ~/cheats.d directory."
                         root.globalIsLoading = false
@@ -59,6 +65,7 @@ PlasmoidItem {
                     root.globalStatusMessage = "⚠️ Error: " + stderr.substring(0, 100)
                     root.globalIsLoading = false
                 }
+                accumulatedStdout = ""
                 disconnectSource(sourceName)
             }
         }
