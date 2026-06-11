@@ -84,7 +84,8 @@ Item {
                     var newGroup = {
                         name: group.name,
                         icon: group.icon,
-                        cheats: matchingCheats
+                        cheats: matchingCheats,
+                        expanded: true // Auto-expand when searching
                     }
                     result.push(newGroup)
                 }

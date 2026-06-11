@@ -85,7 +85,7 @@ Item {
         console.log("[DevToolbox] Copy cheat:", cheatPath);
         
         // FIXED: Properly quote the path to handle spaces
-        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" | ";
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " | ";
         
         // Auto-detect and use available clipboard tool
         cmd += "if command -v wl-copy >/dev/null 2>&1; then wl-copy; ";
@@ -147,9 +147,9 @@ Item {
         var safeName = cheatTitle.replace(/[^a-zA-Z0-9_\-]/g, '_').replace(/__+/g, '_')
         var outFile = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
         
-        // FIXED: Direct sed command without over-escaping
-        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" > \"" + outFile + "\" && " +
-            "notify-send 'DevToolbox' 'Exported to " + outFile + "'";
+        // FIXED: Direct sed command without over-escaping, using secure shell escaping
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " > " + escapeShell(outFile) + " && " +
+            "notify-send 'DevToolbox' 'Exported to " + safeName + ".md'";
         
         console.log("[DevToolbox] Export command:", cmd);
         runCommand(cmd)

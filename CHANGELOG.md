@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.24 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Improved category search filtering in Plasma 5 to automatically expand categories that contain matches, making search results immediately visible.
+- ✅ Security: Ensured the `copyCheat` and `exportCheat` functions in both widgets use strict shell escaping for all cheat paths, removing the final possible vector for shell injection.
+
 ## v1.4.23 (2026-06-11)
 
 **Bug fixes & Adjustments:**
