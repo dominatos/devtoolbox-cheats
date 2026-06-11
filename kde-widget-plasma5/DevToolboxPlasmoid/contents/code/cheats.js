@@ -241,16 +241,16 @@ function getExportCheatCommand(cheatPath, outputFile) {
 
 // Build command to launch fzf search in a terminal.
 // Selected file:line is opened in the preferred editor.
-function getFzfSearchCommand(cheatsDir, editor) {
+function getFzfSearchCommand(cheatsDir) {
     var safeDir = bashSafePath(cheatsDir);
-    var safeEditor = bashSafePath(editor || "code");
     // The inner bash script mirrors the argos fzfSearch() function:
     //   grep -rnH all .md -> fzf with bat/cat preview -> open result in editor
+    // The editor is expected to be resolved and exported via the $EDITOR environment variable.
     var inner =
         "if ! command -v fzf >/dev/null 2>&1; then " +
         "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
         "read -rp 'Press enter to exit...'; exit 1; fi; " +
-        "selected=\$(grep -rnH --include='*.md' . '" + safeDir + "' 2>/dev/null | " +
+        "selected=\$(grep -rnH --include='*.md' . " + safeDir + " 2>/dev/null | " +
         "fzf --delimiter : " +
         "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
         "--preview-window=right:60% " +
@@ -259,11 +259,11 @@ function getFzfSearchCommand(cheatsDir, editor) {
         "[ -z \"\$selected\" ] && exit 0; " +
         "file=\$(echo \"\$selected\" | cut -d: -f1); " +
         "line=\$(echo \"\$selected\" | cut -d: -f2); " +
-        "if command -v '" + safeEditor + "' >/dev/null 2>&1; then " +
-        "'" + safeEditor + "' -g \"\$file:\$line\"; " +
+        "if [[ \"\$EDITOR\" =~ \"code\" || \"\$EDITOR\" =~ \"kate\" ]]; then " +
+        "  \"\$EDITOR\" -g \"\$file:\$line\"; " +
         "else " +
-        "\${EDITOR:-nano} +\"\$line\" \"\$file\"; " +
-        "fi";
+        "  \"\$EDITOR\" +\"\$line\" \"\$file\" || \"\$EDITOR\" \"\$file\"; " +
+        "fi; ";
     // Escape inner for embedding in outer single-quoted bash string
     var safeInner = inner.replace(/'/g, "'\\''");
     return "bash -c '" + safeInner + "'";

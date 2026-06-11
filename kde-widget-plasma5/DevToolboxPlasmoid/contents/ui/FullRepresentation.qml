@@ -108,9 +108,26 @@ Item {
         return "'" + String(str).replace(/'/g, "'\\''") + "'";
     }
 
+    function getEditorResolutionCommand() {
+        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
+        var safeConf = escapeShell(configuredEditor)
+        var fallbackList = "code vscodium zed subl atom pulsar notepadqq kwrite kate gedit xed pluma mousepad leafpad geany micro nano nvim vim vi emacs kak hx helix"
+        
+        var cmd = "export EDITOR=''; " +
+            "if command -v " + safeConf + " >/dev/null 2>&1; then export EDITOR=" + safeConf + "; " +
+            "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Trying fallbacks...\"; " +
+            "for e in " + fallbackList + "; do " +
+            "if command -v \"$e\" >/dev/null 2>&1; then export EDITOR=\"$e\"; break; fi; " +
+            "done; " +
+            "if [ -z \"$EDITOR\" ]; then notify-send 'DevToolbox' 'No text editor found! Please install one.'; exit 1; fi; " +
+            "fi; "
+            
+        return cmd
+    }
+
     function openCheat(cheatPath) {
-        var editor = plasmoid.configuration.preferredEditor || "code"
-        var cmd = escapeShell(editor) + " " + escapeShell(cheatPath)
+        var editorCmd = getEditorResolutionCommand()
+        var cmd = editorCmd + "\"$EDITOR\" " + escapeShell(cheatPath)
         runCommand(cmd)
     }
     
@@ -136,10 +153,10 @@ Item {
     // Launch fzf grep search in a terminal window
     function fzfSearch() {
         var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
-        var editor    = plasmoid.configuration.preferredEditor || "code"
-        var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir, editor)
+        var editorCmd = getEditorResolutionCommand()
+        var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir) // Editor is resolved via $EDITOR in bash
         // Try konsole first (KDE native), fall back to xterm
-        var termCmd =
+        var termCmd = editorCmd +
             "if command -v konsole >/dev/null 2>&1; then " +
             "  konsole --hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
             "elif command -v xterm >/dev/null 2>&1; then " +

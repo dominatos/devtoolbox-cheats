@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.26 (2026-06-12)
+
+**Features & Refactoring:**
+- ✨ Feature: Overhauled editor launch logic for both Plasma 5 and Plasma 6 widgets. If your configured editor isn't installed, the widget will display a warning notification and securely fall back through a massive, dynamically exported list of 23 popular GUI and CLI editors (`vscodium`, `zed`, `kate`, `nvim`, `hx`, etc.) to ensure cheatsheets always open successfully.
+- ♻️ Refactor: Simplified FZF search `getFzfSearchCommand` to inherit the resolved `$EDITOR` directly from the QML logic rather than duplicating fallback behaviors, natively supporting smart `+line` jumping for CLI tools and `-g` for GUI tools.
+
 ## v1.4.25 (2026-06-11)
 
 **Bug fixes & Adjustments:**

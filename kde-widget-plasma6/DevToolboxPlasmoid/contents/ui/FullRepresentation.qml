@@ -113,22 +113,26 @@ Item {
     }
 
     function getEditorResolutionCommand() {
-        var configuredEditor = plasmoid.configuration.preferredEditor || ""
-        if (configuredEditor !== "") {
-            var safeConf = escapeShell(configuredEditor)
-            if (detectedEditor !== "") {
-                var safeDet = escapeShell(detectedEditor)
-                return "if command -v " + safeConf + " >/dev/null 2>&1; then EDITOR=" + safeConf + "; " +
-                    "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Using \"'" + safeDet + "'\" instead.\"; EDITOR=" + safeDet + "; fi; "
-            } else {
-                return "if command -v " + safeConf + " >/dev/null 2>&1; then EDITOR=" + safeConf + "; " +
-                    "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Please install an editor.\"; exit 1; fi; "
-            }
-        } else if (detectedEditor !== "") {
-            return "EDITOR=" + escapeShell(detectedEditor) + "; "
-        } else {
-            return ""
+        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
+        var safeConf = escapeShell(configuredEditor)
+        var safeDet = detectedEditor !== "" ? escapeShell(detectedEditor) : ""
+        var fallbackList = "code vscodium zed subl atom pulsar notepadqq kwrite kate gedit xed pluma mousepad leafpad geany micro nano nvim vim vi emacs kak hx helix"
+        
+        var cmd = "export EDITOR=''; " +
+            "if command -v " + safeConf + " >/dev/null 2>&1; then export EDITOR=" + safeConf + "; "
+            
+        if (safeDet !== "") {
+            cmd += "elif command -v " + safeDet + " >/dev/null 2>&1; then notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Using \"'" + safeDet + "'\".\"; export EDITOR=" + safeDet + "; "
         }
+            
+        cmd += "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Trying fallbacks...\"; " +
+            "for e in " + fallbackList + "; do " +
+            "if command -v \"$e\" >/dev/null 2>&1; then export EDITOR=\"$e\"; break; fi; " +
+            "done; " +
+            "if [ -z \"$EDITOR\" ]; then notify-send 'DevToolbox' 'No text editor found! Please install one.'; exit 1; fi; " +
+            "fi; "
+            
+        return cmd
     }
 
     function openCheat(cheatPath) {
