@@ -43,7 +43,8 @@ Item {
     }
 
     function runCommand(cmd) {
-        shSource.connectSource(cmd)
+        // plasmaShield() escapes special chars so Plasma 6 DataSource does not strip them.
+        shSource.connectSource(Cheats.plasmaShield(cmd))
     }
 
     function refreshCheats() {
@@ -137,11 +138,6 @@ Item {
 
     function openCheat(cheatPath) {
         var editorCmd = getEditorResolutionCommand()
-        if (editorCmd === "") {
-            plasmoid.rootItem.globalStatusMessage = "⚠️ No editor found. Configure one in widget settings."
-            return
-        }
-        
         var cmd = editorCmd + "\"$EDITOR\" " + escapeShell(cheatPath)
         console.log("[DevToolbox] Open command:", cmd);
         runCommand(cmd)
@@ -173,10 +169,6 @@ Item {
     function fzfSearch() {
         var cheatsDir = plasmoid.configuration.cheatsDir
         var editorCmd = getEditorResolutionCommand()
-        if (editorCmd === "") {
-            plasmoid.rootItem.globalStatusMessage = "⚠️ No editor found. Configure one in widget settings."
-            return
-        }
         
         // Get path to fzf-search.sh helper
         var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")

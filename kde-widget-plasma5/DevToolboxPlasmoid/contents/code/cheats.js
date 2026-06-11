@@ -29,16 +29,6 @@ var GROUP_ICONS = {
 };
 
 
-// ... (existing code) ...
-
-if (!groupsMap[group]) {
-    groupsMap[group] = {
-        name: group,
-        icon: icon || GROUP_ICONS[group] || "🧩",
-        cheats: [],
-        expanded: false // Default to collapsed
-    };
-}
 
 // Parse Front Matter from Markdown content
 function parseFrontMatter(content) {

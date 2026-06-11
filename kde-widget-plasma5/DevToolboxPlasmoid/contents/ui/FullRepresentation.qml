@@ -155,16 +155,19 @@ Item {
         var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
         var editorCmd = getEditorResolutionCommand()
         var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir) // Editor is resolved via $EDITOR in bash
+        // Prepend the editor resolution into the inner fzf command so $EDITOR is
+        // exported INSIDE the terminal session (not the outer shell, which konsole doesn't inherit).
+        var innerCmd  = editorCmd + fzfCmd
         // Try konsole first (KDE native), fall back to xterm
-        var termCmd = editorCmd +
+        var termCmd =
             "if command -v konsole >/dev/null 2>&1; then " +
-            "  konsole --hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "  konsole --hold -e bash -c '" + innerCmd.replace(/'/g, "'\\''") + "'; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "  xterm -hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "  xterm -hold -e bash -c '" + innerCmd.replace(/'/g, "'\\''") + "'; " +
             "else " +
             "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm). Install one first.'; " +
             "fi"
-        runCommand("bash -c '" + termCmd.replace(/'/g, "'\\''" ) + "'")
+        runCommand("bash -c '" + termCmd.replace(/'/g, "'\\''") + "'")
         root.globalStatusMessage = "🚀 Opening FZF search..."
     }
 

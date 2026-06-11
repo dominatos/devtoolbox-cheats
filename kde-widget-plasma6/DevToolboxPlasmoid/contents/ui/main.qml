@@ -99,10 +99,11 @@ PlasmoidItem {
 
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
         var cacheFile = plasmoid.configuration.cacheFile.replace(/^~/, "$HOME")
-        var debugLog  = "/tmp/devtoolbox-debug.log"
 
-        var cmd = "bash \"" + scriptBasePath + "\" \"" + cheatsDir + "\" \""
-                + debugLog + "\" \"" + cacheFile + "\""
+        // IMPORTANT: Must use Cheats.getIndexCommand() so plasmaShield() is applied.
+        // Plasma 6 DataSource strips special characters (/, |, $, =, ;, &) from commands
+        // unless they are backslash-escaped by plasmaShield().
+        var cmd = Cheats.getIndexCommand(cheatsDir, cacheFile, scriptBasePath)
         console.log("[DevToolbox] Running indexer:", cmd)
         shSource.connectSource(cmd)
     }
