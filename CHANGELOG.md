@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.21 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Improved FZF Search editor validation. It now verifies the editor exists via `command -v` before launching, properly handles missing editors, and removes the hardcoded `"code"` fallback if no editor is found.
+
 ## v1.4.20 (2026-06-11)
 
 **Bug fixes & Adjustments:**

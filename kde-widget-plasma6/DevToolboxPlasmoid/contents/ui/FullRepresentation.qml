@@ -144,19 +144,26 @@ Item {
     function fzfSearch() {
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
         var configuredEditor = plasmoid.configuration.preferredEditor || ""
-        var fallbackEditor = detectedEditor || "code"
         
         // Get path to fzf-search.sh helper
         var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")
         
         // Build editor selection with command -v validation at the shell level
-        // Priority: configured editor (if exists) → detected editor → "code"
+        // Priority: configured editor (if exists) → detected editor → notify user
         var editorVar = ""
         if (configuredEditor !== "") {
-            editorVar = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
-                "else EDITOR=\"" + fallbackEditor + "\"; fi"
+            if (detectedEditor !== "") {
+                editorVar = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
+                    "else EDITOR=\"" + detectedEditor + "\"; fi"
+            } else {
+                editorVar = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
+                    "else notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Please install an editor.' && exit 1; fi"
+            }
+        } else if (detectedEditor !== "") {
+            editorVar = "EDITOR=\"" + detectedEditor + "\""
         } else {
-            editorVar = "EDITOR=\"" + fallbackEditor + "\""
+            plasmoid.rootItem.globalStatusMessage = "⚠️ No editor found. Configure one in widget settings."
+            return
         }
         
         // Simple command to launch terminal with our script

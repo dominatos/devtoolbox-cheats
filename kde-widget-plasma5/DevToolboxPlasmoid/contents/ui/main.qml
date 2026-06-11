@@ -49,13 +49,21 @@ Item {
 
         if (shSource) {
             shSource.newData.connect(function(sourceName, data) {
-                var stdout = data["stdout"] || ""
+                var stdout   = data["stdout"]    || ""
+                var stderr   = data["stderr"]    || ""
+                var exitCode = data["exit code"] || 0
                 if (shSource.connectedSources.indexOf(sourceName) !== -1) {
                     if (stdout && stdout.indexOf('|') !== -1) {
                         processIndexOutput(stdout)
+                    } else if (stderr || exitCode !== 0) {
+                        // Command failed — don't clobber cache, just show the error
+                        console.error("[DevToolbox] Indexer error (exit " + exitCode + "):", stderr)
+                        root.globalStatusMessage = "⚠️ Indexer error: " + (stderr ? stderr.substring(0, 120) : "exit code " + exitCode)
+                        root.globalIsLoading = false
                     } else {
+                        // Command succeeded but returned no data — genuinely empty
                         root.globalCheatsModel = []
-                        root.globalStatusMessage = "⚠️ No cheats found. Check ~/cheats.d directory."
+                        root.globalStatusMessage = "⚠️ No cheats found. Check " + plasmoid.configuration.cheatsDir + " directory."
                         root.globalIsLoading = false
                     }
                     shSource.disconnectSource(sourceName)
