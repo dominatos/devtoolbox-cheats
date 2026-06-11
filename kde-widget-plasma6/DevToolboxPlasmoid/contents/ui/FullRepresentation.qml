@@ -97,18 +97,25 @@ Item {
         plasmoid.rootItem.globalStatusMessage = "✅ Copied to clipboard!";
     }
 
+    function escapeShell(str) {
+        if (!str) return "''";
+        return "'" + String(str).replace(/'/g, "'\\''") + "'";
+    }
+
     function getEditorResolutionCommand() {
         var configuredEditor = plasmoid.configuration.preferredEditor || ""
         if (configuredEditor !== "") {
+            var safeConf = escapeShell(configuredEditor)
             if (detectedEditor !== "") {
-                return "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
-                    "else notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Using \"" + detectedEditor + "\" instead.'; EDITOR=\"" + detectedEditor + "\"; fi; "
+                var safeDet = escapeShell(detectedEditor)
+                return "if command -v " + safeConf + " >/dev/null 2>&1; then EDITOR=" + safeConf + "; " +
+                    "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Using \"'" + safeDet + "'\" instead.\"; EDITOR=" + safeDet + "; fi; "
             } else {
-                return "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
-                    "else notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Please install an editor.'; exit 1; fi; "
+                return "if command -v " + safeConf + " >/dev/null 2>&1; then EDITOR=" + safeConf + "; " +
+                    "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Please install an editor.\"; exit 1; fi; "
             }
         } else if (detectedEditor !== "") {
-            return "EDITOR=\"" + detectedEditor + "\"; "
+            return "EDITOR=" + escapeShell(detectedEditor) + "; "
         } else {
             return ""
         }
@@ -121,7 +128,7 @@ Item {
             return
         }
         
-        var cmd = editorCmd + "\"$EDITOR\" \"" + cheatPath + "\""
+        var cmd = editorCmd + "\"$EDITOR\" " + escapeShell(cheatPath)
         console.log("[DevToolbox] Open command:", cmd);
         runCommand(cmd)
     }
@@ -163,9 +170,9 @@ Item {
         // Simple command to launch terminal with our script
         var cmd = editorCmd +
             "if command -v konsole >/dev/null 2>&1; then " +
-            "konsole -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"$EDITOR\"; " +
+            "konsole -e bash " + escapeShell(fzfScript) + " " + escapeShell(cheatsDir) + " \"$EDITOR\"; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "xterm -hold -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"$EDITOR\"; " +
+            "xterm -hold -e bash " + escapeShell(fzfScript) + " " + escapeShell(cheatsDir) + " \"$EDITOR\"; " +
             "else " +
             "notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
             "fi"

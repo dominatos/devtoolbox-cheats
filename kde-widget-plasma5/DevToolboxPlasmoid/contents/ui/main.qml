@@ -55,12 +55,13 @@ Item {
                 if (shSource.connectedSources.indexOf(sourceName) !== -1) {
                     if (stdout && stdout.indexOf('|') !== -1) {
                         processIndexOutput(stdout)
-                    } else if (stderr || exitCode !== 0) {
+                    } else if (exitCode !== 0) {
                         // Command failed — don't clobber cache, just show the error
                         console.error("[DevToolbox] Indexer error (exit " + exitCode + "):", stderr)
                         root.globalStatusMessage = "⚠️ Indexer error: " + (stderr ? stderr.substring(0, 120) : "exit code " + exitCode)
                         root.globalIsLoading = false
                     } else {
+                        if (stderr) console.error("[DevToolbox] Indexer warning (exit 0):", stderr)
                         // Command succeeded but returned no data — genuinely empty
                         root.globalCheatsModel = []
                         root.globalStatusMessage = "⚠️ No cheats found. Check " + plasmoid.configuration.cheatsDir + " directory."

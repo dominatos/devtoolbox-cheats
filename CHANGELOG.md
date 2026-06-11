@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.23 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Security: Fixed shell injection vulnerabilities in Plasma 5/6 widgets by aggressively escaping user-supplied strings (`configuredEditor`, `detectedEditor`, `cheatPath`) before composing shell execution strings.
+- ✅ Fix: Improved indexer error handling so it correctly treats commands with `exit 0` as success even if they emit warnings to `stderr`.
+
 ## v1.4.22 (2026-06-11)
 
 **Bug fixes & Adjustments:**

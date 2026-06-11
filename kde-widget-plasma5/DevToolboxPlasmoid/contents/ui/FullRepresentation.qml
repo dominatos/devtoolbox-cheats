@@ -103,9 +103,14 @@ Item {
         root.globalStatusMessage = "✅ Copied to clipboard!"
     }
 
+    function escapeShell(str) {
+        if (!str) return "''";
+        return "'" + String(str).replace(/'/g, "'\\''") + "'";
+    }
+
     function openCheat(cheatPath) {
         var editor = plasmoid.configuration.preferredEditor || "code"
-        var cmd = editor + " '" + cheatPath + "'"
+        var cmd = escapeShell(editor) + " " + escapeShell(cheatPath)
         runCommand(cmd)
     }
     
