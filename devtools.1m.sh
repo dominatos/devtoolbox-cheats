@@ -21,6 +21,7 @@
 export PATH="/usr/local/bin:/usr/bin:$PATH"
 SCRIPT_PATH="$(realpath -s "$0")"
 
+# Maintained by bump-version.sh — used for consistency across all project scripts
 VERSION="v1.4.16"
 
 # Detect clipboard method
