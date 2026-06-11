@@ -168,19 +168,22 @@ Item {
         runCommand(cmd)
         plasmoid.rootItem.globalStatusMessage = "🚀 Opening FZF search..."
     }
+    signal groupExpandedToggled(int groupIndex, bool isExpanded)
 
     function toggleGroup(index) {
-        // OPTIMIZED: Just toggle the expanded property in-place
-        // No need to recreate the entire array!
         if (index >= 0 && index < filteredModel.length) {
-            filteredModel[index].expanded = !filteredModel[index].expanded;
-            // Force QML to re-evaluate by reassigning
-            filteredModel = filteredModel;
+            var newState = !filteredModel[index].expanded;
             
-            // Also update main model if not filtering
+            // 1. Update the JS object so state persists if delegate is recreated (scrolling)
+            filteredModel[index].expanded = newState;
+            
             if (searchField.text === "") {
-                plasmoid.rootItem.globalCheatsModel = filteredModel;
+                plasmoid.rootItem.globalCheatsModel[index].expanded = newState;
             }
+            
+            // 2. Emit signal to update only the specific delegate in-place
+            // This prevents QML from destroying and recreating all 150 delegates!
+            groupExpandedToggled(index, newState);
         }
     }
 
@@ -288,6 +291,15 @@ Item {
                     
                     property string groupIcon: modelData.icon
                     property bool groupExpanded: modelData.expanded
+
+                    Connections {
+                        target: fullRoot
+                        function onGroupExpandedToggled(idx, isExpanded) {
+                            if (index === idx) {
+                                groupLayout.groupExpanded = isExpanded;
+                            }
+                        }
+                    }
 
                     Rectangle {
                         Layout.fillWidth: true

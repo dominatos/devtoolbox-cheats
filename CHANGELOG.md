@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.19 (2026-06-11)
+
+**Performance:**
+- ✅ Categories now expand and collapse **instantly** (near no delay). We implemented a QML signal-based update that prevents the `ListView` from unnecessarily destroying and rebuilding all 150+ cheat delegates whenever a single category is clicked.
+
 ## v1.4.18 (2026-06-11)
 
 **Bug fixes & Adjustments:**

@@ -146,14 +146,22 @@ Item {
         root.globalStatusMessage = "🚀 Opening FZF search..."
     }
 
+    signal groupExpandedToggled(int groupIndex, bool isExpanded)
+
     function toggleGroup(index) {
-        var list = filteredModel
-        var group = list[index]
-        group.expanded = !group.expanded
-        
-        // Force update by assigning a new array reference
-        filteredModel = []
-        filteredModel = list
+        if (index >= 0 && index < filteredModel.length) {
+            var newState = !filteredModel[index].expanded;
+            
+            // 1. Update the JS object
+            filteredModel[index].expanded = newState;
+            
+            if (searchField.text === "") {
+                root.globalCheatsModel[index].expanded = newState;
+            }
+            
+            // 2. Emit signal to update only the specific delegate
+            groupExpandedToggled(index, newState);
+        }
     }
 
     ColumnLayout {
@@ -253,12 +261,22 @@ Item {
                     spacing: 0
                     
                     property string groupIcon: modelData.icon
+                    property bool groupExpanded: modelData.expanded
+
+                    Connections {
+                        target: fullRoot
+                        function onGroupExpandedToggled(idx, isExpanded) {
+                            if (index === idx) {
+                                groupLayout.groupExpanded = isExpanded;
+                            }
+                        }
+                    }
 
                     Rectangle {
                         Layout.fillWidth: true
                         height: 30
                         color: Kirigami.Theme.highlightColor
-                        opacity: modelData.expanded ? 0.3 : 0.1
+                        opacity: groupExpanded ? 0.3 : 0.1
                         visible: true
                         
                         MouseArea {
@@ -279,7 +297,7 @@ Item {
                             spacing: 5
 
                             PlasmaComponents.Label {
-                                text: modelData.expanded ? "▼" : "▶"
+                                text: groupExpanded ? "▼" : "▶"
                             }
 
                             Kirigami.Icon {
@@ -312,7 +330,7 @@ Item {
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: modelData.expanded // Collapse/Expand container
+                        visible: groupExpanded // Collapse/Expand container
 
                         Repeater {
                             model: modelData.cheats
