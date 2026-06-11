@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.27 (2026-06-12)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Fixed a critical bug in the Plasma 6 widget (`main.qml`) where the asynchronous data source would prematurely disconnect if the indexer script printed any `stderr` progress messages before exiting. The widget now properly waits for the bash script to finish (`exitCode !== undefined`) before evaluating the output, fixing the "No cheatsheets found" error.
+
 ## v1.4.26 (2026-06-12)
 
 **Features & Refactoring:**

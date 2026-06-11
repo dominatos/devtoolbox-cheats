@@ -41,17 +41,22 @@ PlasmoidItem {
         onNewData: function(sourceName, data) {
             var stdout   = data["stdout"]  || ""
             var stderr   = data["stderr"]  || ""
-            var exitCode = data["exit code"] || 0
+            var exitCode = data["exit code"]
 
-            if (connectedSources.indexOf(sourceName) !== -1) {
-                if (stdout.length > 0 && stdout.indexOf('|') !== -1) {
-                    processIndexOutput(stdout)
+            if (exitCode !== undefined && connectedSources.indexOf(sourceName) !== -1) {
+                if (exitCode === 0) {
+                    if (stdout.length > 0 && stdout.indexOf('|') !== -1) {
+                        processIndexOutput(stdout)
+                    } else {
+                        console.log("[DevToolbox] Indexer returned no pipe chars. stderr:", stderr)
+                        root.globalCheatsModel = []
+                        root.globalStatusMessage = "⚠️ No cheats found. Check ~/cheats.d directory."
+                        root.globalIsLoading = false
+                    }
                 } else {
-                    console.log("[DevToolbox] Indexer returned no pipe chars. stderr:", stderr)
+                    console.error("[DevToolbox] Indexer failed. Exit code:", exitCode, "Stderr:", stderr)
                     root.globalCheatsModel = []
-                    root.globalStatusMessage = stderr
-                        ? "⚠️ Error: " + stderr.substring(0, 100)
-                        : "⚠️ No cheats found. Check ~/cheats.d directory."
+                    root.globalStatusMessage = "⚠️ Error: " + stderr.substring(0, 100)
                     root.globalIsLoading = false
                 }
                 disconnectSource(sourceName)
