@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.22 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Refactor: Consolidated the editor fallback logic into a single shared helper used by both `openCheat()` and `fzfSearch()`, ensuring consistent behavior.
+- ✅ Fix: Ensured FZF Search aborts correctly if the fallback notification fails to send, preventing it from executing a terminal with an empty editor variable.
+
 ## v1.4.21 (2026-06-11)
 
 **Bug fixes & Adjustments:**

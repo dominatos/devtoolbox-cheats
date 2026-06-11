@@ -97,23 +97,31 @@ Item {
         plasmoid.rootItem.globalStatusMessage = "✅ Copied to clipboard!";
     }
 
-    function openCheat(cheatPath) {
-        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
-        
-        // Try configured editor first, fallback to detected editor
-        var cmd = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then " +
-            "\"" + configuredEditor + "\" \"" + cheatPath + "\"; " +
-            "else "
-        
-        if (detectedEditor !== "") {
-            cmd += "notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Using \"" + detectedEditor + "\" instead.' && "
-            cmd += "\"" + detectedEditor + "\" \"" + cheatPath + "\"; "
+    function getEditorResolutionCommand() {
+        var configuredEditor = plasmoid.configuration.preferredEditor || ""
+        if (configuredEditor !== "") {
+            if (detectedEditor !== "") {
+                return "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
+                    "else notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Using \"" + detectedEditor + "\" instead.'; EDITOR=\"" + detectedEditor + "\"; fi; "
+            } else {
+                return "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
+                    "else notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Please install an editor.'; exit 1; fi; "
+            }
+        } else if (detectedEditor !== "") {
+            return "EDITOR=\"" + detectedEditor + "\"; "
         } else {
-            cmd += "notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Please install an editor.'; "
+            return ""
+        }
+    }
+
+    function openCheat(cheatPath) {
+        var editorCmd = getEditorResolutionCommand()
+        if (editorCmd === "") {
+            plasmoid.rootItem.globalStatusMessage = "⚠️ No editor found. Configure one in widget settings."
+            return
         }
         
-        cmd += "fi"
-        
+        var cmd = editorCmd + "\"$EDITOR\" \"" + cheatPath + "\""
         console.log("[DevToolbox] Open command:", cmd);
         runCommand(cmd)
     }
@@ -143,31 +151,17 @@ Item {
 
     function fzfSearch() {
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var configuredEditor = plasmoid.configuration.preferredEditor || ""
-        
-        // Get path to fzf-search.sh helper
-        var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")
-        
-        // Build editor selection with command -v validation at the shell level
-        // Priority: configured editor (if exists) → detected editor → notify user
-        var editorVar = ""
-        if (configuredEditor !== "") {
-            if (detectedEditor !== "") {
-                editorVar = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
-                    "else EDITOR=\"" + detectedEditor + "\"; fi"
-            } else {
-                editorVar = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
-                    "else notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Please install an editor.' && exit 1; fi"
-            }
-        } else if (detectedEditor !== "") {
-            editorVar = "EDITOR=\"" + detectedEditor + "\""
-        } else {
+        var editorCmd = getEditorResolutionCommand()
+        if (editorCmd === "") {
             plasmoid.rootItem.globalStatusMessage = "⚠️ No editor found. Configure one in widget settings."
             return
         }
         
+        // Get path to fzf-search.sh helper
+        var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")
+        
         // Simple command to launch terminal with our script
-        var cmd = editorVar + "; " +
+        var cmd = editorCmd +
             "if command -v konsole >/dev/null 2>&1; then " +
             "konsole -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"$EDITOR\"; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
