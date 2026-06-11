@@ -16,80 +16,52 @@ Item {
     Layout.preferredWidth: 600
     Layout.preferredHeight: 600
 
-    property var cheatsModel: []
-    property var filteredModel: []
-    property string statusMessage: ""
-    property bool isLoading: false
-    
-    // Dynamic DataSource for compatibility between Plasma 5 (PlasmaCore) and 6 (Plasma5Support)
-    property var shSource: null
+    // ─── Bind to persistent RAM cache owned by main.qml (via root id) ─────────
+    property var    cheatsModel:    root.globalCheatsModel
+    property var    filteredModel:  []
+    property bool   isLoading:      root.globalIsLoading
+    property string statusMessage:  root.globalStatusMessage
 
-    function createDataSource() {
+    // ─── Local DataSource for action commands (copy, open, export, fzf) ──────
+    property var actionSource: null
+
+    function createActionSource() {
         try {
-            // Try Plasma 6 way first
-            shSource = Qt.createQmlObject('import org.kde.plasma.plasma5support; DataSource { engine: "executable" }', fullRoot, "DynamicDataSource");
+            actionSource = Qt.createQmlObject(
+                'import org.kde.plasma.plasma5support; DataSource { engine: "executable" }',
+                fullRoot, "ActionDataSource")
         } catch (e) {
             try {
-                // Fallback to Plasma 5 way
-                shSource = Qt.createQmlObject('import org.kde.plasma.core 2.0; DataSource { engine: "executable" }', fullRoot, "DynamicDataSource");
+                actionSource = Qt.createQmlObject(
+                    'import org.kde.plasma.core 2.0; DataSource { engine: "executable" }',
+                    fullRoot, "ActionDataSource")
             } catch (e2) {
-                console.error("Failed to create DataSource for both Plasma 5 and 6");
+                console.error("[DevToolbox] Failed to create action DataSource")
             }
         }
-
-        if (shSource) {
-            shSource.newData.connect(function(sourceName, data) {
-                var stdout = data["stdout"]
-                if (shSource.connectedSources.indexOf(sourceName) !== -1) {
-                    if (stdout && stdout.indexOf('|') !== -1) {
-                        processIndexOutput(stdout)
-                    }
-                    shSource.disconnectSource(sourceName)
-                }
-            });
+        if (actionSource) {
+            actionSource.newData.connect(function(sourceName, data) {
+                if (actionSource.connectedSources.indexOf(sourceName) !== -1)
+                    actionSource.disconnectSource(sourceName)
+            })
         }
+    }
+
+    // Re-run the filter whenever the global model changes
+    onCheatsModelChanged: updateFilter()
+
+    Component.onCompleted: {
+        createActionSource()
+        updateFilter()
     }
 
     function runCommand(cmd) {
-        if (shSource) shSource.connectedSources.push(cmd)
+        if (actionSource) actionSource.connectSource(cmd)
     }
 
     function refreshCheats() {
-        isLoading = true
-        statusMessage = "Indexing cheats..."
-        var cmd = Cheats.getIndexCommand(
-            plasmoid.configuration.cheatsDir.replace("~", "$HOME"),
-            plasmoid.configuration.cacheFile.replace("~", "$HOME")
-        )
-        console.log("DevToolbox: Refreshing cheats with command:", cmd)
-        runCommand(cmd)
+        root.refreshCheats()
     }
-
-    function processIndexOutput(output) {
-        console.log("DevToolbox: Received index output (length=" + output.length + ")")
-        // console.log("DevToolbox: Output snippet:", output.substring(0, 200))
-
-        cheatsModel = Cheats.parseIndexOutput(output)
-        console.log("DevToolbox: Parsed model with " + cheatsModel.length + " groups.")
-        updateFilter()
-        isLoading = false
-        statusMessage = "Loaded " + countCheats(cheatsModel) + " cheats."
-    }
-    
-    function countCheats(groups) {
-        var c = 0;
-        for(var i=0; i<groups.length; i++) c += groups[i].cheats.length;
-        return c;
-    }
-
-    // Initialize
-    Component.onCompleted: {
-        createDataSource()
-        if (shSource) refreshCheats()
-    }
-
-    function updateFilter() {
-        var query = searchField.text.toLowerCase()
         if (query === "") {
             filteredModel = cheatsModel
         } else {

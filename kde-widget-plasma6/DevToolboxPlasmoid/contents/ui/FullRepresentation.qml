@@ -17,134 +17,37 @@ Item {
     Layout.preferredWidth: 600
     Layout.preferredHeight: 600
 
-    property var cheatsModel: []
-    property var filteredModel: []
-    property string statusMessage: ""
-    property bool isLoading: false
-    property string scriptBasePath: ""
-    property string detectedEditor: ""  // Auto-detected fallback editor
+    // ─── Bind to persistent RAM cache owned by main.qml ─────────────────────
+    property var    cheatsModel:    plasmoid.rootItem.globalCheatsModel
+    property var    filteredModel:  []
+    property bool   isLoading:      plasmoid.rootItem.globalIsLoading
+    property string statusMessage:  plasmoid.rootItem.globalStatusMessage
+    property string detectedEditor: plasmoid.rootItem.globalDetectedEditor
 
-    // Plasma 6 DataSource for running shell commands
+    // ─── Local DataSource for action commands (copy, open, export, fzf) ──────
+    // These are fire-and-forget — no need to cache results.
     Plasma5Support.DataSource {
         id: shSource
         engine: "executable"
         onNewData: function(sourceName, data) {
-            var stdout = data["stdout"] || ""
-            var stderr = data["stderr"] || ""
-            var exitCode = data["exit code"] || 0
-            
-            // Log full output details for debugging
-            console.log("[DevToolbox] DataSource newData received.");
-            console.log("[DevToolbox] Exit code:", exitCode);
-            console.log("[DevToolbox] Stdout length:", stdout.length);
-            if (stderr) console.log("[DevToolbox] Stderr:", stderr);
-            
-            if (connectedSources.indexOf(sourceName) !== -1) {
-                if (stdout.length > 0 && stdout.indexOf('|') !== -1) {
-                    processIndexOutput(stdout)
-                } else if (stdout.length > 0) {
-                    console.log("[DevToolbox] No pipe chars found in output. Raw:", stdout.substring(0, 200));
-                    console.log("[DevToolbox] Full output:", stdout);
-                } else {
-                    console.log("[DevToolbox] Command returned empty stdout.");
-                    if (stderr) {
-                        statusMessage = "⚠️ Error: " + stderr.substring(0, 100);
-                    } else {
-                        statusMessage = "⚠️ No cheats found. Check ~/cheats.d directory.";
-                    }
-                    isLoading = false;
-                }
+            if (connectedSources.indexOf(sourceName) !== -1)
                 disconnectSource(sourceName)
-            }
         }
     }
 
-    // DataSource for detecting available editor
-    Plasma5Support.DataSource {
-        id: editorDetector
-        engine: "executable"
-        
-        onNewData: function(sourceName, data) {
-            var stdout = data["stdout"] || ""
-            if (stdout.trim() !== "") {
-                detectedEditor = stdout.trim()
-                console.log("[DevToolbox] Detected fallback editor:", detectedEditor);
-            }
-            disconnectSource(sourceName)
-        }
-    }
+    // Re-run the filter whenever the global model changes
+    onCheatsModelChanged: updateFilter()
 
     Component.onCompleted: {
-        console.log("[DevToolbox] FullRepresentation loaded. Configuration:");
-        console.log("  - cheatsDir:", plasmoid.configuration.cheatsDir);
-        console.log("  - cacheFile:", plasmoid.configuration.cacheFile);
-        console.log("  - preferredEditor:", plasmoid.configuration.preferredEditor);
-        
-        // Detect fallback editor
-        var detectCmd = "for cmd in code codium kate geany gedit vim nvim nano kwrite; do command -v $cmd >/dev/null 2>&1 && echo $cmd && break; done"
-        editorDetector.connectSource(detectCmd)
-        
-        Qt.callLater(refreshCheats)
+        updateFilter()
     }
 
     function runCommand(cmd) {
-        console.log("[DevToolbox] runCommand:", cmd);
         shSource.connectSource(cmd)
     }
 
     function refreshCheats() {
-        isLoading = true
-        statusMessage = "Loading cheats..."
-        
-        // Construct the absolute path to our helper script
-        if (scriptBasePath === "") {
-            scriptBasePath = Qt.resolvedUrl("../code/indexer.sh").toString().replace("file://", "")
-            console.log("[DevToolbox] Resolved script path:", scriptBasePath);
-        }
-        
-        var scriptPath = scriptBasePath;
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var debugLog = "/tmp/devtoolbox-debug.log"
-        var cacheFile = plasmoid.configuration.cacheFile.replace(/^~/, "$HOME")
-        
-        console.log("[DevToolbox] Using cheats directory:", cheatsDir);
-        console.log("[DevToolbox] Using cache file:", cacheFile);
-        console.log("[DevToolbox] Using script:", scriptPath);
-        
-        // Pass cache file as third parameter to indexer
-        var cmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\" \"" + cacheFile + "\""
-        
-        console.log("[DevToolbox] Command to run:", cmd);
-        runCommand(cmd)
-    }
-
-    function processIndexOutput(output) {
-        console.log("[DevToolbox] Received index output (length=" + output.length + ")")
-
-        var parsed = Cheats.parseIndexOutput(output)
-        console.log("[DevToolbox] Parsed model with " + parsed.length + " groups.")
-        
-        // Initialize expanded property for each group
-        for (var i = 0; i < parsed.length; i++) {
-            parsed[i].expanded = false;
-        }
-        
-        cheatsModel = parsed
-        updateFilter()
-        isLoading = false
-        
-        var totalCheats = countCheats(cheatsModel);
-        if (totalCheats > 0) {
-            statusMessage = "✅ Loaded " + totalCheats + " cheats.";
-        } else {
-            statusMessage = "⚠️ No cheats found in ~/cheats.d"
-        }
-    }
-    
-    function countCheats(groups) {
-        var c = 0;
-        for(var i=0; i<groups.length; i++) c += groups[i].cheats.length;
-        return c;
+        plasmoid.rootItem.refreshCheats()
     }
 
     function updateFilter() {

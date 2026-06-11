@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.17 (2026-06-11)
+
+**Performance — KDE Widget Caching & Instant Loading:**
+- ✅ Massive performance improvement for both Plasma 5 and Plasma 6 widgets. The widget now features **instantaneous 0ms popup loading**.
+- ✅ Moved data loading and index caching out of the ephemeral popup (`FullRepresentation.qml`) and into the persistent background root (`main.qml`).
+- ✅ The widget now fully loads and parses your cheatsheets into RAM when the Plasma shell starts, eliminating the need to spawn `/bin/bash` subprocesses and D-Bus transfers every single time you click the widget icon. The "Loading cheats..." spinner is now completely gone.
+- ✅ The "Refresh" button remains available if you add new `.md` files and want to manually trigger a re-index.
+
 ## v1.4.16 (2026-06-10)
 
 **Bug fixes & Adjustments:**
