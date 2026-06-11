@@ -96,9 +96,8 @@ Item {
     
     // Clipboard Helper
     function copyCheat(cheatPath) {
-        var safePath = cheatPath.replace(/'/g, "'\\''");
         var copyCmd = "if command -v wl-copy >/dev/null; then APP=wl-copy; else APP='xclip -selection clipboard'; fi; " +
-                  "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' '" + safePath + "' | $APP";
+                  "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " | $APP";
 
         runCommand(copyCmd)
         root.globalStatusMessage = "✅ Copied to clipboard!"

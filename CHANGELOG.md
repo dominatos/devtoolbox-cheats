@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.25 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Improved shell escaping via a new `bashSafePath` helper to properly allow bash to expand `$HOME/` and `~/` paths while strictly escaping the rest of the string. This fixes an issue where the `fzfSearch` and Export features were failing when configured to point inside the user's home directory.
+- ✅ Fix: Updated Plasma 5's `copyCheat` function to use the standard centralized `escapeShell` helper instead of a manual string replace.
+- 🛠️ Internal: Updated `tofix-helper.py fetch` to automatically detect CodeRabbit AI rate limits. If a limit is hit, the script displays a live countdown timer and automatically triggers the next review via the GitHub CLI once the cooldown expires.
+
 ## v1.4.24 (2026-06-11)
 
 **Bug fixes & Adjustments:**

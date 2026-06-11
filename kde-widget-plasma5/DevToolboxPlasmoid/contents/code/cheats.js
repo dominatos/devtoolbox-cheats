@@ -203,15 +203,27 @@ function isIconName(str) {
     return /^[a-zA-Z0-9\.\-_+]+$/.test(str);
 }
 
+function bashSafePath(p) {
+    if (!p) return "''";
+    if (p.startsWith("~/")) {
+        return '"$HOME"/\'' + p.substring(2).replace(/'/g, "'\\''") + "'";
+    } else if (p.startsWith("$HOME/")) {
+        return '"$HOME"/\'' + p.substring(6).replace(/'/g, "'\\''") + "'";
+    }
+    return "'" + p.replace(/'/g, "'\\''") + "'";
+}
+
 function getExportMarkdownCommand(cheatsDir, outputFile) {
     // Generate command to concat all cheats
     // We reuse the logic: iterate, cat, strip frontmatter
+    var safeDir = bashSafePath(cheatsDir);
+    var safeOut = bashSafePath(outputFile);
 
-    var cmd = "rm -f '" + outputFile + "'; " +
-        "echo '# Dev Toolbox Cheatsheet' > '" + outputFile + "'; " +
-        "find '" + cheatsDir + "' -type f -name '*.md' | sort | while read f; do " +
-        "  echo '' >> '" + outputFile + "'; " +
-        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> '" + outputFile + "'; " +
+    var cmd = "rm -f " + safeOut + "; " +
+        "echo '# Dev Toolbox Cheatsheet' > " + safeOut + "; " +
+        "find " + safeDir + " -type f -name '*.md' | sort | while read f; do " +
+        "  echo '' >> " + safeOut + "; " +
+        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> " + safeOut + "; " +
         "done";
 
     return cmd;
@@ -219,19 +231,19 @@ function getExportMarkdownCommand(cheatsDir, outputFile) {
 
 // Export a single cheatsheet (front-matter stripped) to outputFile
 function getExportCheatCommand(cheatPath, outputFile) {
-    var safePath = cheatPath.replace(/'/g, "'\\''")
-    var safeOut = outputFile.replace(/'/g, "'\\''");
+    var safePath = bashSafePath(cheatPath);
+    var safeOut = bashSafePath(outputFile);
     return "bash -c " +
         "\"sed '1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}' " +
-        "'" + safePath + "' > '" + safeOut + "' && " +
-        "notify-send 'DevToolbox' 'Exported to " + safeOut + "'\"";
+        safePath + " > " + safeOut + " && " +
+        "notify-send 'DevToolbox' 'Exported to \"\\$HOME/\"...'\"";
 }
 
 // Build command to launch fzf search in a terminal.
 // Selected file:line is opened in the preferred editor.
 function getFzfSearchCommand(cheatsDir, editor) {
-    var safeDir = cheatsDir.replace(/'/g, "'\\''")
-    var safeEditor = (editor || "code").replace(/'/g, "'\\''");
+    var safeDir = bashSafePath(cheatsDir);
+    var safeEditor = bashSafePath(editor || "code");
     // The inner bash script mirrors the argos fzfSearch() function:
     //   grep -rnH all .md -> fzf with bat/cat preview -> open result in editor
     var inner =

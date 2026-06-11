@@ -102,6 +102,16 @@ Item {
         return "'" + String(str).replace(/'/g, "'\\''") + "'";
     }
 
+    function bashSafePath(p) {
+        if (!p) return "''";
+        if (p.startsWith("~/")) {
+            return '\"$HOME\"/' + escapeShell(p.substring(2));
+        } else if (p.startsWith("$HOME/")) {
+            return '\"$HOME\"/' + escapeShell(p.substring(6));
+        }
+        return escapeShell(p);
+    }
+
     function getEditorResolutionCommand() {
         var configuredEditor = plasmoid.configuration.preferredEditor || ""
         if (configuredEditor !== "") {
@@ -147,8 +157,8 @@ Item {
         var safeName = cheatTitle.replace(/[^a-zA-Z0-9_\-]/g, '_').replace(/__+/g, '_')
         var outFile = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
         
-        // FIXED: Direct sed command without over-escaping, using secure shell escaping
-        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " > " + escapeShell(outFile) + " && " +
+        // FIXED: Direct sed command without over-escaping, using secure shell escaping with bashSafePath
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " > " + bashSafePath(outFile) + " && " +
             "notify-send 'DevToolbox' 'Exported to " + safeName + ".md'";
         
         console.log("[DevToolbox] Export command:", cmd);
@@ -157,7 +167,7 @@ Item {
     }
 
     function fzfSearch() {
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
+        var cheatsDir = plasmoid.configuration.cheatsDir
         var editorCmd = getEditorResolutionCommand()
         if (editorCmd === "") {
             plasmoid.rootItem.globalStatusMessage = "⚠️ No editor found. Configure one in widget settings."
@@ -170,9 +180,9 @@ Item {
         // Simple command to launch terminal with our script
         var cmd = editorCmd +
             "if command -v konsole >/dev/null 2>&1; then " +
-            "konsole -e bash " + escapeShell(fzfScript) + " " + escapeShell(cheatsDir) + " \"$EDITOR\"; " +
+            "konsole -e bash " + escapeShell(fzfScript) + " " + bashSafePath(cheatsDir) + " \"$EDITOR\"; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "xterm -hold -e bash " + escapeShell(fzfScript) + " " + escapeShell(cheatsDir) + " \"$EDITOR\"; " +
+            "xterm -hold -e bash " + escapeShell(fzfScript) + " " + bashSafePath(cheatsDir) + " \"$EDITOR\"; " +
             "else " +
             "notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
             "fi"
