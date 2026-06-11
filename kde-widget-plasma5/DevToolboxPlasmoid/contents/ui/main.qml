@@ -41,7 +41,9 @@ Item {
                     'import org.kde.plasma.core 2.0; DataSource { engine: "executable" }',
                     root, "DynamicDataSource")
             } catch (e2) {
-                console.error("[DevToolbox] Failed to create DataSource for both Plasma 5 and 6")
+                console.error("[DevToolbox] Failed to create DataSource for both Plasma 5 and 6:", e2)
+                root.globalIsLoading = false
+                root.globalStatusMessage = "⚠️ Failed to initialize DataSource. The widget cannot run shell commands."
             }
         }
 

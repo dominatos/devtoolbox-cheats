@@ -142,26 +142,29 @@ Item {
     }
 
     function fzfSearch() {
-        // FIXED: Use simple helper script instead of complex escaping
         var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
         var configuredEditor = plasmoid.configuration.preferredEditor || ""
-        var editor = "code" // Ultimate fallback
-        
-        // Prefer user configuration, then detected fallback, then "code"
-        if (configuredEditor !== "") {
-            editor = configuredEditor
-        } else if (detectedEditor !== "") {
-            editor = detectedEditor
-        }
+        var fallbackEditor = detectedEditor || "code"
         
         // Get path to fzf-search.sh helper
         var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")
         
+        // Build editor selection with command -v validation at the shell level
+        // Priority: configured editor (if exists) → detected editor → "code"
+        var editorVar = ""
+        if (configuredEditor !== "") {
+            editorVar = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then EDITOR=\"" + configuredEditor + "\"; " +
+                "else EDITOR=\"" + fallbackEditor + "\"; fi"
+        } else {
+            editorVar = "EDITOR=\"" + fallbackEditor + "\""
+        }
+        
         // Simple command to launch terminal with our script
-        var cmd = "if command -v konsole >/dev/null 2>&1; then " +
-            "konsole -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"" + editor + "\"; " +
+        var cmd = editorVar + "; " +
+            "if command -v konsole >/dev/null 2>&1; then " +
+            "konsole -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"$EDITOR\"; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "xterm -hold -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"" + editor + "\"; " +
+            "xterm -hold -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"$EDITOR\"; " +
             "else " +
             "notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
             "fi"
