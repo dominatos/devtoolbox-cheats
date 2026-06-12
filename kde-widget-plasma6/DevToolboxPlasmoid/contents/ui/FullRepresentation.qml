@@ -23,6 +23,7 @@ Item {
     property bool   isLoading:      devToolboxRoot.globalIsLoading
     property string statusMessage:  devToolboxRoot.globalStatusMessage
     property string detectedEditor: devToolboxRoot.globalDetectedEditor
+    property string updateVersion:  devToolboxRoot.globalUpdateVersion
 
     // ─── Local DataSource for action commands (copy, open, export, fzf) ──────
     // These are fire-and-forget — no need to cache results.
@@ -220,6 +221,16 @@ Item {
                 text: "🗒️ DevToolbox Cheats"
                 font.bold: true
                 font.pointSize: 12
+            }
+
+            PlasmaComponents.Button {
+                visible: updateVersion !== ""
+                text: "⬆️ v" + updateVersion
+                flat: true
+                font.pointSize: 9
+                onClicked: Qt.openUrlExternally("https://github.com/dominatos/devtoolbox-cheats/releases")
+                ToolTip.text: "Update available! Click to open GitHub releases."
+                ToolTip.visible: hovered
             }
             
             Item { Layout.fillWidth: true }

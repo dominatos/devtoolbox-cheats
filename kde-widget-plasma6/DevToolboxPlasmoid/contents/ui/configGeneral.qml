@@ -17,6 +17,7 @@ KCM.SimpleKCM {
     property alias cfg_cacheFile: cacheFileField.text
     property alias cfg_preferredEditor: editorField.text
     property alias cfg_autoRebuildCache: autoRebuildField.checked
+    property alias cfg_checkForUpdates: checkForUpdatesField.checked
 
     // Popular editors list with commands
     property var allEditors: [
@@ -113,7 +114,7 @@ KCM.SimpleKCM {
                 Connections {
                     target: configPage
                     function onInstalledEditorsChanged() {
-                        updateEditorModel()
+                        editorCombo.updateEditorModel()
                     }
                 }
                 
@@ -201,6 +202,12 @@ KCM.SimpleKCM {
             id: autoRebuildField
             Kirigami.FormData.label: "Cache:"
             text: "Rebuild cache on startup"
+        }
+
+        CheckBox {
+            id: checkForUpdatesField
+            Kirigami.FormData.label: "Updates:"
+            text: "Automatically check for updates on startup"
         }
 
         Label {

@@ -21,6 +21,7 @@ Item {
     property var    filteredModel:  []
     property bool   isLoading:      root.globalIsLoading
     property string statusMessage:  root.globalStatusMessage
+    property string updateVersion:  root.globalUpdateVersion
 
     // ─── Local DataSource for action commands (copy, open, export, fzf) ──────
     property var actionSource: null
@@ -201,6 +202,16 @@ Item {
                 text: "🗒️ DevToolbox Cheats"
                 font.bold: true
                 font.pointSize: 12
+            }
+
+            PlasmaComponents.Button {
+                visible: updateVersion !== ""
+                text: "⬆️ v" + updateVersion
+                flat: true
+                font.pointSize: 9
+                onClicked: Qt.openUrlExternally("https://github.com/dominatos/devtoolbox-cheats/releases")
+                ToolTip.text: "Update available! Click to open GitHub releases."
+                ToolTip.visible: hovered
             }
             
             Item { Layout.fillWidth: true } // spacer

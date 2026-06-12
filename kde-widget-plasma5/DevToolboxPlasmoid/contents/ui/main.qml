@@ -24,6 +24,7 @@ Item {
     property var    globalCheatsModel:   []
     property bool   globalIsLoading:     false
     property string globalStatusMessage: ""
+    property string globalUpdateVersion: ""  // Set to latest version string if an update is available
 
     // ─── Dynamic DataSource (Plasma 5/6 compatible creation) ─────────────────
     property var shSource: null
@@ -115,10 +116,48 @@ Item {
         return c
     }
 
+    // ─── Version check ────────────────────────────────────────────────────────
+    function checkForUpdate() {
+        if (!plasmoid.configuration.checkForUpdates) return
+
+        var xhr = new XMLHttpRequest()
+        xhr.open("GET", "https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/version.txt", true)
+        xhr.timeout = 10000
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) return
+            if (xhr.status !== 200) {
+                console.log("[DevToolbox] Update check failed. HTTP status:", xhr.status)
+                return
+            }
+            var remoteVersion = xhr.responseText.trim()
+            var localVersion  = plasmoid.metaData.version
+            if (remoteVersion && remoteVersion !== localVersion && isNewerVersion(remoteVersion, localVersion)) {
+                console.log("[DevToolbox] Update available:", remoteVersion, "(current:", localVersion + ")")
+                root.globalUpdateVersion = remoteVersion
+            } else {
+                console.log("[DevToolbox] Up to date:", localVersion)
+            }
+        }
+        xhr.send()
+    }
+
+    function isNewerVersion(remote, local) {
+        var r = remote.replace(/^v/, "").split(".").map(Number)
+        var l = local.replace(/^v/, "").split(".").map(Number)
+        for (var i = 0; i < Math.max(r.length, l.length); i++) {
+            var rv = r[i] || 0
+            var lv = l[i] || 0
+            if (rv > lv) return true
+            if (rv < lv) return false
+        }
+        return false
+    }
+
     // ─── Startup ──────────────────────────────────────────────────────────────
     Component.onCompleted: {
         console.log("[DevToolbox] main.qml loaded (Plasma 5).")
         createDataSource()
         if (shSource) Qt.callLater(refreshCheats)
+        Qt.callLater(checkForUpdate)
     }
 }

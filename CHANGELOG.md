@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.32 (2026-06-12)
+
+**New Features:**
+- ✨ Feature: Added automatic GitHub version check for both Plasma 5 and Plasma 6 widgets. On startup, the widget performs a single asynchronous HTTP request to fetch `version.txt` from the main branch. If a newer version is available, an "⬆️ v..." update button appears in the widget header — clicking it opens the GitHub Releases page. The check can be disabled via a new "Automatically check for updates on startup" toggle in Settings.
+
 ## v1.4.31 (2026-06-12)
 
 **Bug fixes:**
