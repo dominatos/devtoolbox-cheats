@@ -923,8 +923,8 @@ fzfSearch() {
   # Search all md files recursively.
   # Output format: file:line:content
   # fzf preview uses 'bat' if available, else 'cat'
-  selected=$(grep -rnH --include="*.md" "$CHEATS_DIR" 2>/dev/null | perl -pe 's/^(.*?):(\d+):(.*)$/$1\t$2\t$3/' | \
-             fzf --delimiter '\t' \
+  selected=$(grep -rnH --include="*.md" "$CHEATS_DIR" 2>/dev/null | \
+             fzf --delimiter : \
                  --preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' \
                  --preview-window=right:60% \
                  --header 'Start typing to search commands... Enter to open.' \
@@ -933,7 +933,8 @@ fzfSearch() {
   [[ -z "$selected" ]] && return
 
   local file line
-  IFS=$'\t' read -r file line _ <<< "$selected"
+  file=$(echo "$selected" | cut -d: -f1)
+  line=$(echo "$selected" | cut -d: -f2)
 
   if [[ -n "$file" && -n "$line" ]]; then
      # Try to open in VS Code at specific line
