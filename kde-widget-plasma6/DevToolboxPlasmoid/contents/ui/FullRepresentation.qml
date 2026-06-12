@@ -53,8 +53,12 @@ Item {
     function updateFilter() {
         var query = searchField.text.toLowerCase()
         if (query === "") {
-            // Just copy the model, preserving expanded states
-            filteredModel = cheatsModel.slice()
+            // Safely copy the model (Qt 6 converts arrays across components to QVariantList which lacks .slice())
+            var result = []
+            for (var k = 0; k < cheatsModel.length; k++) {
+                result.push(cheatsModel[k])
+            }
+            filteredModel = result
         } else {
             var result = []
             for (var i = 0; i < cheatsModel.length; i++) {

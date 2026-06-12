@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.29 (2026-06-12)
+
+**Bug fixes:**
+- ✅ Fix: Fixed a silent UI crash in the Plasma 6 widget that caused the "No cheatsheets found" empty state to persistently show even when cheats were successfully indexed in the background. The crash was caused by using `cheatsModel.slice()` to copy the model array. In Qt 6 QML, JavaScript arrays passed across component boundaries (from `main.qml` to `FullRepresentation.qml`) are implicitly converted to `QVariantList`, which does not support the `.slice()` method. Replaced it with a safe manual copy loop.
+
 ## v1.4.28 (2026-06-12)
 
 **Bug fixes:**
