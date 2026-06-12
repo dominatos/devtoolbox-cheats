@@ -18,11 +18,11 @@ Item {
     Layout.preferredHeight: 600
 
     // ─── Bind to persistent RAM cache owned by main.qml ─────────────────────
-    property var    cheatsModel:    plasmoid.rootItem.globalCheatsModel
+    property var    cheatsModel:    devToolboxRoot.globalCheatsModel
     property var    filteredModel:  []
-    property bool   isLoading:      plasmoid.rootItem.globalIsLoading
-    property string statusMessage:  plasmoid.rootItem.globalStatusMessage
-    property string detectedEditor: plasmoid.rootItem.globalDetectedEditor
+    property bool   isLoading:      devToolboxRoot.globalIsLoading
+    property string statusMessage:  devToolboxRoot.globalStatusMessage
+    property string detectedEditor: devToolboxRoot.globalDetectedEditor
 
     // ─── Local DataSource for action commands (copy, open, export, fzf) ──────
     // These are fire-and-forget — no need to cache results.
@@ -47,7 +47,7 @@ Item {
     }
 
     function refreshCheats() {
-        plasmoid.rootItem.refreshCheats()
+        devToolboxRoot.refreshCheats()
     }
 
     function updateFilter() {
@@ -98,7 +98,7 @@ Item {
         
         console.log("[DevToolbox] Copy command:", cmd);
         runCommand(cmd);
-        plasmoid.rootItem.globalStatusMessage = "✅ Copied to clipboard!";
+        devToolboxRoot.globalStatusMessage = "✅ Copied to clipboard!";
     }
 
     function escapeShell(str) {
@@ -153,7 +153,7 @@ Item {
             file
         )
         runCommand(cmd)
-        plasmoid.rootItem.globalStatusMessage = "📥 Exporting all cheats..."
+        devToolboxRoot.globalStatusMessage = "📥 Exporting all cheats..."
     }
 
     function exportCheat(cheatPath, cheatTitle) {
@@ -166,7 +166,7 @@ Item {
         
         console.log("[DevToolbox] Export command:", cmd);
         runCommand(cmd)
-        plasmoid.rootItem.globalStatusMessage = "📥 Exported: " + safeName + ".md"
+        devToolboxRoot.globalStatusMessage = "📥 Exported: " + safeName + ".md"
     }
 
     function fzfSearch() {
@@ -188,7 +188,7 @@ Item {
         
         console.log("[DevToolbox] FZF command:", cmd);
         runCommand(cmd)
-        plasmoid.rootItem.globalStatusMessage = "🚀 Opening FZF search..."
+        devToolboxRoot.globalStatusMessage = "🚀 Opening FZF search..."
     }
     signal groupExpandedToggled(int groupIndex, bool isExpanded)
 
@@ -200,7 +200,7 @@ Item {
             filteredModel[index].expanded = newState;
             
             if (searchField.text === "") {
-                plasmoid.rootItem.globalCheatsModel[index].expanded = newState;
+                devToolboxRoot.globalCheatsModel[index].expanded = newState;
             }
             
             // 2. Emit signal to update only the specific delegate in-place
@@ -285,7 +285,7 @@ Item {
             Timer {
                 interval: 5000
                 running: statusMessage !== "" && statusMessage.indexOf("⚠️") === -1 && statusMessage.indexOf("❌") === -1
-                onTriggered: plasmoid.rootItem.globalStatusMessage = ""
+                onTriggered: devToolboxRoot.globalStatusMessage = ""
             }
         }
         

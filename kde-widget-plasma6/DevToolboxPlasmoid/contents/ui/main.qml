@@ -13,7 +13,7 @@ import org.kde.plasma.plasma5support as Plasma5Support
 import "../code/cheats.js" as Cheats
 
 PlasmoidItem {
-    id: root
+    id: devToolboxRoot
 
     Plasmoid.status: PlasmaCore.Types.ActiveStatus
 
@@ -55,15 +55,15 @@ PlasmoidItem {
                         processIndexOutput(accumulatedStdout)
                     } else {
                         console.log("[DevToolbox] Indexer returned no pipe chars.")
-                        root.globalCheatsModel = []
-                        root.globalStatusMessage = "⚠️ No cheats found. Check ~/cheats.d directory."
-                        root.globalIsLoading = false
+                        devToolboxRoot.globalCheatsModel = []
+                        devToolboxRoot.globalStatusMessage = "⚠️ No cheats found. Check ~/cheats.d directory."
+                        devToolboxRoot.globalIsLoading = false
                     }
                 } else {
                     console.error("[DevToolbox] Indexer failed. Exit code:", exitCode, "Stderr:", stderr)
-                    root.globalCheatsModel = []
-                    root.globalStatusMessage = "⚠️ Error: " + stderr.substring(0, 100)
-                    root.globalIsLoading = false
+                    devToolboxRoot.globalCheatsModel = []
+                    devToolboxRoot.globalStatusMessage = "⚠️ Error: " + stderr.substring(0, 100)
+                    devToolboxRoot.globalIsLoading = false
                 }
                 accumulatedStdout = ""
                 disconnectSource(sourceName)
@@ -79,8 +79,8 @@ PlasmoidItem {
         onNewData: function(sourceName, data) {
             var stdout = data["stdout"] || ""
             if (stdout.trim() !== "") {
-                root.globalDetectedEditor = stdout.trim()
-                console.log("[DevToolbox] Detected fallback editor:", root.globalDetectedEditor)
+                devToolboxRoot.globalDetectedEditor = stdout.trim()
+                console.log("[DevToolbox] Detected fallback editor:", devToolboxRoot.globalDetectedEditor)
             }
             disconnectSource(sourceName)
         }
@@ -88,8 +88,8 @@ PlasmoidItem {
 
     // ─── Functions ────────────────────────────────────────────────────────────
     function refreshCheats() {
-        root.globalIsLoading     = true
-        root.globalStatusMessage = "Loading cheats..."
+        devToolboxRoot.globalIsLoading     = true
+        devToolboxRoot.globalStatusMessage = "Loading cheats..."
 
         if (scriptBasePath === "") {
             scriptBasePath = Qt.resolvedUrl("../code/indexer.sh")
@@ -115,20 +115,20 @@ PlasmoidItem {
             for (var i = 0; i < parsed.length; i++) {
                 parsed[i].expanded = false
             }
-            root.globalCheatsModel   = parsed
-            root.globalIsLoading     = false
+            devToolboxRoot.globalCheatsModel   = parsed
+            devToolboxRoot.globalIsLoading     = false
 
             var total = countCheats(parsed)
-            root.globalStatusMessage = total > 0
+            devToolboxRoot.globalStatusMessage = total > 0
                 ? "✅ Loaded " + total + " cheats."
                 : "⚠️ No cheats found in ~/cheats.d"
 
             console.log("[DevToolbox] Loaded", total, "cheats in", parsed.length, "groups.")
         } catch (e) {
             console.error("[DevToolbox] Error parsing cheats:", e)
-            root.globalCheatsModel   = []
-            root.globalIsLoading     = false
-            root.globalStatusMessage = "⚠️ Error parsing cheats data."
+            devToolboxRoot.globalCheatsModel   = []
+            devToolboxRoot.globalIsLoading     = false
+            devToolboxRoot.globalStatusMessage = "⚠️ Error parsing cheats data."
         }
     }
 
