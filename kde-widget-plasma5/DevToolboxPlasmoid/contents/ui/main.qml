@@ -73,6 +73,7 @@ Item {
                         }
                     } else {
                         console.error("[DevToolbox] Indexer error (exit " + exitCode + "):", stderr)
+                        root.globalCheatsModel = []
                         root.globalStatusMessage = "⚠️ Indexer error: " + (stderr ? stderr.substring(0, 120) : "exit code " + exitCode)
                         root.globalIsLoading = false
                     }
@@ -85,7 +86,7 @@ Item {
 
     // ─── Functions ────────────────────────────────────────────────────────────
     function refreshCheats() {
-        if (!shSource) return
+        if (!shSource || root.globalIsLoading) return
         root.globalIsLoading     = true
         root.globalStatusMessage = "Indexing cheats..."
 
@@ -125,9 +126,20 @@ Item {
 
         var xhr = new XMLHttpRequest()
         xhr.open("GET", "https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/version.txt", true)
-        xhr.timeout = 10000
+
+        var updateTimer = Qt.createQmlObject('import QtQuick 2.0; Timer {}', root, "UpdateTimer")
+        updateTimer.interval = 10000
+        updateTimer.triggered.connect(function() {
+            console.warn("[DevToolbox] Update check timed out.")
+            xhr.abort()
+            updateTimer.destroy()
+        })
+
         xhr.onreadystatechange = function() {
             if (xhr.readyState !== XMLHttpRequest.DONE) return
+            updateTimer.stop()
+            updateTimer.destroy()
+
             if (xhr.status !== 200) {
                 console.log("[DevToolbox] Update check failed. HTTP status:", xhr.status)
                 return
@@ -141,6 +153,8 @@ Item {
                 console.log("[DevToolbox] Up to date:", localVersion)
             }
         }
+        
+        updateTimer.start()
         xhr.send()
     }
 

@@ -96,6 +96,7 @@ PlasmoidItem {
 
     // ─── Functions ────────────────────────────────────────────────────────────
     function refreshCheats() {
+        if (devToolboxRoot.globalIsLoading) return
         devToolboxRoot.globalIsLoading     = true
         devToolboxRoot.globalStatusMessage = "Loading cheats..."
 
@@ -153,9 +154,20 @@ PlasmoidItem {
 
         var xhr = new XMLHttpRequest()
         xhr.open("GET", "https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/version.txt", true)
-        xhr.timeout = 10000
+
+        var updateTimer = Qt.createQmlObject('import QtQuick 2.0; Timer {}', devToolboxRoot, "UpdateTimer")
+        updateTimer.interval = 10000
+        updateTimer.triggered.connect(function() {
+            console.warn("[DevToolbox] Update check timed out.")
+            xhr.abort()
+            updateTimer.destroy()
+        })
+
         xhr.onreadystatechange = function() {
             if (xhr.readyState !== XMLHttpRequest.DONE) return
+            updateTimer.stop()
+            updateTimer.destroy()
+
             if (xhr.status !== 200) {
                 console.log("[DevToolbox] Update check failed. HTTP status:", xhr.status)
                 return
@@ -169,6 +181,8 @@ PlasmoidItem {
                 console.log("[DevToolbox] Up to date:", localVersion)
             }
         }
+        
+        updateTimer.start()
         xhr.send()
     }
 

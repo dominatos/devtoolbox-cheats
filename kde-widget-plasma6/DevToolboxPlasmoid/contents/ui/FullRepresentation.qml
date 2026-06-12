@@ -127,10 +127,10 @@ Item {
             "if command -v " + safeConf + " >/dev/null 2>&1; then export EDITOR=" + safeConf + "; "
             
         if (safeDet !== "") {
-            cmd += "elif command -v " + safeDet + " >/dev/null 2>&1; then notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Using \"'" + safeDet + "'\".\"; export EDITOR=" + safeDet + "; "
+            cmd += "elif command -v " + safeDet + " >/dev/null 2>&1; then notify-send 'DevToolbox' \"Editor \"" + safeConf + "\" not found. Using \"" + safeDet + "\".\"; export EDITOR=" + safeDet + "; "
         }
             
-        cmd += "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Trying fallbacks...\"; " +
+        cmd += "else notify-send 'DevToolbox' \"Editor \"" + safeConf + "\" not found. Trying fallbacks...\"; " +
             "for e in " + fallbackList + "; do " +
             "if command -v \"$e\" >/dev/null 2>&1; then export EDITOR=\"$e\"; break; fi; " +
             "done; " +

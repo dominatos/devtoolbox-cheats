@@ -19,7 +19,7 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.4.33"
+VERSION="v1.4.34"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
@@ -923,8 +923,8 @@ fzfSearch() {
   # Search all md files recursively.
   # Output format: file:line:content
   # fzf preview uses 'bat' if available, else 'cat'
-  selected=$(grep -rnH --include="*.md" "$CHEATS_DIR" 2>/dev/null | \
-             fzf --delimiter : \
+  selected=$(grep -rnH --include="*.md" "$CHEATS_DIR" 2>/dev/null | perl -pe 's/^(.*?):(\d+):(.*)$/$1\t$2\t$3/' | \
+             fzf --delimiter '\t' \
                  --preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' \
                  --preview-window=right:60% \
                  --header 'Start typing to search commands... Enter to open.' \
@@ -933,8 +933,7 @@ fzfSearch() {
   [[ -z "$selected" ]] && return
 
   local file line
-  file=$(echo "$selected" | cut -d: -f1)
-  line=$(echo "$selected" | cut -d: -f2)
+  IFS=$'\t' read -r file line _ <<< "$selected"
 
   if [[ -n "$file" && -n "$line" ]]; then
      # Try to open in VS Code at specific line

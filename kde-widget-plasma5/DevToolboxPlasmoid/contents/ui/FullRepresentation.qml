@@ -116,7 +116,7 @@ Item {
         
         var cmd = "export EDITOR=''; " +
             "if command -v " + safeConf + " >/dev/null 2>&1; then export EDITOR=" + safeConf + "; " +
-            "else notify-send 'DevToolbox' \"Editor \"'" + safeConf + "'\" not found. Trying fallbacks...\"; " +
+            "else notify-send 'DevToolbox' \"Editor \"" + safeConf + "\" not found. Trying fallbacks...\"; " +
             "for e in " + fallbackList + "; do " +
             "if command -v \"$e\" >/dev/null 2>&1; then export EDITOR=\"$e\"; break; fi; " +
             "done; " +

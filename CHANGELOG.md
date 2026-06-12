@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.34 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Replaced standard `XMLHttpRequest.timeout` (which is often silently ignored by QML) with a dynamic `Timer`-based timeout to reliably enforce the 10-second limit during the version check (Plasma 5 & Plasma 6).
+- 🐛 Fix: Ensured `globalCheatsModel` is cleared in Plasma 5 when the indexer encounters an error so that stale cache data isn't displayed alongside error messages.
+- 🐛 Fix: Removed redundant single-quotes around `notify-send` variables in `FullRepresentation.qml` to prevent shell argument breaking when editor paths contain spaces.
+
 ## v1.4.33 (2026-06-12)
 
 **Bug fixes:**

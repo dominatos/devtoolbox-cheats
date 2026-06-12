@@ -13,8 +13,8 @@ if ! command -v fzf >/dev/null 2>&1; then
 fi
 
 # Search all markdown files with fzf
-selected=$(grep -rnH --include='*.md' "$CHEATS_DIR" 2>/dev/null | \
-    fzf --delimiter : \
+selected=$(grep -rnH --include='*.md' "$CHEATS_DIR" 2>/dev/null | perl -pe 's/^(.*?):(\d+):(.*)$/$1\t$2\t$3/' | \
+    fzf --delimiter '\t' \
         --preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' \
         --preview-window=right:60% \
         --header 'Type to search all cheats... Enter to open.' \
@@ -24,8 +24,7 @@ selected=$(grep -rnH --include='*.md' "$CHEATS_DIR" 2>/dev/null | \
 [ -z "$selected" ] && exit 0
 
 # Extract file and line number
-file=$(echo "$selected" | cut -d: -f1)
-line=$(echo "$selected" | cut -d: -f2)
+IFS=$'\t' read -r file line _ <<< "$selected"
 
 # Open in editor
 if command -v "$EDITOR" >/dev/null 2>&1; then
