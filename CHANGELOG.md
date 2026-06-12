@@ -1,5 +1,134 @@
 # Changelog
 
+## v1.4.39 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Dynamically display the configured `cheatsDir` instead of hardcoding `~/cheats.d` in the Plasma 6 widget's empty-state recovery messages.
+## v1.4.38 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Hardened the QML Timer cleanup logic by moving the `timerDestroyed = true` assignment to happen *before* cleanup method invocations (`xhr.abort()` and `updateTimer.destroy()`), completely preventing synchronous re-entrancy edge cases via signals.
+## v1.4.37 (2026-06-12)
+
+**Bug fixes & improvements:**
+- 🐛 Fix: Resolved an issue where Zenity list dialogs (e.g. standalone argos menu) incorrectly displayed `&amp;` instead of `&` for categories like "Dev & Tools". Removed redundant HTML escaping specifically for `zenity --list` which requires literal ampersands.
+- 🐛 Fix: Prevented a double-destruction race condition crash in the QML widgets caused by simultaneous timer timeouts and XHR state changes.
+- 🔧 Improved: Display the installer version explicitly in the headers of `install.sh` and `devtools.1m.sh` outputs.
+- 🔧 Improved: Added an interactive prompt to restart Plasma 5 after widget installation (mirroring the Plasma 6 installer).
+## v1.4.35 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Resolved an issue where `fzf` would return 0 results because the internal `grep` pattern was accidentally removed during a previous code cleanup. The `.` pattern has been safely restored across all widgets and scripts to accurately feed files into `fzf`.
+
+## v1.4.34 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Replaced standard `XMLHttpRequest.timeout` (which is often silently ignored by QML) with a dynamic `Timer`-based timeout to reliably enforce the 10-second limit during the version check (Plasma 5 & Plasma 6).
+- 🐛 Fix: Ensured `globalCheatsModel` is cleared in Plasma 5 when the indexer encounters an error so that stale cache data isn't displayed alongside error messages.
+- 🐛 Fix: Removed redundant single-quotes around `notify-send` variables in `FullRepresentation.qml` to prevent shell argument breaking when editor paths contain spaces.
+
+## v1.4.33 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Resolved an issue where rapidly triggering `refreshCheats()` could cause stdout buffering interleaving by switching to per-command buffer mapping in `main.qml` (Plasma 5 & Plasma 6).
+- 🐛 Fix: Removed an unintended leading dot (`.`) in the `fzfSearch()` internal `grep` command to prevent recursive searching of the current working directory.
+
+## v1.4.32 (2026-06-12)
+
+**New Features:**
+- ✨ Feature: Added automatic GitHub version check for both Plasma 5 and Plasma 6 widgets. On startup, the widget performs a single asynchronous HTTP request to fetch `version.txt` from the main branch. If a newer version is available, an "⬆️ v..." update button appears in the widget header — clicking it opens the GitHub Releases page. The check can be disabled via a new "Automatically check for updates on startup" toggle in Settings.
+
+## v1.4.31 (2026-06-12)
+
+**Bug fixes:**
+- ✅ Fix: Added proper error and exit code logging to the editor auto-detection background task in Plasma 6 to improve debuggability when fallback editors fail to detect.
+
+## v1.4.30 (2026-06-12)
+
+**Security:**
+- 🔒 Fix: Escaped user-controlled configuration values (`cheatsDir`, `cacheFile`) in the Plasma 6 widget's indexer command to prevent shell injection. Previously these values were interpolated with only double-quote wrapping, which does not prevent `$()` or backtick expansion. Now uses single-quote escaping via shared `escapeShell()` / `bashSafePath()` utilities added to `cheats.js`.
+
+## v1.4.29 (2026-06-12)
+
+**Bug fixes:**
+- ✅ Fix: Fixed a silent UI crash in the Plasma 6 widget that caused the "No cheatsheets found" empty state to persistently show even when cheats were successfully indexed in the background. The crash was caused by using `cheatsModel.slice()` to copy the model array. In Qt 6 QML, JavaScript arrays passed across component boundaries (from `main.qml` to `FullRepresentation.qml`) are implicitly converted to `QVariantList`, which does not support the `.slice()` method. Replaced it with a safe manual copy loop.
+
+## v1.4.28 (2026-06-12)
+
+**Bug fixes:**
+- ✅ Fix: Removed the incorrectly applied `plasmaShield()` escaping from the Plasma 6 widget. The `plasmaShield()` function backslash-escapes every special character (including `/`, `.`, `-`), which was completely destroying file paths (e.g., `/home/user/cheats.d` → `\/home\/user\/cheats\.d`) and silently preventing the indexer from ever finding any cheatsheets. The `Plasma5Support.DataSource` executable engine does not strip characters and does not need this escaping.
+- ✅ Fix: Removed orphaned dead code block in Plasma 5 `cheats.js`.
+- ✅ Fix: Deleted accidentally committed `test_home.qml` scratch file.
+- ✅ Fix: Moved `$EDITOR` resolution inside the terminal `bash -c` session in Plasma 5 `fzfSearch()` so that the variable is correctly exported into the `konsole`/`xterm` child process.
+
+## v1.4.27 (2026-06-12)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Fixed a critical bug in the Plasma 6 widget (`main.qml`) where the asynchronous data source would prematurely disconnect if the indexer script printed any `stderr` progress messages before exiting. The widget now properly waits for the bash script to finish (`exitCode !== undefined`) before evaluating the output, fixing the "No cheatsheets found" error.
+
+## v1.4.26 (2026-06-12)
+
+**Features & Refactoring:**
+- ✨ Feature: Overhauled editor launch logic for both Plasma 5 and Plasma 6 widgets. If your configured editor isn't installed, the widget will display a warning notification and securely fall back through a massive, dynamically exported list of 23 popular GUI and CLI editors (`vscodium`, `zed`, `kate`, `nvim`, `hx`, etc.) to ensure cheatsheets always open successfully.
+- ♻️ Refactor: Simplified FZF search `getFzfSearchCommand` to inherit the resolved `$EDITOR` directly from the QML logic rather than duplicating fallback behaviors, natively supporting smart `+line` jumping for CLI tools and `-g` for GUI tools.
+
+## v1.4.25 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Improved shell escaping via a new `bashSafePath` helper to properly allow bash to expand `$HOME/` and `~/` paths while strictly escaping the rest of the string. This fixes an issue where the `fzfSearch` and Export features were failing when configured to point inside the user's home directory.
+- ✅ Fix: Updated Plasma 5's `copyCheat` function to use the standard centralized `escapeShell` helper instead of a manual string replace.
+- 🛠️ Internal: Updated `tofix-helper.py fetch` to automatically detect CodeRabbit AI rate limits. If a limit is hit, the script displays a live countdown timer and automatically triggers the next review via the GitHub CLI once the cooldown expires.
+
+## v1.4.24 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Improved category search filtering in Plasma 5 to automatically expand categories that contain matches, making search results immediately visible.
+- ✅ Security: Ensured the `copyCheat` and `exportCheat` functions in both widgets use strict shell escaping for all cheat paths, removing the final possible vector for shell injection.
+
+## v1.4.23 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Security: Fixed shell injection vulnerabilities in Plasma 5/6 widgets by aggressively escaping user-supplied strings (`configuredEditor`, `detectedEditor`, `cheatPath`) before composing shell execution strings.
+- ✅ Fix: Improved indexer error handling so it correctly treats commands with `exit 0` as success even if they emit warnings to `stderr`.
+
+## v1.4.22 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Refactor: Consolidated the editor fallback logic into a single shared helper used by both `openCheat()` and `fzfSearch()`, ensuring consistent behavior.
+- ✅ Fix: Ensured FZF Search aborts correctly if the fallback notification fails to send, preventing it from executing a terminal with an empty editor variable.
+
+## v1.4.21 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Improved FZF Search editor validation. It now verifies the editor exists via `command -v` before launching, properly handles missing editors, and removes the hardcoded `"code"` fallback if no editor is found.
+
+## v1.4.20 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Added proper `try-catch` blocks around `Cheats.parseIndexOutput()` in `main.qml` to prevent UI lockups if cheat parsing fails.
+- ✅ Fix: Corrected editor fallback logic in `fzfSearch()` to properly respect the user's explicit preferred editor over the auto-detected editor.
+
+## v1.4.19 (2026-06-11)
+
+**Performance:**
+- ✅ Categories now expand and collapse **instantly** (negligible delay). We implemented a QML signal-based update that prevents the `ListView` from unnecessarily destroying and rebuilding all 150+ cheat delegates whenever a single category is clicked.
+
+## v1.4.18 (2026-06-11)
+
+**Bug fixes & Adjustments:**
+- ✅ Fix: Preserved QML property bindings by updating global state (`plasmoid.rootItem`) instead of writing to bound local properties in Plasma 5/6 widgets.
+- ✅ Fix: Repaired a syntax issue with the filter function in Plasma 5 `FullRepresentation.qml`.
+- ✅ Fix: Updated import paths to correctly resolve relative locations (`../code/`) in `main.qml`.
+- ✅ Fix: Ensure the persistent cache is explicitly cleared if the indexer returns empty data, preventing stale entries from displaying.
+
+## v1.4.17 (2026-06-11)
+
+**Performance — KDE Widget Caching & Instant Loading:**
+- ✅ Massive performance improvement for both Plasma 5 and Plasma 6 widgets. The widget now features **virtually instantaneous popup loading**.
+- ✅ Moved data loading and index caching out of the ephemeral popup (`FullRepresentation.qml`) and into the persistent background root (`main.qml`).
+- ✅ The widget now fully loads and parses your cheatsheets into RAM when the Plasma shell starts. The "Loading cheats..." spinner no longer appears on initial popup open because data is preloaded, eliminating the need to spawn `/bin/bash` subprocesses and D-Bus transfers every single time you click the widget icon.
+- ✅ The "Refresh" button remains available if you add new `.md` files and want to manually trigger a re-index. The `globalIsLoading` flag is set during `refreshCheats()`, so the spinner will correctly appear when a manual refresh is requested.
+
 ## v1.4.16 (2026-06-10)
 
 **Bug fixes & Adjustments:**

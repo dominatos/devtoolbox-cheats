@@ -5,6 +5,29 @@
 .pragma library
     .import "utils.js" as Utils
 
+/**
+ * Single-quote escape a string for safe use in shell commands.
+ * Wraps the value in single quotes and escapes any embedded single quotes.
+ */
+function escapeShell(str) {
+    if (!str) return "''";
+    return "'" + String(str).replace(/'/g, "'\\''") + "'";
+}
+
+/**
+ * Produce a bash-safe path string that handles ~/... and $HOME/... prefixes.
+ * The $HOME portion is left unquoted so the shell expands it; the rest is single-quote escaped.
+ */
+function bashSafePath(p) {
+    if (!p) return "''";
+    if (p.indexOf("~/") === 0) {
+        return '"$HOME"/' + escapeShell(p.substring(2));
+    } else if (p.indexOf("$HOME/") === 0) {
+        return '"$HOME"/' + escapeShell(p.substring(6));
+    }
+    return escapeShell(p);
+}
+
 // Groups configuration (default icons)
 var GROUP_ICONS = {
     "Basics": "help-contents",
@@ -143,7 +166,7 @@ function getFzfSearchCommand(cheatsDir, editor) {
         "if ! command -v fzf >/dev/null 2>&1; then " +
         "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
         "read -rp 'Press enter to exit...'; exit 1; fi; " +
-        "selected=$(grep -rnH --include='*.md' . \"" + cheatsDir + "\" 2>/dev/null | " +
+        "selected=$(grep -rnH --include='*.md' \".\" \"" + cheatsDir + "\" 2>/dev/null | " +
         "fzf --delimiter : " +
         "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
         "--preview-window=right:60% " +

@@ -20,5 +20,9 @@
       <default>false</default>
       <label>Rebuild cache on startup</label>
     </entry>
+    <entry name="checkForUpdates" type="Bool">
+      <default>true</default>
+      <label>Automatically check for updates</label>
+    </entry>
   </group>
 </kcfg>

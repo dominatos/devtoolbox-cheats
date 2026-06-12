@@ -28,7 +28,7 @@ Item {
         
         onClicked: {
             console.log("[DevToolbox] CompactRepresentation clicked, toggling expanded");
-            root.expanded = !root.expanded
+            devToolboxRoot.expanded = !devToolboxRoot.expanded
         }
     }
 

@@ -1,13 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="v1.4.16"
+VERSION="v1.4.39"
 
 print_header() {
   echo ""
   echo "╔══════════════════════════════════════════════════════════════╗"
-  echo "║        DevToolbox Cheats —  Script Installer           ║"
+  echo "║     DevToolbox Cheats — Script Installer                     ║"
   echo "╚══════════════════════════════════════════════════════════════╝"
+  echo "($VERSION)"
   echo ""
 }
 print_header

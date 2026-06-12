@@ -29,16 +29,6 @@ var GROUP_ICONS = {
 };
 
 
-// ... (existing code) ...
-
-if (!groupsMap[group]) {
-    groupsMap[group] = {
-        name: group,
-        icon: icon || GROUP_ICONS[group] || "🧩",
-        cheats: [],
-        expanded: false // Default to collapsed
-    };
-}
 
 // Parse Front Matter from Markdown content
 function parseFrontMatter(content) {
@@ -203,15 +193,27 @@ function isIconName(str) {
     return /^[a-zA-Z0-9\.\-_+]+$/.test(str);
 }
 
+function bashSafePath(p) {
+    if (!p) return "''";
+    if (p.startsWith("~/")) {
+        return '"$HOME"/\'' + p.substring(2).replace(/'/g, "'\\''") + "'";
+    } else if (p.startsWith("$HOME/")) {
+        return '"$HOME"/\'' + p.substring(6).replace(/'/g, "'\\''") + "'";
+    }
+    return "'" + p.replace(/'/g, "'\\''") + "'";
+}
+
 function getExportMarkdownCommand(cheatsDir, outputFile) {
     // Generate command to concat all cheats
     // We reuse the logic: iterate, cat, strip frontmatter
+    var safeDir = bashSafePath(cheatsDir);
+    var safeOut = bashSafePath(outputFile);
 
-    var cmd = "rm -f '" + outputFile + "'; " +
-        "echo '# Dev Toolbox Cheatsheet' > '" + outputFile + "'; " +
-        "find '" + cheatsDir + "' -type f -name '*.md' | sort | while read f; do " +
-        "  echo '' >> '" + outputFile + "'; " +
-        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> '" + outputFile + "'; " +
+    var cmd = "rm -f " + safeOut + "; " +
+        "echo '# Dev Toolbox Cheatsheet' > " + safeOut + "; " +
+        "find " + safeDir + " -type f -name '*.md' | sort | while read f; do " +
+        "  echo '' >> " + safeOut + "; " +
+        "  sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"$f\" >> " + safeOut + "; " +
         "done";
 
     return cmd;
@@ -219,39 +221,39 @@ function getExportMarkdownCommand(cheatsDir, outputFile) {
 
 // Export a single cheatsheet (front-matter stripped) to outputFile
 function getExportCheatCommand(cheatPath, outputFile) {
-    var safePath = cheatPath.replace(/'/g, "'\\''")
-    var safeOut = outputFile.replace(/'/g, "'\\''");
+    var safePath = bashSafePath(cheatPath);
+    var safeOut = bashSafePath(outputFile);
     return "bash -c " +
         "\"sed '1,80{/^[Tt]itle:/d; /^[Gg]roup:/d; /^[Ii]con:/d; /^[Oo]rder:/d}' " +
-        "'" + safePath + "' > '" + safeOut + "' && " +
-        "notify-send 'DevToolbox' 'Exported to " + safeOut + "'\"";
+        safePath + " > " + safeOut + " && " +
+        "notify-send 'DevToolbox' 'Exported to \"\\$HOME/\"...'\"";
 }
 
 // Build command to launch fzf search in a terminal.
 // Selected file:line is opened in the preferred editor.
-function getFzfSearchCommand(cheatsDir, editor) {
-    var safeDir = cheatsDir.replace(/'/g, "'\\''")
-    var safeEditor = (editor || "code").replace(/'/g, "'\\''");
+function getFzfSearchCommand(cheatsDir) {
+    var safeDir = bashSafePath(cheatsDir);
     // The inner bash script mirrors the argos fzfSearch() function:
     //   grep -rnH all .md -> fzf with bat/cat preview -> open result in editor
+    // The editor is expected to be resolved and exported via the $EDITOR environment variable.
     var inner =
         "if ! command -v fzf >/dev/null 2>&1; then " +
         "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
         "read -rp 'Press enter to exit...'; exit 1; fi; " +
-        "selected=\$(grep -rnH --include='*.md' . '" + safeDir + "' 2>/dev/null | " +
+        "selected=$(grep -rnH --include='*.md' \".\" " + safeDir + " 2>/dev/null | " +
         "fzf --delimiter : " +
         "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
         "--preview-window=right:60% " +
         "--header 'Type to search all cheats... Enter to open.' " +
         "--bind 'enter:accept') || exit 0; " +
-        "[ -z \"\$selected\" ] && exit 0; " +
-        "file=\$(echo \"\$selected\" | cut -d: -f1); " +
-        "line=\$(echo \"\$selected\" | cut -d: -f2); " +
-        "if command -v '" + safeEditor + "' >/dev/null 2>&1; then " +
-        "'" + safeEditor + "' -g \"\$file:\$line\"; " +
+        "[ -z \"$selected\" ] && exit 0; " +
+        "file=$(echo \"$selected\" | cut -d: -f1); " +
+        "line=$(echo \"$selected\" | cut -d: -f2); " +
+        "if [[ \"$EDITOR\" =~ \"code\" || \"$EDITOR\" =~ \"kate\" ]]; then " +
+        "  \"$EDITOR\" -g \"$file:$line\"; " +
         "else " +
-        "\${EDITOR:-nano} +\"\$line\" \"\$file\"; " +
-        "fi";
+        "  \"$EDITOR\" +\"$line\" \"$file\" || \"$EDITOR\" \"$file\"; " +
+        "fi; ";
     // Escape inner for embedding in outer single-quoted bash string
     var safeInner = inner.replace(/'/g, "'\\''");
     return "bash -c '" + safeInner + "'";

@@ -16,78 +16,53 @@ Item {
     Layout.preferredWidth: 600
     Layout.preferredHeight: 600
 
-    property var cheatsModel: []
-    property var filteredModel: []
-    property string statusMessage: ""
-    property bool isLoading: false
-    
-    // Dynamic DataSource for compatibility between Plasma 5 (PlasmaCore) and 6 (Plasma5Support)
-    property var shSource: null
+    // ─── Bind to persistent RAM cache owned by main.qml (via root id) ─────────
+    property var    cheatsModel:    root.globalCheatsModel
+    property var    filteredModel:  []
+    property bool   isLoading:      root.globalIsLoading
+    property string statusMessage:  root.globalStatusMessage
+    property string updateVersion:  root.globalUpdateVersion
 
-    function createDataSource() {
+    // ─── Local DataSource for action commands (copy, open, export, fzf) ──────
+    property var actionSource: null
+
+    function createActionSource() {
         try {
-            // Try Plasma 6 way first
-            shSource = Qt.createQmlObject('import org.kde.plasma.plasma5support; DataSource { engine: "executable" }', fullRoot, "DynamicDataSource");
+            actionSource = Qt.createQmlObject(
+                'import org.kde.plasma.plasma5support; DataSource { engine: "executable" }',
+                fullRoot, "ActionDataSource")
         } catch (e) {
             try {
-                // Fallback to Plasma 5 way
-                shSource = Qt.createQmlObject('import org.kde.plasma.core 2.0; DataSource { engine: "executable" }', fullRoot, "DynamicDataSource");
+                actionSource = Qt.createQmlObject(
+                    'import org.kde.plasma.core 2.0; DataSource { engine: "executable" }',
+                    fullRoot, "ActionDataSource")
             } catch (e2) {
-                console.error("Failed to create DataSource for both Plasma 5 and 6");
+                console.error("[DevToolbox] Failed to create action DataSource")
             }
         }
-
-        if (shSource) {
-            shSource.newData.connect(function(sourceName, data) {
-                var stdout = data["stdout"]
-                if (shSource.connectedSources.indexOf(sourceName) !== -1) {
-                    if (stdout && stdout.indexOf('|') !== -1) {
-                        processIndexOutput(stdout)
-                    }
-                    shSource.disconnectSource(sourceName)
-                }
-            });
+        if (actionSource) {
+            actionSource.newData.connect(function(sourceName, data) {
+                if (actionSource.connectedSources.indexOf(sourceName) !== -1)
+                    actionSource.disconnectSource(sourceName)
+            })
         }
+    }
+
+    // Re-run the filter whenever the global model changes
+    onCheatsModelChanged: updateFilter()
+
+    Component.onCompleted: {
+        createActionSource()
+        updateFilter()
     }
 
     function runCommand(cmd) {
-        if (shSource) shSource.connectedSources.push(cmd)
+        if (actionSource) actionSource.connectSource(cmd)
     }
 
     function refreshCheats() {
-        isLoading = true
-        statusMessage = "Indexing cheats..."
-        var cmd = Cheats.getIndexCommand(
-            plasmoid.configuration.cheatsDir.replace("~", "$HOME"),
-            plasmoid.configuration.cacheFile.replace("~", "$HOME")
-        )
-        console.log("DevToolbox: Refreshing cheats with command:", cmd)
-        runCommand(cmd)
+        root.refreshCheats()
     }
-
-    function processIndexOutput(output) {
-        console.log("DevToolbox: Received index output (length=" + output.length + ")")
-        // console.log("DevToolbox: Output snippet:", output.substring(0, 200))
-
-        cheatsModel = Cheats.parseIndexOutput(output)
-        console.log("DevToolbox: Parsed model with " + cheatsModel.length + " groups.")
-        updateFilter()
-        isLoading = false
-        statusMessage = "Loaded " + countCheats(cheatsModel) + " cheats."
-    }
-    
-    function countCheats(groups) {
-        var c = 0;
-        for(var i=0; i<groups.length; i++) c += groups[i].cheats.length;
-        return c;
-    }
-
-    // Initialize
-    Component.onCompleted: {
-        createDataSource()
-        if (shSource) refreshCheats()
-    }
-
     function updateFilter() {
         var query = searchField.text.toLowerCase()
         if (query === "") {
@@ -110,7 +85,8 @@ Item {
                     var newGroup = {
                         name: group.name,
                         icon: group.icon,
-                        cheats: matchingCheats
+                        cheats: matchingCheats,
+                        expanded: true // Auto-expand when searching
                     }
                     result.push(newGroup)
                 }
@@ -121,17 +97,38 @@ Item {
     
     // Clipboard Helper
     function copyCheat(cheatPath) {
-        var safePath = cheatPath.replace(/'/g, "'\\''");
         var copyCmd = "if command -v wl-copy >/dev/null; then APP=wl-copy; else APP='xclip -selection clipboard'; fi; " +
-                  "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' '" + safePath + "' | $APP";
+                  "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " | $APP";
 
         runCommand(copyCmd)
-        statusMessage = "✅ Copied to clipboard!"
+        root.globalStatusMessage = "✅ Copied to clipboard!"
+    }
+
+    function escapeShell(str) {
+        if (!str) return "''";
+        return "'" + String(str).replace(/'/g, "'\\''") + "'";
+    }
+
+    function getEditorResolutionCommand() {
+        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
+        var safeConf = escapeShell(configuredEditor)
+        var fallbackList = "code vscodium zed subl atom pulsar notepadqq kwrite kate gedit xed pluma mousepad leafpad geany micro nano nvim vim vi emacs kak hx helix"
+        
+        var cmd = "export EDITOR=''; " +
+            "if command -v " + safeConf + " >/dev/null 2>&1; then export EDITOR=" + safeConf + "; " +
+            "else notify-send 'DevToolbox' \"Editor \"" + safeConf + "\" not found. Trying fallbacks...\"; " +
+            "for e in " + fallbackList + "; do " +
+            "if command -v \"$e\" >/dev/null 2>&1; then export EDITOR=\"$e\"; break; fi; " +
+            "done; " +
+            "if [ -z \"$EDITOR\" ]; then notify-send 'DevToolbox' 'No text editor found! Please install one.'; exit 1; fi; " +
+            "fi; "
+            
+        return cmd
     }
 
     function openCheat(cheatPath) {
-        var editor = plasmoid.configuration.preferredEditor || "code"
-        var cmd = editor + " '" + cheatPath + "'"
+        var editorCmd = getEditorResolutionCommand()
+        var cmd = editorCmd + "\"$EDITOR\" " + escapeShell(cheatPath)
         runCommand(cmd)
     }
     
@@ -142,7 +139,7 @@ Item {
             file
         )
         runCommand(cmd + " && notify-send 'DevToolbox' 'Exported to " + file + "'")
-        statusMessage = "Exporting..."
+        root.globalStatusMessage = "Exporting..."
     }
 
     // Export a single cheatsheet to ~/DevToolbox-<title>_<date>.md
@@ -151,35 +148,46 @@ Item {
         var outFile  = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
         var cmd = Cheats.getExportCheatCommand(cheatPath, outFile)
         runCommand(cmd)
-        statusMessage = "📥 Exported: " + safeName + ".md"
+        root.globalStatusMessage = "📥 Exported: " + safeName + ".md"
     }
 
     // Launch fzf grep search in a terminal window
     function fzfSearch() {
         var cheatsDir = plasmoid.configuration.cheatsDir.replace("~", "$HOME")
-        var editor    = plasmoid.configuration.preferredEditor || "code"
-        var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir, editor)
+        var editorCmd = getEditorResolutionCommand()
+        var fzfCmd    = Cheats.getFzfSearchCommand(cheatsDir) // Editor is resolved via $EDITOR in bash
+        // Prepend the editor resolution into the inner fzf command so $EDITOR is
+        // exported INSIDE the terminal session (not the outer shell, which konsole doesn't inherit).
+        var innerCmd  = editorCmd + fzfCmd
         // Try konsole first (KDE native), fall back to xterm
         var termCmd =
             "if command -v konsole >/dev/null 2>&1; then " +
-            "  konsole --hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "  konsole --hold -e bash -c '" + innerCmd.replace(/'/g, "'\\''") + "'; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "  xterm -hold -e bash -c '" + fzfCmd.replace(/'/g, "'\\''" ) + "'; " +
+            "  xterm -hold -e bash -c '" + innerCmd.replace(/'/g, "'\\''") + "'; " +
             "else " +
             "  notify-send 'DevToolbox' 'No terminal found (konsole/xterm). Install one first.'; " +
             "fi"
-        runCommand("bash -c '" + termCmd.replace(/'/g, "'\\''" ) + "'")
-        statusMessage = "🚀 Opening FZF search..."
+        runCommand("bash -c '" + termCmd.replace(/'/g, "'\\''") + "'")
+        root.globalStatusMessage = "🚀 Opening FZF search..."
     }
 
+    signal groupExpandedToggled(int groupIndex, bool isExpanded)
+
     function toggleGroup(index) {
-        var list = filteredModel
-        var group = list[index]
-        group.expanded = !group.expanded
-        
-        // Force update by assigning a new array reference
-        filteredModel = []
-        filteredModel = list
+        if (index >= 0 && index < filteredModel.length) {
+            var newState = !filteredModel[index].expanded;
+            
+            // 1. Update the JS object
+            filteredModel[index].expanded = newState;
+            
+            if (searchField.text === "") {
+                root.globalCheatsModel[index].expanded = newState;
+            }
+            
+            // 2. Emit signal to update only the specific delegate
+            groupExpandedToggled(index, newState);
+        }
     }
 
     ColumnLayout {
@@ -194,6 +202,16 @@ Item {
                 text: "🗒️ DevToolbox Cheats"
                 font.bold: true
                 font.pointSize: 12
+            }
+
+            PlasmaComponents.Button {
+                visible: updateVersion !== ""
+                text: "⬆️ v" + updateVersion
+                flat: true
+                font.pointSize: 9
+                onClicked: Qt.openUrlExternally("https://github.com/dominatos/devtoolbox-cheats/releases")
+                ToolTip.text: "Update available! Click to open GitHub releases."
+                ToolTip.visible: hovered
             }
             
             Item { Layout.fillWidth: true } // spacer
@@ -258,7 +276,7 @@ Item {
             Timer {
                 interval: 3000
                 running: statusMessage !== ""
-                onTriggered: statusMessage = ""
+                onTriggered: root.globalStatusMessage = ""
             }
         }
 
@@ -279,12 +297,22 @@ Item {
                     spacing: 0
                     
                     property string groupIcon: modelData.icon
+                    property bool groupExpanded: modelData.expanded
+
+                    Connections {
+                        target: fullRoot
+                        function onGroupExpandedToggled(idx, isExpanded) {
+                            if (index === idx) {
+                                groupLayout.groupExpanded = isExpanded;
+                            }
+                        }
+                    }
 
                     Rectangle {
                         Layout.fillWidth: true
                         height: 30
                         color: Kirigami.Theme.highlightColor
-                        opacity: modelData.expanded ? 0.3 : 0.1
+                        opacity: groupExpanded ? 0.3 : 0.1
                         visible: true
                         
                         MouseArea {
@@ -305,7 +333,7 @@ Item {
                             spacing: 5
 
                             PlasmaComponents.Label {
-                                text: modelData.expanded ? "▼" : "▶"
+                                text: groupExpanded ? "▼" : "▶"
                             }
 
                             Kirigami.Icon {
@@ -338,7 +366,7 @@ Item {
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: modelData.expanded // Collapse/Expand container
+                        visible: groupExpanded // Collapse/Expand container
 
                         Repeater {
                             model: modelData.cheats

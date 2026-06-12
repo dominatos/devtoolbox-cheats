@@ -19,7 +19,7 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.4.16"
+VERSION="v1.4.39"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
@@ -271,11 +271,9 @@ list_dialog() {
       ;;
     zenity)
       if [[ $# -gt 0 ]]; then
-        local escaped_items=()
-        for item in "$@"; do escaped_items+=("${item//&/&amp;}"); done
-        printf '%s\n' "${escaped_items[@]}" | zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null | sed 's/&amp;/\&/g'
+        printf '%s\n' "$@" | zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null
       else
-        sed 's/&/\&amp;/g' | zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null | sed 's/&amp;/\&/g'
+        zenity --list --title="$title" --column="$col" --width="$w" --height="$h" 2>/dev/null
       fi
       ;;
     *)

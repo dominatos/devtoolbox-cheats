@@ -129,7 +129,7 @@ echo "Choose restart method:"
 echo "  1. Restart manually (safest - recommended for VMs)"
 echo "  2. Automatic restart (tries systemctl then kquitapp6)"
 echo ""
-read -p "Enter choice [1-2]: " RESTART_CHOICE
+read -rp "Enter choice [1-2]: " RESTART_CHOICE
 
 case "$RESTART_CHOICE" in
     1)

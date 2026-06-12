@@ -13,7 +13,7 @@ if ! command -v fzf >/dev/null 2>&1; then
 fi
 
 # Search all markdown files with fzf
-selected=$(grep -rnH --include='*.md' . "$CHEATS_DIR" 2>/dev/null | \
+selected=$(grep -rnH --include='*.md' "." "$CHEATS_DIR" 2>/dev/null | \
     fzf --delimiter : \
         --preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' \
         --preview-window=right:60% \

@@ -17,141 +17,49 @@ Item {
     Layout.preferredWidth: 600
     Layout.preferredHeight: 600
 
-    property var cheatsModel: []
-    property var filteredModel: []
-    property string statusMessage: ""
-    property bool isLoading: false
-    property string scriptBasePath: ""
-    property string detectedEditor: ""  // Auto-detected fallback editor
+    // ─── Bind to persistent RAM cache owned by main.qml ─────────────────────
+    property var    cheatsModel:    devToolboxRoot.globalCheatsModel
+    property var    filteredModel:  []
+    property bool   isLoading:      devToolboxRoot.globalIsLoading
+    property string statusMessage:  devToolboxRoot.globalStatusMessage
+    property string detectedEditor: devToolboxRoot.globalDetectedEditor
+    property string updateVersion:  devToolboxRoot.globalUpdateVersion
 
-    // Plasma 6 DataSource for running shell commands
+    // ─── Local DataSource for action commands (copy, open, export, fzf) ──────
+    // These are fire-and-forget — no need to cache results.
     Plasma5Support.DataSource {
         id: shSource
         engine: "executable"
         onNewData: function(sourceName, data) {
-            var stdout = data["stdout"] || ""
-            var stderr = data["stderr"] || ""
-            var exitCode = data["exit code"] || 0
-            
-            // Log full output details for debugging
-            console.log("[DevToolbox] DataSource newData received.");
-            console.log("[DevToolbox] Exit code:", exitCode);
-            console.log("[DevToolbox] Stdout length:", stdout.length);
-            if (stderr) console.log("[DevToolbox] Stderr:", stderr);
-            
-            if (connectedSources.indexOf(sourceName) !== -1) {
-                if (stdout.length > 0 && stdout.indexOf('|') !== -1) {
-                    processIndexOutput(stdout)
-                } else if (stdout.length > 0) {
-                    console.log("[DevToolbox] No pipe chars found in output. Raw:", stdout.substring(0, 200));
-                    console.log("[DevToolbox] Full output:", stdout);
-                } else {
-                    console.log("[DevToolbox] Command returned empty stdout.");
-                    if (stderr) {
-                        statusMessage = "⚠️ Error: " + stderr.substring(0, 100);
-                    } else {
-                        statusMessage = "⚠️ No cheats found. Check ~/cheats.d directory.";
-                    }
-                    isLoading = false;
-                }
+            if (connectedSources.indexOf(sourceName) !== -1)
                 disconnectSource(sourceName)
-            }
         }
     }
 
-    // DataSource for detecting available editor
-    Plasma5Support.DataSource {
-        id: editorDetector
-        engine: "executable"
-        
-        onNewData: function(sourceName, data) {
-            var stdout = data["stdout"] || ""
-            if (stdout.trim() !== "") {
-                detectedEditor = stdout.trim()
-                console.log("[DevToolbox] Detected fallback editor:", detectedEditor);
-            }
-            disconnectSource(sourceName)
-        }
-    }
+    // Re-run the filter whenever the global model changes
+    onCheatsModelChanged: updateFilter()
 
     Component.onCompleted: {
-        console.log("[DevToolbox] FullRepresentation loaded. Configuration:");
-        console.log("  - cheatsDir:", plasmoid.configuration.cheatsDir);
-        console.log("  - cacheFile:", plasmoid.configuration.cacheFile);
-        console.log("  - preferredEditor:", plasmoid.configuration.preferredEditor);
-        
-        // Detect fallback editor
-        var detectCmd = "for cmd in code codium kate geany gedit vim nvim nano kwrite; do command -v $cmd >/dev/null 2>&1 && echo $cmd && break; done"
-        editorDetector.connectSource(detectCmd)
-        
-        Qt.callLater(refreshCheats)
+        updateFilter()
     }
 
     function runCommand(cmd) {
-        console.log("[DevToolbox] runCommand:", cmd);
         shSource.connectSource(cmd)
     }
 
     function refreshCheats() {
-        isLoading = true
-        statusMessage = "Loading cheats..."
-        
-        // Construct the absolute path to our helper script
-        if (scriptBasePath === "") {
-            scriptBasePath = Qt.resolvedUrl("../code/indexer.sh").toString().replace("file://", "")
-            console.log("[DevToolbox] Resolved script path:", scriptBasePath);
-        }
-        
-        var scriptPath = scriptBasePath;
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var debugLog = "/tmp/devtoolbox-debug.log"
-        var cacheFile = plasmoid.configuration.cacheFile.replace(/^~/, "$HOME")
-        
-        console.log("[DevToolbox] Using cheats directory:", cheatsDir);
-        console.log("[DevToolbox] Using cache file:", cacheFile);
-        console.log("[DevToolbox] Using script:", scriptPath);
-        
-        // Pass cache file as third parameter to indexer
-        var cmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\" \"" + cacheFile + "\""
-        
-        console.log("[DevToolbox] Command to run:", cmd);
-        runCommand(cmd)
-    }
-
-    function processIndexOutput(output) {
-        console.log("[DevToolbox] Received index output (length=" + output.length + ")")
-
-        var parsed = Cheats.parseIndexOutput(output)
-        console.log("[DevToolbox] Parsed model with " + parsed.length + " groups.")
-        
-        // Initialize expanded property for each group
-        for (var i = 0; i < parsed.length; i++) {
-            parsed[i].expanded = false;
-        }
-        
-        cheatsModel = parsed
-        updateFilter()
-        isLoading = false
-        
-        var totalCheats = countCheats(cheatsModel);
-        if (totalCheats > 0) {
-            statusMessage = "✅ Loaded " + totalCheats + " cheats.";
-        } else {
-            statusMessage = "⚠️ No cheats found in ~/cheats.d"
-        }
-    }
-    
-    function countCheats(groups) {
-        var c = 0;
-        for(var i=0; i<groups.length; i++) c += groups[i].cheats.length;
-        return c;
+        devToolboxRoot.refreshCheats()
     }
 
     function updateFilter() {
         var query = searchField.text.toLowerCase()
         if (query === "") {
-            // Just copy the model, preserving expanded states
-            filteredModel = cheatsModel.slice()
+            // Safely copy the model (Qt 6 converts arrays across components to QVariantList which lacks .slice())
+            var result = []
+            for (var k = 0; k < cheatsModel.length; k++) {
+                result.push(cheatsModel[k])
+            }
+            filteredModel = result
         } else {
             var result = []
             for (var i = 0; i < cheatsModel.length; i++) {
@@ -182,7 +90,7 @@ Item {
         console.log("[DevToolbox] Copy cheat:", cheatPath);
         
         // FIXED: Properly quote the path to handle spaces
-        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" | ";
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " | ";
         
         // Auto-detect and use available clipboard tool
         cmd += "if command -v wl-copy >/dev/null 2>&1; then wl-copy; ";
@@ -191,26 +99,50 @@ Item {
         
         console.log("[DevToolbox] Copy command:", cmd);
         runCommand(cmd);
-        statusMessage = "✅ Copied to clipboard!";
+        devToolboxRoot.globalStatusMessage = "✅ Copied to clipboard!";
+    }
+
+    function escapeShell(str) {
+        if (!str) return "''";
+        return "'" + String(str).replace(/'/g, "'\\''") + "'";
+    }
+
+    function bashSafePath(p) {
+        if (!p) return "''";
+        if (p.startsWith("~/")) {
+            return '\"$HOME\"/' + escapeShell(p.substring(2));
+        } else if (p.startsWith("$HOME/")) {
+            return '\"$HOME\"/' + escapeShell(p.substring(6));
+        }
+        return escapeShell(p);
+    }
+
+    function getEditorResolutionCommand() {
+        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
+        var safeConf = escapeShell(configuredEditor)
+        var safeDet = detectedEditor !== "" ? escapeShell(detectedEditor) : ""
+        var fallbackList = "code vscodium zed subl atom pulsar notepadqq kwrite kate gedit xed pluma mousepad leafpad geany micro nano nvim vim vi emacs kak hx helix"
+        
+        var cmd = "export EDITOR=''; " +
+            "if command -v " + safeConf + " >/dev/null 2>&1; then export EDITOR=" + safeConf + "; "
+            
+        if (safeDet !== "") {
+            cmd += "elif command -v " + safeDet + " >/dev/null 2>&1; then notify-send 'DevToolbox' \"Editor \"" + safeConf + "\" not found. Using \"" + safeDet + "\".\"; export EDITOR=" + safeDet + "; "
+        }
+            
+        cmd += "else notify-send 'DevToolbox' \"Editor \"" + safeConf + "\" not found. Trying fallbacks...\"; " +
+            "for e in " + fallbackList + "; do " +
+            "if command -v \"$e\" >/dev/null 2>&1; then export EDITOR=\"$e\"; break; fi; " +
+            "done; " +
+            "if [ -z \"$EDITOR\" ]; then notify-send 'DevToolbox' 'No text editor found! Please install one.'; exit 1; fi; " +
+            "fi; "
+            
+        return cmd
     }
 
     function openCheat(cheatPath) {
-        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
-        
-        // Try configured editor first, fallback to detected editor
-        var cmd = "if command -v \"" + configuredEditor + "\" >/dev/null 2>&1; then " +
-            "\"" + configuredEditor + "\" \"" + cheatPath + "\"; " +
-            "else "
-        
-        if (detectedEditor !== "") {
-            cmd += "notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Using \"" + detectedEditor + "\" instead.' && "
-            cmd += "\"" + detectedEditor + "\" \"" + cheatPath + "\"; "
-        } else {
-            cmd += "notify-send 'DevToolbox' 'Editor \"" + configuredEditor + "\" not found. Please install an editor.'; "
-        }
-        
-        cmd += "fi"
-        
+        var editorCmd = getEditorResolutionCommand()
+        var cmd = editorCmd + "\"$EDITOR\" " + escapeShell(cheatPath)
         console.log("[DevToolbox] Open command:", cmd);
         runCommand(cmd)
     }
@@ -222,62 +154,59 @@ Item {
             file
         )
         runCommand(cmd)
-        statusMessage = "📥 Exporting all cheats..."
+        devToolboxRoot.globalStatusMessage = "📥 Exporting all cheats..."
     }
 
     function exportCheat(cheatPath, cheatTitle) {
         var safeName = cheatTitle.replace(/[^a-zA-Z0-9_\-]/g, '_').replace(/__+/g, '_')
         var outFile = "$HOME/DevToolbox-" + safeName + "_" + Utils.formatDate(new Date()) + ".md"
         
-        // FIXED: Direct sed command without over-escaping
-        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' \"" + cheatPath + "\" > \"" + outFile + "\" && " +
-            "notify-send 'DevToolbox' 'Exported to " + outFile + "'";
+        // FIXED: Direct sed command without over-escaping, using secure shell escaping with bashSafePath
+        var cmd = "sed '1,80{/^Title:/d; /^Group:/d; /^Icon:/d; /^Order:/d}' " + escapeShell(cheatPath) + " > " + bashSafePath(outFile) + " && " +
+            "notify-send 'DevToolbox' 'Exported to " + safeName + ".md'";
         
         console.log("[DevToolbox] Export command:", cmd);
         runCommand(cmd)
-        statusMessage = "📥 Exported: " + safeName + ".md"
+        devToolboxRoot.globalStatusMessage = "📥 Exported: " + safeName + ".md"
     }
 
     function fzfSearch() {
-        // FIXED: Use simple helper script instead of complex escaping
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var configuredEditor = plasmoid.configuration.preferredEditor || "code"
-        var editor = configuredEditor
-        
-        // Use detected editor if configured one doesn't exist
-        if (detectedEditor !== "") {
-            editor = detectedEditor
-        }
+        var cheatsDir = plasmoid.configuration.cheatsDir
+        var editorCmd = getEditorResolutionCommand()
         
         // Get path to fzf-search.sh helper
         var fzfScript = Qt.resolvedUrl("../code/fzf-search.sh").toString().replace("file://", "")
         
         // Simple command to launch terminal with our script
-        var cmd = "if command -v konsole >/dev/null 2>&1; then " +
-            "konsole -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"" + editor + "\"; " +
+        var cmd = editorCmd +
+            "if command -v konsole >/dev/null 2>&1; then " +
+            "konsole -e bash " + escapeShell(fzfScript) + " " + bashSafePath(cheatsDir) + " \"$EDITOR\"; " +
             "elif command -v xterm >/dev/null 2>&1; then " +
-            "xterm -hold -e bash \"" + fzfScript + "\" \"" + cheatsDir + "\" \"" + editor + "\"; " +
+            "xterm -hold -e bash " + escapeShell(fzfScript) + " " + bashSafePath(cheatsDir) + " \"$EDITOR\"; " +
             "else " +
             "notify-send 'DevToolbox' 'No terminal found (konsole/xterm).'; " +
             "fi"
         
         console.log("[DevToolbox] FZF command:", cmd);
         runCommand(cmd)
-        statusMessage = "🚀 Opening FZF search..."
+        devToolboxRoot.globalStatusMessage = "🚀 Opening FZF search..."
     }
+    signal groupExpandedToggled(int groupIndex, bool isExpanded)
 
     function toggleGroup(index) {
-        // OPTIMIZED: Just toggle the expanded property in-place
-        // No need to recreate the entire array!
         if (index >= 0 && index < filteredModel.length) {
-            filteredModel[index].expanded = !filteredModel[index].expanded;
-            // Force QML to re-evaluate by reassigning
-            filteredModel = filteredModel;
+            var newState = !filteredModel[index].expanded;
             
-            // Also update main model if not filtering
+            // 1. Update the JS object so state persists if delegate is recreated (scrolling)
+            filteredModel[index].expanded = newState;
+            
             if (searchField.text === "") {
-                cheatsModel = filteredModel;
+                devToolboxRoot.globalCheatsModel[index].expanded = newState;
             }
+            
+            // 2. Emit signal to update only the specific delegate in-place
+            // This prevents QML from destroying and recreating all 150 delegates!
+            groupExpandedToggled(index, newState);
         }
     }
 
@@ -292,6 +221,16 @@ Item {
                 text: "🗒️ DevToolbox Cheats"
                 font.bold: true
                 font.pointSize: 12
+            }
+
+            PlasmaComponents.Button {
+                visible: updateVersion !== ""
+                text: "⬆️ v" + updateVersion
+                flat: true
+                font.pointSize: 9
+                onClicked: Qt.openUrlExternally("https://github.com/dominatos/devtoolbox-cheats/releases")
+                ToolTip.text: "Update available! Click to open GitHub releases."
+                ToolTip.visible: hovered
             }
             
             Item { Layout.fillWidth: true }
@@ -357,7 +296,7 @@ Item {
             Timer {
                 interval: 5000
                 running: statusMessage !== "" && statusMessage.indexOf("⚠️") === -1 && statusMessage.indexOf("❌") === -1
-                onTriggered: statusMessage = ""
+                onTriggered: devToolboxRoot.globalStatusMessage = ""
             }
         }
         
@@ -385,6 +324,15 @@ Item {
                     
                     property string groupIcon: modelData.icon
                     property bool groupExpanded: modelData.expanded
+
+                    Connections {
+                        target: fullRoot
+                        function onGroupExpandedToggled(idx, isExpanded) {
+                            if (index === idx) {
+                                groupLayout.groupExpanded = isExpanded;
+                            }
+                        }
+                    }
 
                     Rectangle {
                         Layout.fillWidth: true
