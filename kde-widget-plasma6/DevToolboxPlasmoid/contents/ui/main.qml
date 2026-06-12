@@ -78,7 +78,12 @@ PlasmoidItem {
 
         onNewData: function(sourceName, data) {
             var stdout = data["stdout"] || ""
-            if (stdout.trim() !== "") {
+            var stderr = data["stderr"] || ""
+            var exitCode = data["exit code"]
+
+            if (exitCode !== undefined && exitCode !== 0) {
+                console.warn("[DevToolbox] Editor detection failed. Exit code:", exitCode, "Stderr:", stderr.trim())
+            } else if (stdout.trim() !== "") {
                 devToolboxRoot.globalDetectedEditor = stdout.trim()
                 console.log("[DevToolbox] Detected fallback editor:", devToolboxRoot.globalDetectedEditor)
             }

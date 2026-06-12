@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.31 (2026-06-12)
+
+**Bug fixes:**
+- ✅ Fix: Added proper error and exit code logging to the editor auto-detection background task in Plasma 6 to improve debuggability when fallback editors fail to detect.
+
 ## v1.4.30 (2026-06-12)
 
 **Security:**
