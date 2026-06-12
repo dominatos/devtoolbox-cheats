@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.30 (2026-06-12)
+
+**Security:**
+- 🔒 Fix: Escaped user-controlled configuration values (`cheatsDir`, `cacheFile`) in the Plasma 6 widget's indexer command to prevent shell injection. Previously these values were interpolated with only double-quote wrapping, which does not prevent `$()` or backtick expansion. Now uses single-quote escaping via shared `escapeShell()` / `bashSafePath()` utilities added to `cheats.js`.
+
 ## v1.4.29 (2026-06-12)
 
 **Bug fixes:**

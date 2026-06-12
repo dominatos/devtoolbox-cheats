@@ -5,6 +5,29 @@
 .pragma library
     .import "utils.js" as Utils
 
+/**
+ * Single-quote escape a string for safe use in shell commands.
+ * Wraps the value in single quotes and escapes any embedded single quotes.
+ */
+function escapeShell(str) {
+    if (!str) return "''";
+    return "'" + String(str).replace(/'/g, "'\\''") + "'";
+}
+
+/**
+ * Produce a bash-safe path string that handles ~/... and $HOME/... prefixes.
+ * The $HOME portion is left unquoted so the shell expands it; the rest is single-quote escaped.
+ */
+function bashSafePath(p) {
+    if (!p) return "''";
+    if (p.indexOf("~/") === 0) {
+        return '"$HOME"/' + escapeShell(p.substring(2));
+    } else if (p.indexOf("$HOME/") === 0) {
+        return '"$HOME"/' + escapeShell(p.substring(6));
+    }
+    return escapeShell(p);
+}
+
 // Groups configuration (default icons)
 var GROUP_ICONS = {
     "Basics": "help-contents",

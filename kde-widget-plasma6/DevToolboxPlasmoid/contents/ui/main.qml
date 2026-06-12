@@ -97,14 +97,14 @@ PlasmoidItem {
             console.log("[DevToolbox] Resolved indexer path:", scriptBasePath)
         }
 
-        var cheatsDir = plasmoid.configuration.cheatsDir.replace(/^~/, "$HOME")
-        var cacheFile = plasmoid.configuration.cacheFile.replace(/^~/, "$HOME")
+        var cheatsDir = Cheats.bashSafePath(plasmoid.configuration.cheatsDir)
+        var cacheFile = Cheats.bashSafePath(plasmoid.configuration.cacheFile)
         var debugLog  = "/tmp/devtoolbox-debug.log"
 
-        // Build the command directly (no escaping needed — DataSource executable engine
-        // passes the string to sh -c and handles quoting correctly as-is).
-        var cmd = "bash \"" + scriptBasePath + "\" \"" + cheatsDir + "\" \""
-                + debugLog + "\" \"" + cacheFile + "\""
+        // Escape all interpolated values to prevent shell injection.
+        // scriptBasePath is widget-internal (Qt.resolvedUrl), but still escaped for safety.
+        var cmd = "bash " + Cheats.escapeShell(scriptBasePath) + " " + cheatsDir + " "
+                + Cheats.escapeShell(debugLog) + " " + cacheFile
         console.log("[DevToolbox] Running indexer:", cmd)
         shSource.connectSource(cmd)
     }
