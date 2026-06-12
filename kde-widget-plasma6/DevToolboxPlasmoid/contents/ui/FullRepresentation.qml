@@ -43,8 +43,7 @@ Item {
     }
 
     function runCommand(cmd) {
-        // plasmaShield() escapes special chars so Plasma 6 DataSource does not strip them.
-        shSource.connectSource(Cheats.plasmaShield(cmd))
+        shSource.connectSource(cmd)
     }
 
     function refreshCheats() {

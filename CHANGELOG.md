@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.28 (2026-06-12)
+
+**Bug fixes:**
+- ✅ Fix: Removed the incorrectly applied `plasmaShield()` escaping from the Plasma 6 widget. The `plasmaShield()` function backslash-escapes every special character (including `/`, `.`, `-`), which was completely destroying file paths (e.g., `/home/user/cheats.d` → `\/home\/user\/cheats\.d`) and silently preventing the indexer from ever finding any cheatsheets. The `Plasma5Support.DataSource` executable engine does not strip characters and does not need this escaping.
+- ✅ Fix: Removed orphaned dead code block in Plasma 5 `cheats.js`.
+- ✅ Fix: Deleted accidentally committed `test_home.qml` scratch file.
+- ✅ Fix: Moved `$EDITOR` resolution inside the terminal `bash -c` session in Plasma 5 `fzfSearch()` so that the variable is correctly exported into the `konsole`/`xterm` child process.
+
 ## v1.4.27 (2026-06-12)
 
 **Bug fixes & Adjustments:**
