@@ -59,7 +59,8 @@ PlasmoidItem {
                     } else {
                         console.log("[DevToolbox] Indexer returned no pipe chars.")
                         devToolboxRoot.globalCheatsModel = []
-                        devToolboxRoot.globalStatusMessage = "⚠️ No cheats found. Check ~/cheats.d directory."
+                        var cDir = plasmoid.configuration.cheatsDir || "~/cheats.d"
+                        devToolboxRoot.globalStatusMessage = "⚠️ No cheats found. Check " + cDir + " directory."
                         devToolboxRoot.globalIsLoading = false
                     }
                 } else {
@@ -129,9 +130,10 @@ PlasmoidItem {
             devToolboxRoot.globalIsLoading     = false
 
             var total = countCheats(parsed)
+            var cDir = plasmoid.configuration.cheatsDir || "~/cheats.d"
             devToolboxRoot.globalStatusMessage = total > 0
                 ? "✅ Loaded " + total + " cheats."
-                : "⚠️ No cheats found in ~/cheats.d"
+                : "⚠️ No cheats found in " + cDir
 
             console.log("[DevToolbox] Loaded", total, "cheats in", parsed.length, "groups.")
         } catch (e) {
