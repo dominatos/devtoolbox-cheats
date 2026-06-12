@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.39 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Dynamically display the configured `cheatsDir` instead of hardcoding `~/cheats.d` in the Plasma 6 widget's empty-state recovery messages.
 ## v1.4.38 (2026-06-12)
 
 **Bug fixes:**
