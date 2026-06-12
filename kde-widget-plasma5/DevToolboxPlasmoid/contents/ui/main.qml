@@ -28,7 +28,7 @@ Item {
 
     // ─── Dynamic DataSource (Plasma 5/6 compatible creation) ─────────────────
     property var shSource: null
-    property string accumulatedStdout: ""
+    property var accumulatedStdoutMap: ({})
 
     function createDataSource() {
         try {
@@ -56,13 +56,15 @@ Item {
                 var exitCode = data["exit code"]
 
                 if (stdout.length > 0) {
-                    accumulatedStdout += stdout
+                    var current = root.accumulatedStdoutMap[sourceName] || ""
+                    root.accumulatedStdoutMap[sourceName] = current + stdout
                 }
 
                 if (exitCode !== undefined && shSource.connectedSources.indexOf(sourceName) !== -1) {
+                    var finalStdout = root.accumulatedStdoutMap[sourceName] || ""
                     if (exitCode === 0) {
-                        if (accumulatedStdout.indexOf('|') !== -1) {
-                            processIndexOutput(accumulatedStdout)
+                        if (finalStdout.indexOf('|') !== -1) {
+                            processIndexOutput(finalStdout)
                         } else {
                             if (stderr) console.error("[DevToolbox] Indexer warning (exit 0):", stderr)
                             root.globalCheatsModel = []
@@ -74,7 +76,7 @@ Item {
                         root.globalStatusMessage = "⚠️ Indexer error: " + (stderr ? stderr.substring(0, 120) : "exit code " + exitCode)
                         root.globalIsLoading = false
                     }
-                    accumulatedStdout = ""
+                    root.accumulatedStdoutMap[sourceName] = ""
                     shSource.disconnectSource(sourceName)
                 }
             })
@@ -92,6 +94,7 @@ Item {
             plasmoid.configuration.cacheFile.replace("~", "$HOME")
         )
         console.log("[DevToolbox] Refreshing cheats:", cmd)
+        root.accumulatedStdoutMap[cmd] = "" // Initialize buffer for this command
         shSource.connectSource(cmd)
     }
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.33 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Resolved an issue where rapidly triggering `refreshCheats()` could cause stdout buffering interleaving by switching to per-command buffer mapping in `main.qml` (Plasma 5 & Plasma 6).
+- 🐛 Fix: Removed an unintended leading dot (`.`) in the `fzfSearch()` internal `grep` command to prevent recursive searching of the current working directory.
+
 ## v1.4.32 (2026-06-12)
 
 **New Features:**

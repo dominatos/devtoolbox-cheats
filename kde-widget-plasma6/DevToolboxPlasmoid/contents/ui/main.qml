@@ -34,7 +34,7 @@ PlasmoidItem {
     property string scriptBasePath:       ""
     property string globalUpdateVersion:  ""  // Set to latest version string if an update is available
 
-    property string accumulatedStdout: ""
+    property var accumulatedStdoutMap: ({})
 
     // ─── DataSource: indexer.sh ───────────────────────────────────────────────
     Plasma5Support.DataSource {
@@ -47,13 +47,15 @@ PlasmoidItem {
             var exitCode = data["exit code"]
 
             if (stdout.length > 0) {
-                accumulatedStdout += stdout
+                var current = devToolboxRoot.accumulatedStdoutMap[sourceName] || ""
+                devToolboxRoot.accumulatedStdoutMap[sourceName] = current + stdout
             }
 
             if (exitCode !== undefined && connectedSources.indexOf(sourceName) !== -1) {
+                var finalStdout = devToolboxRoot.accumulatedStdoutMap[sourceName] || ""
                 if (exitCode === 0) {
-                    if (accumulatedStdout.indexOf('|') !== -1) {
-                        processIndexOutput(accumulatedStdout)
+                    if (finalStdout.indexOf('|') !== -1) {
+                        processIndexOutput(finalStdout)
                     } else {
                         console.log("[DevToolbox] Indexer returned no pipe chars.")
                         devToolboxRoot.globalCheatsModel = []
@@ -66,7 +68,7 @@ PlasmoidItem {
                     devToolboxRoot.globalStatusMessage = "⚠️ Error: " + stderr.substring(0, 100)
                     devToolboxRoot.globalIsLoading = false
                 }
-                accumulatedStdout = ""
+                devToolboxRoot.accumulatedStdoutMap[sourceName] = ""
                 disconnectSource(sourceName)
             }
         }
@@ -112,6 +114,7 @@ PlasmoidItem {
         var cmd = "bash " + Cheats.escapeShell(scriptBasePath) + " " + cheatsDir + " "
                 + Cheats.escapeShell(debugLog) + " " + cacheFile
         console.log("[DevToolbox] Running indexer:", cmd)
+        devToolboxRoot.accumulatedStdoutMap[cmd] = "" // Initialize buffer for this command
         shSource.connectSource(cmd)
     }
 
