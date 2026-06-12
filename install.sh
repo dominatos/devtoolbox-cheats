@@ -6,8 +6,9 @@ VERSION="v1.4.36"
 print_header() {
   echo ""
   echo "╔══════════════════════════════════════════════════════════════╗"
-  echo "║        DevToolbox Cheats —  Script Installer           ║"
+  echo "║     DevToolbox Cheats — Script Installer                     ║"
   echo "╚══════════════════════════════════════════════════════════════╝"
+  echo "($VERSION)"
   echo ""
 }
 print_header
