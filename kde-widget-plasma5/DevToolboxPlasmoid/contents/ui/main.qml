@@ -129,16 +129,22 @@ Item {
 
         var updateTimer = Qt.createQmlObject('import QtQuick 2.0; Timer {}', root, "UpdateTimer")
         updateTimer.interval = 10000
+        var timerDestroyed = false
         updateTimer.triggered.connect(function() {
+            if (timerDestroyed) return
             console.warn("[DevToolbox] Update check timed out.")
             xhr.abort()
             updateTimer.destroy()
+            timerDestroyed = true
         })
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState !== XMLHttpRequest.DONE) return
-            updateTimer.stop()
-            updateTimer.destroy()
+            if (!timerDestroyed) {
+                updateTimer.stop()
+                updateTimer.destroy()
+                timerDestroyed = true
+            }
 
             if (xhr.status !== 200) {
                 console.log("[DevToolbox] Update check failed. HTTP status:", xhr.status)
