@@ -9,7 +9,7 @@ print_header() {
   echo "║     DevToolbox Cheats — Script Installer                     ║"
   echo "╚══════════════════════════════════════════════════════════════╝"
   echo "($VERSION)"
-  echo ""cd
+  echo ""
 }
 print_header
 echo "📦 Installing dependencies..."
