@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="v1.4.36"
+VERSION="v1.4.37"
 
 print_header() {
   echo ""
@@ -9,7 +9,7 @@ print_header() {
   echo "║     DevToolbox Cheats — Script Installer                     ║"
   echo "╚══════════════════════════════════════════════════════════════╝"
   echo "($VERSION)"
-  echo ""
+  echo ""cd
 }
 print_header
 echo "📦 Installing dependencies..."

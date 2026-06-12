@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.37 (2026-06-12)
+
+**Bug fixes & improvements:**
+- 🐛 Fix: Resolved an issue where Zenity list dialogs (e.g. standalone argos menu) incorrectly displayed `&amp;` instead of `&` for categories like "Dev & Tools". Removed redundant HTML escaping specifically for `zenity --list` which requires literal ampersands.
+- 🐛 Fix: Prevented a double-destruction race condition crash in the QML widgets caused by simultaneous timer timeouts and XHR state changes.
+- 🔧 Improved: Display the installer version explicitly in the headers of `install.sh` and `devtools.1m.sh` outputs.
+- 🔧 Improved: Added an interactive prompt to restart Plasma 5 after widget installation (mirroring the Plasma 6 installer).
 ## v1.4.35 (2026-06-12)
 
 **Bug fixes:**
