@@ -2,7 +2,7 @@
 # generate-tldr.sh - Generate native TLDR pages from DevToolbox Markdown cheatsheets
 set -euo pipefail
 
-readonly VERSION="v1.4.37"
+readonly VERSION="v1.4.38"
 
 SOURCE_DIR="${SOURCE_DIR:-$HOME/cheats.d}"
 OUTPUT_DIR="${OUTPUT_DIR:-$HOME/cheats.d-gen/tldr}"

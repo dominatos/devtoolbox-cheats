@@ -132,18 +132,18 @@ Item {
         var timerDestroyed = false
         updateTimer.triggered.connect(function() {
             if (timerDestroyed) return
+            timerDestroyed = true
             console.warn("[DevToolbox] Update check timed out.")
             xhr.abort()
             updateTimer.destroy()
-            timerDestroyed = true
         })
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState !== XMLHttpRequest.DONE) return
             if (!timerDestroyed) {
+                timerDestroyed = true
                 updateTimer.stop()
                 updateTimer.destroy()
-                timerDestroyed = true
             }
 
             if (xhr.status !== 200) {

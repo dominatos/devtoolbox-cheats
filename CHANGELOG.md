@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.38 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Hardened the QML Timer cleanup logic by moving the `timerDestroyed = true` assignment to happen *before* cleanup method invocations (`xhr.abort()` and `updateTimer.destroy()`), completely preventing synchronous re-entrancy edge cases via signals.
 ## v1.4.37 (2026-06-12)
 
 **Bug fixes & improvements:**
