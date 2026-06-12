@@ -166,7 +166,7 @@ function getFzfSearchCommand(cheatsDir, editor) {
         "if ! command -v fzf >/dev/null 2>&1; then " +
         "echo 'ERROR: fzf not installed. Install via apt/dnf/pacman.'; " +
         "read -rp 'Press enter to exit...'; exit 1; fi; " +
-        "selected=$(grep -rnH --include='*.md' \"" + cheatsDir + "\" 2>/dev/null | " +
+        "selected=$(grep -rnH --include='*.md' \".\" \"" + cheatsDir + "\" 2>/dev/null | " +
         "fzf --delimiter : " +
         "--preview 'if command -v bat >/dev/null 2>&1; then bat --style=numbers --color=always --highlight-line {2} {1}; else cat {1}; fi' " +
         "--preview-window=right:60% " +

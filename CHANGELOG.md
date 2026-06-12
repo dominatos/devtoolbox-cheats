@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.35 (2026-06-12)
+
+**Bug fixes:**
+- 🐛 Fix: Resolved an issue where `fzf` would return 0 results because the internal `grep` pattern was accidentally removed during a previous code cleanup. The `.` pattern has been safely restored across all widgets and scripts to accurately feed files into `fzf`.
+
 ## v1.4.34 (2026-06-12)
 
 **Bug fixes:**
