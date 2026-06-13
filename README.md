@@ -1015,8 +1015,11 @@ update-desktop-database ~/.local/share/applications
 ```
 devtoolbox-cheats/
 ├── devtoolbox-cheats.30s.sh    # Universal script (all DEs)
+├── devtools.1m.sh              # Argos additional tools menu
 ├── cheats-updater.sh           # Cheats update manager
 ├── install.sh                  # Universal installer
+├── bump-version.sh             # Version bump utility
+├── generate-tldr.sh            # TLDR page generator
 ├── systemd/                    # Systemd user units
 │   ├── devtoolbox-cheats-updater.service
 │   └── devtoolbox-cheats-updater.timer
@@ -1031,12 +1034,22 @@ devtoolbox-cheats/
 │           ├── indexer.sh                 # Cache builder
 │           └── fzf-search.sh              # FZF helper
 ├── kde-widget-plasma5/               # Plasma 5 widget (same structure)
-├── cheats.d/                         # Example cheatsheets (133 files)
+├── Windows-beta/                     # Windows AutoHotkey implementation
+│   ├── cheats.ahk
+│   ├── install-devtoolbox.ps1
+│   └── README-windows.md
+├── cheats.d/                         # Example cheatsheets (133+ files)
 │   ├── databases/                    # Category subfolder
 │   ├── kubernetes-containers/        # Category subfolder
 │   ├── network/                      # Category subfolder
 │   └── ...                           # More category subfolders
-└── README.md
+├── docs/                             # Documentation assets
+│   ├── img/                          # Screenshots
+│   └── cheats-readme.sh
+├── version.txt                       # Current version number
+├── CHANGELOG.md                      # Release history
+├── README.md
+└── LICENSE
 ```
 
 ### Testing
