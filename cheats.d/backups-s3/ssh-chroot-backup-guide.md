@@ -18,6 +18,16 @@ Order: 15
 **Description:**  
 SSH (Secure Shell) chroot environment combined with SFTP provides a highly secure, restricted method for automated remote backups. By forcing a user into a "jail" (`chroot`) and disabling their shell access (`/usr/sbin/nologin`), the backup process can write data securely without allowing lateral movement across the file system if the private key is compromised. Currently, this remains an industry standard for secure, agentless data ingestion over SSH.
 
+### Why Use a Chroot Backup User? / Зачем использовать Chroot для бэкап-пользователя?
+
+When a client machine sends automated backups, it typically uses an SSH private key for passwordless authentication. If that client machine is compromised, the attacker steals the SSH key. Without a chroot jail, that stolen key grants full SSH shell access to your backup server, allowing the attacker to read system files, map your network, or destroy other data.
+Когда клиентская машина отправляет автоматические бэкапы, она использует приватный SSH-ключ для входа без пароля. Если эта машина скомпрометирована, злоумышленник крадет SSH-ключ. Без chroot-окружения этот украденный ключ дает полный доступ к shell на вашем сервере бэкапов, позволяя злоумышленнику читать системные файлы, сканировать сеть или уничтожать другие данные.
+
+By implementing a **chroot jail**:
+Внедряя **chroot jail**:
+1. **Isolation / Изоляция:** The attacker is locked inside `/var/sftp/<USER>`. They cannot see or access `/etc`, `/home`, or `/var` of the main server.
+2. **No Command Execution / Запрет выполнения команд:** With shell access disabled (`/usr/sbin/nologin` + `ForceCommand internal-sftp`), the attacker cannot run bash scripts, binaries, or exploit local vulnerabilities. They are restricted purely to SFTP file transfer operations.
+
 ## Architecture Overview
 
 * **Chroot Jail Root:** `/var/sftp/<USER>` (Owned by `root:root`, Perms: `755`)
@@ -150,6 +160,10 @@ Because the user is jailed inside `/var/sftp/<USER>`, that path effectively beco
 When setting up your `rclone.conf` profile for this host, ensure your paths reflect the jailed environment.
 
 ### Configuring SSH Key for Rclone / Настройка SSH-ключа для Rclone
+
+**Why is this needed? / Зачем это нужно?**
+Using an SSH key instead of a password provides stronger security and enables automated, non-interactive backups (especially since password authentication should be disabled on the server). Furthermore, if your private key is protected by a passphrase, Rclone requires it to decrypt the key during automated runs. We use the secure prompt method below to inject this passphrase into the Rclone config without ever exposing it in your `.bash_history` or system process lists.
+Использование SSH-ключа вместо пароля обеспечивает более высокую безопасность и позволяет выполнять бэкапы автоматически (особенно если вход по паролю на сервере отключен). Если ваш приватный ключ защищен парольной фразой, Rclone должен знать её. Мы используем метод безопасного запроса ниже, чтобы передать пароль в конфигурацию Rclone, не оставляя следов в истории shell (`.bash_history`) или списке запущенных процессов.
 
 To configure an existing rclone remote to use your SSH private key instead of a password:
 Для настройки существующего remote в rclone на использование SSH-ключа вместо пароля:
