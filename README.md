@@ -1137,6 +1137,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🗄️ tar + GPG — Classic Encrypted Backups](cheats.d/backups-s3/targpgcheatsheet.md)
 - [🗄️ Veeam Agent — Linux Backup](cheats.d/backups-s3/veeamcheatsheet.md)
 - [🗄️ Veritas InfoScale](cheats.d/backups-s3/veritascheatsheet.md)
+- [🗄️ SSH Chroot Backup Server](cheats.d/backups-s3/ssh-chroot-backup-guide.md)
 
 ### Basics
 - [📗 Linux Basics 2 — Next Steps](cheats.d/basics/linuxbasics2cheatsheet.md)

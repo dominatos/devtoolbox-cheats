@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-cheats_dir="/home/sviatoslav/devtoolbox-cheats/cheats.d"
-readme="/home/sviatoslav/devtoolbox-cheats/README.md"
+cheats_dir="/home/sviatoslav/scripts/repo/devtoolbox-cheats/cheats.d"
+readme="/home/sviatoslav/scripts/repo/devtoolbox-cheats/README.md"
 
 missing=0
 
