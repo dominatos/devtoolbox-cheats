@@ -584,6 +584,9 @@ bindsym $mod+c exec devtoolbox-cheats-menu menu | wofi --dmenu
 
 ## 📚 Creating Cheatsheets
 
+> [!TIP]
+> Want to add your own custom cheatsheets, create new categories, or change the default directory? Check out our dedicated guide: **[📂 Managing Custom Cheatsheets](docs/custom-cheatsheets.md)**.
+
 ### File Structure
 
 Cheatsheets are Markdown files organized in category subfolders under `~/cheats.d/`.
