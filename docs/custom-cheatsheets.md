@@ -68,7 +68,7 @@ Then, add the metadata shown above to `first-cheat.md`. Make sure the `Group:` f
 ### Seeing Changes in the UI
 Both GNOME (Argos) and KDE Plasma handle your custom categories automatically:
 
-- **🟠 GNOME (Argos):** Argos refreshes the menu every 30 seconds automatically. To see your new category instantly, open the Argos menu and click `🛠 DevToolbox Functions` -> `🔄 Refresh`, or simply disable and re-enable the extension.
+- **🟠 GNOME (Argos):** Argos refreshes the menu every 30 seconds automatically based on the script's filename (`.30s.sh`). To see your new category instantly, you can either just wait a few seconds, or toggle the Argos extension off and on to force an immediate refresh.
 - **🔵 KDE Plasma:** The widget uses a lightning-fast JSON cache and automatically detects changes in the background. If you don't see your new category immediately, right-click the widget -> **Configure DevToolbox Cheats...** and ensure **Auto-Rebuild Cache** is checked.
 
 ---
