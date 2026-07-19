@@ -170,9 +170,6 @@ Disable and re-enable the Argos extension, or press `Alt+F2` → `r` → `Enter`
 
 **Result:** 🗒️ icon appears in your top panel with dropdown menu.
 *(Note: The installer also adds `devtools.1m.sh` to provide an additional tools menu in your panel).*
-
-
-
 </details>
 
 <details>
@@ -1237,14 +1234,14 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🌐 systemd-networkd — Configuration](cheats.d/network/systemd-networkdcheatsheet.md)
 - [🌐 VPN Plugins — NetworkManager](cheats.d/network/vpn-pluginscheatsheet.md)
 - [🕸 nftables — Commands](cheats.d/network/nftcheatsheet.md)
-- [ resolvectl — DNS/Network](cheats.d/network/resolvectlcheatsheet.md)
-- [ RSYNC — Commands](cheats.d/network/rsynccheatsheet.md)
-- [ SCP — Commands](cheats.d/network/scpcheatsheet.md)
+- [resolvectl — DNS/Network](cheats.d/network/resolvectlcheatsheet.md)
+- [RSYNC — Commands](cheats.d/network/rsynccheatsheet.md)
+- [SCP — Commands](cheats.d/network/scpcheatsheet.md)
 - [📡 SS — Socket Stats](cheats.d/network/sscheatsheet.md)
 - [🔑 SSH / VPN / Port Forwarding](cheats.d/network/ssh_vpn_tunnel_cheatsheet.md)
-- [ SSH — Commands & Config](cheats.d/network/sshcheatsheet.md)
+- [SSH — Commands & Config](cheats.d/network/sshcheatsheet.md)
 - [🧱 UFW — Commands](cheats.d/network/ufwcheatsheet.md)
-- [ WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
+- [WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
 
 ### Package Managers
 - [📦 Package Managers](cheats.d/package-managers/pkgmanagerscheatsheet.md)

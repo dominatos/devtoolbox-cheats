@@ -187,9 +187,6 @@ db.adminCommand({ logRotate: 1 })                                               
 db.runCommand({ compact: "<COLLECTION>" })                                          # Compact collection / Сжатие коллекции (block!)
 // db.repairDatabase()                                                              # Repair DB (Blocking!) / Восстановление БД (Блок!)
 ```
-
-
-
 ## Percona Upgrade Guide
 
 > [!WARNING]
@@ -560,9 +557,6 @@ db.createView(
 ```
 
 ---
-
-
-
 
 ## Practice Exercises
 
@@ -1887,5 +1881,4 @@ print("Script ha inserito 100 users nel db users2");
 > MongoDB ротирует логи автоматически командой: `db.adminCommand({ logRotate: 1 })`
 
 ---
-
 
