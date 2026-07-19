@@ -62,7 +62,7 @@ sudo nmcli general hostname <HOST>    # Set hostname / Установить им
 
 **Sample Output:**
 ```
-STATE      CONNECTIVITY  WIFI-HW  WIFI     WWAN-HW  WWAN    
+STATE      CONNECTIVITY  WIFI-HW  WIFI     WWAN-HW  WWAN
 connected  full          enabled  enabled  enabled  enabled
 ```
 

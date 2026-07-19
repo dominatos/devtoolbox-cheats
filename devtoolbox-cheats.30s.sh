@@ -644,7 +644,8 @@ setLayout() {
 
 # Write current category to state file.
 argos_set_category() {
-  mkdir -m 0700 -p "$ARGOS_RUNTIME_DIR" 2>/dev/null || true
+  mkdir -p "$ARGOS_RUNTIME_DIR" 2>/dev/null || true
+  chmod 0700 "$ARGOS_RUNTIME_DIR" 2>/dev/null || true
   local tmp_state
   tmp_state="$(mktemp "${ARGOS_CAT_STATE}.XXXXXX")"
   printf '%s' "$1" > "$tmp_state"

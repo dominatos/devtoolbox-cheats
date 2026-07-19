@@ -208,7 +208,7 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
   <!-- Manager GUI access / Доступ к Manager GUI -->
   <role rolename="manager-gui"/>
   <role rolename="admin-gui"/>
-  
+
   <user username="<USER>" password="<PASSWORD>" roles="manager-gui,admin-gui"/>
 </tomcat-users>
 ```

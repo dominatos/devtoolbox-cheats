@@ -208,34 +208,34 @@ flush ruleset
 table inet filter {
   chain input {
     type filter hook input priority 0; policy drop;
-    
+
     # Allow established/related / Разрешить established/related
     ct state established,related accept
-    
+
     # Drop invalid / Отбросить недействительные
     ct state invalid drop
-    
+
     # Allow loopback / Разрешить loopback
     iif lo accept
-    
+
     # Allow ICMP / Разрешить ICMP
     ip protocol icmp accept
     ip6 nexthdr icmpv6 accept
-    
+
     # Allow SSH / Разрешить SSH
     tcp dport 22 accept
-    
+
     # Allow HTTP/HTTPS / Разрешить HTTP/HTTPS
     tcp dport { 80, 443 } accept
-    
+
     # Log dropped packets / Логировать отброшенные пакеты
     log prefix "nftables drop: " drop
   }
-  
+
   chain forward {
     type filter hook forward priority 0; policy drop;
   }
-  
+
   chain output {
     type filter hook output priority 0; policy accept;
   }
@@ -249,15 +249,15 @@ table inet filter {
 table ip nat {
   chain prerouting {
     type nat hook prerouting priority -100;
-    
+
     # Port forwarding / Проброс портов
     iif eth0 tcp dport 80 dnat to 192.168.1.10
     iif eth0 tcp dport 443 dnat to 192.168.1.11
   }
-  
+
   chain postrouting {
     type nat hook postrouting priority 100;
-    
+
     # Masquerade / Masquerade
     oif eth0 masquerade
   }
@@ -266,7 +266,7 @@ table ip nat {
 table inet filter {
   chain forward {
     type filter hook forward priority 0; policy drop;
-    
+
     ct state established,related accept
     iif eth1 oif eth0 accept
   }
@@ -282,13 +282,13 @@ table inet filter {
     type ipv4_addr
     flags timeout
   }
-  
+
   chain input {
     type filter hook input priority 0; policy drop;
-    
+
     # Rate limit SSH / Ограничение скорости SSH
     tcp dport 22 ct state new meter ssh_meter { ip saddr timeout 60s limit rate 5/minute } accept
-    
+
     # Rate limit HTTP / Ограничение скорости HTTP
     tcp dport 80 meter http_meter { ip saddr limit rate 100/second } accept
   }
@@ -305,12 +305,12 @@ table inet filter {
     flags interval
     elements = { 1.0.1.0/24, 1.0.2.0/23 }
   }
-  
+
   chain input {
     type filter hook input priority 0; policy drop;
-    
+
     ip saddr @country_block drop
-    
+
     # Rest of rules / Остальные правила
   }
 }
@@ -323,7 +323,7 @@ table inet filter {
 table inet filter {
   chain forward {
     type filter hook forward priority 0; policy drop;
-    
+
     # Allow Docker containers / Разрешить контейнеры Docker
     iif docker0 accept
     oif docker0 ct state related,established accept
@@ -333,14 +333,14 @@ table inet filter {
 table ip nat {
   chain prerouting {
     type nat hook prerouting priority -100;
-    
+
     # Docker port mappings / Сопоставления портов Docker
     iif eth0 tcp dport 8080 dnat to 172.17.0.2:80
   }
-  
+
   chain postrouting {
     type nat hook postrouting priority 100;
-    
+
     # Docker masquerade / Docker masquerade
     oif eth0 masquerade
   }
@@ -354,13 +354,13 @@ table ip nat {
 table inet filter {
   chain input {
     type filter hook input priority 0; policy drop;
-    
+
     # Kubernetes API / Kubernetes API
     tcp dport 6443 accept
-    
+
     # Kubelet / Kubelet
     tcp dport 10250 accept
-    
+
     # NodePort range / Диапазон NodePort
     tcp dport 30000-32767 accept
   }

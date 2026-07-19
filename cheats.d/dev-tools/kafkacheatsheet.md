@@ -8,7 +8,7 @@ Order: 9
 > **Description:** Apache Kafka is a distributed event streaming platform capable of handling trillions of events per day. It is used for real-time data pipelines, event sourcing, log aggregation, and stream processing. Kafka 3.3+ supports KRaft mode (no Zookeeper dependency).
 > Apache Kafka — это распределённая платформа потоковой передачи событий, способная обрабатывать триллионы событий в день. Kafka 3.3+ поддерживает режим KRaft (без зависимости от Zookeeper).
 
-> **Status:** Actively maintained by Apache/Confluent. 
+> **Status:** Actively maintained by Apache/Confluent.
 > **Alternatives:** **Apache Pulsar** (multi-tenancy, tiered storage), **RabbitMQ** (traditional message broker), **NATS** (lightweight, cloud-native), **Amazon Kinesis** (AWS-managed).
 > **Role:** Sysadmin / DevOps
 > **Version:** 2.8+ (Zookeeper/KRaft modes noted where applicable)

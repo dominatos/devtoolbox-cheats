@@ -23,7 +23,7 @@ Order: 1
 
 **Status:** Actively maintained and the primary package manager for the largest family of Linux distributions. The `apt` command (introduced in Debian 8/Ubuntu 14.04) is the modern replacement for the older `apt-get` and `apt-cache` commands. / **Статус:** Активно поддерживается и является основным менеджером пакетов для крупнейшего семейства дистрибутивов Linux.
 
-**Default Ports:** N/A (local tool)  
+**Default Ports:** N/A (local tool)
 **Package Format:** `.deb`
 
 ---

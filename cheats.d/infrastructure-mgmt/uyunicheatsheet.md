@@ -744,7 +744,7 @@ spacewalk-data-fsck    # Check data integrity / Проверить целост�
 spacewalk-service status
 
 # Check spacewalk DB connectivity / Проверить подключение к БД spacewalk
-spacewalk-sql --select-mode -                     
+spacewalk-sql --select-mode -
 # Then type: SELECT 1; / Затем введите: SELECT 1;
 
 # Inspect Salt event bus (live) / Просмотр шины событий Salt в реальном времени

@@ -225,10 +225,10 @@ echo "disable backend bk_web" | socat - /run/haproxy.sock
 
 ### Default Paths / Пути по умолчанию
 
-`/etc/haproxy/haproxy.cfg` — Main config / Основной конфиг  
-`/run/haproxy.sock` — Runtime socket / Рантайм сокет  
-`/run/haproxy.pid` — PID file / Файл PID  
-`/var/log/haproxy.log` — Log file / Лог файл  
+`/etc/haproxy/haproxy.cfg` — Main config / Основной конфиг
+`/run/haproxy.sock` — Runtime socket / Рантайм сокет
+`/run/haproxy.pid` — PID file / Файл PID
+`/var/log/haproxy.log` — Log file / Лог файл
 `/etc/haproxy/certs/` — SSL certificates / SSL сертификаты
 
 ### Default Ports / Порты по умолчанию
@@ -241,7 +241,7 @@ echo "disable backend bk_web" | socat - /run/haproxy.sock
 
 ## Core Concepts
 
-**EN:** HAProxy operates as: **input → rules → output**  
+**EN:** HAProxy operates as: **input → rules → output**
 **RU:** HAProxy работает как: **вход → правила → выход**
 
 ### Mental Map / Ментальная карта
@@ -325,10 +325,10 @@ frontend fe_http
   bind *:80                                             # Bind address:port / Адрес и порт
   mode http                                             # Mode (http|tcp) / Режим работы
   default_backend bk_web                                # Default backend / Бэкенд по умолчанию
-  
+
   # HTTP→HTTPS redirect / Редирект HTTP→HTTPS
   http-request redirect scheme https code 301 if !{ ssl_fc }
-  
+
   # Add unique request ID / Добавить уникальный ID
   http-request set-header X-Request-ID %[unique-id]
 ```
@@ -517,10 +517,10 @@ frontend fe_main
 ```cfg
 frontend fe_https
   bind :443 ssl crt /etc/haproxy/certs/ alpn h2,http/1.1  # Enable TLS + HTTP/2 / Включение TLS и HTTP/2
-  
+
   # HSTS header / HSTS заголовок
   http-response set-header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-  
+
   default_backend bk_app
 ```
 
@@ -543,7 +543,7 @@ frontend fe_tls_passthrough
   bind :443
   tcp-request inspect-delay 5s
   tcp-request content accept if { req_ssl_hello_type 1 }
-  
+
   use_backend bk_tls_www if { req_ssl_sni -i <HOST> }  # Route by SNI / Роутинг по SNI
   default_backend bk_tls_www
 
@@ -610,7 +610,7 @@ Checks a specific URL endpoint instead of just TCP connection.
 backend bk_app
   option httpchk GET /healthz HTTP/1.1\r\nHost:\ www.example.com
   http-check expect status 200-299
-  
+
   server app1 10.0.0.1:8080 check inter 5s
   server app2 10.0.0.2:8080 check inter 5s
 ```
@@ -667,17 +667,17 @@ backend bk_agent
 ```cfg
 backend bk_production
   balance roundrobin
-  
+
   # HTTP Check: GET /api/health
   option httpchk GET /api/health
   http-check expect status 200
-  
+
   # Check every 2s, 3 fails = DOWN, 2 success = UP
   server s1 10.0.0.1:80 check inter 2s fall 3 rise 2
-  
+
   # Backup server (used only if s1 is down)
   server b1 10.0.0.2:80 check backup
-  
+
   # Maintenance mode (static code)
   server maint 127.0.0.1:8080 disabled
 ```
@@ -704,7 +704,7 @@ Stick-таблицы — это in-memory хранилище HAProxy. Они п�
 backend bk_app
   # Define table: Key=IP, Max=100k, TTL=30m, Track=ReqRate(10s)
   stick-table type ip size 100k expire 30m store http_req_rate(10s)
-  
+
   # Track every request by Source IP
   stick on src
 ```
@@ -717,19 +717,19 @@ Block clients exceeding 50 requests per 10 seconds.
 ```cfg
 frontend fe_http
   bind :80
-  
+
   # Define table
   stick-table type ip size 200k expire 10m store http_req_rate(10s)
-  
+
   # Track request
   http-request track-sc0 src
-  
+
   # Check limit (gt = greater than)
   acl too_fast sc_http_req_rate(0) gt 50
-  
+
   # Deny if limit exceeded
   http-request deny if too_fast
-  
+
   default_backend bk_app
 ```
 
@@ -744,10 +744,10 @@ Ensure a client always hits the same server.
 backend bk_app
   # Key is a string (32 chars max)
   stick-table type string len 32 size 100k expire 1h
-  
+
   # Use 'sessionid' cookie as key
   stick on req.cook(sessionid)
-  
+
   server s1 10.0.0.1:80 check
   server s2 10.0.0.2:80 check
 ```
@@ -781,14 +781,14 @@ Example: Ban IP after 5 failed logins.
 ```cfg
 frontend fe_login
   stick-table type ip size 100k expire 1h store gpc0
-  
+
   # Track request
   http-request track-sc0 src
-  
+
   # Increment limit if login failed (detected by path/status)
   acl login_fail path_beg /login method POST status 401
   http-request sc-inc-gpc0(0) if login_fail
-  
+
   # Deny if counter > 5
   acl is_banned sc_get_gpc0(0) gt 5
   http-request deny if is_banned
@@ -812,14 +812,14 @@ frontend fe_protected
   bind *:80
   stick-table type ip size 100k expire 10s store http_req_rate(10s),conn_cur
   http-request track-sc0 src
-  
+
   # RPS limit / Лимит RPS
   acl too_fast  sc_http_req_rate(0) gt 100
   # Connection limit / Лимит соединений
   acl too_many  sc_conn_cur(0)      gt 50
-  
+
   http-request deny if too_fast or too_many
-  
+
   default_backend bk_site
 ```
 
@@ -838,7 +838,7 @@ cache static_cache
 backend bk_www
   http-request cache-use static_cache
   http-response cache-store static_cache if { res.hdr(Cache-Control) -m found }
-  
+
   server w1 <IP1>:80 check
 ```
 
@@ -953,7 +953,7 @@ frontend fe_edge
   bind :80
   bind :443 ssl crt /etc/haproxy/certs/ alpn h2,http/1.1
   http-request redirect scheme https code 301 if !{ ssl_fc }
-  
+
   acl is_api path_beg /api
   use_backend bk_api if is_api
   default_backend bk_www
@@ -962,12 +962,12 @@ backend bk_www
   compression algo gzip
   compression type text/html text/css application/javascript application/json image/svg+xml
   balance leastconn
-  
+
   # cache: only static files
   acl static path_reg -i \.(css|js|png|jpg|jpeg|gif|svg|webp|ico|woff2?)$
   http-request  cache-use  static_cache
   http-response cache-store static_cache if static
-  
+
   server w1 <IP1>:80 check
 
 backend bk_api
@@ -999,7 +999,7 @@ backend bk_app
 ```cfg
 frontend fe_ws
   bind :443 ssl crt /etc/haproxy/certs/ alpn h2,http/1.1
-  
+
   acl ws_upgrade hdr(Upgrade) -i websocket
   acl conn_up    hdr(Connection) -i upgrade
   use_backend bk_ws if ws_upgrade conn_up

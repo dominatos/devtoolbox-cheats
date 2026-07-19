@@ -76,7 +76,7 @@ ansible-playbook site.yml -vvv
       yum:
         name: nginx
         state: present
-    
+
     - name: Start nginx service
       service:
         name: nginx

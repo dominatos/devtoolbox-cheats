@@ -5,7 +5,7 @@ readme="/home/sviatoslav/scripts/repo/devtoolbox-cheats/README.md"
 missing=0
 
 while IFS= read -r cheat; do
-    rel_path="${cheat#$cheats_dir/}"
+    rel_path="${cheat#"$cheats_dir"/}"
     if ! grep -qF "$rel_path" "$readme"; then
         echo "Missing in README: $rel_path"
         missing=$((missing+1))

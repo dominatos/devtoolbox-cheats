@@ -29,10 +29,10 @@ Order: 6
 # 📘 Basics & Installation / Основы и установка
 
 ### What is tmux? / Что такое tmux?
-**tmux** = Terminal Multiplexer — allows you to work with multiple sessions, windows, and panes in one terminal.  
+**tmux** = Terminal Multiplexer — allows you to work with multiple sessions, windows, and panes in one terminal.
 **tmux** = Терминальный мультиплексор — позволяет работать с несколькими сессиями, окнами и панелями в одном терминале.
 
-**Main prefix key** / Главная клавиша префикса: `Ctrl+b`  
+**Main prefix key** / Главная клавиша префикса: `Ctrl+b`
 All commands are executed after pressing prefix / Все команды вводятся после префикса.
 
 ### tmux Components / Компоненты tmux

@@ -51,7 +51,7 @@ networkctl lldp                     # Show LLDP neighbors / Показать LLD
 
 **Sample Output:**
 ```
-IDX LINK   TYPE     OPERATIONAL SETUP     
+IDX LINK   TYPE     OPERATIONAL SETUP
   1 lo     loopback carrier     unmanaged
   2 enp0s3 ether    routable    configured
 ```

@@ -201,7 +201,7 @@ services = nss, pam
 [domain/<DOMAIN>]
 ad_domain = <DOMAIN>
 krb5_realm = <REALM_UPPERCASE>
-realmd_tags = manages-system joined-with-adcli 
+realmd_tags = manages-system joined-with-adcli
 cache_credentials = True
 id_provider = ad
 krb5_store_password_if_offline = True

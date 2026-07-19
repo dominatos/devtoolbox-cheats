@@ -23,7 +23,7 @@ Order: 2
 
 **Status:** Actively maintained. **DNF5** (rewritten in C++) is the upcoming replacement, already available in Fedora 41+ as a technology preview and planned as default in future releases. On RHEL 7 and CentOS 7, `yum` is still the default. / **Статус:** Активно поддерживается. **DNF5** — следующее поколение, уже доступное в Fedora 41+.
 
-**Default Ports:** N/A (local tool)  
+**Default Ports:** N/A (local tool)
 **Package Format:** `.rpm`
 
 ---

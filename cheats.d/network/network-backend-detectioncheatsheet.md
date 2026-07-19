@@ -34,7 +34,7 @@ Run these commands in sequence to identify your active network backend on any Li
 systemctl is-active NetworkManager systemd-networkd networking network
 
 # Step 2: Check active listening processes / Проверить процессы, слушающие сеть
-sudo netstat -tulpn | grep -E 'NetworkManager|systemd-networkd' 
+sudo netstat -tulpn | grep -E 'NetworkManager|systemd-networkd'
 
 # Step 3: Check interface ownership (Universal) / Проверить владение интерфейсами
 networkctl list      # systemd-networkd check / Проверка systemd-networkd
@@ -77,9 +77,9 @@ nmcli device status              # List devices / Список устройст�
 
 **Sample Output:**
 ```
-DEVICE       TYPE      STATE      CONNECTION 
-enp3s0       ethernet  connected  Wired connection 1 
-wlan0        wifi      connected  MyWiFi 
+DEVICE       TYPE      STATE      CONNECTION
+enp3s0       ethernet  connected  Wired connection 1
+wlan0        wifi      connected  MyWiFi
 lo           loopback  unmanaged  --
 ```
 - `connected`: Managed by NM.
@@ -105,8 +105,8 @@ networkctl status <INTERFACE>      # Detail status / Детальный стат
 
 **Sample Output:**
 ```
-IDX LINK    TYPE     OPERATIONAL SETUP     
-  1 lo      loopback carrier     unmanaged 
+IDX LINK    TYPE     OPERATIONAL SETUP
+  1 lo      loopback carrier     unmanaged
   2 enp3s0  ether    routable    configured
 ```
 - `configured`: Managed by systemd-networkd.

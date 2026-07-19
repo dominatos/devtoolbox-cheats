@@ -183,7 +183,7 @@ mysql -h 127.0.0.1 -P 6033 -u <APP_USER> -p<APP_PASSWORD>      # Connect as app 
 ProxySQL uses a **3-layer config model** / ProxySQL использует **3 уровня конфигурации**:
 
 | Layer / Уровень | Description / Описание | Persistence / Сохранение |
-|-----------------|------------------------|--------------------------| 
+|-----------------|------------------------|--------------------------|
 | **RUNTIME** | Active in-memory config / Активная конфигурация в памяти | Lost on restart / Сбрасывается при рестарте |
 | **MEMORY** | Staging area (edited via Admin SQL) / Промежуточный слой | Lost on restart / Сбрасывается при рестарте |
 | **DISK** | Persisted to SQLite DB / Сохранено в SQLite | Survives restart / Переживает рестарт |

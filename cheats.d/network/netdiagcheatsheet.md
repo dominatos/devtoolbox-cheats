@@ -14,7 +14,7 @@ A collection of essential network diagnostic tools for connectivity testing, pat
 - [traceroute — Path Tracing](#traceroute-path-tracing)
 - [mtr — Combined Trace](#mtr-combined-trace)
 - [iperf3 — Bandwidth Testing](#iperf3-bandwidth-testing)
-- [netcat — Network Swiss Army](#netcat-network-swiss-army)  
+- [netcat — Network Swiss Army](#netcat-network-swiss-army)
 - [ss — Socket Statistics](#ss-socket-statistics)
 - [Troubleshooting Workflows](#troubleshooting-workflows-рабочие-процессы)
 - [Real-World Examples](#real-world-examples-примеры-из-практики)

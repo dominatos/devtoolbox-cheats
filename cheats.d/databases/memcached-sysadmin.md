@@ -90,7 +90,7 @@ echo "stats" | nc localhost 11211                                          # Che
 
 ### Configuration / Конфигурация
 
-`/etc/memcached.conf` (Ubuntu/Debian)  
+`/etc/memcached.conf` (Ubuntu/Debian)
 `/etc/sysconfig/memcached` (RHEL-based)
 
 ```bash

@@ -90,7 +90,7 @@ innodb_flush_log_at_trx_commit=0
 ```
 
 > [!IMPORTANT]
-> `wsrep_cluster_name` must be **identical** on all nodes. `binlog_format` must be `ROW` to ensure replication consistency. 
+> `wsrep_cluster_name` must be **identical** on all nodes. `binlog_format` must be `ROW` to ensure replication consistency.
 
 ### SST Method Comparison / Сравнение методов SST
 
@@ -186,7 +186,7 @@ sudo systemctl restart mysql   # Restart / Рестарт (triggers state transf
 ### Log Locations / Расположение логов
 
 ```bash
-# MySQL Error log (Contains Galera/wsrep messages) / Лог ошибок MySQL 
+# MySQL Error log (Contains Galera/wsrep messages) / Лог ошибок MySQL
 sudo tail -f /var/log/mysql/error.log
 
 # General query and slow queries (if enabled)
@@ -272,7 +272,7 @@ mysql -u root -p<PASSWORD> < /backup/mysql_full_<DATE>.sql
 
 ### Split-Brain Avoidance / Избежание Split-Brain
 
-A split-brain occurs if the cluster splits into two or more independent parts, none of which has a quorum. 
+A split-brain occurs if the cluster splits into two or more independent parts, none of which has a quorum.
 
 - Keep an **odd number of nodes** (e.g., 3, 5).
 - If you have an even number of nodes, use a **Galera Arbitrator (garbd)** to provide a tie-breaking vote without storing data.

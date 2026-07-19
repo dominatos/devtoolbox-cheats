@@ -23,7 +23,7 @@ Order: 4
 
 **Status:** Actively maintained. Zypper is the standard tool for both OpenSUSE Tumbleweed (rolling release) and OpenSUSE Leap / SLES (stable releases). Notably unique for its interactive conflict resolution and Snapper integration. / **Статус:** Активно поддерживается. Уникален интерактивным разрешением конфликтов и интеграцией Snapper.
 
-**Default Ports:** N/A (local tool)  
+**Default Ports:** N/A (local tool)
 **Package Format:** `.rpm`
 
 ---

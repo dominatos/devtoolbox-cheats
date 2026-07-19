@@ -82,7 +82,7 @@ sudo yum install -y percona-xtrabackup-80       # RHEL/AlmaLinux
 
 ### Node Configuration / Конфигурация узла
 
-`/etc/mysql/mysql.conf.d/mysqld.cnf` (Ubuntu/Debian)  
+`/etc/mysql/mysql.conf.d/mysqld.cnf` (Ubuntu/Debian)
 `/etc/my.cnf` (RHEL/AlmaLinux)
 
 ```ini

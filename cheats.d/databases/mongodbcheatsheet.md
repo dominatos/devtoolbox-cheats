@@ -209,7 +209,7 @@ cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
 
 # 3. Stop Service & Update Package
 # 3. Остановить сервис и обновить пакет
-systemctl stop mongod.service 
+systemctl stop mongod.service
 dnf update percona-server-mongodb
 
 # 4. Restart Service
@@ -223,7 +223,7 @@ mongosh --eval 'db.adminCommand({getParameter:1, featureCompatibilityVersion:1})
 # 6. Switch to New Release Stream
 # 6. Переключиться на новый поток релизов
 systemctl stop mongod
-percona-release enable psmdb-60 release  
+percona-release enable psmdb-60 release
 
 # 7. Install New Version
 # 7. Установить новую версию
@@ -255,7 +255,7 @@ cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
 
 # 3. Stop & Update
 # 3. Остановить и обновить
-systemctl stop mongod.service 
+systemctl stop mongod.service
 dnf update percona-server-mongodb
 
 # 4. Restart
@@ -269,7 +269,7 @@ mongosh --eval 'db.adminCommand({getParameter:1, featureCompatibilityVersion:1})
 # 6. Switch Stream
 # 6. Переключить поток
 systemctl stop mongod
-percona-release enable psmdb-70 release  
+percona-release enable psmdb-70 release
 
 # 7. Install
 # 7. Установить
@@ -301,7 +301,7 @@ cp /etc/mongod.conf /etc/mongod.conf_bkp-$(date +%Y-%m-%d)
 
 # 3. Stop & Update
 # 3. Остановить и обновить
-systemctl stop mongod.service 
+systemctl stop mongod.service
 dnf update percona-server-mongodb
 
 # 4. Restart
@@ -315,7 +315,7 @@ mongosh --eval 'db.adminCommand({getParameter:1, featureCompatibilityVersion:1})
 # 6. Switch Stream
 # 6. Переключить поток
 systemctl stop mongod
-percona-release enable psmdb-80 release  
+percona-release enable psmdb-80 release
 
 # 7. Install
 # 7. Установить
@@ -513,7 +513,7 @@ mongodump --uri="mongodb://<ADMIN>:<PASS>@<NODE_1>:27017,<NODE_2>:27017/?replica
 db.createView(
   "fasc_chiusi_view",     // View name / Имя представления
   "fasc",                 // Source collection / Исходная коллекция
-  [ 
+  [
     { $match: { "customFields_Frontespizio_o_DataChiusura_ld": { $exists: true } } },
     { $project: { _id: 1, customFields_Frontespizio_o_DataChiusura_ld: 1 } }
   ]

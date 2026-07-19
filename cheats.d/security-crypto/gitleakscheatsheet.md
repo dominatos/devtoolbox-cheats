@@ -3,7 +3,7 @@ Group: Security & Crypto
 Icon: 🔐
 Order: 6
 
-> Complete guide for detecting, removing, and preventing sensitive data leaks in Git repositories.  
+> Complete guide for detecting, removing, and preventing sensitive data leaks in Git repositories.
 > Полное руководство по обнаружению, удалению и предотвращению утечек чувствительных данных в Git-репозиториях.
 
 ---
@@ -1453,7 +1453,7 @@ journalctl -u vault -n 100 --no-pager  # Recent logs / Последние лог
 
 ---
 
-**Last Updated / Последнее обновление:** April 2026  
+**Last Updated / Последнее обновление:** April 2026
 **Version / Версия:** 2.0
 
 > [!WARNING]

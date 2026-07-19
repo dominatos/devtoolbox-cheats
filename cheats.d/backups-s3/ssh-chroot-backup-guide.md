@@ -15,7 +15,7 @@ Order: 15
 
 ---
 
-**Description:**  
+**Description:**
 SSH (Secure Shell) chroot environment combined with SFTP provides a highly secure, restricted method for automated remote backups. By forcing a user into a "jail" (`chroot`) and disabling their shell access (`/usr/sbin/nologin`), the backup process can write data securely without allowing lateral movement across the file system if the private key is compromised. Currently, this remains an industry standard for secure, agentless data ingestion over SSH.
 
 ### Why Use a Chroot Backup User? / Зачем использовать Chroot для бэкап-пользователя?

@@ -59,18 +59,18 @@ sudo systemctl enable nginx                              # Enable at boot / Ав
 
 ### Default Paths / Пути по умолчанию
 
-**Main config / Основной конфиг:**  
+**Main config / Основной конфиг:**
 `/etc/nginx/nginx.conf`
 
-**Site configs / Конфиги сайтов:**  
-`/etc/nginx/sites-available/` (Debian/Ubuntu)  
-`/etc/nginx/sites-enabled/` (Debian/Ubuntu)  
+**Site configs / Конфиги сайтов:**
+`/etc/nginx/sites-available/` (Debian/Ubuntu)
+`/etc/nginx/sites-enabled/` (Debian/Ubuntu)
 `/etc/nginx/conf.d/` (RHEL/CentOS)
 
-**Logs directory / Директория логов:**  
+**Logs directory / Директория логов:**
 `/var/log/nginx/`
 
-**Default document root / Корень по умолчанию:**  
+**Default document root / Корень по умолчанию:**
 `/usr/share/nginx/html/` or `/var/www/html/`
 
 ### Default Ports / Порты по умолчанию

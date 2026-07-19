@@ -15,7 +15,7 @@ LVM introduces three abstraction layers:
 **Why LVM matters / Зачем нужен LVM:**
 - **Online resizing** — grow or shrink logical volumes without unmounting
 - **Disk aggregation** — combine multiple physical disks into one logical pool
-- **Snapshots** — create point-in-time copies for backups or testing  
+- **Snapshots** — create point-in-time copies for backups or testing
 - **Thin provisioning** — allocate storage on demand
 - **Migration** — move data between physical disks transparently (`pvmove`)
 

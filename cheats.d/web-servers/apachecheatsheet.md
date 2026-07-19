@@ -52,19 +52,19 @@ sudo systemctl enable httpd                              # Enable at boot / Ав
 
 ### Default Paths / Пути по умолчанию
 
-**Debian/Ubuntu:**  
-`/etc/apache2/apache2.conf` — Main config / Основной конфиг  
-`/etc/apache2/sites-available/` — Available sites / Доступные сайты  
-`/etc/apache2/sites-enabled/` — Enabled sites / Включенные сайты  
-`/etc/apache2/mods-available/` — Available modules / Доступные модули  
-`/etc/apache2/mods-enabled/` — Enabled modules / Включенные модули  
-`/var/www/html/` — Default document root / Корень по умолчанию  
+**Debian/Ubuntu:**
+`/etc/apache2/apache2.conf` — Main config / Основной конфиг
+`/etc/apache2/sites-available/` — Available sites / Доступные сайты
+`/etc/apache2/sites-enabled/` — Enabled sites / Включенные сайты
+`/etc/apache2/mods-available/` — Available modules / Доступные модули
+`/etc/apache2/mods-enabled/` — Enabled modules / Включенные модули
+`/var/www/html/` — Default document root / Корень по умолчанию
 `/var/log/apache2/` — Logs directory / Директория логов
 
-**RHEL/CentOS/AlmaLinux:**  
-`/etc/httpd/conf/httpd.conf` — Main config / Основной конфиг  
-`/etc/httpd/conf.d/` — Additional configs / Дополнительные конфиги  
-`/var/www/html/` — Default document root / Корень по умолчанию  
+**RHEL/CentOS/AlmaLinux:**
+`/etc/httpd/conf/httpd.conf` — Main config / Основной конфиг
+`/etc/httpd/conf.d/` — Additional configs / Дополнительные конфиги
+`/var/www/html/` — Default document root / Корень по умолчанию
 `/var/log/httpd/` — Logs directory / Директория логов
 
 ### Default Ports / Порты по умолчанию
@@ -118,13 +118,13 @@ sudo apachectl graceful                                  # Graceful restart / П
   ServerName <HOST>                                      # Server name / Имя хоста
   ServerAlias www.<HOST>                                 # Alias / Псевдоним
   DocumentRoot /var/www/<HOST>                           # Document root / Корневая директория
-  
+
   <Directory /var/www/<HOST>>
     Options -Indexes +FollowSymLinks                     # Directory options / Опции директории
     AllowOverride All                                    # Allow .htaccess / Разрешить .htaccess
     Require all granted                                  # Access control / Контроль доступа
   </Directory>
-  
+
   ErrorLog ${APACHE_LOG_DIR}/<HOST>_error.log            # Error log / Лог ошибок
   CustomLog ${APACHE_LOG_DIR}/<HOST>_access.log combined # Access log / Лог доступа
 </VirtualHost>
@@ -136,11 +136,11 @@ sudo apachectl graceful                                  # Graceful restart / П
 ```apache
 <VirtualHost *:80>
   ServerName <HOST>                                      # ServerName / Имя хоста
-  
+
   ProxyPreserveHost On                                   # Preserve Host header / Сохранить заголовок Host
   ProxyPass        / http://<IP>:3000/                   # Proxy to backend / Проксировать на backend
   ProxyPassReverse / http://<IP>:3000/                   # Reverse proxy / Обратный прокси
-  
+
   ErrorLog  ${APACHE_LOG_DIR}/<HOST>_error.log           # Error log / Лог ошибок
   CustomLog ${APACHE_LOG_DIR}/<HOST>_access.log combined # Access log / Лог доступа
 </VirtualHost>
@@ -153,17 +153,17 @@ sudo apachectl graceful                                  # Graceful restart / П
 <VirtualHost *:443>
   ServerName <HOST>
   DocumentRoot /var/www/<HOST>
-  
+
   SSLEngine on                                           # Enable SSL / Включить SSL
   SSLCertificateFile /etc/ssl/certs/<HOST>.crt           # Certificate / Сертификат
   SSLCertificateKeyFile /etc/ssl/private/<HOST>.key      # Private key / Приватный ключ
   SSLCertificateChainFile /etc/ssl/certs/<HOST>-chain.crt # Chain / Цепочка
-  
+
   <Directory /var/www/<HOST>>
     AllowOverride All
     Require all granted
   </Directory>
-  
+
   ErrorLog ${APACHE_LOG_DIR}/<HOST>_ssl_error.log
   CustomLog ${APACHE_LOG_DIR}/<HOST>_ssl_access.log combined
 </VirtualHost>
@@ -250,19 +250,19 @@ sudo certbot renew --dry-run                             # Test renewal / Тес
 ```apache
 <VirtualHost *:443>
   ServerName <HOST>
-  
+
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/<HOST>.crt
   SSLCertificateKeyFile /etc/ssl/private/<HOST>.key
-  
+
   # Modern SSL configuration / Современная конфигурация SSL
   SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1                 # Only TLS 1.2+ / Только TLS 1.2+
   SSLCipherSuite HIGH:!aNULL:!MD5                        # Strong ciphers / Сильные шифры
   SSLHonorCipherOrder on                                 # Prefer server ciphers / Приоритет серверу
-  
+
   # HSTS header / Заголовок HSTS
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-  
+
   DocumentRoot /var/www/<HOST>
 </VirtualHost>
 ```
@@ -356,19 +356,19 @@ ServerSignature Off                                      # Hide signature / Ск
 ```apache
 <IfModule mod_expires.c>
   ExpiresActive On                                       # Enable expiration / Включить истечение
-  
+
   # Images / Изображения
   ExpiresByType image/jpg "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/gif "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
-  
+
   # CSS and JavaScript / CSS и JavaScript
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
   ExpiresByType application/x-javascript "access plus 1 month"
-  
+
   # Default / По умолчанию
   ExpiresDefault "access plus 2 days"
 </IfModule>

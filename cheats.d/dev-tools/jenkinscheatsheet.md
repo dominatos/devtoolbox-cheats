@@ -149,7 +149,7 @@ agent {
 ## 5. Security / Безопасность
 
 ### User Database / База пользователей
-Located in `$JENKINS_HOME/users/`. 
+Located in `$JENKINS_HOME/users/`.
 
 ### Reset Admin Password / Сброс пароля админа
 If locked out, edit `$JENKINS_HOME/config.xml` and change `<useSecurity>true</useSecurity>` to `false`. Restart Jenkins.

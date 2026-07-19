@@ -22,7 +22,7 @@ Order: 3
 
 **Status:** Actively maintained. Pacman is the core tool of the Arch ecosystem and is tightly integrated with the AUR (Arch User Repository) via helpers like `yay` and `paru`. / **Статус:** Активно поддерживается. Ядро экосистемы Arch, интегрирован с AUR.
 
-**Default Ports:** N/A (local tool)  
+**Default Ports:** N/A (local tool)
 **Package Format:** `.pkg.tar.zst`
 
 ---
