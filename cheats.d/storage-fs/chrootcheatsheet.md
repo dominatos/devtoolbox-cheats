@@ -26,11 +26,11 @@ Chroot is a fundamental Unix concept (since V7 Unix, 1979) and is built into the
 [chroot(1)](https://man7.org/linux/man-pages/man1/chroot.1.html) · [chroot(2)](https://man7.org/linux/man-pages/man2/chroot.2.html) · [mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) · [arch-chroot](https://man.archlinux.org/man/arch-chroot.8)
 
 ## Table of Contents
-- [Core Management](#core-management)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Comparison: BIOS vs UEFI](#comparison-bios-vs-uefi)
-- [Comparison: Chroot vs Alternatives](#comparison-chroot-vs-alternatives)
-- [Troubleshooting & Tips](#troubleshooting--tips)
+- [Core Management](#core-management-основное-управление)
+- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
+- [Comparison: BIOS vs UEFI](#comparison-bios-vs-uefi-сравнение-bios-и-uefi)
+- [Comparison: Chroot vs Alternatives](#comparison-chroot-vs-alternatives-сравнение-chroot-и-альтернативы)
+- [Troubleshooting & Tips](#troubleshooting-tips-устранение-неполадок-и-советы)
 - [Production Runbook: System Recovery via Chroot](#production-runbook-system-recovery-via-chroot)
 
 ---

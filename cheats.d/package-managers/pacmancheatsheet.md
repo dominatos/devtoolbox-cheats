@@ -5,12 +5,12 @@ Order: 3
 
 ## Table of Contents
 - [Description](#description)
-- [Configuration](#-configuration--конфигурация)
-- [Core Management](#-core-management--основное-управление)
-- [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Security & Verification](#-security--verification--безопасность-и-проверка)
-- [Documentation Links](#-documentation-links)
+- [Configuration](#configuration-конфигурация)
+- [Core Management](#core-management-основное-управление)
+- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Security & Verification](#security-verification-безопасность-и-проверка)
+- [Documentation Links](#documentation-links)
 
 ---
 

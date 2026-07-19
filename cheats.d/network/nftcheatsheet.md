@@ -11,10 +11,10 @@ Order: 14
 
 ## Table of Contents
 - [Basic Commands](#basic-commands)
-- [Tables & Chains](#tables--chains)
+- [Tables & Chains](#tables-chains)
 - [Rules](#rules)
-- [NAT & Port Forwarding](#nat--port-forwarding)
-- [Sets & Maps](#sets--maps)
+- [NAT & Port Forwarding](#nat-port-forwarding)
+- [Sets & Maps](#sets-maps)
 - [Migration from iptables](#migration-from-iptables)
 - [Real-World Examples](#real-world-examples)
 - [Reference Tables](#reference-tables)

@@ -5,12 +5,12 @@ Order: 6
 
 ## Table of Contents
 - [Description](#description)
-- [Configuration](#-configuration--конфигурация)
-- [Core Management](#-core-management--основное-управление)
-- [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
-- [Comparison: Flatpak vs Snap](#-comparison-flatpak-vs-snap)
-- [Security](#-security--безопасность)
-- [Documentation Links](#-documentation-links)
+- [Configuration](#configuration-конфигурация)
+- [Core Management](#core-management-основное-управление)
+- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
+- [Comparison: Flatpak vs Snap](#comparison-flatpak-vs-snap)
+- [Security](#security-безопасность)
+- [Documentation Links](#documentation-links)
 
 ---
 

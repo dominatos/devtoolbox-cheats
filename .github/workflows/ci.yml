@@ -1,0 +1,268 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  # ─── Security ───────────────────────────────────────────────
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Gitleaks (secret scanning)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ─── Bash Syntax ────────────────────────────────────────────
+  bash-syntax:
+    name: Bash Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check bash syntax on all .sh files
+        run: |
+          failed=0
+          for f in $(find . -name '*.sh' -not -path './.git/*' -not -path './Windows-beta/*'); do
+            if ! bash -n "$f"; then
+              echo "FAIL: $f"
+              failed=1
+            else
+              echo "OK:   $f"
+            fi
+          done
+          exit $failed
+
+  # ─── Shell Lint ─────────────────────────────────────────────
+  shell-lint:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Run shellcheck on all .sh files
+        run: |
+          failed=0
+          for f in $(find . -name '*.sh' -not -path './.git/*' -not -path './Windows-beta/*'); do
+            if shellcheck -e SC1091 -e SC2034 -e SC2155 -e SC2169 -e SC3043 -e SC3010 -e SC2086 -e SC2046 -e SC2001 -e SC2002 -e SC2005 -e SC2012 -e SC2015 -e SC2028 -e SC2043 -e SC2116 -e SC2128 -e SC2143 -e SC2162 -e SC2181 -e SC2191 -e SC2206 -e SC2207 -e SC2230 -e SC2236 -e SC2064 -e SC2068 -e SC2069 -e SC2066 -e SC2059 -e SC2050 -e SC2048 -e SC2013 -e SC2027 -e SC2010 -e SC2004 "$f"; then
+              echo "OK:   $f"
+            else
+              echo "FAIL: $f"
+              failed=1
+            fi
+          done
+          exit $failed
+
+  # ─── QML Syntax ─────────────────────────────────────────────
+  qml-syntax:
+    name: QML Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate QML files
+        run: |
+          failed=0
+          for f in $(find . -name '*.qml' -not -path './.git/*'); do
+            # Check for import statements
+            if ! grep -q '^import ' "$f"; then
+              echo "WARN: $f — no import statements found"
+            fi
+            # Check basic brace matching
+            opens=$(grep -o '{' "$f" | wc -l)
+            closes=$(grep -o '}' "$f" | wc -l)
+            if [ "$opens" -ne "$closes" ]; then
+              echo "FAIL: $f — brace mismatch (open=$opens, close=$closes)"
+              failed=1
+            else
+              echo "OK:   $f"
+            fi
+          done
+          exit $failed
+
+  # ─── Markdown Lint ──────────────────────────────────────────
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Layer 1: Fast shell-based checks
+      - name: Validate Markdown front-matter
+        run: |
+          # Cheatsheets use bare "Key: Value" front-matter (no --- delimiters)
+          # Parser reads Title/Group/Icon/Order from first 80 lines
+          failed=0
+          for f in $(find cheats.d -name '*.md' -not -path './.git/*' 2>/dev/null); do
+            # Check Title field exists in first 5 lines
+            if ! head -n 5 "$f" | grep -qi '^Title:'; then
+              echo "FAIL: $f — missing 'Title' in front-matter"
+              failed=1
+            fi
+            # Check for trailing whitespace
+            if grep -Pn '[ \t]+$' "$f" > /dev/null 2>&1; then
+              echo "FAIL: $f — trailing whitespace found"
+              failed=1
+            fi
+          done
+          exit $failed
+
+      - name: Validate Markdown links
+        run: |
+          failed=0
+          for f in $(find . -name '*.md' -not -path './.git/*' -not -path './Windows-beta/*' -not -path './.mimocode/*' -not -path './docs/compose/*'); do
+            # Check for broken local links (not http/https)
+            while IFS= read -r link; do
+              target=$(echo "$link" | grep -oP '\((.*?)\)' | tr -d '()')
+              # Skip http/https links and anchors
+              if [[ "$target" == http* ]] || [[ "$target" == \#* ]]; then
+                continue
+              fi
+              # Strip anchor from file#anchor
+              file_target="${target%%#*}"
+              if [ -n "$file_target" ] && [ ! -f "$file_target" ] && [ ! -d "$file_target" ]; then
+                echo "WARN: $f — broken local link: $target"
+              fi
+            done < <(grep -oP '\[.*?\]\((.*?)\)' "$f" 2>/dev/null || true)
+          done
+          echo "Local link check complete"
+
+      - name: Validate README structure
+        run: |
+          # Check required sections exist
+          sections=("Features" "Requirements" "Installation" "License")
+          failed=0
+          for s in "${sections[@]}"; do
+            if ! grep -qi "## .*${s}" README.md; then
+              echo "FAIL: README.md missing '## $s' section"
+              failed=1
+            fi
+          done
+          # Check CHANGELOG has version entries (## vX.Y.Z format)
+          if ! grep -qP '## v\d+\.\d+\.\d+' CHANGELOG.md; then
+            echo "FAIL: CHANGELOG.md missing version entries"
+            failed=1
+          fi
+          exit $failed
+
+      # Layer 2: markdownlint-cli2 for deep analysis
+      - name: Run markdownlint-cli2
+        run: npx --yes markdownlint-cli2 '**/*.md' '!Windows-beta/**' '!.mimocode/**' '!.codex/**' '!docs/compose/**'
+
+  # ─── File Integrity ─────────────────────────────────────────
+  integrity:
+    name: File Integrity
+    runs-on: ubuntu-latest
+    needs: bash-syntax
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify required files exist
+        run: |
+          required_files=(
+            "version.txt"
+            "README.md"
+            "CHANGELOG.md"
+            "LICENSE"
+            "install.sh"
+            "devtoolbox-cheats.30s.sh"
+            "cheats-updater.sh"
+            ".github/workflows/ci.yml"
+            ".github/dependabot.yml"
+          )
+          failed=0
+          for f in "${required_files[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "FAIL: Missing required file: $f"
+              failed=1
+            else
+              echo "OK:   $f"
+            fi
+          done
+          exit $failed
+
+      - name: Check .env is not committed
+        run: |
+          if [ -f ".env" ]; then
+            echo "FAIL: .env file should not be in repo"
+            exit 1
+          fi
+          echo "OK: No .env in repo"
+
+      - name: Check for large files
+        run: |
+          find . -type f -size +1M -not -path './.git/*' -not -path './Windows-beta/*' -not -path './__pycache__/*' | while read f; do
+            size=$(du -h "$f" | cut -f1)
+            echo "WARN: Large file: $f ($size)"
+          done
+          echo "Large file check complete"
+
+  # ─── Version Sync ───────────────────────────────────────────
+  version-sync:
+    name: Version Sync
+    runs-on: ubuntu-latest
+    needs: bash-syntax
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify version consistency
+        run: |
+          txt_version=$(cat version.txt | tr -d '[:space:]')
+          echo "version.txt: $txt_version"
+          failed=0
+
+          # Scripts use VERSION="v1.4.39" (with v prefix), strip it for comparison
+          for script in devtoolbox-cheats.30s.sh cheats-updater.sh install.sh devtools.1m.sh; do
+            if [ -f "$script" ]; then
+              script_version=$(grep -oP '(?<=VERSION=)["\047]?v?\K[^\s"\047]+' "$script" 2>/dev/null || true)
+              if [ -n "$script_version" ]; then
+                if [ "$txt_version" != "$script_version" ]; then
+                  echo "FAIL: $script version ($script_version) != version.txt ($txt_version)"
+                  failed=1
+                else
+                  echo "OK:   $script = $script_version"
+                fi
+              fi
+            fi
+          done
+
+          # KDE metadata uses bare version (no v prefix)
+          for meta in kde-widget-plasma6/DevToolboxPlasmoid/metadata.json kde-widget-plasma5/DevToolboxPlasmoid/metadata.json; do
+            if [ -f "$meta" ]; then
+              meta_version=$(grep -oP '"Version"\s*:\s*"\K[^"]+' "$meta" 2>/dev/null || true)
+              if [ -n "$meta_version" ]; then
+                if [ "$txt_version" != "$meta_version" ]; then
+                  echo "FAIL: $meta version ($meta_version) != version.txt ($txt_version)"
+                  failed=1
+                else
+                  echo "OK:   $meta = $meta_version"
+                fi
+              fi
+            fi
+          done
+
+          exit $failed

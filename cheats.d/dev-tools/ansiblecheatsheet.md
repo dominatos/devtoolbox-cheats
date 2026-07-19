@@ -16,11 +16,11 @@ Order: 5
 
 ## 📚 Table of Contents / Содержание
 
-1. [Ad-Hoc Commands](#ad-hoc-commands--ad-hoc-команды)
-2. [Playbooks](#playbooks--плейбуки)
-3. [Ansible Galaxy](#ansible-galaxy--ansible-galaxy)
-4. [Ansible Vault](#ansible-vault--ansible-vault-шифрование)
-5. [Configuration](#configuration--конфигурация)
+1. [Ad-Hoc Commands](#1-ad-hoc-commands-ad-hoc-команды)
+2. [Playbooks](#2-playbooks-плейбуки)
+3. [Ansible Galaxy](#3-ansible-galaxy-ansible-galaxy)
+4. [Ansible Vault](#4-ansible-vault-ansible-vault-шифрование)
+5. [Configuration](#5-configuration-конфигурация)
 6. [Sysadmin Basics](#sysadmin-basics)
 7. [Logrotate Configuration](#logrotate-configuration)
 

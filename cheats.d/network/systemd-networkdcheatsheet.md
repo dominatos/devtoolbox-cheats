@@ -8,12 +8,12 @@ Order: 22
 `systemd-networkd` is systemd's native network configuration manager. It's ideal for servers and minimal systems where GUI tools are unnecessary. Configuration is done through `.network` and `.netdev` files.
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
-- [Core Management](#core-management)
+- [Installation & Configuration](#installation-configuration)
+- [Core Management](#core-management-основное-управление)
 - [Network Configuration Files](#network-configuration-files)
-- [Advanced Networking](#advanced-networking)
-- [Troubleshooting & Tools](#troubleshooting--tools)
-- [Comparison Tables](#comparison-tables)
+- [Advanced Networking](#advanced-networking-продвинутые-настройки)
+- [Troubleshooting & Tools](#troubleshooting-tools-устранение-неполадок)
+- [Comparison Tables](#comparison-tables-таблицы-сравнения)
 
 ---
 

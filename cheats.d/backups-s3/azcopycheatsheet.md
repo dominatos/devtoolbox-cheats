@@ -4,7 +4,7 @@ Icon: 🗄️
 Order: 11
 
 ## Table of Contents
-- [Installation & Authentication](#installation--authentication)
+- [Installation & Authentication](#installation-authentication)
 - [Copy Operations](#copy-operations)
 - [Sync Operations](#sync-operations)
 - [Storage Tiers](#storage-tiers)

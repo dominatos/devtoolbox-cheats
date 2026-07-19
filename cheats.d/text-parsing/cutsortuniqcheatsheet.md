@@ -6,12 +6,12 @@ Order: 6
 > **cut**, **sort**, and **uniq** — the classic GNU Coreutils trio for columnar data extraction, line ordering, and deduplication. Pre-installed on every Linux distribution, these tools form the backbone of shell-based data pipelines. They are especially useful for quick log analysis, CSV processing, and frequency counting. No modern replacements needed — they are lightweight, POSIX-compliant, and actively maintained.
 
 ## Table of Contents
-- [CUT — Field Extraction](#-cut--field-extraction--cut--извлечение-полей)
-- [SORT — Sorting Lines](#-sort--sorting-lines--sort--сортировка-строк)
-- [UNIQ — Deduplication](#-uniq--deduplication--uniq--удаление-дубликатов)
-- [Combined Pipelines](#-combined-pipelines--комбинированные-конвейеры)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Performance Tips](#-performance-tips--советы-по-производительности)
+- [CUT — Field Extraction](#cut-field-extraction-cut-извлечение-полей)
+- [SORT — Sorting Lines](#sort-sorting-lines-sort-сортировка-строк)
+- [UNIQ — Deduplication](#uniq-deduplication-uniq-удаление-дубликатов)
+- [Combined Pipelines](#combined-pipelines-комбинированные-конвейеры)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Performance Tips](#performance-tips-советы-по-производительности)
 
 ---
 

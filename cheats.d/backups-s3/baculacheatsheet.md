@@ -8,7 +8,7 @@ Order: 6
 - [Installation](#installation)
 - [bconsole Basics](#bconsole-basics)
 - [Job Management](#job-management)
-- [Volume & Pool Management](#volume--pool-management)
+- [Volume & Pool Management](#volume-pool-management)
 - [Restore Operations](#restore-operations)
 - [Catalog Queries](#catalog-queries)
 - [Client Operations](#client-operations)

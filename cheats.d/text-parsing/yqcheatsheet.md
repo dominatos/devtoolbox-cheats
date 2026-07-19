@@ -6,19 +6,19 @@ Order: 8
 > **yq** — a portable, lightweight YAML/JSON/XML/CSV/TSV processor written in Go by Mike Farah. It uses jq-like syntax for querying, modifying, and converting structured data. Heavily used in Kubernetes/Helm workflows, CI/CD pipelines, and infrastructure-as-code. Actively maintained with frequent releases. Note: there are two tools named `yq` — this cheatsheet covers the Go version ([mikefarah/yq](https://github.com/mikefarah/yq)), not the Python wrapper ([kislyuk/yq](https://github.com/kislyuk/yq)).
 
 ## Table of Contents
-- [Basics](#-basics--основы)
-- [Reading & Querying](#-reading--querying--чтение-и-запросы)
-- [Modifying YAML](#-modifying-yaml--изменение-yaml)
-- [Arrays & Objects](#-arrays--objects--массивы-и-объекты)
-- [Output Formats](#-output-formats--форматы-вывода)
-- [Merging & Combining](#-merging--combining--слияние-и-комбинирование)
-- [Kubernetes Examples](#-kubernetes-examples--примеры-kubernetes)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Data Transformation](#-data-transformation--преобразование-данных)
-- [Advanced Techniques](#-advanced-techniques--продвинутые-техники)
-- [Tips & Tricks](#-tips--tricks--советы-и-хитрости)
-- [Validation & Debugging](#-validation--debugging--проверка-и-отладка)
-- [Installation](#%EF%B8%8F-installation--установка)
+- [Basics](#basics-основы)
+- [Reading & Querying](#reading-querying-чтение-и-запросы)
+- [Modifying YAML](#modifying-yaml-изменение-yaml)
+- [Arrays & Objects](#arrays-objects-массивы-и-объекты)
+- [Output Formats](#output-formats-форматы-вывода)
+- [Merging & Combining](#merging-combining-слияние-и-комбинирование)
+- [Kubernetes Examples](#kubernetes-examples-примеры-kubernetes)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Data Transformation](#data-transformation-преобразование-данных)
+- [Advanced Techniques](#advanced-techniques-продвинутые-техники)
+- [Tips & Tricks](#tips-tricks-советы-и-хитрости)
+- [Validation & Debugging](#validation-debugging-проверка-и-отладка)
+- [Installation](#installation-установка)
 
 ---
 

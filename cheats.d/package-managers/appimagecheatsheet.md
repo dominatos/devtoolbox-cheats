@@ -5,11 +5,11 @@ Order: 7
 
 ## Table of Contents
 - [Description](#description)
-- [Core Management](#-core-management--основное-управление)
-- [Advanced Operations](#-advanced-operations--продвинутые-операции)
-- [Comparison: AppImage vs Others](#-comparison-appimage-vs-others)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Documentation Links](#-documentation-links)
+- [Core Management](#core-management-основное-управление)
+- [Advanced Operations](#advanced-operations-продвинутые-операции)
+- [Comparison: AppImage vs Others](#comparison-appimage-vs-others)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Documentation Links](#documentation-links)
 
 ---
 

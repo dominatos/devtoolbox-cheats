@@ -11,13 +11,13 @@ Order: 6
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Installation & Configuration](#installation--configuration)
+2. [Installation & Configuration](#installation-configuration)
 3. [Scanning Tools Overview](#scanning-tools-overview)
 4. [Automated Scanning](#automated-scanning)
 5. [Manual Search](#manual-search)
 6. [Removing Secrets from History](#removing-secrets-from-history)
 7. [Revoking Compromised Secrets](#revoking-compromised-secrets)
-8. [Prevention & Best Practices](#prevention--best-practices)
+8. [Prevention & Best Practices](#prevention-best-practices)
 9. [GitHub-Specific Tools](#github-specific-tools)
 10. [CI/CD Integration](#cicd-integration)
 11. [Secret Managers](#secret-managers)
@@ -26,7 +26,7 @@ Order: 6
 14. [Emergency Incident Runbook](#emergency-incident-runbook)
 15. [Quick Reference](#quick-reference)
 16. [Sysadmin Operations](#sysadmin-operations)
-17. [Resources & Links](#resources--links)
+17. [Resources & Links](#resources-links)
 
 ---
 

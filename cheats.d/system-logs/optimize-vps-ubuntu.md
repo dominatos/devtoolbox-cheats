@@ -27,7 +27,7 @@ Quick guide to free disk space, reduce RAM/CPU usage, and improve security on a 
 
 1. [Remove Unnecessary Packages](#remove-unnecessary-packages)
 2. [Disable Unneeded Services](#disable-unneeded-services)
-3. [Monitoring & Verification](#monitoring--verification)
+3. [Monitoring & Verification](#monitoring-verification)
 4. [Expected Results](#expected-results)
 
 ---

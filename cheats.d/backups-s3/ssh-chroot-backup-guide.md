@@ -9,7 +9,7 @@ Order: 15
 - [Architecture Overview](#architecture-overview)
 - [Client-Side Key Generation](#client-side-key-generation)
 - [Server-Side Configuration](#server-side-configuration)
-- [Verification & Path Mapping](#verification--path-mapping)
+- [Verification & Path Mapping](#verification-path-mapping)
 - [Integration with Rclone](#integration-with-rclone)
 - [Documentation Links](#documentation-links)
 

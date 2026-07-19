@@ -19,19 +19,19 @@ Order: 5
 
 ## 📚 Table of Contents / Содержание
 
-1. [Connection & Basics](#connect--подключение)
-2. [CRUD Operations](#crud-operations--операции-crud)
-3. [Data Management](#data-management--управление-данными)
-4. [Administration](#administration--администрирование)
-5. [Replica Set Management](#replica-set-management--управление-репликами)
-6. [Profiling & Performance](#profiling--performance--профилирование-и-производительность)
-7. [Sysadmin Toolkit](#sysadmin-toolkit--инструменты-сисадмина)
-8. [Percona Upgrade Guide](#percona-upgrade-guide--руководство-по-обновлению-percona)
-9. [MongoDB Community Upgrade Guide](#mongodb-community-upgrade-guide--руководство-по-обновлению-mongodb-community)
-10. [Advanced Queries](#advanced-cheatsheet---queries--продвинутая-шпаргалка---запросы)
-11. [Practice Exercises](#practice-exercises--задания-для-практики)
-12. [Configuration](#configuration-snippets--примеры-конфигурации)
-13. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
+1. [Connection & Basics](#connect-подключение)
+2. [CRUD Operations](#crud-operations)
+3. [Data Management](#data-management)
+4. [Administration](#administration)
+5. [Replica Set Management](#replica-set-management-управление-репликами)
+6. [Profiling & Performance](#profiling-performance)
+7. [Sysadmin Toolkit](#sysadmin-toolkit)
+8. [Percona Upgrade Guide](#percona-upgrade-guide)
+9. [MongoDB Community Upgrade Guide](#mongodb-community-upgrade-guide)
+10. [Advanced Queries](#advanced-cheatsheet---queries)
+11. [Practice Exercises](#practice-exercises)
+12. [Configuration](#configuration-snippets)
+13. [Logrotate Configuration](#logrotate-configuration)
 
 ---
 

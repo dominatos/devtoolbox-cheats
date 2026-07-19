@@ -16,12 +16,12 @@ Order: 7
 
 ## 📚 Table of Contents / Содержание
 
-1. [Service Management](#service-management--управление-сервисом)
-2. [Jenkins CLI](#jenkins-cli--jenkins-cli)
-3. [Groovy Script Console](#groovy-script-console--консоль-скриптов-groovy)
-4. [Pipeline Syntax](#pipeline-syntax--синтаксис-pipeline-declarative)
-5. [Security](#security--безопасность)
-6. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
+1. [Service Management](#1-service-management-управление-сервисом)
+2. [Jenkins CLI](#2-jenkins-cli-jenkins-cli)
+3. [Groovy Script Console](#3-groovy-script-console-консоль-скриптов-groovy)
+4. [Pipeline Syntax](#4-pipeline-syntax-синтаксис-pipeline-declarative)
+5. [Security](#5-security-безопасность)
+6. [Logrotate Configuration](#6-logrotate-configuration-конфигурация-logrotate)
 
 ---
 

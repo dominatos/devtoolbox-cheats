@@ -16,13 +16,13 @@ Order: 8
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#installation--configuration--установка-и-конфигурация)
-2. [Core Management](#core-management--базовое-управление)
-3. [Sysadmin Operations](#sysadmin-operations--операции-сисадмина)
-4. [Security](#security--безопасность)
-5. [Backup & Restore](#backup--restore--резервное-копирование-и-восстановление)
-6. [Troubleshooting & Tools](#troubleshooting--tools--устранение-неполадок-и-инструменты)
-7. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
+1. [Installation & Configuration](#1-installation-configuration-установка-и-конфигурация)
+2. [Core Management](#2-core-management-базовое-управление)
+3. [Sysadmin Operations](#3-sysadmin-operations-операции-сисадмина)
+4. [Security](#4-security-безопасность)
+5. [Backup & Restore](#5-backup-restore-резервное-копирование-и-восстановление)
+6. [Troubleshooting & Tools](#6-troubleshooting-tools-устранение-неполадок-и-инструменты)
+7. [Logrotate Configuration](#7-logrotate-configuration-конфигурация-logrotate)
 
 ---
 

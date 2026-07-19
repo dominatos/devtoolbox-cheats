@@ -22,7 +22,7 @@ Order: 99
 7. [Install Cowrie Parser](#7-install-cowrie-parser)
 8. [Community Integration](#8-community-integration)
 9. [Web Dashboard](#9-web-dashboard)
-10. [Verify Detection & Firewall](#10-verify-detection--firewall)
+10. [Verify Detection & Firewall](#10-verify-detection-firewall)
 11. [Cowrie Log Analysis Script](#11-cowrie-log-analysis-script)
 12. [Documentation Links](#12-documentation-links)
 

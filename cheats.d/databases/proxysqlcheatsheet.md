@@ -8,16 +8,16 @@ Order: 6
 ## 📚 Table of Contents / Содержание
 
 1. [Description](#description)
-2. [Installation & Configuration](#installation--configuration)
+2. [Installation & Configuration](#installation-configuration)
 3. [Core Management](#core-management)
-4. [Backends & Hostgroups](#backends--hostgroups)
-5. [Query Rules & Routing](#query-rules--routing)
+4. [Backends & Hostgroups](#backends-hostgroups)
+5. [Query Rules & Routing](#query-rules-routing)
 6. [Connection Pooling](#connection-pooling)
 7. [Sysadmin Operations](#sysadmin-operations)
 8. [Security](#security)
-9. [Monitoring & Stats](#monitoring--stats)
-10. [Backup & Restore](#backup--restore)
-11. [Troubleshooting & Tools](#troubleshooting--tools)
+9. [Monitoring & Stats](#monitoring-stats)
+10. [Backup & Restore](#backup-restore)
+11. [Troubleshooting & Tools](#troubleshooting-tools)
 12. [Logrotate Configuration](#logrotate-configuration)
 
 ---

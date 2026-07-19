@@ -6,7 +6,7 @@ Order: 5
 ## Table of Contents
 - [tar Basics](#tar-basics)
 - [GPG Encryption](#gpg-encryption)
-- [Combined tar + GPG](#combined-tar--gpg)
+- [Combined tar + GPG](#combined-tar-gpg)
 - [Compression Options](#compression-options)
 - [Incremental Backups](#incremental-backups)
 - [Split Archives](#split-archives)

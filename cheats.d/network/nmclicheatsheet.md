@@ -8,14 +8,14 @@ Order: 20
 `nmcli` is the command-line interface for NetworkManager, the default network management tool for RHEL, Fedora, Ubuntu, and many other distributions. It provides full control over network connections without requiring a GUI.
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
-- [Core Management](#core-management)
-- [Connection Types](#connection-types)
-- [WiFi Management](#wifi-management)
-- [VPN Connections](#vpn-connections)
-- [Advanced Networking](#advanced-networking)
-- [Troubleshooting & Tools](#troubleshooting--tools)
-- [Comparison Tables](#comparison-tables)
+- [Installation & Configuration](#installation-configuration)
+- [Core Management](#core-management-основное-управление)
+- [Connection Types](#connection-types-типы-соединений)
+- [WiFi Management](#wifi-management-управление-wifi)
+- [VPN Connections](#vpn-connections-vpn-соединения)
+- [Advanced Networking](#advanced-networking-продвинутые-настройки)
+- [Troubleshooting & Tools](#troubleshooting-tools-устранение-неполадок)
+- [Comparison Tables](#comparison-tables-таблицы-сравнения)
 
 ---
 

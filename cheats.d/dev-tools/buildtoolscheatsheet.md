@@ -14,15 +14,15 @@ Order: 5
 ---
 
 ## Table of Contents
-- [Make](#-make--традиционная-сборка)
-- [CMake](#-cmake--современная-сборка)
-- [Meson](#-meson--быстрая-сборка)
-- [Ninja](#-ninja--backend-сборка)
-- [Configure Options](#-configure-options--опции-конфигурации)
+- [Make](#make-традиционная-сборка)
+- [CMake](#cmake-современная-сборка)
+- [Meson](#meson-быстрая-сборка)
+- [Ninja](#ninja-backend-сборка)
+- [Configure Options](#configure-options-опции-конфигурации)
 - [Build Tools Comparison](#build-tools-comparison)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Best Practices](#-best-practices--лучшие-практики)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Best Practices](#best-practices-лучшие-практики)
 
 ---
 

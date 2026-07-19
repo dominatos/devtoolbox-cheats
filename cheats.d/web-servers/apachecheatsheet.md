@@ -24,16 +24,16 @@ Order: 2
 ## Table of Contents
 
 - [Description](#description)
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [Core Management](#core-management)
 - [Virtual Hosts](#virtual-hosts)
 - [Modules Management](#modules-management)
 - [SSL/TLS Configuration](#ssltls-configuration)
-- [Security & Access Control](#security--access-control)
+- [Security & Access Control](#security-access-control)
 - [Performance Tuning](#performance-tuning)
-- [Logs & Monitoring](#logs--monitoring)
-- [Troubleshooting & Tools](#troubleshooting--tools)
-- [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
+- [Logs & Monitoring](#logs-monitoring)
+- [Troubleshooting & Tools](#troubleshooting-tools)
+- [Logrotate Configuration](#logrotate-configuration-конфигурация-logrotate)
 
 ---
 

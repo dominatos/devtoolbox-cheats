@@ -4,14 +4,14 @@ Icon: 🗄️
 Order: 4
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [GPG Key Setup](#gpg-key-setup)
 - [Backup Operations](#backup-operations)
 - [Restore Operations](#restore-operations)
 - [Collection Management](#collection-management)
-- [Retention & Cleanup](#retention--cleanup)
+- [Retention & Cleanup](#retention-cleanup)
 - [Backend URLs](#backend-urls)
-- [Performance & Encryption](#performance--encryption)
+- [Performance & Encryption](#performance-encryption)
 - [Sysadmin Operations](#sysadmin-operations)
 - [Troubleshooting](#troubleshooting)
 

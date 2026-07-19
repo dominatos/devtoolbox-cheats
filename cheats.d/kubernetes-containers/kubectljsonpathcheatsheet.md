@@ -20,7 +20,7 @@ JSONPath is a query language for JSON data, integrated into `kubectl` via the `-
 - [Basic JSONPath Queries](#basic-jsonpath-queries)
 - [Resource Filtering](#resource-filtering)
 - [Node Information](#node-information)
-- [Container & Image Queries](#container--image-queries)
+- [Container & Image Queries](#container-image-queries)
 - [Custom Columns](#custom-columns)
 - [Troubleshooting JSONPath](#troubleshooting-jsonpath)
 - [Documentation Links](#documentation-links)

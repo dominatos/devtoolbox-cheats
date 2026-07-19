@@ -5,13 +5,13 @@ Order: 4
 
 ## Table of Contents
 - [Description](#description)
-- [Configuration](#-configuration--конфигурация)
-- [Core Management](#-core-management--основное-управление)
-- [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Comparison: Update vs Dup](#-comparison-update-vs-dup)
-- [Security](#-security--безопасность)
-- [Documentation Links](#-documentation-links)
+- [Configuration](#configuration-конфигурация)
+- [Core Management](#core-management-основное-управление)
+- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Comparison: Update vs Dup](#comparison-update-vs-dup)
+- [Security](#security-безопасность)
+- [Documentation Links](#documentation-links)
 
 ---
 

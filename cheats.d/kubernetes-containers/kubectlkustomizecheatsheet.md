@@ -18,12 +18,12 @@ Kustomize is a **template-free** configuration management tool for Kubernetes, b
 ## Table of Contents
 
 - [Basic Structure](#basic-structure)
-- [Base & Overlay Pattern](#base--overlay-pattern)
+- [Base & Overlay Pattern](#base-overlay-pattern)
 - [Strategic Merge Patches](#strategic-merge-patches)
 - [JSON Patches](#json-patches)
-- [ConfigMap & Secret Generators](#configmap--secret-generators)
+- [ConfigMap & Secret Generators](#configmap-secret-generators)
 - [Image Tag Replacement](#image-tag-replacement)
-- [Namespace & Labels](#namespace--labels)
+- [Namespace & Labels](#namespace-labels)
 - [Common Commands](#common-commands)
 - [Troubleshooting](#troubleshooting)
 - [Documentation Links](#documentation-links)

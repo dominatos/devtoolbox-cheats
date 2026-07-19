@@ -29,11 +29,11 @@ Order: 3
 ---
 
 ## Table of Contents
-- [ZIP — Classic Archives](#zip--classic-archives)
-- [UNZIP — Extract ZIP](#unzip--extract-zip)
-- [7-Zip — High Compression](#7-zip--high-compression)
-- [ZSTD — Modern Compression](#zstd--modern-compression)
-- [Comparison & Benchmarks](#comparison--benchmarks)
+- [ZIP — Classic Archives](#zip-classic-archives)
+- [UNZIP — Extract ZIP](#unzip-extract-zip)
+- [7-Zip — High Compression](#7-zip-high-compression)
+- [ZSTD — Modern Compression](#zstd-modern-compression)
+- [Comparison & Benchmarks](#comparison-benchmarks)
 - [Real-World Examples](#real-world-examples)
 - [Best Practices](#best-practices)
 - [Documentation Links](#documentation-links)

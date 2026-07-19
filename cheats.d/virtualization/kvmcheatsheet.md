@@ -26,15 +26,15 @@ Order: 1
 ## Table of Contents
 
 - [Description](#description)
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [Core Management](#core-management)
 - [Storage Management](#storage-management)
 - [Networking](#networking)
 - [Template Creation](#template-creation)
-- [Snapshots & Backup](#snapshots--backup)
+- [Snapshots & Backup](#snapshots-backup)
 - [Performance Tuning](#performance-tuning)
 - [Security](#security)
-- [Troubleshooting & Tools](#troubleshooting--tools)
+- [Troubleshooting & Tools](#troubleshooting-tools)
 - [Comparison Tables](#comparison-tables)
 - [Documentation Links](#documentation-links)
 

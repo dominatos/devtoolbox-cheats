@@ -7,11 +7,11 @@ Order: 7
 > / **Клонирование сервера через tar + SSH** — классический метод миграции или дублирования Linux-серверов путём потоковой передачи сжатого архива файловой системы по сети. Современные альтернативы: **rsync**, **Clonezilla**, **Ansible/Terraform**.
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
-- [Core Management (Tar & Backups)](#core-management-tar--backups)
+- [Installation & Configuration](#installation-configuration)
+- [Core Management (Tar & Backups)](#core-management-tar-backups)
 - [Server Cloning (Piped Transfer)](#server-cloning-piped-transfer)
 - [Database Management (MySQL/MariaDB)](#database-management-mysqlmariadb)
-- [Automation & Scripts](#automation--scripts)
+- [Automation & Scripts](#automation-scripts)
 - [Advanced Operations (Multi-volume)](#advanced-operations-multi-volume)
 - [Comparison of Cloning Approaches](#comparison-of-cloning-approaches)
 - [Sysadmin Operations](#sysadmin-operations)

@@ -5,13 +5,13 @@ Order: 2
 
 ## Table of Contents
 - [Description](#description)
-- [Configuration](#-configuration--конфигурация)
-- [Core Management](#-core-management--основное-управление)
-- [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Comparison: DNF vs YUM](#-comparison-dnf-vs-yum)
-- [Security](#-security--безопасность)
-- [Documentation Links](#-documentation-links)
+- [Configuration](#configuration-конфигурация)
+- [Core Management](#core-management-основное-управление)
+- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Comparison: DNF vs YUM](#comparison-dnf-vs-yum)
+- [Security](#security-безопасность)
+- [Documentation Links](#documentation-links)
 
 ---
 

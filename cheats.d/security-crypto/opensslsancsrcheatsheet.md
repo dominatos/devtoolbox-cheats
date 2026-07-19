@@ -13,7 +13,7 @@ Order: 3
 
 ## 📚 Table of Contents / Содержание
 
-1. [Basics & Overview](#1-basics--overview)
+1. [Basics & Overview](#1-basics-overview)
 2. [Configuration File](#2-configuration-file)
 3. [Generating CSR](#3-generating-csr)
 4. [Verification](#4-verification)

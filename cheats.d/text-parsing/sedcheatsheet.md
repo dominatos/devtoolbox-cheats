@@ -6,14 +6,14 @@ Order: 5
 > **sed** (Stream Editor) — a POSIX-standard, non-interactive text transformation tool. GNU sed is pre-installed on all Linux distributions and is the primary tool for in-place file editing, substitution, and line manipulation in shell scripts. Unlike `awk` (column-oriented), `sed` operates on lines and character patterns. There is no modern replacement — `sed` remains the irreplaceable core utility for stream-based text processing.
 
 ## Table of Contents
-- [Basic Substitution](#-basic-substitution--базовая-замена)
-- [Line Selection & Deletion](#-line-selection--deletion--выбор-и-удаление-строк)
-- [In-Place Editing](#-in-place-editing--правка-на-месте)
-- [Multiple Commands](#-multiple-commands--несколько-команд)
-- [Advanced Patterns](#-advanced-patterns--продвинутые-шаблоны)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Extraction & Transformation](#-extraction--transformation--извлечение-и-преобразование)
-- [Advanced Use Cases](#-advanced-use-cases--продвинутые-случаи)
+- [Basic Substitution](#basic-substitution-базовая-замена)
+- [Line Selection & Deletion](#line-selection-deletion-выбор-и-удаление-строк)
+- [In-Place Editing](#in-place-editing-правка-на-месте)
+- [Multiple Commands](#multiple-commands-несколько-команд)
+- [Advanced Patterns](#advanced-patterns-продвинутые-шаблоны)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Extraction & Transformation](#extraction-transformation-извлечение-и-преобразование)
+- [Advanced Use Cases](#advanced-use-cases-продвинутые-случаи)
 
 ---
 

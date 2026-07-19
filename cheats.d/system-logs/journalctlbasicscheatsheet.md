@@ -14,7 +14,7 @@ Order: 3
 - [Basic Viewing](#basic-viewing)
 - [Time Filters](#time-filters)
 - [Unit Filters](#unit-filters)
-- [Priority & Field Filters](#priority--field-filters)
+- [Priority & Field Filters](#priority-field-filters)
 - [Output Formats](#output-formats)
 - [Maintenance](#maintenance)
 - [Troubleshooting](#troubleshooting)

@@ -19,8 +19,8 @@ Helm is the **package manager for Kubernetes**, analogous to `apt` or `yum` for 
 
 - [Repository Management](#repository-management)
 - [Chart Operations](#chart-operations)
-- [Values & Configuration](#values--configuration)
-- [Templating & Validation](#templating--validation)
+- [Values & Configuration](#values-configuration)
+- [Templating & Validation](#templating-validation)
 - [Debugging](#debugging)
 - [Chart Development](#chart-development)
 - [Sysadmin Essentials](#sysadmin-essentials)

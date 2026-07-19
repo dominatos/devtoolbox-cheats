@@ -13,9 +13,9 @@ Order: 5
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation--configuration)
+1. [Installation & Configuration](#1-installation-configuration)
 2. [Core Management](#2-core-management)
-3. [Organization & Search](#3-organization--search)
+3. [Organization & Search](#3-organization-search)
 4. [Git Integration](#4-git-integration)
 5. [Extensions](#5-extensions)
 6. [Real-World Examples](#6-real-world-examples)

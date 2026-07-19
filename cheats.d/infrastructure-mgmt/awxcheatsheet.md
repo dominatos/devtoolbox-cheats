@@ -19,12 +19,12 @@ AWX is the open-source upstream project for **Red Hat Ansible Automation Platfor
 
 ## Table of Contents
 
-1. [Installation & Configuration](#installation--configuration)
+1. [Installation & Configuration](#installation-configuration)
 2. [Core Management](#core-management)
 3. [Sysadmin Operations](#sysadmin-operations)
 4. [Security](#security)
-5. [Backup & Restore](#backup--restore)
-6. [Troubleshooting & Tools](#troubleshooting--tools)
+5. [Backup & Restore](#backup-restore)
+6. [Troubleshooting & Tools](#troubleshooting-tools)
 7. [Logrotate Configuration](#logrotate-configuration)
 8. [Documentation Links](#documentation-links)
 

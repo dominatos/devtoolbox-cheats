@@ -15,11 +15,11 @@ Order: 18
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation / Установка](#installation--установка)
-2. [Basic CLI Usage / Основы CLI](#basic-cli-usage--основы-cli)
-3. [Version Control Integration / Интеграция с Git/SVN](#version-control-integration--интеграция-с-gitsvn)
-4. [Keyboard Shortcuts / Горячие клавиши](#keyboard-shortcuts--горячие-клавиши)
-5. [Directory Comparison / Сравнение директорий](#directory-comparison--сравнение-директорий)
+1. [Installation / Установка](#installation-установка)
+2. [Basic CLI Usage / Основы CLI](#basic-cli-usage-основы-cli)
+3. [Version Control Integration / Интеграция с Git/SVN](#version-control-integration-интеграция-с-gitsvn)
+4. [Keyboard Shortcuts / Горячие клавиши](#keyboard-shortcuts-горячие-клавиши)
+5. [Directory Comparison / Сравнение директорий](#directory-comparison-сравнение-директорий)
 
 ---
 

@@ -20,13 +20,13 @@ Order: 11
 
 ## Table of Contents
 - [Overview](#overview)
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [Core Management](#core-management)
 - [Sysadmin Operations](#sysadmin-operations)
 - [Performance Tuning](#performance-tuning)
 - [Security](#security)
-- [Backup & Restore](#backup--restore)
-- [Troubleshooting & Tools](#troubleshooting--tools)
+- [Backup & Restore](#backup-restore)
+- [Troubleshooting & Tools](#troubleshooting-tools)
 - [Production Runbooks](#production-runbooks)
 - [Additional Notes](#additional-notes)
 - [Documentation](#documentation)

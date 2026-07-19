@@ -6,15 +6,15 @@ Order: 4
 > **AWK** — pattern-scanning and text-processing language, part of POSIX and available on virtually every Unix/Linux system. GNU AWK (`gawk`) is the most common implementation. AWK excels at columnar data extraction, report generation, and one-liner transformations in shell pipelines. It remains a core sysadmin tool with no signs of deprecation; for heavier data work, consider `python` or `miller`.
 
 ## Table of Contents
-- [Basics](#-basics--основы)
-- [Field Separators](#-field-separators--разделители-полей)
-- [Patterns & Filters](#-patterns--filters--шаблоны-и-фильтры)
-- [Built-in Variables](#-built-in-variables--встроенные-переменные)
-- [Arithmetic & Aggregation](#-arithmetic--aggregation--арифметика-и-агрегация)
-- [String Functions](#-string-functions--строковые-функции)
-- [Arrays & Loops](#-arrays--loops--массивы-и-циклы)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Advanced Patterns](#-advanced-patterns--продвинутые-шаблоны)
+- [Basics](#basics-основы)
+- [Field Separators](#field-separators-разделители-полей)
+- [Patterns & Filters](#patterns-filters-шаблоны-и-фильтры)
+- [Built-in Variables](#built-in-variables-встроенные-переменные)
+- [Arithmetic & Aggregation](#arithmetic-aggregation-арифметика-и-агрегация)
+- [String Functions](#string-functions-строковые-функции)
+- [Arrays & Loops](#arrays-loops-массивы-и-циклы)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Advanced Patterns](#advanced-patterns-продвинутые-шаблоны)
 
 ---
 

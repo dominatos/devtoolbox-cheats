@@ -22,8 +22,8 @@ Order: 4
 
 ## Table of Contents
 - [Installation](#installation)
-- [diff — Compare Files](#diff--compare-files)
-- [patch — Apply Changes](#patch--apply-changes)
+- [diff — Compare Files](#diff-compare-files)
+- [patch — Apply Changes](#patch-apply-changes)
 - [Directory Comparison](#directory-comparison)
 - [Git-Style Diffs](#git-style-diffs)
 - [Advanced Usage](#advanced-usage)

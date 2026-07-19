@@ -7,14 +7,14 @@ Order: 2
 
 ## 📚 Table of Contents / Содержание
 
-1. [Permissions & Owners](#permissions--owners--права-и-владельцы)
-2. [Users & Groups](#users--groups--пользователи-и-группы)
-3. [Processes](#processes--процессы)
-4. [Network Basics](#network-basics--сеть-база)
-5. [Archives](#archives--архивы)
-6. [Disk & Memory](#disk--memory--диск-и-память)
-7. [System Information](#system-information--информация-о-системе)
-8. [Helpful Shortcuts](#helpful-shortcuts--полезные-сокращения)
+1. [Permissions & Owners](#permissions-owners-права-и-владельцы)
+2. [Users & Groups](#users-groups-пользователи-и-группы)
+3. [Processes](#processes-процессы)
+4. [Network Basics](#network-basics-сеть-база)
+5. [Archives](#archives-архивы)
+6. [Disk & Memory](#disk-memory-диск-и-память)
+7. [System Information](#system-information-информация-о-системе)
+8. [Helpful Shortcuts](#helpful-shortcuts-полезные-сокращения)
 
 ---
 

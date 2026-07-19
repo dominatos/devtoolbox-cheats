@@ -28,10 +28,10 @@ After a kernel update, `dracut` rebuilds the initramfs with `hostonly="yes"` (de
 - [Permanent Fix via dracut](#permanent-fix-via-dracut)
 - [Safety Kernel Parameters](#safety-kernel-parameters)
 - [Early Boot Diagnostics](#early-boot-diagnostics)
-- [Common Causes → Solutions](#common-causes--solutions)
-- [grubby / GRUB Tips](#grubby--grub-tips)
+- [Common Causes → Solutions](#common-causes-solutions)
+- [grubby / GRUB Tips](#grubby-grub-tips)
 - [Fat initramfs for All Kernels](#fat-initramfs-for-all-kernels)
-- [Rescue Mode / chroot](#rescue-mode--chroot)
+- [Rescue Mode / chroot](#rescue-mode-chroot)
 - [Freeze Kernel Temporarily](#freeze-kernel-temporarily)
 - [Mini FAQ](#mini-faq)
 

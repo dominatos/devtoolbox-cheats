@@ -10,11 +10,11 @@ Order: 10
 📚 **Official Docs / Официальная документация:** [autossh(1)](https://www.harding.motd.ca/autossh/)
 
 ## Table of Contents
-- [Basic Tunneling](#-basic-tunneling--базовое-туннелирование)
-- [Persistent Tunnels](#-persistent-tunnels--постоянные-туннели)
-- [Monitoring & Debugging](#-monitoring--debugging--мониторинг-и-отладка)
-- [Systemd Integration](#-systemd-integration--интеграция-с-systemd)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
+- [Basic Tunneling](#basic-tunneling-базовое-туннелирование)
+- [Persistent Tunnels](#persistent-tunnels-постоянные-туннели)
+- [Monitoring & Debugging](#monitoring-debugging-мониторинг-и-отладка)
+- [Systemd Integration](#systemd-integration-интеграция-с-systemd)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
 
 ---
 

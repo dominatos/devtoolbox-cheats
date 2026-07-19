@@ -10,13 +10,13 @@ Order: 5
 📚 **Official Docs / Официальная документация:** [dig(1)](https://manpages.debian.org/bookworm/bind9-dnsutils/dig.1.en.html) · [nslookup(1)](https://manpages.debian.org/bookworm/bind9-dnsutils/nslookup.1.en.html)
 
 ## Table of Contents
-- [DIG — DNS Lookup](#-dig--dns-lookup)
-- [NSLOOKUP — Interactive DNS](#-nslookup--interactive-dns)
-- [HOST — Simple DNS](#-host--simple-dns)
-- [Record Types](#-record-types--типы-записей)
-- [Advanced Queries](#-advanced-queries--продвинутые-запросы)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
+- [DIG — DNS Lookup](#dig-dns-lookup)
+- [NSLOOKUP — Interactive DNS](#nslookup-interactive-dns)
+- [HOST — Simple DNS](#host-simple-dns)
+- [Record Types](#record-types-типы-записей)
+- [Advanced Queries](#advanced-queries-продвинутые-запросы)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
 
 ---
 

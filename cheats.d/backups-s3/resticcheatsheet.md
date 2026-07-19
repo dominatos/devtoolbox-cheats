@@ -4,14 +4,14 @@ Icon: 🗄️
 Order: 1
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [Repository Management](#repository-management)
 - [Backup Operations](#backup-operations)
 - [Snapshot Management](#snapshot-management)
 - [Restore Operations](#restore-operations)
-- [Pruning & Retention](#pruning--retention)
+- [Pruning & Retention](#pruning-retention)
 - [S3/Cloud Integration](#s3cloud-integration)
-- [Performance & Security](#performance--security)
+- [Performance & Security](#performance-security)
 - [Sysadmin Operations](#sysadmin-operations)
 - [Troubleshooting](#troubleshooting)
 

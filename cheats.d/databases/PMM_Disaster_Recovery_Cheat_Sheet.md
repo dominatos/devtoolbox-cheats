@@ -18,12 +18,12 @@ Order: 20
 ## 📚 Table of Contents / Содержание
 
 1. [Architecture](#architecture)
-2. [Installation & Configuration](#installation--configuration)
+2. [Installation & Configuration](#installation-configuration)
 3. [Core Management](#core-management)
 4. [Sysadmin Operations](#sysadmin-operations)
 5. [Security](#security)
-6. [Backup & Restore](#backup--restore)
-7. [Troubleshooting & Tools](#troubleshooting--tools)
+6. [Backup & Restore](#backup-restore)
+7. [Troubleshooting & Tools](#troubleshooting-tools)
 8. [Production Runbooks](#production-runbooks)
 9. [Disaster Recovery Case Study](#disaster-recovery-case-study)
 10. [Logrotate Configuration](#logrotate-configuration)

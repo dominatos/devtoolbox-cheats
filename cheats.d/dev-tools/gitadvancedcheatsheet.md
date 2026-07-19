@@ -14,17 +14,17 @@ Order: 2
 ---
 
 ## Table of Contents
-- [Worktrees](#-worktrees--рабочие-деревья)
-- [Bisect](#-bisect--бинарный-поиск)
-- [Reflog](#-reflog--журнал-ссылок)
-- [Submodules](#-submodules--подмодули)
-- [Cherry Pick & Rebase](#-cherry-pick--rebase)
-- [Stash](#-stash--откладывание)
-- [Hooks](#-hooks--хуки)
-- [Advanced Techniques](#-advanced-techniques--продвинутые-техники)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Best Practices](#-best-practices--лучшие-практики)
-- [Useful Aliases](#-useful-aliases--полезные-алиасы)
+- [Worktrees](#worktrees-рабочие-деревья)
+- [Bisect](#bisect-бинарный-поиск)
+- [Reflog](#reflog-журнал-ссылок)
+- [Submodules](#submodules-подмодули)
+- [Cherry Pick & Rebase](#cherry-pick-rebase)
+- [Stash](#stash-откладывание)
+- [Hooks](#hooks-хуки)
+- [Advanced Techniques](#advanced-techniques-продвинутые-техники)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Best Practices](#best-practices-лучшие-практики)
+- [Useful Aliases](#useful-aliases-полезные-алиасы)
 
 ---
 

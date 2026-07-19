@@ -18,16 +18,16 @@ ACLs are implemented via POSIX.1e (withdrawn draft) and are supported on all maj
 [acl(5)](https://man7.org/linux/man-pages/man5/acl.5.html) · [getfacl(1)](https://man7.org/linux/man-pages/man1/getfacl.1.html) · [setfacl(1)](https://man7.org/linux/man-pages/man1/setfacl.1.html)
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
-- [Basic Commands](#basic-commands)
-- [ACL Symbols and Values](#acl-symbols-and-values)
-- [Usage Examples](#usage-examples)
-- [Default ACLs (Inheritance)](#default-acls-inheritance)
-- [ACL Mask](#acl-mask)
-- [Utilities and Useful Flags](#utilities-and-useful-flags)
-- [Combining with chmod](#combining-with-chmod)
-- [Backup & Restore ACLs](#backup--restore-acls)
-- [Troubleshooting](#troubleshooting)
+- [Installation & Configuration](#installation-configuration)
+- [Basic Commands](#basic-commands-основные-команды)
+- [ACL Symbols and Values](#acl-symbols-and-values-символы-и-значения-acl)
+- [Usage Examples](#usage-examples-примеры-использования)
+- [Default ACLs (Inheritance)](#default-acls-inheritance-acl-по-умолчанию-наследование)
+- [ACL Mask](#acl-mask-маска-acl)
+- [Utilities and Useful Flags](#utilities-and-useful-flags-утилиты-и-полезные-флаги)
+- [Combining with chmod](#combining-with-chmod-совмещение-с-chmod)
+- [Backup & Restore ACLs](#backup-restore-acls-резервное-копирование-и-восстановление-acl)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
 
 ---
 

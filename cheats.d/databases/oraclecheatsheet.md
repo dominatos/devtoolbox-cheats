@@ -17,14 +17,14 @@ Order: 10
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#installation--configuration)
-2. [Environment & Connection](#environment--connection)
+1. [Installation & Configuration](#installation-configuration)
+2. [Environment & Connection](#environment-connection)
 3. [Listener Management](#listener-management)
 4. [Core Management](#core-management)
 5. [Sysadmin Operations](#sysadmin-operations)
 6. [Security](#security)
-7. [Backup & Restore](#backup--restore)
-8. [Troubleshooting & Tools](#troubleshooting--tools)
+7. [Backup & Restore](#backup-restore)
+8. [Troubleshooting & Tools](#troubleshooting-tools)
 9. [Logrotate Configuration](#logrotate-configuration)
 
 ---

@@ -14,15 +14,15 @@ Order: 3
 ---
 
 ## Table of Contents
-- [venv — Virtual Environments](#-venv--virtual-environments)
-- [pip — Package Manager](#-pip--package-manager)
-- [pipx — CLI Tool Installer](#-pipx--cli-tool-installer)
-- [poetry — Dependency Management](#-poetry--dependency-management)
-- [pyenv — Python Version Manager](#-pyenv--python-version-manager)
+- [venv — Virtual Environments](#venv-virtual-environments)
+- [pip — Package Manager](#pip-package-manager)
+- [pipx — CLI Tool Installer](#pipx-cli-tool-installer)
+- [poetry — Dependency Management](#poetry-dependency-management)
+- [pyenv — Python Version Manager](#pyenv-python-version-manager)
 - [Virtual Environment Tools Comparison](#virtual-environment-tools-comparison)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Best Practices](#-best-practices--лучшие-практики)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Best Practices](#best-practices-лучшие-практики)
 
 ---
 

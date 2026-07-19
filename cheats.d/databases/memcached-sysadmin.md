@@ -18,12 +18,12 @@ Order: 99
 ## 📚 Table of Contents / Содержание
 
 1. [Architecture](#architecture)
-2. [Installation & Configuration](#installation--configuration)
+2. [Installation & Configuration](#installation-configuration)
 3. [Core Management](#core-management)
 4. [Sysadmin Operations](#sysadmin-operations)
 5. [Security](#security)
-6. [Monitoring & Performance](#monitoring--performance)
-7. [Troubleshooting & Tools](#troubleshooting--tools)
+6. [Monitoring & Performance](#monitoring-performance)
+7. [Troubleshooting & Tools](#troubleshooting-tools)
 8. [Logrotate Configuration](#logrotate-configuration)
 
 ---

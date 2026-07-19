@@ -6,18 +6,18 @@ Order: 2
 > **grep** (Global Regular Expression Print) — the quintessential text-search utility, part of every POSIX system. GNU grep supports Basic (BRE), Extended (ERE, `-E`), Fixed-string (`-F`), and Perl-compatible (PCRE, `-P`) regular expressions. It is the go-to tool for searching files, filtering logs, and building shell pipelines. For significantly faster recursive searches (10-100×), consider [`ripgrep` (rg)](https://github.com/BurntSushi/ripgrep) — but `grep` remains the universal standard.
 
 ## Table of Contents
-- [Quick Reference](#-quick-reference--краткая-справка)
-- [Basics](#-basics--основы)
-- [Regex Dialects](#-regex-dialects--диалекты-регулярных-выражений)
-- [Files & Recursion](#-files--recursion--файлы-и-рекурсия)
-- [Output & Context](#-output--context--вывод-и-контекст)
-- [Counts & File Lists](#-counts--file-lists--подсчёт-и-списки-файлов)
-- [Words, Lines & Anchors](#-words-lines--anchors--слова-строки-и-якоря)
-- [Case & Locale](#-case--locale--регистр-и-локаль)
-- [Multiline & NULL-Separated](#-multiline--null-separated--многострочные-и-null-разделители)
-- [Performance & Behavior](#-performance--behavior--производительность-и-поведение)
-- [Log & Streaming Examples](#-log--streaming-examples--логи-и-потоковая-обработка)
-- [Common One-Liners](#-common-one-liners--частые-однострочники)
+- [Quick Reference](#quick-reference-краткая-справка)
+- [Basics](#basics-основы)
+- [Regex Dialects](#regex-dialects-диалекты-регулярных-выражений)
+- [Files & Recursion](#files-recursion-файлы-и-рекурсия)
+- [Output & Context](#output-context-вывод-и-контекст)
+- [Counts & File Lists](#counts-file-lists-подсчёт-и-списки-файлов)
+- [Words, Lines & Anchors](#words-lines-anchors-слова-строки-и-якоря)
+- [Case & Locale](#case-locale-регистр-и-локаль)
+- [Multiline & NULL-Separated](#multiline-null-separated-многострочные-и-null-разделители)
+- [Performance & Behavior](#performance-behavior-производительность-и-поведение)
+- [Log & Streaming Examples](#log-streaming-examples-логи-и-потоковая-обработка)
+- [Common One-Liners](#common-one-liners-частые-однострочники)
 
 ---
 

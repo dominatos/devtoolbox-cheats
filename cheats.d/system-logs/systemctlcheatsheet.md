@@ -20,10 +20,10 @@ Order: 1
 ## Table of Contents
 - [Core Management](#core-management)
 - [Unit File Operations](#unit-file-operations)
-- [Journal & Logs](#journal--logs)
+- [Journal & Logs](#journal-logs)
 - [Advanced Operations](#advanced-operations)
-- [Sandboxing & Security](#sandboxing--security)
-- [Analysis & Troubleshooting](#analysis--troubleshooting)
+- [Sandboxing & Security](#sandboxing-security)
+- [Analysis & Troubleshooting](#analysis-troubleshooting)
 - [Unit Type Comparison](#unit-type-comparison)
 
 ---

@@ -4,13 +4,13 @@ Icon: 🗄️
 Order: 9
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [S3 Bucket Operations](#s3-bucket-operations)
-- [Upload & Download](#upload--download)
+- [Upload & Download](#upload-download)
 - [Sync Operations](#sync-operations)
 - [Storage Classes](#storage-classes)
 - [Lifecycle Policies](#lifecycle-policies)
-- [Versioning & Encryption](#versioning--encryption)
+- [Versioning & Encryption](#versioning-encryption)
 - [Multipart Uploads](#multipart-uploads)
 - [Sysadmin Operations](#sysadmin-operations)
 - [Troubleshooting](#troubleshooting)

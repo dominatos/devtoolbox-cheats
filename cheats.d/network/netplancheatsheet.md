@@ -8,14 +8,14 @@ Order: 21
 Netplan is the default network configuration abstraction layer used by Ubuntu 17.10+ and other modern Ubuntu-based distributions. It uses YAML configuration files and can render configurations for NetworkManager or systemd-networkd as backends.
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
-- [Core Management](#core-management)
-- [Static & DHCP Configuration](#static--dhcp-configuration)
-- [Advanced Networking](#advanced-networking)
-- [WiFi Configuration](#wifi-configuration)
-- [Troubleshooting & Tools](#troubleshooting--tools)
-- [Migration Guide](#migration-guide)
-- [Comparison Tables](#comparison-tables)
+- [Installation & Configuration](#installation-configuration)
+- [Core Management](#core-management-основное-управление)
+- [Static & DHCP Configuration](#static-dhcp-configuration)
+- [Advanced Networking](#advanced-networking-продвинутые-настройки)
+- [WiFi Configuration](#wifi-configuration-настройка-wifi)
+- [Troubleshooting & Tools](#troubleshooting-tools-устранение-неполадок)
+- [Migration Guide](#migration-guide-руководство-по-миграции)
+- [Comparison Tables](#comparison-tables-таблицы-сравнения)
 
 ---
 

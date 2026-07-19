@@ -8,12 +8,12 @@ Order: 23
 NetworkManager provides graphical and text-based user interfaces for network configuration. It's the default on most desktop Linux distributions and offers excellent WiFi, VPN, and mobile broadband support.
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
-- [GUI Tools](#gui-tools)
-- [Text UI (nmtui)](#text-ui-nmtui)
-- [Dispatcher Scripts](#dispatcher-scripts)
-- [Connection Management](#connection-management)
-- [Troubleshooting & Tools](#troubleshooting--tools)
+- [Installation & Configuration](#installation-configuration)
+- [GUI Tools](#gui-tools-gui-инструменты)
+- [Text UI (nmtui)](#text-ui-nmtui-текстовый-интерфейс)
+- [Dispatcher Scripts](#dispatcher-scripts-скрипты-диспетчера)
+- [Connection Management](#connection-management-управление-соединениями)
+- [Troubleshooting & Tools](#troubleshooting-tools-устранение-неполадок)
 
 ---
 

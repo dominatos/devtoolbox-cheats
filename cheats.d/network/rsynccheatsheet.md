@@ -12,12 +12,12 @@ Order: 8
 ## Table of Contents
 - [Basics](#basics)
 - [Remote Sync via SSH](#remote-sync-via-ssh)
-- [Mirror & Delete](#mirror--delete)
+- [Mirror & Delete](#mirror-delete)
 - [Exclude Patterns](#exclude-patterns)
-- [Backups & Snapshots](#backups--snapshots)
-- [Permissions & Ownership](#permissions--ownership)
-- [Dry Run & Preview](#dry-run--preview)
-- [Progress & Stats](#progress--stats)
+- [Backups & Snapshots](#backups-snapshots)
+- [Permissions & Ownership](#permissions-ownership)
+- [Dry Run & Preview](#dry-run-preview)
+- [Progress & Stats](#progress-stats)
 - [Reference Tables](#reference-tables)
 
 ---

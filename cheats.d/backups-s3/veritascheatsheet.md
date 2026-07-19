@@ -8,8 +8,8 @@ Order: 8
 
 ## Table of Contents
 - [Architecture Overview](#architecture-overview)
-- [VxVM — Volume Manager](#vxvm--volume-manager)
-- [VxFS — Filesystem](#vxfs--filesystem)
+- [VxVM — Volume Manager](#vxvm-volume-manager)
+- [VxFS — Filesystem](#vxfs-filesystem)
 - [Sysadmin Operations](#sysadmin-operations)
 - [Troubleshooting](#troubleshooting)
 

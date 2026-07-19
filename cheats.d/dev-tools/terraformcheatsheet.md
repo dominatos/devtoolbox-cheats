@@ -16,13 +16,13 @@ Order: 6
 
 ## 📚 Table of Contents / Содержание
 
-1. [Workflow](#workflow--рабочий-процесс)
-2. [State Management](#state-management--управление-состоянием-state)
-3. [Workspaces](#workspaces--рабочие-окружения)
-4. [Modules](#modules--модули)
-5. [Variables & Outputs](#variables--outputs--переменные-и-выводы)
-6. [Debugging](#debugging--отладка)
-7. [Best Practices](#best-practices--лучшие-практики)
+1. [Workflow](#1-workflow-рабочий-процесс)
+2. [State Management](#2-state-management-управление-состоянием-state)
+3. [Workspaces](#3-workspaces-рабочие-окружения)
+4. [Modules](#4-modules-модули)
+5. [Variables & Outputs](#5-variables-outputs-переменные-и-выводы)
+6. [Debugging](#6-debugging-отладка)
+7. [Best Practices](#best-practices-лучшие-практики)
 
 ---
 

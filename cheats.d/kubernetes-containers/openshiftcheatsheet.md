@@ -19,13 +19,13 @@ Red Hat **OpenShift Container Platform (OCP)** is an enterprise-grade Kubernetes
 
 ## Table of Contents
 
-- [Authentication & Context](#authentication--context)
+- [Authentication & Context](#authentication-context)
 - [Core Operations](#core-operations)
 - [Admin Operations](#admin-operations)
-- [Builds & Deployments](#builds--deployments)
-- [Routes & Networking](#routes--networking)
+- [Builds & Deployments](#builds-deployments)
+- [Routes & Networking](#routes-networking)
 - [Security](#security)
-- [Troubleshooting & Tools](#troubleshooting--tools)
+- [Troubleshooting & Tools](#troubleshooting-tools)
 - [Sysadmin Essentials](#sysadmin-essentials)
 - [Documentation Links](#documentation-links)
 

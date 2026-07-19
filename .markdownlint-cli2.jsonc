@@ -1,0 +1,20 @@
+{
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD033": false,
+    "MD041": false,
+    "MD024": { "siblings_only": true },
+    "MD010": false,
+    "MD025": false,
+    "MD029": { "style": "one_or_space" },
+    "MD012": { "maximum": 2 },
+    "MD032": false
+  },
+  "ignores": [
+    "Windows-beta/**",
+    ".mimocode/**",
+    "docs/compose/**",
+    "node_modules/**"
+  ]
+}

@@ -6,14 +6,14 @@ Order: 3
 > **find** — POSIX-standard utility for recursively searching the file system by name, type, size, time, permissions, and more. Part of GNU Findutils, pre-installed on all Linux distributions. `find` is the most powerful and flexible file-locating tool available in the shell. For simpler syntax and faster performance, consider the modern alternative [`fd`](https://github.com/sharkdp/fd) — but `find` remains the universal, scriptable standard.
 
 ## Table of Contents
-- [Basic Search](#-basic-search--базовый-поиск)
-- [By Type & Name](#-by-type--name--по-типу-и-имени)
-- [By Time](#-by-time--по-времени)
-- [By Size & Permissions](#-by-size--permissions--по-размеру-и-правам)
-- [Excluding Paths](#-excluding-paths--исключение-путей)
-- [Actions: Delete, Exec](#-actions-delete-exec--действия-удаление-выполнение)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Advanced Use Cases](#-advanced-use-cases--продвинутые-случаи)
+- [Basic Search](#basic-search-базовый-поиск)
+- [By Type & Name](#by-type-name-по-типу-и-имени)
+- [By Time](#by-time-по-времени)
+- [By Size & Permissions](#by-size-permissions-по-размеру-и-правам)
+- [Excluding Paths](#excluding-paths-исключение-путей)
+- [Actions: Delete, Exec](#actions-delete-exec-действия-удаление-выполнение)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Advanced Use Cases](#advanced-use-cases-продвинутые-случаи)
 
 ---
 

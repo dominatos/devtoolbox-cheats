@@ -4,13 +4,13 @@ Icon: 🗄️
 Order: 10
 
 ## Table of Contents
-- [Installation & Authentication](#installation--authentication)
+- [Installation & Authentication](#installation-authentication)
 - [Bucket Operations](#bucket-operations)
-- [Upload & Download](#upload--download)
+- [Upload & Download](#upload-download)
 - [Rsync Operations](#rsync-operations)
 - [Storage Classes](#storage-classes)
 - [Lifecycle Management](#lifecycle-management)
-- [Versioning & Retention](#versioning--retention)
+- [Versioning & Retention](#versioning-retention)
 - [Parallel Operations](#parallel-operations)
 - [Sysadmin Operations](#sysadmin-operations)
 - [Troubleshooting](#troubleshooting)

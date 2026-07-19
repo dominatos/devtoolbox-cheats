@@ -6,20 +6,20 @@ Order: 11
 > **fzf** (Fuzzy Finder) — a general-purpose, interactive command-line fuzzy finder written in Go by Junegunn Choi. It reads lines from stdin and provides an interactive, filterable selection interface. Commonly used for file navigation, command history search, process management, Git workflows, and as a building block for custom shell functions. Actively maintained with frequent releases; no known alternatives match its versatility.
 
 ## Table of Contents
-- [Basics](#-basics--основы)
-- [File & Directory Navigation](#-file--directory-navigation--навигация-по-файлам-и-каталогам)
-- [Command History](#-command-history--история-команд)
-- [Git Integration](#-git-integration--интеграция-с-git)
-- [Process Management](#-process-management--управление-процессами)
-- [Custom Preview](#-custom-preview--настраиваемый-предпросмотр)
-- [Docker & Kubernetes](#-docker--kubernetes)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Advanced Techniques](#-advanced-techniques--продвинутые-техники)
-- [Keybindings & Options](#-keybindings--options--клавиатурные-сокращения-и-опции)
-- [Color Schemes](#-color-schemes--цветовые-схемы)
-- [Search Modes](#-search-modes--режимы-поиска)
-- [Performance](#-performance--производительность)
-- [Installation](#%EF%B8%8F-installation--установка)
+- [Basics](#basics-основы)
+- [File & Directory Navigation](#file-directory-navigation-навигация-по-файлам-и-каталогам)
+- [Command History](#command-history-история-команд)
+- [Git Integration](#git-integration-интеграция-с-git)
+- [Process Management](#process-management-управление-процессами)
+- [Custom Preview](#custom-preview-настраиваемый-предпросмотр)
+- [Docker & Kubernetes](#docker-kubernetes)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Advanced Techniques](#advanced-techniques-продвинутые-техники)
+- [Keybindings & Options](#keybindings-options-клавиатурные-сокращения-и-опции)
+- [Color Schemes](#color-schemes-цветовые-схемы)
+- [Search Modes](#search-modes-режимы-поиска)
+- [Performance](#performance-производительность)
+- [Installation](#installation-установка)
 
 ---
 

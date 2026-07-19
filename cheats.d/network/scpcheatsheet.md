@@ -12,7 +12,7 @@ Order: 7
 ## Table of Contents
 - [Basic Transfer](#basic-transfer)
 - [Advanced Options](#advanced-options)
-- [Performance & Compression](#performance--compression)
+- [Performance & Compression](#performance-compression)
 - [Troubleshooting](#troubleshooting)
 - [Real-World Examples](#real-world-examples)
 - [Reference Tables](#reference-tables)

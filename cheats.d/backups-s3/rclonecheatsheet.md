@@ -4,14 +4,14 @@ Icon: 🗄️
 Order: 2
 
 ## Table of Contents
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [Remote Management](#remote-management)
 - [File Operations](#file-operations)
-- [Copy & Sync](#copy--sync)
+- [Copy & Sync](#copy-sync)
 - [Advanced Operations](#advanced-operations)
 - [S3-Specific](#s3-specific)
 - [Encryption](#encryption)
-- [Monitoring & Logging](#monitoring--logging)
+- [Monitoring & Logging](#monitoring-logging)
 - [Sysadmin Operations](#sysadmin-operations)
 - [Troubleshooting](#troubleshooting)
 

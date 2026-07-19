@@ -5,18 +5,18 @@ Order: 0
 
 ## Table of Contents
 - [Description](#description)
-- [APT — Debian/Ubuntu](#-apt--debianubuntu)
-- [DNF — RHEL/Fedora](#-dnf--rhelfedora)
-- [Pacman — Arch Linux](#-pacman--arch-linux)
-- [Zypper — OpenSUSE](#-zypper--opensuse)
-- [Snap — Universal Packages](#-snap--universal-packages)
-- [Flatpak — Application Sandboxes](#-flatpak--application-sandboxes)
-- [AppImage — Portable Apps](#-appimage--portable-apps)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
-- [Cross-Reference Comparison](#-cross-reference-comparison--сравнение-менеджеров-пакетов)
-- [Best Practices](#-best-practices--лучшие-практики)
-- [Configuration Files](#-configuration-files--файлы-конфигурации)
-- [Documentation Links](#-documentation-links)
+- [APT — Debian/Ubuntu](#apt-debianubuntu)
+- [DNF — RHEL/Fedora](#dnf-rhelfedora)
+- [Pacman — Arch Linux](#pacman-arch-linux)
+- [Zypper — OpenSUSE](#zypper-opensuse)
+- [Snap — Universal Packages](#snap-universal-packages)
+- [Flatpak — Application Sandboxes](#flatpak-application-sandboxes)
+- [AppImage — Portable Apps](#appimage-portable-apps)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Cross-Reference Comparison](#cross-reference-comparison-сравнение-менеджеров-пакетов)
+- [Best Practices](#best-practices-лучшие-практики)
+- [Configuration Files](#configuration-files-файлы-конфигурации)
+- [Documentation Links](#documentation-links)
 
 ---
 

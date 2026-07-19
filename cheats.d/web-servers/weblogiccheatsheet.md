@@ -25,12 +25,12 @@ Order: 5
 ## Table of Contents
 
 - [Description](#description)
-- [Installation & Configuration](#installation--configuration)
+- [Installation & Configuration](#installation-configuration)
 - [Server Lifecycle](#server-lifecycle)
 - [WLST (WebLogic Scripting Tool)](#wlst-weblogic-scripting-tool)
 - [Security](#security)
-- [Maintenance & Monitoring](#maintenance--monitoring)
-- [Troubleshooting & Tools](#troubleshooting--tools)
+- [Maintenance & Monitoring](#maintenance-monitoring)
+- [Troubleshooting & Tools](#troubleshooting-tools)
 - [Logrotate Configuration](#logrotate-configuration)
 - [Documentation Links](#documentation-links)
 

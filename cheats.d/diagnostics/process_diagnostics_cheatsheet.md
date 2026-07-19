@@ -13,16 +13,16 @@ These tools (`ps`, `top`, `htop`, `pgrep`, `/proc`) are part of the `procps` pac
 [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html) · [top(1)](https://man7.org/linux/man-pages/man1/top.1.html) · [htop(1)](https://man7.org/linux/man-pages/man1/htop.1.html) · [proc(5)](https://man7.org/linux/man-pages/man5/proc.5.html) · [pgrep(1)](https://man7.org/linux/man-pages/man1/pgrep.1.html) · [iotop(8)](https://man7.org/linux/man-pages/man8/iotop.8.html)
 
 ## Table of Contents
-- [Process Discovery & Identification](#process-discovery--identification)
-- [Process State & Activity](#process-state--activity)
+- [Process Discovery & Identification](#process-discovery-identification)
+- [Process State & Activity](#process-state-activity)
 - [Resource Consumption (CPU, RAM, I/O)](#resource-consumption-cpu-ram-io)
-- [Network & Ports Monitoring](#network--ports-monitoring)
+- [Network & Ports Monitoring](#network-ports-monitoring)
 - [Thread Analysis](#thread-analysis)
-- [File Handles & Descriptors](#file-handles--descriptors)
-- [System Integration & Logging](#system-integration--logging)
+- [File Handles & Descriptors](#file-handles-descriptors)
+- [System Integration & Logging](#system-integration-logging)
 - [Case Study: MySQL Monitoring](#case-study-mysql-monitoring)
-- [Advanced Tracing & Debugging](#advanced-tracing--debugging)
-- [Comparison Tables & Senior Tips](#comparison-tables--senior-tips)
+- [Advanced Tracing & Debugging](#advanced-tracing-debugging)
+- [Comparison Tables & Senior Tips](#comparison-tables-senior-tips)
 
 ---
 

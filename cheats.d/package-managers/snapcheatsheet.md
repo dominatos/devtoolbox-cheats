@@ -5,13 +5,13 @@ Order: 5
 
 ## Table of Contents
 - [Description](#description)
-- [Configuration](#-configuration--конфигурация)
-- [Core Management](#-core-management--основное-управление)
-- [Sysadmin Operations](#-sysadmin-operations--операции-системного-администратора)
-- [Troubleshooting](#-troubleshooting--устранение-неполадок)
-- [Comparison: Confinement Modes](#-comparison-confinement-modes)
-- [Security](#-security--безопасность)
-- [Documentation Links](#-documentation-links)
+- [Configuration](#configuration-конфигурация)
+- [Core Management](#core-management-основное-управление)
+- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Comparison: Confinement Modes](#comparison-confinement-modes)
+- [Security](#security-безопасность)
+- [Documentation Links](#documentation-links)
 
 ---
 

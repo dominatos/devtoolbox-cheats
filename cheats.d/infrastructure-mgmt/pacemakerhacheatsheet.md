@@ -17,13 +17,13 @@ Pacemaker is an advanced, open-source high-availability cluster resource manager
 
 ## Table of Contents
 
-1. [Installation & Configuration](#installation--configuration)
+1. [Installation & Configuration](#installation-configuration)
 2. [Core Management (pcs)](#core-management-pcs)
 3. [Resource Management](#resource-management)
-4. [Constraints & Rules](#constraints--rules)
-5. [STONITH & Fencing](#stonith--fencing)
+4. [Constraints & Rules](#constraints-rules)
+5. [STONITH & Fencing](#stonith-fencing)
 6. [Quorum Management](#quorum-management)
-7. [Troubleshooting & Maintenance](#troubleshooting--maintenance)
+7. [Troubleshooting & Maintenance](#troubleshooting-maintenance)
 8. [Logrotate Configuration](#logrotate-configuration)
 9. [Documentation Links](#documentation-links)
 

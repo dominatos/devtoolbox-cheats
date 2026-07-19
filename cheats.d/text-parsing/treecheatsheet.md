@@ -6,17 +6,17 @@ Order: 13
 > **tree** — a recursive directory listing program that produces a depth-indented, colorized tree of files. Not part of coreutils; requires separate installation on most systems. Commonly used for project overviews, documentation, and quick filesystem audits. Actively maintained; modern alternative: `exa --tree` / `eza --tree` provides similar functionality with git integration.
 
 ## Table of Contents
-- [Basic Usage](#-basic-usage--базовое-использование)
-- [Filters (Include/Exclude)](#-filters-includeexclude--фильтры-включениеисключение)
-- [Sorting & Order](#-sorting--order--сортировка-и-порядок)
-- [Metadata Columns](#-metadata-columns--столбцы-метаданных)
-- [Symlinks](#-symlinks--символические-ссылки)
-- [Color & Charsets](#-color--charsets--цвет-и-кодировки)
-- [Report & Output](#-report--output--отчёт-и-вывод)
-- [HTML Output](#-html-output--html-вывод)
-- [Performance Tips](#-performance-tips--советы-по-производительности)
-- [Practical Recipes](#-practical-recipes--практические-рецепты)
-- [Installation](#%EF%B8%8F-installation--установка)
+- [Basic Usage](#basic-usage-базовое-использование)
+- [Filters (Include/Exclude)](#filters-includeexclude-фильтры-включениеисключение)
+- [Sorting & Order](#sorting-order-сортировка-и-порядок)
+- [Metadata Columns](#metadata-columns-столбцы-метаданных)
+- [Symlinks](#symlinks-символические-ссылки)
+- [Color & Charsets](#color-charsets-цвет-и-кодировки)
+- [Report & Output](#report-output-отчёт-и-вывод)
+- [HTML Output](#html-output-html-вывод)
+- [Performance Tips](#performance-tips-советы-по-производительности)
+- [Practical Recipes](#practical-recipes-практические-рецепты)
+- [Installation](#installation-установка)
 
 ---
 

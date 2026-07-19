@@ -18,3 +18,4 @@ create-missing-releases.sh
 implementation_plan.md
 install-dev.sh
 
+.mimocode/.cron-lock

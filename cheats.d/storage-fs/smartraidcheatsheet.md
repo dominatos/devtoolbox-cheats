@@ -29,14 +29,14 @@ Order: 4
 [smartctl(8)](https://man7.org/linux/man-pages/man8/smartctl.8.html) · [smartd(8)](https://man7.org/linux/man-pages/man8/smartd.8.html) · [mdadm(8)](https://man7.org/linux/man-pages/man8/mdadm.8.html) · [md(4)](https://man7.org/linux/man-pages/man4/md.4.html)
 
 ## Table of Contents
-- [Installation](#installation)
-- [SMART Diagnostics](#smart-diagnostics)
-- [mdadm RAID Management](#mdadm-raid-management)
-- [RAID Levels Comparison](#raid-levels-comparison)
-- [Critical SMART Attributes](#critical-smart-attributes)
-- [Monitoring & Alerts](#monitoring--alerts)
-- [Real-World Examples](#real-world-examples)
-- [Best Practices](#best-practices)
+- [Installation](#installation-установка)
+- [SMART Diagnostics](#smart-diagnostics-диагностика-smart)
+- [mdadm RAID Management](#mdadm-raid-management-управление-raid)
+- [RAID Levels Comparison](#raid-levels-comparison-сравнение-уровней-raid)
+- [Critical SMART Attributes](#critical-smart-attributes-критические-smart-атрибуты)
+- [Monitoring & Alerts](#monitoring-alerts-мониторинг-и-оповещения)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Best Practices](#best-practices-лучшие-практики)
 
 ---
 

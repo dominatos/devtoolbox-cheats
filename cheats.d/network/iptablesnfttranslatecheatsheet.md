@@ -10,13 +10,13 @@ This cheatsheet provides a side-by-side translation reference for migrating fire
 📚 **Official Docs / Официальная документация:** [Moving from iptables to nftables](https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_iptables_to_nftables)
 
 ## Table of Contents
-- [Translation Basics](#-translation-basics--основы-перевода)
-- [Basic Rules](#-basic-rules--базовые-правила)
-- [Chain Management](#-chain-management--управление-цепочками)
-- [NAT Rules](#-nat-rules--правила-nat)
-- [Connection Tracking](#-connection-tracking--отслеживание-соединений)
-- [Advanced Matching](#-advanced-matching--расширенное-сопоставление)
-- [Migration Tools](#-migration-tools--инструменты-миграции)
+- [Translation Basics](#translation-basics-основы-перевода)
+- [Basic Rules](#basic-rules-базовые-правила)
+- [Chain Management](#chain-management-управление-цепочками)
+- [NAT Rules](#nat-rules-правила-nat)
+- [Connection Tracking](#connection-tracking-отслеживание-соединений)
+- [Advanced Matching](#advanced-matching-расширенное-сопоставление)
+- [Migration Tools](#migration-tools-инструменты-миграции)
 
 ---
 

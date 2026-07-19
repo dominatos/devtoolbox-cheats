@@ -17,14 +17,14 @@ Order: 2
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#installation--configuration--установка-и-настройка)
-2. [MySQL Cluster Setup](#mysql-cluster-setup--установка-и-настройка-mysql-cluster)
-3. [Core Management](#core-management--управление)
-4. [Sysadmin Operations](#sysadmin-operations--операции-сисадмина)
-5. [Security](#security--безопасность)
-6. [Backup & Restore](#backup--restore--бэкап-и-восстановление)
-7. [Troubleshooting & Tools](#troubleshooting--tools--устранение-проблем-и-инструменты)
-8. [Logrotate Configuration](#logrotate-configuration--конфигурация-logrotate)
+1. [Installation & Configuration](#installation-configuration-установка-и-настройка)
+2. [MySQL Cluster Setup](#mysql-cluster-setup-установка-и-настройка-mysql-cluster)
+3. [Core Management](#core-management-управление)
+4. [Sysadmin Operations](#sysadmin-operations-операции-сисадмина)
+5. [Security](#security-безопасность)
+6. [Backup & Restore](#backup-restore-бэкап-и-восстановление)
+7. [Troubleshooting & Tools](#troubleshooting-tools-устранение-проблем-и-инструменты)
+8. [Logrotate Configuration](#logrotate-configuration-конфигурация-logrotate)
 
 ---
 

@@ -13,15 +13,15 @@ Order: 2
 
 ## 📚 Table of Contents / Содержание
 
-1. [Random & Hash Generation](#1-random--hash-generation)
+1. [Random & Hash Generation](#1-random-hash-generation)
 2. [Certificate Operations](#2-certificate-operations)
 3. [Key Generation](#3-key-generation)
 4. [Certificate Signing Requests](#4-certificate-signing-requests)
 5. [SSL/TLS Testing](#5-ssltls-testing)
-6. [Encryption & Decryption](#6-encryption--decryption)
+6. [Encryption & Decryption](#6-encryption-decryption)
 7. [File Operations](#7-file-operations)
 8. [Real-World Examples](#8-real-world-examples)
-9. [Troubleshooting & Tools](#9-troubleshooting--tools)
+9. [Troubleshooting & Tools](#9-troubleshooting-tools)
 10. [Documentation Links](#10-documentation-links)
 
 ---

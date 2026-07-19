@@ -17,15 +17,15 @@ Order: 4
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration / Установка и Настройка](#1-installation--configuration--установка-и-настройка)
-2. [Cluster Management / Управление Кластером](#2-cluster-management--управление-кластером)
-3. [Index Management / Управление Индексами](#3-index-management--управление-индексами)
-4. [Document Management / Управление Документами](#4-document-management--управление-документами)
-5. [Backup & Restore / Бэкап и Восстановление](#5-backup--restore--бэкап-и-восстановление)
-6. [Security / Безопасность](#6-security--безопасность)
-7. [Sysadmin Operations / Сисадминские Операции](#7-sysadmin-operations--сисадминские-операции)
-8. [Tools / Инструменты](#8-tools--инструменты)
-9. [Logrotate Configuration / Конфигурация Logrotate](#9-logrotate-configuration--конфигурация-logrotate)
+1. [Installation & Configuration / Установка и Настройка](#installation-configuration)
+2. [Cluster Management / Управление Кластером](#cluster-management)
+3. [Index Management / Управление Индексами](#index-management)
+4. [Document Management / Управление Документами](#document-management)
+5. [Backup & Restore / Бэкап и Восстановление](#backup-restore)
+6. [Security / Безопасность](#security)
+7. [Sysadmin Operations / Сисадминские Операции](#sysadmin-operations)
+8. [Tools / Инструменты](#tools)
+9. [Logrotate Configuration / Конфигурация Logrotate](#logrotate-configuration)
 
 ---
 

@@ -14,8 +14,8 @@ Comprehensive guide to installing and configuring VPN plugins for NetworkManager
 - [L2TP/IPSec](#l2tpipsec)
 - [PPTP](#pptp)
 - [WireGuard](#wireguard)
-- [Troubleshooting](#troubleshooting)
-- [Comparison Tables](#comparison-tables)
+- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Comparison Tables](#comparison-tables-таблицы-сравнения)
 
 ---
 

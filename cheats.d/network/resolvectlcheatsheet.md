@@ -10,11 +10,11 @@ Order: 19
 📚 **Official Docs / Официальная документация:** [systemd-resolved(8)](https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html)
 
 ## Table of Contents
-- [Basics & Status](#basics--status)
+- [Basics & Status](#basics-status)
 - [DNS Queries](#dns-queries)
 - [Link Configuration](#link-configuration)
-- [DNSSEC & DNS-over-TLS](#dnssec--dns-over-tls)
-- [mDNS & LLMNR](#mdns--llmnr)
+- [DNSSEC & DNS-over-TLS](#dnssec-dns-over-tls)
+- [mDNS & LLMNR](#mdns-llmnr)
 - [Service Management](#service-management)
 - [Real-World Examples](#real-world-examples)
 - [Reference Tables](#reference-tables)

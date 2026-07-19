@@ -10,14 +10,14 @@ A collection of essential network diagnostic tools for connectivity testing, pat
 📚 **Official Docs / Официальная документация:** [mtr(8)](https://www.bitwizard.nl/mtr/) · [iperf3](https://iperf.fr/)
 
 ## Table of Contents
-- [ping — Basic Connectivity](#-ping--basic-connectivity)
-- [traceroute — Path Tracing](#-traceroute--path-tracing)
-- [mtr — Combined Trace](#-mtr--combined-trace)
-- [iperf3 — Bandwidth Testing](#-iperf3--bandwidth-testing)
-- [netcat — Network Swiss Army](#-netcat--network-swiss-army)  
-- [ss — Socket Statistics](#-ss--socket-statistics)
-- [Troubleshooting Workflows](#-troubleshooting-workflows--рабочие-процессы)
-- [Real-World Examples](#-real-world-examples--примеры-из-практики)
+- [ping — Basic Connectivity](#ping-basic-connectivity)
+- [traceroute — Path Tracing](#traceroute-path-tracing)
+- [mtr — Combined Trace](#mtr-combined-trace)
+- [iperf3 — Bandwidth Testing](#iperf3-bandwidth-testing)
+- [netcat — Network Swiss Army](#netcat-network-swiss-army)  
+- [ss — Socket Statistics](#ss-socket-statistics)
+- [Troubleshooting Workflows](#troubleshooting-workflows-рабочие-процессы)
+- [Real-World Examples](#real-world-examples-примеры-из-практики)
 
 ---
 

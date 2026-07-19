@@ -16,7 +16,7 @@ Order: 16
 - [Delete Rules](#delete-rules)
 - [Advanced Rules](#advanced-rules)
 - [Application Profiles](#application-profiles)
-- [Logging & Status](#logging--status)
+- [Logging & Status](#logging-status)
 - [Real-World Examples](#real-world-examples)
 - [Reference Tables](#reference-tables)
 
