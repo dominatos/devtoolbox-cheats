@@ -16,6 +16,7 @@ SSH tunneling (port forwarding) allows you to securely route network traffic thr
 📚 **Official Docs / Официальная документация:** [ssh(1)](https://man.openbsd.org/ssh)
 
 ## Table of Contents
+
 - [SSH Tunnel Basics](#SSH%20Tunnel%20Basics)
 - [Local Port Forwarding](#Local%20Port%20Forwarding)
 - [Remote Port Forwarding](#Remote%20Port%20Forwarding)
@@ -25,6 +26,7 @@ SSH tunneling (port forwarding) allows you to securely route network traffic thr
 - [Troubleshooting](#Troubleshooting)
 - [Real-World Examples](#Real-World%20Examples)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

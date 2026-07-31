@@ -14,18 +14,16 @@ tags:
 This cheatsheet provides a universal workflow to determine which network management backend (NetworkManager, systemd-networkd, Netplan, or legacy scripts) is controlling your network interfaces. Essential for troubleshooting network configuration conflicts on any Linux distribution (Ubuntu, Debian, RHEL, CentOS, Fedora).
 
 ## Table of Contents
+
 - [Quick Detection Workflow](#Quick%20Detection%20Workflow)
 - [Universal Backend Check](#Universal%20Backend%20Check)
 - [NetworkManager (NM)](#NetworkManager%20(NM))
 - [systemd-networkd](#systemd-networkd)
 - [Distro-Specific Layers](#Distro-Specific%20Layers)
-    - [Netplan (Ubuntu/Debian)](#Netplan%20(Ubuntu/Debian))
-    - [Legacy: Ifupdown (Debian/Old Ubuntu)](#Legacy:%20Ifupdown%20(Debian/Old%20Ubuntu))
-    - [Legacy: Sysconfig (RHEL/CentOS/Fedora)](#Legacy:%20Sysconfig%20(RHEL/CentOS/Fedora))
 - [Interface Ownership](#Interface%20Ownership)
-- [Routing Table](#Step%204:%20Check%20routing%20table%20source)
 - [Comparison Tables](#Comparison%20Tables)
 - [Troubleshooting](#Troubleshooting)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

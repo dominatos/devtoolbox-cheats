@@ -27,14 +27,14 @@ tags:
 - [Quick Reference](#Quick%20Reference)
 - [Contexts, Clusters, Namespaces](#Contexts,%20Clusters,%20Namespaces)
 - [Pods](#Pods)
-- [Deployments / ReplicaSets / StatefulSets](#Deployments%20/%20ReplicaSets%20/%20StatefulSets)
-- [Services / Ingress / Networking](#Services%20/%20Ingress%20/%20Networking)
+- [Deployments](#Deployments)
+- [Services](#Services)
 - [ConfigMaps & Secrets](#ConfigMaps%20&%20Secrets)
-- [Storage (PV / PVC)](#Storage%20(PV%20/%20PVC))
-- [Nodes / Cluster](#Nodes%20/%20Cluster)
-- [Metrics / Debug / Troubleshooting](#Metrics%20/%20Debug%20/%20Troubleshooting)
-- [YAML / Apply / Diff](#YAML%20/%20Apply%20/%20Diff)
-- [RBAC / Security](#RBAC%20/%20Security)
+- [Storage (PV](#Storage%20(PV)
+- [Nodes](#Nodes)
+- [Metrics](#Metrics)
+- [YAML](#YAML)
+- [RBAC](#RBAC)
 - [Useful One-liners](#Useful%20One-liners)
 - [Sysadmin Essentials](#Sysadmin%20Essentials)
 - [Documentation Links](#Documentation%20Links)
@@ -96,7 +96,7 @@ kubectl cp ./local POD:/path                          # Copy to pod / Копир
 
 ---
 
-## Deployments / ReplicaSets / StatefulSets
+## Deployments
 
 ```bash
 kubectl get deploy                                    # List deployments / Список deployment
@@ -116,7 +116,7 @@ kubectl delete sts APP                                # Delete StatefulSet / У�
 
 ---
 
-## Services / Ingress / Networking
+## Services
 
 ```bash
 kubectl get svc                                       # List services / Список сервисов
@@ -156,7 +156,7 @@ kubectl create secret generic NAME --from-literal=k=v # Create secret / Созд
 
 ---
 
-## Storage (PV / PVC)
+## Storage (PV
 
 ```bash
 kubectl get pv                                        # List PV / Список PersistentVolume
@@ -167,7 +167,7 @@ kubectl delete pvc NAME                               # Delete PVC / Удали�
 
 ---
 
-## Nodes / Cluster
+## Nodes
 
 ```bash
 kubectl get nodes                                     # List nodes / Список нод
@@ -182,7 +182,7 @@ kubectl drain NODE --ignore-daemonsets                # Drain node / Освоб�
 
 ---
 
-## Metrics / Debug / Troubleshooting
+## Metrics
 
 ```bash
 kubectl top nodes                                     # Node CPU/mem / Ресурсы нод
@@ -195,7 +195,7 @@ kubectl explain pod.spec                              # Explain fields / Док�
 
 ---
 
-## YAML / Apply / Diff
+## YAML
 
 ```bash
 kubectl apply -f file.yaml                            # Apply manifest / Применить манифест
@@ -208,7 +208,7 @@ kubectl create deploy APP --image=nginx --dry-run=client -o yaml > app.yaml # Ge
 
 ---
 
-## RBAC / Security
+## RBAC
 
 ```bash
 kubectl get sa                                        # ServiceAccounts / Сервисные аккаунты

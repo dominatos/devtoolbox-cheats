@@ -19,6 +19,7 @@ These tools (`ps`, `top`, `htop`, `pgrep`, `/proc`) are part of the `procps` pac
 [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html) · [top(1)](https://man7.org/linux/man-pages/man1/top.1.html) · [htop(1)](https://man7.org/linux/man-pages/man1/htop.1.html) · [proc(5)](https://man7.org/linux/man-pages/man5/proc.5.html) · [pgrep(1)](https://man7.org/linux/man-pages/man1/pgrep.1.html) · [iotop(8)](https://man7.org/linux/man-pages/man8/iotop.8.html)
 
 ## Table of Contents
+
 - [Process Discovery & Identification](#Process%20Discovery%20&%20Identification)
 - [Process State & Activity](#Process%20State%20&%20Activity)
 - [Resource Consumption (CPU, RAM, I/O)](#Resource%20Consumption%20(CPU,%20RAM,%20I/O))
@@ -29,6 +30,7 @@ These tools (`ps`, `top`, `htop`, `pgrep`, `/proc`) are part of the `procps` pac
 - [Case Study: MySQL Monitoring](#Case%20Study:%20MySQL%20Monitoring)
 - [Advanced Tracing & Debugging](#Advanced%20Tracing%20&%20Debugging)
 - [Comparison Tables & Senior Tips](#Comparison%20Tables%20&%20Senior%20Tips)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

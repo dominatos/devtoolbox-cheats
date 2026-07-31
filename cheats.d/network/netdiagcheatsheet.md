@@ -16,14 +16,20 @@ A collection of essential network diagnostic tools for connectivity testing, pat
 📚 **Official Docs / Официальная документация:** [mtr(8)](https://www.bitwizard.nl/mtr/) · [iperf3](https://iperf.fr/)
 
 ## Table of Contents
-- [ping — Basic Connectivity](#ping:%20Basic%20connectivity)
-- [traceroute — Path Tracing](#️%20traceroute%20—%20Path%20Tracing)
-- [mtr — Combined Trace](#mtr%20—%20Combined%20Trace)
-- [iperf3 — Bandwidth Testing](#iperf3:%20Bandwidth%20testing)
-- [netcat — Network Swiss Army](#netcat%20—%20Network%20Swiss%20Army)
-- [ss — Socket Statistics](#ss%20—%20Socket%20Statistics)
-- [Troubleshooting Workflows](#️%20Troubleshooting%20Workflows)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [🏓 ping — Basic Connectivity](#🏓%20ping%20—%20Basic%20Connectivity)
+- [🗺️ traceroute — Path Tracing](#🗺️%20traceroute%20—%20Path%20Tracing)
+- [🎯 mtr — Combined Trace](#🎯%20mtr%20—%20Combined%20Trace)
+- [📊 iperf3 — Bandwidth Testing](#📊%20iperf3%20—%20Bandwidth%20Testing)
+- [🔌 netcat — Network Swiss Army](#🔌%20netcat%20—%20Network%20Swiss%20Army)
+- [📡 ss — Socket Statistics](#📡%20ss%20—%20Socket%20Statistics)
+- [🛠️ Troubleshooting Workflows](#🛠️%20Troubleshooting%20Workflows)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Default Ports](#🔧%20Default%20Ports)
+- [📋 Common Use Cases](#📋%20Common%20Use%20Cases)
+- [🔍 Alternative Tools](#🔍%20Alternative%20Tools)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

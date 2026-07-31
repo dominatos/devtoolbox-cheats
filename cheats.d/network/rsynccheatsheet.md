@@ -16,6 +16,7 @@ tags:
 📚 **Official Docs / Официальная документация:** [rsync(1)](https://download.samba.org/pub/rsync/rsync.1)
 
 ## Table of Contents
+
 - [Basics](#Basics)
 - [Remote Sync via SSH](#Remote%20Sync%20via%20SSH)
 - [Mirror & Delete](#Mirror%20&%20Delete)
@@ -25,6 +26,7 @@ tags:
 - [Dry Run & Preview](#Dry%20Run%20&%20Preview)
 - [Progress & Stats](#Progress%20&%20Stats)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

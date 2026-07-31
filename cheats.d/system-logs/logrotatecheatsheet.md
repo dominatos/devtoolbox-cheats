@@ -30,10 +30,13 @@ logrotate is part of virtually all Linux distributions and has been the standard
 
 ## 📚 Table of Contents
 
-1. [Basic Commands](#Basic%20Commands)
-2. [Configuration](#Configuration)
-3. [Rotation Strategies](#Rotation%20Strategies)
-4. [Real-World Examples](#Real-World%20Examples)
+- [Basic Commands](#Basic%20Commands)
+- [Configuration](#Configuration)
+- [Rotation Strategies](#Rotation%20Strategies)
+- [Real-World Examples](#Real-World%20Examples)
+- [Default Paths](#Default%20Paths)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

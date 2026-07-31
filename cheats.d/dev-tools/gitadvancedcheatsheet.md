@@ -20,17 +20,8 @@ tags:
 ---
 
 ## Table of Contents
-- [Worktrees](#Worktrees)
-- [Bisect](#Bisect)
-- [Reflog](#Reflog)
-- [Submodules](#Submodules)
-- [Cherry Pick & Rebase](#Cherry%20Pick%20&%20Rebase)
-- [Stash](#Stash)
-- [Hooks](#Hooks)
-- [Advanced Techniques](#Advanced%20Techniques)
-- [Real-World Examples](#Real-World%20Examples)
-- [Best Practices](#Best%20Practices)
-- [Useful Aliases](#Useful%20Aliases)
+
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

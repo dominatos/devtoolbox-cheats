@@ -16,6 +16,7 @@ tags:
 📚 **Official Docs / Официальная документация:** [OpenSSH Manual](https://www.openssh.com/manual.html)
 
 ## Table of Contents
+
 - [Basic Connection](#Basic%20Connection)
 - [Key Management](#Key%20Management)
 - [Port Forwarding & Tunnels](#Port%20Forwarding%20&%20Tunnels)
@@ -27,6 +28,7 @@ tags:
 - [Real-World Examples](#Real-World%20Examples)
 - [SSH Agent Forwarding](#SSH%20Agent%20Forwarding)
 - [Advanced Techniques](#Advanced%20Techniques)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

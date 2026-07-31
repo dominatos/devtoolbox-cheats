@@ -12,12 +12,14 @@ tags:
 > **Bash Loops** — built-in shell constructs (`for`, `while`, `until`) for iterating over files, numbers, arrays, and command output. These are not standalone programs but fundamental parts of Bash (Bourne-Again SHell), the default shell on most Linux systems. Loops are essential for scripting automation, batch processing, retry logic, and monitoring. For complex orchestration, consider dedicated tools like `ansible` or `xargs --parallel`.
 
 ## Table of Contents
-- [FOR Loops](#FOR%20Loops)
-- [WHILE Loops](#⏳%20WHILE%20Loops)
-- [UNTIL Loops](#UNTIL%20Loops)
-- [Loop Control](#Loop%20Control)
-- [Reading Files](#Reading%20Files)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [🔄 FOR Loops](#🔄%20FOR%20Loops)
+- [⏳ WHILE Loops](#⏳%20WHILE%20Loops)
+- [🔁 UNTIL Loops](#🔁%20UNTIL%20Loops)
+- [🎮 Loop Control](#🎮%20Loop%20Control)
+- [📖 Reading Files](#📖%20Reading%20Files)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

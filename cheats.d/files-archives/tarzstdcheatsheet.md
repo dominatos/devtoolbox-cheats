@@ -30,6 +30,8 @@ tags:
 ---
 
 ## Table of Contents
+
+- [Description](#Description)
 - [Installation](#Installation)
 - [Basic Commands](#Basic%20Commands)
 - [Compression Levels](#Compression%20Levels)

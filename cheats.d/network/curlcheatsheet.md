@@ -16,26 +16,28 @@ tags:
 📚 **Official Docs / Официальная документация:** [curl.se](https://curl.se/docs/)
 
 ## Table of Contents
-- [Basics](#Basics)
-- [Output & Files](#Output%20&%20Files)
-- [Headers](#Headers)
-- [HTTP Methods](#HTTP%20Methods%20/%20HTTP-методы)
-- [Sending Data](#Sending%20Data)
-- [Cookies](#Cookies)
-- [Authentication](#Authentication)
-- [Proxy](#Proxy)
-- [Redirects](#Redirects)
-- [Compression & Content](#️%20Compression%20&%20Content)
-- [Timeouts, Retries & Rates](#⏱️%20Timeouts,%20Retries%20&%20Rates)
-- [Debug & Metrics](#Debug%20&%20Metrics)
-- [DNS & Network Tricks](#DNS%20&%20Network%20Tricks%20/%20DNS%20и%20сетевые%20трюки)
-- [TLS & Security](#TLS%20&%20Security%20/%20TLS%20и%20безопасность)
-- [Parallel Requests](#Parallel%20Requests)
-- [Config & Netrc](#️%20Config%20&%20Netrc)
-- [API & JSON Examples](#API%20&%20JSON%20Examples%20/%20API%20и%20примеры%20JSON)
-- [Uploads](#Uploads)
-- [FTP, SFTP & SMTP](#FTP,%20SFTP%20&%20SMTP)
-- [Useful Combos](#Useful%20Combos)
+
+- [📘 Basics](#📘%20Basics)
+- [📂 Output & Files](#📂%20Output%20&%20Files)
+- [📋 Headers](#📋%20Headers)
+- [🔧 HTTP Methods](#🔧%20HTTP%20Methods)
+- [📤 Sending Data](#📤%20Sending%20Data)
+- [🍪 Cookies](#🍪%20Cookies)
+- [🔐 Authentication](#🔐%20Authentication)
+- [🌐 Proxy](#🌐%20Proxy)
+- [🔀 Redirects](#🔀%20Redirects)
+- [🗜️ Compression & Content](#🗜️%20Compression%20&%20Content)
+- [⏱️ Timeouts, Retries & Rates](#⏱️%20Timeouts,%20Retries%20&%20Rates)
+- [🐛 Debug & Metrics](#🐛%20Debug%20&%20Metrics)
+- [🌐 DNS & Network Tricks](#🌐%20DNS%20&%20Network%20Tricks)
+- [🔒 TLS & Security](#🔒%20TLS%20&%20Security)
+- [⚡ Parallel Requests](#⚡%20Parallel%20Requests)
+- [⚙️ Config & Netrc](#⚙️%20Config%20&%20Netrc)
+- [🔌 API & JSON Examples](#🔌%20API%20&%20JSON%20Examples)
+- [📤 Uploads](#📤%20Uploads)
+- [📁 FTP, SFTP & SMTP](#📁%20FTP,%20SFTP%20&%20SMTP)
+- [🌟 Useful Combos](#🌟%20Useful%20Combos)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 
@@ -213,7 +215,7 @@ curl -s -o /dev/null -w '{"code":%{http_code},"total":%{time_total}}\n' https://
 
 ---
 
-## 🌐 DNS & Network Tricks / DNS
+## 🌐 DNS & Network Tricks
 
 ```bash
 curl --resolve example.com:443:<IP> https://example.com  # Override DNS for host:port / Переопределить DNS для host:port
@@ -226,7 +228,7 @@ curl --globoff 'https://example.com/file[1-3].txt'  # Disable URL globbing / О�
 
 ---
 
-## 🔒 TLS & Security / TLS
+## 🔒 TLS & Security
 
 ```bash
 curl --cacert ca.pem https://example.com  # Trust custom CA / Доверять заданному CA
@@ -259,7 +261,7 @@ curl --netrc-file .netrc https://example.com  # Custom netrc path / Заданн
 
 ---
 
-## 🔌 API & JSON Examples / API
+## 🔌 API & JSON Examples
 
 ```bash
 curl --json @payload.json https://api.example.com/v1/items  # POST JSON from file / POST JSON из файла

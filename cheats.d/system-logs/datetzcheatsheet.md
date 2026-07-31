@@ -30,12 +30,14 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [date Command](#date%20Command)
-2. [timedatectl](#timedatectl)
-3. [Timezones](#Timezones)
-4. [Format Specifiers](#Format%20Specifiers)
-5. [Real-World Examples](#Real-World%20Examples)
-6. [Troubleshooting](#Troubleshooting)
+- [date Command](#date%20Command)
+- [timedatectl](#timedatectl)
+- [Timezones](#Timezones)
+- [Format Specifiers](#Format%20Specifiers)
+- [Real-World Examples](#Real-World%20Examples)
+- [Troubleshooting](#Troubleshooting)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

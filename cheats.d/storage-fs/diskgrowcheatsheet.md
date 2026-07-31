@@ -27,6 +27,7 @@ The workflow follows a strict layer-by-layer approach: **disk → partition → 
 [growpart(1)](https://manpages.debian.org/testing/cloud-guest-utils/growpart.1.en.html) · [resize2fs(8)](https://man7.org/linux/man-pages/man8/resize2fs.8.html) · [xfs_growfs(8)](https://man7.org/linux/man-pages/man8/xfs_growfs.8.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html)
 
 ## Table of Contents
+
 - [Partition Growth](#Partition%20Growth)
 - [Filesystem Expansion](#Filesystem%20Expansion)
 - [LVM Growth](#LVM%20Growth)
@@ -36,6 +37,7 @@ The workflow follows a strict layer-by-layer approach: **disk → partition → 
 - [Best Practices](#Best%20Practices)
 - [Filesystem Resize Comparison](#Filesystem%20Resize%20Comparison)
 - [Typical Growth Workflow](#Typical%20Growth%20Workflow)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

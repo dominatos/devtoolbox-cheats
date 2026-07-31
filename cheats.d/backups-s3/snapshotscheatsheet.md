@@ -14,6 +14,7 @@ tags:
 > / **Снапшоты файловых систем** (LVM, ZFS, Btrfs) обеспечивают мгновенные копии данных на уровне блоков с использованием Copy-on-Write (CoW). Используются для консистентных бэкапов работающих баз данных, быстрых откатов и аварийного восстановления. Снапшоты не заменяют внешние резервные копии.
 
 ## Table of Contents
+
 - [Technology Comparison](#Technology%20Comparison)
 - [LVM Snapshots](#LVM%20Snapshots)
 - [ZFS Snapshots](#ZFS%20Snapshots)
@@ -21,6 +22,7 @@ tags:
 - [Snapshot Strategies](#Snapshot%20Strategies)
 - [Sysadmin Patterns](#Sysadmin%20Patterns)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

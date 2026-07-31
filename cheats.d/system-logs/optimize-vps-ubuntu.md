@@ -32,10 +32,12 @@ Quick guide to free disk space, reduce RAM/CPU usage, and improve security on a 
 
 ## 📚 Table of Contents
 
-1. [Remove Unnecessary Packages](#Remove%20Unnecessary%20Packages)
-2. [Disable Unneeded Services](#Disable%20Unneeded%20Services)
-3. [Monitoring & Verification](#Monitoring%20&%20Verification)
-4. [Expected Results](#Expected%20Results)
+- [Remove Unnecessary Packages](#Remove%20Unnecessary%20Packages)
+- [Disable Unneeded Services](#Disable%20Unneeded%20Services)
+- [Monitoring & Verification](#Monitoring%20&%20Verification)
+- [Expected Results](#Expected%20Results)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

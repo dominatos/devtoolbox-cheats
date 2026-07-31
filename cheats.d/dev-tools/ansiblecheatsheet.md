@@ -22,17 +22,18 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Ad-Hoc Commands](#1.%20Ad-Hoc%20Commands%20/%20Ad-Hoc%20Команды)
-2. [Playbooks](#2.%20Playbooks)
-3. [Ansible Galaxy](#3.%20Ansible%20Galaxy%20/%20Ansible%20Galaxy)
-4. [Ansible Vault](#4.%20Ansible%20Vault%20/%20Ansible%20Vault%20(Шифрование))
-5. [Configuration](#5.%20Configuration)
-6. [Sysadmin Basics](#Sysadmin%20Basics)
-7. [Logrotate Configuration](#Logrotate%20Configuration)
+- [1. Ad-Hoc Commands](#1.%20Ad-Hoc%20Commands)
+- [2. Playbooks](#2.%20Playbooks)
+- [3. Ansible Galaxy](#3.%20Ansible%20Galaxy)
+- [4. Ansible Vault](#4.%20Ansible%20Vault)
+- [5. Configuration](#5.%20Configuration)
+- [Sysadmin Basics](#Sysadmin%20Basics)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 
-## 1. Ad-Hoc Commands / Ad-Hoc
+## 1. Ad-Hoc Commands
 
 ### Basic Connectivity
 ```bash
@@ -92,7 +93,7 @@ ansible-playbook site.yml -vvv
 
 ---
 
-## 3. Ansible Galaxy / Ansible Galaxy
+## 3. Ansible Galaxy
 
 ```bash
 # Install Role
@@ -104,7 +105,7 @@ ansible-galaxy init <ROLE_NAME>
 
 ---
 
-## 4. Ansible Vault / Ansible Vault
+## 4. Ansible Vault
 
 ```bash
 # Encrypt file

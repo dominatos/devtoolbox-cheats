@@ -10,12 +10,13 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Description](#Description)
-- [Core Management](#Core%20Management)
-- [Advanced Operations](#Advanced%20Operations)
-- [Comparison: AppImage vs Others](#Comparison:%20AppImage%20vs%20Others)
-- [Troubleshooting](#Troubleshooting)
-- [Documentation Links](#Documentation%20Links)
+- [🛠 Core Management](#🛠%20Core%20Management)
+- [🔧 Advanced Operations](#🔧%20Advanced%20Operations)
+- [📊 Comparison: AppImage vs Others](#📊%20Comparison:%20AppImage%20vs%20Others)
+- [🚨 Troubleshooting](#🚨%20Troubleshooting)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

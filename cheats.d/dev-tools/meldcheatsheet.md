@@ -21,11 +21,12 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Installation / Установка](#Installation)
-2. [Basic CLI Usage / Основы CLI](#Basic%20CLI%20Usage)
-3. [Version Control Integration / Интеграция с Git/SVN](#Version%20Control%20Integration)
-4. [Keyboard Shortcuts / Горячие клавиши](#Keyboard%20Shortcuts)
-5. [Directory Comparison / Сравнение директорий](#Directory%20Comparison)
+- [Installation](#Installation)
+- [Basic CLI Usage](#Basic%20CLI%20Usage)
+- [Version Control Integration](#Version%20Control%20Integration)
+- [Keyboard Shortcuts](#Keyboard%20Shortcuts)
+- [Directory Comparison](#Directory%20Comparison)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

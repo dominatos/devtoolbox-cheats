@@ -16,12 +16,14 @@ tags:
 📚 **Official Docs / Официальная документация:** [ss(8)](https://man7.org/linux/man-pages/man8/ss.8.html)
 
 ## Table of Contents
+
 - [Basic Commands](#Basic%20Commands)
 - [Filtering](#Filtering)
 - [Statistics](#Statistics)
 - [Advanced Usage](#Advanced%20Usage)
 - [Real-World Examples](#Real-World%20Examples)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

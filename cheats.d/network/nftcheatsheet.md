@@ -16,6 +16,7 @@ tags:
 📚 **Official Docs / Официальная документация:** [nftables wiki](https://wiki.nftables.org/)
 
 ## Table of Contents
+
 - [Basic Commands](#Basic%20Commands)
 - [Tables & Chains](#Tables%20&%20Chains)
 - [Rules](#Rules)
@@ -24,6 +25,7 @@ tags:
 - [Migration from iptables](#Migration%20from%20iptables)
 - [Real-World Examples](#Real-World%20Examples)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

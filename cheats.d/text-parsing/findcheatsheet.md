@@ -12,14 +12,16 @@ tags:
 > **find** — POSIX-standard utility for recursively searching the file system by name, type, size, time, permissions, and more. Part of GNU Findutils, pre-installed on all Linux distributions. `find` is the most powerful and flexible file-locating tool available in the shell. For simpler syntax and faster performance, consider the modern alternative [`fd`](https://github.com/sharkdp/fd) — but `find` remains the universal, scriptable standard.
 
 ## Table of Contents
-- [Basic Search](#Basic%20Search)
-- [By Type & Name](#By%20Type%20&%20Name)
-- [By Time](#⏰%20By%20Time)
-- [By Size & Permissions](#By%20Size%20&%20Permissions)
-- [Excluding Paths](#Excluding%20Paths)
-- [Actions: Delete, Exec](#Actions:%20Delete,%20Exec)
-- [Real-World Examples](#Real-World%20Examples)
-- [Advanced Use Cases](#Advanced%20Use%20Cases)
+
+- [🔍 Basic Search](#🔍%20Basic%20Search)
+- [📁 By Type & Name](#📁%20By%20Type%20&%20Name)
+- [⏰ By Time](#⏰%20By%20Time)
+- [📏 By Size & Permissions](#📏%20By%20Size%20&%20Permissions)
+- [🚫 Excluding Paths](#🚫%20Excluding%20Paths)
+- [⚡ Actions: Delete, Exec](#⚡%20Actions:%20Delete,%20Exec)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [🔬 Advanced Use Cases](#🔬%20Advanced%20Use%20Cases)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

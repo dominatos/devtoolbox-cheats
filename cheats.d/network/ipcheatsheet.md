@@ -16,12 +16,18 @@ tags:
 📚 **Official Docs / Официальная документация:** [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html)
 
 ## Table of Contents
-- [Address Management](#Address%20Management)
-- [Link Management](#Link%20Management)
-- [Routing](#️%20Routing)
-- [Neighbor (ARP/NDP)](#️%20Neighbor%20(ARP/NDP)%20/%20Соседи)
-- [Tunnels & VLANs](#Tunnels%20&%20VLANs)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [📍 Address Management](#📍%20Address%20Management)
+- [🔗 Link Management](#🔗%20Link%20Management)
+- [🗺️ Routing](#🗺️%20Routing)
+- [🏘️ Neighbor (ARP/NDP)](#🏘️%20Neighbor%20(ARP/NDP))
+- [🚇 Tunnels & VLANs](#🚇%20Tunnels%20&%20VLANs)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Common Subcommands](#🔧%20Common%20Subcommands)
+- [📋 Useful Options](#📋%20Useful%20Options)
+- [⚠️ Important Notes](#⚠️%20Important%20Notes)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

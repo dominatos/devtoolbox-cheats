@@ -16,16 +16,21 @@ tags:
 📚 **Official Docs / Официальная документация:** [firewalld.org](https://firewalld.org/documentation/)
 
 ## Table of Contents
-- [Installation & Configuration](#Installation%20&%20Configuration)
-- [Basic Commands](#Basic%20Commands)
-- [Zone Management](#️%20Zone%20Management)
-- [Service Management](#Service%20Management)
-- [Port Management](#Port%20Management)
-- [Rich Rules](#Rich%20Rules)
-- [Direct Rules](#Direct%20Rules)
-- [Masquerading & Port Forwarding](#Masquerading%20&%20Port%20Forwarding)
-- [Troubleshooting](#Troubleshooting)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [📦 Installation & Configuration](#📦%20Installation%20&%20Configuration)
+- [🔧 Basic Commands](#🔧%20Basic%20Commands)
+- [🛡️ Zone Management](#🛡️%20Zone%20Management)
+- [🌐 Service Management](#🌐%20Service%20Management)
+- [🔌 Port Management](#🔌%20Port%20Management)
+- [🎯 Rich Rules](#🎯%20Rich%20Rules)
+- [⚡ Direct Rules](#⚡%20Direct%20Rules)
+- [🔀 Masquerading & Port Forwarding](#🔀%20Masquerading%20&%20Port%20Forwarding)
+- [🐛 Troubleshooting](#🐛%20Troubleshooting)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Configuration Files](#🔧%20Configuration%20Files)
+- [📋 Common Ports](#📋%20Common%20Ports)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

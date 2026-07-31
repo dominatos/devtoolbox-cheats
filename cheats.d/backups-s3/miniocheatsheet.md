@@ -14,6 +14,7 @@ tags:
 > / **MinIO** — высокопроизводительная распределённая система хранения объектов, полностью совместимая с API Amazon S3. Используется для хранения больших объёмов неструктурированных данных. `mc` (MinIO Client) — современная альтернатива AWS CLI для управления MinIO и S3 хранилищем.
 
 ## Table of Contents
+
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [Core Management with mc](#Core%20Management%20with%20mc)
 - [Bucket Operations](#Bucket%20Operations)
@@ -23,6 +24,8 @@ tags:
 - [AWS S3 Interoperability](#AWS%20S3%20Interoperability)
 - [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
 - [Comparison Tables](#Comparison%20Tables)
+- [Best Practices](#Best%20Practices)
+- [Additional Resources](#Additional%20Resources)
 
 ---
 

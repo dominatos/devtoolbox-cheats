@@ -22,13 +22,14 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Workflow](#1.%20Workflow)
-2. [State Management](#2.%20State%20Management))
-3. [Workspaces](#3.%20Workspaces)
-4. [Modules](#4.%20Modules)
-5. [Variables & Outputs](#5.%20Variables%20&%20Outputs)
-6. [Debugging](#6.%20Debugging)
-7. [Best Practices](#Best%20Practices)
+- [1. Workflow](#1.%20Workflow)
+- [2. State Management](#2.%20State%20Management)
+- [3. Workspaces](#3.%20Workspaces)
+- [4. Modules](#4.%20Modules)
+- [5. Variables & Outputs](#5.%20Variables%20&%20Outputs)
+- [6. Debugging](#6.%20Debugging)
+- [Best Practices](#Best%20Practices)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

@@ -12,16 +12,18 @@ tags:
 > **cut**, **sort**, and **uniq** — the classic GNU Coreutils trio for columnar data extraction, line ordering, and deduplication. Pre-installed on every Linux distribution, these tools form the backbone of shell-based data pipelines. They are especially useful for quick log analysis, CSV processing, and frequency counting. No modern replacements needed — they are lightweight, POSIX-compliant, and actively maintained.
 
 ## Table of Contents
-- [CUT — Field Extraction](#️%20CUT%20—%20Field%20Extraction%20/%20CUT%20—%20Извлечение%20полей)
-- [SORT — Sorting Lines](#SORT%20—%20Sorting%20Lines%20/%20SORT%20—%20Сортировка%20строк)
-- [UNIQ — Deduplication](#UNIQ%20—%20Deduplication%20/%20UNIQ%20—%20Удаление%20дубликатов)
-- [Combined Pipelines](#Combined%20Pipelines)
-- [Real-World Examples](#Real-World%20Examples)
-- [Performance Tips](#Performance%20Tips)
+
+- [✂️ CUT — Field Extraction](#✂️%20CUT%20—%20Field%20Extraction)
+- [📊 SORT — Sorting Lines](#📊%20SORT%20—%20Sorting%20Lines)
+- [🔀 UNIQ — Deduplication](#🔀%20UNIQ%20—%20Deduplication)
+- [🔗 Combined Pipelines](#🔗%20Combined%20Pipelines)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Performance Tips](#💡%20Performance%20Tips)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 
-## ✂️ CUT — Field Extraction / CUT —
+## ✂️ CUT — Field Extraction
 
 ### By Delimiter
 
@@ -63,7 +65,7 @@ cut -s -d':' -f1 /etc/passwd                   # Suppress lines without delimite
 
 ---
 
-## 📊 SORT — Sorting Lines / SORT —
+## 📊 SORT — Sorting Lines
 
 ### Basic Sorting
 
@@ -104,7 +106,7 @@ sort -s file.txt                               # Stable sort / Стабильн�
 
 ---
 
-## 🔀 UNIQ — Deduplication / UNIQ —
+## 🔀 UNIQ — Deduplication
 
 ### Basic Usage
 

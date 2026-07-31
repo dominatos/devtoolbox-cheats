@@ -12,17 +12,19 @@ tags:
 > **tree** — a recursive directory listing program that produces a depth-indented, colorized tree of files. Not part of coreutils; requires separate installation on most systems. Commonly used for project overviews, documentation, and quick filesystem audits. Actively maintained; modern alternative: `exa --tree` / `eza --tree` provides similar functionality with git integration.
 
 ## Table of Contents
-- [Basic Usage](#Basic%20Usage)
-- [Filters (Include/Exclude)](#Filters%20(Include/Exclude)%20/%20Фильтры%20(включение/исключение))
-- [Sorting & Order](#Sorting%20&%20Order)
-- [Metadata Columns](#Metadata%20Columns)
-- [Symlinks](#Symlinks)
-- [Color & Charsets](#Color%20&%20Charsets)
-- [Report & Output](#Report%20&%20Output)
-- [HTML Output](#HTML%20Output%20/%20HTML%20вывод)
-- [Performance Tips](#Performance%20Tips)
-- [Practical Recipes](#Practical%20Recipes)
-- [Installation](#️%20Installation)
+
+- [📂 Basic Usage](#📂%20Basic%20Usage)
+- [🔍 Filters (Include/Exclude)](#🔍%20Filters%20(Include/Exclude))
+- [📊 Sorting & Order](#📊%20Sorting%20&%20Order)
+- [📋 Metadata Columns](#📋%20Metadata%20Columns)
+- [🔗 Symlinks](#🔗%20Symlinks)
+- [🎨 Color & Charsets](#🎨%20Color%20&%20Charsets)
+- [📄 Report & Output](#📄%20Report%20&%20Output)
+- [🌐 HTML Output](#🌐%20HTML%20Output)
+- [⚡ Performance Tips](#⚡%20Performance%20Tips)
+- [🧰 Practical Recipes](#🧰%20Practical%20Recipes)
+- [⚙️ Installation](#⚙️%20Installation)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 
@@ -117,7 +119,7 @@ tree -o out.txt               # Write to file (text) / Писать вывод �
 
 ---
 
-## 🌐 HTML Output / HTML
+## 🌐 HTML Output
 
 ```bash
 tree -H . -o index.html       # Generate clickable HTML / Сгенерировать HTML с кликабельными ссылками

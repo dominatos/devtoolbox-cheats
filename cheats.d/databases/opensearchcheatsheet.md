@@ -23,15 +23,16 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Installation & Configuration / Установка и Настройка](#Installation%20&%20Configuration)
-2. [Cluster Management / Управление Кластером](#Cluster%20Management)
-3. [Index Management / Управление Индексами](#Index%20Management)
-4. [Document Management / Управление Документами](#Document%20Management)
-5. [Backup & Restore / Бэкап и Восстановление](#Backup%20&%20Restore)
-6. [Security / Безопасность](#Security)
-7. [Sysadmin Operations / Сисадминские Операции](#Sysadmin%20Operations)
-8. [Tools / Инструменты](#Tools)
-9. [Logrotate Configuration / Конфигурация Logrotate](#Logrotate%20Configuration)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Cluster Management](#Cluster%20Management)
+- [Index Management](#Index%20Management)
+- [Document Management](#Document%20Management)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Security](#Security)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Tools](#Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

@@ -21,16 +21,8 @@ tags:
 ---
 
 ## Table of Contents
-- [Setup & Initialization](#️%20Setup%20&%20Initialization)
-- [Basic Workflow](#Basic%20Workflow)
-- [Branching & Merging](#Branching%20&%20Merging)
-- [Remote Operations](#Remote%20Operations)
-- [Stashing](#Stashing)
-- [History & Logs](#History%20&%20Logs)
-- [Undoing Changes](#️%20Undoing%20Changes)
-- [Tags](#️%20Tags)
-- [Real-World Examples](#Real-World%20Examples)
-- [Tips & Best Practices](#Tips%20&%20Best%20Practices)
+
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

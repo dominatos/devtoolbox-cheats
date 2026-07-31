@@ -30,10 +30,12 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Timer Basics](#Timer%20Basics)
-2. [Creating Timers](#Creating%20Timers)
-3. [Management](#Management)
-4. [Real-World Examples](#Real-World%20Examples)
+- [Timer Basics](#Timer%20Basics)
+- [Creating Timers](#Creating%20Timers)
+- [Management](#Management)
+- [Real-World Examples](#Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

@@ -10,14 +10,15 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Description](#Description)
-- [Configuration](#️%20Configuration)
-- [Core Management](#Core%20Management)
-- [Sysadmin Operations](#Sysadmin%20Operations)
-- [Troubleshooting](#Troubleshooting)
-- [Comparison: DNF vs YUM](#Comparison:%20DNF%20vs%20YUM)
-- [Security](#Security)
-- [Documentation Links](#Documentation%20Links)
+- [⚙️ Configuration](#⚙️%20Configuration)
+- [🛠 Core Management](#🛠%20Core%20Management)
+- [🔧 Sysadmin Operations](#🔧%20Sysadmin%20Operations)
+- [🚨 Troubleshooting](#🚨%20Troubleshooting)
+- [📊 Comparison: DNF vs YUM](#📊%20Comparison:%20DNF%20vs%20YUM)
+- [🔒 Security](#🔒%20Security)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

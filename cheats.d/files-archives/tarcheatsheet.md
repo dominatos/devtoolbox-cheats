@@ -27,6 +27,8 @@ tags:
 ---
 
 ## Table of Contents
+
+- [Description](#Description)
 - [Installation](#Installation)
 - [Basic Operations](#Basic%20Operations)
 - [Compression Formats](#Compression%20Formats)

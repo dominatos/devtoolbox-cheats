@@ -12,19 +12,21 @@ tags:
 > **yq** — a portable, lightweight YAML/JSON/XML/CSV/TSV processor written in Go by Mike Farah. It uses jq-like syntax for querying, modifying, and converting structured data. Heavily used in Kubernetes/Helm workflows, CI/CD pipelines, and infrastructure-as-code. Actively maintained with frequent releases. Note: there are two tools named `yq` — this cheatsheet covers the Go version ([mikefarah/yq](https://github.com/mikefarah/yq)), not the Python wrapper ([kislyuk/yq](https://github.com/kislyuk/yq)).
 
 ## Table of Contents
-- [Basics](#Basics)
-- [Reading & Querying](#Reading%20&%20Querying)
-- [Modifying YAML](#️%20Modifying%20YAML)
-- [Arrays & Objects](#Arrays%20&%20Objects)
-- [Output Formats](#Output%20Formats)
-- [Merging & Combining](#Merging%20&%20Combining)
-- [Kubernetes Examples](#️%20Kubernetes%20Examples)
-- [Real-World Examples](#Real-World%20Examples)
-- [Data Transformation](#Data%20Transformation)
-- [Advanced Techniques](#Advanced%20Techniques)
-- [Tips & Tricks](#Tips%20&%20Tricks)
-- [Validation & Debugging](#Validation%20&%20Debugging)
-- [Installation](#️%20Installation)
+
+- [📖 Basics](#📖%20Basics)
+- [🔍 Reading & Querying](#🔍%20Reading%20&%20Querying)
+- [✏️ Modifying YAML](#✏️%20Modifying%20YAML)
+- [📊 Arrays & Objects](#📊%20Arrays%20&%20Objects)
+- [📤 Output Formats](#📤%20Output%20Formats)
+- [🔗 Merging & Combining](#🔗%20Merging%20&%20Combining)
+- [☸️ Kubernetes Examples](#☸️%20Kubernetes%20Examples)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [🔄 Data Transformation](#🔄%20Data%20Transformation)
+- [💡 Advanced Techniques](#💡%20Advanced%20Techniques)
+- [🔧 Tips & Tricks](#🔧%20Tips%20&%20Tricks)
+- [🔍 Validation & Debugging](#🔍%20Validation%20&%20Debugging)
+- [⚙️ Installation](#⚙️%20Installation)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

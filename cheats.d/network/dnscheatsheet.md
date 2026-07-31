@@ -16,13 +16,18 @@ tags:
 📚 **Official Docs / Официальная документация:** [dig(1)](https://manpages.debian.org/bookworm/bind9-dnsutils/dig.1.en.html) · [nslookup(1)](https://manpages.debian.org/bookworm/bind9-dnsutils/nslookup.1.en.html)
 
 ## Table of Contents
-- [DIG — DNS Lookup](#DIG%20—%20DNS%20Lookup)
-- [NSLOOKUP — Interactive DNS](#NSLOOKUP%20—%20Interactive%20DNS)
-- [HOST — Simple DNS](#HOST%20—%20Simple%20DNS)
-- [Record Types](#Record%20Types)
-- [Advanced Queries](#Advanced%20Queries)
-- [Troubleshooting](#Troubleshooting)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [🔍 DIG — DNS Lookup](#🔍%20DIG%20—%20DNS%20Lookup)
+- [🔎 NSLOOKUP — Interactive DNS](#🔎%20NSLOOKUP%20—%20Interactive%20DNS)
+- [🌐 HOST — Simple DNS](#🌐%20HOST%20—%20Simple%20DNS)
+- [📋 Record Types](#📋%20Record%20Types)
+- [🔬 Advanced Queries](#🔬%20Advanced%20Queries)
+- [🐛 Troubleshooting](#🐛%20Troubleshooting)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [📋 Common DNS Servers](#📋%20Common%20DNS%20Servers)
+- [🔧 Configuration Files](#🔧%20Configuration%20Files)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

@@ -36,11 +36,14 @@ tags:
 [Kibana Guide](https://www.elastic.co/guide/en/kibana/current/index.html) · [KQL Reference](https://www.elastic.co/guide/en/kibana/current/kuery-query.html) · [Elasticsearch Guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
 
 ## Table of Contents
+
 - [Discovery & Search](#Discovery%20&%20Search)
 - [Management](#Management)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
 - [Logrotate for Kibana](#Logrotate%20for%20Kibana)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

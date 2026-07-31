@@ -31,6 +31,7 @@ tags:
 [mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) · [fstab(5)](https://man7.org/linux/man-pages/man5/fstab.5.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html) · [fdisk(8)](https://man7.org/linux/man-pages/man8/fdisk.8.html) · [mkfs(8)](https://man7.org/linux/man-pages/man8/mkfs.8.html)
 
 ## Table of Contents
+
 - [Disk Information](#Disk%20Information)
 - [Partitioning](#Partitioning)
 - [Formatting](#Formatting)
@@ -41,6 +42,7 @@ tags:
 - [Partition Table Comparison](#Partition%20Table%20Comparison)
 - [Best Practices](#Best%20Practices)
 - [Default Paths](#Default%20Paths)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

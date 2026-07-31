@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Installation & Authentication](#Installation%20&%20Authentication)
 - [Bucket Operations](#Bucket%20Operations)
 - [Upload & Download](#Upload%20&%20Download)
@@ -21,6 +22,7 @@ tags:
 - [Parallel Operations](#Parallel%20Operations)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

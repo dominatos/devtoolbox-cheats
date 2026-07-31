@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Architecture Overview](#Architecture%20Overview)
 - [Installation](#Installation)
 - [bconsole Basics](#bconsole%20Basics)
@@ -22,6 +23,7 @@ tags:
 - [Configuration Essentials](#Configuration%20Essentials)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

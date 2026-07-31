@@ -13,14 +13,15 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Description](#Description)
-2. [Installation & Configuration](#Installation%20&%20Configuration)
-3. [Core Management](#Core%20Management)
-4. [Sysadmin Operations](#Sysadmin%20Operations)
-5. [Security](#Security)
-6. [Backup & Restore](#Backup%20&%20Restore)
-7. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-8. [Additional Notes](#Additional%20Notes)
+- [Description](#Description)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security](#Security)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Additional Notes](#Additional%20Notes)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

@@ -20,15 +20,9 @@ tags:
 ---
 
 ## Table of Contents
-- [venv — Virtual Environments](#venv%20—%20Virtual%20Environments)
-- [pip — Package Manager](#pip%20—%20Package%20Manager)
-- [pipx — CLI Tool Installer](#pipx%20—%20CLI%20Tool%20Installer)
-- [poetry — Dependency Management](#poetry%20—%20Dependency%20Management)
-- [pyenv — Python Version Manager](#pyenv%20—%20Python%20Version%20Manager)
+
 - [Virtual Environment Tools Comparison](#Virtual%20Environment%20Tools%20Comparison)
-- [Troubleshooting](#Troubleshooting)
-- [Real-World Examples](#Real-World%20Examples)
-- [Best Practices](#Best%20Practices)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

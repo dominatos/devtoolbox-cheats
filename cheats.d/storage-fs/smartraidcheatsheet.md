@@ -36,6 +36,7 @@ tags:
 [smartctl(8)](https://man7.org/linux/man-pages/man8/smartctl.8.html) · [smartd(8)](https://man7.org/linux/man-pages/man8/smartd.8.html) · [mdadm(8)](https://man7.org/linux/man-pages/man8/mdadm.8.html) · [md(4)](https://man7.org/linux/man-pages/man4/md.4.html)
 
 ## Table of Contents
+
 - [Installation](#Installation)
 - [SMART Diagnostics](#SMART%20Diagnostics)
 - [mdadm RAID Management](#mdadm%20RAID%20Management)
@@ -44,6 +45,7 @@ tags:
 - [Monitoring & Alerts](#Monitoring%20&%20Alerts)
 - [Real-World Examples](#Real-World%20Examples)
 - [Best Practices](#Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

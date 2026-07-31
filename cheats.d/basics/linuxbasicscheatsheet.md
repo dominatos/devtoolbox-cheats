@@ -13,16 +13,17 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Navigation](#Navigation)
-2. [Files & Directories](#Files%20&%20Directories)
-3. [View & Edit](#View%20&%20Edit)
-4. [Nano Editor](#Nano%20Editor)
-5. [Privileges](#Privileges)
-6. [Package Management (APT)](#Package%20Management%20(APT)%20/%20Управление%20Пакетами%20(APT))
-7. [Process Management](#Process%20Management)
-8. [System Information](#System%20Information)
-9. [Network Basics](#Network%20Basics)
-10. [Helpful Tips](#Helpful%20Tips)
+- [Navigation](#Navigation)
+- [Files & Directories](#Files%20&%20Directories)
+- [View & Edit](#View%20&%20Edit)
+- [Nano Editor](#Nano%20Editor)
+- [Privileges](#Privileges)
+- [Package Management (APT)](#Package%20Management%20(APT))
+- [Process Management](#Process%20Management)
+- [System Information](#System%20Information)
+- [Network Basics](#Network%20Basics)
+- [Helpful Tips](#Helpful%20Tips)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

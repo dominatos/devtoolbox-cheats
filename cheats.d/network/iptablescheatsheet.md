@@ -19,15 +19,22 @@ tags:
 > `iptables` is legacy. For new deployments, use `nftables` — see the [nftables cheatsheet](nftcheatsheet.md) and [migration guide](iptablesnfttranslatecheatsheet.md).
 
 ## Table of Contents
-- [Basics](#Basics)
-- [List & View Rules](#List%20&%20View%20Rules)
-- [INPUT Chain](#⬇️%20INPUT%20Chain)
-- [OUTPUT Chain](#⬆️%20OUTPUT%20Chain)
-- [FORWARD Chain](#FORWARD%20Chain)
-- [NAT & Port Forwarding](#NAT%20&%20Port%20Forwarding%20/%20NAT%20и%20проброс%20портов)
-- [Saving & Restoring](#Saving%20&%20Restoring)
-- [Common Patterns](#Common%20Patterns)
-- [Troubleshooting](#Troubleshooting)
+
+- [📘 Basics](#📘%20Basics)
+- [🔍 List & View Rules](#🔍%20List%20&%20View%20Rules)
+- [⬇️ INPUT Chain](#⬇️%20INPUT%20Chain)
+- [⬆️ OUTPUT Chain](#⬆️%20OUTPUT%20Chain)
+- [🔀 FORWARD Chain](#🔀%20FORWARD%20Chain)
+- [🌐 NAT & Port Forwarding](#🌐%20NAT%20&%20Port%20Forwarding)
+- [💾 Saving & Restoring](#💾%20Saving%20&%20Restoring)
+- [🧩 Common Patterns](#🧩%20Common%20Patterns)
+- [🔧 Rule Management](#🔧%20Rule%20Management)
+- [🐛 Troubleshooting](#🐛%20Troubleshooting)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Configuration Files](#🔧%20Configuration%20Files)
+- [📋 Migration to nftables](#📋%20Migration%20to%20nftables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 
@@ -134,7 +141,7 @@ sudo iptables -A FORWARD -o wg0 -j ACCEPT     # Forward to VPN / Пересыл�
 
 ---
 
-## 🌐 NAT & Port Forwarding / NAT
+## 🌐 NAT & Port Forwarding
 
 ### SNAT (Source NAT) / SNAT (NAT
 ```bash

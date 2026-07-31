@@ -20,15 +20,9 @@ tags:
 ---
 
 ## Table of Contents
-- [Make](#Make)
-- [CMake](#️%20CMake)
-- [Meson](#Meson)
-- [Ninja](#Ninja%20/%20Backend%20сборка)
-- [Configure Options](#️%20Configure%20Options)
+
 - [Build Tools Comparison](#Build%20Tools%20Comparison)
-- [Troubleshooting](#Troubleshooting)
-- [Real-World Examples](#Real-World%20Examples)
-- [Best Practices](#Best%20Practices)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

@@ -28,6 +28,8 @@ tags:
 ---
 
 ## Table of Contents
+
+- [Description](#Description)
 - [Installation](#Installation)
 - [diff — Compare Files](#diff%20—%20Compare%20Files)
 - [patch — Apply Changes](#patch%20—%20Apply%20Changes)

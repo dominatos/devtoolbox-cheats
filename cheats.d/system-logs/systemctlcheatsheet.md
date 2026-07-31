@@ -25,6 +25,7 @@ tags:
 [systemctl(1)](https://man7.org/linux/man-pages/man1/systemctl.1.html) · [systemd(1)](https://man7.org/linux/man-pages/man1/systemd.1.html) · [systemd.service(5)](https://man7.org/linux/man-pages/man5/systemd.service.5.html) · [systemd.unit(5)](https://man7.org/linux/man-pages/man5/systemd.unit.5.html)
 
 ## Table of Contents
+
 - [Core Management](#Core%20Management)
 - [Unit File Operations](#Unit%20File%20Operations)
 - [Journal & Logs](#Journal%20&%20Logs)
@@ -32,6 +33,8 @@ tags:
 - [Sandboxing & Security](#Sandboxing%20&%20Security)
 - [Analysis & Troubleshooting](#Analysis%20&%20Troubleshooting)
 - [Unit Type Comparison](#Unit%20Type%20Comparison)
+- [Default Paths](#Default%20Paths)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

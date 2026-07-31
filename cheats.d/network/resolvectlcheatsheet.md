@@ -16,6 +16,7 @@ tags:
 📚 **Official Docs / Официальная документация:** [systemd-resolved(8)](https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html)
 
 ## Table of Contents
+
 - [Basics & Status](#Basics%20&%20Status)
 - [DNS Queries](#DNS%20Queries)
 - [Link Configuration](#Link%20Configuration)
@@ -24,6 +25,7 @@ tags:
 - [Service Management](#Service%20Management)
 - [Real-World Examples](#Real-World%20Examples)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

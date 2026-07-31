@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Installation & Authentication](#Installation%20&%20Authentication)
 - [Copy Operations](#Copy%20Operations)
 - [Sync Operations](#Sync%20Operations)
@@ -20,6 +21,7 @@ tags:
 - [Benchmark Mode](#Benchmark%20Mode)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

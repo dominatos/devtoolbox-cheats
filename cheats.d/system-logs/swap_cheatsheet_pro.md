@@ -26,6 +26,7 @@ tags:
 - **zram** and **zswap** are modern complements, not always full replacements for disk-backed swap
 
 ## Table of Contents
+
 - [Overview](#Overview)
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [Core Management](#Core%20Management)

@@ -35,10 +35,13 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [SELinux](#SELinux)
-2. [AppArmor](#AppArmor)
-3. [Troubleshooting](#Troubleshooting)
-4. [Real-World Examples](#Real-World%20Examples)
+- [SELinux](#SELinux)
+- [AppArmor](#AppArmor)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Configuration Files](#Configuration%20Files)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

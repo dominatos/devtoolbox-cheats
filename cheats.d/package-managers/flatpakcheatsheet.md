@@ -10,13 +10,14 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Description](#Description)
-- [Configuration](#️%20Configuration)
-- [Core Management](#Core%20Management)
-- [Sysadmin Operations](#Sysadmin%20Operations)
-- [Comparison: Flatpak vs Snap](#Comparison:%20Flatpak%20vs%20Snap)
-- [Security](#Security)
-- [Documentation Links](#Documentation%20Links)
+- [⚙️ Configuration](#⚙️%20Configuration)
+- [🛠 Core Management](#🛠%20Core%20Management)
+- [🔧 Sysadmin Operations](#🔧%20Sysadmin%20Operations)
+- [📊 Comparison: Flatpak vs Snap](#📊%20Comparison:%20Flatpak%20vs%20Snap)
+- [🔒 Security](#🔒%20Security)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

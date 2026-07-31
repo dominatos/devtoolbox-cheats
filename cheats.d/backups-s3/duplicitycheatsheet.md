@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [GPG Key Setup](#GPG%20Key%20Setup)
 - [Backup Operations](#Backup%20Operations)
@@ -21,6 +22,7 @@ tags:
 - [Performance & Encryption](#Performance%20&%20Encryption)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

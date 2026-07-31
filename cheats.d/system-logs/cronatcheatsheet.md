@@ -32,21 +32,23 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Crontab Management](#Crontab%20Management)
-2. [Schedule Syntax](#Schedule%20Syntax)
-3. [Shortcut Macros](#Shortcut%20Macros)
-4. [Common Schedule Patterns](#Common%20Schedule%20Patterns)
-5. [Environment Variables](#Environment%20Variables)
-6. [Locking & Overlap Prevention](#Locking%20&%20Overlap%20Prevention)
-7. [Logging & Output](#Logging%20&%20Output)
-8. [at — One-Shot Jobs](#at%20—%20One-Shot%20Jobs)
-9. [Anacron](#Anacron)
-10. [System Cron Directories](#System%20Cron%20Directories)
-11. [Access Control](#Access%20Control)
-12. [Backup & Restore](#Backup%20&%20Restore)
-13. [Real-World Examples](#Real-World%20Examples)
-14. [Troubleshooting & Debugging](#Troubleshooting%20&%20Debugging)
-15. [Logrotate for Cron](#Logrotate%20for%20Cron)
+- [Crontab Management](#Crontab%20Management)
+- [Schedule Syntax](#Schedule%20Syntax)
+- [Shortcut Macros](#Shortcut%20Macros)
+- [Common Schedule Patterns](#Common%20Schedule%20Patterns)
+- [Environment Variables](#Environment%20Variables)
+- [Locking & Overlap Prevention](#Locking%20&%20Overlap%20Prevention)
+- [Logging & Output](#Logging%20&%20Output)
+- [at — One-Shot Jobs](#at%20—%20One-Shot%20Jobs)
+- [Anacron](#Anacron)
+- [System Cron Directories](#System%20Cron%20Directories)
+- [Access Control](#Access%20Control)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Real-World Examples](#Real-World%20Examples)
+- [Troubleshooting & Debugging](#Troubleshooting%20&%20Debugging)
+- [Logrotate for Cron](#Logrotate%20for%20Cron)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

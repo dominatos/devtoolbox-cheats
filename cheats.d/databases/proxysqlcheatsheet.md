@@ -13,18 +13,19 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Description](#Description)
-2. [Installation & Configuration](#Installation%20&%20Configuration)
-3. [Core Management](#Core%20Management)
-4. [Backends & Hostgroups](#Backends%20&%20Hostgroups)
-5. [Query Rules & Routing](#Query%20Rules%20&%20Routing)
-6. [Connection Pooling](#Connection%20Pooling)
-7. [Sysadmin Operations](#Sysadmin%20Operations)
-8. [Security](#Security)
-9. [Monitoring & Stats](#Monitoring%20&%20Stats)
-10. [Backup & Restore](#Backup%20&%20Restore)
-11. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-12. [Logrotate Configuration](#Logrotate%20Configuration)
+- [Description](#Description)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Backends & Hostgroups](#Backends%20&%20Hostgroups)
+- [Query Rules & Routing](#Query%20Rules%20&%20Routing)
+- [Connection Pooling](#Connection%20Pooling)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security](#Security)
+- [Monitoring & Stats](#Monitoring%20&%20Stats)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

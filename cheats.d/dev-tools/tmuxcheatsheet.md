@@ -20,15 +20,9 @@ tags:
 ---
 
 ## Table of Contents
-- [Basics & Installation](#Basics%20&%20Installation)
-- [Session Management](#Session%20Management)
-- [Window Management](#Window%20Management)
-- [Pane Management](#Pane%20Management)
-- [Copy Mode & Buffers](#Copy%20Mode%20&%20Buffers)
-- [Configuration](#️%20Configuration)
+
 - [Key Bindings Quick Reference](#Key%20Bindings%20Quick%20Reference)
-- [Real-World Examples](#Real-World%20Examples)
-- [Useful Tips](#Useful%20Tips)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

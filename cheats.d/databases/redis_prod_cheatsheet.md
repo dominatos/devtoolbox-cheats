@@ -23,17 +23,18 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Installation & Configuration](#Installation%20&%20Configuration)
-2. [Core Management](#Core%20Management)
-3. [Sysadmin Operations](#Sysadmin%20Operations)
-4. [Security](#Security)
-5. [Persistence](#Persistence)
-6. [Monitoring & Performance](#Monitoring%20&%20Performance)
-7. [Data Structures](#Data%20Structures)
-8. [Caching Patterns](#Caching%20Patterns)
-9. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-10. [Backup & Restore](#Backup%20&%20Restore)
-11. [Logrotate Configuration](#Logrotate%20Configuration)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security](#Security)
+- [Persistence](#Persistence)
+- [Monitoring & Performance](#Monitoring%20&%20Performance)
+- [Data Structures](#Data%20Structures)
+- [Caching Patterns](#Caching%20Patterns)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

@@ -19,6 +19,7 @@ All tools are actively maintained and part of most Linux distributions. There ar
 [strace(1)](https://man7.org/linux/man-pages/man1/strace.1.html) · [perf](https://perf.wiki.kernel.org/) · [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) · [lsof(8)](https://man7.org/linux/man-pages/man8/lsof.8.html) · [ltrace(1)](https://man7.org/linux/man-pages/man1/ltrace.1.html)
 
 ## Table of Contents
+
 - [strace — System Call Tracing](#strace%20—%20System%20Call%20Tracing)
 - [perf — Performance Analysis](#perf%20—%20Performance%20Analysis)
 - [tcpdump — Network Packet Capture](#tcpdump%20—%20Network%20Packet%20Capture)
@@ -29,6 +30,7 @@ All tools are actively maintained and part of most Linux distributions. There ar
 - [Troubleshooting Workflows](#Troubleshooting%20Workflows)
 - [Real-World Examples](#Real-World%20Examples)
 - [Best Practices](#Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

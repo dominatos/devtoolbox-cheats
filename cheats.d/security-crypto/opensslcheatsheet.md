@@ -20,16 +20,16 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Random & Hash Generation](#1.%20Random%20&%20Hash%20Generation)
-2. [Certificate Operations](#2.%20Certificate%20Operations)
-3. [Key Generation](#3.%20Key%20Generation)
-4. [Certificate Signing Requests](#4.%20Certificate%20Signing%20Requests)
-5. [SSL/TLS Testing](#5.%20SSL/TLS%20Testing)
-6. [Encryption & Decryption](#6.%20Encryption%20&%20Decryption)
-7. [File Operations](#7.%20File%20Operations)
-8. [Real-World Examples](#8.%20Real-World%20Examples)
-9. [Troubleshooting & Tools](#9.%20Troubleshooting%20&%20Tools)
-10. [Documentation Links](#10.%20Documentation%20Links)
+- [1. Random & Hash Generation](#1.%20Random%20&%20Hash%20Generation)
+- [2. Certificate Operations](#2.%20Certificate%20Operations)
+- [3. Key Generation](#3.%20Key%20Generation)
+- [4. Certificate Signing Requests](#4.%20Certificate%20Signing%20Requests)
+- [5. SSL/TLS Testing](#5.%20SSL/TLS%20Testing)
+- [6. Encryption & Decryption](#6.%20Encryption%20&%20Decryption)
+- [7. File Operations](#7.%20File%20Operations)
+- [8. Real-World Examples](#8.%20Real-World%20Examples)
+- [9. Troubleshooting & Tools](#9.%20Troubleshooting%20&%20Tools)
+- [10. Documentation Links](#10.%20Documentation%20Links)
 
 ---
 

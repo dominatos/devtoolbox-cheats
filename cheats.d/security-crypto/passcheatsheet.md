@@ -20,14 +20,14 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
-2. [Core Management](#2.%20Core%20Management)
-3. [Organization & Search](#3.%20Organization%20&%20Search)
-4. [Git Integration](#4.%20Git%20Integration)
-5. [Extensions](#5.%20Extensions)
-6. [Real-World Examples](#6.%20Real-World%20Examples)
-7. [Best Practices](#7.%20Best%20Practices)
-8. [Documentation Links](#8.%20Documentation%20Links)
+- [1. Installation & Configuration](#1.%20Installation%20&%20Configuration)
+- [2. Core Management](#2.%20Core%20Management)
+- [3. Organization & Search](#3.%20Organization%20&%20Search)
+- [4. Git Integration](#4.%20Git%20Integration)
+- [5. Extensions](#5.%20Extensions)
+- [6. Real-World Examples](#6.%20Real-World%20Examples)
+- [7. Best Practices](#7.%20Best%20Practices)
+- [8. Documentation Links](#8.%20Documentation%20Links)
 
 ---
 

@@ -23,15 +23,16 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Installation & Configuration](#Installation%20&%20Configuration)
-2. [Environment & Connection](#Environment%20&%20Connection)
-3. [Listener Management](#Listener%20Management)
-4. [Core Management](#Core%20Management)
-5. [Sysadmin Operations](#Sysadmin%20Operations)
-6. [Security](#Security)
-7. [Backup & Restore](#Backup%20&%20Restore)
-8. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-9. [Logrotate Configuration](#Logrotate%20Configuration)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Environment & Connection](#Environment%20&%20Connection)
+- [Listener Management](#Listener%20Management)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security](#Security)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

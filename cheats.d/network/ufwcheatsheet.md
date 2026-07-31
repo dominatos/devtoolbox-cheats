@@ -16,6 +16,7 @@ tags:
 📚 **Official Docs / Официальная документация:** [UFW Community Help](https://help.ubuntu.com/community/UFW)
 
 ## Table of Contents
+
 - [Basic Commands](#Basic%20Commands)
 - [Allow Rules](#Allow%20Rules)
 - [Deny Rules](#Deny%20Rules)
@@ -25,6 +26,7 @@ tags:
 - [Logging & Status](#Logging%20&%20Status)
 - [Real-World Examples](#Real-World%20Examples)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

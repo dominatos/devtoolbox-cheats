@@ -23,14 +23,15 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Installation & Configuration](#Installation%20&%20Configuration)
-2. [Core Management](#Core%20Management)
-3. [Sysadmin Operations](#Sysadmin%20Operations)
-4. [Security](#Security)
-5. [Backup & Restore](#Backup%20&%20Restore)
-6. [Monitoring & Cluster Health](#Monitoring%20&%20Cluster%20Health)
-7. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-8. [Logrotate Configuration](#Logrotate%20Configuration)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security](#Security)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Monitoring & Cluster Health](#Monitoring%20&%20Cluster%20Health)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

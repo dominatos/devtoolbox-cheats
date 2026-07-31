@@ -39,7 +39,9 @@ tags:
 - [Performance Tuning](#Performance%20Tuning)
 - [Logs & Monitoring](#Logs%20&%20Monitoring)
 - [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Quick Reference](#Quick%20Reference)
 - [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

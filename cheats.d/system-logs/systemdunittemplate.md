@@ -36,12 +36,14 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Service Unit Template](#Service%20Unit%20Template)
-2. [Timer Unit Template](#Timer%20Unit%20Template)
-3. [Socket Unit Template](#Socket%20Unit%20Template)
-4. [Common Directives](#Common%20Directives)
-5. [Unit Management](#Unit%20Management)
-6. [Troubleshooting](#Troubleshooting)
+- [Service Unit Template](#Service%20Unit%20Template)
+- [Timer Unit Template](#Timer%20Unit%20Template)
+- [Socket Unit Template](#Socket%20Unit%20Template)
+- [Common Directives](#Common%20Directives)
+- [Unit Management](#Unit%20Management)
+- [Troubleshooting](#Troubleshooting)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

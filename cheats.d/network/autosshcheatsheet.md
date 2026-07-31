@@ -16,11 +16,17 @@ tags:
 📚 **Official Docs / Официальная документация:** [autossh(1)](https://www.harding.motd.ca/autossh/)
 
 ## Table of Contents
-- [Basic Tunneling](#Basic%20Tunneling)
-- [Persistent Tunnels](#Persistent%20Tunnels)
-- [Monitoring & Debugging](#Monitoring%20&%20Debugging)
-- [Systemd Integration](#Systemd%20Integration)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [🔧 Basic Tunneling](#🔧%20Basic%20Tunneling)
+- [🔄 Persistent Tunnels](#🔄%20Persistent%20Tunnels)
+- [📊 Monitoring & Debugging](#📊%20Monitoring%20&%20Debugging)
+- [🔧 Systemd Integration](#🔧%20Systemd%20Integration)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 SSH Config Options](#🔧%20SSH%20Config%20Options)
+- [📋 Common Use Cases](#📋%20Common%20Use%20Cases)
+- [⚠️ Security Notes](#⚠️%20Security%20Notes)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

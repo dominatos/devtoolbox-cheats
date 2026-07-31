@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [S3 Bucket Operations](#S3%20Bucket%20Operations)
 - [Upload & Download](#Upload%20&%20Download)
@@ -21,6 +22,7 @@ tags:
 - [Multipart Uploads](#Multipart%20Uploads)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

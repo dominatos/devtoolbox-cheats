@@ -22,12 +22,13 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Service Management](#1.%20Service%20Management)
-2. [Jenkins CLI](#2.%20Jenkins%20CLI%20/%20Jenkins%20CLI)
-3. [Groovy Script Console](#3.%20Groovy%20Script%20Console)
-4. [Pipeline Syntax](#4.%20Pipeline%20Syntax))
-5. [Security](#5.%20Security)
-6. [Logrotate Configuration](#6.%20Logrotate%20Configuration)
+- [1. Service Management](#1.%20Service%20Management)
+- [2. Jenkins CLI](#2.%20Jenkins%20CLI)
+- [3. Groovy Script Console](#3.%20Groovy%20Script%20Console)
+- [4. Pipeline Syntax](#4.%20Pipeline%20Syntax)
+- [5. Security](#5.%20Security)
+- [6. Logrotate Configuration](#6.%20Logrotate%20Configuration)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 
@@ -57,7 +58,7 @@ systemctl status jenkins  # Status / Статус
 
 ---
 
-## 2. Jenkins CLI / Jenkins CLI
+## 2. Jenkins CLI
 Download CLI jar from: `http://<HOST>:8080/jnlpJars/jenkins-cli.jar`
 
 ```bash

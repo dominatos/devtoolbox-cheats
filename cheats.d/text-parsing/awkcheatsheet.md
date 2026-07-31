@@ -12,15 +12,17 @@ tags:
 > **AWK** — pattern-scanning and text-processing language, part of POSIX and available on virtually every Unix/Linux system. GNU AWK (`gawk`) is the most common implementation. AWK excels at columnar data extraction, report generation, and one-liner transformations in shell pipelines. It remains a core sysadmin tool with no signs of deprecation; for heavier data work, consider `python` or `miller`.
 
 ## Table of Contents
-- [Basics](#Basics)
-- [Field Separators](#Field%20Separators)
-- [Patterns & Filters](#Patterns%20&%20Filters)
-- [Built-in Variables](#Built-in%20Variables)
-- [Arithmetic & Aggregation](#Arithmetic%20&%20Aggregation)
-- [String Functions](#String%20Functions)
-- [Arrays & Loops](#Arrays%20&%20Loops)
-- [Real-World Examples](#Real-World%20Examples)
-- [Advanced Patterns](#Advanced%20Patterns)
+
+- [📖 Basics](#📖%20Basics)
+- [🔤 Field Separators](#🔤%20Field%20Separators)
+- [🎯 Patterns & Filters](#🎯%20Patterns%20&%20Filters)
+- [🔢 Built-in Variables](#🔢%20Built-in%20Variables)
+- [🧮 Arithmetic & Aggregation](#🧮%20Arithmetic%20&%20Aggregation)
+- [🔡 String Functions](#🔡%20String%20Functions)
+- [📊 Arrays & Loops](#📊%20Arrays%20&%20Loops)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Advanced Patterns](#💡%20Advanced%20Patterns)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

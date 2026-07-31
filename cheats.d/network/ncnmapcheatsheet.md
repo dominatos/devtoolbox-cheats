@@ -16,12 +16,18 @@ tags:
 📚 **Official Docs / Официальная документация:** [nmap.org](https://nmap.org/docs.html) · [ncat(1)](https://nmap.org/ncat/guide/)
 
 ## Table of Contents
-- [netcat — Swiss Army Knife](#netcat%20—%20Swiss%20Army%20Knife)
-- [nmap — Port Scanner](#nmap%20—%20Port%20Scanner)
-- [Advanced Scanning](#Advanced%20Scanning)
-- [NSE Scripts](#NSE%20Scripts)
-- [Troubleshooting](#Troubleshooting)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [🔌 netcat — Swiss Army Knife](#🔌%20netcat%20—%20Swiss%20Army%20Knife)
+- [🔍 nmap — Port Scanner](#🔍%20nmap%20—%20Port%20Scanner)
+- [🔬 Advanced Scanning](#🔬%20Advanced%20Scanning)
+- [📜 NSE Scripts](#📜%20NSE%20Scripts)
+- [🐛 Troubleshooting](#🐛%20Troubleshooting)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Common nmap Scan Types](#🔧%20Common%20nmap%20Scan%20Types)
+- [📋 netcat Variants](#📋%20netcat%20Variants)
+- [⚠️ Legal Warning](#⚠️%20Legal%20Warning)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

@@ -16,6 +16,7 @@ WireGuard is a modern, high-performance VPN solution that uses state-of-the-art 
 📚 **Official Docs / Официальная документация:** [WireGuard](https://www.wireguard.com/)
 
 ## Table of Contents
+
 - [Installation](#Installation)
 - [Key Generation](#Key%20Generation)
 - [Configuration](#Configuration)
@@ -25,6 +26,7 @@ WireGuard is a modern, high-performance VPN solution that uses state-of-the-art 
 - [Client Setup](#Client%20Setup)
 - [Real-World Examples](#Real-World%20Examples)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

@@ -23,14 +23,15 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Installation & Configuration](#Installation%20&%20Configuration)
-2. [MySQL Cluster Setup](#MySQL%20Cluster%20Setup)
-3. [Core Management](#Core%20Management)
-4. [Sysadmin Operations](#Sysadmin%20Operations)
-5. [Security](#Security)
-6. [Backup & Restore](#Backup%20&%20Restore)
-7. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-8. [Logrotate Configuration](#Logrotate%20Configuration)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [MySQL Cluster Setup](#MySQL%20Cluster%20Setup)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security](#Security)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

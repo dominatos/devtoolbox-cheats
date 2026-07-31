@@ -20,15 +20,9 @@ tags:
 ---
 
 ## Table of Contents
-- [nvm — Version Manager](#nvm%20—%20Version%20Manager)
-- [npm — Package Manager](#npm%20—%20Package%20Manager)
-- [yarn — Fast Package Manager](#yarn%20—%20Fast%20Package%20Manager)
-- [pnpm — Efficient Package Manager](#pnpm%20—%20Efficient%20Package%20Manager)
+
 - [Package Manager Comparison](#Package%20Manager%20Comparison)
-- [Package Scripts](#Package%20Scripts)
-- [Troubleshooting](#Troubleshooting)
-- [Real-World Examples](#Real-World%20Examples)
-- [Best Practices](#Best%20Practices)
+- [Official Documentation](#Official%20Documentation)
 
 ---
 

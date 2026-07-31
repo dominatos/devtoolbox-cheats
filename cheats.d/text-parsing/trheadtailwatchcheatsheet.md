@@ -12,15 +12,18 @@ tags:
 > **tr**, **head**, **tail**, and **watch** — essential Unix text and monitoring utilities. `tr` (translate characters), `head` (first N lines), and `tail` (last N lines, follow mode) are part of GNU Coreutils, pre-installed everywhere. `watch` (from `procps-ng`) repeatedly runs a command and displays output, ideal for real-time monitoring. All are production staples with no replacements needed; `tail -f` is the standard way to follow logs in real time.
 
 ## Table of Contents
-- [TR — Translate Characters](#TR%20—%20Translate%20Characters%20/%20TR%20—%20Преобразование%20символов)
-- [HEAD — First Lines](#⬆️%20HEAD%20—%20First%20Lines%20/%20HEAD%20—%20Первые%20строки)
-- [TAIL — Last Lines](#⬇️%20TAIL%20—%20Last%20Lines%20/%20TAIL%20—%20Последние%20строки)
-- [WATCH — Monitor Commands](#WATCH%20—%20Monitor%20Commands%20/%20WATCH%20—%20Мониторинг%20команд)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [🔄 TR — Translate Characters](#🔄%20TR%20—%20Translate%20Characters)
+- [⬆️ HEAD — First Lines](#⬆️%20HEAD%20—%20First%20Lines)
+- [⬇️ TAIL — Last Lines](#⬇️%20TAIL%20—%20Last%20Lines)
+- [🔁 WATCH — Monitor Commands](#🔁%20WATCH%20—%20Monitor%20Commands)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Performance Tips](#💡%20Performance%20Tips)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 
-## 🔄 TR — Translate Characters / TR —
+## 🔄 TR — Translate Characters
 
 ### Case Conversion
 
@@ -68,7 +71,7 @@ tr -cd '[:alpha:]\n' < file                     # Keep only letters / Остав
 
 ---
 
-## ⬆️ HEAD — First Lines / HEAD —
+## ⬆️ HEAD — First Lines
 
 ### Basic Usage
 
@@ -98,7 +101,7 @@ history | head -n 50                            # First 50 history entries / П�
 
 ---
 
-## ⬇️ TAIL — Last Lines / TAIL —
+## ⬇️ TAIL — Last Lines
 
 ### Basic Usage
 
@@ -138,7 +141,7 @@ tail -s 5 -f file                               # Poll every 5s / Опрос к�
 
 ---
 
-## 🔁 WATCH — Monitor Commands / WATCH —
+## 🔁 WATCH — Monitor Commands
 
 ### Basic Monitoring
 

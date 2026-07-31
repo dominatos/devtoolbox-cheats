@@ -41,6 +41,7 @@ tags:
 - [Optimization & Features](#Optimization%20&%20Features)
 - [Production Scenarios & Templates](#Production%20Scenarios%20&%20Templates)
 - [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Production Checklist](#Production%20Checklist)
 - [Logrotate Configuration](#Logrotate%20Configuration)
 - [Documentation Links](#Documentation%20Links)
 

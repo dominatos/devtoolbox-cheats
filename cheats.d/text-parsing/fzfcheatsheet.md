@@ -12,20 +12,22 @@ tags:
 > **fzf** (Fuzzy Finder) — a general-purpose, interactive command-line fuzzy finder written in Go by Junegunn Choi. It reads lines from stdin and provides an interactive, filterable selection interface. Commonly used for file navigation, command history search, process management, Git workflows, and as a building block for custom shell functions. Actively maintained with frequent releases; no known alternatives match its versatility.
 
 ## Table of Contents
-- [Basics](#Basics)
-- [File & Directory Navigation](#File%20&%20Directory%20Navigation)
-- [Command History](#Command%20History)
-- [Git Integration](#Git%20Integration)
-- [Process Management](#Process%20Management)
-- [Custom Preview](#️%20Custom%20Preview)
-- [Docker & Kubernetes](#Docker%20&%20Kubernetes)
-- [Real-World Examples](#Real-World%20Examples)
-- [Advanced Techniques](#Advanced%20Techniques)
-- [Keybindings & Options](#Keybindings%20&%20Options)
-- [Color Schemes](#Color%20Schemes)
-- [Search Modes](#Search%20Modes)
-- [Performance](#Performance)
-- [Installation](#️%20Installation)
+
+- [📖 Basics](#📖%20Basics)
+- [📁 File & Directory Navigation](#📁%20File%20&%20Directory%20Navigation)
+- [📜 Command History](#📜%20Command%20History)
+- [🌿 Git Integration](#🌿%20Git%20Integration)
+- [🔄 Process Management](#🔄%20Process%20Management)
+- [🖼️ Custom Preview](#🖼️%20Custom%20Preview)
+- [🐳 Docker & Kubernetes](#🐳%20Docker%20&%20Kubernetes)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [🔧 Advanced Techniques](#🔧%20Advanced%20Techniques)
+- [💡 Keybindings & Options](#💡%20Keybindings%20&%20Options)
+- [🎨 Color Schemes](#🎨%20Color%20Schemes)
+- [🔍 Search Modes](#🔍%20Search%20Modes)
+- [🚀 Performance](#🚀%20Performance)
+- [⚙️ Installation](#⚙️%20Installation)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

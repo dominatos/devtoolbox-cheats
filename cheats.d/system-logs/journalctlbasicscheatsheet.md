@@ -18,6 +18,7 @@ tags:
 [journalctl(1)](https://man7.org/linux/man-pages/man1/journalctl.1.html) · [journald.conf(5)](https://man7.org/linux/man-pages/man5/journald.conf.5.html)
 
 ## Table of Contents
+
 - [Basic Viewing](#Basic%20Viewing)
 - [Time Filters](#Time%20Filters)
 - [Unit Filters](#Unit%20Filters)
@@ -25,6 +26,8 @@ tags:
 - [Output Formats](#Output%20Formats)
 - [Maintenance](#Maintenance)
 - [Troubleshooting](#Troubleshooting)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

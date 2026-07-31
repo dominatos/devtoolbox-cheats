@@ -36,6 +36,8 @@ tags:
 ---
 
 ## Table of Contents
+
+- [Description](#Description)
 - [ZIP — Classic Archives](#ZIP%20—%20Classic%20Archives)
 - [UNZIP — Extract ZIP](#UNZIP%20—%20Extract%20ZIP)
 - [7-Zip — High Compression](#7-Zip%20—%20High%20Compression)

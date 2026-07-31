@@ -20,13 +20,13 @@ tags:
 
 ## 📚 Table of Contents
 
-1. [Basics & Overview](#1.%20Basics%20&%20Overview)
-2. [Configuration File](#2.%20Configuration%20File)
-3. [Generating CSR](#3.%20Generating%20CSR)
-4. [Verification](#4.%20Verification)
-5. [Real-World Examples](#5.%20Real-World%20Examples)
-6. [Best Practices](#6.%20Best%20Practices)
-7. [Documentation Links](#7.%20Documentation%20Links)
+- [1. Basics & Overview](#1.%20Basics%20&%20Overview)
+- [2. Configuration File](#2.%20Configuration%20File)
+- [3. Generating CSR](#3.%20Generating%20CSR)
+- [4. Verification](#4.%20Verification)
+- [5. Real-World Examples](#5.%20Real-World%20Examples)
+- [6. Best Practices](#6.%20Best%20Practices)
+- [7. Documentation Links](#7.%20Documentation%20Links)
 
 ---
 

@@ -10,14 +10,15 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Description](#Description)
-- [Configuration](#️%20Configuration)
-- [Core Management](#Core%20Management)
-- [Sysadmin Operations](#Sysadmin%20Operations)
-- [Troubleshooting](#Troubleshooting)
-- [Comparison: Update vs Dup](#Comparison:%20Update%20vs%20Dup)
-- [Security](#Security)
-- [Documentation Links](#Documentation%20Links)
+- [⚙️ Configuration](#⚙️%20Configuration)
+- [🛠 Core Management](#🛠%20Core%20Management)
+- [🔧 Sysadmin Operations](#🔧%20Sysadmin%20Operations)
+- [🚨 Troubleshooting](#🚨%20Troubleshooting)
+- [📊 Comparison: Update vs Dup](#📊%20Comparison:%20Update%20vs%20Dup)
+- [🔒 Security](#🔒%20Security)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

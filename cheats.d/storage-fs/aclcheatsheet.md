@@ -25,16 +25,18 @@ ACLs are implemented via POSIX.1e (withdrawn draft) and are supported on all maj
 [acl(5)](https://man7.org/linux/man-pages/man5/acl.5.html) · [getfacl(1)](https://man7.org/linux/man-pages/man1/getfacl.1.html) · [setfacl(1)](https://man7.org/linux/man-pages/man1/setfacl.1.html)
 
 ## Table of Contents
+
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [Basic Commands](#Basic%20Commands)
 - [ACL Symbols and Values](#ACL%20Symbols%20and%20Values)
 - [Usage Examples](#Usage%20Examples)
-- [Default ACLs (Inheritance)](#Default%20ACLs%20(Inheritance)%20/%20ACL%20по%20умолчанию%20(Наследование))
+- [Default ACLs (Inheritance)](#Default%20ACLs%20(Inheritance))
 - [ACL Mask](#ACL%20Mask)
 - [Utilities and Useful Flags](#Utilities%20and%20Useful%20Flags)
 - [Combining with chmod](#Combining%20with%20chmod)
 - [Backup & Restore ACLs](#Backup%20&%20Restore%20ACLs)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 
@@ -127,7 +129,7 @@ getfacl -R /opt/<APP>/logs
 
 ---
 
-## Default ACLs (Inheritance) / ACL
+## Default ACLs (Inheritance)
 
 Default ACLs are set on directories and determine the ACLs that new files and subdirectories inherit.
 ACL по умолчанию устанавливаются на каталоги и определяют ACL, которые наследуют новые файлы и подкаталоги.

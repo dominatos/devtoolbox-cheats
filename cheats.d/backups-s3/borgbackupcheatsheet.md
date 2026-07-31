@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [Repository Management](#Repository%20Management)
 - [Create Archives](#Create%20Archives)
@@ -23,6 +24,7 @@ tags:
 - [Performance & Deduplication](#Performance%20&%20Deduplication)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

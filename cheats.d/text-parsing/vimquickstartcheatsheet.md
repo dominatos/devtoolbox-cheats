@@ -12,31 +12,33 @@ tags:
 > **Vim** (Vi IMproved) — the ubiquitous modal text editor, available on virtually every Unix/Linux system. Vim’s modal editing (Normal, Insert, Visual, Command) provides exceptional editing speed once mastered. It is the de facto standard for quick edits over SSH, config file changes, and emergency recovery. Actively maintained; the modern fork [**Neovim**](https://neovim.io/) (`nvim`) adds Lua scripting, built-in LSP, and async plugins while maintaining full Vim compatibility.
 
 ## Table of Contents
-- [Open / Save / Quit](#Open)
-- [Modes](#Modes)
-- [Navigation & Movement](#Navigation%20&%20Movement)
-- [Marks & Jumps](#Marks%20&%20Jumps)
-- [Search](#Search)
-- [Replace](#Replace)
-- [Editing](#️%20Editing)
-- [Visual & Block Ops](#️%20Visual%20&%20Block%20Ops)
-- [Registers & Clipboard](#Registers%20&%20Clipboard)
-- [Windows (splits)](#Windows%20(splits)%20/%20Окна%20(сплиты))
-- [Tabs](#Tabs)
-- [Buffers](#Buffers)
-- [Folding](#Folding)
-- [Quickfix & Grep](#Quickfix%20&%20Grep)
-- [Diff](#Diff)
-- [Netrw (file browser)](#Netrw%20(file%20browser)%20/%20Файловый%20браузер)
-- [External & Filters](#️%20External%20&%20Filters)
-- [Sessions & Workdirs](#Sessions%20&%20Workdirs)
-- [Indent & Whitespace](#Indent%20&%20Whitespace)
-- [Spell](#Spell)
-- [QoL Options](#️%20QoL%20Options)
+
+- [📂 Open](#📂%20Open)
+- [🎭 Modes](#🎭%20Modes)
+- [🧭 Navigation & Movement](#🧭%20Navigation%20&%20Movement)
+- [📌 Marks & Jumps](#📌%20Marks%20&%20Jumps)
+- [🔍 Search](#🔍%20Search)
+- [🔄 Replace](#🔄%20Replace)
+- [✏️ Editing](#✏️%20Editing)
+- [👁️ Visual & Block Ops](#👁️%20Visual%20&%20Block%20Ops)
+- [📋 Registers & Clipboard](#📋%20Registers%20&%20Clipboard)
+- [🪟 Windows (splits)](#🪟%20Windows%20(splits))
+- [📑 Tabs](#📑%20Tabs)
+- [📦 Buffers](#📦%20Buffers)
+- [📁 Folding](#📁%20Folding)
+- [🔎 Quickfix & Grep](#🔎%20Quickfix%20&%20Grep)
+- [🔀 Diff](#🔀%20Diff)
+- [📂 Netrw (file browser)](#📂%20Netrw%20(file%20browser))
+- [⚙️ External & Filters](#⚙️%20External%20&%20Filters)
+- [💾 Sessions & Workdirs](#💾%20Sessions%20&%20Workdirs)
+- [📏 Indent & Whitespace](#📏%20Indent%20&%20Whitespace)
+- [🔤 Spell](#🔤%20Spell)
+- [🛠️ QoL Options](#🛠️%20QoL%20Options)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 
-## 📂 Open / Save / Quit
+## 📂 Open
 
 ```bash
 vim file.txt                                     # Open file / Открыть файл

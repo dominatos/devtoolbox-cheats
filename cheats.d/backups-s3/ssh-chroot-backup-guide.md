@@ -13,6 +13,7 @@ tags:
 # Secure SSH Chroot Backup Server Configuration
 
 ## Table of Contents
+
 - [Architecture Overview](#Architecture%20Overview)
 - [Client-Side Key Generation](#Client-Side%20Key%20Generation)
 - [Server-Side Configuration](#Server-Side%20Configuration)

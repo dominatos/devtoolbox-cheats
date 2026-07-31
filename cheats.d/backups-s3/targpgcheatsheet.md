@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [tar Basics](#tar%20Basics)
 - [GPG Encryption](#GPG%20Encryption)
 - [Combined tar + GPG](#Combined%20tar%20+%20GPG)
@@ -20,6 +21,7 @@ tags:
 - [Remote Backups](#Remote%20Backups)
 - [Sysadmin Patterns](#Sysadmin%20Patterns)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

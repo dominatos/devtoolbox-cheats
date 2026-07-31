@@ -15,15 +15,17 @@ tags:
 > **exa is unmaintained** since 2023. The actively maintained community fork is [**eza**](https://github.com/eza-community/eza). All examples below use `eza`.
 
 ## Table of Contents
-- [ripgrep — Fast Search](#ripgrep%20—%20Fast%20Search)
-- [fd — Fast Find](#fd%20—%20Fast%20Find)
-- [bat — Better Cat](#bat%20—%20Better%20Cat)
-- [eza — Better ls](#eza%20—%20Better%20ls)
-- [Real-World Examples](#Real-World%20Examples)
-- [Best Practices](#Best%20Practices)
-- [Aliases](#Use%20eza%20aliases%20for%20enhanced%20ls)
-- [Tool Comparison](#Tool%20Comparison)
-- [Installation](#️%20Installation)
+
+- [🔍 ripgrep — Fast Search](#🔍%20ripgrep%20—%20Fast%20Search)
+- [📂 fd — Fast Find](#📂%20fd%20—%20Fast%20Find)
+- [🎨 bat — Better Cat](#🎨%20bat%20—%20Better%20Cat)
+- [📊 eza — Better ls](#📊%20eza%20—%20Better%20ls)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Aliases](#🔧%20Aliases)
+- [📋 Tool Comparison](#📋%20Tool%20Comparison)
+- [⚠️ Installation](#⚠️%20Installation)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

@@ -10,19 +10,12 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Description](#Description)
-- [APT — Debian/Ubuntu](#APT%20—%20Debian/Ubuntu)
-- [DNF — RHEL/Fedora](#DNF%20—%20RHEL/Fedora)
-- [Pacman — Arch Linux](#Pacman%20—%20Arch%20Linux)
-- [Zypper — OpenSUSE](#Zypper%20—%20OpenSUSE)
-- [Snap — Universal Packages](#Snap%20—%20Universal%20Packages)
-- [Flatpak — Application Sandboxes](#Flatpak%20—%20Application%20Sandboxes)
-- [AppImage — Portable Apps](#AppImage%20—%20Portable%20Apps)
-- [Real-World Examples](#Real-World%20Examples)
-- [Cross-Reference Comparison](#Cross-Reference%20Comparison)
-- [Best Practices](#Best%20Practices)
-- [Configuration Files](#Configuration%20Files)
-- [Documentation Links](#Documentation%20Links)
+- [📊 Cross-Reference Comparison](#📊%20Cross-Reference%20Comparison)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Configuration Files](#🔧%20Configuration%20Files)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

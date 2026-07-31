@@ -16,13 +16,19 @@ tags:
 📚 **Official Docs / Официальная документация:** [Fail2Ban](https://www.fail2ban.org/)
 
 ## Table of Contents
-- [Basic Commands](#Basic%20Commands)
-- [Jail Management](#Jail%20Management)
-- [Ban Operations](#Ban%20Operations)
-- [Configuration](#️%20Configuration)
-- [Filters & Actions](#Filters%20&%20Actions)
-- [Monitoring & Logs](#Monitoring%20&%20Logs)
-- [Real-World Examples](#Real-World%20Examples)
+
+- [🔧 Basic Commands](#🔧%20Basic%20Commands)
+- [🔒 Jail Management](#🔒%20Jail%20Management)
+- [🚫 Ban Operations](#🚫%20Ban%20Operations)
+- [⚙️ Configuration](#⚙️%20Configuration)
+- [🎯 Filters & Actions](#🎯%20Filters%20&%20Actions)
+- [📊 Monitoring & Logs](#📊%20Monitoring%20&%20Logs)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Best Practices](#💡%20Best%20Practices)
+- [🔧 Configuration Files](#🔧%20Configuration%20Files)
+- [📋 Common Jails](#📋%20Common%20Jails)
+- [⚠️ Important Notes](#⚠️%20Important%20Notes)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 

@@ -12,18 +12,20 @@ tags:
 > **grep** (Global Regular Expression Print) — the quintessential text-search utility, part of every POSIX system. GNU grep supports Basic (BRE), Extended (ERE, `-E`), Fixed-string (`-F`), and Perl-compatible (PCRE, `-P`) regular expressions. It is the go-to tool for searching files, filtering logs, and building shell pipelines. For significantly faster recursive searches (10-100×), consider [`ripgrep` (rg)](https://github.com/BurntSushi/ripgrep) — but `grep` remains the universal standard.
 
 ## Table of Contents
-- [Quick Reference](#Quick%20Reference)
-- [Basics](#Basics)
-- [Regex Dialects](#Regex%20Dialects)
-- [Files & Recursion](#Files%20&%20Recursion)
-- [Output & Context](#Output%20&%20Context)
-- [Counts & File Lists](#Counts%20&%20File%20Lists)
-- [Words, Lines & Anchors](#Words,%20Lines%20&%20Anchors)
-- [Case & Locale](#Case%20&%20Locale)
-- [Multiline & NULL-Separated](#Multiline%20&%20NULL-Separated)
-- [Performance & Behavior](#Performance%20&%20Behavior)
-- [Log & Streaming Examples](#Log%20&%20Streaming%20Examples)
-- [Common One-Liners](#Common%20One-Liners)
+
+- [🚀 Quick Reference](#🚀%20Quick%20Reference)
+- [📖 Basics](#📖%20Basics)
+- [🧬 Regex Dialects](#🧬%20Regex%20Dialects)
+- [📂 Files & Recursion](#📂%20Files%20&%20Recursion)
+- [📋 Output & Context](#📋%20Output%20&%20Context)
+- [🔢 Counts & File Lists](#🔢%20Counts%20&%20File%20Lists)
+- [🔤 Words, Lines & Anchors](#🔤%20Words,%20Lines%20&%20Anchors)
+- [🌐 Case & Locale](#🌐%20Case%20&%20Locale)
+- [📄 Multiline & NULL-Separated](#📄%20Multiline%20&%20NULL-Separated)
+- [⚡ Performance & Behavior](#⚡%20Performance%20&%20Behavior)
+- [📊 Log & Streaming Examples](#📊%20Log%20&%20Streaming%20Examples)
+- [💡 Common One-Liners](#💡%20Common%20One-Liners)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

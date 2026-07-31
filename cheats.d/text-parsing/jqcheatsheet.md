@@ -12,16 +12,18 @@ tags:
 > **jq** — a lightweight, command-line JSON processor written in C. It uses a functional, pipeline-oriented query language for slicing, filtering, mapping, and transforming structured JSON data. Widely used in CI/CD pipelines, API automation, Kubernetes/Docker scripting, and log analysis. Actively maintained; for YAML processing, use [`yq`](https://github.com/mikefarah/yq). Alternative: [`gojq`](https://github.com/itchyny/gojq) (Go reimplementation with YAML support).
 
 ## Table of Contents
-- [Basics](#Basics)
-- [Selecting & Filtering](#Selecting%20&%20Filtering)
-- [Transforming Data](#Transforming%20Data)
-- [Arrays & Objects](#Arrays%20&%20Objects)
-- [Aggregation & Math](#Aggregation%20&%20Math)
-- [Advanced Queries](#Advanced%20Queries)
-- [Output Formatting](#Output%20Formatting)
-- [Real-World Examples](#Real-World%20Examples)
-- [Advanced Techniques](#Advanced%20Techniques)
-- [Troubleshooting](#Troubleshooting)
+
+- [📖 Basics](#📖%20Basics)
+- [🔍 Selecting & Filtering](#🔍%20Selecting%20&%20Filtering)
+- [🔄 Transforming Data](#🔄%20Transforming%20Data)
+- [📊 Arrays & Objects](#📊%20Arrays%20&%20Objects)
+- [🧮 Aggregation & Math](#🧮%20Aggregation%20&%20Math)
+- [🔬 Advanced Queries](#🔬%20Advanced%20Queries)
+- [📤 Output Formatting](#📤%20Output%20Formatting)
+- [🌟 Real-World Examples](#🌟%20Real-World%20Examples)
+- [💡 Advanced Techniques](#💡%20Advanced%20Techniques)
+- [🔧 Troubleshooting](#🔧%20Troubleshooting)
+- [📚 Documentation](#📚%20Documentation)
 
 ---
 

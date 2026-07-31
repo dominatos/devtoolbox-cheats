@@ -11,6 +11,7 @@ tags:
 ---
 
 ## Table of Contents
+
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [Remote Management](#Remote%20Management)
 - [File Operations](#File%20Operations)
@@ -21,6 +22,7 @@ tags:
 - [Monitoring & Logging](#Monitoring%20&%20Logging)
 - [Sysadmin Operations](#Sysadmin%20Operations)
 - [Troubleshooting](#Troubleshooting)
+- [Documentation](#Documentation)
 
 ---
 

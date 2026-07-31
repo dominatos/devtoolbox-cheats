@@ -16,12 +16,14 @@ tags:
 📚 **Official Docs / Официальная документация:** [scp(1)](https://man.openbsd.org/scp)
 
 ## Table of Contents
+
 - [Basic Transfer](#Basic%20Transfer)
 - [Advanced Options](#Advanced%20Options)
 - [Performance & Compression](#Performance%20&%20Compression)
 - [Troubleshooting](#Troubleshooting)
 - [Real-World Examples](#Real-World%20Examples)
 - [Reference Tables](#Reference%20Tables)
+- [📚 Documentation Links](#📚%20Documentation%20Links)
 
 ---
 
