@@ -174,6 +174,28 @@ The script will detect and use it automatically on the next launch.
 
 ---
 
+## 📝 Table of Contents Formatting
+
+All 147 official cheatsheets are already perfectly formatted with Obsidian-compatible Table of Contents anchors (`#Basic%20Commands`). Out of the box, Windows users do not need to do anything to get this formatting.
+
+If you create your own **custom cheatsheets** on Windows and want to automatically build/reformat their TOCs, or if you prefer the **GitHub** link style (`#basic-commands`), you can use our Python formatting tool.
+
+*(Note: You must have Python 3 installed on Windows to use this script).*
+
+1. Open PowerShell
+2. Navigate to your cloned repository's `tools` folder
+3. Run the Python formatting script:
+
+```powershell
+# Format as Obsidian (Default / Recommended)
+python manage-tocs.py --style obsidian --dir $env:USERPROFILE\cheats.d
+
+# Format as GitHub
+python manage-tocs.py --style github --dir $env:USERPROFILE\cheats.d
+```
+
+---
+
 ## ❓ Troubleshooting
 
 ### AutoHotkey v2 is installed instead of v1
