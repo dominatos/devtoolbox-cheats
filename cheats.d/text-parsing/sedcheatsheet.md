@@ -6,18 +6,18 @@ Order: 5
 > **sed** (Stream Editor) — a POSIX-standard, non-interactive text transformation tool. GNU sed is pre-installed on all Linux distributions and is the primary tool for in-place file editing, substitution, and line manipulation in shell scripts. Unlike `awk` (column-oriented), `sed` operates on lines and character patterns. There is no modern replacement — `sed` remains the irreplaceable core utility for stream-based text processing.
 
 ## Table of Contents
-- [Basic Substitution](#basic-substitution-базовая-замена)
-- [Line Selection & Deletion](#line-selection-deletion-выбор-и-удаление-строк)
-- [In-Place Editing](#in-place-editing-правка-на-месте)
-- [Multiple Commands](#multiple-commands-несколько-команд)
-- [Advanced Patterns](#advanced-patterns-продвинутые-шаблоны)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Extraction & Transformation](#extraction-transformation-извлечение-и-преобразование)
-- [Advanced Use Cases](#advanced-use-cases-продвинутые-случаи)
+- [Basic Substitution](#basic-substitution)
+- [Line Selection & Deletion](#line-selection--deletion)
+- [In-Place Editing](#in-place-editing)
+- [Multiple Commands](#multiple-commands)
+- [Advanced Patterns](#advanced-patterns)
+- [Real-World Examples](#real-world-examples)
+- [Extraction & Transformation](#extraction--transformation)
+- [Advanced Use Cases](#advanced-use-cases)
 
 ---
 
-## 🔀 Basic Substitution / Базовая замена
+## Basic Substitution
 
 ```bash
 sed 's/foo/bar/' file                          # Replace first 'foo' per line / Заменить первое 'foo' в строке
@@ -32,7 +32,7 @@ sed 's/\t/ /g' file                            # Replace tabs with spaces / За
 
 ---
 
-## 📑 Line Selection & Deletion / Выбор и удаление строк
+## Line Selection & Deletion
 
 ```bash
 sed -n '10,20p' file                           # Print only lines 10-20 / Печать только строк 10-20
@@ -48,7 +48,7 @@ sed '/pattern/d' file                          # Delete lines matching pattern /
 
 ---
 
-## 💾 In-Place Editing / Правка на месте
+## In-Place Editing
 
 > [!WARNING]
 > In-place editing (`-i`) modifies original files. Always use `-i.bak` to create a backup first.
@@ -63,7 +63,7 @@ sed -i '/^#/d' config.txt                      # Delete comments in-place / Уд
 
 ---
 
-## 🔧 Multiple Commands / Несколько команд
+## Multiple Commands
 
 ```bash
 sed -e 's/foo/bar/' -e 's/baz/qux/' file       # Multiple substitutions / Несколько замен
@@ -74,7 +74,7 @@ sed '1d; $d' file                              # Delete first and last / Уда�
 
 ---
 
-## 🎯 Advanced Patterns / Продвинутые шаблоны
+## Advanced Patterns
 
 ```bash
 sed -n 's/^ID=//p' /etc/os-release             # Extract value after ID= / Извлечь значение после ID=
@@ -89,7 +89,7 @@ sed '0,/pattern/s//replacement/' file          # Replace first occurrence / За
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## Real-World Examples
 
 ```bash
 sed 's/192\.168\.1\./10.0.0./' hosts           # Change IP range / Сменить диапазон IP
@@ -106,7 +106,7 @@ sed -i 's/\r$//' file.txt                      # Remove Windows line endings / �
 
 ---
 
-## 📋 Extraction & Transformation / Извлечение и преобразование
+## Extraction & Transformation
 
 ```bash
 sed -n 's/.*href="\([^"]*\)".*/\1/p' page.html  # Extract URLs / Извлечь URL
@@ -118,7 +118,7 @@ sed 's/\([^,]*\),\([^,]*\)/\2,\1/' file        # Swap CSV columns / Поменя
 
 ---
 
-## 🔬 Advanced Use Cases / Продвинутые случаи
+## Advanced Use Cases
 
 ```bash
 sed -n '/BEGIN/,/END/p' file                   # Extract block / Извлечь блок
@@ -133,7 +133,7 @@ sed '5q' file                                  # Quit after line 5 / Выход 
 
 ---
 
-## 📚 Documentation / Документация
+## Documentation
 
 - [GNU sed Manual](https://www.gnu.org/software/sed/manual/sed.html)
 - [POSIX sed specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sed.html)
