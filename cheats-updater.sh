@@ -174,7 +174,7 @@ cmd_update() {
         notify-send "DevToolbox Cheats" "Updated: +${added} new, ~${modified} modified" 2>/dev/null || true
     fi
     
-    # Auto-apply TOC formatting if manage-tocs.py is available and a format is configured
+    # Auto-apply TOC formatting — official files only, never custom user files
     local toc_conf="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
     local toc_format="obsidian"
     if [[ -s "$toc_conf" ]]; then
@@ -184,7 +184,7 @@ cmd_update() {
             obsidian|github) toc_format="$_fmt" ;;
         esac
     fi
-    
+
     # Search for manage-tocs.py in known install locations
     local manage_tocs=""
     for candidate in \
@@ -196,13 +196,22 @@ cmd_update() {
             break
         fi
     done
-    
+
     if [[ -n "$manage_tocs" ]] && command -v python3 &>/dev/null; then
-        log_info "Applying TOC format: ${C_CYAN}${toc_format}${C_RESET}"
-        if python3 "$manage_tocs" --style "$toc_format" --dir "$CHEATS_DIR" &>/dev/null; then
-            log_info "TOC formatting applied (${toc_format})"
-        else
-            log_warn "TOC formatting failed — run manually: python3 ${manage_tocs} --style ${toc_format}"
+        log_info "Applying TOC format (${C_CYAN}${toc_format}${C_RESET}) to official files only..."
+        # Build list of official local file paths — custom files in CHEATS_DIR are never included
+        local official_local_files=()
+        for remote_file in "${remote_files[@]}"; do
+            local rel_path="${remote_file#"${TEMP_DIR}"/cheats.d/}"
+            local local_file="${CHEATS_DIR}/${rel_path}"
+            [[ -f "$local_file" ]] && official_local_files+=("$local_file")
+        done
+        if (( ${#official_local_files[@]} > 0 )); then
+            if python3 "$manage_tocs" --style "$toc_format" --files "${official_local_files[@]}" &>/dev/null; then
+                log_info "TOC formatting applied (${toc_format}, ${#official_local_files[@]} official files)"
+            else
+                log_warn "TOC formatting failed — run manually: python3 ${manage_tocs} --style ${toc_format}"
+            fi
         fi
     fi
 }

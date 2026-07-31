@@ -109,22 +109,29 @@ def main():
                         help='Formatting style to use for TOC links (default: obsidian)')
     parser.add_argument('--dir', type=Path, default=None,
                         help='Directory containing .md files (default: ~/cheats.d)')
+    parser.add_argument('--files', type=Path, nargs='+', default=None,
+                        help='Explicit list of .md files to format (overrides --dir)')
     args = parser.parse_args()
 
-    if args.dir:
-        cheats_dir = args.dir
+    # Explicit file list takes priority over directory scan
+    if args.files:
+        files_to_process = [f for f in args.files if f.is_file()]
     else:
-        cheats_dir = Path.home() / 'cheats.d'
+        if args.dir:
+            cheats_dir = args.dir
+        else:
+            cheats_dir = Path.home() / 'cheats.d'
 
-    if not cheats_dir.is_dir():
-        print(f"Error: Directory {cheats_dir} not found.", file=sys.stderr)
-        sys.exit(1)
+        if not cheats_dir.is_dir():
+            print(f"Error: Directory {cheats_dir} not found.", file=sys.stderr)
+            sys.exit(1)
 
+        files_to_process = sorted(cheats_dir.rglob('*.md'))
     print(f"Starting TOC rebuild. Mode: {args.style.upper()}")
     modified_count = 0
     total_count = 0
     
-    for md_file in sorted(cheats_dir.rglob('*.md')):
+    for md_file in files_to_process:
         total_count += 1
         if process_file(md_file, args.style):
             modified_count += 1
