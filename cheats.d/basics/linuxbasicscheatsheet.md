@@ -11,22 +11,22 @@ tags:
 
 # 📚 Linux Basics — Cheatsheet
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
-1. [Navigation](#Navigation%20/%20Навигация)
-2. [Files & Directories](#Files%20&%20Directories%20/%20Файлы%20и%20Папки)
-3. [View & Edit](#View%20&%20Edit%20/%20Просмотр%20и%20Редактирование)
-4. [Nano Editor](#Nano%20Editor%20/%20Редактор%20Nano)
-5. [Privileges](#Privileges%20/%20Права%20и%20Привилегии)
+1. [Navigation](#Navigation)
+2. [Files & Directories](#Files%20&%20Directories)
+3. [View & Edit](#View%20&%20Edit)
+4. [Nano Editor](#Nano%20Editor)
+5. [Privileges](#Privileges)
 6. [Package Management (APT)](#Package%20Management%20(APT)%20/%20Управление%20Пакетами%20(APT))
-7. [Process Management](#Process%20Management%20/%20Управление%20Процессами)
-8. [System Information](#System%20Information%20/%20Информация%20о%20Системе)
-9. [Network Basics](#Network%20Basics%20/%20Основы%20Сети)
-10. [Helpful Tips](#Helpful%20Tips%20/%20Полезные%20Советы)
+7. [Process Management](#Process%20Management)
+8. [System Information](#System%20Information)
+9. [Network Basics](#Network%20Basics)
+10. [Helpful Tips](#Helpful%20Tips)
 
 ---
 
-## Navigation / Навигация
+## Navigation
 
 ```bash
 pwd                                           # Show current directory / Показать текущую директорию
@@ -40,7 +40,7 @@ cd /                                          # Filesystem root / Корень �
 
 ---
 
-## Files & Directories / Файлы и Папки
+## Files & Directories
 
 ```bash
 mkdir newdir                                  # Create directory / Создать папку
@@ -65,7 +65,7 @@ rmdir emptydir                                # Remove empty dir / Удалит�
 
 ---
 
-## View & Edit / Просмотр и Редактирование
+## View & Edit
 
 ```bash
 cat file.txt                                  # Print file / Вывести файл
@@ -77,7 +77,7 @@ tail -f /var/log/syslog                       # Follow log / «Хвост» ло
 
 ---
 
-## Nano Editor / Редактор Nano
+## Nano Editor
 
 ```bash
 nano file.txt                                 # Open in nano / Открыть в nano
@@ -94,7 +94,7 @@ nano file.txt                                 # Open in nano / Открыть в
 
 ---
 
-## Privileges / Права и Привилегии
+## Privileges
 
 ```bash
 whoami                                        # Current user / Текущий пользователь
@@ -106,7 +106,7 @@ su -                                          # Switch to root / Переклю�
 
 ---
 
-## Package Management (APT) / Управление Пакетами (APT)
+## Package Management (APT)
 
 > [!NOTE]
 > APT is the package manager for Debian/Ubuntu based distributions.
@@ -124,32 +124,32 @@ apt show nginx                                # Package info / Информац�
 do-release-upgrade                            # Upgrade to next Ubuntu release / Обновить до след. версии Ubuntu
 ```
 
-### Debconf & GRUB Disk Configuration / Debconf и настройка диска GRUB
+### Debconf & GRUB Disk Configuration / Debconf
 
 ```bash
-# Show GRUB install device configuration / Показать конфигурацию установки GRUB
+# Show GRUB install device configuration
 debconf-show grub-pc | grep install_devices
 
-# Change GRUB install device (e.g. /dev/sda→sdb) / Изменить диск установки GRUB
+# Change GRUB install device (e.g. /dev/sda→sdb)
 echo "grub-pc grub-pc/install_devices multiselect /dev/sdb" | debconf-set-selections
 
-# Verify change / Проверить изменение
+# Verify change
 debconf-show grub-pc | grep install_devices
 ```
 
 > [!WARNING]
 > Wrong GRUB install device = unbootable system after kernel update. Always verify with `debconf-show grub-pc` after disk changes. / Неверный диск GRUB = незагружаемая система после обновления ядра.
 
-### Ubuntu Minimal / Cloud Images / Ubuntu Minimal / Облачные образы
+### Ubuntu Minimal / Cloud Images / Ubuntu Minimal
 
 ```bash
-# Restore man pages and docs on minimal/cloud installs / Восстановить man-страницы на облачных образах
+# Restore man pages and docs on minimal/cloud installs
 unminimize
 ```
 
 ---
 
-## Process Management / Управление Процессами
+## Process Management
 
 ```bash
 ps aux                                        # All processes / Все процессы
@@ -170,7 +170,7 @@ nohup command &                               # Run detached / Запустит�
 
 ---
 
-## System Information / Информация о Системе
+## System Information
 
 ```bash
 uname -a                                      # System info / Информация о системе
@@ -190,7 +190,7 @@ lscpu                                         # CPU info / Информация 
 
 ---
 
-## Network Basics / Основы Сети
+## Network Basics
 
 ```bash
 ip a                                          # IP addresses / IP-адреса
@@ -205,7 +205,7 @@ hostname -I                                   # Local IP / Локальный IP
 
 ---
 
-## Helpful Tips / Полезные Советы
+## Helpful Tips
 
 ```bash
 man ls                                        # Manual (q exit) / Руководство (q — выход)
@@ -220,7 +220,7 @@ echo $PATH                                    # PATH variable / Переменн
 export VAR=value                              # Set env variable / Установить переменную окружения
 ```
 
-### Keyboard Shortcuts / Клавиатурные сокращения
+### Keyboard Shortcuts
 
 | Shortcut | Action / Действие |
 |----------|-------------------|

@@ -34,18 +34,18 @@ All tools are actively maintained and part of most Linux distributions. There ar
 
 ## strace — System Call Tracing
 
-### Description / Описание
+### Description
 
 `strace` intercepts and records every system call a process makes, plus signals it receives. It works via the `ptrace()` mechanism, which means **significant overhead** (2–100× slowdown). Use it for debugging, not profiling.
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install strace                       # Debian/Ubuntu
 sudo dnf install strace                       # RHEL/Fedora
 sudo pacman -S strace                         # Arch
 ```
 
-### Basic Usage / Базовое использование
+### Basic Usage
 ```bash
 strace <COMMAND>                              # Trace command / Трассировать команду
 strace ls -la                                 # Trace ls command / Трассировать команду ls
@@ -53,17 +53,17 @@ strace -p <PID>                               # Attach to running process / По
 strace -p <PID> -f                            # Follow child processes / Следовать за дочерними процессами
 ```
 
-### Output Options / Опции вывода
+### Output Options
 ```bash
 strace -o trace.txt <COMMAND>                 # Save to file / Сохранить в файл
 strace -o trace.txt -f -tt -T -s 200 -p <PID> # Detailed trace / Детальная трассировка
-# -f: follow forks / следовать за fork
-# -tt: timestamps with microseconds / временные метки с микросекундами
-# -T: show time spent in calls / показать время вызовов
-# -s 200: string size limit / лимит размера строки
+# -f: follow forks
+# -tt: timestamps with microseconds
+# -T: show time spent in calls
+# -s 200: string size limit
 ```
 
-### Filter by Syscall / Фильтр по системным вызовам
+### Filter by Syscall
 ```bash
 strace -e trace=open,read,write <COMMAND>     # Trace specific calls / Трассировать конкретные вызовы
 strace -e trace=network -p <PID>              # Network syscalls / Сетевые системные вызовы
@@ -73,7 +73,7 @@ strace -e trace=signal -p <PID>               # Signal handling / Обработ
 strace -e trace=ipc -p <PID>                  # IPC operations / IPC операции
 ```
 
-### Statistics / Статистика
+### Statistics
 ```bash
 strace -c <COMMAND>                           # Summary statistics / Сводная статистика
 strace -c -p <PID>                            # Count syscalls / Подсчитать системные вызовы
@@ -93,7 +93,7 @@ strace -c -S calls <COMMAND>                  # Sort by call count / Сорти�
 100.00    0.002753                   263         5 total
 ```
 
-### Advanced / Продвинутое использование
+### Advanced
 ```bash
 strace -e trace=open,openat -e signal=none <COMMAND>  # Open calls, no signals / Вызовы open, без сигналов
 strace -y -p <PID>                            # Show file descriptor paths / Показать пути дескрипторов
@@ -109,11 +109,11 @@ strace -r <COMMAND>                           # Relative timestamps / Относ
 
 ## perf — Performance Analysis
 
-### Description / Описание
+### Description
 
 `perf` is the official Linux kernel profiling tool. It uses hardware performance counters and kernel tracepoints with **minimal overhead** (1–5%), making it safe for production use. It supports CPU sampling (flame graphs), cache/branch analysis, and per-function breakdowns.
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install linux-tools-common linux-tools-$(uname -r)  # Debian/Ubuntu
 sudo dnf install perf                         # RHEL/Fedora
@@ -124,14 +124,14 @@ sudo pacman -S perf                           # Arch
 > The kernel version of `linux-tools` must match your running kernel. After a kernel update, reinstall `linux-tools-$(uname -r)`.
 > / Версия `linux-tools` должна соответствовать версии работающего ядра. После обновления ядра переустановите `linux-tools-$(uname -r)`.
 
-### Top CPU Consumers / Топ потребителей CPU
+### Top CPU Consumers
 ```bash
 sudo perf top                                 # Live CPU hot spots / «Горячие точки» CPU
 sudo perf top -p <PID>                        # Top for specific process / Top для конкретного процесса
 sudo perf top -g                              # Call graph / Граф вызовов
 ```
 
-### Record and Report / Запись и отчёт
+### Record and Report
 ```bash
 sudo perf record -g -- <COMMAND>              # Record with call graph / Записать с графом вызовов
 sudo perf record -g -p <PID>                  # Record process / Записать процесс
@@ -140,7 +140,7 @@ sudo perf report                              # View report / Просмотр �
 sudo perf report --stdio                      # Text report / Текстовый отчёт
 ```
 
-### CPU Profiling / Профилирование CPU
+### CPU Profiling
 ```bash
 sudo perf stat <COMMAND>                      # Performance statistics / Статистика производительности
 sudo perf stat -p <PID>                       # Stats for process / Статистика для процесса
@@ -150,13 +150,13 @@ sudo perf stat -e cpu-cycles,instructions <COMMAND>  # Specific events / Кон�
 
 ### Flame Graphs / Flame-графы
 ```bash
-# Step 1: Record CPU samples / Шаг 1: Записать семплы CPU
+# Step 1: Record CPU samples
 sudo perf record -F 99 -a -g -- sleep 30      # Record for 30s at 99 Hz / Записать 30с на частоте 99 Гц
 
-# Step 2: Export to readable script / Шаг 2: Экспортировать в читаемый скрипт
+# Step 2: Export to readable script
 sudo perf script > out.perf                   # Export data / Экспортировать данные
 
-# Step 3: Generate flame graph / Шаг 3: Генерировать flame граф
+# Step 3: Generate flame graph
 # Requires https://github.com/brendangregg/FlameGraph
 stackcollapse-perf.pl out.perf | flamegraph.pl > perf.svg
 ```
@@ -165,7 +165,7 @@ stackcollapse-perf.pl out.perf | flamegraph.pl > perf.svg
 > `-F 99` samples at 99 Hz (not 100) to avoid lockstep aliasing with kernel timers. This is a Brendan Gregg best practice.
 > / `-F 99` сэмплирует на частоте 99 Гц (а не 100), чтобы избежать резонанса с таймерами ядра. Это лучшая практика от Brendan Gregg.
 
-### List Available Events / Список доступных событий
+### List Available Events
 ```bash
 perf list                                     # List all events / Список всех событий
 perf list cache                               # Cache events / События кэша
@@ -177,18 +177,18 @@ perf list sw                                  # Software events / Програм
 
 ## tcpdump — Network Packet Capture
 
-### Description / Описание
+### Description
 
 `tcpdump` captures network packets directly from interfaces using the `libpcap` library. It can display packet headers, payloads (ASCII/Hex), and filter by BPF (Berkeley Packet Filter) expressions. Output files (`.pcap`) are compatible with Wireshark/tshark.
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install tcpdump                      # Debian/Ubuntu
 sudo dnf install tcpdump                      # RHEL/Fedora
 sudo pacman -S tcpdump                        # Arch
 ```
 
-### Default Ports / Стандартные порты
+### Default Ports
 ```bash
 # Common ports used in tcpdump filters:
 # 22   — SSH
@@ -201,7 +201,7 @@ sudo pacman -S tcpdump                        # Arch
 # 8080 — HTTP alt / management
 ```
 
-### Basic Capture / Базовый захват
+### Basic Capture
 ```bash
 sudo tcpdump                                  # Capture all interfaces / Захват всех интерфейсов
 sudo tcpdump -i eth0                          # Capture specific interface / Захват конкретного интерфейса
@@ -210,7 +210,7 @@ sudo tcpdump -n                               # No DNS resolution / Без DNS �
 sudo tcpdump -nn                              # No DNS/port resolution / Без DNS/портов
 ```
 
-### Protocol Filters / Фильтры протоколов
+### Protocol Filters
 ```bash
 sudo tcpdump tcp                              # TCP packets only / Только TCP пакеты
 sudo tcpdump udp                              # UDP packets only / Только UDP пакеты
@@ -218,7 +218,7 @@ sudo tcpdump icmp                             # ICMP packets only / Только
 sudo tcpdump arp                              # ARP packets only / Только ARP пакеты
 ```
 
-### Port Filters / Фильтры портов
+### Port Filters
 ```bash
 sudo tcpdump port 80                          # HTTP traffic / HTTP трафик
 sudo tcpdump port 443                         # HTTPS traffic / HTTPS трафик
@@ -227,7 +227,7 @@ sudo tcpdump 'tcp port 80 or tcp port 443'    # HTTP or HTTPS / HTTP или HTTP
 sudo tcpdump portrange 8000-9000              # Port range / Диапазон портов
 ```
 
-### Host Filters / Фильтры хостов
+### Host Filters
 ```bash
 sudo tcpdump host <IP>                        # Specific host / Конкретный хост
 sudo tcpdump src <IP>                         # Source IP / IP источника
@@ -235,7 +235,7 @@ sudo tcpdump dst <IP>                         # Destination IP / IP назнач
 sudo tcpdump net 192.168.1.0/24               # Network / Сеть
 ```
 
-### Output Options / Опции вывода
+### Output Options
 ```bash
 sudo tcpdump -w capture.pcap                  # Write to file / Записать в файл
 sudo tcpdump -r capture.pcap                  # Read from file / Читать из файла
@@ -245,7 +245,7 @@ sudo tcpdump -s 0                             # Capture full packets / Захв�
 sudo tcpdump -s0 -A -i any host <IP>          # Full packets ASCII / Полные пакеты ASCII
 ```
 
-### Advanced Filters / Продвинутые фильтры
+### Advanced Filters
 ```bash
 sudo tcpdump -n -i eth0 tcp port 443          # HTTPS on eth0 / HTTPS на eth0
 sudo tcpdump -A -s0 -i any host <IP>          # Full packets host filter / Полные пакеты фильтр хоста
@@ -255,7 +255,7 @@ sudo tcpdump -c 100                           # Capture 100 packets / Захва
 sudo tcpdump -nn -vv -c 50 port 53            # DNS queries verbose / DNS запросы подробно
 ```
 
-### Combine Filters / Комбинирование фильтров
+### Combine Filters
 ```bash
 sudo tcpdump 'host <IP> and port 80'          # Host and port / Хост и порт
 sudo tcpdump 'src <IP> and dst port 443'      # Source IP and dest port / IP источника и порт назначения
@@ -271,18 +271,18 @@ sudo tcpdump '(tcp port 80 or tcp port 443) and host <IP>'  # HTTP/HTTPS to host
 
 ## lsof — List Open Files
 
-### Description / Описание
+### Description
 
 `lsof` (List Open Files) reports all open files in the system — regular files, directories, sockets, pipes, and devices. In Linux "everything is a file," so `lsof` is invaluable for debugging file locks, hung mount points, and network connections.
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install lsof                         # Debian/Ubuntu
 sudo dnf install lsof                         # RHEL/Fedora
 sudo pacman -S lsof                           # Arch
 ```
 
-### Basic Usage / Базовое использование
+### Basic Usage
 ```bash
 lsof                                          # List all open files / Список всех открытых файлов
 lsof -u <USER>                                # Files opened by user / Файлы открытые пользователем
@@ -290,7 +290,7 @@ lsof -p <PID>                                 # Files opened by process / Фай
 lsof <FILE>                                   # Processes using file / Процессы использующие файл
 ```
 
-### Network Connections / Сетевые соединения
+### Network Connections
 ```bash
 lsof -i                                       # All network connections / Все сетевые соединения
 lsof -i :80                                   # Port 80 connections / Соединения порта 80
@@ -300,7 +300,7 @@ lsof -i tcp:22                                # SSH connections / SSH соеди
 lsof -i @<IP>                                 # Connections to IP / Соединения к IP
 ```
 
-### Process Information / Информация о процессах
+### Process Information
 ```bash
 lsof -c nginx                                 # Files by command / Файлы по команде
 lsof -t -c nginx                              # PIDs only / Только PID
@@ -308,7 +308,7 @@ lsof -a -u <USER> -i                          # User network files / Сетев�
 lsof -a -p <PID> -i                           # Process network files / Сетевые файлы процесса
 ```
 
-### Filesystem / Файловая система
+### Filesystem
 ```bash
 lsof +D /path/to/dir                          # All files in directory / Все файлы в директории
 lsof +d /path/to/dir                          # Files in directory (no recurse) / Файлы в директории (без рекурсии)
@@ -319,7 +319,7 @@ lsof /mnt                                     # What's using mount / Что ис
 > `lsof +D` recursively scans the directory tree — on large filesystems this can be very slow. Use `lsof +d` (lowercase, non-recursive) when possible.
 > / `lsof +D` рекурсивно сканирует дерево каталогов — на больших ФС это может быть очень медленно. По возможности используйте `lsof +d` (без рекурсии).
 
-### Common Patterns / Распространённые шаблоны
+### Common Patterns
 ```bash
 lsof -i :80 | grep LISTEN                     # Who's listening on 80 / Кто слушает порт 80
 lsof -nP -iTCP -sTCP:LISTEN                   # All listening TCP / Все слушающие TCP
@@ -332,18 +332,18 @@ lsof -i -u <USER>                             # User network activity / Сете
 
 ## ltrace — Library Call Tracing
 
-### Description / Описание
+### Description
 
 `ltrace` traces calls to shared library functions (e.g., `malloc`, `free`, `printf`) as well as signals received. It uses the same `ptrace()` mechanism as `strace`, so performance impact is similarly **HIGH**. Useful for analyzing memory allocation patterns and debugging library-level issues.
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install ltrace                       # Debian/Ubuntu
 sudo dnf install ltrace                       # RHEL/Fedora
 sudo pacman -S ltrace                         # Arch
 ```
 
-### Basic Usage / Базовое использование
+### Basic Usage
 ```bash
 ltrace <COMMAND>                              # Trace library calls / Трассировать библиотечные вызовы
 ltrace -p <PID>                               # Attach to process / Подключиться к процессу
@@ -361,7 +361,7 @@ ltrace -f <COMMAND>                           # Follow forks / Следоват�
 
 ## Tool Comparison
 
-### Performance Impact / Влияние на производительность
+### Performance Impact
 
 > [!WARNING]
 > Tracing tools have significant performance impact on the traced process. Use with care in production.
@@ -375,7 +375,7 @@ ltrace -f <COMMAND>                           # Follow forks / Следоват�
 | **lsof** | `/proc` scan / сканирование /proc | 🟢 MINIMAL / Минимальное | Point-in-time snapshot / Снимок | ✅ Yes |
 | **ltrace** | ptrace / каждый lib call | 🔴 HIGH / Высокое | 2–100× slowdown | ⚠️ No |
 
-### Layer Comparison / Сравнение уровней
+### Layer Comparison
 
 | Layer / Уровень | Tool / Инструмент | What it shows (EN / RU) |
 |-----------------|-------------------|-------------------------|
@@ -403,7 +403,7 @@ ltrace -f <COMMAND>                           # Follow forks / Следоват�
 
 ## Troubleshooting Workflows
 
-### Runbook: Debug High CPU / Отладка высокой нагрузки CPU
+### Runbook: Debug High CPU
 
 1. Identify the offending process / Найти проблемный процесс:
 ```bash
@@ -424,7 +424,7 @@ strace -c -p <PID>                            # Summary: which calls are slow / 
 strace -p <PID> -f -e trace=all               # Full trace / Полная трассировка
 ```
 
-### Runbook: Debug Network Issues / Отладка сетевых проблем
+### Runbook: Debug Network Issues
 
 1. Check connections / Проверить соединения:
 ```bash
@@ -443,7 +443,7 @@ sudo tcpdump -i any -A host <IP>              # ASCII payload from host / ASCII 
 strace -e trace=network -p <PID> -f           # Network syscalls / Сетевые системные вызовы
 ```
 
-### Runbook: Debug File Access / Отладка доступа к файлам
+### Runbook: Debug File Access
 
 1. Find open files / Найти открытые файлы:
 ```bash
@@ -463,7 +463,7 @@ lsof +D /path/to/dir                          # Files in directory tree / Фай
 fuser -v /path/to/file                        # Process using file / Процесс использующий файл
 ```
 
-### Runbook: Unmountable Filesystem / Невозможно отмонтировать ФС
+### Runbook: Unmountable Filesystem
 
 1. Find who holds the mount / Найти кто блокирует монтирование:
 ```bash
@@ -485,72 +485,72 @@ umount /mnt/data                              # Unmount / Отмонтирова
 
 ## Real-World Examples
 
-### Debug Slow Application / Отладка медленного приложения
+### Debug Slow Application
 ```bash
-# Trace duration of syscalls / Трассировать длительность системных вызовов
+# Trace duration of syscalls
 sudo strace -c -p <PID>
 sudo strace -T -tt -p <PID> | grep -v '<0.000'
 
-# Profile CPU / Профилировать CPU
+# Profile CPU
 sudo perf record -g -p <PID> -- sleep 30
 sudo perf report --stdio | head -50
 ```
 
-### Find Network Bottleneck / Найти сетевое узкое место
+### Find Network Bottleneck
 ```bash
-# Capture HTTP traffic / Захватить HTTP трафик
+# Capture HTTP traffic
 sudo tcpdump -i any -s0 -A 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' | grep -i "GET\|POST\|HTTP"
 
-# Find slow DNS / Найти медленный DNS
+# Find slow DNS
 sudo tcpdump -i any -nn port 53
 
-# Monitor connections / Мониторить соединения
+# Monitor connections
 watch -n 1 'lsof -i :80 | wc -l'
 ```
 
-### Debug Container / Отладка контейнера
+### Debug Container
 ```bash
-# Find container PID / Найти PID контейнера
+# Find container PID
 docker inspect -f '{{.State.Pid}}' <CONTAINER>
 
-# Trace container / Трассировать контейнер
+# Trace container
 sudo strace -p <CONTAINER_PID> -f
 
-# Network trace / Сетевая трассировка
+# Network trace
 sudo nsenter -t <CONTAINER_PID> -n tcpdump -i any
 ```
 
-### Find Memory Leaks / Найти утечки памяти
+### Find Memory Leaks
 ```bash
-# Trace memory allocations / Трассировать выделение памяти
+# Trace memory allocations
 ltrace -e malloc,free,realloc -p <PID>
 ltrace -c -e malloc,free -p <PID>
 
-# Track with valgrind / Отслеживать с valgrind
+# Track with valgrind
 valgrind --leak-check=full <COMMAND>
 ```
 
-### Debug SSL/TLS / Отладка SSL/TLS
+### Debug SSL/TLS
 ```bash
-# Capture TLS traffic / Захватить TLS трафик
+# Capture TLS traffic
 sudo tcpdump -i any -nn -s0 -X 'tcp port 443'
 
-# Trace SSL calls / Трассировать SSL вызовы
+# Trace SSL calls
 ltrace -e SSL_* -p <PID>
 
-# Check TLS handshake timing / Проверить время TLS хендшейка
+# Check TLS handshake timing
 sudo tcpdump -nn -i any 'tcp port 443 and (tcp[tcpflags] & (tcp-syn) != 0)'
 ```
 
-### Find Deleted But Still Open Files / Найти удалённые но открытые файлы
+### Find Deleted But Still Open Files
 ```bash
-# Find deleted files still held open / Найти удалённые файлы
+# Find deleted files still held open
 lsof | grep '(deleted)'
 
-# Find specific process holding deleted files / Найти процесс с удалёнными файлами
+# Find specific process holding deleted files
 lsof -p <PID> | grep '(deleted)'
 
-# Recover space by restarting service / Освободить пространство перезапуском
+# Recover space by restarting service
 systemctl restart <SERVICE_NAME>              # Restart service / Перезапустить сервис
 ```
 
@@ -562,38 +562,38 @@ systemctl restart <SERVICE_NAME>              # Restart service / Перезап
 
 ## Best Practices
 
-### General Tracing Rules / Общие правила трассировки
+### General Tracing Rules
 ```bash
-# 1. Always start with -c for quick overview / Начинайте с -c для быстрого обзора
+# 1. Always start with -c for quick overview
 strace -c -p <PID>                            # before full trace / перед полной трассировкой
 
-# 2. Use perf for CPU profiling, NOT strace / Используйте perf для CPU, НЕ strace
+# 2. Use perf for CPU profiling, NOT strace
 sudo perf top -p <PID>                        # minimal overhead / минимальная нагрузка
 
-# 3. Filter strace to reduce noise / Фильтруйте strace
+# 3. Filter strace to reduce noise
 strace -e trace=network -p <PID>              # only what you need / только то что нужно
 
-# 4. Use -nn with tcpdump to avoid DNS delays / Используйте -nn с tcpdump
+# 4. Use -nn with tcpdump to avoid DNS delays
 sudo tcpdump -nn -i any port <PORT>           # no DNS resolution / без DNS разрешения
 
-# 5. Use lsof for quick connection overview / lsof для быстрого обзора
+# 5. Use lsof for quick connection overview / lsof
 lsof -nP -iTCP -sTCP:LISTEN                   # all listeners / все слушатели
 
-# 6. Always attach with -p to running process / Подключайтесь к процессу через -p
+# 6. Always attach with -p to running process
 strace -p <PID> -f                            # not by running cmd / не запуском команды
 
-# 7. Limit tcpdump capture count or size / Ограничивайте захват tcpdump
+# 7. Limit tcpdump capture count or size
 sudo tcpdump -c 1000 -W 5 -C 100 -w out.pcap # rotate 5 files × 100MB / ротация 5 файлов × 100МБ
 ```
 
-### Decision: Which Tool to Use / Какой инструмент использовать
+### Decision: Which Tool to Use
 ```bash
-# App is slow but CPU is fine    → strace -c / Приложение медленное но CPU ОК → strace -c
-# CPU is pegged at 100%          → perf top -p / CPU загружен на 100% → perf top -p
-# Network timeouts               → tcpdump / Таймауты сети → tcpdump
-# "Port already in use"          → lsof -i :<PORT> / «Порт уже используется» → lsof -i :<PORT>
-# Memory leak suspected          → ltrace -e malloc,free / Подозрение на утечку → ltrace -e malloc,free
-# Can't unmount filesystem       → lsof +D /mount/point / Невозможно отмонтировать → lsof +D /mount/point
+# App is slow but CPU is fine    → strace -c
+# CPU is pegged at 100%          → perf top -p / CPU
+# Network timeouts               → tcpdump
+# "Port already in use"          → lsof -i :<PORT> / «Порт
+# Memory leak suspected          → ltrace -e malloc,free
+# Can't unmount filesystem       → lsof +D /mount/point
 ```
 
 ---

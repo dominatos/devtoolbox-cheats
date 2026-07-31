@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Architecture](#Architecture)
 2. [Installation & Configuration](#Installation%20&%20Configuration)
@@ -36,7 +36,7 @@ tags:
 
 ## Architecture
 
-### Key Properties / Ключевые свойства
+### Key Properties
 
 **EN:**
 - In-memory only — no persistence
@@ -62,7 +62,7 @@ tags:
 > Never store critical data in Memcached. A restart erases all data — this is expected behavior.
 > Никогда не храните критичные данные в Memcached. Рестарт стирает все данные — это нормальное поведение.
 
-### Memcached vs Redis Comparison / Сравнение Memcached и Redis
+### Memcached vs Redis Comparison
 
 | Feature / Особенность | Memcached | Redis |
 |----------------------|-----------|-------|
@@ -78,7 +78,7 @@ tags:
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Ubuntu/Debian
@@ -88,13 +88,13 @@ sudo apt update && sudo apt install -y memcached libmemcached-tools        # Ins
 sudo dnf install -y memcached libmemcached                                 # Install Memcached / Установка Memcached
 ```
 
-### Quick Test / Быстрый тест
+### Quick Test
 
 ```bash
 echo "stats" | nc localhost 11211                                          # Check if Memcached responds / Проверить ответ Memcached
 ```
 
-### Configuration / Конфигурация
+### Configuration
 
 `/etc/memcached.conf` (Ubuntu/Debian)
 `/etc/sysconfig/memcached` (RHEL-based)
@@ -112,7 +112,7 @@ echo "stats" | nc localhost 11211                                          # Che
 > Setting `-l 0.0.0.0` exposes Memcached to the internet with **no authentication**. Memcached was used in massive UDP DDoS amplification attacks (1.35 Tbps attack on GitHub in 2018).
 > Установка `-l 0.0.0.0` открывает Memcached в интернет **без аутентификации**. Memcached использовался в масштабных DDoS-атаках.
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -123,21 +123,21 @@ echo "stats" | nc localhost 11211                                          # Che
 
 ## Core Management
 
-### Common Use Cases / Типичные сценарии использования
+### Common Use Cases
 
-#### Database Query Caching / Кэширование запросов к БД
+#### Database Query Caching
 
 ```text
 key: user:123:profile
 ttl: 300
 ```
 
-#### Session Storage (risky) / Хранение сессий (рискованно)
+#### Session Storage (risky)
 
 - Often used in PHP legacy apps / Часто используется в PHP legacy приложениях
 - Memcached restart = user logout / Рестарт Memcached = разлогин пользователя
 
-#### Rate Limiting / Ограничение запросов
+#### Rate Limiting
 
 - Counter + TTL pattern / Паттерн счётчик + TTL
 - Simple but effective / Просто, но эффективно
@@ -146,7 +146,7 @@ ttl: 300
 
 ## Sysadmin Operations
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start memcached                                             # Start service / Запустить сервис
@@ -156,7 +156,7 @@ sudo systemctl status memcached                                            # Ser
 sudo systemctl enable memcached                                            # Enable on boot / Включить автозапуск
 ```
 
-### Log Locations / Расположение логов
+### Log Locations
 
 | Type / Тип | Path / Путь |
 |------------|-------------|
@@ -167,14 +167,14 @@ sudo systemctl enable memcached                                            # Ena
 sudo journalctl -u memcached -f                                            # Follow service logs / Следить за логами
 ```
 
-### Network & Firewall / Сеть и файрвол
+### Network & Firewall
 
 ```bash
-# Default port: 11211 / Порт по умолчанию: 11211
+# Default port: 11211
 
 # UFW / UFW
 sudo ufw allow 11211/tcp                                                   # Allow Memcached TCP / Разрешить TCP
-# Do NOT allow 11211/udp in production! / НЕ разрешайте UDP в продакшене!
+# Do NOT allow 11211/udp in production!
 
 # firewalld / firewalld
 sudo firewall-cmd --permanent --add-port=11211/tcp && sudo firewall-cmd --reload
@@ -188,7 +188,7 @@ sudo firewall-cmd --permanent --add-port=11211/tcp && sudo firewall-cmd --reload
 > Memcached has **NO built-in authentication** by default. Security relies entirely on network-level access control.
 > Memcached **НЕ имеет встроенной аутентификации** по умолчанию. Безопасность полностью зависит от сетевого контроля.
 
-### Security Best Practices / Лучшие практики безопасности
+### Security Best Practices
 
 - Bind only to `localhost` or private network / Привязывать только к `localhost` или приватной сети
 - Disable UDP (`-U 0`) / Отключить UDP
@@ -196,7 +196,7 @@ sudo firewall-cmd --permanent --add-port=11211/tcp && sudo firewall-cmd --reload
 - Use SASL authentication if available / Использовать SASL аутентификацию при возможности
 - Run as non-root user / Запускать от непривилегированного пользователя
 
-### SASL Authentication (Optional) / Аутентификация SASL
+### SASL Authentication (Optional)
 
 ```bash
 # Enable SASL (requires memcached compiled with SASL support)
@@ -207,10 +207,10 @@ sasldb_path: /etc/sasl2/memcached-sasldb2
 ```
 
 ```bash
-# Create SASL user / Создать пользователя SASL
+# Create SASL user
 saslpasswd2 -a memcached -c -f /etc/sasl2/memcached-sasldb2 <USER>
 
-# Start with SASL / Запустить с SASL
+# Start with SASL
 memcached -S                                                               # Enable SASL authentication / Включить SASL
 ```
 
@@ -218,7 +218,7 @@ memcached -S                                                               # Ena
 
 ## Monitoring & Performance
 
-### View Stats / Просмотр статистики
+### View Stats
 
 ```bash
 memcached-tool localhost:11211 stats                                       # Full stats / Полная статистика
@@ -228,7 +228,7 @@ echo "stats slabs" | nc localhost 11211                                    # Sla
 echo "stats items" | nc localhost 11211                                    # Item stats / Статистика элементов
 ```
 
-### Key Metrics / Важные метрики
+### Key Metrics
 
 | Metric / Метрика | Meaning (EN) | Значение (RU) | Warning Threshold / Порог |
 |-----------------|-------------|---------------|--------------------------|
@@ -239,13 +239,13 @@ echo "stats items" | nc localhost 11211                                    # Ite
 | `curr_items` | Current items count | Кол-во объектов | — |
 | `curr_connections` | Active connections | Активные подключения | Near `maxconns` |
 
-### Interpretation / Интерпретация
+### Interpretation
 
 - **High misses** → bad caching strategy or TTL too low / Плохая стратегия кэширования
 - **High evictions** → not enough memory (`-m` too small) / Недостаточно памяти
 - **Memory near limit** → risk of eviction storms / Риск каскадных вытеснений
 
-### When NOT to Use Memcached / Когда НЕ стоит использовать
+### When NOT to Use Memcached
 
 - Persistence required / Нужна персистентность → **Use Redis**
 - Replication needed / Нужна репликация → **Use Redis**
@@ -256,7 +256,7 @@ echo "stats items" | nc localhost 11211                                    # Ite
 
 ## Troubleshooting & Tools
 
-### Cache is Ineffective / Кэш не работает
+### Cache is Ineffective
 
 **Causes / Причины:**
 - TTL too low / TTL слишком низкий
@@ -265,20 +265,20 @@ echo "stats items" | nc localhost 11211                                    # Ite
 - Insufficient memory causing evictions / Недостаточно памяти
 
 ```bash
-# Check hit ratio / Проверить процент попаданий
+# Check hit ratio
 echo "stats" | nc localhost 11211 | grep -E 'get_hits|get_misses'
 
 # Calculate hit rate: hits / (hits + misses) × 100%
-# Good: >90% / Хорошо: >90%
+# Good: >90%
 ```
 
-### Data Lost After Restart / Данные пропали после рестарта
+### Data Lost After Restart
 
 > [!NOTE]
 > This is expected behavior — Memcached is an in-memory cache with no persistence. If you need data to survive restarts, use Redis with persistence enabled.
 > Это нормальное поведение — Memcached хранит данные только в RAM.
 
-### Performance Degradation / Падение производительности
+### Performance Degradation
 
 - Not enough RAM (`-m` parameter) / Недостаточно RAM
 - High evictions / Много вытеснений
@@ -286,14 +286,14 @@ echo "stats" | nc localhost 11211 | grep -E 'get_hits|get_misses'
 - Network issues / Сетевые проблемы
 
 ```bash
-# Check eviction rate / Проверить частоту вытеснений
+# Check eviction rate
 echo "stats" | nc localhost 11211 | grep evictions
 
-# Monitor connections / Мониторинг подключений
+# Monitor connections
 echo "stats" | nc localhost 11211 | grep curr_connections
 ```
 
-### Interview Questions / Вопросы на собеседовании
+### Interview Questions
 
 | Question / Вопрос | Answer / Ответ |
 |-------------------|----------------|

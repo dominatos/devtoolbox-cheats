@@ -15,24 +15,24 @@ Netplan is the default network configuration abstraction layer used by Ubuntu 17
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Core Management](#Core%20Management)
 - [Static & DHCP Configuration](#Static%20&%20DHCP%20Configuration)
-- [Advanced Networking](#Advanced%20Networking%20/%20Продвинутые%20настройки)
-- [WiFi Configuration](#WiFi%20Configuration%20/%20Настройка%20WiFi)
-- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools%20/%20Устранение%20неполадок)
-- [Migration Guide](#Migration%20Guide%20/%20Руководство%20по%20миграции)
-- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
+- [Advanced Networking](#Advanced%20Networking)
+- [WiFi Configuration](#WiFi%20Configuration)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Migration Guide](#Migration%20Guide)
+- [Comparison Tables](#Comparison%20Tables)
 
 ---
 
 ## Installation & Configuration
 
-### Install Netplan / Установка Netplan
+### Install Netplan
 ```bash
 sudo apt update && sudo apt install -y netplan.io  # Install netplan / Установить netplan
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 - **Main config directory:** `/etc/netplan/`
 - **Common config file:** `/etc/netplan/01-netcfg.yaml` or `/etc/netplan/50-cloud-init.yaml`
 - **Rendered configs:** `/run/netplan/` (read-only)
@@ -40,7 +40,7 @@ sudo apt update && sudo apt install -y netplan.io  # Install netplan / Уста�
 > [!IMPORTANT]
 > Netplan files must have `.yaml` extension and use valid YAML syntax (indentation with spaces, not tabs).
 
-### Backend Selection / Выбор бэкенда
+### Backend Selection
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -52,9 +52,9 @@ network:
 
 ---
 
-## Core Management / Основное управление
+## Core Management
 
-### Apply Configuration / Применить конфигурацию
+### Apply Configuration
 ```bash
 sudo netplan apply               # Apply netplan config / Применить конфигурацию
 sudo netplan --debug apply       # Apply with debug output / Применить с отладкой
@@ -64,13 +64,13 @@ sudo netplan try                 # Try config with auto-rollback / Попроб�
 > [!TIP]
 > Use `netplan try` in production to test changes safely. It will revert automatically after timeout if you don't confirm.
 
-### Validate Configuration / Проверить конфигурацию
+### Validate Configuration
 ```bash
 sudo netplan generate            # Generate backend config / Сгенерировать конфигурацию бэкенда
 sudo netplan --debug generate    # Generate with debug / Сгенерировать с отладкой
 ```
 
-### View Current Configuration / Просмотреть текущую конфигурацию
+### View Current Configuration
 ```bash
 cat /etc/netplan/*.yaml          # View all netplan configs / Просмотреть все конфигурации
 sudo netplan get                 # Show merged config / Показать объединённую конфигурацию
@@ -80,7 +80,7 @@ sudo netplan get                 # Show merged config / Показать объ�
 
 ## Static & DHCP Configuration
 
-### DHCP Configuration / Конфигурация DHCP
+### DHCP Configuration
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -97,7 +97,7 @@ network:
 sudo netplan apply  # Apply configuration / Применить конфигурацию
 ```
 
-### Static IP Configuration / Статический IP
+### Static IP Configuration
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -115,7 +115,7 @@ network:
         addresses: [8.8.8.8, 8.8.4.4]  # DNS servers / DNS серверы
 ```
 
-### Multiple IP Addresses / Несколько IP адресов
+### Multiple IP Addresses
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -131,9 +131,9 @@ network:
 
 ---
 
-## Advanced Networking / Продвинутые настройки
+## Advanced Networking
 
-### Bridge Configuration / Настройка моста
+### Bridge Configuration
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -161,7 +161,7 @@ network:
 sudo netplan apply  # Apply bridge config / Применить конфигурацию моста
 ```
 
-### Bond (Link Aggregation) / Объединение каналов
+### Bond (Link Aggregation)
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -186,7 +186,7 @@ network:
         mii-monitor-interval: 100
 ```
 
-### VLAN Configuration / Настройка VLAN
+### VLAN Configuration
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -205,9 +205,9 @@ network:
 
 ---
 
-## WiFi Configuration / Настройка WiFi
+## WiFi Configuration
 
-### Basic WiFi / Базовая настройка WiFi
+### Basic WiFi
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -222,7 +222,7 @@ network:
       dhcp4: true
 ```
 
-### WiFi with Multiple Networks / WiFi с несколькими сетями
+### WiFi with Multiple Networks / WiFi
 `/etc/netplan/01-netcfg.yaml`
 
 ```yaml
@@ -244,41 +244,41 @@ network:
 
 ---
 
-## Troubleshooting & Tools / Устранение неполадок
+## Troubleshooting & Tools
 
-### Common Issues / Типичные проблемы
+### Common Issues
 ```bash
-# YAML syntax errors / Ошибки синтаксиса YAML
+# YAML syntax errors
 sudo netplan --debug generate  # Check for YAML errors / Проверить ошибки YAML
 
-# Configuration not applying / Конфигурация не применяется
+# Configuration not applying
 sudo netplan apply
 sudo systemctl restart systemd-networkd  # Restart backend / Перезапустить бэкенд
 # OR for NetworkManager:
 sudo systemctl restart NetworkManager
 
-# Revert to previous config / Вернуться к предыдущей конфигурации
+# Revert to previous config
 sudo cp /etc/netplan/01-netcfg.yaml.bak /etc/netplan/01-netcfg.yaml
 sudo netplan apply
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 ```bash
 sudo netplan --debug apply       # Verbose apply / Подробное применение
 sudo networkctl status           # Check systemd-networkd status / Проверить статус
 journalctl -u systemd-networkd -f  # Follow networkd logs / Смотреть логи
 ```
 
-### Backup Configuration / Бэкап конфигурации
+### Backup Configuration
 ```bash
 sudo cp /etc/netplan/01-netcfg.yaml /etc/netplan/01-netcfg.yaml.bak  # Backup / Бэкап
 ```
 
 ---
 
-## Migration Guide / Руководство по миграции
+## Migration Guide
 
-### Production Runbook: Migrate from ifupdown to netplan / Миграция с ifupdown на netplan
+### Production Runbook: Migrate from ifupdown to netplan
 
 1. **Backup current configuration / Бэкап текущей конфигурации**
    ```bash
@@ -314,16 +314,16 @@ sudo cp /etc/netplan/01-netcfg.yaml /etc/netplan/01-netcfg.yaml.bak  # Backup / 
 
 ---
 
-## Comparison Tables / Таблицы сравнения
+## Comparison Tables
 
-### Netplan Renderers Comparison / Сравнение бэкендов Netplan
+### Netplan Renderers Comparison
 
 | Renderer | Best For | WiFi Support | Desktop Integration |
 | :--- | :--- | :--- | :--- |
 | **systemd-networkd** | Servers, minimal systems / Серверы, минимальные системы | Limited / Ограниченная | No / Нет |
 | **NetworkManager** | Desktops, laptops / Десктопы, ноутбуки | Full / Полная | Yes / Да |
 
-### Bond Modes / Режимы Bond
+### Bond Modes
 
 | Mode | Description (EN / RU) | Use Case |
 | :--- | :--- | :--- |

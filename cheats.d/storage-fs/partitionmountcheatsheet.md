@@ -31,22 +31,22 @@ tags:
 [mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) · [fstab(5)](https://man7.org/linux/man-pages/man5/fstab.5.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html) · [fdisk(8)](https://man7.org/linux/man-pages/man8/fdisk.8.html) · [mkfs(8)](https://man7.org/linux/man-pages/man8/mkfs.8.html)
 
 ## Table of Contents
-- [Disk Information](#Disk%20Information%20/%20Информация%20о%20дисках)
-- [Partitioning](#Partitioning%20/%20Разметка)
-- [Formatting](#Formatting%20/%20Форматирование)
-- [Mounting](#Mounting%20/%20Монтирование)
-- [fstab Management](#fstab%20Management%20/%20Управление%20fstab)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Filesystem Types Comparison](#Filesystem%20Types%20Comparison%20/%20Сравнение%20типов%20ФС)
-- [Partition Table Comparison](#Partition%20Table%20Comparison%20/%20Сравнение%20таблиц%20разделов)
-- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
-- [Default Paths](#Default%20Paths%20/%20Пути%20по%20умолчанию)
+- [Disk Information](#Disk%20Information)
+- [Partitioning](#Partitioning)
+- [Formatting](#Formatting)
+- [Mounting](#Mounting)
+- [fstab Management](#fstab%20Management)
+- [Troubleshooting](#Troubleshooting)
+- [Filesystem Types Comparison](#Filesystem%20Types%20Comparison)
+- [Partition Table Comparison](#Partition%20Table%20Comparison)
+- [Best Practices](#Best%20Practices)
+- [Default Paths](#Default%20Paths)
 
 ---
 
-## Disk Information / Информация о дисках
+## Disk Information
 
-### List Block Devices / Список блочных устройств
+### List Block Devices
 
 ```bash
 lsblk                                     # Tree view of devices / Дерево устройств
@@ -54,7 +54,7 @@ lsblk -f                                  # With filesystems / С файловы
 lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID   # Custom columns / Выборочные столбцы
 ```
 
-### Device Info / Информация об устройствах
+### Device Info
 
 ```bash
 blkid                                     # UUID and FS types / UUID и типы ФС
@@ -63,7 +63,7 @@ sudo fdisk -l                             # Partition tables / Таблицы р
 sudo parted -l                            # All disks info / Информация о всех дисках
 ```
 
-### Disk Usage / Использование дисков
+### Disk Usage
 
 ```bash
 df -h                                     # Mounted filesystems / Смонтированные ФС
@@ -73,16 +73,16 @@ lsblk -d -o NAME,SIZE,MODEL               # Physical disks / Физически�
 
 ---
 
-## Partitioning / Разметка
+## Partitioning
 
-### GPT Partitioning (parted) / GPT разметка
+### GPT Partitioning (parted) / GPT
 
 ```bash
-# Create GPT table and partition / Создать GPT таблицу и раздел
+# Create GPT table and partition
 sudo parted /dev/sdb -- mklabel gpt
 sudo parted /dev/sdb -- mkpart primary ext4 1MiB 100%
 
-# Create multiple partitions / Создать несколько разделов
+# Create multiple partitions
 sudo parted /dev/sdb -- mkpart primary ext4 1MiB 50%
 sudo parted /dev/sdb -- mkpart primary xfs 50% 100%
 ```
@@ -91,15 +91,15 @@ sudo parted /dev/sdb -- mkpart primary xfs 50% 100%
 > Starting at `1MiB` instead of `0%` ensures proper alignment for SSDs and modern drives. Misaligned partitions can cause up to 50% performance degradation on SSDs.
 > Начало с `1MiB` вместо `0%` обеспечивает правильное выравнивание для SSD. Невыровненные разделы могут вызвать падение производительности SSD до 50%.
 
-### MBR Partitioning (fdisk) / MBR разметка
+### MBR Partitioning (fdisk) / MBR
 
 ```bash
 sudo fdisk /dev/sdb                       # Interactive mode / Интерактивный режим
 # Commands: n=new, d=delete, p=print, w=write, q=quit
-# Команды: n=новый, d=удалить, p=показать, w=записать, q=выход
+#
 ```
 
-### Partition Info / Информация о разделах
+### Partition Info
 
 ```bash
 sudo parted /dev/sdb print                # Show partitions / Показать разделы
@@ -109,9 +109,9 @@ cat /proc/partitions                      # Kernel view / Вид ядра
 
 ---
 
-## Formatting / Форматирование
+## Formatting
 
-### Create Filesystems / Создание файловых систем
+### Create Filesystems
 
 ```bash
 sudo mkfs.ext4 /dev/sdb1                  # ext4 filesystem / ФС ext4
@@ -120,7 +120,7 @@ sudo mkfs.btrfs /dev/sdb1                 # Btrfs filesystem / ФС Btrfs
 sudo mkfs.vfat -F 32 /dev/sdb1            # FAT32 (USB/EFI) / FAT32 (USB/EFI)
 ```
 
-### Filesystem Options / Опции форматирования
+### Filesystem Options
 
 ```bash
 sudo mkfs.ext4 -L "DATA" /dev/sdb1        # With label / С меткой
@@ -133,7 +133,7 @@ sudo mkfs.ext4 -m 1 /dev/sdb1             # Reserve 1% (instead of 5%) / Зар�
 > By default, `mkfs.ext4` reserves 5% of space for root. On large data volumes, reduce this with `-m 1` (1%) or `-m 0` (0%) to avoid wasting space.
 > По умолчанию `mkfs.ext4` резервирует 5% для root. На больших томах уменьшите с `-m 1` (1%) или `-m 0` (0%).
 
-### Check/Repair Filesystems / Проверка/Восстановление ФС
+### Check/Repair Filesystems
 
 > [!WARNING]
 > Filesystem must be **unmounted** before running `fsck` or `xfs_repair`. Running on a mounted filesystem can cause **data corruption**.
@@ -147,9 +147,9 @@ sudo xfs_repair /dev/sdb1                 # Repair XFS / Восстановит�
 
 ---
 
-## Mounting / Монтирование
+## Mounting
 
-### Basic Mount / Базовое монтирование
+### Basic Mount
 
 ```bash
 sudo mkdir -p /mnt/disk                   # Create mount point / Создать точку монтирования
@@ -157,7 +157,7 @@ sudo mount /dev/sdb1 /mnt/disk            # Mount device / Смонтирова�
 sudo mount -t xfs /dev/sdb1 /mnt/disk     # Specify FS type / Указать тип ФС
 ```
 
-### Mount Options / Опции монтирования
+### Mount Options
 
 ```bash
 sudo mount -o ro /dev/sdb1 /mnt/disk      # Read-only / Только чтение
@@ -165,17 +165,17 @@ sudo mount -o noexec /dev/sdb1 /mnt/disk  # No executables / Без исполн
 sudo mount -o rw,noatime /dev/sdb1 /mnt/disk  # Read-write, no atime / RW, без atime
 ```
 
-### Mount by UUID / Монтирование по UUID
+### Mount by UUID
 
 ```bash
-# Get UUID / Получить UUID
+# Get UUID
 blkid /dev/sdb1
 
-# Mount by UUID / Монтировать по UUID
+# Mount by UUID
 sudo mount UUID="<UUID>" /mnt/disk
 ```
 
-### Unmount / Размонтирование
+### Unmount
 
 ```bash
 sudo umount /mnt/disk                     # Unmount by path / Размонтировать по пути
@@ -187,7 +187,7 @@ sudo umount -l /mnt/disk                  # Lazy unmount / Отложенное 
 > Lazy unmount (`-l`) detaches the filesystem immediately but cleans up when it's no longer in use. Useful when processes are still accessing files.
 > Отложенное размонтирование (`-l`) сразу отключает ФС, но очищает, когда она больше не используется. Полезно, когда процессы всё ещё работают с файлами.
 
-### Check Mounted / Проверка смонтированных
+### Check Mounted
 
 ```bash
 mount | grep sdb                          # Find mounted / Найти смонтированные
@@ -197,31 +197,31 @@ findmnt /mnt/disk                         # Check specific / Проверить 
 
 ---
 
-## fstab Management / Управление fstab
+## fstab Management
 
 `/etc/fstab`
 
-### fstab Format / Формат fstab
+### fstab Format
 
 ```bash
 # Format: <device> <mount> <type> <options> <dump> <pass>
-# Формат: <устройство> <точка> <тип> <опции> <dump> <pass>
+#
 ```
 
-### Add to fstab / Добавить в fstab
+### Add to fstab
 
 ```bash
-# By device / По устройству
+# By device
 echo '/dev/sdb1 /mnt/disk xfs defaults 0 0' | sudo tee -a /etc/fstab
 
-# By UUID (recommended) / По UUID (рекомендуется)
+# By UUID (recommended)
 echo 'UUID=<UUID> /mnt/disk xfs defaults 0 2' | sudo tee -a /etc/fstab
 
-# By label / По метке
+# By label
 echo 'LABEL=DATA /mnt/disk ext4 defaults 0 2' | sudo tee -a /etc/fstab
 ```
 
-### Common fstab Options / Типичные опции fstab
+### Common fstab Options
 
 | Option | Description (EN) | Описание (RU) |
 | :--- | :--- | :--- |
@@ -234,7 +234,7 @@ echo 'LABEL=DATA /mnt/disk ext4 defaults 0 2' | sudo tee -a /etc/fstab
 | `_netdev` | Network device (wait for network) | Сетевое устройство |
 | `discard` | Enable TRIM for SSDs | Включить TRIM для SSD |
 
-### fstab dump and pass fields / Поля dump и pass
+### fstab dump and pass fields
 
 | Field | Value | Description (EN) | Описание (RU) |
 | :--- | :--- | :--- | :--- |
@@ -244,7 +244,7 @@ echo 'LABEL=DATA /mnt/disk ext4 defaults 0 2' | sudo tee -a /etc/fstab
 | **pass** | `1` | fsck first (root only) | Проверять первым (только root) |
 | **pass** | `2` | fsck after root | Проверять после root |
 
-### Test fstab / Тестирование fstab
+### Test fstab
 
 > [!TIP]
 > Always test fstab changes with `mount -fav` before rebooting. A bad fstab entry can prevent the system from booting.
@@ -258,9 +258,9 @@ findmnt --verify                          # Verify fstab syntax / Провери
 
 ---
 
-## Troubleshooting / Устранение неполадок
+## Troubleshooting
 
-### Device Busy / Устройство занято
+### Device Busy
 
 > [!CAUTION]
 > `fuser -km` will **kill all processes** using the mount point. Use with extreme caution in production.
@@ -272,7 +272,7 @@ fuser -mv /mnt/disk                       # Processes using mount / Процес
 sudo fuser -km /mnt/disk                  # Kill processes / Убить процессы
 ```
 
-### Mount Errors / Ошибки монтирования
+### Mount Errors
 
 ```bash
 dmesg | tail -20                          # Kernel messages / Сообщения ядра
@@ -280,26 +280,26 @@ journalctl -xe                            # Systemd journal / Журнал syste
 sudo mount -v /dev/sdb1 /mnt/disk         # Verbose mount / Подробный вывод
 ```
 
-### Refresh Partition Table / Обновить таблицу разделов
+### Refresh Partition Table
 
 ```bash
 sudo partprobe /dev/sdb                   # Re-read partitions / Перечитать разделы
 sudo blockdev --rereadpt /dev/sdb         # Alternative method / Альтернативный метод
 ```
 
-### Wrong Filesystem Type / Неверный тип ФС
+### Wrong Filesystem Type
 
 ```bash
 # "mount: wrong fs type, bad option, bad superblock"
-# Check actual filesystem type / Проверить фактический тип ФС
+# Check actual filesystem type
 blkid /dev/sdb1
-# Then specify correct type / Затем укажите правильный тип
+# Then specify correct type
 sudo mount -t ext4 /dev/sdb1 /mnt/disk
 ```
 
 ---
 
-## Filesystem Types Comparison / Сравнение типов ФС
+## Filesystem Types Comparison
 
 | Filesystem | Journaling | Max File Size | Shrinkable | Best For (EN) | Лучше для (RU) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -312,7 +312,7 @@ sudo mount -t ext4 /dev/sdb1 /mnt/disk
 
 ---
 
-## Partition Table Comparison / Сравнение таблиц разделов
+## Partition Table Comparison
 
 | Feature | MBR (DOS) | GPT |
 | :--- | :--- | :--- |
@@ -326,7 +326,7 @@ sudo mount -t ext4 /dev/sdb1 /mnt/disk
 
 ---
 
-## Best Practices / Лучшие практики
+## Best Practices
 
 > [!IMPORTANT]
 > - Use **UUID in fstab** for stability — device names can change between reboots.
@@ -339,7 +339,7 @@ sudo mount -t ext4 /dev/sdb1 /mnt/disk
 
 ---
 
-## Default Paths / Пути по умолчанию
+## Default Paths
 
 | Path | Purpose (EN) | Назначение (RU) |
 | :--- | :--- | :--- |

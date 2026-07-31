@@ -20,20 +20,20 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
-1. [Service Management](#1.%20Service%20Management%20/%20Управление%20сервисом)
+1. [Service Management](#1.%20Service%20Management)
 2. [Jenkins CLI](#2.%20Jenkins%20CLI%20/%20Jenkins%20CLI)
-3. [Groovy Script Console](#3.%20Groovy%20Script%20Console%20/%20Консоль%20скриптов%20Groovy)
-4. [Pipeline Syntax](#4.%20Pipeline%20Syntax%20/%20Синтаксис%20Pipeline%20(Declarative))
-5. [Security](#5.%20Security%20/%20Безопасность)
-6. [Logrotate Configuration](#6.%20Logrotate%20Configuration%20/%20Конфигурация%20Logrotate)
+3. [Groovy Script Console](#3.%20Groovy%20Script%20Console)
+4. [Pipeline Syntax](#4.%20Pipeline%20Syntax))
+5. [Security](#5.%20Security)
+6. [Logrotate Configuration](#6.%20Logrotate%20Configuration)
 
 ---
 
-## 1. Service Management / Управление сервисом
+## 1. Service Management
 
-### Default Ports / Стандартные порты
+### Default Ports
 
 | Port | Description (EN / RU) |
 |------|----------------------|
@@ -51,7 +51,7 @@ systemctl restart jenkins # Restart / Перезапуск
 systemctl status jenkins  # Status / Статус
 ```
 
-### Logs / Логи
+### Logs
 *   Linux (Systemd): `/var/log/jenkins/jenkins.log`
 *   Windows: `%JENKINS_HOME%\jenkins.out`
 
@@ -61,31 +61,31 @@ systemctl status jenkins  # Status / Статус
 Download CLI jar from: `http://<HOST>:8080/jnlpJars/jenkins-cli.jar`
 
 ```bash
-# General Syntax / Общий синтаксис
+# General Syntax
 java -jar jenkins-cli.jar -s http://<HOST>:8080/ -auth <USER>:<TOKEN> <COMMAND>
 ```
 
-### Common Commands / Частые команды
+### Common Commands
 ```bash
-# Restart Jenkins (Safe) / Перезагрузка (Безопасная)
+# Restart Jenkins (Safe)
 java -jar jenkins-cli.jar -s ... safe-restart
 
-# List Jobs / Список задач
+# List Jobs
 java -jar jenkins-cli.jar -s ... list-jobs
 
-# Build Job / Запуск сборки
+# Build Job
 java -jar jenkins-cli.jar -s ... build <JOB_NAME> -s -v
 
-# Install Plugin / Установка плагина
+# Install Plugin
 java -jar jenkins-cli.jar -s ... install-plugin <PLUGIN_ID>
 ```
 
 ---
 
-## 3. Groovy Script Console / Консоль скриптов Groovy
+## 3. Groovy Script Console
 URL: `http://<HOST>:8080/script`
 
-### Useful Scripts / Полезные скрипты
+### Useful Scripts
 
 **Print System Info:**
 ```groovy
@@ -107,9 +107,9 @@ instance.save()
 
 ---
 
-## 4. Pipeline Syntax / Синтаксис Pipeline (Declarative)
+## 4. Pipeline Syntax
 
-### Basic Structure / Базовая структура
+### Basic Structure
 ```groovy
 pipeline {
     agent any
@@ -140,7 +140,7 @@ pipeline {
 }
 ```
 
-### Agents (Docker) / Агенты (Docker)
+### Agents (Docker)
 ```groovy
 agent {
     docker {
@@ -152,18 +152,18 @@ agent {
 
 ---
 
-## 5. Security / Безопасность
+## 5. Security
 
-### User Database / База пользователей
+### User Database
 Located in `$JENKINS_HOME/users/`.
 
-### Reset Admin Password / Сброс пароля админа
+### Reset Admin Password
 If locked out, edit `$JENKINS_HOME/config.xml` and change `<useSecurity>true</useSecurity>` to `false`. Restart Jenkins.
 Если заблокированы, измените `true` на `false` в теге `<useSecurity>`. Перезапустите Jenkins.
 
 ---
 
-## 6. Logrotate Configuration / Конфигурация Logrotate
+## 6. Logrotate Configuration
 
 `/etc/logrotate.d/jenkins`
 
@@ -186,7 +186,7 @@ If locked out, edit `$JENKINS_HOME/config.xml` and change `<useSecurity>true</us
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **Jenkins:** https://www.jenkins.io/doc/
 - **Jenkins Pipeline Syntax:** https://www.jenkins.io/doc/book/pipeline/syntax/

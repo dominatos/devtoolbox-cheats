@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -34,10 +34,10 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install Filebeat / Установка Filebeat
+### Install Filebeat
 
 ```bash
-# RHEL/CentOS/AlmaLinux (add Elastic repo first) / Добавить репозиторий Elastic
+# RHEL/CentOS/AlmaLinux (add Elastic repo first)
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 cat > /etc/yum.repos.d/elastic.repo << 'EOF'
 [elastic-8.x]
@@ -57,12 +57,12 @@ echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" > /etc/apt/
 apt update && apt install filebeat
 ```
 
-### Main Configuration / Основная конфигурация
+### Main Configuration
 
 `/etc/filebeat/filebeat.yml`
 
 ```yaml
-# Input configuration / Конфигурация ввода
+# Input configuration
 filebeat.inputs:
   - type: filestream
     id: syslog
@@ -91,7 +91,7 @@ filebeat.inputs:
       negate: true
       match: after
 
-# Output to Elasticsearch / Вывод в Elasticsearch
+# Output to Elasticsearch
 output.elasticsearch:
   hosts: ["https://<ES_HOST>:9200"]
   username: "<USER>"
@@ -99,18 +99,18 @@ output.elasticsearch:
   ssl.certificate_authorities: ["/etc/filebeat/ca.crt"]
   index: "filebeat-%{+yyyy.MM.dd}"
 
-# Output to Logstash (alternative) / Вывод в Logstash (альтернатива)
+# Output to Logstash (alternative)
 # output.logstash:
 #   hosts: ["<LOGSTASH_HOST>:5044"]
 #   ssl.certificate_authorities: ["/etc/filebeat/ca.crt"]
 
-# Kibana setup / Настройка Kibana
+# Kibana setup
 setup.kibana:
   host: "https://<KIBANA_HOST>:5601"
   username: "<USER>"
   password: "<PASSWORD>"
 
-# Processors / Обработчики
+# Processors
 processors:
   - add_host_metadata:
       when.not.contains.tags: forwarded
@@ -119,7 +119,7 @@ processors:
       fields: ["agent.ephemeral_id", "agent.hostname"]
 ```
 
-### Output Comparison / Сравнение выходов
+### Output Comparison
 
 | Output | Use Case / Применение | Buffering / Буферизация | Notes / Примечания |
 |--------|----------------------|------------------------|-------------------|
@@ -136,23 +136,23 @@ processors:
 
 ## 2. Core Management
 
-### Enable Built-in Modules / Включение встроенных модулей
+### Enable Built-in Modules
 
 ```bash
-# List available modules / Список доступных модулей
+# List available modules
 filebeat modules list
 
-# Enable modules / Включить модули
+# Enable modules
 filebeat modules enable system nginx apache mysql postgresql
 
-# Disable module / Отключить модуль
+# Disable module
 filebeat modules disable apache
 
-# View module config / Посмотреть конфиг модуля
+# View module config
 cat /etc/filebeat/modules.d/system.yml
 ```
 
-### Module Configuration Example / Пример конфигурации модуля
+### Module Configuration Example
 
 `/etc/filebeat/modules.d/system.yml`
 
@@ -166,19 +166,19 @@ cat /etc/filebeat/modules.d/system.yml
     var.paths: ["/var/log/auth.log", "/var/log/secure"]
 ```
 
-### Setup Commands / Команды установки
+### Setup Commands
 
 ```bash
-# Setup index template / Настроить шаблон индекса
+# Setup index template
 filebeat setup --index-management
 
-# Setup Kibana dashboards / Настроить дашборды Kibana
+# Setup Kibana dashboards
 filebeat setup --dashboards
 
-# Setup ILM policy / Настроить ILM-политику
+# Setup ILM policy
 filebeat setup --ilm-policy
 
-# Full setup (template + dashboards + ILM) / Полная настройка
+# Full setup (template + dashboards + ILM)
 filebeat setup
 ```
 
@@ -186,7 +186,7 @@ filebeat setup
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
 systemctl start filebeat      # Start / Запустить
@@ -196,7 +196,7 @@ systemctl enable filebeat     # Enable on boot / Автозапуск
 systemctl status filebeat     # Check status / Проверить статус
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -206,16 +206,16 @@ systemctl status filebeat     # Check status / Проверить статус
 | `/var/lib/filebeat/registry/` | File tracking registry / Реестр отслеживания файлов |
 | `/var/log/filebeat/` | Filebeat logs / Логи Filebeat |
 
-### Test Configuration / Тест конфигурации
+### Test Configuration
 
 ```bash
-# Test config syntax / Проверить синтаксис конфига
+# Test config syntax
 filebeat test config
 
-# Test output connectivity / Проверить подключение к выходу
+# Test output connectivity
 filebeat test output
 
-# Run with debug output / Запуск с отладочным выводом
+# Run with debug output
 filebeat -e -d "*"
 ```
 
@@ -223,19 +223,19 @@ filebeat -e -d "*"
 
 ## 4. Security
 
-### TLS/SSL Configuration / Настройка TLS/SSL
+### TLS/SSL Configuration
 
 `/etc/filebeat/filebeat.yml`
 
 ```yaml
-# TLS to Elasticsearch / TLS к Elasticsearch
+# TLS to Elasticsearch / TLS
 output.elasticsearch:
   hosts: ["https://<ES_HOST>:9200"]
   ssl.certificate_authorities: ["/etc/filebeat/ca.crt"]
   ssl.certificate: "/etc/filebeat/filebeat.crt"
   ssl.key: "/etc/filebeat/filebeat.key"
 
-# TLS to Logstash / TLS к Logstash
+# TLS to Logstash / TLS
 output.logstash:
   hosts: ["<LOGSTASH_HOST>:5044"]
   ssl.certificate_authorities: ["/etc/filebeat/ca.crt"]
@@ -247,28 +247,28 @@ output.logstash:
 
 ## 5. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Filebeat Not Sending Data / Filebeat не отправляет данные
+#### 1. Filebeat Not Sending Data / Filebeat
 
 ```bash
-# Check connectivity / Проверить подключение
+# Check connectivity
 filebeat test output
 
-# Check config / Проверить конфиг
+# Check config
 filebeat test config
 
-# Run in debug mode / Запустить в режиме отладки
+# Run in debug mode
 filebeat -e -d "*" 2>&1 | head -100
 ```
 
-#### 2. Duplicate Data / Дублирование данных
+#### 2. Duplicate Data
 
 ```bash
-# Check registry state / Проверить состояние реестра
+# Check registry state
 cat /var/lib/filebeat/registry/filebeat/log.json | jq .
 
-# Reset registry (resend all data) / Сбросить реестр (повторная отправка данных)
+# Reset registry (resend all data)
 systemctl stop filebeat
 rm -rf /var/lib/filebeat/registry/
 systemctl start filebeat
@@ -277,11 +277,11 @@ systemctl start filebeat
 > [!CAUTION]
 > Deleting the registry will cause Filebeat to re-read all log files from the beginning, potentially creating duplicate data. / Удаление реестра приведёт к повторному чтению всех файлов, что может создать дубликаты.
 
-#### 3. High Memory Usage / Высокое потребление памяти
+#### 3. High Memory Usage
 
 ```bash
-# Limit bulk size and queue / Ограничить размер bulks и очереди
-# In filebeat.yml / В filebeat.yml:
+# Limit bulk size and queue
+# In filebeat.yml
 # output.elasticsearch:
 #   bulk_max_size: 50
 # queue.mem:
@@ -311,7 +311,7 @@ systemctl start filebeat
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **Official Documentation:** https://www.elastic.co/guide/en/beats/filebeat/current/index.html
 - **Filebeat Modules:** https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-modules.html

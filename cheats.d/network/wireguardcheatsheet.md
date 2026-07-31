@@ -43,7 +43,7 @@ sudo dnf install wireguard-tools              # Install tools / Установи
 sudo dnf install kmod-wireguard               # Install kernel module / Установить модуль ядра
 ```
 
-### Verify Installation / Проверка установки
+### Verify Installation
 ```bash
 wg --version                                  # Check version / Проверить версию
 sudo modprobe wireguard                       # Load module / Загрузить модуль
@@ -54,18 +54,18 @@ lsmod | grep wireguard                        # Verify module loaded / Пров�
 
 ## Key Generation
 
-### Generate Keys / Генерация ключей
+### Generate Keys
 ```bash
 wg genkey | tee server.key | wg pubkey > server.pub  # Server keys / Ключи сервера
 wg genkey | tee client.key | wg pubkey > client.pub  # Client keys / Ключи клиента
 ```
 
-### Generate Preshared Key / Генерация предварительно разделённого ключа
+### Generate Preshared Key
 ```bash
 wg genpsk > preshared.key                     # Preshared key (optional) / Предварительно разделённый ключ (опционально)
 ```
 
-### Secure Key Files / Защита файлов ключей
+### Secure Key Files
 ```bash
 chmod 600 server.key client.key preshared.key # Secure keys / Защитить ключи
 sudo mkdir -p /etc/wireguard                  # Create config dir / Создать директорию конфигов
@@ -77,7 +77,7 @@ sudo chmod 600 /etc/wireguard/*.key           # Secure moved keys / Защити
 
 ## Configuration
 
-### Server Config / Конфигурация сервера
+### Server Config
 `/etc/wireguard/wg0.conf`
 
 ```ini
@@ -86,22 +86,22 @@ Address = 10.0.0.1/24                         # VPN subnet / Подсеть VPN
 ListenPort = 51820                            # UDP port / UDP порт
 PrivateKey = <SERVER_PRIVATE_KEY>             # Server private key / Приватный ключ сервера
 
-# NAT and IP forwarding / NAT и пересылка IP
+# NAT and IP forwarding / NAT
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
-# Client 1 / Клиент 1
+# Client 1
 [Peer]
 PublicKey = <CLIENT1_PUBLIC_KEY>              # Client public key / Публичный ключ клиента
 AllowedIPs = 10.0.0.2/32                      # Client VPN IP / VPN IP клиента
 
-# Client 2 / Клиент 2
+# Client 2
 [Peer]
 PublicKey = <CLIENT2_PUBLIC_KEY>              # Client public key / Публичный ключ клиента
 AllowedIPs = 10.0.0.3/32                      # Client VPN IP / VPN IP клиента
 ```
 
-### Client Config / Конфигурация клиента
+### Client Config
 `/etc/wireguard/wg0.conf`
 
 ```ini
@@ -117,9 +117,9 @@ AllowedIPs = 0.0.0.0/0, ::/0                  # Route all traffic / Маршру
 PersistentKeepalive = 25                      # Keep connection alive / Поддерживать соединение
 ```
 
-### Split-Tunnel Config (Client) / Конфигурация раздельного туннелирования
+### Split-Tunnel Config (Client)
 ```ini
-# Route only specific networks / Маршрутизировать только определённые сети
+# Route only specific networks
 AllowedIPs = 10.0.0.0/24, 192.168.1.0/24      # VPN subnets only / Только подсети VPN
 ```
 
@@ -127,14 +127,14 @@ AllowedIPs = 10.0.0.0/24, 192.168.1.0/24      # VPN subnets only / Только 
 
 ## Interface Management
 
-### Start/Stop Interface / Запуск/остановка интерфейса
+### Start/Stop Interface
 ```bash
 sudo wg-quick up wg0                          # Bring up wg0 / Поднять wg0
 sudo wg-quick down wg0                        # Bring down wg0 / Опустить wg0
 sudo wg-quick up /path/to/custom.conf         # Custom config / Пользовательская конфигурация
 ```
 
-### Status and Information / Статус и информация
+### Status and Information
 ```bash
 sudo wg show                                  # Show all interfaces / Показать все интерфейсы
 sudo wg show wg0                              # Show specific interface / Показать конкретный интерфейс
@@ -145,7 +145,7 @@ sudo wg show wg0 transfer                     # Transfer stats / Статист�
 sudo wg show wg0 endpoints                    # Peer endpoints / Конечные точки пиров
 ```
 
-### Enable on Boot / Включить при загрузке
+### Enable on Boot
 ```bash
 sudo systemctl enable wg-quick@wg0            # Enable wg0 / Включить wg0
 sudo systemctl start wg-quick@wg0             # Start wg0 / Запустить wg0
@@ -157,21 +157,21 @@ sudo systemctl restart wg-quick@wg0           # Restart wg0 / Перезапус
 
 ## Troubleshooting
 
-### Check Interface Status / Проверка статуса интерфейса
+### Check Interface Status
 ```bash
 ip addr show wg0                              # Show wg0 IP / Показать IP wg0
 ip route show                                 # Show routing table / Показать таблицу маршрутизации
 sudo wg show wg0                              # WireGuard status / Статус WireGuard
 ```
 
-### Test Connectivity / Тестирование подключения
+### Test Connectivity
 ```bash
 ping 10.0.0.1                                 # Ping server VPN IP / Пинг VPN IP сервера
 ping 10.0.0.2                                 # Ping client VPN IP / Пинг VPN IP клиента
 traceroute 10.0.0.1                           # Trace route / Трассировка маршрута
 ```
 
-### Check Firewall / Проверка файрвола
+### Check Firewall
 ```bash
 sudo iptables -L -n -v | grep wg0             # Check iptables rules / Проверить правила iptables
 sudo ufw status                               # UFW status / Статус UFW
@@ -180,21 +180,21 @@ sudo firewall-cmd --add-port=51820/udp --permanent  # FirewallD (RHEL) / Firewal
 sudo firewall-cmd --reload                    # Reload firewall / Перезагрузить файрвол
 ```
 
-### Check IP Forwarding / Проверка пересылки IP
+### Check IP Forwarding
 ```bash
 sysctl net.ipv4.ip_forward                    # Check forwarding status / Проверить статус пересылки
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf  # Enable permanently / Включить постоянно
 sudo sysctl -p                                # Apply sysctl changes / Применить изменения sysctl
 ```
 
-### View Logs / Просмотр логов
+### View Logs
 ```bash
 sudo journalctl -u wg-quick@wg0 -f            # Follow logs / Следить за логами
 sudo journalctl -u wg-quick@wg0 --since "10 minutes ago"  # Recent logs / Последние логи
 dmesg | grep wireguard                        # Check kernel messages / Проверить сообщения ядра
 ```
 
-### Dynamic Peer Management / Динамическое управление пирами
+### Dynamic Peer Management
 ```bash
 sudo wg set wg0 peer <PEER_PUBLIC_KEY> allowed-ips 10.0.0.4/32  # Add peer / Добавить пир
 sudo wg set wg0 peer <PEER_PUBLIC_KEY> remove  # Remove peer / Удалить пир
@@ -205,13 +205,13 @@ sudo wg syncconf wg0 <(wg-quick strip wg0)    # Reload without restart / Пер�
 
 ## Server Setup
 
-### Complete Server Setup / Полная настройка сервера
+### Complete Server Setup
 ```bash
-# Generate server keys / Генерация ключей сервера
+# Generate server keys
 wg genkey | sudo tee /etc/wireguard/server.key | wg pubkey | sudo tee /etc/wireguard/server.pub
 sudo chmod 600 /etc/wireguard/server.key
 
-# Create server config / Создание конфигурации сервера
+# Create server config
 sudo tee /etc/wireguard/wg0.conf <<EOF
 [Interface]
 Address = 10.0.0.1/24
@@ -221,22 +221,22 @@ PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 EOF
 
-# Enable IP forwarding / Включение пересылки IP
+# Enable IP forwarding
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
-# Enable and start / Включить и запустить
+# Enable and start
 sudo systemctl enable --now wg-quick@wg0
 ```
 
-### Add Client to Server / Добавление клиента на сервер
+### Add Client to Server
 ```bash
 # Add peer section to /etc/wireguard/wg0.conf
 [Peer]
 PublicKey = <CLIENT_PUBLIC_KEY>
 AllowedIPs = 10.0.0.2/32
 
-# Reload config / Перезагрузить конфигурацию
+# Reload config
 sudo wg syncconf wg0 <(wg-quick strip wg0)
 ```
 
@@ -244,13 +244,13 @@ sudo wg syncconf wg0 <(wg-quick strip wg0)
 
 ## Client Setup
 
-### Complete Client Setup / Полная настройка клиента
+### Complete Client Setup
 ```bash
-# Generate client keys / Генерация ключей клиента
+# Generate client keys
 wg genkey | tee client.key | wg pubkey > client.pub
 chmod 600 client.key
 
-# Create client config / Создание конфигурации клиента
+# Create client config
 cat > wg0.conf <<EOF
 [Interface]
 Address = 10.0.0.2/24
@@ -264,7 +264,7 @@ AllowedIPs = 0.0.0.0/0
 PersistentKeepalive = 25
 EOF
 
-# Install and start / Установить и запустить
+# Install and start
 sudo cp wg0.conf /etc/wireguard/
 sudo wg-quick up wg0
 ```
@@ -273,7 +273,7 @@ sudo wg-quick up wg0
 
 ## Real-World Examples
 
-### Site-to-Site VPN / VPN между сайтами
+### Site-to-Site VPN / VPN
 ```ini
 # Site A (10.1.0.0/24)
 [Interface]
@@ -288,9 +288,9 @@ AllowedIPs = 10.2.0.0/24                      # Site B subnet / Подсеть �
 PersistentKeepalive = 25
 ```
 
-### Road Warrior Setup / Настройка для мобильных работников
+### Road Warrior Setup
 ```bash
-# Server allows multiple clients / Сервер разрешает несколько клиентов
+# Server allows multiple clients
 # Each client has unique IP in AllowedIPs
 
 [Peer]
@@ -306,7 +306,7 @@ PublicKey = <CLIENT3_PUBLIC_KEY>
 AllowedIPs = 10.0.0.12/32
 ```
 
-### Docker Integration / Интеграция с Docker
+### Docker Integration
 `/etc/wireguard/wg0.conf`
 
 ```bash
@@ -319,7 +319,7 @@ PostDown = iptables -D FORWARD -i wg0 -o docker0 -j ACCEPT
 AllowedIPs = 172.17.0.0/16, 10.0.0.2/32      # Docker subnet + client / Docker подсеть + клиент
 ```
 
-### QR Code for Mobile / QR-код для мобильных
+### QR Code for Mobile / QR-код
 ```bash
 sudo apt install qrencode                     # Install qrencode / Установить qrencode
 qrencode -t ansiutf8 < /etc/wireguard/client-mobile.conf  # Generate QR code / Генерация QR-кода
@@ -330,7 +330,7 @@ qrencode -o mobile.png < /etc/wireguard/client-mobile.conf  # Save as image / С
 
 ## Reference Tables
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 
 | Path | Description (EN / RU) |
 | :--- | :--- |

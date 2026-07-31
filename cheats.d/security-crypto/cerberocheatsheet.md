@@ -20,7 +20,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -36,21 +36,21 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install on Linux / Установка на Linux
+### Install on Linux
 
 ```bash
-# Download from official site / Скачать с официального сайта
+# Download from official site
 wget https://cerbero.io/downloads/CerberoSuite-<VERSION>-linux-x86_64.tar.gz
 
-# Extract / Распаковать
+# Extract
 tar -xzf CerberoSuite-<VERSION>-linux-x86_64.tar.gz
 cd CerberoSuite
 
-# Run / Запустить
+# Run
 ./CerberoSuite
 ```
 
-### Install via Package (if provided) / Установка через пакет
+### Install via Package (if provided)
 
 ```bash
 # Debian/Ubuntu (.deb)
@@ -61,17 +61,17 @@ apt install -f  # Fix dependencies / Установить зависимости
 rpm -ivh cerbero-suite-<VERSION>.x86_64.rpm
 ```
 
-### License Activation / Активация лицензии
+### License Activation
 
 ```bash
-# Activate license via GUI / Активация через GUI
+# Activate license via GUI
 # Help → License → Enter License Key → <LICENSE_KEY>
 
-# Or via environment variable / Или через переменную окружения
+# Or via environment variable
 export CERBERO_LICENSE_KEY=<LICENSE_KEY>
 ```
 
-### Editions Comparison / Сравнение редакций
+### Editions Comparison
 
 | Feature | Standard | Advanced |
 |---------|----------|----------|
@@ -85,7 +85,7 @@ export CERBERO_LICENSE_KEY=<LICENSE_KEY>
 | Memory forensics / Криминалистика памяти | ❌ | ✅ |
 | Emulators / Эмуляторы | ❌ | ✅ |
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 
 | Path | Description |
 |------|-------------|
@@ -98,7 +98,7 @@ export CERBERO_LICENSE_KEY=<LICENSE_KEY>
 
 ## 2. Core Management
 
-### Supported File Formats / Поддерживаемые форматы файлов
+### Supported File Formats
 
 | Category | Formats |
 |----------|---------|
@@ -109,29 +109,29 @@ export CERBERO_LICENSE_KEY=<LICENSE_KEY>
 | Firmware / Прошивки | UPX packed, UEFI, firmware images |
 | Memory / Память | Raw memory dumps, hibernation files, crash dumps |
 
-### Basic Operations / Основные операции
+### Basic Operations
 
 ```
-# Open file for analysis / Открыть файл для анализа
+# Open file for analysis
 File → Open → Select file
 
-# Scan directory for embedded files / Сканировать каталог на встроенные файлы
+# Scan directory for embedded files
 File → Scan Directory → Select directory
 
-# Batch analysis / Пакетный анализ
+# Batch analysis
 File → Batch Analysis → Configure and run
 
-# Export analysis report / Экспорт отчёта
+# Export analysis report
 File → Export → Choose format (JSON, XML, Text)
 ```
 
 ### Hex Editor / Hex-редактор
 
 ```
-# Open file in hex editor / Открыть файл в hex-редакторе
+# Open file in hex editor
 Right-click file → Open in Hex Editor
 
-# Key features / Ключевые возможности:
+# Key features
 # - Define structures (C-like syntax)
 # - Bookmark regions
 # - Pattern search (hex, text, regex)
@@ -139,7 +139,7 @@ Right-click file → Open in Hex Editor
 # - Edit live process memory (Advanced)
 ```
 
-### Keyboard Shortcuts / Горячие клавиши
+### Keyboard Shortcuts
 
 | Shortcut | Action / Действие |
 |----------|-------------------|
@@ -158,10 +158,10 @@ Right-click file → Open in Hex Editor
 
 ## 3. File Analysis
 
-### PE (Windows Executable) Analysis / Анализ PE
+### PE (Windows Executable) Analysis
 
 ```
-# Inspect PE headers / Инспекция PE-заголовков
+# Inspect PE headers
 # Automatic on opening .exe/.dll files:
 # - DOS Header, PE Header, Optional Header
 # - Sections table (text/data/rsrc/reloc)
@@ -171,10 +171,10 @@ Right-click file → Open in Hex Editor
 # - Overlay data detection
 ```
 
-### ELF (Linux Executable) Analysis / Анализ ELF
+### ELF (Linux Executable) Analysis
 
 ```
-# Inspect ELF binaries / Инспекция ELF-бинарников
+# Inspect ELF binaries
 # - ELF Header (class, type, machine, entry point)
 # - Program Headers (segments)
 # - Section Headers
@@ -184,17 +184,17 @@ Right-click file → Open in Hex Editor
 # - DWARF debug info (if present)
 ```
 
-### Document Analysis / Анализ документов
+### Document Analysis
 
 ```
-# Inspect Office documents for macros / Инспекция Office-документов на макросы
+# Inspect Office documents for macros
 # Open .doc/.xls/.docx/.xlsx:
 # - Automatic VBA macro extraction
 # - OLE stream inspection
 # - Embedded object detection
 # - Suspicious pattern highlighting
 
-# PDF analysis / Анализ PDF
+# PDF analysis
 # Open .pdf:
 # - Object tree inspection
 # - JavaScript extraction
@@ -210,20 +210,20 @@ Right-click file → Open in Hex Editor
 
 ## 4. Malware Analysis & YARA
 
-### YARA Rules Management / Управление правилами YARA
+### YARA Rules Management
 
 ```
-# Download YARA rules / Скачать правила YARA
+# Download YARA rules
 # Tools → YARA → Download Rules
 
-# Scan file with YARA / Сканировать файл правилами YARA
+# Scan file with YARA
 # Right-click file → Scan with YARA
 
-# Create custom YARA rule / Создать кастомное правило YARA
+# Create custom YARA rule
 # Tools → YARA → New Rule
 ```
 
-### YARA Rule Example / Пример YARA-правила
+### YARA Rule Example
 
 ```yara
 rule Suspicious_PDF_JavaScript
@@ -246,7 +246,7 @@ rule Suspicious_PDF_JavaScript
 }
 ```
 
-### Malware Triage Workflow / Рабочий процесс сортировки вредоносного ПО
+### Malware Triage Workflow
 
 1. **Open suspicious file / Открыть подозрительный файл**
 2. **Check file type detection / Проверить определение типа файла** — verify actual format vs extension / сравнить реальный формат с расширением
@@ -264,19 +264,19 @@ rule Suspicious_PDF_JavaScript
 > [!NOTE]
 > Reverse engineering features (Carbon disassembler, decompilers, debugger, emulators) require the **Advanced** edition. / Функции реверс-инжиниринга требуют редакции **Advanced**.
 
-### Carbon Disassembler / Дизассемблер Carbon
+### Carbon Disassembler
 
 ```
-# Disassemble executable / Дизассемблировать исполняемый файл
+# Disassemble executable
 # Right-click PE/ELF/Mach-O → Disassemble
 
-# Supported architectures / Поддерживаемые архитектуры:
+# Supported architectures
 # - x86 / x86-64
 # - ARM / ARM64
 # - MIPS
 # - PowerPC
 
-# Features / Возможности:
+# Features
 # - Interactive navigation
 # - Cross-references (xrefs)
 # - Function detection
@@ -284,7 +284,7 @@ rule Suspicious_PDF_JavaScript
 # - Comment and rename symbols
 ```
 
-### Decompilers / Декомпиляторы
+### Decompilers
 
 | Target | Description / Описание |
 |--------|------------------------|
@@ -293,19 +293,19 @@ rule Suspicious_PDF_JavaScript
 | Android (DEX) | Decompile to Java/Smali / Декомпиляция в Java/Smali |
 | Native (via Ghidra Sleigh) | Decompile to pseudo-C / Декомпиляция в псевдо-C |
 
-### Debugger / Отладчик
+### Debugger
 
 ```
-# Attach to process / Присоединиться к процессу
+# Attach to process
 # Debug → Attach → Select PID
 
-# Debug executable / Отладить исполняемый файл
+# Debug executable
 # Debug → Start → Select file
 
-# Debug shellcode / Отладить шелл-код
+# Debug shellcode
 # Debug → Shellcode → Paste or load shellcode
 
-# Convert shellcode to executable / Конвертировать шелл-код в исполняемый файл
+# Convert shellcode to executable
 # Tools → Shellcode → Convert to EXE
 ```
 
@@ -316,7 +316,7 @@ rule Suspicious_PDF_JavaScript
 > [!NOTE]
 > Memory forensics features require the **Advanced** edition. Supports Windows memory images (XP through 11). / Криминалистика памяти — функция Advanced-редакции. Поддержка образов памяти Windows (от XP до 11).
 
-### Supported Memory Image Types / Поддерживаемые типы образов памяти
+### Supported Memory Image Types
 
 | Type | Description / Описание |
 |------|------------------------|
@@ -325,13 +325,13 @@ rule Suspicious_PDF_JavaScript
 | Crash dump / Аварийный дамп | Full/kernel memory dump / Полный/ядрёной дамп |
 | VMware `.vmem` | VMware memory snapshot / Снимок памяти VMware |
 
-### Memory Analysis Workflow / Рабочий процесс анализа памяти
+### Memory Analysis Workflow
 
 ```
-# Open memory image / Открыть образ памяти
+# Open memory image
 File → Open → Select memory dump
 
-# Analysis features / Возможности анализа:
+# Analysis features
 # - Process list with PID/PPID tree
 # - DLL list per process
 # - Handle list (files, registry, mutexes)
@@ -349,7 +349,7 @@ File → Open → Select memory dump
 ### Python SDK / Python SDK
 
 ```python
-# Example: analyze a PE file / Пример: анализ PE-файла
+# Example: analyze a PE file
 from Pro.Core import *
 
 def analyze_pe(file_path):
@@ -369,14 +369,14 @@ def analyze_pe(file_path):
         sect = obj.Section(i)
         print(f"Section: {sect.Name()}  VA: 0x{sect.VirtualAddress():08X}  Size: {sect.SizeOfRawData()}")
 
-# Run / Запуск
+# Run
 analyze_pe("/path/to/sample.exe")
 ```
 
-### Batch Processing Script / Скрипт пакетной обработки
+### Batch Processing Script
 
 ```python
-# Example: scan directory for suspicious PDFs / Пример: сканирование каталога на подозрительные PDF
+# Example: scan directory for suspicious PDFs
 import os
 from Pro.Core import *
 
@@ -400,32 +400,32 @@ def scan_pdfs(directory):
 scan_pdfs("/path/to/scan/")
 ```
 
-### Plugin Development / Разработка плагинов
+### Plugin Development
 
 ```
-# Plugin directory / Каталог плагинов
+# Plugin directory
 ~/.local/share/CerberoSuite/plugins/
 
-# Plugin structure / Структура плагина:
+# Plugin structure
 # my_plugin/
-# ├── __init__.py       # Plugin entry point / Точка входа
-# ├── plugin.json       # Metadata / Метаданные
-# └── modules/          # Additional modules / Доп. модули
+# ├── __init__.py       # Plugin entry point
+# ├── plugin.json       # Metadata
+# └── modules/          # Additional modules
 ```
 
 ---
 
 ## 8. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. GUI Not Starting on Linux / GUI не запускается на Linux
+#### 1. GUI Not Starting on Linux / GUI
 
 ```bash
-# Check library dependencies / Проверить зависимости библиотек
+# Check library dependencies
 ldd ./CerberoSuite | grep "not found"
 
-# Install missing Qt/GUI libraries / Установить недостающие Qt/GUI библиотеки
+# Install missing Qt/GUI libraries
 # Debian/Ubuntu
 apt install libqt5widgets5 libqt5gui5 libqt5core5a libgl1-mesa-glx
 
@@ -433,35 +433,35 @@ apt install libqt5widgets5 libqt5gui5 libqt5core5a libgl1-mesa-glx
 dnf install qt5-qtbase qt5-qtbase-gui mesa-libGL
 ```
 
-#### 2. Large File Performance / Производительность с большими файлами
+#### 2. Large File Performance
 
 ```
-# For large files (> 1GB) / Для больших файлов:
-# - Use hex editor with lazy loading / Hex-редактор с ленивой загрузкой
-# - Disable auto-scan for embedded files / Отключить автосканирование вложений
+# For large files (> 1GB)
+# - Use hex editor with lazy loading / Hex-редактор
+# - Disable auto-scan for embedded files
 # Settings → Analysis → Disable "Auto-scan embedded files"
 ```
 
-#### 3. YARA Rules Not Loading / Правила YARA не загружаются
+#### 3. YARA Rules Not Loading
 
 ```bash
-# Check YARA rules directory / Проверить каталог правил YARA
+# Check YARA rules directory
 ls -la ~/.local/share/CerberoSuite/yara/
 
-# Validate YARA rule syntax / Проверить синтаксис правил YARA
+# Validate YARA rule syntax
 yara -C /path/to/rule.yar    # Compile check / Проверка компиляции
 ```
 
-### CLI Usage / Использование из командной строки
+### CLI Usage
 
 ```bash
-# Analyze file from CLI / Анализ файла из командной строки
+# Analyze file from CLI
 CerberoSuite --analyze /path/to/file
 
-# Scan with specific YARA rules / Сканирование конкретными YARA-правилами
+# Scan with specific YARA rules
 CerberoSuite --yara-scan /path/to/rules.yar /path/to/file
 
-# Batch scan directory / Пакетное сканирование каталога
+# Batch scan directory
 CerberoSuite --batch /path/to/directory --output /path/to/report.json
 ```
 

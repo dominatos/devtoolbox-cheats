@@ -17,7 +17,7 @@ Keycloak is an open-source Identity and Access Management (IAM) solution providi
 > [!NOTE]
 > **Legacy vs Modern:** Keycloak versions prior to 17.0 used WildFly/JBoss as the application server (with `standalone.xml` configuration). Since version 17.0, Keycloak migrated to Quarkus. If you are running a WildFly-based version, consider upgrading. WildFly-based Keycloak reached end-of-life. / **Устаревший vs Современный:** Версии Keycloak до 17.0 использовали WildFly. С версии 17.0 Keycloak мигрировал на Quarkus.
 
-## Table of Contents / Оглавление
+## Table of Contents
 
 - [Dev vs Prod Comparison](#Dev%20vs%20Prod%20Comparison)
 - [Installation & Configuration](#Installation%20&%20Configuration)
@@ -53,26 +53,26 @@ Keycloak is an open-source Identity and Access Management (IAM) solution providi
 
 ## Installation & Configuration
 
-### Production Runbook: Installation / Руководство по установке
+### Production Runbook: Installation
 
-#### 1. Prerequisites / Предварительные требования
+#### 1. Prerequisites
 
 ```bash
-# Install Java 17 (Required for modern Keycloak) / Установите Java 17
+# Install Java 17 (Required for modern Keycloak)
 sudo apt update && sudo apt install openjdk-17-jdk -y  # Debian/Ubuntu
 sudo dnf install java-17-openjdk-devel -y             # RHEL/Fedora
 
-# Verify Java version / Проверить версию Java
+# Verify Java version
 java -version  # Should output: openjdk version "17.x.x" / Должен вывести: openjdk version "17.x.x"
 ```
 
-#### 2. Database Setup / Настройка базы данных
+#### 2. Database Setup
 
 > [!IMPORTANT]
 > Use a production-grade database like PostgreSQL. The embedded H2 database is **only for development**. / Используйте производственную БД, такую как PostgreSQL. Встроенная H2 **только для разработки**.
 
 ```bash
-# PostgreSQL Setup / Настройка PostgreSQL
+# PostgreSQL Setup
 sudo -u postgres psql <<EOF
 CREATE DATABASE keycloak;
 CREATE USER <USER> WITH ENCRYPTED PASSWORD '<PASSWORD>';
@@ -80,48 +80,48 @@ GRANT ALL PRIVILEGES ON DATABASE keycloak TO <USER>;
 EOF
 ```
 
-#### 3. Download & Install / Скачивание и установка
+#### 3. Download & Install
 
 ```bash
-# Create dedicated system user / Создание выделенного системного пользователя
+# Create dedicated system user
 sudo useradd -m -d /opt/keycloak -s /sbin/nologin keycloak
 
-# Download and extract / Скачать и распаковать
+# Download and extract
 curl -L https://github.com/keycloak/keycloak/releases/download/<VERSION>/keycloak-<VERSION>.tar.gz -o keycloak.tar.gz
 sudo tar -xvzf keycloak.tar.gz -C /opt/keycloak --strip-components=1
 sudo chown -R keycloak: /opt/keycloak
 ```
 
-#### 4. Configuration / Конфигурация
+#### 4. Configuration
 `/opt/keycloak/conf/keycloak.conf`
 
 ```properties
-# Database / База данных
+# Database
 db=postgres
 db-url=jdbc:postgresql://<HOST>:5432/keycloak
 db-username=<USER>
 db-password=<PASSWORD>
 
-# Hostname / Имя хоста
+# Hostname
 hostname=<HOST>
 
-# HTTPS / Сертификаты
+# HTTPS
 http-enabled=false
 https-certificate-file=/etc/letsencrypt/live/<HOST>/fullchain.pem
 https-certificate-key-file=/etc/letsencrypt/live/<HOST>/privkey.pem
 
-# Proxy (if behind reverse proxy) / Прокси (если за обратным прокси)
+# Proxy (if behind reverse proxy)
 # proxy-headers=xforwarded
 # http-enabled=true
 ```
 
-#### 5. Build and Admin Setup / Сборка и создание админа
+#### 5. Build and Admin Setup
 
 ```bash
-# Build optimized image / Сборка оптимизированного образа
+# Build optimized image
 sudo -u keycloak /opt/keycloak/bin/kc.sh build
 
-# Create initial admin user (Env variables) / Создание первого админа
+# Create initial admin user (Env variables)
 export KC_BOOTSTRAP_ADMIN_USERNAME=<USER>
 export KC_BOOTSTRAP_ADMIN_PASSWORD=<PASSWORD>
 sudo -u keycloak /opt/keycloak/bin/kc.sh start --optimized
@@ -130,7 +130,7 @@ sudo -u keycloak /opt/keycloak/bin/kc.sh start --optimized
 > [!TIP]
 > After the first admin is created, remove the environment variables from your shell history for security. / После создания первого админа удалите переменные окружения из истории shell.
 
-#### 6. Systemd Integration / Интеграция с Systemd
+#### 6. Systemd Integration
 `/etc/systemd/system/keycloak.service`
 
 ```ini
@@ -148,7 +148,7 @@ Restart=on-failure
 RestartSec=10
 Environment=JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 
-# Security hardening / Усиление безопасности
+# Security hardening
 NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=true
@@ -163,7 +163,7 @@ sudo systemctl daemon-reload  # Reload systemd / Перезагрузить syst
 sudo systemctl enable --now keycloak  # Enable and start / Включить и запустить
 ```
 
-### Running the Server / Запуск сервера
+### Running the Server
 
 ```bash
 bin/kc.sh start-dev  # Run in dev mode (H2, HTTP allowed) / Запуск в режиме разработки
@@ -176,10 +176,10 @@ bin/kc.sh show-config  # Show current configuration / Показать теку�
 
 ## Core Management
 
-### CLI Login / Вход через CLI
+### CLI Login
 
 ```bash
-# Login to master realm / Вход в мастер-реалм
+# Login to master realm
 bin/kcadm.sh config credentials \
   --server http://localhost:8080 \
   --realm master \
@@ -187,7 +187,7 @@ bin/kcadm.sh config credentials \
   --password <PASSWORD>
 ```
 
-### Realm Management / Управление реалмами
+### Realm Management
 
 ```bash
 bin/kcadm.sh create realms -s realm=<REALM_NAME> -s enabled=true  # Create new realm / Создать новый реалм
@@ -200,32 +200,32 @@ bin/kcadm.sh delete realms/<REALM_NAME>  # Delete realm / Удалить реа�
 > [!WARNING]
 > Deleting a realm removes all users, clients, roles, and sessions within it. This action is **irreversible**. / Удаление реалма удалит всех пользователей, клиентов, роли и сессии. Это действие **необратимо**.
 
-### User Management / Управление пользователями
+### User Management
 
 ```bash
-# Create user / Создать пользователя
+# Create user
 bin/kcadm.sh create users -r <REALM_NAME> -s username=<USER> -s enabled=true
 
-# Set password / Установить пароль
+# Set password
 bin/kcadm.sh set-password -r <REALM_NAME> --username <USER> --new-password <PASSWORD>
 
-# Set password as temporary (user must change on first login) / Установить временный пароль
+# Set password as temporary (user must change on first login)
 bin/kcadm.sh set-password -r <REALM_NAME> --username <USER> --new-password <PASSWORD> --temporary
 
-# List users / Список пользователей
+# List users
 bin/kcadm.sh get users -r <REALM_NAME> --limit 100
 
-# Search users / Поиск пользователей
+# Search users
 bin/kcadm.sh get users -r <REALM_NAME> -q username=<USER>
 
-# Delete user / Удалить пользователя
+# Delete user
 bin/kcadm.sh delete users/<USER_ID> -r <REALM_NAME>
 ```
 
-### Client Management / Управление клиентами
+### Client Management
 
 ```bash
-# Create client / Создать клиент
+# Create client
 bin/kcadm.sh create clients -r <REALM_NAME> \
   -s clientId=<CLIENT_ID> \
   -s enabled=true \
@@ -233,23 +233,23 @@ bin/kcadm.sh create clients -r <REALM_NAME> \
   -s publicClient=false \
   -s 'redirectUris=["http://<HOST>:8080/*"]'
 
-# List clients / Список клиентов
+# List clients
 bin/kcadm.sh get clients -r <REALM_NAME> --fields id,clientId
 
-# Get client secret / Получить секрет клиента
+# Get client secret
 bin/kcadm.sh get clients/<CLIENT_UUID>/client-secret -r <REALM_NAME>
 ```
 
-### Role Management / Управление ролями
+### Role Management
 
 ```bash
-# Create realm role / Создать роль реалма
+# Create realm role
 bin/kcadm.sh create roles -r <REALM_NAME> -s name=<ROLE_NAME>
 
-# Assign role to user / Назначить роль пользователю
+# Assign role to user
 bin/kcadm.sh add-roles -r <REALM_NAME> --uusername <USER> --rolename <ROLE_NAME>
 
-# List realm roles / Список ролей реалма
+# List realm roles
 bin/kcadm.sh get roles -r <REALM_NAME>
 ```
 
@@ -257,13 +257,13 @@ bin/kcadm.sh get roles -r <REALM_NAME>
 
 ## Production Runbook: Realm Configuration (UI)
 
-### 1. Create a Realm / Создание реалма
+### 1. Create a Realm
 
 1. Login to Admin Console at `https://<HOST>:8443/admin/`.
 2. Click the **Master** dropdown (top-left) → **Create Realm**.
 3. Name: `my-realm` → **Create**.
 
-### 2. Create a Client (e.g. Tomcat) / Создание клиента
+### 2. Create a Client (e.g. Tomcat)
 
 1. Navigate to **Clients** → **Create client**.
 2. **Client ID:** `tomcat-app`.
@@ -273,13 +273,13 @@ bin/kcadm.sh get roles -r <REALM_NAME>
 6. **Web Origins:** `*` (or your domain).
 7. Save and go to **Credentials** tab to get the **Client Secret**.
 
-### 3. Create a User / Создание пользователя
+### 3. Create a User
 
 1. Navigate to **Users** → **Add user**.
 2. Username: `<USER>` → **Create**.
 3. **Credentials** tab → **Set password** → Disable **Temporary**.
 
-### 4. Configure Identity Providers (Optional) / Настройка провайдеров идентификации
+### 4. Configure Identity Providers (Optional)
 
 1. Navigate to **Identity Providers** → Choose provider (Google, GitHub, SAML, etc.).
 2. Configure **Client ID** and **Secret** from the external provider.
@@ -289,7 +289,7 @@ bin/kcadm.sh get roles -r <REALM_NAME>
 
 ## Tomcat Integration
 
-### Configuration Details / Детали конфигурации
+### Configuration Details
 
 To integrate Tomcat with Keycloak, use the `keycloak.json` file or configure the `KeycloakAuthenticatorValve` in `context.xml`.
 
@@ -311,20 +311,20 @@ To integrate Tomcat with Keycloak, use the `keycloak.json` file or configure the
 }
 ```
 
-### Installation Steps / Шаги установки
+### Installation Steps
 
 ```bash
-# 1. Download Keycloak Tomcat Adapter / Скачайте адаптер
+# 1. Download Keycloak Tomcat Adapter
 curl -L https://github.com/keycloak/keycloak/releases/download/<VERSION>/keycloak-oidc-tomcat-adapter-<VERSION>.tar.gz -o adapter.tar.gz
 
-# 2. Extract into $TOMCAT_HOME/lib / Распакуйте в lib
+# 2. Extract into $TOMCAT_HOME/lib
 tar xzf adapter.tar.gz -C /opt/tomcat/lib/
 
-# 3. Restart Tomcat / Перезапустите Tomcat
+# 3. Restart Tomcat
 systemctl restart tomcat
 ```
 
-### Add Keycloak Valve to context.xml / Добавьте клапан в context.xml
+### Add Keycloak Valve to context.xml
 `/var/lib/tomcat/webapps/<APP>/META-INF/context.xml`
 
 ```xml
@@ -335,7 +335,7 @@ systemctl restart tomcat
 
 ## Sysadmin Operations
 
-### Service Controls / Управление службой
+### Service Controls
 
 ```bash
 systemctl daemon-reload  # Reload systemd / Перезагрузить systemd
@@ -347,7 +347,7 @@ journalctl -u keycloak -f  # Follow logs / Следовать за логами
 journalctl -u keycloak --since "1 hour ago"  # Logs from last hour / Логи за последний час
 ```
 
-### Default Network Ports / Сетевые порты по умолчанию
+### Default Network Ports
 
 | Port / Порт | Protocol / Протокол | Service / Сервис |
 | :--- | :--- | :--- |
@@ -355,7 +355,7 @@ journalctl -u keycloak --since "1 hour ago"  # Logs from last hour / Логи з
 | **8443** | HTTPS | Direct Access / Прямой доступ |
 | **9000** | HTTP | Management Interface (health, metrics) / Интерфейс управления |
 
-### Firewall Configuration / Настройка файрвола
+### Firewall Configuration
 
 ```bash
 # UFW (Debian/Ubuntu)
@@ -368,7 +368,7 @@ sudo firewall-cmd --permanent --add-port=9000/tcp  # Management
 sudo firewall-cmd --reload  # Apply changes / Применить изменения
 ```
 
-### Key File Locations / Ключевые файлы и каталоги
+### Key File Locations
 
 | Path / Путь | Description / Описание |
 | :--- | :--- |
@@ -383,38 +383,38 @@ sudo firewall-cmd --reload  # Apply changes / Применить изменен�
 
 ## Security
 
-### Brute Force Protection / Защита от брутфорса
+### Brute Force Protection
 
 > [!NOTE]
 > Configure via **Realm Settings** → **Security Defenses** → **Brute Force Detection** in the Admin Console. / Настройте через **Настройки реалма** → **Защита** → **Обнаружение брутфорса** в консоли администратора.
 
 ```bash
-# Get brute force config for realm / Получить конфиг защиты от брутфорса
+# Get brute force config for realm
 bin/kcadm.sh get realms/<REALM_NAME> --fields bruteForceProtected,maxFailureWaitSeconds,failureFactor
 ```
 
-### Password Policies / Политики паролей
+### Password Policies
 
 ```bash
-# Set password policy for realm / Установить политику паролей для реалма
+# Set password policy for realm
 bin/kcadm.sh update realms/<REALM_NAME> \
   -s 'passwordPolicy="length(8) and digits(1) and upperCase(1) and specialChars(1)"'
 ```
 
-### Truststores & Keystores / Хранилища ключей
+### Truststores & Keystores
 
 ```bash
-# Import certificate into Java keystore / Импорт сертификата в Java keystore
+# Import certificate into Java keystore
 keytool -import -alias <HOST> -file <CERT_FILE> -keystore <KEYSTORE_FILE> -storepass <PASSWORD>
 
-# List certificates in keystore / Список сертификатов в keystore
+# List certificates in keystore
 keytool -list -keystore <KEYSTORE_FILE> -storepass <PASSWORD>
 ```
 
-### Restricting Admin Console Access / Ограничение доступа к консоли администратора
+### Restricting Admin Console Access
 
 ```bash
-# In keycloak.conf — restrict admin console to specific IPs / Ограничить доступ к консоли
+# In keycloak.conf — restrict admin console to specific IPs
 # Use reverse proxy rules (nginx/Apache) to restrict /admin/ path
 # Or use Keycloak's built-in hostname settings:
 hostname-admin=<ADMIN_HOST>
@@ -424,7 +424,7 @@ hostname-admin=<ADMIN_HOST>
 
 ## Backup & Restore
 
-### Export Realm / Экспорт реалма
+### Export Realm
 
 ```bash
 bin/kc.sh export --dir <EXPORT_PATH> --realm <REALM_NAME>  # Export specific realm to directory / Экспорт конкретного реалма в каталог
@@ -432,7 +432,7 @@ bin/kc.sh export --file <FILE_PATH>  # Export all realms to single file / Экс
 bin/kc.sh export --dir <EXPORT_PATH> --users realm_file  # Export with users / Экспорт с пользователями
 ```
 
-### Import Realm / Импорт реалма
+### Import Realm
 
 ```bash
 bin/kc.sh import --file <FILE_PATH>  # Import from file / Импорт из файла
@@ -442,17 +442,17 @@ bin/kc.sh import --dir <IMPORT_PATH>  # Import from directory / Импорт и�
 > [!CAUTION]
 > **Data Loss Risk:** Importing realms may overwrite existing configurations including users, clients, and roles. Always take a database snapshot before major imports. / **Риск потери данных:** Импорт реалмов может перезаписать существующие конфигурации. Всегда делайте снапшот базы данных перед крупным импортом.
 
-### Database Backup / Резервное копирование БД
+### Database Backup
 
 ```bash
-# PostgreSQL backup / Резервная копия PostgreSQL
+# PostgreSQL backup
 pg_dump -U <USER> -h <HOST> keycloak > keycloak_backup_$(date +%Y%m%d).sql
 
-# PostgreSQL restore / Восстановление PostgreSQL
+# PostgreSQL restore
 psql -U <USER> -h <HOST> keycloak < keycloak_backup_<DATE>.sql
 ```
 
-### Production Runbook: Full Backup / Полное резервное копирование
+### Production Runbook: Full Backup
 
 1. **Stop Keycloak** (if consistency is critical):
    ```bash
@@ -479,17 +479,17 @@ psql -U <USER> -h <HOST> keycloak < keycloak_backup_<DATE>.sql
 
 ## Optimization
 
-### JVM Tuning / Настройка JVM
+### JVM Tuning
 `/opt/keycloak/conf/keycloak.conf`
 
 ```bash
-# Add to JAVA_OPTS in bin/kc.sh or use environment variables / Добавьте в JAVA_OPTS или используйте переменные окружения
+# Add to JAVA_OPTS in bin/kc.sh or use environment variables
 export KC_DB_POOL_MAX_SIZE=20  # Max DB connection pool size / Макс. размер пула соединений с БД
 export KC_DB_POOL_INITIAL_SIZE=5  # Initial connection pool / Начальный пул соединений
 export JAVA_OPTS="-Xms1024m -Xmx2048m"  # RAM allocation / Выделение оперативной памяти
 ```
 
-### Performance Flags / Флаги производительности
+### Performance Flags
 
 | Optimization / Оптимизация | Env Variable / Переменная | Description / Описание |
 | :--- | :--- | :--- |
@@ -500,20 +500,20 @@ export JAVA_OPTS="-Xms1024m -Xmx2048m"  # RAM allocation / Выделение о
 | **HTTP Max Connections** | `QUARKUS_HTTP_MAX_CONNECTIONS` | Max concurrent HTTP connections / Макс. одновременных HTTP-соединений |
 | **Cache Owners** | `KC_CACHE_ISPN_DEFAULT_OWNERS` | Number of cache owners in cluster / Число владельцев кэша в кластере |
 
-### Health & Metrics Endpoints / Эндпоинты здоровья и метрик
+### Health & Metrics Endpoints
 
 ```bash
-# Enable health and metrics (add to keycloak.conf) / Включить проверки здоровья и метрики
+# Enable health and metrics (add to keycloak.conf)
 # health-enabled=true
 # metrics-enabled=true
 
-# Check health / Проверить здоровье
+# Check health
 curl -s http://localhost:9000/health | jq .
 
-# Check readiness / Проверить готовность
+# Check readiness
 curl -s http://localhost:9000/health/ready | jq .
 
-# Prometheus metrics / Метрики Prometheus
+# Prometheus metrics
 curl -s http://localhost:9000/metrics
 ```
 
@@ -521,23 +521,23 @@ curl -s http://localhost:9000/metrics
 
 ## Troubleshooting
 
-### Check Active Sessions / Просмотр активных сессий
+### Check Active Sessions
 
 ```bash
 bin/kcadm.sh get realms/<REALM_NAME>/users/<USER_ID>/sessions  # List sessions for user / Список сессий пользователя
 ```
 
-### Logout All Sessions / Завершить все сессии
+### Logout All Sessions
 
 > [!WARNING]
 > This will force all users in the realm to re-authenticate. / Это заставит всех пользователей реалма пройти повторную аутентификацию.
 
 ```bash
-# Logout all sessions in realm / Завершить все сессии в реалме
+# Logout all sessions in realm
 bin/kcadm.sh create realms/<REALM_NAME>/logout-all
 ```
 
-### Common Issues & Fixes / Частые проблемы и решения
+### Common Issues & Fixes
 
 | Issue / Проблема | Fix / Решение |
 | :--- | :--- |
@@ -549,18 +549,18 @@ bin/kcadm.sh create realms/<REALM_NAME>/logout-all
 | **Slow startup** | Run `kc.sh build` first, then `start --optimized` / Сначала `kc.sh build`, потом `start --optimized` |
 | **Token expired errors** | Increase token lifespan in Realm Settings → Tokens / Увеличьте время жизни токена |
 
-### Debug Logging / Отладочное логирование
+### Debug Logging
 
 ```bash
-# Enable debug logging for specific categories / Включить отладочные логи для категорий
+# Enable debug logging for specific categories
 bin/kc.sh start --log-level=org.keycloak:debug  # Debug Keycloak internals / Отладка внутренних компонентов
 bin/kc.sh start --log-level=org.keycloak.services:debug  # Debug services / Отладка сервисов
 ```
 
-### Test OIDC Token / Проверка OIDC-токена
+### Test OIDC Token
 
 ```bash
-# Get access token via Resource Owner Password Grant / Получить access token
+# Get access token via Resource Owner Password Grant
 curl -X POST "https://<HOST>:8443/realms/<REALM_NAME>/protocol/openid-connect/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=password" \
@@ -569,7 +569,7 @@ curl -X POST "https://<HOST>:8443/realms/<REALM_NAME>/protocol/openid-connect/to
   -d "username=<USER>" \
   -d "password=<PASSWORD>"
 
-# Introspect token / Интроспекция токена
+# Introspect token
 curl -X POST "https://<HOST>:8443/realms/<REALM_NAME>/protocol/openid-connect/token/introspect" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "token=<ACCESS_TOKEN>" \
@@ -581,7 +581,7 @@ curl -X POST "https://<HOST>:8443/realms/<REALM_NAME>/protocol/openid-connect/to
 
 ## Logrotate Configuration
 
-### Keycloak Logs / Логи Keycloak
+### Keycloak Logs
 `/etc/logrotate.d/keycloak`
 
 ```bash

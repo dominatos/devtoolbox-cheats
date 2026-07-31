@@ -39,13 +39,13 @@ tags:
 - [Security](#Security)
 - [Logs & Monitoring](#Logs%20&%20Monitoring)
 - [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-- [Logrotate Configuration](#Logrotate%20Configuration%20/%20Конфигурация%20Logrotate)
+- [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Debian/Ubuntu
@@ -56,13 +56,13 @@ sudo apt install tomcat10                                # Install Tomcat 10 / �
 sudo dnf install tomcat                                  # Install Tomcat / Установить Tomcat
 sudo systemctl enable tomcat                             # Enable at boot / Автозапуск
 
-# Manual installation / Ручная установка
+# Manual installation
 wget https://dlcdn.apache.org/tomcat/tomcat-10/v<VERSION>/bin/apache-tomcat-<VERSION>.tar.gz
 tar -xzf apache-tomcat-<VERSION>.tar.gz
 sudo mv apache-tomcat-<VERSION> /opt/tomcat
 ```
 
-### Default Paths / Пути по умолчанию
+### Default Paths
 
 ```bash
 # Debian/Ubuntu (package install)
@@ -84,7 +84,7 @@ sudo mv apache-tomcat-<VERSION> /opt/tomcat
 /opt/tomcat/logs/                                        # Logs directory
 ```
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64     # Java home / Путь к Java
@@ -92,7 +92,7 @@ export CATALINA_HOME=/opt/tomcat                         # Tomcat home / Дом�
 export CATALINA_BASE=/opt/tomcat                         # Tomcat base / Базовая директория
 ```
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 - **8080** — HTTP connector (default web port)
 - **8443** — HTTPS connector (SSL/TLS)
@@ -103,10 +103,10 @@ export CATALINA_BASE=/opt/tomcat                         # Tomcat base / Баз�
 
 ## Core Management
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
-# Systemd (package install) / Systemd (установка пакетом)
+# Systemd (package install) / Systemd
 sudo systemctl start tomcat9                             # Start service / Запустить сервис
 sudo systemctl stop tomcat9                              # Stop service / Остановить сервис
 sudo systemctl restart tomcat9                           # Restart service / Перезапустить сервис
@@ -114,13 +114,13 @@ sudo systemctl status tomcat9                            # Service status / Ст
 sudo systemctl enable tomcat9                            # Enable at boot / Автозапуск
 
 # RHEL/CentOS: replace tomcat9 with tomcat
-# Manual installation / Ручная установка
+# Manual installation
 /opt/tomcat/bin/startup.sh                               # Start Tomcat / Запустить Tomcat
 /opt/tomcat/bin/shutdown.sh                              # Stop Tomcat / Остановить Tomcat
 /opt/tomcat/bin/catalina.sh run                          # Run in foreground / Запуск на переднем плане
 ```
 
-### Check Running Status / Проверка статуса
+### Check Running Status
 
 ```bash
 ps aux | grep tomcat                                     # Check process / Проверить процесс
@@ -133,23 +133,23 @@ sudo lsof -i :8080                                       # Alternative / Аль�
 
 ## Deployment
 
-### Deploy WAR File / Деплой WAR файла
+### Deploy WAR File
 
 ```bash
-# Drop-in deployment / Простой деплой
+# Drop-in deployment
 sudo cp app.war /var/lib/tomcat9/webapps/                # Copy WAR / Копировать WAR
-# Tomcat auto-deploys on detect / Tomcat автоматически развернет
+# Tomcat auto-deploys on detect / Tomcat
 
-# Deploy as ROOT app / Деплой как ROOT приложение
+# Deploy as ROOT app
 sudo rm -rf /var/lib/tomcat9/webapps/ROOT                # Remove default ROOT / Удалить ROOT
 sudo cp app.war /var/lib/tomcat9/webapps/ROOT.war        # Deploy as ROOT / Развернуть как ROOT
 
-# Manual unpacking / Ручная распаковка
+# Manual unpacking
 sudo mkdir /var/lib/tomcat9/webapps/app
 sudo unzip app.war -d /var/lib/tomcat9/webapps/app/      # Exploded deployment / Распакованный деплой
 ```
 
-### Undeploy Application / Удаление приложения
+### Undeploy Application
 
 ```bash
 sudo rm /var/lib/tomcat9/webapps/app.war                 # Remove WAR / Удалить WAR
@@ -157,20 +157,20 @@ sudo rm -rf /var/lib/tomcat9/webapps/app/                # Remove directory / У
 sudo systemctl restart tomcat9                           # Restart / Перезапустить
 ```
 
-### Hot Deployment / Горячий деплой
+### Hot Deployment
 
 ```bash
-# Enable auto-deployment in server.xml / Включить автодеплой в server.xml
+# Enable auto-deployment in server.xml
 # <Host autoDeploy="true" unpackWARs="true">
 # Simply copy new WAR, Tomcat will redeploy automatically
-# Просто скопируй новый WAR, Tomcat развернет автоматически
+#
 ```
 
 ---
 
 ## Configuration Files
 
-### server.xml / Основной конфигурационный файл
+### server.xml
 
 `/etc/tomcat9/server.xml`
 
@@ -205,7 +205,7 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 </Engine>
 ```
 
-### tomcat-users.xml / Пользователи и роли
+### tomcat-users.xml
 
 `/etc/tomcat9/tomcat-users.xml`
 
@@ -219,7 +219,7 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 </tomcat-users>
 ```
 
-### context.xml / Конфигурация контекста
+### context.xml
 
 `/etc/tomcat9/context.xml` or `META-INF/context.xml`
 
@@ -235,7 +235,7 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 </Context>
 ```
 
-### web.xml / Дескриптор веб-приложения
+### web.xml
 
 `/etc/tomcat9/web.xml` or `WEB-INF/web.xml`
 
@@ -253,14 +253,14 @@ sudo systemctl restart tomcat9                           # Restart / Перез�
 
 ## JVM Tuning
 
-### Set JVM Options / Настройка JVM
+### Set JVM Options
 
 ```bash
 # Debian/Ubuntu: Edit /etc/default/tomcat9
 # RHEL/CentOS: Edit /etc/tomcat/tomcat.conf
 # Manual install: Create/edit /opt/tomcat/bin/setenv.sh
 
-# Example setenv.sh / Пример setenv.sh
+# Example setenv.sh
 export JAVA_OPTS="-Xms512m -Xmx1024m"                    # Heap size / Размер кучи
 export JAVA_OPTS="$JAVA_OPTS -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m"  # Metaspace
 export JAVA_OPTS="$JAVA_OPTS -server"                   # Server mode / Режим сервера
@@ -270,30 +270,30 @@ export CATALINA_OPTS="-Dspring.profiles.active=prod"    # App options / Опци
 export CATALINA_OPTS="$CATALINA_OPTS -Dfile.encoding=UTF-8"  # File encoding
 ```
 
-### Common JVM Options / Общие опции JVM
+### Common JVM Options
 
 ```bash
-# Memory settings / Настройки памяти
+# Memory settings
 -Xms512m                                                 # Initial heap / Начальный размер кучи
 -Xmx2048m                                                # Maximum heap / Максимальный размер кучи
 -XX:MetaspaceSize=256m                                   # Metaspace size / Размер Metaspace
 -XX:MaxMetaspaceSize=512m                                # Max Metaspace / Макс. Metaspace
 
-# Garbage Collection / Сборка мусора
+# Garbage Collection
 -XX:+UseG1GC                                             # Use G1 GC / Использовать G1 GC
 -XX:+UseParallelGC                                       # Parallel GC
 -XX:+UseConcMarkSweepGC                                  # CMS GC (deprecated)
 
-# Performance / Производительность
+# Performance
 -server                                                  # Server mode / Режим сервера
 -XX:+UseStringDeduplication                              # String dedup / Дедупликация строк
 
-# Debugging / Отладка
+# Debugging
 -Xdebug                                                  # Enable debug / Включить отладку
 -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005  # Remote debug
 ```
 
-### Production JVM Settings / Настройки для продакшена
+### Production JVM Settings
 
 ```bash
 export JAVA_OPTS="-Xms2g -Xmx2g"                         # Equal min/max for predictability
@@ -309,7 +309,7 @@ export JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/tomcat9/gc.log"
 
 ## Connectors & Ports
 
-### HTTP Connector / HTTP коннектор
+### HTTP Connector / HTTP
 
 ```xml
 <Connector port="8080" protocol="HTTP/1.1"
@@ -322,7 +322,7 @@ export JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/tomcat9/gc.log"
            URIEncoding="UTF-8" />
 ```
 
-### HTTPS Connector (SSL/TLS) / HTTPS коннектор
+### HTTPS Connector (SSL/TLS) / HTTPS
 
 ```xml
 <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
@@ -336,7 +336,7 @@ export JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/tomcat9/gc.log"
 </Connector>
 ```
 
-### AJP Connector (Apache mod_jk) / AJP коннектор
+### AJP Connector (Apache mod_jk) / AJP
 
 ```xml
 <Connector port="8009" protocol="AJP/1.3"
@@ -344,7 +344,7 @@ export JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/tomcat9/gc.log"
            secretRequired="false" />
 ```
 
-### Behind Reverse Proxy / За обратным прокси
+### Behind Reverse Proxy
 
 ```xml
 <!-- Add RemoteIpValve to preserve client IP / Добавить RemoteIpValve для сохранения IP -->
@@ -364,44 +364,44 @@ export JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/tomcat9/gc.log"
 
 ## Security
 
-### Manager Application Security / Безопасность Manager
+### Manager Application Security
 
 ```bash
-# Restrict Manager access to localhost / Ограничить Manager локалхостом
+# Restrict Manager access to localhost
 # Edit /var/lib/tomcat9/webapps/manager/META-INF/context.xml
 
-# Allow specific IPs / Разрешить конкретные IP
+# Allow specific IPs
 <Context antiResourceLocking="false" privileged="true" >
   <Valve className="org.apache.catalina.valves.RemoteAddrValve"
          allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|<IP>" />
 </Context>
 ```
 
-### SSL/TLS Configuration / Конфигурация SSL/TLS
+### SSL/TLS Configuration
 
 ```bash
-# Create keystore / Создать keystore
+# Create keystore
 keytool -genkey -alias tomcat -keyalg RSA -keystore /etc/tomcat9/keystore.jks
 
-# Import certificate / Импортировать сертификат
+# Import certificate
 keytool -import -alias tomcat -file certificate.crt -keystore /etc/tomcat9/keystore.jks
 
-# List certificates / Список сертификатов
+# List certificates
 keytool -list -keystore /etc/tomcat9/keystore.jks
 ```
 
-### Remove Default Apps / Удалить приложения по умолчанию
+### Remove Default Apps
 
 ```bash
 # Remove examples, docs, manager, host-manager for security
-# Удалить примеры, документацию, manager для безопасности
+#
 sudo rm -rf /var/lib/tomcat9/webapps/examples
 sudo rm -rf /var/lib/tomcat9/webapps/docs
 sudo rm -rf /var/lib/tomcat9/webapps/manager
 sudo rm -rf /var/lib/tomcat9/webapps/host-manager
 ```
 
-### Security Best Practices / Лучшие практики безопасности
+### Security Best Practices
 
 - Remove default applications / Удали приложения по умолчанию
 - Use strong passwords in tomcat-users.xml / Используй сильные пароли
@@ -415,7 +415,7 @@ sudo rm -rf /var/lib/tomcat9/webapps/host-manager
 
 ## Logs & Monitoring
 
-### Log Files / Файлы логов
+### Log Files
 
 ```bash
 # Debian/Ubuntu
@@ -429,7 +429,7 @@ sudo tail -f /var/log/tomcat9/host-manager.<DATE>.log   # Host Manager log
 sudo tail -f /opt/tomcat/logs/catalina.out
 ```
 
-### Enable Access Logs / Включить логи доступа
+### Enable Access Logs
 
 ```xml
 <!-- Add to server.xml in <Host> section -->
@@ -439,120 +439,120 @@ sudo tail -f /opt/tomcat/logs/catalina.out
        pattern="%h %l %u %t &quot;%r&quot; %s %b" />
 ```
 
-### JMX Monitoring / Мониторинг JMX
+### JMX Monitoring
 
 ```bash
-# Enable JMX remote monitoring / Включить удаленный мониторинг JMX
+# Enable JMX remote monitoring
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote"
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote.port=9999"
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote.ssl=false"
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
 
-# Connect with JConsole / Подключение через JConsole
+# Connect with JConsole
 jconsole <IP>:9999
 ```
 
-### Application Monitoring / Мониторинг приложений
+### Application Monitoring
 
 ```bash
-# Access Manager GUI / Доступ к Manager GUI
+# Access Manager GUI
 http://localhost:8080/manager/html
 
 # Login with user from tomcat-users.xml
-# Вход с пользователем из tomcat-users.xml
+#
 ```
 
 ---
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 ```bash
-# Port already in use / Порт уже используется
+# Port already in use
 sudo netstat -tlnp | grep :8080                          # Check port / Проверить порт
 sudo lsof -i :8080                                       # Alternative / Альтернатива
 sudo fuser -k 8080/tcp                                   # Kill process on port / Убить процесс
 
-# Permission denied / Доступ запрещен
+# Permission denied
 sudo chown -R tomcat:tomcat /var/lib/tomcat9/webapps/    # Fix ownership / Исправить владельца
 sudo chmod -R 755 /var/lib/tomcat9/webapps/              # Fix permissions / Исправить права
 
-# OutOfMemoryError / Ошибка памяти
-# Increase heap size in JAVA_OPTS / Увеличь размер кучи в JAVA_OPTS
+# OutOfMemoryError
+# Increase heap size in JAVA_OPTS
 export JAVA_OPTS="-Xms1g -Xmx2g"
 
-# Check JAVA_HOME / Проверить JAVA_HOME
+# Check JAVA_HOME
 echo $JAVA_HOME
 which java
 java -version
 ```
 
-### Thread Dump / Дамп потоков
+### Thread Dump
 
 ```bash
-# Get PID / Получить PID
+# Get PID
 ps aux | grep tomcat
 
-# Generate thread dump / Создать дамп потоков
+# Generate thread dump
 sudo kill -3 <PID>                                       # Output to catalina.out
 sudo jstack <PID> > thread_dump.txt                      # Save to file / Сохранить в файл
 ```
 
-### Heap Dump / Дамп кучи
+### Heap Dump
 
 ```bash
-# Generate heap dump / Создать дамп кучи
+# Generate heap dump
 sudo jmap -dump:format=b,file=/tmp/heap.bin <PID>
 
 # Analyze with tools like Eclipse MAT or VisualVM
-# Анализ с помощью Eclipse MAT или VisualVM
+#
 ```
 
-### Check Configuration / Проверка конфигурации
+### Check Configuration
 
 ```bash
-# Validate server.xml / Проверить server.xml
+# Validate server.xml
 # Start Tomcat and check logs for errors
-# Запусти Tomcat и проверь логи на ошибки
+#
 
-# Check effective configuration / Проверить действующую конфигурацию
+# Check effective configuration
 # Access Manager → Server Status → Show server configuration
-# Доступ Manager → Server Status → Показать конфигурацию сервера
+#
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 
 ```bash
-# Enable debug mode / Включить режим отладки
+# Enable debug mode
 export JPDA_ADDRESS=5005
 export JPDA_TRANSPORT=dt_socket
 /opt/tomcat/bin/catalina.sh jpda start
 
-# Connect debugger to port 5005 / Подключить отладчик к порту 5005
+# Connect debugger to port 5005
 ```
 
-### Performance Tuning / Настройка производительности
+### Performance Tuning
 
 ```bash
-# Increase connector threads / Увеличить потоки коннектора
+# Increase connector threads
 # Edit maxThreads in server.xml Connector
-# Редактировать maxThreads в Connector в server.xml
+#
 
-# Enable HTTP/2 / Включить HTTP/2
+# Enable HTTP/2
 # Use NIO2 or APR connector with upgradeProtocol
-# Использовать NIO2 или APR коннектор с upgradeProtocol
+#
 
-# Enable compression / Включить сжатие
+# Enable compression
 <Connector compression="on"
            compressibleMimeType="text/html,text/xml,text/plain,text/css,application/javascript,application/json" />
 ```
 
 ---
 
-## Quick Reference / Краткая справка
+## Quick Reference
 
-### Essential Commands / Основные команды
+### Essential Commands
 
 ```bash
 sudo systemctl status tomcat9                            # Status / Статус
@@ -562,7 +562,7 @@ sudo cp app.war /var/lib/tomcat9/webapps/                # Deploy WAR / Депл
 sudo rm -rf /var/lib/tomcat9/webapps/app*                # Undeploy / Удалить приложение
 ```
 
-### Best Practices / Лучшие практики
+### Best Practices
 
 - Set equal `-Xms` and `-Xmx` for stable performance / Установить равные `-Xms` и `-Xmx`
 - Use G1GC for better GC performance / Используй G1GC для лучшей производительности
@@ -576,7 +576,7 @@ sudo rm -rf /var/lib/tomcat9/webapps/app*                # Undeploy / Удали
 
 ---
 
-## Logrotate Configuration / Конфигурация Logrotate
+## Logrotate Configuration
 
 `/etc/logrotate.d/tomcat9`
 

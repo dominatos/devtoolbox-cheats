@@ -40,27 +40,27 @@ Uyuni is an open-source systems management solution for software-defined infrast
 > [!IMPORTANT]
 > Uyuni requires openSUSE Leap 15.x as the host OS. It cannot be installed on RHEL/Debian directly. Use the official container or VM image for other platforms. / Uyuni требует openSUSE Leap 15.x. Для других платформ используйте контейнерный или VM-образ.
 
-### Repository Setup / Настройка репозитория
+### Repository Setup
 
 ```bash
-# Add Uyuni server repository / Добавить репозиторий Uyuni Server
+# Add Uyuni server repository
 zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/openSUSE_Leap_15.6/ Uyuni-Stable
 
-# Refresh repos / Обновить репозитории
+# Refresh repos
 zypper refresh
 ```
 
-### Install Uyuni Server / Установка сервера
+### Install Uyuni Server
 
 ```bash
-# Install the Uyuni server pattern / Установить паттерн Uyuni server
+# Install the Uyuni server pattern
 zypper install -t pattern uyuni_server
 
-# Or install via container (recommended for quick setup) / Через контейнер (рекомендуется для быстрого старта)
+# Or install via container (recommended for quick setup)
 mgradm install podman <FQDN_HOSTNAME>
 ```
 
-### Deployment Methods Comparison / Сравнение методов развёртывания
+### Deployment Methods Comparison
 
 | Method / Метод | Complexity / Сложность | Best for / Лучше для... |
 |:---|:---|:---|
@@ -68,12 +68,12 @@ mgradm install podman <FQDN_HOSTNAME>
 | **Container (`mgradm`)** | Low / Низкая | Quick setup, isolation, portability / Быстрый старт, изоляция |
 | **Manual setup** | High / Высокая | Custom or hardened environments / Кастомные окружения |
 
-### Initial Setup Wizard / Первоначальная настройка
+### Initial Setup Wizard
 
 After installation, access:
 
 ```bash
-# Web UI first-user setup / Создание первого пользователя через веб
+# Web UI first-user setup
 https://<HOST>/rhn/newlogin/CreateFirstUser.do
 ```
 
@@ -83,55 +83,55 @@ Configure via YaST:
 yast2 susemanager_setup  # Interactive setup wizard / Интерактивный мастер настройки
 ```
 
-### Essential Configuration Files / Основные конфигурационные файлы
+### Essential Configuration Files
 
-#### Spacewalk config (rhn.conf) / Конфигурация Spacewalk
+#### Spacewalk config (rhn.conf)
 
 `/etc/rhn/rhn.conf`
 
 ```ini
-# Database connection / Подключение к БД
+# Database connection
 db_host = localhost
 db_name = susemanager
 db_user = susemanager
 db_password = <PASSWORD>
 
-# Web UI hostname / FQDN веб-интерфейса
+# Web UI hostname / FQDN
 java.hostname = <HOST>
 
-# Maximum upload size / Максимальный размер загрузки (MB)
+# Maximum upload size
 web.maximum_upload_size = 256
 ```
 
-#### Salt Master configuration / Конфигурация Salt Master
+#### Salt Master configuration
 
 `/etc/salt/master.d/susemanager.conf`
 
 ```yaml
-# Uyuni auto-sign minions (use carefully in production) / Авто-подпись миньонов (осторожно в продакшн)
+# Uyuni auto-sign minions (use carefully in production)
 auto_accept: False
 
-# Timeout for Salt operations / Таймаут для операций Salt
+# Timeout for Salt operations
 timeout: 120
 gather_job_timeout: 120
 ```
 
-#### Taskomatic (scheduler) / Планировщик Taskomatic
+#### Taskomatic (scheduler)
 
 `/etc/rhn/taskomatic.conf`
 
 ```ini
-# JVM memory settings / Настройки памяти JVM
+# JVM memory settings
 JAVA_OPTS="-Xms512m -Xmx2048m -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
 ```
 
-### Database Initialization / Инициализация базы данных
+### Database Initialization
 
 ```bash
-# Setup PostgreSQL DB for Uyuni / Настройка PostgreSQL для Uyuni
+# Setup PostgreSQL DB for Uyuni
 spacewalk-setup --disconnected --answer-file=/root/answers.txt
 
-# Or use the automated db-setup / Или автоматическая настройка БД
+# Or use the automated db-setup
 uyuni-setup --setup
 ```
 
@@ -157,70 +157,70 @@ enable-tftp = y
 
 ## Core Management
 
-### Web UI Access / Доступ к веб-интерфейсу
+### Web UI Access
 
 ```bash
-# Web UI endpoints / Адреса веб-интерфейса
+# Web UI endpoints
 https://<HOST>/         # Main dashboard / Главная панель
 https://<HOST>/rhn/     # Legacy namespace / Старое пространство имён
 ```
 
-### spacecmd CLI Tool / CLI инструмент spacecmd
+### spacecmd CLI Tool / CLI
 
 `spacecmd` is the primary CLI for Uyuni management. / `spacecmd` — основной CLI для управления Uyuni.
 
 ```bash
-# Login (interactive prompt) / Войти (интерактивный ввод)
+# Login (interactive prompt)
 spacecmd -u <USER> -p <PASSWORD>
 
-# List all registered systems / Список всех зарегистрированных систем
+# List all registered systems
 spacecmd system_list
 
-# Get system details / Детали системы
+# Get system details
 spacecmd system_details <SYSTEM_NAME>
 
-# List all software channels / Список всех каналов ПО
+# List all software channels
 spacecmd softwarechannel_list
 
-# List activation keys / Список ключей активации
+# List activation keys
 spacecmd activationkey_list
 
-# List configuration channels / Список каналов конфигурации
+# List configuration channels
 spacecmd configchannel_list
 
-# List organizations / Список организаций
+# List organizations
 spacecmd org_list
 
-# List users / Список пользователей
+# List users
 spacecmd user_list
 
-# Apply errata to a system / Применить патчи к системе
+# Apply errata to a system
 spacecmd errata_apply <ERRATA_ID> -s <SYSTEM_NAME>
 ```
 
-### System Registration / Регистрация систем
+### System Registration
 
 ```bash
-# Register a minion via bootstrap script (generated from UI) / Регистрация через bootstrap-скрипт
+# Register a minion via bootstrap script (generated from UI)
 curl -Sks https://<HOST>/pub/bootstrap/bootstrap.sh | bash
 
-# Check minion key status on server / Проверить статус ключа минионов на сервере
+# Check minion key status on server
 salt-key -L
 
-# Accept all pending minion keys / Принять все ожидающие ключи
+# Accept all pending minion keys
 salt-key -A
 
-# Accept specific minion key / Принять ключ конкретного миньона
+# Accept specific minion key
 salt-key -a <MINION_ID>
 
-# Reject a key / Отклонить ключ
+# Reject a key
 salt-key -r <MINION_ID>
 ```
 
 > [!WARNING]
 > Using `salt-key -A` accepts ALL pending keys including potentially unauthorized ones. In production, always verify minion identity before accepting keys. / `salt-key -A` принимает ВСЕ ожидающие ключи, включая потенциально неавторизованные. В продакшене проверяйте идентичность миньонов.
 
-### Software Channels / Каналы программного обеспечения
+### Software Channels
 
 | Operation / Операция | Command / Команда |
 |:---|:---|
@@ -237,41 +237,41 @@ salt-key -r <MINION_ID>
 > [!NOTE]
 > Uyuni uses Salt as its configuration management engine. Salt commands run via `salt` CLI on the Uyuni server or through the Web UI (Remote Command / States). / Uyuni использует Salt в качестве движка управления конфигурацией. Команды Salt запускаются через CLI на сервере или через веб-интерфейс.
 
-### Salt Command Reference / Справочник команд Salt
+### Salt Command Reference
 
 ```bash
-# Test connectivity to all minions / Проверить связь со всеми миньонами
+# Test connectivity to all minions
 salt '*' test.ping
 
-# Test connectivity to specific minion / Проверить связь с конкретным миньоном
+# Test connectivity to specific minion
 salt '<MINION_ID>' test.ping
 
-# Run command on all minions / Выполнить команду на всех миньонах
+# Run command on all minions
 salt '*' cmd.run 'uptime'
 
-# Run command on group of minions by grain / Выполнить команду по grain
+# Run command on group of minions by grain
 salt -G 'os:openSUSE Leap' cmd.run 'zypper ref'
 
-# Apply a Salt state / Применить Salt state
+# Apply a Salt state
 salt '<MINION_ID>' state.apply <STATE_NAME>
 
-# Apply highstate (all assigned states) / Применить highstate (все назначенные состояния)
+# Apply highstate (all assigned states)
 salt '<MINION_ID>' state.highstate
 
-# Run a formula / Запустить формулу
+# Run a formula
 salt '<MINION_ID>' state.apply formulas.<FORMULA_NAME>
 
-# Refresh grains / Обновить grains
+# Refresh grains
 salt '<MINION_ID>' saltutil.refresh_grains
 
-# List available modules / Список доступных модулей
+# List available modules
 salt '<MINION_ID>' sys.list_modules
 
-# Get minion grains (system info) / Получить grains (информация о системе)
+# Get minion grains (system info)
 salt '<MINION_ID>' grains.items
 ```
 
-### Salt Targeting Methods / Методы таргетинга Salt
+### Salt Targeting Methods
 
 | Method / Метод | Flag / Флаг | Example / Пример | Description / Описание |
 |:---|:---|:---|:---|
@@ -282,37 +282,37 @@ salt '<MINION_ID>' grains.items
 | Compound / Комбинированный | `-C` | `salt -C 'G@os:SLES and web*' test.ping` | Combined / Комбинированный |
 | Nodegroup / Группа | `-N` | `salt -N databases test.ping` | Predefined group / Предопределённая группа |
 
-### Configuration Channels / Каналы конфигурации
+### Configuration Channels
 
 ```bash
-# List config channels / Список каналов конфигурации
+# List config channels
 spacecmd configchannel_list
 
-# Create a config channel / Создать канал конфигурации
+# Create a config channel
 spacecmd configchannel_create -n "<NAME>" -l <LABEL> -d "<DESCRIPTION>"
 
-# Add a file to a config channel / Добавить файл в канал конфигурации
+# Add a file to a config channel
 spacecmd configchannel_addfile <CHANNEL_LABEL> -p /etc/myapp/config.conf -f /local/path/config.conf
 
-# List files in a channel / Список файлов в канале
+# List files in a channel
 spacecmd configchannel_listfiles <CHANNEL_LABEL>
 
-# Deploy config to system / Применить конфиг на систему
+# Deploy config to system
 spacecmd configchannel_deploy -s <SYSTEM_NAME> <CHANNEL_LABEL>
 ```
 
-### Formulas / Формулы
+### Formulas
 
 Formulas are Salt states with a YAML-based configuration UI. / Формулы — это Salt states с веб-интерфейсом конфигурации на основе YAML.
 
 ```bash
-# List available formulas / Список доступных формул
+# List available formulas
 salt '<MINION_ID>' saltutil.list_states
 
-# Show formula data / Показать данные формулы
+# Show formula data
 spacecmd system_runscript -s <SYSTEM> -e bash -c 'ls /usr/share/susemanager/formulas/'
 
-# Apply formula state manually / Применить состояние формулы вручную
+# Apply formula state manually
 salt '<MINION_ID>' state.apply formulas.<FORMULA_NAME>
 ```
 
@@ -320,35 +320,35 @@ salt '<MINION_ID>' state.apply formulas.<FORMULA_NAME>
 
 ## Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
-# Restart all Uyuni services / Перезапустить все сервисы Uyuni
+# Restart all Uyuni services
 spacewalk-service restart
 
-# Start all services / Запустить все сервисы
+# Start all services
 spacewalk-service start
 
-# Stop all services / Остановить все сервисы
+# Stop all services
 spacewalk-service stop
 
-# Check status of all services / Проверить статус всех сервисов
+# Check status of all services
 spacewalk-service status
 
-# Restart only Taskomatic (scheduler) / Перезапустить только Taskomatic (планировщик)
+# Restart only Taskomatic (scheduler)
 systemctl restart taskomatic
 
-# Restart Salt Master / Перезапустить Salt Master
+# Restart Salt Master
 systemctl restart salt-master
 
-# Restart Tomcat (web app) / Перезапустить Tomcat (веб-приложение)
+# Restart Tomcat (web app)
 systemctl restart tomcat
 
-# Restart PostgreSQL / Перезапустить PostgreSQL
+# Restart PostgreSQL
 systemctl restart postgresql
 ```
 
-### Individual Service Stack / Стек отдельных сервисов
+### Individual Service Stack
 
 | Service / Сервис | Unit Name | Port / Порт | Description / Описание |
 |:---|:---|:---|:---|
@@ -360,7 +360,7 @@ systemctl restart postgresql
 | OSAD | `osa-dispatcher` | `5222` | Push notification / Push-уведомления |
 | Search | `rhn-search` | — | Search indexer / Индексатор поиска |
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path / Путь | Description / Описание |
 |:---|:---|
@@ -375,37 +375,37 @@ systemctl restart postgresql
 | `/usr/share/susemanager/formulas/` | Installed formulas / Установленные формулы |
 | `/root/ssl-build/` | Generated SSL certificates / Сгенерированные SSL-сертификаты |
 
-### Log Locations / Расположение логов
+### Log Locations
 
 ```bash
-# Main application log / Основной лог приложения
+# Main application log
 tail -f /var/log/rhn/rhn_web_api.log
 
-# Taskomatic scheduler log / Лог планировщика Taskomatic
+# Taskomatic scheduler log
 tail -f /var/log/rhn/rhn_taskomatic_daemon.log
 
-# Salt master log / Лог Salt master
+# Salt master log
 tail -f /var/log/salt/master
 
-# Tomcat log / Лог Tomcat
+# Tomcat log
 tail -f /var/log/tomcat/catalina.out
 
-# spacewalk-repo-sync log / Лог синхронизации репозиториев
+# spacewalk-repo-sync log
 tail -f /var/log/rhn/reposync/<CHANNEL_LABEL>.log
 ```
 
-### JVM / Performance Tuning / Настройка JVM и производительности
+### JVM / Performance Tuning
 
-#### Taskomatic JVM Settings / Настройки JVM для Taskomatic
+#### Taskomatic JVM Settings
 
 `/etc/rhn/taskomatic.conf`
 
 ```ini
-# Increase heap for large environments (> 1000 systems) / Увеличить heap для больших окружений
+# Increase heap for large environments (> 1000 systems)
 JAVA_OPTS="-Xms1024m -Xmx4096m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log/rhn/"
 ```
 
-#### Tomcat JVM Settings / Настройки JVM для Tomcat
+#### Tomcat JVM Settings
 
 `/etc/tomcat/conf.d/tomcat.conf` (or `/usr/share/tomcat/conf/catalina.sh`)
 
@@ -416,7 +416,7 @@ JAVA_OPTS="-Xms512m -Xmx2048m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urand
 > [!TIP]
 > For environments with 500+ systems, increase PostgreSQL `shared_buffers` to 25% of RAM and `max_connections` to at least 200 in `/etc/postgresql/<VERSION>/postgresql.conf`. / Для окружений с 500+ систем увеличьте `shared_buffers` до 25% RAM и `max_connections` до 200 в конфиге PostgreSQL.
 
-### JVM Sizing Guidelines / Рекомендации по размерам JVM
+### JVM Sizing Guidelines
 
 | Systems / Систем | Taskomatic `-Xmx` | Tomcat `-Xmx` | PostgreSQL `shared_buffers` |
 |:---|:---|:---|:---|
@@ -425,26 +425,26 @@ JAVA_OPTS="-Xms512m -Xmx2048m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urand
 | 500–2000 | 8 GB | 4 GB | 4 GB (25% RAM) |
 | 2000+ | 16 GB | 8 GB | 8 GB (25% RAM) |
 
-### Repository Synchronization / Синхронизация репозиториев
+### Repository Synchronization
 
 ```bash
-# Sync a specific software channel / Синхронизировать конкретный канал
+# Sync a specific software channel
 spacewalk-repo-sync -c <CHANNEL_LABEL>
 
-# Sync all channels / Синхронизировать все каналы
+# Sync all channels
 spacewalk-repo-sync --synchronize-all
 
-# Sync with detailed output / Синхронизировать с подробным выводом
+# Sync with detailed output
 spacewalk-repo-sync -c <CHANNEL_LABEL> --verbose
 
-# List available metadata source types / Список типов источников метаданных
+# List available metadata source types
 spacewalk-repo-sync --list-types
 ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Required ports for Uyuni server / Необходимые порты для сервера Uyuni
+# Required ports for Uyuni server
 firewall-cmd --permanent --add-port=80/tcp    # HTTP redirect / Редирект HTTP
 firewall-cmd --permanent --add-port=443/tcp   # HTTPS Web UI / Веб-интерфейс
 firewall-cmd --permanent --add-port=4505/tcp  # Salt publisher / Публикация Salt
@@ -458,29 +458,29 @@ firewall-cmd --reload
 
 ## Security
 
-### User & Role Management / Управление пользователями и ролями
+### User & Role Management
 
 ```bash
-# List all users / Список всех пользователей
+# List all users
 spacecmd user_list
 
-# Create a user / Создать пользователя
+# Create a user
 spacecmd user_create -u <USER> -p <PASSWORD> -e <EMAIL> -f <FIRST_NAME> -l <LAST_NAME>
 
-# Delete a user / Удалить пользователя
+# Delete a user
 spacecmd user_delete <USER>
 
-# List roles of a user / Список ролей пользователя
+# List roles of a user
 spacecmd user_listroles <USER>
 
-# Add role to user / Добавить роль пользователю
+# Add role to user
 spacecmd user_addrole <USER> <ROLE>
 
-# Remove role from user / Убрать роль у пользователя
+# Remove role from user
 spacecmd user_removerole <USER> <ROLE>
 ```
 
-### Available Roles / Доступные роли
+### Available Roles
 
 | Role / Роль | Description / Описание |
 |:---|:---|
@@ -491,23 +491,23 @@ spacecmd user_removerole <USER> <ROLE>
 | `activation_key_admin` | Manage activation keys / Управление ключами активации |
 | `image_admin` | Manage container/OS images / Управление образами |
 
-### SSL Certificate Management / Управление SSL-сертификатами
+### SSL Certificate Management
 
 ```bash
-# View current certificate info / Просмотр текущего сертификата
+# View current certificate info
 openssl x509 -in /etc/apache2/ssl.crt/spacewalk.crt -noout -text | grep -E "Subject:|Not After"
 
-# Regenerate self-signed SSL certificate / Перегенерировать самоподписанный сертификат
+# Regenerate self-signed SSL certificate
 rhn-ssl-tool --gen-server-cert --dir=/root/ssl-build \
   --set-country=<COUNTRY_CODE> --set-state=<STATE> --set-city=<CITY> \
   --set-org=<ORG_NAME> --set-org-unit=IT \
   --set-hostname=<HOST> --set-email=admin@<HOST> \
   --set-cname=<HOST>
 
-# Deploy new certificate / Развернуть новый сертификат
+# Deploy new certificate
 rhn-deploy-ca-cert --dir=/root/ssl-build --target=/etc/apache2/ssl.crt/
 
-# Rebuild CA certificate RPM for distribution to clients / Пересобрать RPM сертификата CA для клиентов
+# Rebuild CA certificate RPM for distribution to clients
 rhn-ssl-tool --gen-ca --dir=/root/ssl-build \
   --set-org=<ORG_NAME> --set-common-name=<HOST> \
   --password=<PASSWORD>
@@ -516,19 +516,19 @@ rhn-ssl-tool --gen-ca --dir=/root/ssl-build \
 > [!WARNING]
 > After regenerating SSL certificates, all registered minions will need to re-accept the new CA certificate. Plan for a maintenance window. / После перегенерации SSL-сертификатов все зарегистрированные миньоны должны принять новый CA-сертификат. Планируйте окно обслуживания.
 
-### Activation Keys / Ключи активации
+### Activation Keys
 
 ```bash
-# List activation keys / Список ключей активации
+# List activation keys
 spacecmd activationkey_list
 
-# Create an activation key / Создать ключ активации
+# Create an activation key
 spacecmd activationkey_create -n "<DESCRIPTION>" -b <BASE_CHANNEL>
 
-# Add entitlement to key / Добавить entitlement к ключу
+# Add entitlement to key
 spacecmd activationkey_addentitlement <KEY_ID> <ENTITLEMENT>
 
-# Add child channel to key / Добавить дочерний канал к ключу
+# Add child channel to key
 spacecmd activationkey_addchildchannel <KEY_ID> <CHANNEL>
 ```
 
@@ -539,7 +539,7 @@ spacecmd activationkey_addchildchannel <KEY_ID> <CHANNEL>
 > [!CAUTION]
 > Uyuni stores all data (packages, repositories) in `/var/spacewalk/`. This directory can be very large (hundreds of GB). Always verify available disk space before backup. / Uyuni хранит все данные в `/var/spacewalk/`. Этот каталог может быть очень большим. Всегда проверяйте свободное место перед резервным копированием.
 
-### Production Runbook: Full Backup / Операционный сценарий резервного копирования
+### Production Runbook: Full Backup
 
 1. **Stop non-critical services to ensure consistency / Остановить некритические сервисы для обеспечения согласованности:**
 
@@ -581,7 +581,7 @@ spacecmd activationkey_addchildchannel <KEY_ID> <CHANNEL>
    spacewalk-service start
    ```
 
-### Production Runbook: Restore / Сценарий восстановления
+### Production Runbook: Restore
 
 > [!CAUTION]
 > Restore will overwrite all current data. Perform only on a clean system or after understanding the full impact. / Восстановление перезапишет все данные. Выполняйте только на чистой системе.
@@ -613,22 +613,22 @@ spacecmd activationkey_addchildchannel <KEY_ID> <CHANNEL>
    spacewalk-service status
    ```
 
-### Incremental Content Backup Script / Скрипт инкрементального резервного копирования
+### Incremental Content Backup Script
 
 ```bash
 #!/bin/bash
-# Uyuni Incremental Backup Script / Скрипт инкрементального бэкапа Uyuni
+# Uyuni Incremental Backup Script
 BACKUP_DIR=/backup/uyuni
 DATE=$(date +%F)
 mkdir -p "$BACKUP_DIR/$DATE"
 
-# DB dump / Дамп БД
+# DB dump
 sudo -u postgres pg_dump susemanager | gzip > "$BACKUP_DIR/$DATE/db.sql.gz"
 
-# Config / Конфиги
+# Config
 tar -czf "$BACKUP_DIR/$DATE/conf.tar.gz" /etc/rhn/ /etc/salt/ /root/ssl-build/ /srv/pillar/ /srv/salt/
 
-# Keep last 7 days / Хранить 7 дней
+# Keep last 7 days
 find "$BACKUP_DIR" -maxdepth 1 -type d -mtime +7 -exec rm -rf {} +
 
 echo "Backup completed: $BACKUP_DIR/$DATE"
@@ -638,77 +638,77 @@ echo "Backup completed: $BACKUP_DIR/$DATE"
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Web UI Not Loading / Веб-интерфейс не загружается
+#### 1. Web UI Not Loading
 
 ```bash
-# Check Tomcat status and logs / Проверить статус и логи Tomcat
+# Check Tomcat status and logs
 systemctl status tomcat
 tail -50 /var/log/tomcat/catalina.out
 
-# Check Apache status / Проверить статус Apache
+# Check Apache status
 systemctl status apache2
 tail -20 /var/log/apache2/error_log
 
-# Restart web stack / Перезапустить веб-стек
+# Restart web stack
 systemctl restart tomcat && systemctl restart apache2
 ```
 
-#### 2. Minions Not Responding / Миньоны не отвечают
+#### 2. Minions Not Responding
 
 ```bash
-# Check Salt master connectivity / Проверить связь Salt master
+# Check Salt master connectivity
 salt '<MINION_ID>' test.ping
 
-# Check salt-key state / Проверить состояние ключей Salt
+# Check salt-key state
 salt-key -L
 
-# Test connection from minion side (on minion) / Проверить связь со стороны миньона
+# Test connection from minion side (on minion)
 salt-minion -l debug   # Run in foreground for debug output / Запустить в foreground для отладки
 
-# Check Salt master log / Проверить лог Salt master
+# Check Salt master log
 tail -100 /var/log/salt/master | grep -i error
 ```
 
-#### 3. Repository Sync Failures / Ошибки синхронизации репозиториев
+#### 3. Repository Sync Failures
 
 ```bash
-# Check sync log for specific channel / Проверить лог синхронизации конкретного канала
+# Check sync log for specific channel
 tail -f /var/log/rhn/reposync/<CHANNEL_LABEL>.log
 
-# Re-run sync verbosely / Запустить синхронизацию с отладкой
+# Re-run sync verbosely
 spacewalk-repo-sync -c <CHANNEL_LABEL> --verbose
 
-# Check disk space (spacewalk data dir) / Проверить место на диске
+# Check disk space (spacewalk data dir)
 df -h /var/spacewalk
 ```
 
-#### 4. Taskomatic Jobs Stuck / Зависшие задачи Taskomatic
+#### 4. Taskomatic Jobs Stuck
 
 ```bash
-# Check Taskomatic log / Проверить лог Taskomatic
+# Check Taskomatic log
 tail -100 /var/log/rhn/rhn_taskomatic_daemon.log
 
-# Restart Taskomatic / Перезапустить Taskomatic
+# Restart Taskomatic
 systemctl restart taskomatic
 
-# Check DB connection from Uyuni / Проверить подключение к БД
+# Check DB connection from Uyuni
 spacecmd -- system_list  # If this hangs, DB connection is likely broken / Если зависает — проблема с БД
 ```
 
-#### 5. High Memory Usage / Высокое потребление памяти
+#### 5. High Memory Usage
 
 ```bash
-# Check JVM heap usage / Проверить использование JVM heap
+# Check JVM heap usage
 jcmd $(pgrep -f taskomatic) VM.heap_info 2>/dev/null || \
   jstat -gc $(pgrep -f catalina) 2000 5
 
-# Check overall system memory / Проверить общую память системы
+# Check overall system memory
 free -h && top -b -n1 | head -20
 ```
 
-### Common Issues Quick Reference / Краткий справочник проблем
+### Common Issues Quick Reference
 
 | Issue / Проблема | Fix / Решение |
 |:---|:---|
@@ -719,51 +719,51 @@ free -h && top -b -n1 | head -20
 | **OOM errors** | Increase JVM `-Xmx` in `taskomatic.conf` / Увеличить `-Xmx` |
 | **SSL cert expired** | Regenerate with `rhn-ssl-tool` / Перегенерировать через `rhn-ssl-tool` |
 
-### Database Maintenance / Обслуживание базы данных
+### Database Maintenance
 
 ```bash
-# Check database size / Проверить размер базы данных
+# Check database size
 sudo -u postgres psql susemanager -c "SELECT pg_size_pretty(pg_database_size('susemanager'));"
 
-# List largest tables / Список крупнейших таблиц
+# List largest tables
 sudo -u postgres psql susemanager -c "
 SELECT schemaname, relname, pg_size_pretty(pg_total_relation_size(relid))
 FROM pg_catalog.pg_statio_user_tables
 ORDER BY pg_total_relation_size(relid) DESC LIMIT 10;"
 
-# Vacuum analyze for performance / Vacuum analyze для производительности
+# Vacuum analyze for performance / Vacuum analyze
 sudo -u postgres psql susemanager -c "VACUUM ANALYZE;"
 
-# Run spacewalk built-in cleanup / Запустить встроенную очистку spacewalk
+# Run spacewalk built-in cleanup
 spacewalk-data-fsck    # Check data integrity / Проверить целостность данных
 ```
 
 > [!TIP]
 > Run `satellite-sync` (depending on version) to re-sync channels if the database and filesystem are out of sync. / Запустите `satellite-sync` для повторной синхронизации каналов, если база данных и файловая система рассинхронизированы.
 
-### Useful Diagnostic Commands / Полезные диагностические команды
+### Useful Diagnostic Commands
 
 ```bash
-# Check overall Uyuni health / Общая проверка состояния Uyuni
+# Check overall Uyuni health
 spacewalk-service status
 
-# Check spacewalk DB connectivity / Проверить подключение к БД spacewalk
+# Check spacewalk DB connectivity
 spacewalk-sql --select-mode -
-# Then type: SELECT 1; / Затем введите: SELECT 1;
+# Then type: SELECT 1;
 
-# Inspect Salt event bus (live) / Просмотр шины событий Salt в реальном времени
+# Inspect Salt event bus (live)
 salt-run state.event pretty=True
 
-# List all pending Salt jobs / Список всех ожидающих задач Salt
+# List all pending Salt jobs
 salt-run jobs.list_jobs
 
-# Kill a stuck Salt job / Остановить зависшую задачу Salt
+# Kill a stuck Salt job
 salt-run jobs.kill <JID>
 
-# Verify SSL cert expiry / Проверить срок действия SSL-сертификата
+# Verify SSL cert expiry
 echo | openssl s_client -connect <HOST>:443 2>/dev/null | openssl x509 -noout -dates
 
-# Show registered system count / Показать количество зарегистрированных систем
+# Show registered system count
 spacecmd system_list | wc -l
 ```
 
@@ -774,7 +774,7 @@ spacecmd system_list | wc -l
 `/etc/logrotate.d/uyuni`
 
 ```conf
-# Uyuni application logs / Логи приложения Uyuni
+# Uyuni application logs
 /var/log/rhn/*.log {
     daily
     rotate 14
@@ -790,7 +790,7 @@ spacecmd system_list | wc -l
     endscript
 }
 
-# Salt master logs / Логи Salt master
+# Salt master logs
 /var/log/salt/*.log {
     weekly
     rotate 8
@@ -805,7 +805,7 @@ spacecmd system_list | wc -l
     endscript
 }
 
-# Taskomatic scheduler logs / Логи планировщика Taskomatic
+# Taskomatic scheduler logs
 /var/log/rhn/rhn_taskomatic_daemon.log {
     daily
     rotate 7
@@ -816,7 +816,7 @@ spacecmd system_list | wc -l
     create 640 tomcat www
 }
 
-# Repo sync logs (can grow large) / Логи синхронизации репозиториев (могут быть большими)
+# Repo sync logs (can grow large)
 /var/log/rhn/reposync/*.log {
     weekly
     rotate 4

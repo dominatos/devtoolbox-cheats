@@ -26,7 +26,7 @@ tags:
 
 ## Installation & Configuration
 
-### Install / Установить
+### Install
 
 ```bash
 # Debian/Ubuntu
@@ -35,7 +35,7 @@ apt install restic                              # Install restic / Устано�
 # RHEL / AlmaLinux / Rocky Linux
 dnf install restic                              # Install restic / Установить restic
 
-# From binary (Linux amd64) / Из бинарника
+# From binary (Linux amd64)
 wget https://github.com/restic/restic/releases/download/v0.16.0/restic_0.16.0_linux_amd64.bz2
 bunzip2 restic_0.16.0_linux_amd64.bz2
 chmod +x restic_0.16.0_linux_amd64
@@ -45,7 +45,7 @@ restic version                                  # Verify install / Провер�
 restic self-update                              # Self-update binary / Самообновление
 ```
 
-### Repository Types / Типы репозиториев
+### Repository Types
 
 | Backend | URI Format | Notes |
 |---------|-----------|-------|
@@ -65,7 +65,7 @@ restic -r s3:s3.amazonaws.com/<BUCKET> init     # AWS S3 / AWS S3
 restic -r rest:https://<HOST>:8000/ init        # REST server / REST сервер
 ```
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 `~/.bashrc` or `/etc/environment`
 
@@ -83,7 +83,7 @@ export RESTIC_CACHE_DIR=/var/cache/restic      # Custom cache dir / Кастом
 
 ## Repository Management
 
-### Initialization & Integrity / Инициализация и целостность
+### Initialization & Integrity
 
 ```bash
 restic -r /backup init                         # Initialize repo / Инициализировать репозиторий
@@ -104,7 +104,7 @@ Total File Count:   12345
 Total Size:         45.678 GiB
 ```
 
-### Key Management / Управление ключами
+### Key Management
 
 ```bash
 restic -r /backup key list                     # List encryption keys / Список ключей шифрования
@@ -120,7 +120,7 @@ restic -r /backup key passwd                   # Change password / Измени�
 
 ## Backup Operations
 
-### Basic Backup / Базовый бэкап
+### Basic Backup
 
 ```bash
 restic -r /backup backup /var/www              # Backup single directory / Бэкап одного каталога
@@ -128,7 +128,7 @@ restic -r /backup backup /etc /var/www         # Multiple paths / Несколь
 restic -r /backup backup /home --exclude="*.tmp"  # Exclude pattern / Исключить паттерн
 ```
 
-### Advanced Options / Расширенные параметры
+### Advanced Options
 
 ```bash
 restic -r /backup backup /data --tag production            # Tag snapshot / Тегировать снапшот
@@ -138,7 +138,7 @@ restic -r /backup backup /data --one-file-system           # Don't cross mount p
 restic -r /backup backup /data --no-scan                   # Skip pre-scan (faster start) / Пропустить пресканирование
 ```
 
-### Exclude Patterns / Исключения
+### Exclude Patterns
 
 ```bash
 restic -r /backup backup /home \
@@ -148,7 +148,7 @@ restic -r /backup backup /home \
   --exclude=".cache"                           # Multiple excludes / Множественные исключения
 ```
 
-### Backup via Environment Variables / Бэкап через переменные окружения
+### Backup via Environment Variables
 
 ```bash
 export RESTIC_REPOSITORY=/backup
@@ -160,7 +160,7 @@ restic backup /var/www                         # Use env vars / Использо
 
 ## Snapshot Management
 
-### List & Filter / Список и фильтрация
+### List & Filter
 
 ```bash
 restic -r /backup snapshots                    # List all snapshots / Список всех снапшотов
@@ -178,7 +178,7 @@ a1b2c3d4  2024-01-15 02:00:01  webserver  daily       /var/www
 e5f6a7b8  2024-01-14 02:00:02  webserver  daily       /var/www
 ```
 
-### Browse Snapshots / Просмотр снапшотов
+### Browse Snapshots
 
 ```bash
 restic -r /backup ls latest                    # List files in latest snapshot / Файлы в последнем снапшоте
@@ -193,7 +193,7 @@ restic -r /backup cat blob <BLOB_ID>           # Display blob content / Пока
 
 ## Restore Operations
 
-### Full Restore / Полное восстановление
+### Full Restore
 
 > [!CAUTION]
 > Restoring to `/` (root) will overwrite existing files. Always test restores to a separate path first.
@@ -205,7 +205,7 @@ restic -r /backup restore latest --tag production -t /restore  # Restore by tag 
 restic -r /backup restore latest -t / --verify             # Restore to root + verify / В корень + проверка
 ```
 
-### Partial Restore / Частичное восстановление
+### Partial Restore
 
 ```bash
 restic -r /backup restore latest -t /restore --path /var/www         # Restore specific path / Конкретный путь
@@ -213,7 +213,7 @@ restic -r /backup restore latest -t /restore --include="*.conf"      # Include p
 restic -r /backup restore latest -t /restore --exclude="*.log"       # Exclude pattern / Исключить паттерн
 ```
 
-### Production Restore Runbook / Процедура восстановления в продакшне
+### Production Restore Runbook
 
 1. Identify the correct snapshot:
    ```bash
@@ -240,7 +240,7 @@ restic -r /backup restore latest -t /restore --exclude="*.log"       # Exclude p
 
 ## Pruning & Retention
 
-### Forget Snapshots / Удаление снапшотов
+### Forget Snapshots
 
 ```bash
 restic -r /backup forget --keep-last 10        # Keep last 10 / Сохранить последние 10
@@ -250,7 +250,7 @@ restic -r /backup forget --keep-monthly 12     # Keep monthly for 12 months / М
 restic -r /backup forget --keep-yearly 3       # Keep yearly for 3 years / Годовые за 3 года
 ```
 
-### Combined Retention Policy / Комбинированная политика хранения
+### Combined Retention Policy
 
 ```bash
 restic -r /backup forget \
@@ -266,7 +266,7 @@ restic -r /backup forget \
 > [!WARNING]
 > Always run with `--dry-run` first to preview which snapshots will be deleted before executing for real.
 
-### Prune (Free Space) / Очистка (освобождение места)
+### Prune (Free Space)
 
 ```bash
 restic -r /backup prune                        # Remove unreferenced data / Удалить неиспользуемые данные
@@ -334,7 +334,7 @@ restic -r gs:<BUCKET>:/ backup /data
 
 ## Performance & Security
 
-### Compression / Сжатие
+### Compression
 
 | Mode | Description | Use Case |
 |------|-------------|----------|
@@ -348,14 +348,14 @@ restic -r /backup backup /data --compression max    # Max compression / Макс
 restic -r /backup backup /data --compression off    # No compression / Без сжатия
 ```
 
-### Bandwidth Limiting / Ограничение полосы пропускания
+### Bandwidth Limiting
 
 ```bash
 restic -r /backup backup /data --limit-upload 1024    # Limit upload to 1 MB/s / Ограничить загрузку до 1 МБ/с
 restic -r /backup backup /data --limit-download 2048  # Limit download to 2 MB/s / Ограничить скачивание
 ```
 
-### Cache Management / Управление кэшем
+### Cache Management
 
 ```bash
 restic -r /backup --cache-dir /var/cache/restic backup /data  # Custom cache dir / Кастомный кэш
@@ -363,21 +363,21 @@ restic cache --cleanup                                        # Clean stale cach
 restic cache --no-cache backup /data                          # Disable cache / Отключить кэш
 ```
 
-### Encryption / Шифрование
+### Encryption
 
 ```bash
 # Restic uses AES-256-CTR + Poly1305-AES for authenticated encryption
-# / Restic использует AES-256-CTR + Poly1305-AES для аутентифицированного шифрования
+# / Restic
 
 export RESTIC_PASSWORD=<PASSWORD>              # Set password via env / Установить пароль через env
 export RESTIC_PASSWORD_FILE=/root/.restic-pw   # Set password via file / Установить пароль через файл
 
-# Create password file securely / Создать файл пароля безопасно
+# Create password file securely
 echo "<PASSWORD>" > /root/.restic-pw
 chmod 600 /root/.restic-pw                    # Restrict permissions / Ограничить права доступа
 ```
 
-### Parallel Operations / Параллельные операции
+### Parallel Operations
 
 ```bash
 restic -r /backup backup /data --read-concurrency 4   # Parallel reads / Параллельное чтение
@@ -388,7 +388,7 @@ restic -r /backup backup /data --pack-size 16          # Smaller pack size for m
 
 ## Sysadmin Operations
 
-### Default Paths / Пути по умолчанию
+### Default Paths
 
 ```bash
 ~/.cache/restic/       # Cache directory / Директория кэша
@@ -397,7 +397,7 @@ restic -r /backup backup /data --pack-size 16          # Smaller pack size for m
 /var/log/restic/       # Recommended log directory / Рекомендуемая директория логов
 ```
 
-### Systemd Service for Automated Backups / Systemd-сервис для автоматических бэкапов
+### Systemd Service for Automated Backups / Systemd-сервис
 
 `/etc/systemd/system/restic-backup.service`
 
@@ -439,7 +439,7 @@ RandomizedDelaySec=30m        # Spread load / Распределить нагр�
 WantedBy=timers.target
 ```
 
-### Enable & Manage Timer / Включить и управлять таймером
+### Enable & Manage Timer
 
 ```bash
 mkdir -p /var/log/restic                        # Create log directory / Создать директорию логов
@@ -450,7 +450,7 @@ systemctl status restic-backup.timer            # Check status / Провери�
 systemctl list-timers restic-backup.timer       # Show next run / Показать следующий запуск
 ```
 
-### Logs & Monitoring / Логи и мониторинг
+### Logs & Monitoring
 
 ```bash
 journalctl -u restic-backup.service             # View backup logs / Просмотр логов бэкапа
@@ -459,7 +459,7 @@ journalctl -u restic-backup.service --since today  # Today's logs / Сегодн
 tail -f /var/log/restic/backup.log              # Tail log file / Следить за файлом лога
 ```
 
-### Logrotate Configuration / Конфигурация logrotate
+### Logrotate Configuration
 
 `/etc/logrotate.d/restic`
 
@@ -481,23 +481,23 @@ tail -f /var/log/restic/backup.log              # Tail log file / Следить
 
 ## Troubleshooting
 
-### Compression / Common Errors / Распространённые ошибки
+### Compression / Common Errors
 
 ```bash
-# Error: "repository is already locked" / "репозиторий уже заблокирован"
+# Error: "repository is already locked" / "репозиторий
 restic -r /backup unlock                       # Remove stale lock / Удалить устаревшую блокировку
 
-# Error: "wrong password" / "неверный пароль"
+# Error: "wrong password" / "неверный
 echo "<PASSWORD>" > /root/.restic-pw
 chmod 600 /root/.restic-pw
 export RESTIC_PASSWORD_FILE=/root/.restic-pw
 
-# Check repository errors / Ошибки целостности репозитория
+# Check repository errors
 restic -r /backup check --read-data            # Deep check / Глубокая проверка
 restic -r /backup rebuild-index                # Rebuild index / Пересоздать индекс
 ```
 
-### Repair Operations / Операции восстановления
+### Repair Operations
 
 > [!WARNING]
 > Repair operations modify repository data. Run `check` first to understand the extent of damage before repairing.
@@ -509,7 +509,7 @@ restic -r /backup repair packs                 # Remove invalid pack files / У�
 restic -r /backup rebuild-index                # Rebuild index from scratch / Пересоздать индекс с нуля
 ```
 
-### Verbose Output / Подробный вывод
+### Verbose Output
 
 ```bash
 restic -r /backup backup /data -v              # Verbose / Подробный вывод
@@ -517,7 +517,7 @@ restic -r /backup backup /data -vv             # Very verbose / Очень по�
 restic -r /backup --log-file /tmp/restic.log backup /data  # Log to file / Лог в файл
 ```
 
-### Performance Issues / Проблемы с производительностью
+### Performance Issues
 
 ```bash
 restic -r /backup backup /data --read-concurrency 4   # Increase parallelism / Увеличить параллелизм
@@ -526,7 +526,7 @@ restic -r /backup backup /data --no-scan              # Skip file count pre-scan
 restic cache --cleanup                                # Free stale cache / Освободить устаревший кэш
 ```
 
-### Integrity Check Runbook / Процедура проверки целостности
+### Integrity Check Runbook
 
 1. Quick check (no data reads):
    ```bash

@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#Installation%20&%20Configuration)
 2. [Core Management](#Core%20Management)
@@ -36,7 +36,7 @@ tags:
 
 ## Installation & Configuration
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -45,10 +45,10 @@ tags:
 | `4567` | Galera replication traffic (TCP + UDP) / Репликационный трафик |
 | `4568` | IST (Incremental State Transfer) — partial resync / Частичная синхронизация |
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
-# Ubuntu/Debian — Official Percona repo / Официальный репозиторий Percona
+# Ubuntu/Debian — Official Percona repo
 wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
 sudo dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
 sudo percona-release setup pxc80                          # Enable PXC 8.0 repo / Включить репозиторий PXC 8.0
@@ -63,10 +63,10 @@ sudo yum install -y percona-xtradb-cluster
 > [!TIP]
 > For PXC 5.7 compatibility use `pxc57` instead of `pxc80`. PXC 8.0 is the current recommended production version as of 2024.
 
-### Dependencies / Зависимости
+### Dependencies
 
 ```bash
-# Required: socat for SST / Необходимо: socat для SST
+# Required: socat for SST
 sudo apt install -y socat qpress                # Ubuntu/Debian
 sudo yum install -y socat qpress                # RHEL/AlmaLinux
 
@@ -75,7 +75,7 @@ sudo apt install -y percona-xtrabackup-80       # Ubuntu/Debian — PXC 8.0
 sudo yum install -y percona-xtrabackup-80       # RHEL/AlmaLinux
 ```
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File / Файл | Purpose / Назначение |
 |-------------|----------------------|
@@ -86,31 +86,31 @@ sudo yum install -y percona-xtrabackup-80       # RHEL/AlmaLinux
 | `/var/log/mysql/error.log` | MySQL error log / Лог ошибок MySQL |
 | `/var/run/mysqld/mysqld.sock` | MySQL Unix socket / Unix-сокет |
 
-### Node Configuration / Конфигурация узла
+### Node Configuration
 
 `/etc/mysql/mysql.conf.d/mysqld.cnf` (Ubuntu/Debian)
 `/etc/my.cnf` (RHEL/AlmaLinux)
 
 ```ini
 [mysqld]
-# --- Server Identity / Идентификация сервера ---
+# --- Server Identity
 server_id                   = 1          # Unique per node! / Уникально для каждого узла!
 bind-address                = 0.0.0.0
 datadir                     = /var/lib/mysql
 
-# --- Binary Log (required for PXC) / Бинарный лог (обязателен для PXC) ---
+# --- Binary Log (required for PXC)
 log_bin                     = /var/log/mysql/mysql-bin.log
 binlog_format               = ROW         # PXC requires ROW format / PXC требует ROW формат
 expire_logs_days            = 7
 
-# --- InnoDB Tuning / Настройка InnoDB ---
+# --- InnoDB Tuning
 innodb_buffer_pool_size     = 4G          # ~70% of RAM / ~70% ОЗУ
 innodb_log_file_size        = 512M
 innodb_flush_log_at_trx_commit = 1        # Safest; use 2 for better perf / Безопаснее; 2 для производительности
 innodb_flush_method         = O_DIRECT
 innodb_file_per_table       = ON
 
-# --- Galera / WSREP Settings / Настройки Galera/WSREP ---
+# --- Galera / WSREP Settings
 wsrep_on                    = ON
 wsrep_provider              = /usr/lib/galera4/libgalera_smm.so
 wsrep_cluster_name          = "pxc-cluster-prod"   # Must match on all nodes! / Одинаково на всех узлах!
@@ -118,11 +118,11 @@ wsrep_cluster_address       = "gcomm://<IP_NODE1>,<IP_NODE2>,<IP_NODE3>"
 wsrep_node_address          = "<IP_THIS_NODE>"
 wsrep_node_name             = "<HOSTNAME_THIS_NODE>"
 
-# --- SST Method / Метод передачи состояния ---
+# --- SST Method
 wsrep_sst_method            = xtrabackup-v2   # Recommended for hot SST / Рекомендуется для горячего SST
 wsrep_sst_auth              = "<SST_USER>:<SST_PASSWORD>"
 
-# --- Slave threads / Потоки репликации ---
+# --- Slave threads
 wsrep_slave_threads         = 4           # Match CPU cores / Число потоков == CPU ядра
 ```
 
@@ -132,7 +132,7 @@ wsrep_slave_threads         = 4           # Match CPU cores / Число пот�
 > [!WARNING]
 > `binlog_format` **must** be `ROW` for PXC. `STATEMENT` or `MIXED` can cause data inconsistency in a multi-writer setup.
 
-### SST Method Comparison / Сравнение методов передачи состояния (SST)
+### SST Method Comparison
 
 | Method / Метод | Description / Описание | Use Case / Применение |
 |----------------|------------------------|----------------------|
@@ -147,12 +147,12 @@ wsrep_slave_threads         = 4           # Match CPU cores / Число пот�
 
 ## Core Management
 
-### Bootstrap & Starting the Cluster / Начальный запуск кластера
+### Bootstrap & Starting the Cluster
 
 > [!IMPORTANT]
 > **Bootstrap** must be done only once on the **first node** when bringing up a fresh cluster. All other nodes join normally afterwards.
 
-#### Runbook: Initial Cluster Bootstrap / Первый запуск кластера
+#### Runbook: Initial Cluster Bootstrap
 
 1. **Bootstrap the first node / Запустить первый узел в режиме bootstrap:**
    ```bash
@@ -186,7 +186,7 @@ wsrep_slave_threads         = 4           # Match CPU cores / Число пот�
    -- Expected: 3 (or N nodes) / Ожидаемо: 3 или N узлов
    ```
 
-### Connecting to MySQL / Подключение к MySQL
+### Connecting to MySQL
 
 ```bash
 mysql -u root -p                                        # Connect as root / Подключиться как root
@@ -194,7 +194,7 @@ mysql -u <USER> -p<PASSWORD> -h <IP_NODE1> -P 3306   # Remote connection / Уд�
 mysql -u <USER> -p<PASSWORD> --socket=/var/run/mysqld/mysqld.sock  # Unix socket / Через сокет
 ```
 
-### Cluster Status Queries / Запросы статуса кластера
+### Cluster Status Queries
 
 ```sql
 -- Full cluster status overview / Полный обзор состояния кластера
@@ -209,7 +209,7 @@ SHOW STATUS LIKE 'wsrep_ready';                -- ON = accepting queries / ON = 
 SHOW STATUS LIKE 'wsrep_flow_control_paused';  -- >0 means replication lag / >0 — отставание репликации
 ```
 
-### wsrep State Reference / Справочник состояний wsrep
+### wsrep State Reference
 
 | State / Состояние | Meaning / Значение | Action / Действие |
 |-------------------|--------------------|-------------------|
@@ -219,7 +219,7 @@ SHOW STATUS LIKE 'wsrep_flow_control_paused';  -- >0 means replication lag / >0 
 | `Initialized` | Local data ready, waiting / Данные готовы, ожидание | Pre-join state / Состояние до вступления |
 | `Disconnected` | Not connected to cluster / Не подключён к кластеру | Investigate logs / Проверить логи |
 
-### CRUD Quick Reference / Быстрый справочник CRUD
+### CRUD Quick Reference
 
 ```sql
 -- Database operations / Операции с базами данных
@@ -247,7 +247,7 @@ KILL <PROCESS_ID>;
 
 ## Sysadmin Operations
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start mysql                             # Start MySQL / Запустить MySQL
@@ -256,7 +256,7 @@ sudo systemctl restart mysql                           # Restart MySQL / Пер�
 sudo systemctl status mysql                            # Service status / Статус сервиса
 sudo systemctl enable mysql                            # Enable on boot / Автозапуск
 
-# Bootstrap service (first-start only!) / Bootstrap сервис (только первый запуск!)
+# Bootstrap service (first-start only!) / Bootstrap
 sudo systemctl start mysql@bootstrap.service           # Ubuntu/Debian only
 sudo systemctl stop mysql@bootstrap.service
 ```
@@ -264,7 +264,7 @@ sudo systemctl stop mysql@bootstrap.service
 > [!CAUTION]
 > `systemctl restart mysql` on a Galera node will cause it to leave and rejoin the cluster, triggering SST or IST. In production, always do rolling restarts — one node at a time — and verify each node is `Synced` before restarting the next.
 
-### Runbook: Rolling Restart / Плавный последовательный перезапуск
+### Runbook: Rolling Restart
 
 1. **Identify nodes / Определить узлы:**
    ```sql
@@ -281,7 +281,7 @@ sudo systemctl stop mysql@bootstrap.service
    ```
 4. **Repeat for node 2, then node 1.**
 
-### Log Locations / Расположение логов
+### Log Locations
 
 | Log / Лог | Path / Путь |
 |-----------|-------------|
@@ -291,14 +291,14 @@ sudo systemctl stop mysql@bootstrap.service
 | Slow Query Log | `/var/log/mysql/slow.log` |
 
 ```bash
-# View recent errors / Просмотр последних ошибок
+# View recent errors
 sudo tail -f /var/log/mysql/error.log
 
-# Filter for Galera/WSREP events / Фильтр событий Galera/WSREP
+# Filter for Galera/WSREP events
 sudo grep -i 'wsrep\|galera\|sst' /var/log/mysql/error.log | tail -50
 ```
 
-### Slow Query Log / Лог медленных запросов
+### Slow Query Log
 
 `/etc/mysql/mysql.conf.d/mysqld.cnf`
 
@@ -309,7 +309,7 @@ long_query_time         = 1              # Seconds / Секунды
 log_queries_not_using_indexes = 1
 ```
 
-### Performance Tuning / Настройка производительности
+### Performance Tuning
 
 `/etc/mysql/mysql.conf.d/mysqld.cnf`
 
@@ -322,11 +322,11 @@ innodb_io_capacity            = 2000     # IOPS of disk / IOPS диска
 innodb_read_io_threads        = 8
 innodb_write_io_threads       = 8
 
-# Connection / Подключения
+# Connection
 max_connections               = 500
 thread_cache_size             = 50
 
-# Galera-specific tuning / Настройка специфичная для Galera
+# Galera-specific tuning
 wsrep_slave_threads           = 4        # Parallel apply threads / Потоки параллельного применения
 wsrep_max_ws_size             = 2G       # Max write-set size / Максимальный размер write-set
 wsrep_provider_options        = "gcache.size=2G"  # Galera cache for IST / Кэш Galera для IST
@@ -335,7 +335,7 @@ wsrep_provider_options        = "gcache.size=2G"  # Galera cache for IST / Кэ�
 > [!TIP]
 > Increase `gcache.size` to avoid SST (full resync) when a node rejoins after a short outage. A larger gcache enables IST (incremental resync), which is much faster.
 
-### Network & Firewall / Сеть и брандмауэр
+### Network & Firewall
 
 ```bash
 # UFW — UFW
@@ -358,16 +358,16 @@ sudo firewall-cmd --reload
 
 ## Security
 
-### Root Password Reset / Сброс пароля root
+### Root Password Reset
 
 ```bash
-# Stop MySQL / Остановить MySQL
+# Stop MySQL
 sudo systemctl stop mysql
 
-# Start with skip-grant-tables / Запустить без проверки прав
+# Start with skip-grant-tables
 sudo mysqld_safe --skip-grant-tables --skip-networking &
 
-# Connect and reset password / Подключиться и сбросить пароль
+# Connect and reset password
 mysql -u root
 ```
 ```sql
@@ -381,7 +381,7 @@ sudo systemctl stop mysql
 sudo systemctl start mysql
 ```
 
-### SST User Creation / Создание пользователя SST
+### SST User Creation
 
 ```sql
 -- Create SST user on bootstrap node (replicated to all nodes)
@@ -394,12 +394,12 @@ FLUSH PRIVILEGES;
 > [!IMPORTANT]
 > The SST user credentials must match `wsrep_sst_auth` in `/etc/my.cnf`. Mismatch will cause joiner nodes to fail SST and not rejoin the cluster.
 
-### At-Rest Encryption / Шифрование данных
+### At-Rest Encryption
 
 `/etc/mysql/mysql.conf.d/mysqld.cnf`
 
 ```ini
-# Enable InnoDB tablespace encryption keyring / Включить шифрование tablespace через keyring
+# Enable InnoDB tablespace encryption keyring
 early-plugin-load            = keyring_file.so
 keyring_file_data            = /var/lib/mysql-keyring/keyring
 innodb_encrypt_tables        = ON
@@ -415,7 +415,7 @@ SELECT SPACE, NAME, ENCRYPTION FROM information_schema.INNODB_TABLESPACES
 WHERE NAME LIKE '<DB_NAME>%';
 ```
 
-### TLS/SSL Client Connections / TLS/SSL для клиентских подключений
+### TLS/SSL Client Connections / TLS/SSL
 
 `/etc/mysql/mysql.conf.d/mysqld.cnf`
 
@@ -435,7 +435,7 @@ SHOW STATUS LIKE 'Ssl_cipher';
 ALTER USER '<USER>'@'%' REQUIRE SSL;
 ```
 
-### Galera Encryption (node-to-node) / Шифрование трафика между узлами
+### Galera Encryption (node-to-node)
 
 `/etc/mysql/mysql.conf.d/mysqld.cnf`
 
@@ -449,7 +449,7 @@ wsrep_provider_options = "socket.ssl_key=/etc/mysql/ssl/server-key.pem;
 
 ## Backup & Restore
 
-### Backup Methods Comparison / Сравнение методов резервного копирования
+### Backup Methods Comparison
 
 | Method / Метод | Tool / Инструмент | Type / Тип | Notes / Примечания |
 |----------------|-------------------|------------|--------------------|
@@ -458,23 +458,23 @@ wsrep_provider_options = "socket.ssl_key=/etc/mysql/ssl/server-key.pem;
 | Logical parallel dump | `mydumper` | SQL | Faster than mysqldump / Быстрее mysqldump |
 | Snapshot / Снапшот | LVM/Cloud snapshot | Block | Instant; requires consistent state / Требует согласованного состояния |
 
-### Runbook: Backup with Percona XtraBackup / Резервное копирование через XtraBackup
+### Runbook: Backup with Percona XtraBackup
 
 ```bash
-# 1. Install XtraBackup / Установить XtraBackup
+# 1. Install XtraBackup
 sudo apt install -y percona-xtrabackup-80
 
-# 2. Full backup / Полный бэкап
+# 2. Full backup
 sudo xtrabackup --backup \
     --user=<BACKUP_USER> \
     --password=<BACKUP_PASSWORD> \
     --target-dir=/backup/mysql/full-$(date +%Y%m%d_%H%M%S)    # Backup with timestamp
 
-# 3. Prepare backup / Подготовить бэкап
+# 3. Prepare backup
 sudo xtrabackup --prepare \
     --target-dir=/backup/mysql/full-<TIMESTAMP>
 
-# 4. Incremental backup (after full) / Инкрементальный бэкап
+# 4. Incremental backup (after full)
 sudo xtrabackup --backup \
     --user=<BACKUP_USER> \
     --password=<BACKUP_PASSWORD> \
@@ -482,33 +482,33 @@ sudo xtrabackup --backup \
     --incremental-basedir=/backup/mysql/full-<TIMESTAMP>
 ```
 
-### Runbook: Restore with XtraBackup / Восстановление через XtraBackup
+### Runbook: Restore with XtraBackup
 
 > [!CAUTION]
 > Restoring overwrites all data in `/var/lib/mysql`. Stop MySQL first and take a pre-restore snapshot if possible.
 
 ```bash
-# 1. Stop MySQL / Остановить MySQL
+# 1. Stop MySQL
 sudo systemctl stop mysql
 
-# 2. Move existing data directory / Переместить текущий каталог данных
+# 2. Move existing data directory
 sudo mv /var/lib/mysql /var/lib/mysql.bak
 
-# 3. Restore backup / Восстановить бэкап
+# 3. Restore backup
 sudo xtrabackup --copy-back \
     --target-dir=/backup/mysql/full-<TIMESTAMP>
 
-# 4. Fix permissions / Исправить права
+# 4. Fix permissions
 sudo chown -R mysql:mysql /var/lib/mysql
 
-# 5. Start MySQL / Запустить MySQL
+# 5. Start MySQL
 sudo systemctl start mysql
 ```
 
-### Logical Backup with mysqldump / Логический бэкап через mysqldump
+### Logical Backup with mysqldump
 
 ```bash
-# Full dump — all databases / Полный дамп всех баз данных
+# Full dump — all databases
 mysqldump -u root -p<PASSWORD> \
     --all-databases \
     --single-transaction \
@@ -518,13 +518,13 @@ mysqldump -u root -p<PASSWORD> \
     --triggers \
     | gzip > /backup/mysql/full-dump-$(date +%Y%m%d).sql.gz
 
-# Single database dump / Дамп одной базы данных
+# Single database dump
 mysqldump -u root -p<PASSWORD> \
     --single-transaction \
     --databases <DB_NAME> \
     | gzip > /backup/mysql/<DB_NAME>-$(date +%Y%m%d).sql.gz
 
-# Restore from dump / Восстановление из дампа
+# Restore from dump
 gunzip < /backup/mysql/full-dump-<DATE>.sql.gz \
     | mysql -u root -p<PASSWORD>
 ```
@@ -532,7 +532,7 @@ gunzip < /backup/mysql/full-dump-<DATE>.sql.gz \
 > [!TIP]
 > Always use `--single-transaction` with InnoDB tables to get a consistent backup without locking the database.
 
-### Backup User Permissions / Права пользователя резервного копирования
+### Backup User Permissions
 
 ```sql
 CREATE USER '<BACKUP_USER>'@'localhost' IDENTIFIED BY '<BACKUP_PASSWORD>';
@@ -545,7 +545,7 @@ FLUSH PRIVILEGES;
 
 ## Monitoring & Cluster Health
 
-### Key wsrep Status Variables / Ключевые переменные статуса wsrep
+### Key wsrep Status Variables
 
 ```sql
 -- Comprehensive cluster health check / Полная проверка состояния кластера
@@ -569,7 +569,7 @@ WHERE VARIABLE_NAME IN (
 );
 ```
 
-### Health Indicators Quick Reference / Быстрый справочник индикаторов состояния
+### Health Indicators Quick Reference
 
 | Variable / Переменная | Healthy Value / Норма | Warning / Предупреждение |
 |-----------------------|-----------------------|--------------------------|
@@ -581,7 +581,7 @@ WHERE VARIABLE_NAME IN (
 | `wsrep_flow_control_paused` | `< 0.1` | `> 0.1` — replication lag |
 | `wsrep_local_recv_queue` | `< 5` | `> 10` — overloaded |
 
-### Replication Performance / Производительность репликации
+### Replication Performance
 
 ```sql
 -- Check replication lag indicators / Проверить индикаторы отставания репликации
@@ -594,7 +594,7 @@ SHOW STATUS LIKE 'wsrep_replicated';            -- Transactions sent / Отпр�
 SHOW STATUS LIKE 'wsrep_received';              -- Transactions received / Получено транзакций
 ```
 
-### InnoDB Status / Статус InnoDB
+### InnoDB Status
 
 ```sql
 SHOW ENGINE INNODB STATUS\G                    -- Full InnoDB engine status / Полный статус InnoDB
@@ -616,23 +616,23 @@ SELECT
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### Node fails to join cluster (SST failing) / Узел не может подключиться к кластеру
+#### Node fails to join cluster (SST failing)
 
 ```bash
-# Check SST error on joiner / Проверить ошибку SST на присоединяющемся узле
+# Check SST error on joiner
 sudo grep -i 'sst\|error\|wsrep' /var/log/mysql/error.log | tail -30
 
-# Verify SST user exists on donor / Проверить SST пользователя на доноре
+# Verify SST user exists on donor
 mysql -u root -p -e "SELECT user, host FROM mysql.user WHERE user='<SST_USER>';"
 
-# Verify ports are open (on joiner, check donor) / Проверить открытые порты
+# Verify ports are open (on joiner, check donor)
 sudo ss -tlnp | grep -E '4444|4567|4568'
 sudo nc -zv <IP_DONOR> 4444                   # Test SST port / Тест SST порта
 ```
 
-#### Split-brain: `wsrep_cluster_status = Non-Primary` / Разделение кластера
+#### Split-brain: `wsrep_cluster_status = Non-Primary`
 
 > [!CAUTION]
 > Split-brain means the cluster has partitioned. Do NOT allow writes on `Non-Primary` nodes — data divergence will occur.
@@ -650,7 +650,7 @@ SET GLOBAL wsrep_provider_options='pc.bootstrap=YES';
 > [!WARNING]
 > Running `pc.bootstrap=YES` on the wrong node during a real split-brain will cause two independent Primary segments and data divergence. Always identify the segment with the most recent data.
 
-#### Flow Control firing frequently / Частое срабатывание Flow Control
+#### Flow Control firing frequently
 
 ```sql
 -- Check flow control pause ratio / Проверить долю паузы flow control
@@ -661,23 +661,23 @@ SHOW STATUS LIKE 'wsrep_local_recv_queue%';
 ```
 
 ```bash
-# Check system resources on slow node / Проверить ресурсы на медленном узле
+# Check system resources on slow node
 iostat -xz 1 5                                 # Disk I/O / Дисковый ввод-вывод
 vmstat 1 5                                     # Memory / Память
 top -bn1 | head -20                            # CPU / ЦПУ
 ```
 
-#### Node is stuck in Donor/Desynced state / Узел завис в состоянии Donor/Desynced
+#### Node is stuck in Donor/Desynced state
 
 ```bash
-# Check SST progress on donor / Прогресс SST на доноре
+# Check SST progress on donor
 sudo grep -i 'sst\|xtrabackup' /var/log/mysql/error.log | tail -20
 
-# Check xtrabackup process / Проверить процесс xtrabackup
+# Check xtrabackup process
 sudo ps aux | grep xtrabackup
 ```
 
-#### Galera cache (gcache) full / Кэш Galera переполнен
+#### Galera cache (gcache) full
 
 ```sql
 -- Check current gcache configuration / Проверить конфигурацию gcache
@@ -685,30 +685,30 @@ SHOW GLOBAL VARIABLES LIKE 'wsrep_provider_options';
 ```
 
 ```ini
-# Increase gcache size to reduce SST frequency / Увеличить gcache для уменьшения SST
+# Increase gcache size to reduce SST frequency
 # /etc/mysql/mysql.conf.d/mysqld.cnf
 wsrep_provider_options = "gcache.size=4G"     # Increase from default 128M / Увеличить с 128M
 ```
 
-### Useful Diagnostic Commands / Полезные диагностические команды
+### Useful Diagnostic Commands
 
 ```bash
-# MySQLCheck — check all databases / Проверка всех баз данных
+# MySQLCheck — check all databases
 mysqlcheck -u root -p<PASSWORD> --all-databases --check
 
-# Check InnoDB tables / Проверка таблиц InnoDB
+# Check InnoDB tables
 mysqlcheck -u root -p<PASSWORD> --all-databases --check --extended
 
-# Check for galera inconsistencies in logs / Поиск несоответствий Galera в логах
+# Check for galera inconsistencies in logs
 sudo grep -i 'inconsistent\|conflict\|deadlock' /var/log/mysql/error.log | tail -50
 
-# Verify binary log integrity / Проверка целостности бинарных логов
+# Verify binary log integrity
 mysqlbinlog /var/log/mysql/mysql-bin.000001 | head -50
 
-# Show binary log list / Список бинарных логов
+# Show binary log list
 mysql -u root -p -e "SHOW BINARY LOGS;"
 
-# Purge old binary logs / Очистка старых бинарных логов
+# Purge old binary logs
 mysql -u root -p -e "PURGE BINARY LOGS TO 'mysql-bin.<LAST_SAFE_LOG>';"
 mysql -u root -p -e "PURGE BINARY LOGS BEFORE NOW() - INTERVAL 7 DAY;"
 ```
@@ -716,7 +716,7 @@ mysql -u root -p -e "PURGE BINARY LOGS BEFORE NOW() - INTERVAL 7 DAY;"
 > [!CAUTION]
 > Only purge binary logs after verifying all cluster nodes have applied them (`wsrep_last_applied` >= log position). Premature purge may force a full SST on lag nodes.
 
-### Runbook: Recovering a Crashed Cluster (All Nodes Down) / Восстановление после полного падения кластера
+### Runbook: Recovering a Crashed Cluster (All Nodes Down)
 
 > [!WARNING]
 > Only use this runbook when **all nodes** are down. Never bootstrap a node that may have stale data.
@@ -755,20 +755,20 @@ mysql -u root -p -e "PURGE BINARY LOGS BEFORE NOW() - INTERVAL 7 DAY;"
    sudo systemctl start mysql
    ```
 
-### pt-toolkit Integration / Интеграция pt-toolkit
+### pt-toolkit Integration
 
 ```bash
-# Install Percona Toolkit / Установить Percona Toolkit
+# Install Percona Toolkit
 sudo apt install -y percona-toolkit
 
-# Check table checksums for consistency across nodes / Проверка контрольных сумм таблиц
+# Check table checksums for consistency across nodes
 pt-table-checksum \
     --host=<IP_NODE1> \
     --user=<USER> \
     --password=<PASSWORD> \
     --databases=<DB_NAME>
 
-# Sync inconsistent tables / Синхронизация несогласованных таблиц
+# Sync inconsistent tables
 pt-table-sync \
     --execute \
     --host=<IP_NODE1> \
@@ -776,10 +776,10 @@ pt-table-sync \
     --password=<PASSWORD> \
     --databases=<DB_NAME>
 
-# Analyze slow queries / Анализ медленных запросов
+# Analyze slow queries
 pt-query-digest /var/log/mysql/slow.log | head -100
 
-# Check for duplicate indexes / Поиск дублирующих индексов
+# Check for duplicate indexes
 pt-duplicate-key-checker \
     --host=<IP_NODE1> \
     --user=<USER> \

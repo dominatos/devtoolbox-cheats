@@ -12,18 +12,18 @@ tags:
 > **Bash Loops** — built-in shell constructs (`for`, `while`, `until`) for iterating over files, numbers, arrays, and command output. These are not standalone programs but fundamental parts of Bash (Bourne-Again SHell), the default shell on most Linux systems. Loops are essential for scripting automation, batch processing, retry logic, and monitoring. For complex orchestration, consider dedicated tools like `ansible` or `xargs --parallel`.
 
 ## Table of Contents
-- [FOR Loops](#FOR%20Loops%20/%20Циклы%20FOR)
-- [WHILE Loops](#⏳%20WHILE%20Loops%20/%20Циклы%20WHILE)
-- [UNTIL Loops](#UNTIL%20Loops%20/%20Циклы%20UNTIL)
-- [Loop Control](#Loop%20Control%20/%20Управление%20циклами)
-- [Reading Files](#Reading%20Files%20/%20Чтение%20файлов)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [FOR Loops](#FOR%20Loops)
+- [WHILE Loops](#⏳%20WHILE%20Loops)
+- [UNTIL Loops](#UNTIL%20Loops)
+- [Loop Control](#Loop%20Control)
+- [Reading Files](#Reading%20Files)
+- [Real-World Examples](#Real-World%20Examples)
 
 ---
 
-## 🔄 FOR Loops / Циклы FOR
+## 🔄 FOR Loops
 
-### Over Files / Перебор файлов
+### Over Files
 
 ```bash
 for f in *.log; do echo "$f"; done             # Iterate .log files / Перебрать .log файлы
@@ -33,7 +33,7 @@ for f in $(find . -name "*.txt"); do echo "$f"; done  # With find / С find
 for f in *.conf; do cp "$f" "$f.bak"; done     # Backup all configs / Бэкап всех конфигов
 ```
 
-### Over Numbers / Перебор чисел
+### Over Numbers
 
 ```bash
 for i in {1..5}; do echo $i; done              # Range 1-5 / Диапазон 1-5
@@ -43,7 +43,7 @@ for ((i=1; i<=5; i++)); do echo $i; done       # C-style loop / Цикл в ст
 for ((i=0; i<10; i+=2)); do echo $i; done      # C-style with step / С шагом
 ```
 
-### Over Arrays / Перебор массивов
+### Over Arrays
 
 ```bash
 arr=("apple" "banana" "cherry")
@@ -51,7 +51,7 @@ for item in "${arr[@]}"; do echo "$item"; done # Iterate array / Перебра�
 for i in "${!arr[@]}"; do echo "$i: ${arr[$i]}"; done  # With indices / С индексами
 ```
 
-### Over Command Output / По выводу команды
+### Over Command Output
 
 ```bash
 for user in $(cut -d: -f1 /etc/passwd); do echo "$user"; done  # All users / Все пользователи
@@ -61,9 +61,9 @@ for pod in $(kubectl get pods -o name); do kubectl describe "$pod"; done  # K8s 
 
 ---
 
-## ⏳ WHILE Loops / Циклы WHILE
+## ⏳ WHILE Loops
 
-### Basic While / Базовый while
+### Basic While
 
 ```bash
 i=1
@@ -73,7 +73,7 @@ while [ $i -le 5 ]; do
 done                                           # Counter 1-5 / Счётчик 1-5
 ```
 
-### Read from File / Чтение из файла
+### Read from File
 
 ```bash
 while read -r line; do
@@ -81,7 +81,7 @@ while read -r line; do
 done < file.txt                                # Read file lines / Читать построчно
 ```
 
-### Infinite Loops / Бесконечные циклы
+### Infinite Loops
 
 ```bash
 while :; do
@@ -97,7 +97,7 @@ while true; do
 done                                           # Alternative infinite / Альтернативный бесконечный
 ```
 
-### Conditional While / Условный while
+### Conditional While
 
 ```bash
 while pgrep -x "nginx" > /dev/null; do
@@ -115,9 +115,9 @@ done                                           # Wait for network / Ждать �
 
 ---
 
-## 🔁 UNTIL Loops / Циклы UNTIL
+## 🔁 UNTIL Loops
 
-### Basic Until / Базовый until
+### Basic Until
 
 ```bash
 i=1
@@ -127,7 +127,7 @@ until [ $i -gt 5 ]; do
 done                                           # Run until condition true / Пока условие ЛОЖНО
 ```
 
-### Wait for Condition / Ожидание условия
+### Wait for Condition
 
 ```bash
 until curl -sf http://localhost:8080/health > /dev/null; do
@@ -145,9 +145,9 @@ done                                           # Wait for file / Ждать фа
 
 ---
 
-## 🎮 Loop Control / Управление циклами
+## 🎮 Loop Control
 
-### Break / Прерывание
+### Break
 
 ```bash
 for i in {1..10}; do
@@ -158,7 +158,7 @@ for i in {1..10}; do
 done                                           # Exit loop at 5 / Выход на 5
 ```
 
-### Continue / Продолжение
+### Continue
 
 ```bash
 for i in {1..10}; do
@@ -169,7 +169,7 @@ for i in {1..10}; do
 done                                           # Skip even numbers / Пропустить чётные
 ```
 
-### Nested Loops / Вложенные циклы
+### Nested Loops
 
 ```bash
 for i in {1..3}; do
@@ -181,9 +181,9 @@ done                                           # Nested iteration / Вложен
 
 ---
 
-## 📖 Reading Files / Чтение файлов
+## 📖 Reading Files
 
-### Read Lines / Чтение строк
+### Read Lines
 
 ```bash
 while IFS= read -r line; do
@@ -191,7 +191,7 @@ while IFS= read -r line; do
 done < file.txt                                # Preserve whitespace / Сохранить пробелы
 ```
 
-### Read CSV / Чтение CSV
+### Read CSV
 
 ```bash
 while IFS=',' read -r col1 col2 col3; do
@@ -199,7 +199,7 @@ while IFS=',' read -r col1 col2 col3; do
 done < data.csv                                # Parse CSV / Парсить CSV
 ```
 
-### Process Substitution / Подстановка процесса
+### Process Substitution
 
 ```bash
 while IFS= read -r f; do
@@ -207,7 +207,7 @@ while IFS= read -r f; do
 done < <(ls -1)                                # No subshell variable loss / Без потери переменных
 ```
 
-### Read with Timeout / Чтение с таймаутом
+### Read with Timeout
 
 ```bash
 while read -t 5 -r line; do
@@ -217,12 +217,12 @@ done < <(some_command)                         # 5s timeout / Таймаут 5с
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
-### System Administration / Системное администрирование
+### System Administration
 
 ```bash
-# Rotate logs / Ротация логов
+# Rotate logs
 for log in /var/log/app/*.log; do
   mv "$log" "$log.old"
   touch "$log"
@@ -230,7 +230,7 @@ done
 ```
 
 ```bash
-# Monitor services / Мониторинг сервисов
+# Monitor services
 while :; do
   if ! systemctl is-active --quiet nginx; then
     echo "Nginx down, restarting..."
@@ -241,17 +241,17 @@ done
 ```
 
 ```bash
-# Cleanup old files / Очистка старых файлов
+# Cleanup old files
 for f in $(find /tmp -name "*.tmp" -mtime +7); do
   echo "Deleting $f"
   rm "$f"
 done
 ```
 
-### Network Operations / Сетевые операции
+### Network Operations
 
 ```bash
-# Ping sweep / Проверка сети
+# Ping sweep
 for i in {1..254}; do
   {
     ip="192.168.1.$i"
@@ -262,54 +262,54 @@ wait
 ```
 
 ```bash
-# Port scan / Сканирование портов
+# Port scan
 for port in {20..30}; do
   timeout 1 bash -c "echo > /dev/tcp/<HOST>/$port" 2>/dev/null && echo "Port $port open"
 done
 ```
 
 ```bash
-# Check URLs / Проверка URL
+# Check URLs
 while IFS= read -r url; do
   status=$(curl -o /dev/null -s -w "%{http_code}" "$url")
   echo "$url: $status"
 done < urls.txt
 ```
 
-### File Processing / Обработка файлов
+### File Processing
 
 ```bash
-# Batch rename / Пакетное переименование
+# Batch rename
 for f in *.jpeg; do
   mv "$f" "${f%.jpeg}.jpg"
 done
 ```
 
 ```bash
-# Convert images / Конвертация изображений
+# Convert images
 for img in *.png; do
   convert "$img" "${img%.png}.webp"
 done
 ```
 
 ```bash
-# Extract archives / Распаковка архивов
+# Extract archives
 for archive in *.tar.gz; do
   tar -xzf "$archive" -C /dest/
 done
 ```
 
-### Database Operations / Операции с БД
+### Database Operations
 
 ```bash
-# Backup all databases / Бэкап всех БД
+# Backup all databases
 for db in $(mysql -Ne "SHOW DATABASES" | grep -v "information_schema\|performance_schema\|mysql"); do
   mysqldump "$db" | gzip > "/backup/${db}-$(date +%Y%m%d).sql.gz"
 done
 ```
 
 ```bash
-# Check DB connections / Проверка подключений к БД
+# Check DB connections
 while IFS= read -r host; do
   mysql -h "$host" -e "SELECT 1" &>/dev/null && echo "$host: OK" || echo "$host: FAIL"
 done < db_hosts.txt
@@ -322,31 +322,31 @@ done < db_hosts.txt
 > Удаление подов и контейнеров — деструктивная операция. Убедитесь, что вы работаете с нужным namespace/ресурсами.
 
 ```bash
-# Restart all pods / Перезапуск всех подов
+# Restart all pods
 for pod in $(kubectl get pods -o name -n <NAMESPACE>); do
   kubectl delete "$pod" -n <NAMESPACE>
 done
 ```
 
 ```bash
-# Cleanup old containers / Очистка старых контейнеров
+# Cleanup old containers
 for container in $(docker ps -aq); do
   docker rm -f "$container"
 done
 ```
 
 ```bash
-# Check pod status / Проверка статуса подов
+# Check pod status
 while :; do
   kubectl get pods -o wide
   sleep 10
 done
 ```
 
-### Parallel Processing / Параллельная обработка
+### Parallel Processing
 
 ```bash
-# Process files in parallel / Обработка файлов параллельно
+# Process files in parallel
 for f in *.log; do
   {
     gzip "$f"
@@ -357,7 +357,7 @@ wait                                           # Wait for all background jobs / 
 ```
 
 ```bash
-# Limited parallelism / Ограниченный параллелизм
+# Limited parallelism
 max_jobs=4
 for f in *.txt; do
   while [ $(jobs -r | wc -l) -ge $max_jobs ]; do
@@ -370,10 +370,10 @@ done
 wait
 ```
 
-### Monitoring & Alerting / Мониторинг и оповещения
+### Monitoring & Alerting
 
 ```bash
-# Watch disk space / Мониторинг дискового пространства
+# Watch disk space
 while :; do
   usage=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
   if [ "$usage" -gt 90 ]; then
@@ -384,7 +384,7 @@ done
 ```
 
 ```bash
-# Monitor log for errors / Мониторинг логов на ошибки
+# Monitor log for errors
 tail -f /var/log/app.log | while read -r line; do
   if echo "$line" | grep -q "ERROR"; then
     echo "Error detected: $line"
@@ -392,10 +392,10 @@ tail -f /var/log/app.log | while read -r line; do
 done
 ```
 
-### Advanced Patterns / Продвинутые шаблоны
+### Advanced Patterns
 
 ```bash
-# Counter with timeout / Счётчик с таймаутом
+# Counter with timeout
 timeout=10
 counter=0
 while [ $counter -lt $timeout ]; do
@@ -409,7 +409,7 @@ done
 ```
 
 ```bash
-# Retry logic / Логика повтора
+# Retry logic
 max_retries=3
 retry=0
 until some_command || [ $retry -eq $max_retries ]; do
@@ -420,7 +420,7 @@ done
 ```
 
 ```bash
-# Interactive menu / Интерактивное меню
+# Interactive menu
 options=("Start" "Stop" "Restart" "Exit")
 while :; do
   for i in "${!options[@]}"; do
@@ -436,7 +436,7 @@ done
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [Bash Reference Manual — Looping Constructs](https://www.gnu.org/software/bash/manual/html_node/Looping-Constructs.html)
 - [Bash Reference Manual (full)](https://www.gnu.org/software/bash/manual/bash.html)

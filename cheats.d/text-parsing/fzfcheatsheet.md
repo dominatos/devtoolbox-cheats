@@ -12,24 +12,24 @@ tags:
 > **fzf** (Fuzzy Finder) — a general-purpose, interactive command-line fuzzy finder written in Go by Junegunn Choi. It reads lines from stdin and provides an interactive, filterable selection interface. Commonly used for file navigation, command history search, process management, Git workflows, and as a building block for custom shell functions. Actively maintained with frequent releases; no known alternatives match its versatility.
 
 ## Table of Contents
-- [Basics](#Basics%20/%20Основы)
-- [File & Directory Navigation](#File%20&%20Directory%20Navigation%20/%20Навигация%20по%20файлам%20и%20каталогам)
-- [Command History](#Command%20History%20/%20История%20команд)
-- [Git Integration](#Git%20Integration%20/%20Интеграция%20с%20Git)
-- [Process Management](#Process%20Management%20/%20Управление%20процессами)
-- [Custom Preview](#️%20Custom%20Preview%20/%20Настраиваемый%20предпросмотр)
+- [Basics](#Basics)
+- [File & Directory Navigation](#File%20&%20Directory%20Navigation)
+- [Command History](#Command%20History)
+- [Git Integration](#Git%20Integration)
+- [Process Management](#Process%20Management)
+- [Custom Preview](#️%20Custom%20Preview)
 - [Docker & Kubernetes](#Docker%20&%20Kubernetes)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Advanced Techniques](#Advanced%20Techniques%20/%20Продвинутые%20техники)
-- [Keybindings & Options](#Keybindings%20&%20Options%20/%20Клавиатурные%20сокращения%20и%20опции)
-- [Color Schemes](#Color%20Schemes%20/%20Цветовые%20схемы)
-- [Search Modes](#Search%20Modes%20/%20Режимы%20поиска)
-- [Performance](#Performance%20/%20Производительность)
-- [Installation](#️%20Installation%20/%20Установка)
+- [Real-World Examples](#Real-World%20Examples)
+- [Advanced Techniques](#Advanced%20Techniques)
+- [Keybindings & Options](#Keybindings%20&%20Options)
+- [Color Schemes](#Color%20Schemes)
+- [Search Modes](#Search%20Modes)
+- [Performance](#Performance)
+- [Installation](#️%20Installation)
 
 ---
 
-## 📖 Basics / Основы
+## 📖 Basics
 
 ```bash
 fzf                                            # Interactive fuzzy finder / Интерактивный нечёткий поиск
@@ -45,7 +45,7 @@ fzf --exit-0                                   # Auto-exit if no matches / Ав�
 
 ---
 
-## 📁 File & Directory Navigation / Навигация по файлам и каталогам
+## 📁 File & Directory Navigation
 
 ```bash
 fd -t f | fzf                                  # Find and select file / Найти и выбрать файл
@@ -59,7 +59,7 @@ fd . | fzf --preview 'tree -C {} | head -100'  # Tree preview for dirs / Дер�
 
 ---
 
-## 📜 Command History / История команд
+## 📜 Command History
 
 ```bash
 history | fzf                                  # Search command history / Поиск по истории команд
@@ -70,7 +70,7 @@ fc -l 1 | fzf | awk '{print $2}'               # Alternative history / Альт�
 
 ---
 
-## 🌿 Git Integration / Интеграция с Git
+## 🌿 Git Integration
 
 ```bash
 git branch | fzf | xargs -r git checkout       # Switch branch / Переключить ветку
@@ -85,7 +85,7 @@ git reflog | fzf | awk '{print $1}' | xargs -r git checkout  # Browse reflog / �
 
 ---
 
-## 🔄 Process Management / Управление процессами
+## 🔄 Process Management
 
 > [!WARNING]
 > `kill -9` forcefully terminates processes without cleanup. Use with caution.
@@ -101,7 +101,7 @@ journalctl -u $(systemctl list-units --type=service | fzf | awk '{print $1}')  #
 
 ---
 
-## 🖼️ Custom Preview / Настраиваемый предпросмотр
+## 🖼️ Custom Preview
 
 ```bash
 fzf --preview 'cat {}'                         # File content preview / Предпросмотр содержимого
@@ -129,66 +129,66 @@ kubectl get pods -o name | fzf | xargs -r kubectl delete  # Delete pod / Уда�
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
 ```bash
-# Select and edit config file / Выбор и редактирование конфига
+# Select and edit config file
 fd -e conf -e yaml -e yml /etc | fzf | xargs -r $EDITOR
 
-# Select and tail log file / Выбор и просмотр лога
+# Select and tail log file
 find /var/log -name "*.log" | fzf | xargs -r tail -f
 
-# Kill process by name / Убить процесс по имени
+# Kill process by name
 ps aux | fzf --header 'Select process to kill' | awk '{print $2}' | xargs -r kill -9
 
-# SSH to host / SSH на хост
+# SSH to host / SSH
 cat ~/.ssh/config | grep "^Host " | awk '{print $2}' | fzf | xargs -r ssh
 
-# Change directory / Сменить каталог
+# Change directory
 cd $(fd -t d | fzf)
 
-# Git checkout with preview / Git checkout с предпросмотром
+# Git checkout with preview / Git checkout
 git branch -a | sed 's/^* //' | sed 's/remotes\/origin\///' | sort -u | fzf --preview 'git log --oneline --color=always {}' | xargs -r git checkout
 
-# Select and compress files / Выбор и сжатие файлов
+# Select and compress files
 fd -t f | fzf -m | xargs -r tar -czf archive.tar.gz
 
-# Find and remove old files / Найти и удалить старые файлы
+# Find and remove old files
 find . -name "*.tmp" -mtime +7 | fzf -m --preview 'ls -lh {}' | xargs -r rm
 
-# Browse and edit recent files / Просмотр и редактирование недавних файлов
+# Browse and edit recent files
 find . -type f -mtime -7 | fzf --preview 'bat --color=always {}' | xargs -r $EDITOR
 ```
 
 ---
 
-## 🔧 Advanced Techniques / Продвинутые техники
+## 🔧 Advanced Techniques
 
 ```bash
-# With ripgrep for content search / С ripgrep для поиска по содержимому
+# With ripgrep for content search
 rg --files-with-matches "" | fzf --preview 'rg --pretty --context 3 {q} {}'
 
-# Interactive file manager / Интерактивный файловый менеджер
+# Interactive file manager
 fd . | fzf --bind 'enter:execute($EDITOR {})'
 
-# Multi-select with custom actions / Множественный выбор с действиями
+# Multi-select with custom actions
 fd -t f | fzf -m --bind 'ctrl-d:execute(rm {}),ctrl-e:execute($EDITOR {})'
 
-# Environment variable selector / Выбор переменной окружения
+# Environment variable selector
 env | fzf | cut -d= -f1
 
-# Select and copy to clipboard / Выбор и копирование в буфер
+# Select and copy to clipboard
 fd -t f | fzf | xargs -r cat | xclip -selection clipboard
 
-# Kill process by port / Убить процесс по порту
+# Kill process by port
 lsof -ti:$(seq 1 65535 | fzf) | xargs -r kill -9
 ```
 
 ---
 
-## 💡 Keybindings & Options / Клавиатурные сокращения и опции
+## 💡 Keybindings & Options
 
-### Default Keybindings / Стандартные сочетания
+### Default Keybindings
 
 | Key | Action / Действие |
 |-----|-------------------|
@@ -199,7 +199,7 @@ lsof -ti:$(seq 1 65535 | fzf) | xargs -r kill -9
 | `Ctrl-Space` | Toggle selection (multi-select) / Переключить выбор |
 | `Ctrl-/` | Toggle preview / Переключить предпросмотр |
 
-### Custom Keybindings / Пользовательские сочетания
+### Custom Keybindings
 
 ```bash
 fzf --bind 'ctrl-a:select-all,ctrl-d:deselect-all'  # Select all/none / Выбрать все/ничего
@@ -210,7 +210,7 @@ fzf --bind 'ctrl-r:reload(fd -t f)'                # Reload results / Перез
 
 ---
 
-## 🎨 Color Schemes / Цветовые схемы
+## 🎨 Color Schemes
 
 ```bash
 fzf --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9       # Dracula theme / Тема Dracula
@@ -221,7 +221,7 @@ fzf --color=16                                     # 16-color scheme / 16-цве
 
 ---
 
-## 🔍 Search Modes / Режимы поиска
+## 🔍 Search Modes
 
 ```bash
 fzf --exact                                        # Exact match / Точное совпадение
@@ -234,7 +234,7 @@ fzf --with-nth 2..                                 # Display from field 2 / По
 
 ---
 
-## 🚀 Performance / Производительность
+## 🚀 Performance
 
 ```bash
 fzf --algo=v2                                      # Use v2 algorithm / Использовать алгоритм v2
@@ -244,7 +244,7 @@ fzf --tiebreak=index                               # Tiebreaker strategy / Ст�
 
 ---
 
-## ⚙️ Installation / Установка
+## ⚙️ Installation
 
 ```bash
 # Ubuntu/Debian
@@ -262,7 +262,7 @@ brew install fzf
 # From Git (latest)
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
-# Check version / Проверить версию
+# Check version
 fzf --version
 ```
 
@@ -272,7 +272,7 @@ fzf --version
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [fzf — GitHub repository](https://github.com/junegunn/fzf)
 - [fzf Wiki — Examples](https://github.com/junegunn/fzf/wiki/examples)

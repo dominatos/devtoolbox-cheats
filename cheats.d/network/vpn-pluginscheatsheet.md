@@ -20,44 +20,44 @@ Comprehensive guide to installing and configuring VPN plugins for NetworkManager
 - [L2TP/IPSec](#L2TP/IPSec)
 - [PPTP](#PPTP)
 - [WireGuard](#WireGuard)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
+- [Troubleshooting](#Troubleshooting)
+- [Comparison Tables](#Comparison%20Tables)
 
 ---
 
 ## OpenVPN
 
-### Install OpenVPN Plugin / Установка плагина OpenVPN
+### Install OpenVPN Plugin
 
 #### Debian / Ubuntu
 ```bash
 sudo apt update && sudo apt install -y openvpn network-manager-openvpn network-manager-openvpn-gnome
-# Install OpenVPN + NetworkManager plugin / Установить OpenVPN + плагин NM
+# Install OpenVPN + NetworkManager plugin
 ```
 
 #### RHEL / Fedora
 ```bash
 sudo dnf install -y openvpn NetworkManager-openvpn NetworkManager-openvpn-gnome
-# Install OpenVPN + NetworkManager plugin / Установить OpenVPN + плагин NM
+# Install OpenVPN + NetworkManager plugin
 ```
 
-### Import OpenVPN Configuration / Импорт конфигурации OpenVPN
+### Import OpenVPN Configuration
 ```bash
 nmcli connection import type openvpn file <CONFIG>.ovpn  # Import .ovpn file / Импортировать .ovpn
 ```
 
-### Connect via CLI / Подключиться через CLI
+### Connect via CLI
 ```bash
 nmcli connection up <VPN_NAME>    # Connect to VPN / Подключиться к VPN
 nmcli connection down <VPN_NAME>  # Disconnect from VPN / Отключиться от VPN
 ```
 
-### Connect via GUI / Подключиться через GUI
+### Connect via GUI
 1. Open **NetworkManager applet** (system tray)
 2. Select **VPN Connections → <VPN_NAME>**
 3. Enter credentials if prompted
 
-### Standalone OpenVPN (without NetworkManager) / Автономный OpenVPN
+### Standalone OpenVPN (without NetworkManager)
 ```bash
 sudo openvpn --config <CONFIG>.ovpn  # Connect via OpenVPN CLI / Подключиться через OpenVPN CLI
 ```
@@ -66,21 +66,21 @@ sudo openvpn --config <CONFIG>.ovpn  # Connect via OpenVPN CLI / Подключ�
 
 ## OpenConnect (Cisco AnyConnect)
 
-### Install OpenConnect Plugin / Установка плагина OpenConnect
+### Install OpenConnect Plugin
 
 #### Debian / Ubuntu
 ```bash
 sudo apt update && sudo apt install -y openconnect network-manager-openconnect network-manager-openconnect-gnome
-# Install OpenConnect + NetworkManager plugin / Установить OpenConnect + плагин NM
+# Install OpenConnect + NetworkManager plugin
 ```
 
 #### RHEL / Fedora
 ```bash
 sudo dnf install -y openconnect NetworkManager-openconnect NetworkManager-openconnect-gnome
-# Install OpenConnect + NetworkManager plugin / Установить OpenConnect + плагин NM
+# Install OpenConnect + NetworkManager plugin
 ```
 
-### Create OpenConnect VPN (GUI) / Создать OpenConnect VPN (GUI)
+### Create OpenConnect VPN (GUI)
 1. Open **nm-connection-editor**
 2. Click **Add** → Select **Cisco AnyConnect Compatible VPN (openconnect)**
 3. Enter:
@@ -88,12 +88,12 @@ sudo dnf install -y openconnect NetworkManager-openconnect NetworkManager-openco
    - **Authentication:** Username/password or certificate
 4. Click **Save**
 
-### Connect via CLI / Подключиться через CLI
+### Connect via CLI
 ```bash
 nmcli connection up <VPN_NAME>  # Connect to VPN / Подключиться к VPN
 ```
 
-### Standalone OpenConnect / Автономный OpenConnect
+### Standalone OpenConnect
 ```bash
 sudo openconnect <VPN_SERVER>  # Connect via OpenConnect CLI / Подключиться через OpenConnect CLI
 sudo openconnect --user=<USER> <VPN_SERVER>  # Connect with username / Подключиться с именем пользователя
@@ -105,9 +105,9 @@ sudo openconnect --user=<USER> <VPN_SERVER>  # Connect with username / Подк�
 
 Fortinet VPN offers multiple client options: **FortiClient** (official GUI), **openfortivpn** (CLI), and **openfortigui** (GUI wrapper for openfortivpn).
 
-### FortiClient (Official) / FortiClient (официальный)
+### FortiClient (Official) / FortiClient
 
-#### Install FortiClient / Установка FortiClient
+#### Install FortiClient
 
 **Ubuntu/Debian:**
 ```bash
@@ -124,14 +124,14 @@ wget -O forticlient.rpm https://links.fortinet.com/forticlient/rpm/vpnagent  # D
 sudo dnf install -y ./forticlient.rpm  # Install FortiClient / Установить FortiClient
 ```
 
-#### Launch FortiClient / Запустить FortiClient
+#### Launch FortiClient
 ```bash
 forticlient  # Launch FortiClient GUI / Запустить FortiClient GUI
 ```
 
-### openfortivpn (CLI) / openfortivpn (командная строка)
+### openfortivpn (CLI) / openfortivpn
 
-#### Install openfortivpn / Установка openfortivpn
+#### Install openfortivpn
 
 **Debian / Ubuntu:**
 ```bash
@@ -143,7 +143,7 @@ sudo apt update && sudo apt install -y openfortivpn  # Install openfortivpn / У
 sudo dnf install -y openfortivpn  # Install openfortivpn / Установить openfortivpn
 ```
 
-#### Create Configuration File / Создать файл конфигурации
+#### Create Configuration File
 `/etc/openfortivpn/config`
 
 ```ini
@@ -158,7 +158,7 @@ trusted-cert = <CERT_FINGERPRINT>  # Optional: pin certificate / Опциона�
 sudo chmod 600 /etc/openfortivpn/config  # Secure permissions / Безопасные права
 ```
 
-#### Connect via openfortivpn / Подключиться через openfortivpn
+#### Connect via openfortivpn
 ```bash
 sudo openfortivpn  # Connect using /etc/openfortivpn/config / Подключиться используя /etc/openfortivpn/config
 sudo openfortivpn <VPN_SERVER>:<PORT> -u <USER>  # Connect with inline args / Подключиться с аргументами
@@ -167,9 +167,9 @@ sudo openfortivpn <VPN_SERVER>:<PORT> -u <USER>  # Connect with inline args / П
 > [!TIP]
 > Use `--trusted-cert` to pin SSL certificate fingerprint for enhanced security.
 
-### openfortigui (GUI for openfortivpn) / openfortigui (GUI для openfortivpn)
+### openfortigui (GUI for openfortivpn) / openfortigui (GUI
 
-#### Install openfortigui / Установка openfortigui
+#### Install openfortigui
 
 **Debian / Ubuntu:**
 ```bash
@@ -191,7 +191,7 @@ make
 sudo make install
 ```
 
-#### Launch openfortigui / Запустить openfortigui
+#### Launch openfortigui
 ```bash
 openfortigui  # Launch GUI / Запустить GUI
 ```
@@ -206,15 +206,15 @@ openfortigui  # Launch GUI / Запустить GUI
 3. Click **Save**
 4. Click **Connect**
 
-### NetworkManager Fortinet Plugin / Плагин Fortinet для NetworkManager
+### NetworkManager Fortinet Plugin
 
-#### Install NetworkManager Fortinet Plugin / Установка плагина
+#### Install NetworkManager Fortinet Plugin
 ```bash
 sudo apt install -y network-manager-fortisslvpn network-manager-fortisslvpn-gnome  # Debian/Ubuntu
 sudo dnf install -y NetworkManager-fortisslvpn NetworkManager-fortisslvpn-gnome  # RHEL/Fedora
 ```
 
-#### Create Fortinet VPN (GUI) / Создать Fortinet VPN (GUI)
+#### Create Fortinet VPN (GUI)
 1. Open **nm-connection-editor**
 2. Click **Add** → Select **Fortinet SSLVPN**
 3. Enter:
@@ -227,21 +227,21 @@ sudo dnf install -y NetworkManager-fortisslvpn NetworkManager-fortisslvpn-gnome 
 
 ## L2TP/IPSec
 
-### Install L2TP/IPSec Plugin / Установка плагина L2TP/IPSec
+### Install L2TP/IPSec Plugin
 
 #### Debian / Ubuntu
 ```bash
 sudo apt update && sudo apt install -y network-manager-l2tp network-manager-l2tp-gnome strongswan-nm
-# Install L2TP plugin + strongSwan / Установить плагин L2TP + strongSwan
+# Install L2TP plugin + strongSwan
 ```
 
 #### RHEL / Fedora
 ```bash
 sudo dnf install -y NetworkManager-l2tp NetworkManager-l2tp-gnome strongswan
-# Install L2TP plugin + strongSwan / Установить плагин L2TP + strongSwan
+# Install L2TP plugin + strongSwan
 ```
 
-### Create L2TP VPN (GUI) / Создать L2TP VPN (GUI)
+### Create L2TP VPN (GUI)
 1. Open **nm-connection-editor**
 2. Click **Add** → Select **Layer 2 Tunneling Protocol (L2TP)**
 3. Enter:
@@ -259,25 +259,25 @@ sudo dnf install -y NetworkManager-l2tp NetworkManager-l2tp-gnome strongswan
 > [!WARNING]
 > PPTP is insecure and deprecated. Use OpenVPN, WireGuard, or L2TP/IPSec instead.
 
-### Install PPTP Plugin / Установка плагина PPTP
+### Install PPTP Plugin
 
 #### Debian / Ubuntu
 ```bash
 sudo apt update && sudo apt install -y network-manager-pptp network-manager-pptp-gnome
-# Install PPTP plugin / Установить плагин PPTP
+# Install PPTP plugin
 ```
 
 #### RHEL / Fedora
 ```bash
 sudo dnf install -y NetworkManager-pptp NetworkManager-pptp-gnome
-# Install PPTP plugin / Установить плагин PPTP
+# Install PPTP plugin
 ```
 
 ---
 
 ## WireGuard
 
-### Install WireGuard / Установка WireGuard
+### Install WireGuard
 ```bash
 # Debian / Ubuntu
 sudo apt update && sudo apt install -y wireguard  # Install WireGuard / Установить WireGuard
@@ -286,7 +286,7 @@ sudo apt update && sudo apt install -y wireguard  # Install WireGuard / Уста
 sudo dnf install -y wireguard-tools  # Install WireGuard / Установить WireGuard
 ```
 
-### Import WireGuard Configuration / Импорт конфигурации WireGuard
+### Import WireGuard Configuration
 ```bash
 nmcli connection import type wireguard file /path/to/<CONFIG>.conf  # Import config / Импортировать конфигурацию
 nmcli connection up <WG_NAME>  # Connect / Подключиться
@@ -297,31 +297,31 @@ nmcli connection up <WG_NAME>  # Connect / Подключиться
 
 ---
 
-## Troubleshooting / Устранение неполадок
+## Troubleshooting
 
-### Common VPN Issues / Типичные проблемы VPN
+### Common VPN Issues
 ```bash
-# VPN connection fails / VPN соединение не устанавливается
+# VPN connection fails / VPN
 journalctl -u NetworkManager -f  # Watch NetworkManager logs / Смотреть логи NetworkManager
 nmcli connection show <VPN_NAME>  # View connection details / Просмотреть детали соединения
 
-# DNS not working over VPN / DNS не работает через VPN
+# DNS not working over VPN / DNS
 nmcli connection modify <VPN_NAME> ipv4.dns-priority -50  # Prioritize VPN DNS / Приоритет VPN DNS
 nmcli connection modify <VPN_NAME> ipv4.ignore-auto-dns no  # Use VPN DNS / Использовать VPN DNS
 nmcli connection up <VPN_NAME>  # Reconnect / Переподключиться
 
-# Certificate errors (OpenConnect, Fortinet) / Ошибки сертификата
+# Certificate errors (OpenConnect, Fortinet)
 nmcli connection modify <VPN_NAME> vpn.data "cert-pass-flags=0"  # Disable cert validation / Отключить валидацию
 ```
 
-### Enable VPN Debug Logging / Включить отладочное логирование VPN
+### Enable VPN Debug Logging
 ```bash
 sudo nmcli general logging level DEBUG domains VPN  # Enable VPN debug / Включить отладку VPN
 journalctl -u NetworkManager -f  # Watch logs / Смотреть логи
 sudo nmcli general logging level INFO domains VPN  # Restore normal logging / Восстановить обычное логирование
 ```
 
-### Test VPN Connection / Проверить VPN соединение
+### Test VPN Connection
 ```bash
 curl ifconfig.me  # Check public IP before VPN / Проверить IP до VPN
 nmcli connection up <VPN_NAME>  # Connect to VPN / Подключиться к VPN
@@ -330,9 +330,9 @@ curl ifconfig.me  # Check public IP after VPN / Проверить IP после
 
 ---
 
-## Comparison Tables / Таблицы сравнения
+## Comparison Tables
 
-### VPN Protocols Comparison / Сравнение VPN протоколов
+### VPN Protocols Comparison
 
 | Protocol | Security | Speed | Use Case | NAT Traversal |
 | :--- | :--- | :--- | :--- | :--- |
@@ -343,7 +343,7 @@ curl ifconfig.me  # Check public IP after VPN / Проверить IP после
 | **Fortinet SSLVPN** | High / Высокая | High / Высокая | FortiGate appliances / Устройства FortiGate | Good / Хорошее |
 | **PPTP** | **Insecure** / **Небезопасно** | High / Высокая | **Deprecated** / **Устарело** | Excellent / Отличное |
 
-### Fortinet VPN Tools Comparison / Сравнение инструментов Fortinet VPN
+### Fortinet VPN Tools Comparison
 
 | Tool | Interface | Installation | NetworkManager Integration | Best For |
 | :--- | :--- | :--- | :--- | :--- |
@@ -352,7 +352,7 @@ curl ifconfig.me  # Check public IP after VPN / Проверить IP после
 | **openfortigui** | GUI (Qt) | Standard repos / Стандартные репозитории | No / Нет | Desktop, open-source preference / Десктоп, open-source |
 | **NM Fortinet Plugin** | NM integration | Standard repos / Стандартные репозитории | Yes / Да | Seamless NM integration / Плавная интеграция с NM |
 
-### Installation Comparison / Сравнение установки
+### Installation Comparison
 
 | VPN Type | Package (Debian/Ubuntu) | Package (RHEL/Fedora) |
 | :--- | :--- | :--- |

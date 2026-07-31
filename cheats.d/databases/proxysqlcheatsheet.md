@@ -11,7 +11,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Description](#Description)
 2. [Installation & Configuration](#Installation%20&%20Configuration)
@@ -30,13 +30,13 @@ tags:
 
 ## Description
 
-### What is ProxySQL / Что такое ProxySQL
+### What is ProxySQL
 
 **ProxySQL** is a high-performance, open-source MySQL protocol-aware proxy. It sits between application servers and MySQL/MariaDB/Percona backends, providing intelligent query routing, connection pooling, query caching, and real-time traffic management — all without application code changes.
 
 **ProxySQL** — высокопроизводительный, открытый прокси-сервер с поддержкой протокола MySQL. Он располагается между серверами приложений и бэкендами MySQL/MariaDB/Percona, обеспечивая интеллектуальную маршрутизацию запросов, пул соединений, кэширование запросов и управление трафиком в реальном времени — без изменения кода приложений.
 
-### Common Use Cases / Типичные сценарии использования
+### Common Use Cases
 
 | Use Case / Сценарий | Description / Описание |
 |---|---|
@@ -48,13 +48,13 @@ tags:
 | **Zero-Downtime Maintenance** | Graceful drain of backends for patching / Плавный вывод backend для обслуживания |
 | **Galera/PXC Support** | Native support for Galera and Percona XtraDB Cluster / Нативная поддержка Galera и PXC |
 
-### Current Status / Текущий статус
+### Current Status
 
 ProxySQL is actively maintained and widely used in production. **ProxySQL 2.x** is the current stable branch (as of 2025). It is the de facto standard for MySQL-protocol proxying in the open-source ecosystem.
 
 ProxySQL активно поддерживается и широко используется в production. **ProxySQL 2.x** — текущая стабильная ветка (по состоянию на 2025 год). Это де-факто стандарт для проксирования MySQL-протокола в open-source экосистеме.
 
-### Alternatives / Альтернативы
+### Alternatives
 
 | Tool / Инструмент | Type / Тип | Notes / Примечания |
 |---|---|---|
@@ -67,10 +67,10 @@ ProxySQL активно поддерживается и широко испол�
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
-# Ubuntu/Debian — Official repo / Официальный репозиторий
+# Ubuntu/Debian — Official repo
 curl -fsSL https://repo.proxysql.com/ProxySQL/proxysql-2.x/repo_pub_key \
     | sudo apt-key add -
 echo "deb https://repo.proxysql.com/ProxySQL/proxysql-2.x/$(lsb_release -sc)/ ./" \
@@ -91,7 +91,7 @@ sudo dnf install -y proxysql2                        # Install ProxySQL 2.x / У
 > [!TIP]
 > ProxySQL 2.x is the current stable branch. Always pin to the 2.x repo for production use.
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -99,7 +99,7 @@ sudo dnf install -y proxysql2                        # Install ProxySQL 2.x / У
 | `6033` | MySQL traffic proxy port / Порт проксирования MySQL |
 | `6070` | REST API / HTTP Stats (ProxySQL 2.1+) |
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File / Файл | Purpose / Назначение |
 |-------------|----------------------|
@@ -110,7 +110,7 @@ sudo dnf install -y proxysql2                        # Install ProxySQL 2.x / У
 > [!IMPORTANT]
 > Once `/var/lib/proxysql/proxysql.db` exists, ProxySQL **ignores** `/etc/proxysql.cnf` on restart. All config changes must be made via the Admin interface and saved with `SAVE ... TO DISK`.
 
-### Bootstrap Config / Начальная конфигурация
+### Bootstrap Config
 
 `/etc/proxysql.cnf`
 
@@ -177,14 +177,14 @@ mysql_users=
 
 ## Core Management
 
-### Connecting to Admin Interface / Подключение к интерфейсу администратора
+### Connecting to Admin Interface
 
 ```bash
 mysql -h 127.0.0.1 -P 6032 -u <ADMIN_USER> -p<ADMIN_PASSWORD>  # Connect to ProxySQL admin / Подключиться к admin
 mysql -h 127.0.0.1 -P 6033 -u <APP_USER> -p<APP_PASSWORD>      # Connect as app user (proxied) / Подключиться как приложение
 ```
 
-### Config Layer Explanation / Уровни конфигурации
+### Config Layer Explanation
 
 ProxySQL uses a **3-layer config model** / ProxySQL использует **3 уровня конфигурации**:
 
@@ -215,7 +215,7 @@ SAVE MYSQL VARIABLES TO DISK;
 
 ## Backends & Hostgroups
 
-### Hostgroup Concept / Концепция Hostgroup
+### Hostgroup Concept
 
 Hostgroups are logical groups of MySQL servers. Traffic is routed to a hostgroup based on users, query rules, or replication topology.
 
@@ -224,7 +224,7 @@ Hostgroups are logical groups of MySQL servers. Traffic is routed to a hostgroup
 | `10` | Writer / Primary — writes go here / Запись — сюда идут записи |
 | `20` | Reader / Replica — reads go here / Чтение — сюда идут чтения |
 
-### Load Balancing Algorithms / Алгоритмы балансировки нагрузки
+### Load Balancing Algorithms
 
 ProxySQL distributes traffic within a hostgroup based on **server weight**:
 
@@ -234,7 +234,7 @@ ProxySQL distributes traffic within a hostgroup based on **server weight**:
 | **Latency-aware routing** | Enabled via `mysql-default_max_latency_ms` — avoids high-latency backends / Избегает backend с высокой задержкой | Geo-distributed replicas / Географически распределённые реплики |
 | **Max connections per backend** | `max_connections` per server — prevents overloading a single node / Лимит соединений на сервер | Mixed-capacity clusters / Кластеры с разной мощностью |
 
-### Managing MySQL Servers / Управление MySQL серверами
+### Managing MySQL Servers
 
 ```sql
 -- Add backend server / Добавить backend сервер
@@ -262,7 +262,7 @@ LOAD MYSQL SERVERS TO RUNTIME;
 SAVE MYSQL SERVERS TO DISK;
 ```
 
-### Server Status Values / Значения статуса серверов
+### Server Status Values
 
 | Status / Статус | Meaning / Значение |
 |---|---|
@@ -274,7 +274,7 @@ SAVE MYSQL SERVERS TO DISK;
 > [!CAUTION]
 > `OFFLINE_HARD` immediately kills all active connections to that backend. Use `OFFLINE_SOFT` in production to allow graceful drain.
 
-### Replication Hostgroups / Группы репликации
+### Replication Hostgroups
 
 ```sql
 -- Auto-detect writer/reader based on read_only variable / Авто-определение writer/reader по read_only
@@ -298,7 +298,7 @@ LOAD MYSQL SERVERS TO RUNTIME;
 SAVE MYSQL SERVERS TO DISK;
 ```
 
-### Health Check Types / Типы проверки здоровья
+### Health Check Types
 
 ProxySQL uses **active health checks** to monitor backend servers:
 
@@ -317,13 +317,13 @@ ProxySQL uses **active health checks** to monitor backend servers:
 
 ## Query Rules & Routing
 
-### Query Routing Concept / Концепция маршрутизации запросов
+### Query Routing Concept
 
 | Rule Priority / Приоритет | Use Case / Применение |
 |---|---|
 | Lower `rule_id` = processed first / Меньший `rule_id` = обрабатывается первым | Order rules from most specific to most general |
 
-### Common Query Rules / Типичные правила маршрутизации
+### Common Query Rules
 
 ```sql
 -- Route SELECT (reads) to replicas (hostgroup 20) / Направить SELECT на реплики
@@ -351,7 +351,7 @@ LOAD MYSQL QUERY RULES TO RUNTIME;
 SAVE MYSQL QUERY RULES TO DISK;
 ```
 
-### Query Rules Field Reference / Поля правил запросов
+### Query Rules Field Reference
 
 | Field / Поле | Description / Описание |
 |---|---|
@@ -364,7 +364,7 @@ SAVE MYSQL QUERY RULES TO DISK;
 | `apply` | Stop rule processing after match / Остановить обработку правил |
 | `mirror_hostgroup` | Mirror queries to another hostgroup / Зеркалировать запросы |
 
-### Query Cache / Кэш запросов
+### Query Cache
 
 ```sql
 -- Enable query cache for specific rule (TTL=30s) / Включить кэш запросов на 30 секунд
@@ -383,7 +383,7 @@ SAVE MYSQL QUERY RULES TO DISK;
 
 ## Connection Pooling
 
-### Connection Pool Overview / Обзор пула соединений
+### Connection Pool Overview
 
 ProxySQL uses a **multiplexing connection pool**: many client connections share fewer backend connections.
 
@@ -399,7 +399,7 @@ SELECT * FROM stats.stats_mysql_connection_pool;
 -- Latency_us: backend latency in microseconds / задержка до backend
 ```
 
-### Tuning Pool Parameters / Настройка параметров пула
+### Tuning Pool Parameters
 
 ```sql
 -- Set connection pool parameters per hostgroup / Настройка на hostgroup
@@ -421,7 +421,7 @@ SAVE MYSQL VARIABLES TO DISK;
 
 ## Sysadmin Operations
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start proxysql          # Start service / Запустить сервис
@@ -435,7 +435,7 @@ sudo systemctl reload proxysql         # Reload config (not always safe) / Пе�
 > [!CAUTION]
 > `systemctl restart proxysql` in production will drop all active client connections. Always use `LOAD ... TO RUNTIME` for zero-downtime config changes.
 
-### Runbook: Zero-Downtime Config Change / Изменение конфигурации без простоя
+### Runbook: Zero-Downtime Config Change
 
 1. **Connect to admin / Подключиться к admin:**
    ```bash
@@ -463,7 +463,7 @@ sudo systemctl reload proxysql         # Reload config (not always safe) / Пе�
    SAVE MYSQL QUERY RULES TO DISK;
    ```
 
-### Runbook: Drain & Remove a Backend / Плавный вывод backend из эксплуатации
+### Runbook: Drain & Remove a Backend
 
 1. **Set server to OFFLINE_SOFT / Плавное отключение:**
    ```sql
@@ -487,7 +487,7 @@ sudo systemctl reload proxysql         # Reload config (not always safe) / Пе�
    SAVE MYSQL SERVERS TO DISK;
    ```
 
-### Logs & Paths / Логи и пути
+### Logs & Paths
 
 | Type / Тип | Path / Путь |
 |------------|-------------|
@@ -497,7 +497,7 @@ sudo systemctl reload proxysql         # Reload config (not always safe) / Пе�
 | Stats DB / База статистики | `/var/lib/proxysql/proxysql_stats.db` |
 | Bootstrap Config / Начальный конфиг | `/etc/proxysql.cnf` |
 
-### Network & Firewall / Сеть и брандмауэр
+### Network & Firewall
 
 ```bash
 # Default ports: 6032 (admin), 6033 (proxy), 6070 (REST stats)
@@ -518,7 +518,7 @@ sudo firewall-cmd --permanent --add-port=6032/tcp && sudo firewall-cmd --reload
 
 ## Security
 
-### Monitor User Setup / Настройка пользователя мониторинга
+### Monitor User Setup
 
 ProxySQL requires a **dedicated monitor user** on all MySQL backends to check health.
 
@@ -537,7 +537,7 @@ LOAD MYSQL VARIABLES TO RUNTIME;
 SAVE MYSQL VARIABLES TO DISK;
 ```
 
-### Application User Management / Управление пользователями приложения
+### Application User Management
 
 ```sql
 -- Add app user (must match MySQL backend user) / Добавить пользователя приложения
@@ -555,7 +555,7 @@ SAVE MYSQL USERS TO DISK;
 > [!IMPORTANT]
 > The user credentials in `mysql_users` must exactly match those on the MySQL backends. ProxySQL forwards the auth to the backend and must authenticate successfully.
 
-### Admin Credentials Update / Обновление учётных данных администратора
+### Admin Credentials Update
 
 ```sql
 -- Update admin password / Обновить пароль администратора
@@ -564,7 +564,7 @@ LOAD ADMIN VARIABLES TO RUNTIME;
 SAVE ADMIN VARIABLES TO DISK;
 ```
 
-### SSL/TLS to Backends / SSL/TLS до backend серверов
+### SSL/TLS to Backends / SSL/TLS
 
 `/etc/proxysql.cnf`
 
@@ -589,7 +589,7 @@ SAVE MYSQL SERVERS TO DISK;
 
 ## Monitoring & Stats
 
-### Key Stats Tables / Ключевые таблицы статистики
+### Key Stats Tables
 
 > All stats are in the `stats` schema within the admin interface.
 
@@ -622,7 +622,7 @@ FROM monitor.mysql_server_read_only_log
 ORDER BY time_start_us DESC LIMIT 20;
 ```
 
-### Query Digest Analysis / Анализ дайджестов запросов
+### Query Digest Analysis
 
 ```sql
 -- Reset query digest stats / Сбросить статистику дайджестов
@@ -640,7 +640,7 @@ FROM stats.stats_mysql_global
 WHERE variable_name LIKE 'Query_Cache%';
 ```
 
-### Backend Health / Состояние backend серверов
+### Backend Health
 
 ```sql
 -- Check backend health status / Проверить состояние backend серверов
@@ -658,7 +658,7 @@ ORDER BY time_start_us DESC LIMIT 10;
 
 ## Backup & Restore
 
-### Backup Methods Comparison / Сравнение методов резервирования
+### Backup Methods Comparison
 
 | Method / Метод | What / Что | Notes / Примечания |
 |---|---|---|
@@ -666,41 +666,41 @@ ORDER BY time_start_us DESC LIMIT 10;
 | Admin SQL export / Экспорт SQL | `mysqldump` via admin port 6032 | Can script individual tables / Можно выгрузить отдельные таблицы |
 | `/etc/proxysql.cnf` export | Manual recreation / Ручное воссоздание | Use only for initial bootstrap / Только для первого запуска |
 
-### Runbook: Backup ProxySQL Config / Резервное копирование конфигурации
+### Runbook: Backup ProxySQL Config
 
 ```bash
-# 1. Stop service before copying SQLite DB / Остановить перед копированием SQLite
+# 1. Stop service before copying SQLite DB
 sudo systemctl stop proxysql
 
-# 2. Backup the SQLite runtime DB / Резервная копия рабочей БД
+# 2. Backup the SQLite runtime DB
 sudo cp /var/lib/proxysql/proxysql.db \
     /backup/proxysql/proxysql.db.$(date +%Y%m%d_%H%M%S)                 # Backup with timestamp / С меткой времени
 
-# 3. Start again / Запустить снова
+# 3. Start again
 sudo systemctl start proxysql
 ```
 
 ```bash
-# Hot backup via admin SQL (no downtime) / Горячий бэкап через SQL (без простоя)
+# Hot backup via admin SQL (no downtime)
 mysql -h 127.0.0.1 -P 6032 -u <ADMIN_USER> -p<ADMIN_PASSWORD> \
     -e "SAVE MYSQL SERVERS TO DISK; SAVE MYSQL USERS TO DISK; \
         SAVE MYSQL QUERY RULES TO DISK; SAVE MYSQL VARIABLES TO DISK;"
 sudo cp /var/lib/proxysql/proxysql.db /backup/proxysql/proxysql.db.$(date +%Y%m%d)
 ```
 
-### Runbook: Restore ProxySQL Config / Восстановление конфигурации
+### Runbook: Restore ProxySQL Config
 
 ```bash
-# 1. Stop service / Остановить сервис
+# 1. Stop service
 sudo systemctl stop proxysql
 
-# 2. Replace SQLite DB with backup / Заменить рабочую БД резервной копией
+# 2. Replace SQLite DB with backup
 sudo cp /backup/proxysql/proxysql.db.<TIMESTAMP> /var/lib/proxysql/proxysql.db
 
-# 3. Start service / Запустить сервис
+# 3. Start service
 sudo systemctl start proxysql
 
-# 4. Verify config loaded correctly / Проверить загрузку конфигурации
+# 4. Verify config loaded correctly
 mysql -h 127.0.0.1 -P 6032 -u <ADMIN_USER> -p<ADMIN_PASSWORD> \
     -e "SELECT hostgroup_id, hostname, port, status FROM mysql_servers;"
 ```
@@ -709,9 +709,9 @@ mysql -h 127.0.0.1 -P 6032 -u <ADMIN_USER> -p<ADMIN_PASSWORD> \
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### Backend unreachable / Backend недоступен
+#### Backend unreachable / Backend
 
 ```sql
 -- Check connect errors / Проверить ошибки подключения
@@ -724,7 +724,7 @@ ORDER BY time_start_us DESC LIMIT 20;
 SHOW VARIABLES LIKE 'mysql-monitor%';
 ```
 
-#### All traffic going to writer, reads not routed / Весь трафик на мастер
+#### All traffic going to writer, reads not routed
 
 ```sql
 -- Check if read rules are active / Проверить активность правил чтения
@@ -737,7 +737,7 @@ ORDER BY rule_id;
 SELECT hostgroup_id, hostname, port, status FROM mysql_servers WHERE hostgroup_id=20;
 ```
 
-#### High connection count / Большое количество соединений
+#### High connection count
 
 ```sql
 -- Find top connection consumers / Найти потребителей соединений
@@ -749,7 +749,7 @@ SELECT hostgroup, srv_host, ConnUsed, ConnFree,
 FROM stats.stats_mysql_connection_pool;
 ```
 
-#### Slow queries / Медленные запросы
+#### Slow queries
 
 ```sql
 -- Top queries by total time / Топ запросов по суммарному времени
@@ -762,7 +762,7 @@ ORDER BY sum_time DESC
 LIMIT 20;
 ```
 
-### Useful Admin Commands / Полезные команды администратора
+### Useful Admin Commands
 
 ```sql
 -- Show all running queries / Все активные запросы
@@ -784,14 +784,14 @@ SELECT @@version;
 SELECT * FROM global_variables;
 ```
 
-### ProxySQL CLI Utility / Утилита proxysql
+### ProxySQL CLI Utility
 
 ```bash
-# Reload/reinitialize from config file (deletes proxysql.db!) / Пересоздать БД из конфига
-# WARNING: Destructive! All DISK config will be replaced / ВНИМАНИЕ: Удаляет текущую конфигурацию
+# Reload/reinitialize from config file (deletes proxysql.db!)
+# WARNING: Destructive! All DISK config will be replaced
 sudo proxysql --initial -c /etc/proxysql.cnf                 # Reinit from proxysql.cnf / Пересоздать из proxysql.cnf
 
-# Start in foreground for debugging / Запустить на переднем плане для отладки
+# Start in foreground for debugging
 sudo proxysql --foreground -D /var/lib/proxysql               # Foreground mode / Режим переднего плана
 ```
 

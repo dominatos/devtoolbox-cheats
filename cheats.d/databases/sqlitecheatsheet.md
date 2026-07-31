@@ -11,7 +11,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Description](#Description)
 2. [Installation & Configuration](#Installation%20&%20Configuration)
@@ -26,13 +26,13 @@ tags:
 
 ## Description
 
-### What is SQLite / Что такое SQLite
+### What is SQLite
 
 **SQLite** is a self-contained, serverless, zero-configuration, transactional SQL database engine. It is the most widely deployed database engine in the world — embedded in virtually every smartphone, web browser, operating system, and countless applications.
 
 **SQLite** — автономный, бессерверный, транзакционный движок SQL-баз данных, не требующий настройки. Это самый распространённый движок баз данных в мире — встроен практически в каждый смартфон, браузер, операционную систему и множество приложений.
 
-### Common Use Cases / Типичные сценарии использования
+### Common Use Cases
 
 | Use Case / Сценарий | Description / Описание |
 |---|---|
@@ -43,13 +43,13 @@ tags:
 | **Data analysis** | Lightweight analytics on CSV/TSV imports / Лёгкий анализ данных на импортированных CSV |
 | **ProxySQL runtime DB** | ProxySQL stores its configuration in SQLite / ProxySQL хранит конфигурацию в SQLite |
 
-### Current Status / Текущий статус
+### Current Status
 
 SQLite is actively maintained and is one of the most stable, battle-tested software projects in existence. The developers have committed to supporting it until **at least 2050**. It is **not legacy** — it is the gold standard for embedded/serverless SQL databases.
 
 SQLite активно поддерживается и является одним из самых стабильных и проверенных временем программных проектов. Разработчики обязались поддерживать его как минимум до **2050 года**. Это **не устаревшее ПО** — это золотой стандарт для встроенных/бессерверных SQL-баз данных.
 
-### When NOT to Use SQLite / Когда НЕ стоит использовать SQLite
+### When NOT to Use SQLite
 
 | Scenario / Сценарий | Recommended Alternative / Рекомендуемая альтернатива |
 |---|---|
@@ -66,7 +66,7 @@ SQLite активно поддерживается и является одни�
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Ubuntu/Debian
@@ -75,22 +75,22 @@ sudo apt update && sudo apt install -y sqlite3                            # Inst
 # RHEL/AlmaLinux/Rocky
 sudo dnf install -y sqlite                                                # Install SQLite / Установка SQLite
 
-# From source / Из исходников
+# From source
 wget https://www.sqlite.org/2025/sqlite-autoconf-<VERSION>.tar.gz
 tar -xzf sqlite-autoconf-<VERSION>.tar.gz
 cd sqlite-autoconf-<VERSION>/
 ./configure && make && sudo make install                                  # Compile and install / Компиляция и установка
 ```
 
-### Check Version / Проверка версии
+### Check Version
 
 ```bash
 sqlite3 --version                                                         # Check SQLite version / Проверить версию
-# Sample output / Пример вывода:
+# Sample output
 # 3.45.1 2024-01-30 16:01:20
 ```
 
-### Key Characteristics / Ключевые характеристики
+### Key Characteristics
 
 | Feature / Характеристика | Value / Значение |
 |---|---|
@@ -107,7 +107,7 @@ sqlite3 --version                                                         # Chec
 
 ## Core Management
 
-### Database Operations / Операции с базами
+### Database Operations
 
 ```bash
 sqlite3 <FILE>.db                                                         # Open/create database / Открыть/создать базу
@@ -115,7 +115,7 @@ sqlite3 <FILE>.db '.databases'                                            # Show
 sqlite3 <FILE>.db '.quit'                                                 # Exit / Выйти
 ```
 
-### Table Operations / Операции с таблицами
+### Table Operations
 
 ```sql
 .tables                                                                   -- List tables / Список таблиц
@@ -131,7 +131,7 @@ ALTER TABLE <TABLE> RENAME TO <NEW_TABLE>;                                -- Ren
 > [!WARNING]
 > SQLite does **not** support `ALTER TABLE DROP COLUMN` in versions below 3.35.0 (2021-03-12). You must recreate the table without the column in older versions.
 
-### CRUD Operations / Операции CRUD
+### CRUD Operations
 
 ```sql
 INSERT INTO users (name) VALUES ('Alice');                                -- Insert row / Вставить строку
@@ -141,7 +141,7 @@ DELETE FROM users WHERE id = 1;                                           -- Del
 SELECT COUNT(*) FROM <TABLE>;                                             -- Count rows / Подсчитать строки
 ```
 
-### Indexes / Индексы
+### Indexes
 
 ```sql
 CREATE INDEX idx_name ON users(name);                                     -- Create index / Создать индекс
@@ -150,7 +150,7 @@ CREATE UNIQUE INDEX idx_email ON users(email);                            -- Uni
 DROP INDEX idx_name;                                                      -- Drop index / Удалить индекс
 ```
 
-### Transactions / Транзакции
+### Transactions
 
 ```sql
 BEGIN TRANSACTION;                                                        -- Start transaction / Начать транзакцию
@@ -166,7 +166,7 @@ ROLLBACK;                                                                 -- Rol
 > [!TIP]
 > Wrapping bulk `INSERT` operations in a transaction is **dramatically faster** (~50x). Without `BEGIN/COMMIT`, each `INSERT` is auto-committed as a separate transaction with an `fsync()` call.
 
-### Views / Представления
+### Views
 
 ```sql
 CREATE VIEW active_users AS                                               -- Create view / Создать представление
@@ -177,7 +177,7 @@ SELECT * FROM active_users;                                               -- Que
 DROP VIEW active_users;                                                   -- Drop view / Удалить представление
 ```
 
-### Triggers / Триггеры
+### Triggers
 
 ```sql
 CREATE TRIGGER log_delete AFTER DELETE ON users                           -- Create trigger / Создать триггер
@@ -189,7 +189,7 @@ END;
 DROP TRIGGER log_delete;                                                  -- Drop trigger / Удалить триггер
 ```
 
-### sqlite3 CLI Commands / Команды CLI
+### sqlite3 CLI Commands
 
 ```sql
 .help                                                                     -- Show help / Справка
@@ -208,20 +208,20 @@ DROP TRIGGER log_delete;                                                  -- Dro
 .dump <TABLE>                                                             -- Dump table as SQL / Дамп таблицы в SQL
 ```
 
-### Import/Export CSV / Импорт/Экспорт CSV
+### Import/Export CSV
 
 ```bash
-# Export to CSV / Экспорт в CSV
+# Export to CSV
 sqlite3 <FILE>.db -csv -header "SELECT * FROM users;" > users.csv
 
-# Import CSV / Импорт CSV
+# Import CSV
 sqlite3 <FILE>.db <<EOF
 .mode csv
 .import users.csv users
 EOF
 ```
 
-### Attach Multiple Databases / Подключение нескольких баз
+### Attach Multiple Databases
 
 ```sql
 ATTACH DATABASE 'other.db' AS other;                                      -- Attach database / Подключить базу
@@ -236,10 +236,10 @@ DETACH DATABASE other;                                                    -- Det
 
 ## Sysadmin Operations
 
-### File Locations / Расположение файлов
+### File Locations
 
 ```bash
-# SQLite databases are just files / Базы SQLite — это просто файлы
+# SQLite databases are just files
 ls -lh *.db                                                               # List database files / Список файлов баз
 file <FILE>.db                                                            # Check file type / Проверить тип файла
 du -h <FILE>.db                                                           # Check database size / Проверить размер базы
@@ -255,7 +255,7 @@ du -h <FILE>.db                                                           # Chec
 | `<FILE>.db-shm` | Shared-memory index for WAL / Индекс разделяемой памяти для WAL |
 | `<FILE>.db-journal` | Rollback journal (DELETE mode) / Журнал отката |
 
-### Permissions / Права доступа
+### Permissions
 
 ```bash
 chmod 600 <FILE>.db                                                       # Read/write for owner only / Только владелец
@@ -266,7 +266,7 @@ chown <USER>:<GROUP> <FILE>.db                                            # Chan
 > [!IMPORTANT]
 > The process writing to SQLite must have **write permissions on both the database file AND its parent directory**. SQLite creates temporary files (`-journal`, `-wal`, `-shm`) in the same directory.
 
-### PRAGMA Commands / Команды PRAGMA
+### PRAGMA Commands
 
 ```sql
 PRAGMA database_list;                                                     -- List attached databases / Список подключенных баз
@@ -283,7 +283,7 @@ PRAGMA foreign_keys = ON;                                                 -- Ena
 PRAGMA cache_size = 10000;                                                -- Set cache size (pages) / Установить размер кэша
 ```
 
-### Journal Modes Comparison / Сравнение режимов журналирования
+### Journal Modes Comparison
 
 SQLite supports several journal modes that affect durability, performance, and concurrency:
 
@@ -299,7 +299,7 @@ SQLite supports several journal modes that affect durability, performance, and c
 > [!CAUTION]
 > `PRAGMA journal_mode = OFF` and `PRAGMA journal_mode = MEMORY` provide **no crash recovery**. Database corruption will occur if the process crashes or loses power during a write.
 
-### Synchronous Modes Comparison / Сравнение режимов синхронизации
+### Synchronous Modes Comparison
 
 | Mode / Режим | Description / Описание | Safety / Безопасность |
 |---|---|---|
@@ -310,7 +310,7 @@ SQLite supports several journal modes that affect durability, performance, and c
 > [!TIP]
 > The recommended production setup is `PRAGMA journal_mode = WAL` + `PRAGMA synchronous = NORMAL`. This gives the best performance/durability trade-off.
 
-### Performance Tuning / Настройка производительности
+### Performance Tuning
 
 ```sql
 PRAGMA journal_mode = WAL;                                                -- Enable WAL mode (better concurrency) / Режим WAL
@@ -320,14 +320,14 @@ PRAGMA mmap_size = 268435456;                                             -- Mem
 PRAGMA cache_size = -64000;                                               -- Cache size in KB (-64MB) / Размер кэша в KB
 ```
 
-### Integrity Check / Проверка целостности
+### Integrity Check
 
 ```sql
 PRAGMA integrity_check;                                                   -- Full integrity check / Полная проверка целостности
 PRAGMA quick_check;                                                       -- Quick integrity check / Быстрая проверка
 ```
 
-### Analyze & Optimize / Анализ и оптимизация
+### Analyze & Optimize
 
 ```sql
 ANALYZE;                                                                  -- Update query optimizer statistics / Обновить статистику
@@ -341,45 +341,45 @@ VACUUM;                                                                   -- Reb
 
 ## Security
 
-### Overview / Обзор
+### Overview
 
 SQLite has **no built-in authentication, users, or roles**. Security is managed entirely through **file system permissions** and optional extensions.
 
 SQLite **не имеет встроенной аутентификации, пользователей или ролей**. Безопасность обеспечивается исключительно через **права файловой системы** и опциональные расширения.
 
-### File-Level Security / Безопасность на уровне файлов
+### File-Level Security
 
 ```bash
-# Restrict to owner only / Ограничить доступ только владельцу
+# Restrict to owner only
 chmod 600 <FILE>.db                                                       # Owner read/write / Чтение/запись владельцу
 chown <USER>:<GROUP> <FILE>.db                                            # Set ownership / Установить владельца
 
-# Restrict directory access / Ограничить доступ к директории
+# Restrict directory access
 chmod 700 /path/to/db/directory/                                          # Only owner can enter / Вход только владельцу
 ```
 
-### Encryption (SQLCipher) / Шифрование (SQLCipher)
+### Encryption (SQLCipher)
 
 [SQLCipher](https://www.zetetic.net/sqlcipher/) is the de facto extension for SQLite encryption at rest:
 
 ```bash
-# Install SQLCipher / Установка SQLCipher
+# Install SQLCipher
 sudo apt install sqlcipher                                                # Ubuntu/Debian
 sudo dnf install sqlcipher                                                # RHEL/Fedora
 
-# Create encrypted database / Создать зашифрованную базу
+# Create encrypted database
 sqlcipher <FILE>.db
 > PRAGMA key = '<PASSWORD>';
 > CREATE TABLE sensitive (id INTEGER PRIMARY KEY, data TEXT);
 > .quit
 
-# Open encrypted database / Открыть зашифрованную базу
+# Open encrypted database
 sqlcipher <FILE>.db
 > PRAGMA key = '<PASSWORD>';
 > SELECT * FROM sensitive;
 ```
 
-### Foreign Key Enforcement / Применение внешних ключей
+### Foreign Key Enforcement
 
 ```sql
 PRAGMA foreign_keys = ON;                                                 -- Enable foreign key constraints / Включить ограничения FK
@@ -393,7 +393,7 @@ PRAGMA foreign_keys;                                                      -- Che
 
 ## Backup & Restore
 
-### Backup Methods Comparison / Сравнение методов резервирования
+### Backup Methods Comparison
 
 | Method / Метод | Online-safe / Онлайн-безопасный | Description / Описание |
 |---|---|---|
@@ -402,14 +402,14 @@ PRAGMA foreign_keys;                                                      -- Che
 | **`.dump` → SQL** | ✅ Yes | SQL text export, portable across versions / Текстовый SQL-экспорт |
 | **`VACUUM INTO`** | ✅ Yes (3.27+) | Creates compacted copy atomically / Атомарная компактная копия |
 
-### Simple Backup / Простой бэкап
+### Simple Backup
 
 ```bash
-# Copy file (only when DB is not in use) / Копирование файла (только когда база не используется)
+# Copy file (only when DB is not in use)
 cp <FILE>.db <FILE>_backup.db                                             # Copy database file / Копировать файл базы
 gzip -c <FILE>.db > <FILE>_backup.db.gz                                   # Compress backup / Сжатый бэкап
 
-# Restore / Восстановление
+# Restore
 cp <FILE>_backup.db <FILE>.db                                             # Restore from backup / Восстановить из бэкапа
 gunzip < <FILE>_backup.db.gz > <FILE>.db                                  # Restore from gzip / Восстановить из gzip
 ```
@@ -417,29 +417,29 @@ gunzip < <FILE>_backup.db.gz > <FILE>.db                                  # Rest
 > [!CAUTION]
 > **Never** `cp` a SQLite database while it is being written to. In WAL mode, you must also copy the `-wal` and `-shm` files together, or use `.backup` instead.
 
-### Online Backup / Онлайн бэкап
+### Online Backup
 
 ```bash
-# Using .backup command (safe while DB is in use) / Использование .backup (безопасно во время использования)
+# Using .backup command (safe while DB is in use)
 sqlite3 <FILE>.db '.backup <FILE>_backup.db'                              # Backup database / Бэкап базы
 sqlite3 <FILE>.db '.backup <FILE>_backup.sqlite'                          # Backup with different extension / Другое расширение
 
-# Using VACUUM INTO (3.27+, creates compacted copy) / Компактная копия
+# Using VACUUM INTO (3.27+, creates compacted copy)
 sqlite3 <FILE>.db "VACUUM INTO '/backup/<FILE>_backup.db';"               # Compacted backup / Компактный бэкап
 ```
 
-### Dump/Restore SQL / Дамп/Восстановление SQL
+### Dump/Restore SQL
 
 ```bash
-# Dump to SQL / Дамп в SQL
+# Dump to SQL
 sqlite3 <FILE>.db .dump > dump.sql                                        # Full database dump / Полный дамп базы
 sqlite3 <FILE>.db ".dump <TABLE>" > table_dump.sql                        # Dump single table / Дамп одной таблицы
 
-# Restore from SQL / Восстановление из SQL
+# Restore from SQL
 sqlite3 <FILE>_new.db < dump.sql                                          # Restore from dump / Восстановить из дампа
 ```
 
-### Scheduled Backups / Автоматические бэкапы
+### Scheduled Backups
 
 ```bash
 #!/bin/bash
@@ -464,42 +464,42 @@ find $BACKUP_DIR -name "*.gz" -mtime +7 -delete                           # Dele
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### Database is locked / База заблокирована
+#### Database is locked
 
 ```bash
-# Check for processes using the database / Проверить процессы использующие базу
+# Check for processes using the database
 lsof <FILE>.db
 fuser <FILE>.db
 
-# If in WAL mode, check for -wal and -shm files / В режиме WAL проверить файлы
+# If in WAL mode, check for -wal and -shm files
 ls -lh <FILE>.db*
 
-# Remove lock (only if no process is using DB) / Удалить блокировку (только если база не используется)
+# Remove lock (only if no process is using DB)
 rm <FILE>.db-shm <FILE>.db-wal
 ```
 
 > [!CAUTION]
 > Removing `-wal` and `-shm` files while a process is still writing **will cause data loss**. Always confirm with `lsof` / `fuser` first.
 
-#### Corrupt database / Поврежденная база
+#### Corrupt database
 
 ```bash
-# Try integrity check / Проверить целостность
+# Try integrity check
 sqlite3 <FILE>.db 'PRAGMA integrity_check;'
 
-# Attempt recovery / Попытка восстановления
+# Attempt recovery
 sqlite3 <FILE>.db '.dump' | sqlite3 <FILE>_recovered.db                   # Dump and restore / Дамп и восстановление
 
-# If dump fails, try recover (3.29+) / Если дамп не работает
+# If dump fails, try recover (3.29+)
 sqlite3 <FILE>.db '.recover' | sqlite3 <FILE>_recovered.db
 ```
 
 > [!TIP]
 > `.recover` (available since SQLite 3.29) extracts as much data as possible from a corrupt database, including data from pages not referenced by the schema.
 
-### Query Optimization / Оптимизация запросов
+### Query Optimization
 
 ```sql
 EXPLAIN QUERY PLAN SELECT * FROM users WHERE name = 'Alice';              -- Show query plan / План выполнения запроса
@@ -507,7 +507,7 @@ CREATE INDEX idx_name ON users(name);                                     -- Add
 ANALYZE;                                                                  -- Update statistics / Обновить статистику
 ```
 
-### Database Size / Размер базы
+### Database Size
 
 ```sql
 SELECT page_count * page_size AS size FROM pragma_page_count(), pragma_page_size(); -- Database size in bytes / Размер в байтах
@@ -518,26 +518,26 @@ du -h <FILE>.db                                                           # Huma
 ls -lh <FILE>.db                                                          # Detailed file info / Подробная информация
 ```
 
-### Vacuum to Reclaim Space / Очистка для освобождения места
+### Vacuum to Reclaim Space
 
 ```sql
 VACUUM;                                                                   -- Rebuild database and reclaim space / Перестроить и освободить место
 ```
 
 ```bash
-# Before and after vacuum / До и после vacuum
+# Before and after vacuum
 ls -lh <FILE>.db
 sqlite3 <FILE>.db 'VACUUM;'
 ls -lh <FILE>.db
 ```
 
-### Monitoring / Мониторинг
+### Monitoring
 
 ```bash
-# Watch file size changes / Отслеживать изменения размера
+# Watch file size changes
 watch -n 1 'ls -lh <FILE>.db'
 
-# Monitor active connections (check processes) / Мониторинг подключений
+# Monitor active connections (check processes)
 lsof <FILE>.db
 fuser -v <FILE>.db
 ```
@@ -546,12 +546,12 @@ fuser -v <FILE>.db
 
 ## Additional Notes
 
-### Logrotate / Ротация логов
+### Logrotate
 
 > [!NOTE]
 > SQLite is serverless and does not produce log files. Logrotate configuration is **not applicable**. If your application logs SQLite queries, configure logrotate for the **application's** log files instead.
 
-### Common SQLite Files in Production / Типичные SQLite-файлы в production
+### Common SQLite Files in Production
 
 Many popular services use SQLite internally:
 
@@ -565,7 +565,7 @@ Many popular services use SQLite internally:
 | **GNOME Tracker** | `~/.local/share/tracker/data/` |
 | **PHP/Python apps** | Application-specific paths |
 
-### SQLite vs Full RDBMS Comparison / Сравнение SQLite с полноценными СУБД
+### SQLite vs Full RDBMS Comparison
 
 | Feature / Функция | SQLite | MySQL/MariaDB | PostgreSQL |
 |---|---|---|---|

@@ -20,28 +20,28 @@ tags:
 ---
 
 ## Table of Contents
-- [Basics & Installation](#Basics%20&%20Installation%20/%20Основы%20и%20установка)
-- [Session Management](#Session%20Management%20/%20Управление%20сессиями)
-- [Window Management](#Window%20Management%20/%20Управление%20окнами)
-- [Pane Management](#Pane%20Management%20/%20Управление%20панелями)
-- [Copy Mode & Buffers](#Copy%20Mode%20&%20Buffers%20/%20Режим%20копирования%20и%20буферы)
-- [Configuration](#️%20Configuration%20/%20Настройки)
+- [Basics & Installation](#Basics%20&%20Installation)
+- [Session Management](#Session%20Management)
+- [Window Management](#Window%20Management)
+- [Pane Management](#Pane%20Management)
+- [Copy Mode & Buffers](#Copy%20Mode%20&%20Buffers)
+- [Configuration](#️%20Configuration)
 - [Key Bindings Quick Reference](#Key%20Bindings%20Quick%20Reference)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Useful Tips](#Useful%20Tips%20/%20Полезные%20советы)
+- [Real-World Examples](#Real-World%20Examples)
+- [Useful Tips](#Useful%20Tips)
 
 ---
 
-# 📘 Basics & Installation / Основы и установка
+# 📘 Basics & Installation
 
-### What is tmux? / Что такое tmux?
+### What is tmux?
 **tmux** = Terminal Multiplexer — allows you to work with multiple sessions, windows, and panes in one terminal.
 **tmux** = Терминальный мультиплексор — позволяет работать с несколькими сессиями, окнами и панелями в одном терминале.
 
 **Main prefix key** / Главная клавиша префикса: `Ctrl+b`
 All commands are executed after pressing prefix / Все команды вводятся после префикса.
 
-### tmux Components / Компоненты tmux
+### tmux Components
 
 | Component | Description (EN / RU) |
 |-----------|----------------------|
@@ -50,7 +50,7 @@ All commands are executed after pressing prefix / Все команды ввод
 | **Window** | A full-screen tab within a session / Полноэкранная вкладка внутри сессии |
 | **Pane** | A split within a window / Разделение внутри окна |
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install tmux              # Debian/Ubuntu
 sudo dnf install tmux              # RHEL/Fedora
@@ -60,9 +60,9 @@ brew install tmux                  # macOS
 
 ---
 
-# 🔧 Session Management / Управление сессиями
+# 🔧 Session Management
 
-### Basic Session Commands / Основные команды сессий
+### Basic Session Commands
 ```bash
 tmux                                      # Start new session / Запустить новую сессию
 tmux new -s <NAME>                        # Create named session / Создать именованную сессию
@@ -75,13 +75,13 @@ tmux detach                               # Detach from current session / Отс
 tmux new-session -d -s <NAME>             # Create detached session / Создать фоновую сессию
 ```
 
-### Session Switching / Переключение сессий
+### Session Switching
 ```bash
 tmux switch -t <NAME>                     # Switch to session / Переключить сессию
 tmux rename-session -t <OLD> <NEW>        # Rename session / Переименовать сессию
 ```
 
-### Key Bindings / Сочетания клавиш
+### Key Bindings
 ```
 Ctrl+b d                                  # Detach from session / Отсоединиться от сессии
 Ctrl+b D                                  # Choose session to detach / Выбор сессии для отсоединения
@@ -91,9 +91,9 @@ Ctrl+b $                                  # Rename current session / Переи�
 
 ---
 
-# 🪟 Window Management / Управление окнами
+# 🪟 Window Management
 
-### Window Commands / Команды окон
+### Window Commands
 ```
 Ctrl+b c                                  # Create new window / Создать новое окно
 Ctrl+b w                                  # List all windows / Список окон
@@ -106,22 +106,22 @@ Ctrl+b f                                  # Find window / Найти окно
 Ctrl+b 0-9                                # Switch to window N / Переключиться на окно N
 ```
 
-### Rename Window / Переименование окна
+### Rename Window
 ```bash
 tmux rename-window <NAME>                 # Rename current window / Переименовать текущее окно
 ```
 
 ---
 
-# 🔲 Pane Management / Управление панелями
+# 🔲 Pane Management
 
-### Split Panes / Разделение панелей
+### Split Panes
 ```
 Ctrl+b %                                  # Split vertically / Вертикальный сплит
 Ctrl+b "                                  # Split horizontally / Горизонтальный сплит
 ```
 
-### Navigate Panes / Навигация между панелями
+### Navigate Panes
 ```
 Ctrl+b ↑↓←→                               # Move between panes / Перемещение между панелями
 Ctrl+b o                                  # Next pane / Следующая панель
@@ -129,7 +129,7 @@ Ctrl+b ;                                  # Last active pane / Предыдущ�
 Ctrl+b q                                  # Show pane numbers / Показать номера панелей
 ```
 
-### Manage Panes / Управление панелями
+### Manage Panes
 ```
 Ctrl+b x                                  # Kill current pane / Удалить панель
 Ctrl+b z                                  # Toggle zoom pane / Развернуть/свернуть панель
@@ -138,7 +138,7 @@ Ctrl+b {                                  # Move pane left / Перемести�
 Ctrl+b }                                  # Move pane right / Переместить панель вправо
 ```
 
-### Resize Panes / Изменение размера панелей
+### Resize Panes
 ```
 Ctrl+b Alt+↑↓←→                           # Resize pane / Изменить размер панели
 Ctrl+b Space                              # Change layout / Сменить раскладку
@@ -151,9 +151,9 @@ Ctrl+b M-5                                # Tiled layout / Мозаичная р
 
 ---
 
-# 📋 Copy Mode & Buffers / Режим копирования и буферы
+# 📋 Copy Mode & Buffers
 
-### Copy Mode / Режим копирования
+### Copy Mode
 ```
 Ctrl+b [                                  # Enter copy mode / Войти в режим копирования
 ↑ ↓ PgUp PgDn                             # Scroll / Пролистывать экран
@@ -162,7 +162,7 @@ Enter                                     # Copy selected text / Копиров�
 Ctrl+b ]                                  # Paste buffer / Вставить буфер
 ```
 
-### Buffer Management / Управление буферами
+### Buffer Management
 ```bash
 tmux show-buffer                          # Show buffer content / Показать содержимое буфера
 tmux save-buffer <FILE>                   # Save buffer to file / Сохранить буфер в файл
@@ -172,36 +172,36 @@ tmux paste-buffer                         # Paste buffer / Вставить бу
 
 ---
 
-# ⚙️ Configuration / Настройки
+# ⚙️ Configuration
 
-### Configuration File / Файл конфигурации
+### Configuration File
 `~/.tmux.conf`
 
 ```bash
-# Performance / Производительность
+# Performance
 set -sg escape-time 0                     # Remove prefix delay / Убрать задержку префикса
 set -g history-limit 10000                # History limit / Лимит истории
 
-# Mouse Support / Поддержка мыши
+# Mouse Support
 set -g mouse on                           # Enable mouse / Включить мышь
 
-# Indexing / Нумерация
+# Indexing
 set -g base-index 1                       # Window start from 1 / Нумерация окон с 1
 setw -g pane-base-index 1                 # Pane start from 1 / Нумерация панелей с 1
 
-# Prefix Key / Клавиша префикса
+# Prefix Key
 unbind C-b                                # Unbind default prefix / Отвязать стандартный префикс
 set -g prefix C-a                         # Set new prefix to Ctrl+a / Установить новый префикс Ctrl+a
 bind C-a send-prefix                      # Forward prefix / Передать префикс
 
-# Status Bar / Строка состояния
+# Status Bar
 set -g status-bg black                    # Status bar background / Фон строки состояния
 set -g status-fg white                    # Status bar foreground / Цвет текста
 set -g status-left "#S"                   # Show session name left / Показать имя сессии слева
 set -g status-right "%Y-%m-%d %H:%M"      # Show time right / Показать время справа
 ```
 
-### Reload Configuration / Перезагрузка конфигурации
+### Reload Configuration
 ```bash
 tmux source-file ~/.tmux.conf             # Reload config / Перезагрузить конфигурацию
 ```
@@ -215,20 +215,20 @@ Inside tmux command prompt (`Ctrl+b :`):
 
 ## Key Bindings Quick Reference
 
-### General / Общие
+### General
 ```
 Ctrl+b ?                                  # Show all key bindings / Показать все сочетания клавиш
 Ctrl+b t                                  # Show clock / Показать часы
 Ctrl+b :                                  # Command prompt / Командная строка
 ```
 
-### Custom Commands / Дополнительные команды
+### Custom Commands
 ```bash
 tmux list-keys                            # List all key bindings / Список всех сочетаний клавиш
 tmux info                                 # Show session info / Показать информацию о сессии
 ```
 
-### Default Shortcuts Summary / Краткая справка по сочетаниям
+### Default Shortcuts Summary
 
 | Shortcut | Action (EN / RU) |
 |----------|-----------------|
@@ -244,71 +244,71 @@ tmux info                                 # Show session info / Показать
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+# 🌟 Real-World Examples
 
-### Quick Start Workflow / Быстрый старт
+### Quick Start Workflow
 ```bash
-# Create development session / Создать сессию для разработки
+# Create development session
 tmux new -s dev
 
-# Create windows / Создать окна
+# Create windows
 Ctrl+b c                                  # New window for editor / Новое окно для редактора
 Ctrl+b c                                  # New window for terminal / Новое окно для терминала
 
-# Split panes / Разделить панели
+# Split panes
 Ctrl+b %                                  # Vertical split / Вертикальный сплит
 
-# Detach and reattach / Отсоединиться и подключиться обратно
+# Detach and reattach
 Ctrl+b d                                  # Detach / Отсоединиться
 tmux attach -t dev                        # Reattach / Подключиться обратно
 ```
 
-### Development Environment / Среда разработки
+### Development Environment
 ```bash
-# Create project session with 3 windows / Создать проектную сессию с 3 окнами
+# Create project session with 3 windows
 tmux new -s project
 tmux rename-window editor
 tmux new-window -n servers
 tmux new-window -n logs
 
-# Split panes for monitoring / Разделить панели для мониторинга
+# Split panes for monitoring
 Ctrl+b %                                  # Split for logs / Разделить для логов
 ```
 
-### Remote Server Management / Управление удалённым сервером
+### Remote Server Management
 ```bash
-# SSH to server and create session / SSH на сервер и создать сессию
+# SSH to server and create session / SSH
 ssh user@<SERVER>
 tmux new -s maintenance
 
 # Work safely - connection drops won't kill session
-# Работать безопасно - разрыв соединения не убьёт сессию
+#
 
-# Reconnect later / Переподключиться позже
+# Reconnect later
 ssh user@<SERVER>
 tmux attach -t maintenance
 ```
 
-### Pair Programming / Парное программирование
+### Pair Programming
 ```bash
-# User 1: Create shared session / Пользователь 1: Создать общую сессию
+# User 1: Create shared session
 tmux new -s shared
 
-# User 2: Attach to same session / Пользователь 2: Подключиться к той же сессии
+# User 2: Attach to same session
 ssh <USER>@<HOST>
 tmux attach -t shared
 ```
 
-### Kill Detached Sessions / Удалить отсоединённые сессии
+### Kill Detached Sessions
 ```bash
-# Remove all detached sessions / Удалить все отсоединённые сессии
+# Remove all detached sessions
 tmux ls | grep -v attached | cut -d: -f1 | xargs -n1 tmux kill-session -t
 ```
 
-### Scripted Session Setup / Скриптовая настройка сессии
+### Scripted Session Setup
 ```bash
 #!/bin/bash
-# Create a full development environment / Создать полное окружение разработки
+# Create a full development environment
 tmux new-session -d -s dev -n editor
 tmux send-keys -t dev:editor 'vim .' C-m
 tmux new-window -t dev -n server
@@ -321,9 +321,9 @@ tmux attach -t dev
 
 ---
 
-# 💡 Useful Tips / Полезные советы
+# 💡 Useful Tips
 
-### Aliases / Алиасы
+### Aliases
 
 Add to `~/.bashrc` or `~/.zshrc`:
 
@@ -334,7 +334,7 @@ alias tls='tmux ls'                      # Quick list / Быстрый спис�
 alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удаление
 ```
 
-### Terminal Multiplexer Comparison / Сравнение мультиплексоров
+### Terminal Multiplexer Comparison
 
 | Tool | Description (EN / RU) | Best For |
 |------|----------------------|----------|
@@ -343,7 +343,7 @@ alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удал�
 | **Zellij** | Modern Rust-based workspace / Современный workspace на Rust | New users, built-in layouts |
 | **byobu** | tmux/screen wrapper / Обёртка для tmux/screen | Enhanced UI out of the box |
 
-### Best Practices / Лучшие практики
+### Best Practices
 
 - Always name your sessions / Всегда именуйте сессии
 - Use mouse mode for easier navigation / Используйте режим мыши для лёгкой навигации
@@ -351,7 +351,7 @@ alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удал�
 - Use tmux on remote servers / Используйте tmux на удалённых серверах
 - Detach instead of closing / Отсоединяйтесь вместо закрытия
 
-### Common Issues / Распространённые проблемы
+### Common Issues
 
 | Issue | Solution (EN / RU) |
 |-------|-------------------|
@@ -359,7 +359,7 @@ alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удал�
 | Wrong colors | `set -g default-terminal "screen-256color"` in `.tmux.conf` / Установить 256-цветный терминал |
 | Clipboard not working | Install `xclip` (Linux) or use `pbcopy` (macOS) / Установить `xclip` или использовать `pbcopy` |
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File | Description (EN / RU) |
 |------|----------------------|
@@ -368,7 +368,7 @@ alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удал�
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **tmux:** https://github.com/tmux/tmux/wiki
 - **tmux Man Page:** `man tmux`

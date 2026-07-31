@@ -18,7 +18,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Overview](#1.%20Overview)
 2. [Install Docker](#2.%20Install%20Docker)
@@ -44,7 +44,7 @@ tags:
 > - Logs saved and optionally sent to CrowdSec community blocklist / Логи сохраняются и отправляются в CrowdSec
 > - Optional web dashboard and GeoIP visualization / Опциональная веб-панель и визуализация GeoIP
 
-### Architecture / Архитектура
+### Architecture
 
 ```text
 Internet
@@ -81,7 +81,7 @@ docker --version                                          # Verify install / П�
 > Open firewall for the new SSH port **before** disconnecting from the current session!
 > Откройте порт в файрволе **до** отключения от текущей сессии!
 
-### Edit SSH Config / Редактирование конфига SSH
+### Edit SSH Config
 
 `/etc/ssh/sshd_config`
 
@@ -89,7 +89,7 @@ docker --version                                          # Verify install / П�
 Port 2222
 ```
 
-### Apply Changes / Применить изменения
+### Apply Changes
 
 ```bash
 sudo ufw allow 2222/tcp                                   # Open firewall / Открыть файрвол
@@ -115,7 +115,7 @@ docker ps                                                 # Check container / П
 ## 5. Save Honeypot Logs
 
 ```bash
-# Run with persistent logs / Запуск с постоянными логами
+# Run with persistent logs
 docker run -d --name cowrie \
   -p 22:2222 \
   -v /opt/cowrie/log:/cowrie/var/log/cowrie \
@@ -183,7 +183,7 @@ sudo iptables -L -n                                        # Firewall rules / П
 sudo cscli bouncers list                                   # Registered bouncers / Зарегистрированные bouncer'ы
 ```
 
-### Useful Commands / Полезные команды
+### Useful Commands
 
 ```bash
 sudo cscli alerts list -o human                            # Top attackers / Топ атакующих

@@ -38,23 +38,23 @@ Red Hat **OpenShift Container Platform (OCP)** is an enterprise-grade Kubernetes
 
 ## Authentication & Context
 
-### Login / Вход
+### Login
 
 ```bash
-# Login via Token / Вход по токену
+# Login via Token
 oc login --token=<TOKEN> --server=https://api.<CLUSTER>:6443
 
-# Login with User/Pass / Вход по логину/паролю
+# Login with User/Pass
 oc login -u <USER> -p <PASSWORD> https://api.<CLUSTER>:6443
 
-# Login as System Admin (if certs available) / Вход как админ
+# Login as System Admin (if certs available)
 export KUBECONFIG=<PATH_TO_KUBECONFIG>
 oc whoami                                          # Show current user / Показать текущего пользователя
 oc whoami --show-server                            # Show API server / Показать API сервер
 oc whoami --show-token                             # Show current token / Показать текущий токен
 ```
 
-### Project Management / Управление проектами (Namespaces)
+### Project Management
 
 ```bash
 oc project <PROJECT_NAME>                          # Switch project / Переключить проект
@@ -73,7 +73,7 @@ oc project                                         # Show current project / По
 
 The `oc` CLI is a superset of `kubectl` — all `kubectl` commands work with `oc`. Below are OpenShift-specific commands and aliases. / CLI `oc` — надмножество `kubectl`. Ниже — команды, специфичные для OpenShift.
 
-### Get Resources / Получение ресурсов
+### Get Resources
 
 ```bash
 oc get pods                                        # List pods / Список pod-ов
@@ -85,7 +85,7 @@ oc get bc                                          # BuildConfig / Конфиг�
 oc get is                                          # ImageStreams / Потоки образов
 ```
 
-### Logs & Exec / Логи и вход
+### Logs & Exec
 
 ```bash
 oc logs -f <POD_NAME>                              # Container logs (follow) / Логи контейнера
@@ -97,7 +97,7 @@ oc exec -it <POD_NAME> -- /bin/bash                # Exec bash / Выполни�
 > [!TIP]
 > `oc rsh` is more convenient than `kubectl exec -it` — it defaults to `/bin/sh` and requires fewer flags. / `oc rsh` удобнее `kubectl exec -it` — по умолчанию `/bin/sh` и требует меньше флагов.
 
-### Resource Creation / Создание ресурсов
+### Resource Creation
 
 ```bash
 oc new-app nginx                                   # Deploy app from image / Развернуть из образа
@@ -113,20 +113,20 @@ oc expose svc/<SERVICE_NAME>                       # Create route for service / 
 > [!IMPORTANT]
 > Admin operations require `cluster-admin` or equivalent privileges. / Админские операции требуют привилегий `cluster-admin`.
 
-### Node Management / Управление узлами
+### Node Management
 
 ```bash
 oc get nodes                                       # List nodes / Список узлов
 oc describe node <NODE_NAME>                       # Node details / Детали узла
 oc debug node/<NODE_NAME>                          # Debug node (mounts host OS) / Отладка узла
-# → chroot /host                                   # Access host filesystem / Доступ к ФС хоста
+# → chroot /host                                   # Access host filesystem
 oc adm top nodes                                   # Node resource usage / Использование ресурсов нод
 oc adm cordon <NODE_NAME>                          # Mark unschedulable / Запретить планирование
 oc adm uncordon <NODE_NAME>                        # Enable scheduling / Разрешить планирование
 oc adm drain <NODE_NAME> --ignore-daemonsets       # Drain node / Освободить ноду
 ```
 
-### Policy & Users / Политики и пользователи
+### Policy & Users
 
 ```bash
 oc adm policy add-cluster-role-to-user cluster-admin <USER>  # Add cluster admin / Дать админа
@@ -135,7 +135,7 @@ oc adm policy add-scc-to-user anyuid -z default -n <PROJECT> # Add SCC to SA / �
 oc get clusterrolebindings | grep <USER>                     # Check user roles / Проверить роли пользователя
 ```
 
-### Cluster Management / Управление кластером
+### Cluster Management
 
 ```bash
 oc get clusterversion                              # Cluster version / Версия кластера
@@ -148,7 +148,7 @@ oc get machineconfigpool                           # MachineConfigPool status / 
 
 ## Builds & Deployments
 
-### OpenShift-specific Resources / Ресурсы, специфичные для OpenShift
+### OpenShift-specific Resources
 
 | Resource | Description (EN / RU) | Use Case / Best for... |
 | :--- | :--- | :--- |
@@ -158,16 +158,16 @@ oc get machineconfigpool                           # MachineConfigPool status / 
 | **Route** | External access (HTTP/HTTPS) / Внешний доступ | Alternative to Ingress, TLS termination. |
 
 ```bash
-# Start a build / Запустить сборку
+# Start a build
 oc start-build <BUILD_CONFIG>
 
-# Start build from local directory / Сборка из локальной директории
+# Start build from local directory
 oc start-build <BUILD_CONFIG> --from-dir=.
 
-# Cancel a build / Отменить сборку
+# Cancel a build
 oc cancel-build <BUILD_NAME>
 
-# Rollout / deployment management / Управление деплойментом
+# Rollout / deployment management
 oc rollout latest dc/<APP_NAME>                    # Trigger new rollout / Запустить новое развёртывание
 oc rollout status dc/<APP_NAME>                    # Rollout status / Статус развёртывания
 oc rollout undo dc/<APP_NAME>                      # Rollback / Откат
@@ -181,20 +181,20 @@ oc rollout undo dc/<APP_NAME>                      # Rollback / Откат
 ## Routes & Networking
 
 ```bash
-# Create route / Создать маршрут
+# Create route
 oc expose svc/<SERVICE_NAME>                       # HTTP route / HTTP маршрут
 oc create route edge --service=<SERVICE_NAME>      # HTTPS route (edge TLS) / HTTPS маршрут
 
-# Manage routes / Управление маршрутами
+# Manage routes
 oc get routes                                      # List routes / Список маршрутов
 oc describe route <ROUTE_NAME>                     # Route details / Детали маршрута
 oc delete route <ROUTE_NAME>                       # Delete route / Удалить маршрут
 
-# Get route URL / Получить URL маршрута
+# Get route URL
 oc get route <ROUTE_NAME> -o jsonpath='{.spec.host}'
 ```
 
-### Route vs Ingress / Маршруты vs Ingress
+### Route vs Ingress
 
 | Feature | Route (OpenShift) | Ingress (Kubernetes) |
 | :--- | :--- | :--- |
@@ -207,7 +207,7 @@ oc get route <ROUTE_NAME> -o jsonpath='{.spec.host}'
 
 ## Security
 
-### Security Context Constraints (SCC) / Ограничения контекста безопасности
+### Security Context Constraints (SCC)
 
 SCCs are OpenShift's extension of Kubernetes PodSecurityPolicies (now PodSecurityStandards). / SCC — расширение Kubernetes PodSecurityPolicies.
 
@@ -218,7 +218,7 @@ oc adm policy add-scc-to-user anyuid -z <SA_NAME> -n <PROJECT>  # Grant SCC / В
 oc adm policy who-can use scc anyuid               # Who has SCC / Кто имеет SCC
 ```
 
-### OAuth & Identity / OAuth и идентификация
+### OAuth & Identity / OAuth
 
 ```bash
 oc get oauth cluster -o yaml                       # OAuth config / Конфигурация OAuth
@@ -232,7 +232,7 @@ oc adm groups add-users <GROUP_NAME> <USER>        # Add user to group / Доб�
 
 ## Troubleshooting & Tools
 
-### Events & Diagnostics / События и диагностика
+### Events & Diagnostics
 
 ```bash
 oc get events --sort-by='.lastTimestamp'            # Recent events / Последние события
@@ -241,7 +241,7 @@ oc adm node-logs <NODE_NAME> -u kubelet            # Node kubelet logs / Лог�
 oc adm must-gather                                 # Collect diagnostic data / Собрать диагностику
 ```
 
-### Image Streams & Registry / Потоки образов и реестр
+### Image Streams & Registry
 
 ```bash
 oc get is -n openshift                             # OpenShift base images / Базовые образы OpenShift
@@ -249,20 +249,20 @@ oc describe is <IMAGE_STREAM> -n openshift         # IS details / Детали I
 oc import-image <IMAGE>:<TAG> --from=<REGISTRY>/<IMAGE>:<TAG> --confirm  # Import image / Импорт образа
 ```
 
-### Internal Registry / Внутренний реестр
+### Internal Registry
 
 ```bash
-# Login to internal registry / Вход во внутренний реестр
+# Login to internal registry
 oc registry login
 
-# Get registry URL / Получить URL реестра
+# Get registry URL
 oc registry info
 
-# Push image to internal registry / Отправить образ во внутренний реестр
+# Push image to internal registry
 podman push <IMAGE> $(oc registry info)/<PROJECT>/<IMAGE>:<TAG>
 ```
 
-### Common Issues Quick Reference / Краткий справочник проблем
+### Common Issues Quick Reference
 
 | Issue / Проблема | Fix / Решение |
 | :--- | :--- |
@@ -276,7 +276,7 @@ podman push <IMAGE> $(oc registry info)/<PROJECT>/<IMAGE>:<TAG>
 
 ## Sysadmin Essentials
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path / Путь | Description / Описание |
 | :--- | :--- |
@@ -285,7 +285,7 @@ podman push <IMAGE> $(oc registry info)/<PROJECT>/<IMAGE>:<TAG>
 | `/etc/origin/` | Legacy OpenShift 3.x config / Конфигурация OpenShift 3.x (устаревшее) |
 | `/var/log/containers/` | Container logs on node / Логи контейнеров на ноде |
 
-### oc vs kubectl Comparison / Сравнение oc и kubectl
+### oc vs kubectl Comparison
 
 | Feature | `oc` | `kubectl` |
 | :--- | :--- | :--- |

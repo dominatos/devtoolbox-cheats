@@ -30,7 +30,7 @@ SSH tunneling (port forwarding) allows you to securely route network traffic thr
 
 ## SSH Tunnel Basics
 
-### Common SSH Tunnel Flags / Распространённые флаги SSH-туннелей
+### Common SSH Tunnel Flags
 ```bash
 -L [local_port]:[remote_host]:[remote_port]  # Local port forwarding / Локальный порт форвардится на удалённый
 -R [remote_port]:[local_host]:[local_port]   # Remote port forwarding / Обратный порт
@@ -46,12 +46,12 @@ SSH tunneling (port forwarding) allows you to securely route network traffic thr
 
 ## Local Port Forwarding
 
-### Basic Syntax / Базовый синтаксис
+### Basic Syntax
 ```bash
 ssh -L [LOCAL_IP:]<LOCAL_PORT>:<REMOTE_HOST>:<REMOTE_PORT> <USER>@<SSH_SERVER>
 ```
 
-### Examples / Примеры
+### Examples
 ```bash
 ssh -L 2222:192.168.164.51:22 <USER>@<BASTION>  # Forward local 2222 to remote SSH / Проброс локального 2222 на удалённый SSH
 ssh -L 9080:<INTERNAL_HOST>:9080 <USER>@<BASTION>  # Forward web service / Проброс веб-сервиса
@@ -60,12 +60,12 @@ ssh -L 5432:<DB_SERVER>:5432 <USER>@<BASTION>  # Forward PostgreSQL / Пробр
 ssh -L 6379:<REDIS_SERVER>:6379 <USER>@<BASTION>  # Forward Redis / Проброс Redis
 ```
 
-### Background Tunnel / Туннель в фоне
+### Background Tunnel
 ```bash
 ssh -f -N -L 9080:<INTERNAL_HOST>:9080 <USER>@<BASTION>  # Background tunnel / Туннель в фоне
 ```
 
-### Bind to Specific Interface / Привязка к конкретному интерфейсу
+### Bind to Specific Interface
 ```bash
 ssh -L 127.0.0.1:9080:<HOST>:9080 <USER>@<BASTION>  # Localhost only / Только localhost
 ssh -L 0.0.0.0:9080:<HOST>:9080 <USER>@<BASTION>  # All interfaces / Все интерфейсы
@@ -75,19 +75,19 @@ ssh -L 0.0.0.0:9080:<HOST>:9080 <USER>@<BASTION>  # All interfaces / Все ин
 
 ## Remote Port Forwarding
 
-### Basic Syntax / Базовый синтаксис
+### Basic Syntax
 ```bash
 ssh -R [REMOTE_IP:]<REMOTE_PORT>:<LOCAL_HOST>:<LOCAL_PORT> <USER>@<SSH_SERVER>
 ```
 
-### Examples / Примеры
+### Examples
 ```bash
 ssh -R 8080:localhost:80 <USER>@<BASTION>  # Expose local web server / Открыть локальный веб-сервер
 ssh -R 3000:localhost:3000 <USER>@<BASTION>  # Expose dev server / Открыть dev-сервер
 ssh -R 5432:localhost:5432 <USER>@<BASTION>  # Expose local database / Открыть локальную БД
 ```
 
-### Background Remote Tunnel / Обратный туннель в фоне
+### Background Remote Tunnel
 ```bash
 ssh -f -N -R 8080:localhost:80 <USER>@<BASTION>  # Background remote tunnel / Обратный туннель в фоне
 ```
@@ -96,20 +96,20 @@ ssh -f -N -R 8080:localhost:80 <USER>@<BASTION>  # Background remote tunnel / О
 
 ## Dynamic Port Forwarding (SOCKS)
 
-### SOCKS Proxy / SOCKS прокси
+### SOCKS Proxy / SOCKS
 ```bash
 ssh -D <LOCAL_PORT> <USER>@<SSH_SERVER>  # Create SOCKS proxy / Создать SOCKS прокси
 ssh -D 1080 <USER>@<BASTION>  # Standard SOCKS on port 1080 / Стандартный SOCKS на порту 1080
 ssh -f -N -D 1080 <USER>@<BASTION>  # Background SOCKS proxy / SOCKS прокси в фоне
 ```
 
-### Use with Applications / Использование с приложениями
+### Use with Applications
 ```bash
-# Configure browser / Настроить браузер
+# Configure browser
 # SOCKS Host: localhost
 # Port: 1080
 
-# curl with SOCKS / curl с SOCKS
+# curl with SOCKS / curl
 curl --socks5 localhost:1080 http://example.com
 ```
 
@@ -117,24 +117,24 @@ curl --socks5 localhost:1080 http://example.com
 
 ## SSH Control Sockets
 
-### Create Master Session / Создать мастер-сессию
+### Create Master Session
 ```bash
 ssh -fNM -S /tmp/ssh.sock -L 2222:<INTERNAL_HOST>:22 <USER>@<BASTION>  # Create master with socket / Создать мастер с сокетом
 ```
 
-### Reuse Session / Переиспользовать сессию
+### Reuse Session
 ```bash
 ssh -S /tmp/ssh.sock <USER>@localhost -p 2222  # Use existing tunnel / Использовать существующий туннель
 ```
 
-### Control Master Session / Управлять мастер-сессией
+### Control Master Session
 ```bash
 ssh -S /tmp/ssh.sock -O check <USER>@<BASTION>  # Check status / Проверить статус
 ssh -S /tmp/ssh.sock -O exit <USER>@<BASTION>  # Close master / Закрыть мастер
 ssh -S /tmp/ssh.sock -O stop <USER>@<BASTION>  # Stop accepting connections / Остановить приём соединений
 ```
 
-### SSH Config with ControlMaster / SSH конфиг с ControlMaster
+### SSH Config with ControlMaster / SSH
 `~/.ssh/config`
 
 ```bash
@@ -150,7 +150,7 @@ Host bastion
 
 ## Bastion/Jump Host Configuration
 
-### SSHD Configuration for Tunnel-Only User / Конфигурация SSHD для пользователя только с туннелями
+### SSHD Configuration for Tunnel-Only User
 `/etc/ssh/sshd_config`
 
 ```bash
@@ -167,13 +167,13 @@ Match User <TUNNEL_USER>
 sudo systemctl restart sshd  # Restart SSHD / Перезапустить SSHD
 ```
 
-### Create Tunnel-Only User / Создать пользователя только для туннелей
+### Create Tunnel-Only User
 ```bash
 sudo useradd -m -s /bin/false <TUNNEL_USER>  # Create user with no shell / Создать пользователя без shell
 sudo passwd <TUNNEL_USER>                    # Set password / Установить пароль
 ```
 
-### ProxyJump Configuration / Конфигурация ProxyJump
+### ProxyJump Configuration
 `~/.ssh/config`
 
 ```bash
@@ -187,35 +187,35 @@ Host internal-server
 
 ## Troubleshooting
 
-### Check Local Ports / Проверка локальных портов
+### Check Local Ports
 ```bash
 ss -tnlp | grep <PORT>                       # Check listening ports / Проверить слушающие порты
 netstat -tnlp | grep <PORT>                  # Alternative check / Альтернативная проверка
 lsof -i :<PORT>                              # Show process using port / Показать процесс на порту
 ```
 
-### Test Tunnel / Тестировать туннель
+### Test Tunnel
 ```bash
 curl http://localhost:<LOCAL_PORT>           # Test HTTP service / Тестировать HTTP сервис
 nc -zv localhost <LOCAL_PORT>                # Test port connectivity / Тестировать доступность порта
 telnet localhost <LOCAL_PORT>                # Interactive test / Интерактивный тест
 ```
 
-### Check Remote Service / Проверка удалённого сервиса
+### Check Remote Service
 ```bash
-# From bastion / С бастион-хоста
+# From bastion
 nc -zv <INTERNAL_HOST> <PORT>                # Test connectivity to internal host / Тестировать доступность внутреннего хоста
 ss -tnlp | grep :<PORT>                      # Check if service is listening / Проверить слушает ли сервис
 ```
 
-### Debug SSH Tunnel / Отладка SSH туннеля
+### Debug SSH Tunnel
 ```bash
 ssh -v -L <LOCAL_PORT>:<HOST>:<PORT> <USER>@<BASTION>  # Verbose output / Подробный вывод
 ssh -vv -L <LOCAL_PORT>:<HOST>:<PORT> <USER>@<BASTION>  # More verbose / Ещё более подробно
 ssh -vvv -L <LOCAL_PORT>:<HOST>:<PORT> <USER>@<BASTION>  # Maximum verbosity / Максимальная подробность
 ```
 
-### Kill Stuck Tunnels / Убить зависшие туннели
+### Kill Stuck Tunnels
 ```bash
 ps aux | grep 'ssh.*-L'                      # Find tunnel processes / Найти процессы туннелей
 pkill -f 'ssh.*-L.*<PORT>'                   # Kill specific tunnel / Убить конкретный туннель
@@ -228,54 +228,54 @@ pkill -f 'ssh.*-L.*<PORT>'                   # Kill specific tunnel / Убить
 
 ## Real-World Examples
 
-### Access Internal Web Application / Доступ к внутреннему веб-приложению
+### Access Internal Web Application
 ```bash
-# Forward internal web app to localhost:9080 / Проброс внутреннего веб-приложения на localhost:9080
+# Forward internal web app to localhost:9080
 ssh -f -N -L 9080:<INTERNAL_HOST>:9080 <USER>@<BASTION>
 
-# Access in browser / Доступ в браузере
+# Access in browser
 # http://localhost:9080
 ```
 
-### Database Access Through Bastion / Доступ к БД через бастион
+### Database Access Through Bastion
 ```bash
-# MySQL tunnel / Туннель MySQL
+# MySQL tunnel
 ssh -f -N -L 3306:<DB_SERVER>:3306 <USER>@<BASTION>
 mysql -h 127.0.0.1 -P 3306 -u <DB_USER> -p
 
-# PostgreSQL tunnel / Туннель PostgreSQL
+# PostgreSQL tunnel
 ssh -f -N -L 5432:<DB_SERVER>:5432 <USER>@<BASTION>
 psql -h localhost -p 5432 -U <DB_USER> -d <DATABASE>
 ```
 
-### Multi-Hop SSH Tunnel / Многоступенчатый SSH туннель
+### Multi-Hop SSH Tunnel
 ```bash
-# Tunnel through multiple hops / Туннель через несколько прыжков
+# Tunnel through multiple hops
 ssh -f -N -L 2222:<BASTION2>:22 <USER>@<BASTION1>
 ssh -f -N -L 9080:<INTERNAL_HOST>:9080 <USER>@localhost -p 2222
 
-# Or use ProxyJump / Или использовать ProxyJump
+# Or use ProxyJump
 ssh -J <USER>@<BASTION1> -L 9080:<INTERNAL_HOST>:9080 <USER>@<BASTION2>
 ```
 
-### Persistent Tunnel with AutoSSH / Постоянный туннель с AutoSSH
+### Persistent Tunnel with AutoSSH
 ```bash
-# Install autossh / Установить autossh
+# Install autossh
 sudo apt install autossh
 
-# Create persistent tunnel / Создать постоянный туннель
+# Create persistent tunnel
 autossh -M 0 -f -N -L 9080:<HOST>:9080 <USER>@<BASTION>
 
-# With monitoring / С мониторингом
+# With monitoring
 autossh -M 20000 -f -N -L 9080:<HOST>:9080 <USER>@<BASTION>
 ```
 
-### Expose Local Dev Server / Открыть локальный dev-сервер
+### Expose Local Dev Server
 ```bash
-# Make local service accessible from remote / Сделать локальный сервис доступным с удалённого
+# Make local service accessible from remote
 ssh -R 8080:localhost:3000 <USER>@<PUBLIC_SERVER>
 
-# Now accessible at / Теперь доступен на
+# Now accessible at
 # http://<PUBLIC_SERVER>:8080
 ```
 
@@ -283,7 +283,7 @@ ssh -R 8080:localhost:3000 <USER>@<PUBLIC_SERVER>
 
 ## Reference Tables
 
-### Common Port Mappings / Распространённые проброс портов
+### Common Port Mappings
 
 | Service | Port | Typical Tunnel Command |
 | :--- | :--- | :--- |
@@ -297,7 +297,7 @@ ssh -R 8080:localhost:3000 <USER>@<PUBLIC_SERVER>
 | RDP | 3389 | `ssh -L 3389:host:3389` |
 | VNC | 5900 | `ssh -L 5900:host:5900` |
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File | Description (EN / RU) |
 | :--- | :--- |

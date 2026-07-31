@@ -17,7 +17,7 @@ tags:
 > [!NOTE]
 > `adcli` is actively maintained and is the primary tool used by `realmd` under the hood. For higher-level automation, consider using `realm join` which wraps `adcli` with automatic SSSD/Kerberos configuration.
 
-## Table of Contents / Оглавление
+## Table of Contents
 
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [Domain Discovery & Joining](#Domain%20Discovery%20&%20Joining)
@@ -33,7 +33,7 @@ tags:
 
 ## Installation & Configuration
 
-### Install adcli / Установка adcli
+### Install adcli
 
 ```bash
 # Debian/Ubuntu
@@ -43,7 +43,7 @@ sudo apt update && sudo apt install adcli sssd sssd-ad realmd krb5-user -y
 sudo dnf install adcli sssd realmd krb5-workstation oddjob oddjob-mkhomedir -y
 ```
 
-### Required Packages Overview / Обзор необходимых пакетов
+### Required Packages Overview
 
 | Package / Пакет | Purpose / Назначение |
 | :--- | :--- |
@@ -53,7 +53,7 @@ sudo dnf install adcli sssd realmd krb5-workstation oddjob oddjob-mkhomedir -y
 | `krb5-user` / `krb5-workstation` | Kerberos client utilities / Клиентские утилиты Kerberos |
 | `oddjob-mkhomedir` | Auto-create home dirs on login (RHEL) / Автосоздание домашних каталогов (RHEL) |
 
-### Enable Auto Home Directory Creation / Автоматическое создание домашних каталогов
+### Enable Auto Home Directory Creation
 
 ```bash
 # RHEL/CentOS/Fedora
@@ -67,7 +67,7 @@ sudo pam-auth-update --enable mkhomedir  # Enable mkhomedir PAM module / Вкл�
 
 ## Domain Discovery & Joining
 
-### Discover Active Directory Domain / Обнаружение домена AD
+### Discover Active Directory Domain
 
 ```bash
 adcli info <DOMAIN>  # Discover domain info (DCs, site, forest) / Обнаружить информацию о домене (DC, сайт, лес)
@@ -83,7 +83,7 @@ domain-controller = <DC_HOSTNAME>
 domain-controller-site = Default-First-Site-Name
 ```
 
-### Production Runbook: Domain Join / Пошаговое присоединение к домену
+### Production Runbook: Domain Join
 
 > [!IMPORTANT]
 > Before joining, ensure DNS is correctly configured to resolve the AD domain. The Linux server **must** be able to resolve `_ldap._tcp.<DOMAIN>` SRV records.
@@ -118,7 +118,7 @@ domain-controller-site = Default-First-Site-Name
    id <USER>@<DOMAIN>  # Verify AD user lookup / Проверить поиск пользователя AD
    ```
 
-### Join via realmd (Higher-Level) / Присоединение через realmd
+### Join via realmd (Higher-Level)
 
 ```bash
 realm discover <DOMAIN>  # Discover domain and required packages / Обнаружить домен и зависимости
@@ -126,7 +126,7 @@ realm join <DOMAIN> -U <USER>  # Join automatically (configures SSSD + Kerberos)
 realm list  # Show joined domains / Показать присоединённые домены
 ```
 
-### Update Machine Account / Обновление учетной записи компьютера
+### Update Machine Account
 
 ```bash
 adcli update --domain=<DOMAIN> --verbose  # Update the machine account password and details in AD / Обновить пароль и данные учётной записи машины в AD
@@ -139,19 +139,19 @@ adcli update --domain=<DOMAIN> --verbose  # Update the machine account password 
 
 ## Machine Account Management
 
-### Pre-Create Computer Account / Предварительное создание учётной записи
+### Pre-Create Computer Account
 
 ```bash
 adcli preset-computer --domain=<DOMAIN> <COMPUTER_NAME>  # Pre-create computer account in AD / Предварительно создать учётную запись компьютера в AD
 ```
 
-### Reset Machine Account Password / Сброс пароля учётной записи
+### Reset Machine Account Password
 
 ```bash
 adcli reset-computer --domain=<DOMAIN> <COMPUTER_NAME>  # Reset password for existing computer account / Сбросить пароль существующей учётной записи компьютера
 ```
 
-### Delete Machine Account / Удаление учётной записи
+### Delete Machine Account
 
 > [!WARNING]
 > This command will remove the computer from Active Directory. The machine will no longer be able to authenticate users against AD until re-joined. / Эта команда удалит компьютер из Active Directory. Машина не сможет аутентифицировать пользователей в AD до повторного присоединения.
@@ -164,26 +164,26 @@ adcli delete-computer --domain=<DOMAIN> <COMPUTER_NAME>  # Remove computer from 
 
 ## Active Directory Authentication (Kerberos)
 
-### Initialize Kerberos Ticket for Machine / Инициализация Kerberos-билета для машины
+### Initialize Kerberos Ticket for Machine
 
 ```bash
 kinit -k -t /etc/krb5.keytab <COMPUTER_NAME>$@<REALM_UPPERCASE>  # Authenticate using machine keytab / Аутентификация с помощью keytab машины
 ```
 
-### Initialize Kerberos Ticket for User / Инициализация Kerberos-билета для пользователя
+### Initialize Kerberos Ticket for User
 
 ```bash
 kinit <USER>@<REALM_UPPERCASE>  # Obtain TGT for user / Получить TGT для пользователя
 ```
 
-### Check Available Kerberos Tickets / Проверка доступных билетов Kerberos
+### Check Available Kerberos Tickets
 
 ```bash
 klist  # Show current tickets / Показать текущие билеты
 klist -k /etc/krb5.keytab  # View keys in the keytab / Просмотр ключей в keytab
 ```
 
-### Destroy Kerberos Tickets / Уничтожение Kerberos-билетов
+### Destroy Kerberos Tickets
 
 ```bash
 kdestroy  # Destroy all tickets in default cache / Уничтожить все билеты в кэше по умолчанию
@@ -193,7 +193,7 @@ kdestroy  # Destroy all tickets in default cache / Уничтожить все �
 
 ## Key Configuration Files
 
-### SSSD Configuration / Конфигурация SSSD
+### SSSD Configuration
 `/etc/sssd/sssd.conf`
 
 ```ini
@@ -219,7 +219,7 @@ access_provider = ad
 > [!IMPORTANT]
 > File permissions must be `0600` and owned by root: `chmod 0600 /etc/sssd/sssd.conf`. SSSD will refuse to start otherwise. / Права на файл должны быть `0600`, владелец root. Иначе SSSD не запустится.
 
-### Kerberos Configuration / Конфигурация Kerberos
+### Kerberos Configuration
 `/etc/krb5.conf`
 
 ```ini
@@ -245,11 +245,11 @@ access_provider = ad
 <DOMAIN> = <REALM_UPPERCASE>
 ```
 
-### NSSwitch Configuration / Конфигурация NSSwitch
+### NSSwitch Configuration
 `/etc/nsswitch.conf`
 
 ```bash
-# Ensure sss is listed for passwd, group, shadow / Убедитесь, что sss указан для passwd, group, shadow
+# Ensure sss is listed for passwd, group, shadow
 passwd:     files sss
 group:      files sss
 shadow:     files sss
@@ -259,7 +259,7 @@ shadow:     files sss
 
 ## Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
 systemctl enable --now sssd  # Enable and start SSSD / Включить и запустить SSSD
@@ -267,7 +267,7 @@ systemctl restart sssd  # Restart SSSD service / Перезапустить сл
 systemctl status sssd  # Check SSSD status / Проверить статус SSSD
 ```
 
-### Important Log Files / Важные лог-файлы
+### Important Log Files
 
 | Log File / Файл лога | Purpose / Назначение |
 | :--- | :--- |
@@ -284,17 +284,17 @@ tail -f /var/log/secure  # Auth logs (CentOS/RHEL) / Логи аутентифи
 tail -f /var/log/auth.log  # Auth logs (Debian/Ubuntu) / Логи аутентификации (Debian/Ubuntu)
 ```
 
-### SSSD Debug Level / Уровень отладки SSSD
+### SSSD Debug Level
 
 ```bash
-# Temporarily increase debug level / Временно увеличить уровень отладки
+# Temporarily increase debug level
 sss_debuglevel 6  # Set debug level (1-9, 6 is detailed) / Установить уровень отладки
 
 # Or add to /etc/sssd/sssd.conf under [domain/<DOMAIN>]:
 # debug_level = 6
 ```
 
-### Logrotate Configuration / Настройка ротации логов
+### Logrotate Configuration
 `/etc/logrotate.d/sssd`
 
 ```bash
@@ -313,14 +313,14 @@ sss_debuglevel 6  # Set debug level (1-9, 6 is detailed) / Установить 
 
 ## Troubleshooting & Tools
 
-### Verify Domain Membership / Проверка членства в домене
+### Verify Domain Membership
 
 ```bash
 adcli testjoin --domain=<DOMAIN> --verbose  # Test domain join status / Проверить статус присоединения к домену
 realm list  # Show joined domains / Показать присоединённые домены
 ```
 
-### Clear SSSD Cache / Очистка кэша SSSD
+### Clear SSSD Cache
 
 > [!CAUTION]
 > Clearing the SSSD cache will force re-lookup of all users/groups from AD. During this time, AD authentication may be temporarily unavailable. / Очистка кэша SSSD приведёт к повторному запросу всех пользователей/групп из AD. На это время аутентификация может быть временно недоступна.
@@ -330,7 +330,7 @@ sss_cache -E  # Expire all cached entries / Инвалидировать все 
 systemctl restart sssd  # Restart SSSD after cache clear / Перезапустить SSSD после очистки кэша
 ```
 
-### Test User Lookup / Проверка поиска пользователя
+### Test User Lookup
 
 ```bash
 id <USER>@<DOMAIN>  # Lookup AD user / Найти пользователя AD
@@ -338,7 +338,7 @@ getent passwd <USER>  # Get passwd entry for AD user / Получить запи
 getent group "<GROUP_NAME>"  # Get group entry / Получить запись группы
 ```
 
-### Common Issues & Fixes / Частые проблемы и решения
+### Common Issues & Fixes
 
 | Issue / Проблема | Fix / Решение |
 | :--- | :--- |
@@ -348,7 +348,7 @@ getent group "<GROUP_NAME>"  # Get group entry / Получить запись �
 | Users not found after join | Clear the SSSD cache: `sss_cache -E && systemctl restart sssd` / Очистите кэш SSSD |
 | Machine password expired (trust broken) | Run `adcli update --domain=<DOMAIN> --verbose` / Обновите пароль машины |
 
-### Required Firewall Ports / Необходимые порты файрвола
+### Required Firewall Ports
 
 | Port / Порт | Protocol / Протокол | Service / Сервис |
 | :--- | :--- | :--- |

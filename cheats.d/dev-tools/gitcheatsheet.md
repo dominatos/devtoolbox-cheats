@@ -21,22 +21,22 @@ tags:
 ---
 
 ## Table of Contents
-- [Setup & Initialization](#️%20Setup%20&%20Initialization%20/%20Настройка%20и%20инициализация)
-- [Basic Workflow](#Basic%20Workflow%20/%20Базовый%20рабочий%20процесс)
-- [Branching & Merging](#Branching%20&%20Merging%20/%20Ветки%20и%20слияние)
-- [Remote Operations](#Remote%20Operations%20/%20Удалённые%20операции)
-- [Stashing](#Stashing%20/%20Временное%20сохранение)
-- [History & Logs](#History%20&%20Logs%20/%20История%20и%20логи)
-- [Undoing Changes](#️%20Undoing%20Changes%20/%20Отмена%20изменений)
-- [Tags](#️%20Tags%20/%20Теги)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Tips & Best Practices](#Tips%20&%20Best%20Practices%20/%20Советы%20и%20лучшие%20практики)
+- [Setup & Initialization](#️%20Setup%20&%20Initialization)
+- [Basic Workflow](#Basic%20Workflow)
+- [Branching & Merging](#Branching%20&%20Merging)
+- [Remote Operations](#Remote%20Operations)
+- [Stashing](#Stashing)
+- [History & Logs](#History%20&%20Logs)
+- [Undoing Changes](#️%20Undoing%20Changes)
+- [Tags](#️%20Tags)
+- [Real-World Examples](#Real-World%20Examples)
+- [Tips & Best Practices](#Tips%20&%20Best%20Practices)
 
 ---
 
-# 🛠️ Setup & Initialization / Настройка и инициализация
+# 🛠️ Setup & Initialization
 
-### Configuration / Конфигурация
+### Configuration
 ```bash
 git config --global user.name "Your Name"      # Set name / Установить имя
 git config --global user.email "you@example.com"  # Set email / Установить email
@@ -47,7 +47,7 @@ git config --list                              # Show all config / Показа�
 git config --global --edit                     # Edit config file / Редактировать конфигурацию
 ```
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File | Scope (EN / RU) |
 |------|-----------------|
@@ -55,7 +55,7 @@ git config --global --edit                     # Edit config file / Редакт
 | `~/.gitconfig` | User config / Пользовательская конфигурация |
 | `.git/config` | Repository config (highest priority) / Конфигурация репозитория (наивысший приоритет) |
 
-### Initialize Repository / Инициализация репозитория
+### Initialize Repository
 ```bash
 git init                                       # Init new repo / Инициализировать новый репозиторий
 git init --bare                                # Init bare repo / Инициализировать bare репозиторий
@@ -66,9 +66,9 @@ git clone --branch <BRANCH> <URL>              # Clone specific branch / Кло�
 
 ---
 
-# 📝 Basic Workflow / Базовый рабочий процесс
+# 📝 Basic Workflow
 
-### Status & Staging / Статус и индексация
+### Status & Staging
 ```bash
 git status                                     # Show status / Показать статус
 git status -s                                  # Short status / Короткий статус
@@ -79,7 +79,7 @@ git add -u                                     # Stage modified/deleted / Инд
 git reset file.txt                             # Unstage file / Убрать из индекса
 ```
 
-### Commit / Коммит
+### Commit
 ```bash
 git commit -m "message"                        # Commit with message / Коммит с сообщением
 git commit -am "message"                       # Add and commit / Индексировать и закоммитить
@@ -88,7 +88,7 @@ git commit --amend --no-edit                   # Amend without editing message /
 git commit --allow-empty -m "trigger CI"       # Empty commit / Пустой коммит
 ```
 
-### Differences / Различия
+### Differences
 ```bash
 git diff                                       # Show unstaged changes / Показать неиндексированные изменения
 git diff --staged                              # Show staged changes / Показать индексированные изменения
@@ -99,9 +99,9 @@ git diff <COMMIT1> <COMMIT2>                   # Compare commits / Сравни�
 
 ---
 
-# 🌿 Branching & Merging / Ветки и слияние
+# 🌿 Branching & Merging
 
-### Branches / Ветки
+### Branches
 ```bash
 git branch                                     # List local branches / Список локальных веток
 git branch -a                                  # List all branches / Список всех веток
@@ -119,7 +119,7 @@ git branch -m old-name new-name                # Rename branch / Переиме�
 > `git switch` and `git restore` (Git 2.23+) are modern replacements for the overloaded `git checkout` command. Prefer them for clarity.
 > `git switch` и `git restore` (Git 2.23+) — это современные замены перегруженной команды `git checkout`. Используйте их для ясности.
 
-### Merging / Слияние
+### Merging
 ```bash
 git merge feature/new                          # Merge branch / Слить ветку
 git merge --no-ff feature/new                  # No fast-forward merge / Слияние без fast-forward
@@ -128,7 +128,7 @@ git merge --abort                              # Abort merge / Отменить 
 git mergetool                                  # Launch merge tool / Запустить инструмент слияния
 ```
 
-### Rebasing / Перебазирование
+### Rebasing
 ```bash
 git rebase main                                # Rebase onto main / Перебазировать на main
 git rebase -i HEAD~3                           # Interactive rebase last 3 / Интерактивный rebase последних 3
@@ -141,7 +141,7 @@ git rebase --skip                              # Skip current patch / Пропу
 > Never rebase commits that have been pushed to a shared remote. This rewrites history and can break other contributors' work.
 > Никогда не делайте rebase коммитов, которые были отправлены в общий удалённый репозиторий. Это перезаписывает историю и может сломать работу других.
 
-### Merge vs Rebase — When to Use / Когда использовать
+### Merge vs Rebase — When to Use
 
 | Strategy | Use Case (EN / RU) | History |
 |----------|---------------------|---------|
@@ -152,9 +152,9 @@ git rebase --skip                              # Skip current patch / Пропу
 
 ---
 
-# 🌐 Remote Operations / Удалённые операции
+# 🌐 Remote Operations
 
-### Remote Management / Управление удалёнными
+### Remote Management
 ```bash
 git remote -v                                  # List remotes / Список удалённых репозиториев
 git remote add origin <URL>                    # Add remote / Добавить удалённый репозиторий
@@ -164,7 +164,7 @@ git remote set-url origin <NEW_URL>            # Change URL / Изменить U
 git remote show origin                         # Show remote info / Показать информацию об удалённом
 ```
 
-### Push / Отправка
+### Push
 ```bash
 git push                                       # Push to upstream / Отправить в upstream
 git push origin main                           # Push to branch / Отправить в ветку
@@ -180,7 +180,7 @@ git push origin --delete feature/old           # Delete remote branch / Удал
 > `git push --force` overwrites remote history. Always prefer `--force-with-lease` which checks that no one else has pushed.
 > `git push --force` перезаписывает удалённую историю. Всегда предпочитайте `--force-with-lease`, который проверяет, что никто не отправлял изменения.
 
-### Pull & Fetch / Получение и загрузка
+### Pull & Fetch
 ```bash
 git pull                                       # Fetch and merge / Загрузить и слить
 git pull --rebase                              # Fetch and rebase / Загрузить и перебазировать
@@ -193,7 +193,7 @@ git fetch --tags                               # Fetch tags / Загрузить
 
 ---
 
-# 💾 Stashing / Временное сохранение
+# 💾 Stashing
 
 ```bash
 git stash                                      # Stash changes / Спрятать изменения
@@ -210,7 +210,7 @@ git stash branch feature/from-stash            # Create branch from stash / Со
 
 ---
 
-# 📜 History & Logs / История и логи
+# 📜 History & Logs
 
 ```bash
 git log                                        # Show commit history / Показать историю коммитов
@@ -231,9 +231,9 @@ git show <COMMIT>:file.txt                     # Show file at commit / Пока�
 
 ---
 
-# ↩️ Undoing Changes / Отмена изменений
+# ↩️ Undoing Changes
 
-### Discard Changes / Отмена изменений
+### Discard Changes
 ```bash
 git checkout -- file.txt                       # Discard file changes / Отменить изменения файла
 git restore file.txt                           # Modern discard / Современная отмена
@@ -245,7 +245,7 @@ git clean -fd                                  # Remove untracked files/dirs / �
 > `git clean -fd` permanently deletes untracked files and directories. Use `git clean -fdn` (dry run) first to preview.
 > `git clean -fd` безвозвратно удаляет неотслеживаемые файлы и директории. Используйте `git clean -fdn` (пробный запуск) для предварительного просмотра.
 
-### Reset / Сброс
+### Reset
 ```bash
 git reset HEAD~1                               # Undo last commit (keep changes) / Отменить последний коммит (сохранить изменения)
 git reset --soft HEAD~1                        # Undo commit (keep staged) / Отменить коммит (сохранить индекс)
@@ -258,7 +258,7 @@ git reset --hard origin/main                   # Reset to remote / Сброси�
 > `git reset --hard` permanently discards uncommitted changes. Make sure to stash or commit first.
 > `git reset --hard` безвозвратно удаляет незакоммиченные изменения. Убедитесь, что сделали stash или commit.
 
-### Reset Modes Comparison / Сравнение режимов reset
+### Reset Modes Comparison
 
 | Mode | Working Directory | Staging Area | Use Case (EN / RU) |
 |------|-------------------|-------------|---------------------|
@@ -266,7 +266,7 @@ git reset --hard origin/main                   # Reset to remote / Сброси�
 | `--mixed` (default) | Unchanged | Cleared | Unstage changes / Убрать из индекса |
 | `--hard` | Cleared | Cleared | Full undo / Полная отмена |
 
-### Revert / Откат
+### Revert
 ```bash
 git revert <COMMIT>                            # Create revert commit / Создать откатывающий коммит
 git revert HEAD                                # Revert last commit / Откатить последний коммит
@@ -279,7 +279,7 @@ git revert --no-commit <COMMIT>                # Revert without committing / О�
 
 ---
 
-# 🏷️ Tags / Теги
+# 🏷️ Tags
 
 ```bash
 git tag                                        # List tags / Список тегов
@@ -295,15 +295,15 @@ git push origin --delete v1.0.0                # Delete remote tag / Удали�
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+# 🌟 Real-World Examples
 
-### Quick Start / Быстрый старт
+### Quick Start
 ```bash
 git init && git add . && git commit -m "Initial commit"  # Initialize project / Инициализировать проект
 git clone <URL> && cd $(basename <URL> .git)   # Clone and enter / Клонировать и войти
 ```
 
-### Feature Development / Разработка функции
+### Feature Development
 ```bash
 git checkout -b feature/login                  # Start feature / Начать функцию
 git add . && git commit -m "Add login UI"      # Save progress / Сохранить прогресс
@@ -313,7 +313,7 @@ git rebase main feature/login                  # Rebase feature / Перебаз
 git checkout main && git merge --no-ff feature/login  # Merge feature / Слить функцию
 ```
 
-### Emergency Hotfix / Экстренное исправление
+### Emergency Hotfix
 ```bash
 git checkout -b hotfix/critical main           # Create hotfix branch / Создать ветку исправления
 git commit -am "Fix critical bug"              # Quick fix / Быстрое исправление
@@ -321,14 +321,14 @@ git checkout main && git merge hotfix/critical # Merge to main / Слить в m
 git push && git branch -d hotfix/critical      # Push and cleanup / Отправить и очистить
 ```
 
-### Cleanup History / Очистка истории
+### Cleanup History
 ```bash
 git log --oneline -n 5                         # Review recent commits / Просмотреть последние коммиты
 git rebase -i HEAD~5                           # Interactive rebase / Интерактивный rebase
 git push --force-with-lease                    # Safe force push / Безопасная принудительная отправка
 ```
 
-### Collaboration / Совместная работа
+### Collaboration
 ```bash
 git fetch --prune                              # Clean remote branches / Очистить удалённые ветки
 git branch -vv                                 # Show tracking branches / Показать отслеживаемые ветки
@@ -338,7 +338,7 @@ git log --oneline HEAD..origin/main            # Commits behind origin / Ком�
 
 ---
 
-# 💡 Tips & Best Practices / Советы и лучшие практики
+# 💡 Tips & Best Practices
 
 - Always pull before push / Всегда делайте `pull` перед `push`
 - Use `--force-with-lease` instead of `--force` / Используйте `--force-with-lease` вместо `--force`
@@ -347,7 +347,7 @@ git log --oneline HEAD..origin/main            # Commits behind origin / Ком�
 - Use branches for features / Используйте ветки для функций
 - Use `git switch` / `git restore` (2.23+) over `git checkout` / Используйте `git switch` / `git restore` вместо `git checkout`
 
-### Default Ports / Стандартные порты
+### Default Ports
 
 | Port | Protocol | Description (EN / RU) |
 |------|----------|----------------------|
@@ -357,7 +357,7 @@ git log --oneline HEAD..origin/main            # Commits behind origin / Ком�
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **Git:** https://git-scm.com/doc
 - **Git Reference:** https://git-scm.com/docs

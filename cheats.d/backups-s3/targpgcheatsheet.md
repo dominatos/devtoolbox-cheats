@@ -25,7 +25,7 @@ tags:
 
 ## tar Basics
 
-### Create Archive / Создать архив
+### Create Archive
 
 ```bash
 tar -cvf backup.tar /data                       # Create plain archive / Создать архив
@@ -34,7 +34,7 @@ tar -cjf backup.tar.bz2 /data                   # Create with bzip2 / С bzip2
 tar -cJf backup.tar.xz /data                    # Create with xz / С xz
 ```
 
-### Extract Archive / Извлечь архив
+### Extract Archive
 
 ```bash
 tar -xvf backup.tar                             # Extract plain / Извлечь
@@ -44,14 +44,14 @@ tar -xJf backup.tar.xz                          # Extract xz / Извлечь xz
 tar -xvf backup.tar -C /restore                 # Extract to directory / Извлечь в директорию
 ```
 
-### List Contents / Список содержимого
+### List Contents
 
 ```bash
 tar -tvf backup.tar                             # List files / Список файлов
 tar -tzf backup.tar.gz                          # List gzip archive / Список gzip архива
 ```
 
-### Exclude Patterns / Исключения
+### Exclude Patterns
 
 ```bash
 tar -czf backup.tar.gz /data \
@@ -67,21 +67,21 @@ tar -czf backup.tar.gz /data \
 
 ## GPG Encryption
 
-### Symmetric Encryption (Passphrase-based) / Симметричное шифрование
+### Symmetric Encryption (Passphrase-based)
 
 ```bash
 gpg --symmetric --cipher-algo AES256 file.tar   # Encrypt with passphrase / Зашифровать паролем
 gpg --decrypt file.tar.gpg > file.tar           # Decrypt / Расшифровать
 ```
 
-### Public Key Encryption / Асимметричное шифрование
+### Public Key Encryption
 
 ```bash
 gpg --encrypt --recipient <USER> file.tar       # Encrypt for recipient / Зашифровать для получателя
 gpg --decrypt file.tar.gpg > file.tar           # Decrypt / Расшифровать
 ```
 
-### Sign Files / Подписать файлы
+### Sign Files
 
 ```bash
 gpg --sign file.tar                             # Sign file / Подписать файл
@@ -93,21 +93,21 @@ gpg --clearsign file.txt                        # Clear sign / Подпись в
 
 ## Combined tar + GPG
 
-### Create Encrypted Backup / Создать зашифрованный бэкап
+### Create Encrypted Backup
 
 ```bash
-# Symmetric (passphrase) / Симметричный (пароль)
+# Symmetric (passphrase)
 tar -czf - /data | gpg --symmetric --cipher-algo AES256 > backup.tar.gz.gpg
 
-# Asymmetric (recipient key) / Асимметричный (ключ получателя)
+# Asymmetric (recipient key)
 tar -czf - /data | gpg --encrypt --recipient <USER> > backup.tar.gz.gpg
 
-# With date in filename / С датой в имени файла
+# With date in filename
 tar -czf - /data | gpg --symmetric --cipher-algo AES256 \
   -o "backup-$(date +%Y%m%d).tar.gz.gpg"
 ```
 
-### Restore Encrypted Backup / Восстановить зашифрованный бэкап
+### Restore Encrypted Backup
 
 ```bash
 gpg --decrypt backup.tar.gz.gpg | tar -xz -C /restore  # Decrypt + extract / Расшифровать + извлечь
@@ -117,7 +117,7 @@ gpg --decrypt backup.tar.gz.gpg | tar -xz -C /restore  # Decrypt + extract / Р�
 
 ## Compression Options
 
-### Compression Comparison / Сравнение компрессоров
+### Compression Comparison
 
 | Algorithm | Speed | Ratio | Best For |
 |-----------|-------|-------|----------|
@@ -127,21 +127,21 @@ gpg --decrypt backup.tar.gz.gpg | tar -xz -C /restore  # Decrypt + extract / Р�
 | `xz` (`-J`) | Slowest | Best | Archive storage, bandwidth saving |
 
 ```bash
-# Default compression / Стандартное сжатие
+# Default compression
 tar -czf backup.tar.gz /data                    # gzip (default) / gzip (по умолчанию)
 tar -cjf backup.tar.bz2 /data                   # bzip2 / bzip2
 tar -cJf backup.tar.xz /data                    # xz / xz
 tar -cf backup.tar /data                        # No compression / Без сжатия
 ```
 
-### Maximum Compression / Максимальное сжатие
+### Maximum Compression
 
 ```bash
 GZIP=-9 tar -czf backup.tar.gz /data            # Max gzip / Максимальный gzip
 XZ_OPT=-9 tar -cJf backup.tar.xz /data          # Max xz / Максимальный xz
 ```
 
-### Parallel Compression / Параллельное сжатие
+### Parallel Compression
 
 ```bash
 tar -cf - /data | pigz > backup.tar.gz           # Parallel gzip (pigz) / Параллельный gzip
@@ -152,17 +152,17 @@ tar -cJf backup.tar.xz /data --use-compress-program="xz -T0"  # Parallel xz / П
 
 ## Incremental Backups
 
-### Snapshot-Based Incremental / Инкрементальный на основе снапшотов
+### Snapshot-Based Incremental
 
 ```bash
-# First run = full backup / Первый запуск = полный бэкап
+# First run = full backup
 tar -czf full-backup.tar.gz -g /var/backups/snapshot.snar /data
 
-# Subsequent runs = incremental / Последующие запуски = инкрементальный
+# Subsequent runs = incremental
 tar -czf inc-backup.tar.gz -g /var/backups/snapshot.snar /data
 ```
 
-### Listed Incremental / Перечисленный инкрементальный
+### Listed Incremental
 
 ```bash
 tar --create --listed-incremental=/var/backups/snapshot.file \
@@ -176,17 +176,17 @@ tar --extract --listed-incremental=/var/backups/snapshot.file \
 
 ## Split Archives
 
-### Split Large Archives / Разбить большие архивы
+### Split Large Archives
 
 ```bash
-# Split into 1 GB parts / Разбить на части по 1 ГБ
+# Split into 1 GB parts
 tar -czf - /data | split -b 1G - backup.tar.gz.part
 
-# Restore split archive / Восстановить разбитый архив
+# Restore split archive
 cat backup.tar.gz.part* | tar -xz
 ```
 
-### Split with GPG / Разбить с шифрованием
+### Split with GPG
 
 ```bash
 tar -czf - /data | gpg --symmetric --cipher-algo AES256 \
@@ -199,7 +199,7 @@ cat backup.tar.gz.gpg.part* | gpg --decrypt | tar -xz  # Restore / Восста�
 
 ## Remote Backups
 
-### Backup via SSH / Бэкап через SSH
+### Backup via SSH
 
 ```bash
 tar -czf - /data | ssh <USER>@<HOST> "cat > /backup/backup.tar.gz"  # Plain / Обычный
@@ -208,7 +208,7 @@ tar -czf - /data | ssh <USER>@<HOST> \
   "gpg --symmetric --cipher-algo AES256 > /backup/backup.tar.gz.gpg"  # Encrypted / Зашифрованный
 ```
 
-### Restore from Remote / Восстановить с удалённого
+### Restore from Remote
 
 ```bash
 ssh <USER>@<HOST> "cat /backup/backup.tar.gz" | tar -xz -C /restore
@@ -220,14 +220,14 @@ ssh <USER>@<HOST> "gpg --decrypt /backup/backup.tar.gz.gpg" | tar -xz -C /restor
 
 ## Sysadmin Patterns
 
-### Daily Encrypted Backup Script / Ежедневный зашифрованный бэкап
+### Daily Encrypted Backup Script
 
 `/usr/local/bin/daily-backup.sh`
 
 ```bash
 #!/bin/bash
 # Daily encrypted tar+GPG backup with 7-day retention
-# / Ежедневный зашифрованный бэкап tar+GPG с хранением 7 дней
+#
 
 set -euo pipefail
 
@@ -245,7 +245,7 @@ tar -czf - "$SOURCE" | gpg --symmetric --cipher-algo AES256 \
 
 echo "$(date): Backup created: $BACKUP_DIR/backup-$DATE.tar.gz.gpg" >> "$LOG"
 
-# Keep only last 7 days / Сохранить только последние 7 дней
+# Keep only last 7 days
 find "$BACKUP_DIR" -name "backup-*.tar.gz.gpg" -mtime +7 -delete
 echo "$(date): Old backups pruned." >> "$LOG"
 ```
@@ -256,14 +256,14 @@ echo "<STRONG_PASSPHRASE>" > /root/.backup-passphrase
 chmod 600 /root/.backup-passphrase
 ```
 
-### Weekly Full + Daily Incremental / Еженедельный полный + ежедневный инкрементальный
+### Weekly Full + Daily Incremental
 
 `/usr/local/bin/weekly-incremental-backup.sh`
 
 ```bash
 #!/bin/bash
 # Weekly full on Monday, incremental on other days
-# / Полный бэкап в понедельник, инкрементальный в остальные дни
+#
 
 set -euo pipefail
 
@@ -350,35 +350,35 @@ systemctl start tar-backup.timer
 
 ## Troubleshooting
 
-### Common Errors / Распространённые ошибки
+### Common Errors
 
 ```bash
-# "Cannot stat: No such file or directory" / "Нет такого файла"
+# "Cannot stat: No such file or directory" / "Нет
 tar -czf backup.tar.gz /data --ignore-failed-read  # Ignore missing / Игнорировать отсутствующие
 
-# "File changed as we read it" / "Файл изменился во время чтения"
+# "File changed as we read it" / "Файл
 tar -czf backup.tar.gz /data --warning=no-file-changed  # Suppress warning / Подавить предупреждение
 
-# GPG decryption failed / Ошибка расшифровки GPG
+# GPG decryption failed
 gpg --list-keys                                 # Verify keys / Проверить ключи
 gpg --list-secret-keys                          # Verify secret keys / Секретные ключи
 ```
 
-### Verify Archive Integrity / Проверить целостность архива
+### Verify Archive Integrity
 
 ```bash
 tar -tzf backup.tar.gz > /dev/null && echo "OK"  # Test gzip archive / Тест gzip архива
 gpg --decrypt backup.tar.gz.gpg | tar -tz > /dev/null && echo "OK"  # Test encrypted / Тест зашифрованного
 ```
 
-### Extract Specific Files / Извлечь конкретные файлы
+### Extract Specific Files
 
 ```bash
 tar -xzf backup.tar.gz data/important/file.txt  # Single file / Один файл
 tar -xzf backup.tar.gz data/important/          # Directory / Директория
 ```
 
-### Performance / Производительность
+### Performance
 
 ```bash
 tar -czf backup.tar.gz /data --use-compress-program=pigz  # Parallel gzip / Параллельный gzip

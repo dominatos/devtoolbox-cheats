@@ -26,15 +26,15 @@ tags:
 - [poetry — Dependency Management](#poetry%20—%20Dependency%20Management)
 - [pyenv — Python Version Manager](#pyenv%20—%20Python%20Version%20Manager)
 - [Virtual Environment Tools Comparison](#Virtual%20Environment%20Tools%20Comparison)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
+- [Best Practices](#Best%20Practices)
 
 ---
 
 # 🌍 venv — Virtual Environments
 
-### Create & Activate / Создание и активация
+### Create & Activate
 ```bash
 python3 -m venv .venv                         # Create venv / Создать venv
 source .venv/bin/activate                     # Activate (Linux/Mac) / Активировать (Linux/Mac)
@@ -42,7 +42,7 @@ source .venv/bin/activate                     # Activate (Linux/Mac) / Акти�
 deactivate                                    # Deactivate venv / Деактивировать venv
 ```
 
-### With System Packages / С системными пакетами
+### With System Packages
 ```bash
 python3 -m venv --system-site-packages .venv  # Include system packages / Включить системные пакеты
 python3 -m venv --clear .venv                 # Recreate venv / Пересоздать venv
@@ -52,7 +52,7 @@ python3 -m venv --clear .venv                 # Recreate venv / Пересозд
 
 # 📦 pip — Package Manager
 
-### Install Packages / Установка пакетов
+### Install Packages
 ```bash
 pip install requests                          # Install package / Установить пакет
 pip install requests==2.28.0                  # Install specific version / Установить конкретную версию
@@ -60,14 +60,14 @@ pip install requests>=2.28.0                  # Install minimum version / Уст
 pip install -e .                              # Install in editable mode / Установить в редактируемом режиме
 ```
 
-### Requirements Files / Файлы требований
+### Requirements Files
 ```bash
 pip install -r requirements.txt               # Install from file / Установить из файла
 pip freeze > requirements.txt                 # Generate requirements / Сгенерировать requirements
 pip install -r requirements-dev.txt           # Install dev dependencies / Установить dev зависимости
 ```
 
-### Update & Upgrade / Обновление
+### Update & Upgrade
 ```bash
 pip install -U pip                            # Upgrade pip / Обновить pip
 pip install -U pip setuptools wheel           # Update base tools / Обновить базовые инструменты
@@ -75,14 +75,14 @@ pip install -U requests                       # Upgrade package / Обновит
 pip list --outdated                           # Show outdated packages / Показать устаревшие пакеты
 ```
 
-### Remove & Clean / Удаление и очистка
+### Remove & Clean
 ```bash
 pip uninstall requests                        # Uninstall package / Удалить пакет
 pip uninstall -r requirements.txt -y          # Uninstall from file / Удалить из файла
 pip cache purge                               # Clear cache / Очистить кэш
 ```
 
-### List & Show / Список и информация
+### List & Show
 ```bash
 pip list                                      # List installed packages / Список установленных пакетов
 pip show requests                             # Show package info / Показать информацию о пакете
@@ -93,7 +93,7 @@ pip check                                     # Verify dependencies / Прове
 
 # 🎯 pipx — CLI Tool Installer
 
-### Install Tools / Установка инструментов
+### Install Tools
 ```bash
 pipx install black                            # Install CLI tool / Установить CLI инструмент
 pipx install flake8                           # Install linter / Установить линтер
@@ -101,7 +101,7 @@ pipx install poetry                           # Install poetry / Установ�
 pipx install ansible                          # Install ansible / Установить ansible
 ```
 
-### Manage Tools / Управление инструментами
+### Manage Tools
 ```bash
 pipx list                                     # List installed tools / Список установленных инструментов
 pipx upgrade black                            # Upgrade tool / Обновить инструмент
@@ -109,7 +109,7 @@ pipx upgrade-all                              # Upgrade all tools / Обнови
 pipx uninstall black                          # Uninstall tool / Удалить инструмент
 ```
 
-### Run Temporarily / Запустить временно
+### Run Temporarily
 ```bash
 pipx run black script.py                      # Run without installing / Запустить без установки
 pipx run --spec black==22.0.0 black           # Run specific version / Запустить конкретную версию
@@ -119,13 +119,13 @@ pipx run --spec black==22.0.0 black           # Run specific version / Запу�
 
 # 📚 poetry — Dependency Management
 
-### Initialize Project / Инициализировать проект
+### Initialize Project
 ```bash
 poetry new myproject                          # Create new project / Создать новый проект
 poetry init                                   # Initialize in existing dir / Инициализировать в существующей директории
 ```
 
-### Install Dependencies / Установка зависимостей
+### Install Dependencies
 ```bash
 poetry install                                # Install dependencies / Установить зависимости
 poetry add requests                           # Add package / Добавить пакет
@@ -133,14 +133,14 @@ poetry add -D pytest                          # Add dev dependency / Добав�
 poetry add requests@^2.28.0                   # Add with version constraint / Добавить с ограничением версии
 ```
 
-### Update & Remove / Обновление и удаление
+### Update & Remove
 ```bash
 poetry update                                 # Update dependencies / Обновить зависимости
 poetry update requests                        # Update specific package / Обновить конкретный пакет
 poetry remove requests                        # Remove package / Удалить пакет
 ```
 
-### Virtual Environment / Виртуальная среда
+### Virtual Environment
 ```bash
 poetry shell                                  # Activate venv / Активировать venv
 poetry run python script.py                   # Run in venv / Запустить в venv
@@ -148,7 +148,7 @@ poetry run pytest                             # Run tests / Запустить �
 poetry env info                               # Show venv info / Показать информацию о venv
 ```
 
-### Build & Publish / Сборка и публикация
+### Build & Publish
 ```bash
 poetry build                                  # Build package / Собрать пакет
 poetry publish                                # Publish to PyPI / Опубликовать в PyPI
@@ -159,28 +159,28 @@ poetry publish --build                        # Build and publish / Собрат
 
 # 🔧 pyenv — Python Version Manager
 
-### Install Python Versions / Установка версий Python
+### Install Python Versions
 ```bash
 pyenv install 3.11.0                          # Install specific version / Установить конкретную версию
 pyenv install 3.11:latest                     # Install latest 3.11 / Установить последнюю 3.11
 pyenv install --list                          # List available versions / Список доступных версий
 ```
 
-### Use Python Versions / Использование версий Python
+### Use Python Versions
 ```bash
 pyenv global 3.11.0                           # Set global version / Установить глобальную версию
 pyenv local 3.10.0                            # Set local version / Установить локальную версию
 pyenv shell 3.11.0                            # Set shell version / Установить версию для shell
 ```
 
-### List & Manage / Список и управление
+### List & Manage
 ```bash
 pyenv versions                                # List installed versions / Список установленных версий
 pyenv version                                 # Show current version / Показать текущую версию
 pyenv uninstall 3.9.0                         # Uninstall version / Удалить версию
 ```
 
-### pyenv Priority / Приоритет pyenv
+### pyenv Priority
 
 | Priority | Method | Description (EN / RU) |
 |----------|--------|----------------------|
@@ -202,7 +202,7 @@ pyenv uninstall 3.9.0                         # Uninstall version / Удалит
 | **pipx** | CLI tool installer | Isolated environments for CLI tools / Изолированные окружения для CLI инструментов | Installing CLI tools globally |
 | **uv** | Ultra-fast (Rust-based) | Replaces pip/pip-tools/virtualenv / Замена pip/pip-tools/virtualenv | Speed-critical workflows, modern projects |
 
-### Requirements Files / Файлы требований
+### Requirements Files
 
 | File | Purpose (EN / RU) |
 |------|-------------------|
@@ -211,7 +211,7 @@ pyenv uninstall 3.9.0                         # Uninstall version / Удалит
 | `requirements-test.txt` | Test dependencies / Тестовые зависимости |
 | `pyproject.toml` | Modern Poetry/PEP 621 format / Современный формат Poetry/PEP 621 |
 
-### Package Indexes / Индексы пакетов
+### Package Indexes
 
 | Index | URL | Description (EN / RU) |
 |-------|-----|----------------------|
@@ -221,11 +221,11 @@ pyenv uninstall 3.9.0                         # Uninstall version / Удалит
 
 ---
 
-# 🐛 Troubleshooting / Устранение неполадок
+# 🐛 Troubleshooting
 
-### Reinstall Packages / Переустановить пакеты
+### Reinstall Packages
 ```bash
-# Clean install / Чистая установка
+# Clean install
 rm -rf .venv
 python3 -m venv .venv
 source .venv/bin/activate
@@ -233,17 +233,17 @@ pip install -U pip setuptools wheel
 pip install -r requirements.txt
 ```
 
-### Fix SSL Issues / Исправить SSL проблемы
+### Fix SSL Issues
 ```bash
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org <PACKAGE>
 ```
 
-### Fix Permission Issues / Исправить проблемы с правами
+### Fix Permission Issues
 ```bash
 pip install --user <PACKAGE>                  # Install for user / Установить для пользователя
 ```
 
-### Resolve Conflicts / Разрешить конфликты
+### Resolve Conflicts
 ```bash
 pip install pip-tools                         # Install pip-tools / Установить pip-tools
 pip-compile requirements.in                   # Compile dependencies / Скомпилировать зависимости
@@ -254,7 +254,7 @@ pip-sync requirements.txt                     # Sync environment / Синхро�
 ```bash
 # Error: "externally-managed-environment" (Python 3.11+ on Debian/Ubuntu)
 # Solution: Always use venv or --break-system-packages
-# Решение: Всегда используйте venv или --break-system-packages
+#
 
 python3 -m venv .venv && source .venv/bin/activate  # Recommended / Рекомендуется
 pip install --break-system-packages <PACKAGE>       # Not recommended / Не рекомендуется
@@ -266,94 +266,94 @@ pip install --break-system-packages <PACKAGE>       # Not recommended / Не р�
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+# 🌟 Real-World Examples
 
-### New Python Project / Новый Python проект
+### New Python Project
 ```bash
-# Create project / Создать проект
+# Create project
 mkdir myproject && cd myproject
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install tools / Установить инструменты
+# Install tools
 pip install -U pip setuptools wheel
 pip install black flake8 pytest
 
-# Create requirements / Создать requirements
+# Create requirements
 pip freeze > requirements.txt
 ```
 
-### Poetry Project / Проект с Poetry
+### Poetry Project
 ```bash
-# Initialize / Инициализировать
+# Initialize
 poetry new myproject
 cd myproject
 
-# Add dependencies / Добавить зависимости
+# Add dependencies
 poetry add fastapi uvicorn
 poetry add -D pytest black
 
-# Run / Запустить
+# Run
 poetry run python main.py
 ```
 
 ### Jupyter Notebook / Jupyter Notebook
 ```bash
-# Install Jupyter / Установить Jupyter
+# Install Jupyter
 pip install jupyter notebook
 
-# Create kernel / Создать kernel
+# Create kernel
 python -m ipykernel install --user --name=myproject
 
-# Start notebook / Запустить notebook
+# Start notebook
 jupyter notebook
 ```
 
-### Flask Development / Разработка Flask
+### Flask Development
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install flask python-dotenv
 pip install -D pytest pytest-flask
 
-# Run dev server / Запустить dev сервер
+# Run dev server
 export FLASK_APP=app.py
 export FLASK_ENV=development
 flask run
 ```
 
-### Django Setup / Настройка Django
+### Django Setup
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install django psycopg2-binary python-dotenv
 
-# Create project / Создать проект
+# Create project
 django-admin startproject myproject .
 python manage.py migrate
 python manage.py runserver
 ```
 
-### Data Science Environment / Окружение для Data Science
+### Data Science Environment
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install numpy pandas matplotlib jupyter scikit-learn
 
-# Save requirements / Сохранить requirements
+# Save requirements
 pip freeze > requirements.txt
 ```
 
-### CLI Tool Development / Разработка CLI инструментов
+### CLI Tool Development
 ```bash
-# Install in editable mode / Установить в редактируемом режиме
+# Install in editable mode
 pip install -e .
 
-# Run CLI / Запустить CLI
+# Run CLI
 mycli --help
 ```
 
-### Docker Python Image / Docker образ Python
+### Docker Python Image / Docker
 ```dockerfile
 FROM python:3.11-slim
 WORKDIR /app
@@ -365,7 +365,7 @@ CMD ["python", "app.py"]
 
 ---
 
-# 💡 Best Practices / Лучшие практики
+# 💡 Best Practices
 
 - Always use virtual environments / Всегда используйте виртуальные окружения
 - Pin dependencies in `requirements.txt` / Фиксируйте зависимости в `requirements.txt`
@@ -376,7 +376,7 @@ CMD ["python", "app.py"]
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **Python venv:** https://docs.python.org/3/library/venv.html
 - **pip:** https://pip.pypa.io/en/stable/

@@ -25,16 +25,16 @@ tags:
 - [yarn — Fast Package Manager](#yarn%20—%20Fast%20Package%20Manager)
 - [pnpm — Efficient Package Manager](#pnpm%20—%20Efficient%20Package%20Manager)
 - [Package Manager Comparison](#Package%20Manager%20Comparison)
-- [Package Scripts](#Package%20Scripts%20/%20Скрипты%20пакетов)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
+- [Package Scripts](#Package%20Scripts)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
+- [Best Practices](#Best%20Practices)
 
 ---
 
 # 📦 nvm — Version Manager
 
-### Install & Use Versions / Установка и использование версий
+### Install & Use Versions
 ```bash
 nvm install --lts                             # Install latest LTS / Установить последнюю LTS
 nvm install node                              # Install latest / Установить последнюю
@@ -44,7 +44,7 @@ nvm use 18                                    # Use version 18.x / Исполь�
 nvm use node                                  # Use latest / Использовать последнюю
 ```
 
-### List & Manage / Список и управление
+### List & Manage
 ```bash
 nvm ls                                        # List installed versions / Список установленных версий
 nvm ls-remote                                 # List available versions / Список доступных версий
@@ -53,7 +53,7 @@ nvm current                                   # Show current version / Пока�
 nvm uninstall 16.0.0                          # Uninstall version / Удалить версию
 ```
 
-### Default Version / Версия по умолчанию
+### Default Version
 ```bash
 nvm alias default 18                          # Set default version / Установить версию по умолчанию
 nvm alias default node                        # Set default to latest / Установить по умолчанию последнюю
@@ -63,7 +63,7 @@ nvm alias default node                        # Set default to latest / Уста
 
 # 📦 npm — Package Manager
 
-### Install Packages / Установка пакетов
+### Install Packages
 ```bash
 npm install                                   # Install all dependencies / Установить все зависимости
 npm ci                                        # Clean install (faster, CI) / Чистая установка (быстрее, CI)
@@ -72,7 +72,7 @@ npm install -D typescript                     # Install as dev dependency / Ус
 npm install -g pm2                            # Install globally / Установить глобально
 ```
 
-### Update & Audit / Обновление и аудит
+### Update & Audit
 ```bash
 npm update                                    # Update packages / Обновить пакеты
 npm update express                            # Update specific package / Обновить конкретный пакет
@@ -86,14 +86,14 @@ npm audit fix --force                         # Force fix (breaking changes) / �
 > `npm audit fix --force` can introduce breaking changes by upgrading to major versions. Review changes carefully.
 > `npm audit fix --force` может привести к breaking changes при обновлении до мажорных версий. Проверяйте изменения.
 
-### Remove & Clean / Удаление и очистка
+### Remove & Clean
 ```bash
 npm uninstall express                         # Uninstall package / Удалить пакет
 npm prune                                     # Remove unused packages / Удалить неиспользуемые пакеты
 npm cache clean --force                       # Clean cache / Очистить кэш
 ```
 
-### Scripts / Скрипты
+### Scripts
 ```bash
 npm run build                                 # Run build script / Запустить скрипт build
 npm run dev                                   # Run dev script / Запустить скрипт dev
@@ -101,7 +101,7 @@ npm start                                     # Run start script / Запуст�
 npm test                                      # Run tests / Запустить тесты
 ```
 
-### Publish / Публикация
+### Publish
 ```bash
 npm login                                     # Login to npm registry / Войти в npm registry
 npm publish                                   # Publish package / Опубликовать пакет
@@ -113,7 +113,7 @@ npm version minor                             # Bump minor version / Увели�
 
 # 🧶 yarn — Fast Package Manager
 
-### Install Packages / Установка пакетов
+### Install Packages
 ```bash
 yarn                                          # Install all dependencies / Установить все зависимости
 yarn install                                  # Same as above / То же что выше
@@ -122,7 +122,7 @@ yarn add -D typescript                        # Add as dev dependency / Доба
 yarn global add pm2                           # Add globally / Добавить глобально
 ```
 
-### Update & Audit / Обновление и аудит
+### Update & Audit
 ```bash
 yarn upgrade                                  # Upgrade packages / Обновить пакеты
 yarn upgrade express                          # Upgrade specific package / Обновить конкретный пакет
@@ -130,13 +130,13 @@ yarn upgrade-interactive                      # Interactive upgrade / Интер
 yarn audit                                    # Security audit / Аудит безопасности
 ```
 
-### Remove & Clean / Удаление и очистка
+### Remove & Clean
 ```bash
 yarn remove express                           # Remove package / Удалить пакет
 yarn cache clean                              # Clean cache / Очистить кэш
 ```
 
-### Scripts / Скрипты
+### Scripts
 ```bash
 yarn build                                    # Run build script / Запустить скрипт build
 yarn dev                                      # Run dev script / Запустить скрипт dev
@@ -144,7 +144,7 @@ yarn start                                    # Run start script / Запуст�
 yarn test                                     # Run tests / Запустить тесты
 ```
 
-### Workspaces / Рабочие пространства
+### Workspaces
 ```bash
 yarn workspaces info                          # Show workspaces / Показать workspaces
 yarn workspace <NAME> add express             # Add to specific workspace / Добавить в конкретный workspace
@@ -154,7 +154,7 @@ yarn workspace <NAME> add express             # Add to specific workspace / До
 
 # 📦 pnpm — Efficient Package Manager
 
-### Install Packages / Установка пакетов
+### Install Packages
 ```bash
 pnpm install                                  # Install all dependencies / Установить все зависимости
 pnpm add express                              # Add package / Добавить пакет
@@ -162,7 +162,7 @@ pnpm add -D typescript                        # Add as dev dependency / Доба
 pnpm add -g pm2                               # Add globally / Добавить глобально
 ```
 
-### Update & Audit / Обновление и аудит
+### Update & Audit
 ```bash
 pnpm update                                   # Update packages / Обновить пакеты
 pnpm update express                           # Update specific package / Обновить конкретный пакет
@@ -170,14 +170,14 @@ pnpm outdated                                 # Check outdated packages / Про
 pnpm audit                                    # Security audit / Аудит безопасности
 ```
 
-### Remove & Clean / Удаление и очистка
+### Remove & Clean
 ```bash
 pnpm remove express                           # Remove package / Удалить пакет
 pnpm prune                                    # Remove unused packages / Удалить неиспользуемые пакеты
 pnpm store prune                              # Prune store / Очистить хранилище
 ```
 
-### Scripts / Скрипты
+### Scripts
 ```bash
 pnpm run build                                # Run build script / Запустить скрипт build
 pnpm dev                                      # Run dev script / Запустить скрипт dev
@@ -200,9 +200,9 @@ pnpm start                                    # Run start script / Запуст�
 
 ---
 
-# 📜 Package Scripts / Скрипты пакетов
+# 📜 Package Scripts
 
-### Common Scripts / Распространённые скрипты
+### Common Scripts
 ```json
 {
   "scripts": {
@@ -217,7 +217,7 @@ pnpm start                                    # Run start script / Запуст�
 }
 ```
 
-### Run Scripts / Запуск скриптов
+### Run Scripts
 ```bash
 npm run <SCRIPT>                              # Run script / Запустить скрипт
 yarn <SCRIPT>                                 # Run script (yarn) / Запустить скрипт (yarn)
@@ -226,9 +226,9 @@ pnpm <SCRIPT>                                 # Run script (pnpm) / Запуст
 
 ---
 
-# 🐛 Troubleshooting / Устранение неполадок
+# 🐛 Troubleshooting
 
-### Clear Cache & Reinstall / Очистить кэш и переустановить
+### Clear Cache & Reinstall
 ```bash
 # npm
 rm -rf node_modules package-lock.json
@@ -250,15 +250,15 @@ pnpm install
 > Deleting lock files (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`) may change resolved dependency versions. Only do this as a last resort.
 > Удаление lock-файлов может изменить версии зависимостей. Делайте это только в крайнем случае.
 
-### Fix Permissions / Исправить права
+### Fix Permissions
 ```bash
-# Fix npm global permissions / Исправить глобальные права npm
+# Fix npm global permissions
 mkdir -p ~/.npm-global
 npm config set prefix '~/.npm-global'
 # Add to ~/.bashrc: export PATH=~/.npm-global/bin:$PATH
 ```
 
-### Node Version Issues / Проблемы с версией Node
+### Node Version Issues
 ```bash
 nvm use 18                                    # Switch Node version / Переключить версию Node
 node -v                                       # Check version / Проверить версию
@@ -267,9 +267,9 @@ npm rebuild                                   # Rebuild native modules / Пер�
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+# 🌟 Real-World Examples
 
-### Initialize New Project / Инициализировать новый проект
+### Initialize New Project
 ```bash
 mkdir myproject && cd myproject
 nvm use --lts
@@ -278,22 +278,22 @@ npm install express dotenv
 npm install -D nodemon typescript @types/node @types/express
 ```
 
-### CI/CD Setup / Настройка CI/CD
+### CI/CD Setup
 ```bash
-# Use npm ci for faster, reproducible builds / Используйте npm ci для быстрых, воспроизводимых сборок
+# Use npm ci for faster, reproducible builds
 npm ci
 npm run build
 npm test
 ```
 
-### Corepack (Yarn/pnpm Manager) / Corepack (менеджер Yarn/pnpm)
+### Corepack (Yarn/pnpm Manager) / Corepack
 ```bash
 corepack enable                               # Enable Corepack / Включить Corepack
 corepack prepare yarn@stable --activate       # Activate Yarn / Активировать Yarn
 yarn -v                                       # Check Yarn version / Проверить версию Yarn
 ```
 
-### Monorepo with Workspaces / Monorepo с workspaces
+### Monorepo with Workspaces / Monorepo
 ```json
 {
   "workspaces": [
@@ -309,7 +309,7 @@ yarn workspaces run build                     # Run build in all workspaces / З
 
 ---
 
-# 💡 Best Practices / Лучшие практики
+# 💡 Best Practices
 
 - Use `nvm` to manage Node versions / Используйте `nvm` для управления версиями Node
 - Use `npm ci` in CI/CD pipelines / Используйте `npm ci` в CI/CD пайплайнах
@@ -324,7 +324,7 @@ yarn workspaces run build                     # Run build in all workspaces / З
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **Node.js:** https://nodejs.org/en/docs
 - **npm:** https://docs.npmjs.com/

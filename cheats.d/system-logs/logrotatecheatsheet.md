@@ -28,7 +28,7 @@ logrotate is part of virtually all Linux distributions and has been the standard
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Basic Commands](#Basic%20Commands)
 2. [Configuration](#Configuration)
@@ -39,7 +39,7 @@ logrotate is part of virtually all Linux distributions and has been the standard
 
 ## Basic Commands
 
-### Test & Force / Тест и принудительный запуск
+### Test & Force
 
 ```bash
 sudo logrotate -d /etc/logrotate.conf         # Dry-run (debug mode) / Тестовый прогон
@@ -48,7 +48,7 @@ sudo logrotate -f /etc/logrotate.conf         # Force rotation / Принуди�
 sudo logrotate -f /etc/logrotate.d/nginx      # Force specific config / Принудительно для конкретного конфига
 ```
 
-### Check Configuration / Проверить конфигурацию
+### Check Configuration
 
 ```bash
 sudo logrotate -d /etc/logrotate.d/nginx      # Test nginx config / Проверить конфиг nginx
@@ -63,7 +63,7 @@ cat /var/lib/logrotate/status                 # Check last rotation / Прове
 
 ## Configuration
 
-### Main Config File / Основной файл конфигурации
+### Main Config File
 
 `/etc/logrotate.conf`
 
@@ -75,7 +75,7 @@ compress                                      # Compress rotated logs / Сжим
 include /etc/logrotate.d                      # Include conf.d directory / Включить conf.d директорию
 ```
 
-### Rotation Frequency Options / Опции частоты ротации
+### Rotation Frequency Options
 
 ```bash
 daily                                         # Rotate daily / Ротация ежедневно
@@ -88,7 +88,7 @@ maxsize 500M                                  # Force rotate if > 500MB / При
 minsize 1M                                    # Don't rotate if < 1MB / Не ротировать если < 1МБ
 ```
 
-### Compression Options / Опции сжатия
+### Compression Options
 
 ```bash
 compress                                      # Compress rotated logs / Сжимать ротированные логи
@@ -97,7 +97,7 @@ compresscmd /usr/bin/xz                       # Use xz for compression / Исп�
 compressoptions -9                            # Compression options / Опции сжатия
 ```
 
-### File Handling / Обработка файлов
+### File Handling
 
 ```bash
 create 0644 www-data www-data                 # Create with permissions / Создать с правами
@@ -109,7 +109,7 @@ sharedscripts                                 # Run scripts once / Запуст�
 dateext                                       # Add date to rotated filename / Добавить дату к имени
 ```
 
-### copytruncate vs create / Сравнение
+### copytruncate vs create
 
 | Method | Description (EN / RU) | When to Use / Когда использовать |
 | :--- | :--- | :--- |
@@ -123,7 +123,7 @@ dateext                                       # Add date to rotated filename / �
 
 ## Rotation Strategies
 
-### Size-Based Rotation / Ротация по размеру
+### Size-Based Rotation
 
 ```bash
 /var/log/app/*.log {
@@ -135,7 +135,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Time-Based Rotation / Ротация по времени
+### Time-Based Rotation
 
 ```bash
 /var/log/nginx/*.log {
@@ -150,7 +150,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Combined Strategy / Комбинированная стратегия
+### Combined Strategy
 
 ```bash
 /var/log/app/access.log {
@@ -169,7 +169,7 @@ dateext                                       # Add date to rotated filename / �
 
 ## Real-World Examples
 
-### Nginx Logs / Логи Nginx
+### Nginx Logs
 
 `/etc/logrotate.d/nginx`
 
@@ -194,7 +194,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Apache Logs / Логи Apache
+### Apache Logs
 
 `/etc/logrotate.d/apache2`
 
@@ -214,7 +214,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Application Logs / Логи приложений
+### Application Logs
 
 `/etc/logrotate.d/myapp`
 
@@ -237,7 +237,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Docker Container Logs / Логи контейнеров Docker
+### Docker Container Logs
 
 `/etc/logrotate.d/docker`
 
@@ -253,7 +253,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### System Logs / Системные логи
+### System Logs
 
 `/etc/logrotate.d/rsyslog`
 
@@ -275,7 +275,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Database Logs / Логи баз данных
+### Database Logs
 
 `/etc/logrotate.d/mysql`
 
@@ -296,7 +296,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Dated Archives / Архивы с датами
+### Dated Archives
 
 ```bash
 /var/log/app/*.log {
@@ -311,7 +311,7 @@ dateext                                       # Add date to rotated filename / �
 }
 ```
 
-### Custom Cleanup Script / Пользовательский скрипт очистки
+### Custom Cleanup Script
 
 ```bash
 /var/log/custom/*.log {
@@ -327,7 +327,7 @@ dateext                                       # Add date to rotated filename / �
 
 ---
 
-## Default Paths / Пути по умолчанию
+## Default Paths
 
 | Path | Purpose (EN) | Назначение (RU) |
 | :--- | :--- | :--- |
@@ -338,7 +338,7 @@ dateext                                       # Add date to rotated filename / �
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Use **size limits** to prevent disk full situations. / Используйте ограничения размера.
 - **Compress** rotated logs to save space. / Сжимайте ротированные логи.

@@ -21,21 +21,21 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
-1. [Installation & Configuration](#Installation%20&%20Configuration%20/%20Установка%20и%20Настройка)
-2. [Core Management](#Core%20Management%20/%20Управление)
-3. [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20Сисадмина)
-4. [Security](#Security%20/%20Безопасность)
-5. [Backup & Restore](#Backup%20&%20Restore%20/%20Бэкап%20и%20Восстановление)
-6. [Troubleshooting](#Troubleshooting%20/%20Устранение%20проблем)
-7. [Logrotate Configuration](#Logrotate%20Configuration%20/%20Конфигурация%20Logrotate)
+1. [Installation & Configuration](#Installation%20&%20Configuration)
+2. [Core Management](#Core%20Management)
+3. [Sysadmin Operations](#Sysadmin%20Operations)
+4. [Security](#Security)
+5. [Backup & Restore](#Backup%20&%20Restore)
+6. [Troubleshooting](#Troubleshooting)
+7. [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 
-## Installation & Configuration / Установка и Настройка
+## Installation & Configuration
 
-### Install / Установка
+### Install
 
 ```bash
 # Ubuntu/Debian
@@ -46,7 +46,7 @@ sudo dnf install -y postgresql-server postgresql-contrib                  # Inst
 sudo postgresql-setup --initdb                                            # Initialize DB / Инициализация БД
 ```
 
-### Configuration / Конфигурация
+### Configuration
 
 **Main config files / Основной файл конфигурации:**
 
@@ -85,10 +85,10 @@ host    all             all             ::1/128                 md5
 host    all             all             <SUBNET>/24             md5
 ```
 
-### System Tuning / Настройка системы
+### System Tuning
 
 ```bash
-# Shared memory settings (add to /etc/sysctl.conf) / Настройки shared memory
+# Shared memory settings (add to /etc/sysctl.conf)
 kernel.shmmax = 17179869184                                               # 16GB in bytes / 16ГБ в байтах
 kernel.shmall = 4194304                                                   # Pages (16GB / 4KB) / Страницы
 
@@ -97,9 +97,9 @@ sudo sysctl -p                                                            # Appl
 
 ---
 
-## Core Management / Управление
+## Core Management
 
-### Connection / Подключение
+### Connection
 
 ```bash
 psql -h <HOST> -U <USER> -d <DB>                                          # Connect to database / Подключение к базе
@@ -108,7 +108,7 @@ psql postgres://\<USER\>:\<PASSWORD\>@\<HOST\>:5432/\<DB\>                # Conn
 sudo -u postgres psql                                                     # Connect as postgres user / Как пользователь postgres
 ```
 
-### Database Operations / Операции с базами
+### Database Operations
 
 ```sql
 \l                                                                        -- List databases / Список баз
@@ -121,7 +121,7 @@ DROP DATABASE <DB_NAME>;                                                  -- Del
 \d+ <TABLE>                                                               -- Detailed table info / Подробная информация
 ```
 
-### Schema Operations / Операции со схемами
+### Schema Operations
 
 ```sql
 \dn                                                                       -- List schemas / Список схем
@@ -131,7 +131,7 @@ DROP SCHEMA <SCHEMA_NAME> CASCADE;                                        -- Del
 SET search_path TO <SCHEMA>, public;                                      -- Set default schema / Установить схему по умолчанию
 ```
 
-### Table Operations / Операции с таблицами
+### Table Operations
 
 ```sql
 CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(100));            -- Create table / Создать таблицу
@@ -141,7 +141,7 @@ DROP TABLE <TABLE> CASCADE;                                               -- Del
 TRUNCATE TABLE <TABLE> CASCADE;                                           -- Empty table / Очистить таблицу
 ```
 
-### CRUD Operations / Операции CRUD
+### CRUD Operations
 
 ```sql
 INSERT INTO users (name) VALUES ('Alice');                                -- Insert row / Вставить строку
@@ -150,7 +150,7 @@ UPDATE users SET name = 'Bob' WHERE id = 1;                               -- Upd
 DELETE FROM users WHERE id = 1;                                           -- Delete row / Удалить строку
 ```
 
-### Indexes / Индексы
+### Indexes
 
 ```sql
 CREATE INDEX idx_name ON users(name);                                     -- Create index / Создать индекс
@@ -159,7 +159,7 @@ CREATE UNIQUE INDEX idx_email ON users(email);                            -- Uni
 DROP INDEX idx_name;                                                      -- Drop index / Удалить индекс
 ```
 
-### psql Commands / Команды psql
+### psql Commands
 
 ```sql
 \?                                                                        -- Help / Справка
@@ -174,9 +174,9 @@ DROP INDEX idx_name;                                                      -- Dro
 
 ---
 
-## Sysadmin Operations / Операции Сисадмина
+## Sysadmin Operations
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start postgresql                                           # Start service / Запустить сервис
@@ -187,7 +187,7 @@ sudo systemctl enable postgresql                                          # Enab
 sudo systemctl reload postgresql                                          # Reload config / Перезагрузить конфиг
 ```
 
-### Logs / Логи
+### Logs
 
 ```bash
 sudo tail -f /var/log/postgresql/postgresql-<VERSION>-main.log            # Main log (Debian/Ubuntu) / Основной лог
@@ -196,7 +196,7 @@ sudo journalctl -u postgresql -f                                          # Syst
 grep "ERROR" /var/log/postgresql/*.log                                    # Find errors / Найти ошибки
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 ```bash
 /var/lib/postgresql/<VERSION>/main/                                       # Data directory (Debian/Ubuntu)
@@ -206,13 +206,13 @@ grep "ERROR" /var/log/postgresql/*.log                                    # Find
 /tmp/.s.PGSQL.5432                                                        # Unix socket / Unix-сокет
 ```
 
-### Default Port / Порт по умолчанию
+### Default Port
 
 ```bash
 5432/tcp                                                                  # PostgreSQL default port / Порт по умолчанию
 ```
 
-### Firewall / Файрвол
+### Firewall
 
 ```bash
 sudo firewall-cmd --permanent --add-service=postgresql                    # Open PostgreSQL port / Открыть порт
@@ -220,7 +220,7 @@ sudo firewall-cmd --reload                                                # Relo
 sudo ufw allow 5432/tcp                                                   # UFW: allow PostgreSQL / UFW: разрешить PostgreSQL
 ```
 
-### Performance / Производительность
+### Performance
 
 ```sql
 SELECT * FROM pg_stat_activity;                                           -- Active connections / Активные подключения
@@ -233,9 +233,9 @@ FROM pg_tables ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 
 ---
 
-## Security / Безопасность
+## Security
 
-### Role Management / Управление ролями
+### Role Management
 
 ```sql
 CREATE ROLE <USER> WITH LOGIN PASSWORD '<PASSWORD>';                     -- Create user / Создать пользователя
@@ -247,7 +247,7 @@ ALTER ROLE <USER> WITH NOSUPERUSER;                                      -- Revo
 \du                                                                       -- List roles / Список ролей
 ```
 
-### Permissions / Права доступа
+### Permissions
 
 ```sql
 GRANT ALL PRIVILEGES ON DATABASE <DB> TO <USER>;                         -- Grant all on DB / Все права на базу
@@ -257,10 +257,10 @@ REVOKE ALL PRIVILEGES ON DATABASE <DB> FROM <USER>;                      -- Revo
 \dp <TABLE>                                                               -- Show table permissions / Показать права
 ```
 
-### SSL Configuration / Настройка SSL
+### SSL Configuration
 
 ```bash
-# Generate SSL certificates / Генерация SSL сертификатов
+# Generate SSL certificates
 sudo openssl req -new -x509 -days 365 -nodes -text -out server.crt \
   -keyout server.key -subj "/CN=<HOSTNAME>"
 sudo chmod 600 /var/lib/postgresql/<VERSION>/main/server.key             # Set permissions / Установить права
@@ -276,26 +276,26 @@ ssl_key_file = 'server.key'
 
 ---
 
-## Backup & Restore / Бэкап и Восстановление
+## Backup & Restore
 
-### pg_dump / Логический бэкап
+### pg_dump
 
 ```bash
-# Dump single database / Дамп одной базы
+# Dump single database
 pg_dump -h <HOST> -U <USER> -d <DB> > dump.sql                            # Dump to SQL / Дамп в SQL
 pg_dump -h <HOST> -U <USER> -d <DB> | gzip > dump.sql.gz                  # Dump to gzip / Дамп в gzip
 pg_dump -h <HOST> -U <USER> -d <DB> -Fc > dump.custom                     # Custom format / Пользовательский формат
 pg_dump -h <HOST> -U <USER> -d <DB> -Fd -j 4 -f dumpdir                   # Directory format / Формат директории
 
-# Dump all databases / Дамп всех баз
+# Dump all databases
 pg_dumpall -h <HOST> -U <USER> > all_dbs.sql                              # All databases / Все базы
 pg_dumpall -h <HOST> -U <USER> --globals-only > globals.sql               # Only roles/tablespaces / Только роли
 
-# Dump specific table / Дамп конкретной таблицы
+# Dump specific table
 pg_dump -h <HOST> -U <USER> -d <DB> -t <TABLE> > table_dump.sql           # Table dump / Дамп таблицы
 ```
 
-### Restore / Восстановление
+### Restore
 
 ```bash
 psql -h <HOST> -U <USER> -d <DB> < dump.sql                               # Restore from SQL / Восстановить из SQL
@@ -305,15 +305,15 @@ pg_restore -h <HOST> -U <USER> -d <DB> -Fd -j 4 dumpdir                   # Rest
 psql -h <HOST> -U <USER> -d postgres < all_dbs.sql                        # Restore all databases / Все базы
 ```
 
-### Physical Backup (pg_basebackup) / Физический бэкап
+### Physical Backup (pg_basebackup)
 
 ```bash
-# Base backup / Базовый бэкап
+# Base backup
 pg_basebackup -h <HOST> -U <USER> -D /backup/pgdata -Ft -z -P             # Tar gzip format / Формат tar gzip
 pg_basebackup -h <HOST> -U <USER> -D /backup/pgdata -Fp -Xs -P            # Plain format with WAL / Обычный формат с WAL
 ```
 
-### WAL Archiving & PITR / Архивирование WAL и восстановление на момент времени
+### WAL Archiving & PITR
 
 **In postgresql.conf:**
 
@@ -326,15 +326,15 @@ archive_command = 'cp %p /archive/%f'
 **Restore with PITR:**
 
 ```bash
-# 1. Restore base backup / Восстановить базовый бэкап
+# 1. Restore base backup
 sudo systemctl stop postgresql
 rm -rf /var/lib/postgresql/<VERSION>/main/*
 tar -xzf base.tar.gz -C /var/lib/postgresql/<VERSION>/main/
 
-# 2. Create recovery.signal / Создать recovery.signal
+# 2. Create recovery.signal
 touch /var/lib/postgresql/<VERSION>/main/recovery.signal
 
-# 3. Configure recovery in postgresql.conf / Настроить восстановление
+# 3. Configure recovery in postgresql.conf
 restore_command = 'cp /archive/%f %p'
 recovery_target_time = '2025-08-27 12:00:00'
 
@@ -343,9 +343,9 @@ sudo systemctl start postgresql
 
 ---
 
-## Troubleshooting / Устранение проблем
+## Troubleshooting
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 **Can't connect to PostgreSQL / Не могу подключиться:**
 
@@ -353,7 +353,7 @@ sudo systemctl start postgresql
 sudo systemctl status postgresql                                          # Check if running / Проверить запущен ли
 sudo netstat -tuln | grep 5432                                            # Check if listening / Проверить прослушивание
 sudo tail -f /var/log/postgresql/*.log                                    # Check error log / Проверить лог ошибок
-# Check pg_hba.conf for auth rules / Проверить правила аутентификации
+# Check pg_hba.conf for auth rules
 ```
 
 **Reset postgres password / Сброс пароля postgres:**
@@ -362,14 +362,14 @@ sudo tail -f /var/log/postgresql/*.log                                    # Chec
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '<NEW_PASSWORD>';"
 ```
 
-### Query Analysis / Анализ запросов
+### Query Analysis
 
 ```sql
 EXPLAIN SELECT * FROM users WHERE name = 'Alice';                         -- Explain query plan / План выполнения запроса
 EXPLAIN ANALYZE SELECT * FROM users WHERE name = 'Alice';                 -- Execute and explain / Выполнить и показать план
 ```
 
-### Database Maintenance / Обслуживание базы
+### Database Maintenance
 
 ```sql
 VACUUM;                                                                   -- Vacuum database / Очистка базы
@@ -380,7 +380,7 @@ REINDEX TABLE <TABLE>;                                                    -- Reb
 REINDEX DATABASE <DB>;                                                    -- Rebuild all indexes / Все индексы в базе
 ```
 
-### Bloat Check / Проверка раздувания
+### Bloat Check
 
 ```sql
 SELECT schemaname, tablename,
@@ -390,7 +390,7 @@ WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
 ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;         -- Find largest tables / Найти самые большие таблицы
 ```
 
-### Monitoring / Мониторинг
+### Monitoring
 
 ```sql
 SELECT datname, numbackends FROM pg_stat_database;                        -- Connections per DB / Подключения по базам
@@ -399,7 +399,7 @@ SELECT * FROM pg_locks;                                                   -- Loc
 SELECT * FROM pg_stat_user_tables;                                        -- Table statistics / Статистика таблиц
 ```
 
-### Slow Queries / Медленные запросы
+### Slow Queries
 
 **Enable slow query logging in postgresql.conf:**
 
@@ -409,7 +409,7 @@ log_min_duration_statement = 1000                                         # Log 
 
 ---
 
-## Logrotate Configuration / Конфигурация Logrotate
+## Logrotate Configuration
 
 `/etc/logrotate.d/postgresql`
 

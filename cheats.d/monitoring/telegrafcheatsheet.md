@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -34,7 +34,7 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install Telegraf / Установка Telegraf
+### Install Telegraf
 
 ```bash
 # RHEL/CentOS/AlmaLinux
@@ -54,12 +54,12 @@ echo "deb https://repos.influxdata.com/debian stable main" > /etc/apt/sources.li
 apt update && apt install telegraf
 ```
 
-### Main Configuration / Основная конфигурация
+### Main Configuration
 
 `/etc/telegraf/telegraf.conf`
 
 ```toml
-# Global agent settings / Глобальные настройки агента
+# Global agent settings
 [agent]
   interval = "10s"                    # Collection interval / Интервал сбора
   round_interval = true               # Round collection to interval / Округлить до интервала
@@ -70,19 +70,19 @@ apt update && apt install telegraf
   hostname = ""                       # Auto-detect / Авто-определение
   omit_hostname = false
 
-# Output to InfluxDB v2 / Вывод в InfluxDB v2
+# Output to InfluxDB v2
 [[outputs.influxdb_v2]]
   urls = ["http://<INFLUXDB_HOST>:8086"]
   token = "<TOKEN>"
   organization = "<ORG>"
   bucket = "<BUCKET>"
 
-# Output to Prometheus / Вывод в Prometheus
+# Output to Prometheus
 # [[outputs.prometheus_client]]
 #   listen = ":9273"
 #   metric_version = 2
 
-# System inputs (default) / Системные входы (по умолчанию)
+# System inputs (default)
 [[inputs.cpu]]
   percpu = true
   totalcpu = true
@@ -99,7 +99,7 @@ apt update && apt install telegraf
 [[inputs.system]]
 ```
 
-### Output Plugin Comparison / Сравнение плагинов вывода
+### Output Plugin Comparison
 
 | Output | Protocol | Best For / Лучше для |
 |--------|----------|---------------------|
@@ -114,34 +114,34 @@ apt update && apt install telegraf
 
 ## 2. Core Management
 
-### Generate Configuration / Генерация конфигурации
+### Generate Configuration
 
 ```bash
-# Generate full default config / Сгенерировать полный конфиг по умолчанию
+# Generate full default config
 telegraf config > /etc/telegraf/telegraf.conf.default
 
-# Generate config with specific plugins only / Конфиг только с конкретными плагинами
+# Generate config with specific plugins only
 telegraf config --input-filter cpu:mem:disk:net --output-filter influxdb_v2 > /etc/telegraf/telegraf.conf
 
-# List available input plugins / Список входных плагинов
+# List available input plugins
 telegraf --input-list
 
-# List available output plugins / Список выходных плагинов
+# List available output plugins
 telegraf --output-list
 
-# Print sample config for specific plugin / Показать пример конфига плагина
+# Print sample config for specific plugin
 telegraf --usage cpu
 telegraf --usage influxdb_v2
 ```
 
-### Popular Input Plugins / Популярные плагины ввода
+### Popular Input Plugins
 
 ```toml
-# Nginx status / Статус Nginx
+# Nginx status
 [[inputs.nginx]]
   urls = ["http://localhost/nginx_status"]
 
-# MySQL statistics / Статистика MySQL
+# MySQL statistics
 [[inputs.mysql]]
   servers = ["<USER>:<PASSWORD>@tcp(<HOST>:3306)/"]
 
@@ -149,16 +149,16 @@ telegraf --usage influxdb_v2
 [[inputs.postgresql]]
   address = "host=<HOST> user=<USER> password=<PASSWORD> sslmode=disable dbname=<DB>"
 
-# Docker containers / Контейнеры Docker
+# Docker containers
 [[inputs.docker]]
   endpoint = "unix:///var/run/docker.sock"
 
-# HTTP response check / Проверка HTTP-ответа
+# HTTP response check
 [[inputs.http_response]]
   urls = ["https://<HOST>"]
   response_timeout = "5s"
 
-# SNMP polling / Опрос SNMP
+# SNMP polling
 [[inputs.snmp]]
   agents = ["udp://<HOST>:161"]
   community = "<COMMUNITY_STRING>"
@@ -166,7 +166,7 @@ telegraf --usage influxdb_v2
     oid = ".1.3.6.1.2.1.1.3.0"
     name = "uptime"
 
-# Execute custom script / Выполнить кастомный скрипт
+# Execute custom script
 [[inputs.exec]]
   commands = ["/usr/local/bin/custom_metric.sh"]
   data_format = "influx"
@@ -178,7 +178,7 @@ telegraf --usage influxdb_v2
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
 systemctl start telegraf      # Start / Запустить
@@ -188,7 +188,7 @@ systemctl enable telegraf     # Enable on boot / Автозапуск
 systemctl status telegraf     # Check status / Проверить статус
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -199,16 +199,16 @@ systemctl status telegraf     # Check status / Проверить статус
 > [!TIP]
 > Use `/etc/telegraf/telegraf.d/` to split configs into per-service files (e.g., `nginx.conf`, `mysql.conf`). Telegraf loads all `.conf` files from this directory. / Разделяйте конфиг на файлы по сервисам в `/etc/telegraf/telegraf.d/`.
 
-### Test Configuration / Тест конфигурации
+### Test Configuration
 
 ```bash
-# Test config syntax / Проверить синтаксис конфига
+# Test config syntax
 telegraf --config /etc/telegraf/telegraf.conf --test
 
-# Dry run (collect once, print to stdout) / Пробный запуск
+# Dry run (collect once, print to stdout)
 telegraf --config /etc/telegraf/telegraf.conf --once --test
 
-# Run with debug output / Запуск с отладкой
+# Run with debug output
 telegraf --config /etc/telegraf/telegraf.conf --debug
 ```
 
@@ -216,18 +216,18 @@ telegraf --config /etc/telegraf/telegraf.conf --debug
 
 ## 4. Security
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 `/etc/default/telegraf` (Debian) or `/etc/sysconfig/telegraf` (RHEL)
 
 ```ini
-# Store secrets in environment / Хранить секреты в переменных окружения
+# Store secrets in environment
 INFLUX_TOKEN=<TOKEN>
 DB_PASSWORD=<PASSWORD>
 ```
 
 ```toml
-# Reference in telegraf.conf / Использование в telegraf.conf
+# Reference in telegraf.conf
 [[outputs.influxdb_v2]]
   token = "$INFLUX_TOKEN"
 ```
@@ -236,41 +236,41 @@ DB_PASSWORD=<PASSWORD>
 
 ## 5. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. No Data in Output / Нет данных на выходе
+#### 1. No Data in Output
 
 ```bash
-# Test specific input / Тест конкретного входа
+# Test specific input
 telegraf --config /etc/telegraf/telegraf.conf --input-filter cpu --test
 
-# Test output connectivity / Проверить подключение к выходу
+# Test output connectivity
 telegraf --config /etc/telegraf/telegraf.conf --output-filter influxdb_v2 --test
 
-# Check logs / Проверить логи
+# Check logs
 journalctl -u telegraf -f --no-pager
 ```
 
-#### 2. Plugin Permission Errors / Ошибки прав плагинов
+#### 2. Plugin Permission Errors
 
 ```bash
-# Add telegraf user to required groups / Добавить пользователя telegraf в необходимые группы
+# Add telegraf user to required groups
 usermod -aG docker telegraf     # For Docker input / Для Docker
 usermod -aG systemd-journal telegraf  # For journal input / Для journald
 
 systemctl restart telegraf
 ```
 
-#### 3. High CPU/Memory Usage / Высокое потребление CPU/памяти
+#### 3. High CPU/Memory Usage
 
 ```bash
-# Reduce collection interval / Уменьшить интервал сбора
+# Reduce collection interval
 # agent.interval = "30s" instead of "10s"
 
-# Reduce buffer / Уменьшить буфер
+# Reduce buffer
 # agent.metric_buffer_limit = 5000
 
-# Check which plugins are slow / Проверить какие плагины медленные
+# Check which plugins are slow
 telegraf --config /etc/telegraf/telegraf.conf --debug 2>&1 | grep "took"
 ```
 
@@ -297,7 +297,7 @@ telegraf --config /etc/telegraf/telegraf.conf --debug 2>&1 | grep "took"
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **Official Documentation:** https://docs.influxdata.com/telegraf/
 - **Plugin Directory:** https://docs.influxdata.com/telegraf/latest/plugins/

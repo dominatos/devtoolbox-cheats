@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -34,43 +34,43 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install Cerebro / Установка Cerebro
+### Install Cerebro
 
 ```bash
-# Download latest release / Скачать последний релиз
+# Download latest release
 RELEASE="0.9.4"
 wget "https://github.com/lmenezes/cerebro/releases/download/v${RELEASE}/cerebro-${RELEASE}.tgz"
 tar -xzf cerebro-${RELEASE}.tgz
 mv cerebro-${RELEASE} /opt/cerebro
 ```
 
-### Install via Docker / Установка через Docker
+### Install via Docker
 
 ```bash
-# Run Cerebro in Docker / Запустить Cerebro в Docker
+# Run Cerebro in Docker
 docker run -d --name cerebro \
   -p 9000:9000 \
   -e CEREBRO_PORT=9000 \
   lmenezes/cerebro:latest
 
-# Or with custom config / Или с кастомным конфигом
+# Or with custom config
 docker run -d --name cerebro \
   -p 9000:9000 \
   -v /etc/cerebro/application.conf:/opt/cerebro/conf/application.conf:ro \
   lmenezes/cerebro:latest
 ```
 
-### Main Configuration / Основная конфигурация
+### Main Configuration
 
 `/opt/cerebro/conf/application.conf`
 
 ```hocon
-# Server settings / Настройки сервера
+# Server settings
 play {
   server.http.port = 9000
 }
 
-# Elasticsearch cluster connections / Подключения к кластерам Elasticsearch
+# Elasticsearch cluster connections
 hosts = [
   {
     host = "http://<ES_HOST_1>:9200"
@@ -82,7 +82,7 @@ hosts = [
   }
 ]
 
-# Authentication (optional) / Аутентификация (опционально)
+# Authentication (optional)
 auth = {
   type: "basic"
   settings {
@@ -91,7 +91,7 @@ auth = {
   }
 }
 
-# LDAP authentication / Аутентификация через LDAP
+# LDAP authentication
 # auth = {
 #   type: "ldap"
 #   settings {
@@ -103,7 +103,7 @@ auth = {
 # }
 ```
 
-### Systemd Service / Сервис systemd
+### Systemd Service
 
 `/etc/systemd/system/cerebro.service`
 
@@ -126,11 +126,11 @@ WantedBy=multi-user.target
 ```
 
 ```bash
-# Create user and set permissions / Создать пользователя и настроить права
+# Create user and set permissions
 useradd -r -s /sbin/nologin cerebro
 chown -R cerebro:cerebro /opt/cerebro
 
-# Enable and start / Активировать и запустить
+# Enable and start
 systemctl daemon-reload
 systemctl enable --now cerebro
 ```
@@ -139,7 +139,7 @@ systemctl enable --now cerebro
 
 ## 2. Core Management
 
-### Web UI Access / Доступ к веб-интерфейсу
+### Web UI Access
 
 ```bash
 http://<HOST>:9000    # Cerebro dashboard / Панель Cerebro
@@ -147,7 +147,7 @@ http://<HOST>:9000    # Cerebro dashboard / Панель Cerebro
 
 On first access, enter your Elasticsearch cluster URL to connect. / При первом доступе введите URL вашего кластера Elasticsearch.
 
-### Cerebro UI Features / Функции интерфейса Cerebro
+### Cerebro UI Features
 
 | Feature | Description / Описание |
 |---------|------------------------|
@@ -161,25 +161,25 @@ On first access, enter your Elasticsearch cluster URL to connect. / При пе�
 | **Snapshots** | Manage repository snapshots / Управление snapshot-репозиториями |
 | **Cat API** | Visual /_cat API browser / Визуальный браузер Cat API |
 
-### Useful Elasticsearch API Queries via Cerebro / Полезные запросы через REST-интерфейс
+### Useful Elasticsearch API Queries via Cerebro
 
 ```bash
-# Cluster health / Здоровье кластера
+# Cluster health
 GET /_cluster/health
 
-# Node stats / Статистика узлов
+# Node stats
 GET /_nodes/stats
 
-# Index list / Список индексов
+# Index list
 GET /_cat/indices?v&s=store.size:desc
 
-# Shard allocation / Распределение шардов
+# Shard allocation
 GET /_cat/shards?v&s=store:desc
 
-# Pending tasks / Ожидающие задачи
+# Pending tasks
 GET /_cluster/pending_tasks
 
-# Check disk allocation / Проверить распределение дисков
+# Check disk allocation
 GET /_cat/allocation?v
 ```
 
@@ -187,7 +187,7 @@ GET /_cat/allocation?v
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
 systemctl start cerebro      # Start / Запустить
@@ -197,7 +197,7 @@ systemctl enable cerebro     # Enable on boot / Автозапуск
 systemctl status cerebro     # Check status / Проверить статус
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -205,24 +205,24 @@ systemctl status cerebro     # Check status / Проверить статус
 | `/opt/cerebro/conf/application.conf` | Main configuration / Основной конфиг |
 | `/opt/cerebro/logs/` | Application logs / Логи приложения |
 
-### JVM Tuning / Настройка JVM
+### JVM Tuning
 
 `/opt/cerebro/conf/jvm.options` or environment variable:
 
 ```bash
-# Set JVM heap size / Установить размер heap JVM
+# Set JVM heap size
 export JAVA_OPTS="-Xms256m -Xmx512m"
 
-# Or in systemd override / Или через переопределение systemd
+# Or in systemd override
 # /etc/systemd/system/cerebro.service.d/override.conf
 # [Service]
 # Environment="JAVA_OPTS=-Xms256m -Xmx512m"
 ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Allow Cerebro port / Разрешить порт Cerebro
+# Allow Cerebro port
 firewall-cmd --permanent --add-port=9000/tcp
 firewall-cmd --reload
 ```
@@ -234,7 +234,7 @@ firewall-cmd --reload
 
 ## 4. Security
 
-### Authentication Types / Типы аутентификации
+### Authentication Types
 
 | Type | Description / Описание | Best For / Лучше для |
 |------|------------------------|---------------------|
@@ -242,7 +242,7 @@ firewall-cmd --reload
 | Basic | Username/password in config / Логин/пароль в конфиге | Small teams / Маленькие команды |
 | LDAP | Corporate directory integration / Интеграция с каталогом | Enterprise / Корпоративное |
 
-### Reverse Proxy with TLS / Обратный прокси с TLS
+### Reverse Proxy with TLS
 
 `/etc/nginx/conf.d/cerebro.conf`
 
@@ -271,37 +271,37 @@ server {
 
 ## 5. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Cerebro Cannot Connect to Elasticsearch / Cerebro не может подключиться к ES
+#### 1. Cerebro Cannot Connect to Elasticsearch / Cerebro
 
 ```bash
-# Check Elasticsearch connectivity / Проверить подключение к ES
+# Check Elasticsearch connectivity
 curl -s http://<ES_HOST>:9200/_cluster/health | jq .
 
-# Check Cerebro logs / Проверить логи Cerebro
+# Check Cerebro logs
 tail -50 /opt/cerebro/logs/application.log
 
-# Verify network / Проверить сеть
+# Verify network
 curl -v http://<ES_HOST>:9200
 ```
 
-#### 2. Cerebro UI Loads Slowly / Интерфейс Cerebro загружается медленно
+#### 2. Cerebro UI Loads Slowly
 
 ```bash
-# Check JVM heap usage / Проверить использование JVM heap
+# Check JVM heap usage
 jcmd $(pgrep -f cerebro) VM.heap_info 2>/dev/null
 
-# Increase JVM heap / Увеличить JVM heap
+# Increase JVM heap
 # Set JAVA_OPTS="-Xms512m -Xmx1g"
 ```
 
-#### 3. Cluster Shows Red/Yellow Status / Кластер показывает статус Red/Yellow
+#### 3. Cluster Shows Red/Yellow Status
 
 This is an Elasticsearch issue, not Cerebro. Use Cerebro's UI to diagnose: / Это проблема Elasticsearch, не Cerebro. Используйте Cerebro для диагностики:
 
 ```bash
-# In Cerebro REST tab / В REST-интерфейсе Cerebro
+# In Cerebro REST tab
 GET /_cluster/health
 GET /_cat/shards?v&h=index,shard,prirep,state,unassigned.reason&s=state
 GET /_cluster/allocation/explain
@@ -333,7 +333,7 @@ GET /_cluster/allocation/explain
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **GitHub Repository:** https://github.com/lmenezes/cerebro
 - **Releases:** https://github.com/lmenezes/cerebro/releases

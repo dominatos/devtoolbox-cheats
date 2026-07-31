@@ -27,7 +27,7 @@ tags:
 
 ## Installation
 
-### Download & Install / Скачать и установить
+### Download & Install
 
 > [!TIP]
 > For production use, register at [veeam.com](https://www.veeam.com) to get the official download link for the latest version.
@@ -43,40 +43,40 @@ wget https://download2.veeam.com/VeeamAgentLinux-6.0.0.287-1.x86_64.rpm
 rpm -ivh VeeamAgentLinux-6.0.0.287-1.x86_64.rpm
 ```
 
-### License / Лицензия
+### License
 
 ```bash
 veeam                                           # Start configurator / Запустить конфигуратор
-# Select "Free" edition for workstation / Выбрать "Free" для рабочей станции
+# Select "Free" edition for workstation
 ```
 
 ---
 
 ## Job Configuration
 
-### Create Backup Job / Создать задачу бэкапа
+### Create Backup Job
 
 ```bash
 veeamconfig job create                          # Interactive wizard / Интерактивный мастер
 ```
 
-#### Job Types / Типы задач
+#### Job Types
 
 ```bash
-# Entire machine backup / Бэкап всей машины
+# Entire machine backup
 veeamconfig job create \
   --name FullBackup \
   --type EntireMachine \
   --repoName LocalRepo
 
-# Volume-level backup / Бэкап на уровне томов
+# Volume-level backup
 veeamconfig job create \
   --name VolumeBackup \
   --type Volume \
   --objects /dev/sda1 \
   --repoName LocalRepo
 
-# File-level backup / Бэкап на уровне файлов
+# File-level backup
 veeamconfig job create \
   --name FileBackup \
   --type FileLevel \
@@ -84,7 +84,7 @@ veeamconfig job create \
   --repoName LocalRepo
 ```
 
-### List & Manage Jobs / Список и управление задачами
+### List & Manage Jobs
 
 ```bash
 veeamconfig job list                            # List all jobs / Список задач
@@ -97,7 +97,7 @@ veeamconfig job delete --name FullBackup        # Delete job / Удалить з
 
 ## Backup Operations
 
-### Run Backup / Запустить бэкап
+### Run Backup
 
 ```bash
 veeamconfig job start --name FullBackup         # Start job / Запустить задачу
@@ -105,14 +105,14 @@ veeamconfig job start --all                     # Start all jobs / Все зад
 veeamconfig job start --name FullBackup --full  # Force full backup / Принудительно полный бэкап
 ```
 
-### Backup Modes / Режимы бэкапа
+### Backup Modes
 
 | Mode | Description / Описание | Flag |
 |------|------------------------|------|
 | Full | Complete backup of all data / Полный бэкап | `--full` |
 | Incremental | Changed blocks since last backup / Только изменения | *(default)* |
 
-### Monitor Progress / Мониторинг прогресса
+### Monitor Progress
 
 ```bash
 veeamconfig job status                          # Current job status / Статус задачи
@@ -123,29 +123,29 @@ veeamconfig session list                        # List all sessions / Списо
 
 ## Recovery Operations
 
-### Bare Metal Recovery / Восстановление Bare Metal
+### Bare Metal Recovery
 
 > [!IMPORTANT]
 > Boot from **Veeam Recovery Media** for bare metal restore. Create it before disaster: `veeam` → "Recovery Media".
 
 ```bash
-# Steps / Шаги:
-# 1. Boot from Veeam Recovery Media / Загрузить с Veeam Recovery Media
-# 2. Select "Bare metal recovery" / Выбрать "Bare metal recovery"
-# 3. Choose restore point / Выбрать точку восстановления
-# 4. Select target disks / Выбрать целевые диски
+# Steps
+# 1. Boot from Veeam Recovery Media
+# 2. Select "Bare metal recovery"
+# 3. Choose restore point
+# 4. Select target disks
 ```
 
-### File-Level Recovery / Файловое восстановление
+### File-Level Recovery
 
 ```bash
 veeamconfig recovery mount --session <SESSION_ID>  # Mount backup / Смонтировать бэкап
-# Files are mounted to /mnt/backup/ / Файлы смонтированы в /mnt/backup/
+# Files are mounted to /mnt/backup/
 cp /mnt/backup/var/www/* /var/www/              # Copy files / Копировать файлы
 veeamconfig recovery unmount                    # Unmount / Размонтировать
 ```
 
-### Volume-Level Recovery / Восстановление тома
+### Volume-Level Recovery
 
 ```bash
 veeamconfig recovery start \
@@ -157,22 +157,22 @@ veeamconfig recovery start \
 
 ## Repository Management
 
-### Create Repository / Создать репозиторий
+### Create Repository
 
 ```bash
-# Local directory / Локальный каталог
+# Local directory
 veeamconfig repository create \
   --name LocalRepo \
   --location /backup
 
-# Network share (SMB) / Сетевой ресурс (SMB)
+# Network share (SMB)
 veeamconfig repository create \
   --name NetworkRepo \
   --location smb://<HOST>/backup \
   --login <USER> \
   --password <PASSWORD>
 
-# Veeam Backup & Replication server / Сервер VBR
+# Veeam Backup & Replication server
 veeamconfig repository create \
   --name VBRRepo \
   --location vbr://<HOST> \
@@ -180,7 +180,7 @@ veeamconfig repository create \
   --password <PASSWORD>
 ```
 
-### Manage Repositories / Управление репозиториями
+### Manage Repositories
 
 ```bash
 veeamconfig repository list                     # List repos / Список репозиториев
@@ -192,7 +192,7 @@ veeamconfig repository delete --name LocalRepo  # Delete repo / Удалить �
 
 ## CLI Commands
 
-### Tools Reference / Справка по инструментам
+### Tools Reference
 
 | Command | Purpose / Назначение |
 |---------|----------------------|
@@ -213,7 +213,7 @@ veeamsnap --delete                              # Delete all snapshots / Уда�
 
 ## Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
 systemctl status veeamservice                   # Check service / Проверить сервис
@@ -222,7 +222,7 @@ systemctl stop veeamservice                     # Stop service / Останов�
 systemctl enable veeamservice                   # Enable at boot / Включить при загрузке
 ```
 
-### Schedule Backups / Планирование бэкапов
+### Schedule Backups
 
 ```bash
 veeamconfig job edit \
@@ -237,14 +237,14 @@ veeamconfig job edit \
   --days sunday                                 # Weekly on Sunday / Еженедельно в воскресенье
 ```
 
-### Logs & Configuration / Логи и конфигурация
+### Logs & Configuration
 
 ```bash
 tail -f /var/log/veeam/veeam.log               # Main Veeam log / Основной лог Veeam
 journalctl -u veeamservice                      # Service journal / Журнал сервиса
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 
 ```bash
 /etc/veeam/          # Configuration directory / Директория конфигурации
@@ -272,33 +272,33 @@ journalctl -u veeamservice                      # Service journal / Журнал
 
 ## Troubleshooting
 
-### Common Issues / Распространённые проблемы
+### Common Issues
 
 ```bash
-# "Snapshot creation failed" / "Не удалось создать снапшот"
+# "Snapshot creation failed" / "Не
 veeamsnap --show                                # Check snapshots / Проверить снапшоты
 veeamsnap --delete                              # Delete stale snapshots / Удалить устаревшие
 
-# "Cannot connect to repository" / "Нет подключения к репозиторию"
+# "Cannot connect to repository" / "Нет
 veeamconfig repository list                     # Check repo config / Конфигурация репозитория
 mount | grep /backup                            # Check mount / Проверить монтирование
 
-# "Backup job failed" / "Задача бэкапа провалилась"
+# "Backup job failed" / "Задача
 veeamconfig session list                        # Check sessions / Список сессий
 tail -f /var/log/veeam/veeam.log               # Check logs / Логи
 
-# Kernel module missing (dkms) / Модуль ядра не установлен
+# Kernel module missing (dkms)
 dkms status                                     # Check DKMS / Статус DKMS
 apt install linux-headers-$(uname -r)           # Install headers / Установить заголовки ядра
 ```
 
-### Debug / Отладка
+### Debug
 
 ```bash
 veeamconfig --trace job start --name FullBackup  # Run with trace / Трассировка
 ```
 
-### Uninstall / Удалить
+### Uninstall
 
 ```bash
 apt remove veeam                                # Debian/Ubuntu

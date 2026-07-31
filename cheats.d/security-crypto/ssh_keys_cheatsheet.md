@@ -19,7 +19,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Key Generation](#2.%20Key%20Generation)
@@ -35,7 +35,7 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Important Paths / Важные пути
+### Important Paths
 
 | File Path | Location | Purpose (EN / RU) |
 |-----------|----------|-------------------|
@@ -50,24 +50,24 @@ tags:
 
 ## 2. Key Generation
 
-### Modern Standard (ED25519) / Современный стандарт
+### Modern Standard (ED25519)
 
 Recommended for all modern systems (OpenSSH 6.5+). Faster and more secure. / Рекомендуется для всех современных систем.
 
 ```bash
-# Generate ED25519 key / Генерация ключа ED25519
+# Generate ED25519 key
 ssh-keygen -t ed25519 -C "<USER_EMAIL>" -f ~/.ssh/id_ed25519
 
-# With extra KDF rounds (better brute-force protection) / С дополнительными раундами KDF
+# With extra KDF rounds (better brute-force protection)
 ssh-keygen -t ed25519 -o -a 100 -C "<USER_EMAIL>"
 ```
 
-### Legacy Compatibility (RSA 4096) / Наследие (RSA 4096)
+### Legacy Compatibility (RSA 4096)
 
 Use only if connecting to very old legacy systems (Cisco routers, old CentOS 5/6). / Используйте только для подключения к старым системам.
 
 ```bash
-# Generate RSA 4096 key / Генерация ключа RSA 4096
+# Generate RSA 4096 key
 ssh-keygen -t rsa -b 4096 -C "<USER_EMAIL>"
 ```
 
@@ -75,7 +75,7 @@ ssh-keygen -t rsa -b 4096 -C "<USER_EMAIL>"
 
 ## 3. Key Distribution
 
-### Method 1: ssh-copy-id (Standard) / Стандартный метод
+### Method 1: ssh-copy-id (Standard)
 
 The safest and easiest way to install a public key. / Самый безопасный и простой способ установки ключа.
 
@@ -84,7 +84,7 @@ ssh-copy-id -i ~/.ssh/id_ed25519.pub <USER>@<HOST>  # Install key / Устано
 ssh-copy-id -i ~/.ssh/id_ed25519.pub -p <PORT> <USER>@<HOST>  # Non-standard port / Нестандартный порт
 ```
 
-### Method 2: Manual Install (One-liner) / Ручная установка
+### Method 2: Manual Install (One-liner)
 
 Use when `ssh-copy-id` is not available. / Когда `ssh-copy-id` недоступен.
 
@@ -92,10 +92,10 @@ Use when `ssh-copy-id` is not available. / Когда `ssh-copy-id` недост
 cat ~/.ssh/id_ed25519.pub | ssh <USER>@<HOST> "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 ```
 
-### Method 3: Bulk Distribution / Массовое распространение
+### Method 3: Bulk Distribution
 
 ```bash
-# Distribute to hosts matching pattern / Перебор хостов по шаблону
+# Distribute to hosts matching pattern
 grep '^Host ' ~/.ssh/config | awk '{for(i=2;i<=NF;i++) print $i}' | grep 'prod-*' | while read -r host; do
     echo "Deploying to $host..."
     ssh-copy-id -i ~/.ssh/id_ed25519.pub "$host"
@@ -108,24 +108,24 @@ done
 
 `~/.ssh/config`
 
-### Common Patterns / Частые шаблоны
+### Common Patterns
 
 ```bash
-# Global defaults / Глобальные настройки
+# Global defaults
 Host *
     User sysadmin
     IdentityFile ~/.ssh/id_ed25519
     Compression yes
     ServerAliveInterval 60
 
-# Specific Server / Конкретный сервер
+# Specific Server
 Host prod-db
     HostName <IP_OR_DNS>
     User postgres
     Port 2222
     IdentityFile ~/.ssh/db_key
 
-# Jump Host (Bastion) / Бастион
+# Jump Host (Bastion)
 Host bastion
     HostName <BASTION_IP>
 
@@ -140,23 +140,23 @@ Host internal-app
 
 `/etc/ssh/sshd_config`
 
-### Critical Settings / Критические настройки
+### Critical Settings
 
 ```bash
-# Allow Public Key Authentication / Разрешить вход по ключам
+# Allow Public Key Authentication
 PubkeyAuthentication yes
 
-# Location of authorized keys / Расположение файла авторизованных ключей
+# Location of authorized keys
 AuthorizedKeysFile .ssh/authorized_keys
 
-# Disable Password Authentication (Hardening) / Отключить пароли (Усиление)
+# Disable Password Authentication (Hardening)
 PasswordAuthentication no
 PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 ```
 
 ```bash
-# Always reload SSH after changes / Всегда перезагружать SSH после изменений
+# Always reload SSH after changes
 systemctl reload sshd  # Apply config / Применить конфиг
 ```
 
@@ -164,41 +164,41 @@ systemctl reload sshd  # Apply config / Применить конфиг
 
 ## 6. Security Hardening
 
-### File Permissions / Права доступа к файлам
+### File Permissions
 
 > [!IMPORTANT]
 > Incorrect permissions are the #1 reason SSH keys fail.
 > Неверные права доступа — причина №1 неработающих SSH ключей.
 
 ```bash
-# Client side / На клиенте
+# Client side
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 chmod 600 ~/.ssh/config
 
-# Server side / На сервере
+# Server side
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
 ```
 
-### Restrict Key Capabilities / Ограничение возможностей ключа
+### Restrict Key Capabilities
 
 In `~/.ssh/authorized_keys`:
 
 ```bash
 # Key can only run backup script, no PTY, no forwarding
-# Ключ запускает только скрипт бэкапа, без консоли
+#
 command="/usr/local/bin/backup.sh",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 AAAAC3... user@email
 ```
 
-### Disable Root Login / Отключение входа root
+### Disable Root Login
 
 `/etc/ssh/sshd_config`
 
 ```bash
 PermitRootLogin no
-# OR allow root ONLY with keys (better) / ИЛИ разрешить root только по ключам
+# OR allow root ONLY with keys (better)
 PermitRootLogin prohibit-password
 ```
 
@@ -210,7 +210,7 @@ PermitRootLogin prohibit-password
 
 ## 7. Troubleshooting & Tools
 
-### Diagnostics Workflow / Порядок диагностики
+### Diagnostics Workflow
 
 1. **Verbose Mode / Подробный режим:**
    ```bash
@@ -231,7 +231,7 @@ PermitRootLogin prohibit-password
    journalctl -u sshd -f       # Systemd universal
    ```
 
-### Common Errors / Частые ошибки
+### Common Errors
 
 - **"Permission denied (publickey)":**
     - Check `~/.ssh` directory permissions / Проверьте права директории `~/.ssh`
@@ -244,7 +244,7 @@ PermitRootLogin prohibit-password
 
 ## 8. Comparison Tables
 
-### Key Algorithms / Алгоритмы ключей
+### Key Algorithms
 
 | Algorithm | Security | Performance | Key Size | Recommendation |
 |-----------|----------|-------------|----------|----------------|

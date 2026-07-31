@@ -12,18 +12,18 @@ tags:
 > **find** — POSIX-standard utility for recursively searching the file system by name, type, size, time, permissions, and more. Part of GNU Findutils, pre-installed on all Linux distributions. `find` is the most powerful and flexible file-locating tool available in the shell. For simpler syntax and faster performance, consider the modern alternative [`fd`](https://github.com/sharkdp/fd) — but `find` remains the universal, scriptable standard.
 
 ## Table of Contents
-- [Basic Search](#Basic%20Search%20/%20Базовый%20поиск)
-- [By Type & Name](#By%20Type%20&%20Name%20/%20По%20типу%20и%20имени)
-- [By Time](#⏰%20By%20Time%20/%20По%20времени)
-- [By Size & Permissions](#By%20Size%20&%20Permissions%20/%20По%20размеру%20и%20правам)
-- [Excluding Paths](#Excluding%20Paths%20/%20Исключение%20путей)
-- [Actions: Delete, Exec](#Actions:%20Delete,%20Exec%20/%20Действия:%20удаление,%20выполнение)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Advanced Use Cases](#Advanced%20Use%20Cases%20/%20Продвинутые%20случаи)
+- [Basic Search](#Basic%20Search)
+- [By Type & Name](#By%20Type%20&%20Name)
+- [By Time](#⏰%20By%20Time)
+- [By Size & Permissions](#By%20Size%20&%20Permissions)
+- [Excluding Paths](#Excluding%20Paths)
+- [Actions: Delete, Exec](#Actions:%20Delete,%20Exec)
+- [Real-World Examples](#Real-World%20Examples)
+- [Advanced Use Cases](#Advanced%20Use%20Cases)
 
 ---
 
-## 🔍 Basic Search / Базовый поиск
+## 🔍 Basic Search
 
 ```bash
 find . -name "file.txt"                        # Find by exact name / Поиск по точному имени
@@ -38,7 +38,7 @@ find . -group <GROUP>                          # Files owned by group / Файл
 
 ---
 
-## 📁 By Type & Name / По типу и имени
+## 📁 By Type & Name
 
 ```bash
 find . -name "*.log" -type f                   # Log files / Файлы логов
@@ -51,7 +51,7 @@ find . -path "*/conf/*" -name "*.xml"          # Path + name pattern / Шабл�
 
 ---
 
-## ⏰ By Time / По времени
+## ⏰ By Time
 
 ```bash
 find . -mtime -1                               # Modified last 24h / Изменено за сутки
@@ -66,7 +66,7 @@ find . -newermt "2024-01-01"                   # Newer than date / Новее д
 
 ---
 
-## 📏 By Size & Permissions / По размеру и правам
+## 📏 By Size & Permissions
 
 ```bash
 find . -size +100M                             # Larger than 100MB / Больше 100МБ
@@ -80,7 +80,7 @@ find . -perm /u+w,g+w                          # Writable by user OR group / Д�
 
 ---
 
-## 🚫 Excluding Paths / Исключение путей
+## 🚫 Excluding Paths
 
 ```bash
 find . -not -path "*/.git/*"                   # Exclude .git / Исключить .git
@@ -91,7 +91,7 @@ find . -name ".DS_Store" -prune -o -name "*.log" -print  # Skip .DS_Store / Пр
 
 ---
 
-## ⚡ Actions: Delete, Exec / Действия: удаление, выполнение
+## ⚡ Actions: Delete, Exec
 
 > [!CAUTION]
 > Commands with `-delete` and `-exec rm` permanently remove files. Always test with `-print` first.
@@ -110,7 +110,7 @@ find . -name "core" -delete                    # Delete core dumps / Удали�
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
 ```bash
 find /var/log -name "*.log" -mtime +30 -delete  # Delete old logs / Удалить старые логи
@@ -129,7 +129,7 @@ find . -name ".git" -type d -prune -o -name "*.js" -print  # JS files excluding 
 
 ---
 
-## 🔬 Advanced Use Cases / Продвинутые случаи
+## 🔬 Advanced Use Cases
 
 ```bash
 find . -maxdepth 2 -name "*.md"                # Limit depth to 2 / Глубина до 2
@@ -146,7 +146,7 @@ find . -perm /4000                             # Find SUID files / Найти SU
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [GNU Findutils Manual](https://www.gnu.org/software/findutils/manual/html_node/find_html/index.html)
 - [POSIX find specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/find.html)

@@ -15,15 +15,15 @@ tags:
 - [CUT — Field Extraction](#️%20CUT%20—%20Field%20Extraction%20/%20CUT%20—%20Извлечение%20полей)
 - [SORT — Sorting Lines](#SORT%20—%20Sorting%20Lines%20/%20SORT%20—%20Сортировка%20строк)
 - [UNIQ — Deduplication](#UNIQ%20—%20Deduplication%20/%20UNIQ%20—%20Удаление%20дубликатов)
-- [Combined Pipelines](#Combined%20Pipelines%20/%20Комбинированные%20конвейеры)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Performance Tips](#Performance%20Tips%20/%20Советы%20по%20производительности)
+- [Combined Pipelines](#Combined%20Pipelines)
+- [Real-World Examples](#Real-World%20Examples)
+- [Performance Tips](#Performance%20Tips)
 
 ---
 
-## ✂️ CUT — Field Extraction / CUT — Извлечение полей
+## ✂️ CUT — Field Extraction / CUT —
 
-### By Delimiter / По разделителю
+### By Delimiter
 
 ```bash
 cut -d',' -f1 data.csv                         # First column (CSV) / Первый столбец (CSV)
@@ -36,7 +36,7 @@ cut -d' ' -f1 access.log                       # First field (space-delimited) /
 cut -d$'\t' -f2 file.tsv                       # Tab-delimited / Разделитель табуляция
 ```
 
-### By Character Position / По позиции символов
+### By Character Position
 
 ```bash
 cut -c1-10 file                                # Characters 1-10 / Символы 1-10
@@ -46,14 +46,14 @@ cut -c5- file                                  # From position 5 onward / С п�
 cut -c-10 file                                 # First 10 characters / Первые 10 символов
 ```
 
-### By Byte / По байтам
+### By Byte
 
 ```bash
 cut -b1-10 file                                # First 10 bytes / Первые 10 байтов
 cut -b5- file                                  # From byte 5 onward / С байта 5 до конца
 ```
 
-### Options / Опции
+### Options
 
 ```bash
 cut -d',' -f1 --complement data.csv            # All except field 1 / Все кроме поля 1
@@ -63,9 +63,9 @@ cut -s -d':' -f1 /etc/passwd                   # Suppress lines without delimite
 
 ---
 
-## 📊 SORT — Sorting Lines / SORT — Сортировка строк
+## 📊 SORT — Sorting Lines / SORT —
 
-### Basic Sorting / Базовая сортировка
+### Basic Sorting
 
 ```bash
 sort file                                      # Alphabetical sort / Алфавитная сортировка
@@ -78,7 +78,7 @@ sort -M months.txt                             # Month sort / Сортировк
 sort -V versions.txt                           # Version sort / Сортировка версий
 ```
 
-### By Field / По полю
+### By Field
 
 ```bash
 sort -t',' -k2 data.csv                        # Sort by 2nd field (CSV) / Сортировать по 2-му полю
@@ -88,7 +88,7 @@ sort -k2n -k1 file                             # Sort by 2nd (numeric), then 1st
 sort -t',' -k3nr data.csv                      # 3rd field numeric reverse / 3-е поле обратная числовая
 ```
 
-### Advanced Options / Продвинутые опции
+### Advanced Options
 
 ```bash
 sort -o output.txt input.txt                   # Sort to file / Сортировать в файл
@@ -104,9 +104,9 @@ sort -s file.txt                               # Stable sort / Стабильн�
 
 ---
 
-## 🔀 UNIQ — Deduplication / UNIQ — Удаление дубликатов
+## 🔀 UNIQ — Deduplication / UNIQ —
 
-### Basic Usage / Базовое использование
+### Basic Usage
 
 ```bash
 sort file | uniq                               # Remove adjacent duplicates / Удалить смежные дубликаты
@@ -116,7 +116,7 @@ sort file | uniq -u                            # Show only unique / Только
 sort file | uniq -i                            # Case-insensitive / Без учёта регистра
 ```
 
-### With Count / С подсчётом
+### With Count
 
 ```bash
 sort file | uniq -c                            # Count lines / Подсчитать строки
@@ -125,7 +125,7 @@ sort file | uniq -c | sort -n                  # Sort by frequency (ascending) /
 sort file | uniq -c | sort -rn | head -10      # Top 10 most frequent / Топ 10 самых частых
 ```
 
-### By Field / По полю
+### By Field
 
 ```bash
 sort -k2 file | uniq -f 1                      # Skip first field / Пропустить первое поле
@@ -135,7 +135,7 @@ sort file | uniq -w 10                         # Compare only first 10 chars / �
 
 ---
 
-## 🔗 Combined Pipelines / Комбинированные конвейеры
+## 🔗 Combined Pipelines
 
 ### CUT + SORT + UNIQ
 
@@ -145,7 +145,7 @@ cut -d',' -f2 data.csv | sort | uniq -c        # Count unique in column 2 / По
 cut -d' ' -f1 access.log | sort | uniq -c | sort -rn | head -10  # Top 10 IPs / Топ 10 IP-адресов
 ```
 
-### Complex Pipelines / Сложные конвейеры
+### Complex Pipelines
 
 ```bash
 cat /var/log/nginx/access.log | cut -d' ' -f1 | sort | uniq -c | sort -rn | head -20  # Top 20 IPs / Топ 20 IP
@@ -155,9 +155,9 @@ netstat -an | grep ESTABLISHED | cut -d':' -f2 | cut -d' ' -f1 | sort | uniq -c 
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
-### Log Analysis / Анализ логов
+### Log Analysis
 
 ```bash
 cut -d' ' -f1 access.log | sort | uniq -c | sort -rn | head  # Top IPs / Топ IP-адресов
@@ -166,7 +166,7 @@ cut -d' ' -f9 access.log | sort | uniq -c                   # HTTP status distri
 cat access.log | cut -d'[' -f2 | cut -d']' -f1 | cut -d':' -f2 | sort | uniq -c  # Requests by hour / Запросы по часам
 ```
 
-### User & System Analysis / Анализ пользователей и системы
+### User & System Analysis
 
 ```bash
 cut -d':' -f1 /etc/passwd | sort                # All usernames / Все имена пользователей
@@ -175,7 +175,7 @@ cut -d':' -f7 /etc/passwd | sort | uniq -c      # Shell distribution / Расп�
 ps aux | tr -s ' ' | cut -d' ' -f1 | sort | uniq -c | sort -rn  # Processes per user / Процессы на пользователя
 ```
 
-### Data Processing / Обработка данных
+### Data Processing
 
 ```bash
 cut -d',' -f2,4 sales.csv | sort -t',' -k2 -nr  # Sort sales by price / Сортировать продажи по цене
@@ -183,7 +183,7 @@ cut -d',' -f3 data.csv | sort -n | uniq          # Unique numeric values / Ун�
 cat *.log | cut -d' ' -f5 | sort | uniq -c       # Aggregate from multiple files / Агрегация из нескольких файлов
 ```
 
-### CSV Manipulation / Работа с CSV
+### CSV Manipulation
 
 ```bash
 cut -d',' -f1,3,5 data.csv > filtered.csv       # Extract columns / Извлечь столбцы
@@ -191,7 +191,7 @@ cut -d',' -f2 data.csv | sort | uniq | wc -l    # Count unique values / Подс
 cut -d',' -f3 data.csv | sort -n > sorted.txt   # Sort numeric column / Сортировать числовой столбец
 ```
 
-### Network Analysis / Анализ сети
+### Network Analysis
 
 ```bash
 netstat -an | grep ESTABLISHED | cut -d':' -f2 | cut -d' ' -f1 | sort | uniq -c  # Active connections / Активные соединения
@@ -199,7 +199,7 @@ ss -tn | tail -n +2 | tr -s ' ' | cut -d' ' -f5 | cut -d':' -f1 | sort | uniq -c
 cat /var/log/auth.log | grep "Failed password" | cut -d' ' -f11 | sort | uniq -c | sort -rn  # Failed SSH attempts / Неудачные попытки SSH
 ```
 
-### File System / Файловая система
+### File System
 
 ```bash
 find . -type f -name "*.log" | cut -d'/' -f2 | sort | uniq  # Unique subdirs with logs / Уникальные подкаталоги с логами
@@ -207,7 +207,7 @@ df -h | tail -n +2 | tr -s ' ' | cut -d' ' -f5 | sort -h    # Disk usage sorted 
 du -sh * | sort -h                              # Directory sizes sorted / Размеры каталогов (сортировка)
 ```
 
-### Complex Text Processing / Сложная обработка текста
+### Complex Text Processing
 
 ```bash
 grep "ERROR" app.log | cut -d' ' -f5 | cut -d':' -f1 | sort | uniq -c | sort -rn  # Error frequency by hour / Частота ошибок по часам
@@ -217,25 +217,25 @@ cat /proc/cpuinfo | grep "model name" | cut -d':' -f2 | uniq  # CPU model / Мо
 
 ---
 
-## 💡 Performance Tips / Советы по производительности
+## 💡 Performance Tips
 
 ```bash
 # Use 'sort -u' instead of 'sort | uniq' for better performance
-# Используйте 'sort -u' вместо 'sort | uniq'
+#
 sort -u file                                    # Faster than sort | uniq / Быстрее чем sort | uniq
 
 # For very large files, use LC_ALL=C for faster sorting
-# Для очень больших файлов используйте LC_ALL=C
+#
 LC_ALL=C sort largefile.txt                     # Faster byte-order sort / Быстрая побайтовая сортировка
 
 # Parallelize sorting for multi-core systems
-# Распараллеливание для многоядерных систем
+#
 sort --parallel=8 -S 4G largefile.txt           # 8 cores, 4GB buffer / 8 ядер, 4GB буфер
 ```
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [GNU Coreutils — cut](https://www.gnu.org/software/coreutils/manual/html_node/cut-invocation.html)
 - [GNU Coreutils — sort](https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html)

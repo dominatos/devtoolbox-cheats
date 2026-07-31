@@ -30,7 +30,7 @@ Quick guide to free disk space, reduce RAM/CPU usage, and improve security on a 
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Remove Unnecessary Packages](#Remove%20Unnecessary%20Packages)
 2. [Disable Unneeded Services](#Disable%20Unneeded%20Services)
@@ -41,7 +41,7 @@ Quick guide to free disk space, reduce RAM/CPU usage, and improve security on a 
 
 ## Remove Unnecessary Packages
 
-### Basic Cleanup / Базовая очистка
+### Basic Cleanup
 
 ```bash
 sudo apt update                               # Update package list / Обновить список пакетов
@@ -49,14 +49,14 @@ sudo apt autoremove --purge                   # Remove orphaned + configs / Уд
 sudo apt autoclean && sudo apt clean          # Clear APT cache / Очистить кэш APT
 ```
 
-### Orphaned Packages / Пакеты-сироты
+### Orphaned Packages
 
 ```bash
 sudo apt install deborphan                    # Install deborphan / Установить deborphan
 sudo apt purge $(deborphan)                   # Remove orphaned packages / Удалить пакеты-сироты
 ```
 
-### Graphics Stack (headless servers) / Графика (headless серверы)
+### Graphics Stack (headless servers)
 
 ```bash
 sudo apt purge '*nvidia*' libgl1-mesa-dri libglu1-mesa xserver-xorg*  # Remove GPU stack / Удалить GPU стек
@@ -65,7 +65,7 @@ sudo apt purge '*nvidia*' libgl1-mesa-dri libglu1-mesa xserver-xorg*  # Remove G
 > [!TIP]
 > On headless VPS this frees ~300–500 MB. Ensure no GUI apps depend on these packages before removing. / На headless VPS это освобождает ~300–500 МБ.
 
-### Other Removable Packages / Другие удаляемые пакеты
+### Other Removable Packages
 
 ```bash
 sudo apt purge snapd                          # Remove snapd (~300 MB) / Удалить snapd
@@ -77,36 +77,36 @@ sudo apt install language-pack-en             # Reinstall English pack / Пер�
 
 ## Disable Unneeded Services
 
-### Disable Service / Отключить сервис
+### Disable Service
 
 ```bash
 sudo systemctl disable --now <SERVICE>.service  # Disable and stop / Отключить и остановить
 sudo systemctl daemon-reload                    # Reload systemd / Перезагрузить systemd
 ```
 
-### Recommended to Disable / Рекомендуется отключить
+### Recommended to Disable
 
 ```bash
 # GPU / VM / Power management — not needed on headless VPS
-# GPU / ВМ / Управление питанием — не нужны на headless VPS
+# GPU
 sudo systemctl disable --now gpu-manager switcheroo-control thermald power-profiles-daemon speech-dispatcherd
 
 # VM tools / Ubuntu extras — disable if not needed
-# Утилиты ВМ / Ubuntu экстра — отключить если не нужны
+#
 sudo systemctl disable --now open-vm-tools lxd-agent pollinate ubuntu-advantage
 ```
 
-### Conditionally Disable / Условно отключить
+### Conditionally Disable
 
 ```bash
-# Mail/DNS/FTP — if unused / Если не используются
+# Mail/DNS/FTP — if unused
 sudo systemctl disable --now dovecot postfix named proftpd
 ```
 
 > [!CAUTION]
 > **Do NOT disable** these critical services: `sshd`, `apache2`, `nginx`, `mysql`, `php-fpm`, `docker`, `cron`, `rsyslog`, `fail2ban`, `crowdsec`. / **Не отключайте** критичные сервисы.
 
-### Check Running Services / Проверить запущенные сервисы
+### Check Running Services
 
 ```bash
 systemctl list-units --type=service --state=running        # List running / Список запущенных
@@ -117,7 +117,7 @@ systemctl list-units --type=service --state=running | wc -l  # Count running / �
 
 ## Monitoring & Verification
 
-### Final Checks / Финальная проверка
+### Final Checks
 
 ```bash
 df -h                                         # Disk usage / Использование диска
@@ -126,7 +126,7 @@ deborphan                                     # Check for leftovers / Прове
 systemd-analyze blame                         # Boot time per service / Время загрузки по сервисам
 ```
 
-### Reboot / Перезагрузка
+### Reboot
 
 ```bash
 sudo reboot                                   # Reboot to apply changes / Перезагрузить для применения изменений
@@ -147,7 +147,7 @@ sudo reboot                                   # Reboot to apply changes / Пер
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Apply changes **step by step**, verifying after each. / Применяйте изменения поэтапно.
 - Always **check what you're removing** before `apt purge`. / Всегда проверяйте, что удаляете.

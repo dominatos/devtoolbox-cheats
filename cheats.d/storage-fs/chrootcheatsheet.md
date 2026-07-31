@@ -33,18 +33,18 @@ Chroot is a fundamental Unix concept (since V7 Unix, 1979) and is built into the
 [chroot(1)](https://man7.org/linux/man-pages/man1/chroot.1.html) · [chroot(2)](https://man7.org/linux/man-pages/man2/chroot.2.html) · [mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) · [arch-chroot](https://man.archlinux.org/man/arch-chroot.8)
 
 ## Table of Contents
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
-- [Comparison: BIOS vs UEFI](#Comparison:%20BIOS%20vs%20UEFI%20/%20Сравнение:%20BIOS%20и%20UEFI)
-- [Comparison: Chroot vs Alternatives](#Comparison:%20Chroot%20vs%20Alternatives%20/%20Сравнение:%20Chroot%20и%20альтернативы)
-- [Troubleshooting & Tips](#Troubleshooting%20&%20Tips%20/%20Устранение%20неполадок%20и%20советы)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Comparison: BIOS vs UEFI](#Comparison:%20BIOS%20vs%20UEFI)
+- [Comparison: Chroot vs Alternatives](#Comparison:%20Chroot%20vs%20Alternatives)
+- [Troubleshooting & Tips](#Troubleshooting%20&%20Tips)
 - [Production Runbook: System Recovery via Chroot](#Production%20Runbook:%20System%20Recovery%20via%20Chroot)
 
 ---
 
-## Core Management / Основное управление
+## Core Management
 
-### 1. Identify Partitions / Определение разделов
+### 1. Identify Partitions
 Identify the root, boot, and EFI partitions before mounting.
 
 ```bash
@@ -53,7 +53,7 @@ blkid          # Show UUIDs of partitions / Показать UUID раздело
 fdisk -l       # List partition tables / Показать таблицы разделов
 ```
 
-### 2. Mount Root Filesystem / Монтирование корневой системы
+### 2. Mount Root Filesystem
 Mount the main partition where the OS is installed.
 
 ```bash
@@ -61,7 +61,7 @@ mkdir -p /mnt/sysroot             # Create mount point / Создать точк
 mount /dev/sdXN /mnt/sysroot      # Mount root partition / Смонтировать корневой раздел
 ```
 
-### 3. Mount System Directories / Монтирование системных директорий
+### 3. Mount System Directories
 Bind essential system virtual filesystems to the new root.
 
 ```bash
@@ -79,12 +79,12 @@ mount --bind /run  /mnt/sysroot/run     # Bind runtime data / Пробросит
 > mount --bind /sys/firmware/efi/efivars /mnt/sysroot/sys/firmware/efi/efivars
 > ```
 
-### 4. Enter Chroot Environment / Вход в окружение Chroot
+### 4. Enter Chroot Environment
 Switch to the mounted system environment.
 
 ```bash
 chroot /mnt/sysroot /bin/bash    # Enter using Bash / Войти через Bash
-# OR / ИЛИ
+# OR
 chroot /mnt/sysroot /bin/sh      # Fallback to SH / Войти через SH
 ```
 
@@ -92,7 +92,7 @@ chroot /mnt/sysroot /bin/sh      # Fallback to SH / Войти через SH
 > On Arch-based systems, use `arch-chroot /mnt/sysroot` — it auto-mounts `/proc`, `/sys`, `/dev`, and `/run` for you.
 > На системах Arch используйте `arch-chroot /mnt/sysroot` — он автоматически монтирует `/proc`, `/sys`, `/dev` и `/run`.
 
-### 5. Exit and Cleanup / Выход и очистка
+### 5. Exit and Cleanup
 Always unmount recursively to ensure all bind mounts are released.
 
 ```bash
@@ -106,9 +106,9 @@ umount -R /mnt/sysroot           # Recursive unmount / Рекурсивное р
 
 ---
 
-## Sysadmin Operations / Операции системного администратора
+## Sysadmin Operations
 
-### Kernel & Initramfs Management / Управление ядром и Initramfs
+### Kernel & Initramfs Management
 Rebuilding the initial ramdisk after kernel updates.
 
 ```bash
@@ -120,7 +120,7 @@ update-initramfs -u -k all                # Update all kernels / Обновит�
 dracut --force                            # Regenerate initramfs (RHEL/Fedora) / Пересоздать initramfs
 ```
 
-### Bootloader Repair (GRUB) / Восстановление загрузчика (GRUB)
+### Bootloader Repair (GRUB)
 Installing and updating the GRUB configuration.
 
 ```bash
@@ -135,19 +135,19 @@ update-grub                               # Update config / Обновить к�
 grub2-mkconfig -o /boot/grub2/grub.cfg    # Regenerate GRUB config / Пересоздать конфиг GRUB
 ```
 
-### DNS Resolution Inside Chroot / DNS разрешение внутри Chroot
+### DNS Resolution Inside Chroot / DNS
 
 ```bash
-# Copy DNS config into chroot / Скопировать DNS конфиг в chroot
+# Copy DNS config into chroot
 cp /etc/resolv.conf /mnt/sysroot/etc/resolv.conf
 
 # This is required for network-dependent operations like apt/dnf
-# Это необходимо для сетевых операций, таких как apt/dnf
+#
 ```
 
 ---
 
-## Comparison: BIOS vs UEFI / Сравнение: BIOS и UEFI
+## Comparison: BIOS vs UEFI
 
 | Feature | BIOS (Legacy) | UEFI |
 | :--- | :--- | :--- |
@@ -160,7 +160,7 @@ cp /etc/resolv.conf /mnt/sysroot/etc/resolv.conf
 
 ---
 
-## Comparison: Chroot vs Alternatives / Сравнение: Chroot и альтернативы
+## Comparison: Chroot vs Alternatives
 
 | Feature | `chroot` | `systemd-nspawn` | Docker/Podman |
 | :--- | :--- | :--- | :--- |
@@ -173,9 +173,9 @@ cp /etc/resolv.conf /mnt/sysroot/etc/resolv.conf
 
 ---
 
-## Troubleshooting & Tips / Устранение неполадок и советы
+## Troubleshooting & Tips
 
-### Common Fixes / Типичные исправления
+### Common Fixes
 If the system fails to boot after an update, reinstalling the kernel often helps.
 
 ```bash
@@ -188,7 +188,7 @@ update-grub                               # Refresh GRUB / Обновить GRUB
 > [!TIP]
 > Use `ls -lh /boot` to verify that both `vmlinuz-*` (kernel) and `initrd.img-*` (initramfs) pairs exist for your version.
 
-### Log Locations / Расположение логов
+### Log Locations
 Checking logs inside chroot after a failed boot attempt.
 
 | Log Path | Description (EN) | Описание (RU) |
@@ -199,31 +199,31 @@ Checking logs inside chroot after a failed boot attempt.
 | `/var/log/boot.log` | Boot process logs | Логи процесса загрузки |
 | `/var/log/kern.log` | Kernel messages | Сообщения ядра |
 
-### Common Chroot Problems / Типичные проблемы Chroot
+### Common Chroot Problems
 
 ```bash
 # "bash: command not found" inside chroot
-# Verify /bin and /usr/bin exist in chroot / Проверить наличие /bin и /usr/bin
+# Verify /bin and /usr/bin exist in chroot
 ls /mnt/sysroot/bin /mnt/sysroot/usr/bin
 
 # "Could not resolve host" inside chroot
-# Copy resolv.conf / Скопировать resolv.conf
+# Copy resolv.conf
 cp /etc/resolv.conf /mnt/sysroot/etc/resolv.conf
 
 # "Permission denied" on commands inside chroot
-# Ensure /dev is properly bind-mounted / Убедитесь, что /dev правильно примонтирован
+# Ensure /dev is properly bind-mounted
 mount --bind /dev /mnt/sysroot/dev
 
 # Cannot run systemd commands inside chroot
 # systemd requires PID 1 — use systemd-nspawn instead
-# systemd требует PID 1 — используйте systemd-nspawn
+# systemd
 ```
 
 ---
 
 ## Production Runbook: System Recovery via Chroot
 
-### Scenario: System won't boot after kernel update / Система не загружается после обновления ядра
+### Scenario: System won't boot after kernel update
 
 1. **Boot from Live USB/CD** / Загрузиться с Live USB/CD
 

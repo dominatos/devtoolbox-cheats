@@ -37,7 +37,7 @@ tags:
 
 ## Core Management
 
-### Service Control / Управление сервисами
+### Service Control
 
 ```bash
 systemctl status <SERVICE>            # Show status / Показать статус
@@ -49,7 +49,7 @@ sudo systemctl enable --now <SERVICE> # Enable on boot and start / Включи�
 sudo systemctl try-restart <SERVICE>  # Restart only if running / Перезапустить только если запущен
 ```
 
-### Enable/Disable Autostart / Управление автозагрузкой
+### Enable/Disable Autostart
 
 ```bash
 sudo systemctl enable <SERVICE>       # Enable at boot / Включить автозапуск
@@ -70,7 +70,7 @@ systemctl is-active <SERVICE>         # Check if running / Проверить з
 
 ## Unit File Operations
 
-### Inspecting Units / Инспекция юнитов
+### Inspecting Units
 
 ```bash
 systemctl list-units --type=service --state=running # List running units / Список запущенных
@@ -80,7 +80,7 @@ systemctl show <SERVICE>                            # Show all properties / По
 systemctl show <SERVICE> -p MainPID,ActiveState     # Show specific props / Показать конкретные свойства
 ```
 
-### Editing Units / Редактирование юнитов
+### Editing Units
 
 Typical path: `/etc/systemd/system/<SERVICE>.service.d/override.conf`
 
@@ -94,7 +94,7 @@ sudo systemctl daemon-reload          # Reload manager config / Перезагр
 > Always run `systemctl daemon-reload` after modifying unit files. Without this, systemd uses the old cached version.
 > Всегда выполняйте `systemctl daemon-reload` после изменения юнит-файлов.
 
-### Dependency Analysis / Анализ зависимостей
+### Dependency Analysis
 
 ```bash
 systemctl list-dependencies <SERVICE>         # Show dependencies / Показать зависимости
@@ -105,7 +105,7 @@ systemctl list-dependencies --reverse <SERVICE> # Show dependents / Показа
 
 ## Journal & Logs
 
-### Filtering logs with journalctl / Фильтрация логов
+### Filtering logs with journalctl
 
 ```bash
 journalctl -u <SERVICE> -f                    # Follow logs / Следить за логами
@@ -120,7 +120,7 @@ journalctl -b -1                              # Previous boot logs / Логи п
 
 ## Advanced Operations
 
-### Timers, Sockets, Paths / Таймеры, Сокеты, Пути
+### Timers, Sockets, Paths
 
 ```bash
 systemctl list-timers                         # List active timers / Список активных таймеров
@@ -128,7 +128,7 @@ systemctl list-sockets                        # List active sockets / Списо
 systemctl list-paths                          # List active path units / Список активных путей
 ```
 
-### User Services / Пользовательские службы
+### User Services
 
 Commands for services running in the user session context.
 Команды для служб, работающих в контексте пользовательской сессии.
@@ -140,7 +140,7 @@ systemctl --user list-units           # List user units / Список юнит�
 loginctl enable-linger <USER>         # Run user services without login / Запуск без входа юзера
 ```
 
-### System State / Состояние системы
+### System State
 
 ```bash
 systemctl default                             # Return to default target / Вернуться к цели по умолчанию
@@ -152,29 +152,29 @@ sudo systemctl set-default multi-user.target  # Set default boot target / Уст
 
 ## Sandboxing & Security
 
-### Security Configuration Snippets / Примеры конфигурации безопасности
+### Security Configuration Snippets
 
 `/etc/systemd/system/<SERVICE>.service`
 
 ```ini
 [Service]
-# Basic Sandboxing / Базовая изоляция
+# Basic Sandboxing
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=read-only
 PrivateTmp=yes
 
-# Capability Controls / Контроль привилегий
+# Capability Controls
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 
-# Resource Limits / Лимиты ресурсов
+# Resource Limits
 MemoryMax=50M
 CPUQuota=50%
 TasksMax=500
 ```
 
-### Security Audit / Аудит безопасности
+### Security Audit
 
 ```bash
 systemd-analyze security <SERVICE>            # Security score / Оценка безопасности
@@ -189,7 +189,7 @@ systemd-analyze security                      # All services / Все серви
 
 ## Analysis & Troubleshooting
 
-### Performance Analysis / Анализ производительности
+### Performance Analysis
 
 ```bash
 systemd-analyze                               # Total boot time / Общее время загрузки
@@ -198,7 +198,7 @@ systemd-analyze critical-chain                # Critical chain tree / Дерев
 systemd-analyze plot > boot.svg               # Export SVG graph / Выгрузить график в SVG
 ```
 
-### Troubleshooting states / Отладка состояний
+### Troubleshooting states
 
 ```bash
 systemctl --failed                            # List failed units / Показать упавшие юниты
@@ -232,7 +232,7 @@ systemctl reset-failed <SERVICE>              # Clear specific unit / Сброс
 
 ---
 
-## Default Paths / Пути по умолчанию
+## Default Paths
 
 | Path | Purpose (EN) | Назначение (RU) |
 | :--- | :--- | :--- |

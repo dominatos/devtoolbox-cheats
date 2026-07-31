@@ -47,7 +47,7 @@ After a kernel update, `dracut` rebuilds the initramfs with `hostonly="yes"` (de
 ## Quick Checklist
 
 ```bash
-# 1) Boot into working kernel (from GRUB) / Загрузись в рабочее ядро (из GRUB)
+# 1) Boot into working kernel (from GRUB)
 uname -r
 rpm -qa kernel\* | sort
 grubby --info=ALL
@@ -55,7 +55,7 @@ cat /proc/cmdline
 lsblk -f; blkid
 df -h /boot /boot/efi
 
-# 2) Check if the new kernel initramfs has required drivers / Проверить драйверы в initramfs
+# 2) Check if the new kernel initramfs has required drivers
 KVER="<KERNEL_VERSION>"
 lsinitrd -m /boot/initramfs-${KVER}.img | egrep 'nvme|dm_|lvm|xfs|ext4|md_|raid|virtio' || echo "EMPTY?"
 ```
@@ -69,13 +69,13 @@ lsinitrd -m /boot/initramfs-${KVER}.img | egrep 'nvme|dm_|lvm|xfs|ext4|md_|raid|
 
 ```bash
 # Force-load modules early + give time + remove noisy flags
-# Принудительно загрузить модули на ранней стадии
+#
 KVER="<KERNEL_VERSION>"
 grubby --update-kernel="/boot/vmlinuz-${KVER}" \
   --remove-args="quiet rhgb nvme_core.multipath=Y" \
   --args="rd.driver.pre=nvme rd.driver.pre=dm_mod rd.driver.pre=xfs rootdelay=5 panic=120"
 # NOTE: if root is EXT4, replace rd.driver.pre=xfs → rd.driver.pre=ext4
-# ПРИМЕЧАНИЕ: если root на EXT4, замени rd.driver.pre=xfs → rd.driver.pre=ext4
+#
 ```
 
 > [!NOTE]
@@ -86,7 +86,7 @@ grubby --update-kernel="/boot/vmlinuz-${KVER}" \
 ## Permanent Fix via dracut
 
 ```bash
-# Permanently add drivers to initramfs / Жёстко добавляем драйверы в initramfs
+# Permanently add drivers to initramfs
 cat >/etc/dracut.conf.d/99-nvme.conf <<'EOF'
 hostonly="no"
 add_drivers+=" nvme nvme_core dm_mod xfs "
@@ -95,7 +95,7 @@ EOF
 KVER="<KERNEL_VERSION>"
 dracut -f -v "/boot/initramfs-${KVER}.img" "${KVER}"
 
-# Verify / Проверка
+# Verify
 lsinitrd -m "/boot/initramfs-${KVER}.img" | egrep 'nvme|dm_mod|lvm|xfs|ext4'
 ```
 
@@ -110,22 +110,22 @@ lsinitrd -m "/boot/initramfs-${KVER}.img" | egrep 'nvme|dm_mod|lvm|xfs|ext4'
 ## Safety Kernel Parameters
 
 ```bash
-# More logs and panic timeout (time to see the screen) / Больше логов и таймаут на панику
+# More logs and panic timeout (time to see the screen)
 grubby --update-kernel="/boot/vmlinuz-${KVER}" \
   --args="systemd.log_level=debug loglevel=7 log_buf_len=1M panic=120"
 
-# For hardware glitches (sometimes helps) / При железных глюках (иногда спасает)
+# For hardware glitches (sometimes helps)
 grubby --update-kernel="/boot/vmlinuz-${KVER}" \
   --args="nokaslr iommu=soft"
 # (or amd_iommu=off / intel_iommu=off depending on hardware)
-# (или amd_iommu=off / intel_iommu=off в зависимости от платформы)
+#
 ```
 
 ---
 
 ## Early Boot Diagnostics
 
-### Option A: initramfs shell (dracut) / Шелл в initramfs
+### Option A: initramfs shell (dracut)
 
 ```bash
 grubby --update-kernel="/boot/vmlinuz-${KVER}" \
@@ -142,13 +142,13 @@ mount -o ro /dev/almalinux/root /sysroot && echo OK_ROOT || echo FAIL
 dmesg | tail -n 200
 ```
 
-### Option B: kdump (kernel crash dump) / kdump (дамп ядра)
+### Option B: kdump (kernel crash dump) / kdump
 
 ```bash
 dnf -y install kexec-tools crash
 systemctl enable --now kdump
 kdumpctl status
-# After panic and reboot / После паники и перезагрузки:
+# After panic and reboot
 ls -lh /var/crash/*/
 vmcore-dmesg /var/crash/*/vmcore | less
 ```
@@ -164,7 +164,7 @@ ls -lah /sys/fs/pstore/
 
 ## Common Causes → Solutions
 
-### ❌ Missing disk/FS/LVM drivers in initramfs / Нет драйверов диска/ФС/LVM в initramfs
+### ❌ Missing disk/FS/LVM drivers in initramfs
 
 Symptom / Симптом: `VFS: Unable to mount root fs`, `dracut: FATAL: can't find UUID`.
 
@@ -172,13 +172,13 @@ Symptom / Симптом: `VFS: Unable to mount root fs`, `dracut: FATAL: can't 
 
 ---
 
-### ❌ Wrong `root=`/`rd.lvm.lv=` in cmdline / Неверный `root=`/`rd.lvm.lv=` в cmdline
+### ❌ Wrong `root=`/`rd.lvm.lv=` in cmdline
 
 ```bash
 WK="$(uname -r)"
 ARGS="$(grubby --info /boot/vmlinuz-${WK} | sed -n 's/.*args=\"\(.*\)\".*/\1/p')"
 grubby --update-kernel="/boot/vmlinuz-${KVER}" --args="$ARGS"
-# Remove junk like nvme_core.multipath=Y if needed / Убери мусор при необходимости
+# Remove junk like nvme_core.multipath=Y if needed
 ```
 
 Verify UUID/volume correspondence / Проверь соответствие UUID/томов:
@@ -189,10 +189,10 @@ lsblk -f; blkid
 
 ---
 
-### ❌ NVMe multipath enabled but not configured / NVMe multipath включён, но не настроен
+### ❌ NVMe multipath enabled but not configured / NVMe multipath
 
 ```bash
-# Temporarily disable / Временно отключить:
+# Temporarily disable
 grubby --update-kernel="/boot/vmlinuz-${KVER}" --remove-args="nvme_core.multipath=Y"
 ```
 
@@ -200,7 +200,7 @@ Or **properly configure** multipath (udev/LVM/rules) and **include configs in in
 
 ---
 
-### ❌ IOMMU/KASLR/microcode issues / Глюки IOMMU/KASLR/микрокода
+### ❌ IOMMU/KASLR/microcode issues
 
 See safety flags in the **Safety Kernel Parameters** section. / См. страхующие флаги в разделе выше.
 
@@ -216,21 +216,21 @@ Options / Варианты: sign via MOK / temporarily disable Secure Boot. / П
 ## grubby / GRUB Tips
 
 ```bash
-# List all entries and default / Все записи и дефолт
+# List all entries and default
 grubby --info=ALL
 grubby --default-kernel
 
-# Copy working kernel cmdline to new / Скопировать cmdline рабочего ядра на новое
+# Copy working kernel cmdline to new
 WK="$(uname -r)"; NEW="${KVER}"
 ARGS="$(grubby --info /boot/vmlinuz-${WK} | sed -n 's/.*args=\"\(.*\)\".*/\1/p')"
 grubby --update-kernel="/boot/vmlinuz-${NEW}" --args="$ARGS"
 
-# Add test entry (don't touch default) / Добавить тестовую запись (не трогая дефолт)
+# Add test entry (don't touch default)
 grubby --copy-default --add-kernel="/boot/vmlinuz-${NEW}" \
   --initrd="/boot/initramfs-${NEW}.img" --title "Test ${NEW}" \
   --args="${ARGS} rd.driver.pre=nvme"
 
-# Regenerate GRUB configs (BIOS/UEFI) / Перегенерация конфигов
+# Regenerate GRUB configs (BIOS/UEFI)
 grub2-mkconfig -o /boot/grub2/grub.cfg
 [ -d /boot/efi/EFI ] && grub2-mkconfig -o /boot/efi/EFI/$(ls /boot/efi/EFI | head -n1)/grub.cfg
 ```
@@ -282,7 +282,7 @@ mount --rbind /sys /mnt/sysroot/sys
 mount --rbind /dev /mnt/sysroot/dev
 chroot /mnt/sysroot
 
-# Reinstall kernel / rebuild initramfs / GRUB / Переустановить ядро/пересобрать initramfs/GRUB
+# Reinstall kernel / rebuild initramfs / GRUB
 dnf reinstall -y "kernel-core-<KERNEL_VERSION>"
 dracut -f -v "/boot/initramfs-<KERNEL_VERSION>.img" "<KERNEL_VERSION>"
 grub2-mkconfig -o /boot/grub2/grub.cfg
@@ -303,7 +303,7 @@ grubby --set-default /boot/vmlinuz-<KERNEL_VERSION>
 > Заморозка ядра — временная мера. Размороженные ядра необходимо обновлять для безопасности.
 
 ```bash
-# Unfreeze later / Разморозить позже
+# Unfreeze later
 dnf versionlock delete kernel kernel-core kernel-modules kernel-modules-extra
 ```
 

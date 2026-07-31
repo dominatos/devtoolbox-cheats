@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -35,10 +35,10 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Repository Setup / Настройка репозитория
+### Repository Setup
 
 ```bash
-# RHEL/AlmaLinux 9 (Zabbix 6.0 LTS) / Настройка репозитория
+# RHEL/AlmaLinux 9 (Zabbix 6.0 LTS)
 rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-release-6.0-4.el9.noarch.rpm
 dnf clean all
 
@@ -52,17 +52,17 @@ dpkg -i zabbix-release_*.deb
 apt update
 ```
 
-### Install Server & Agent / Установка сервера и агента
+### Install Server & Agent
 
 ```bash
-# RHEL/AlmaLinux (MySQL backend) / Установка с MySQL
+# RHEL/AlmaLinux (MySQL backend)
 dnf install zabbix-server-mysql zabbix-web-mysql zabbix-apache-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent2
 
 # Debian/Ubuntu (MySQL backend)
 apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent2
 ```
 
-### Agent Versions Comparison / Сравнение версий агентов
+### Agent Versions Comparison
 
 | Feature / Особенность | Zabbix Agent (C) | Zabbix Agent 2 (Go) |
 |----------------------|-------------------|----------------------|
@@ -73,9 +73,9 @@ apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sq
 | Built-in Plugins / Встроенные плагины | None / Нет | MongoDB, PostgreSQL, Docker, etc. |
 | Recommended / Рекомендуемый | Legacy / Устаревший | Yes / Да |
 
-### Essential Configs / Основные конфиги
+### Essential Configs
 
-#### Server Configuration / Конфигурация сервера
+#### Server Configuration
 
 `/etc/zabbix/zabbix_server.conf`
 
@@ -85,7 +85,7 @@ DBName=zabbix
 DBUser=zabbix
 DBPassword=<PASSWORD>
 
-# Performance tuning / Настройка производительности
+# Performance tuning
 StartPollers=10                    # Default: 5, increase for large setups / По умолчанию: 5
 StartPollersUnreachable=3          # For unreachable hosts / Для недоступных хостов
 StartTrappers=5                    # For active agent/proxy data / Для данных агентов
@@ -94,22 +94,22 @@ HistoryCacheSize=64M               # History cache / Кэш истории
 ValueCacheSize=64M                 # Value cache / Кэш значений
 ```
 
-#### Agent Configuration / Конфигурация агента
+#### Agent Configuration
 
 `/etc/zabbix/zabbix_agentd.conf` (or `zabbix_agent2.conf`)
 
 ```ini
-# Server IP for passive checks / IP сервера для пассивных проверок
+# Server IP for passive checks / IP
 Server=<IP_SERVER>
 
-# Server IP for active checks / IP сервера для активных проверок
+# Server IP for active checks / IP
 ServerActive=<IP_SERVER>
 
-# Hostname must match frontend config / Hostname должен совпадать с конфигом в веб-интерфейсе
+# Hostname must match frontend config / Hostname
 Hostname=<HOST>
 ```
 
-### Database Creation / Создание базы данных
+### Database Creation
 
 ```bash
 # MySQL / MariaDB
@@ -125,10 +125,10 @@ QUIT;
 ```
 
 ```bash
-# Import schema / Импорт схемы
+# Import schema
 zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix
 
-# Disable after import / Отключить после импорта
+# Disable after import
 mysql -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 0;"
 ```
 
@@ -141,12 +141,12 @@ mysql -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 0;"
 
 ### CLI Tools / CLI-инструменты
 
-#### zabbix_get (Test Passive Checks) / Тест пассивных проверок
+#### zabbix_get (Test Passive Checks)
 
 Run from server or proxy. / Запуск с сервера или прокси.
 
 ```bash
-# Test system metrics / Тест системных метрик
+# Test system metrics
 zabbix_get -s <HOST_IP> -k "system.cpu.load[all,avg1]"
 zabbix_get -s <HOST_IP> -k "vm.memory.size[available]"
 zabbix_get -s <HOST_IP> -k "vfs.fs.size[/,pfree]"
@@ -154,23 +154,23 @@ zabbix_get -s <HOST_IP> -k "system.uptime"
 zabbix_get -s <HOST_IP> -k "agent.version"
 ```
 
-#### zabbix_sender (Push Data) / Отправка данных
+#### zabbix_sender (Push Data)
 
 ```bash
-# Send single value / Отправить одно значение
+# Send single value
 zabbix_sender -z <IP_SERVER> -s "<HOST>" -k "custom.key" -o "value"
 
-# Send from file / Отправить из файла
+# Send from file
 zabbix_sender -z <IP_SERVER> -i /tmp/zabbix_data.txt
 # File format: <HOST> <KEY> <VALUE>
 ```
 
-### Web UI Access / Доступ к веб-интерфейсу
+### Web UI Access
 
 ```bash
-# Default URL / URL по умолчанию
+# Default URL / URL
 http://<HOST>/zabbix
-# Default credentials / Учётные данные по умолчанию: Admin / zabbix
+# Default credentials
 ```
 
 > [!CAUTION]
@@ -180,27 +180,27 @@ http://<HOST>/zabbix
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
-# Server / Сервер
+# Server
 systemctl start zabbix-server      # Start / Запустить
 systemctl stop zabbix-server       # Stop / Остановить
 systemctl restart zabbix-server    # Restart / Перезапустить
 systemctl enable zabbix-server     # Enable on boot / Автозапуск
 systemctl status zabbix-server     # Check status / Проверить статус
 
-# Agent 2 / Агент 2
+# Agent 2
 systemctl start zabbix-agent2      # Start / Запустить
 systemctl restart zabbix-agent2    # Restart / Перезапустить
 systemctl enable zabbix-agent2     # Enable on boot / Автозапуск
 
-# Web stack / Веб-стек
+# Web stack
 systemctl restart httpd php-fpm    # RHEL/AlmaLinux
 systemctl restart apache2 php-fpm  # Debian/Ubuntu
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -212,7 +212,7 @@ systemctl restart apache2 php-fpm  # Debian/Ubuntu
 | `/usr/lib/zabbix/externalscripts/` | External scripts / Внешние скрипты |
 | `/usr/lib/zabbix/alertscripts/` | Alert scripts / Скрипты уведомлений |
 
-### Log Locations / Расположение логов
+### Log Locations
 
 | Log File | Description / Описание |
 |----------|------------------------|
@@ -222,16 +222,16 @@ systemctl restart apache2 php-fpm  # Debian/Ubuntu
 | `/var/log/httpd/error_log` | Apache error log (RHEL) / Лог ошибок Apache |
 | `/var/log/apache2/error.log` | Apache error log (Debian) / Лог ошибок Apache |
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Agent (passive) listens on 10050 / Агент (пассивный) слушает 10050
+# Agent (passive) listens on 10050
 firewall-cmd --permanent --add-port=10050/tcp
 
-# Server/Proxy listens on 10051 / Сервер/Прокси слушает 10051
+# Server/Proxy listens on 10051
 firewall-cmd --permanent --add-port=10051/tcp
 
-# Web UI / Веб-интерфейс
+# Web UI
 firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
 firewall-cmd --reload
@@ -241,10 +241,10 @@ firewall-cmd --reload
 
 ## 4. Security
 
-### Encryption (PSK) / Шифрование (PSK)
+### Encryption (PSK)
 
 ```bash
-# Generate PSK key / Сгенерировать PSK-ключ
+# Generate PSK key
 openssl rand -hex 32 > /etc/zabbix/zabbix_agentd.psk
 chmod 640 /etc/zabbix/zabbix_agentd.psk
 chown root:zabbix /etc/zabbix/zabbix_agentd.psk
@@ -264,7 +264,7 @@ TLSPSKFile=/etc/zabbix/zabbix_agentd.psk
 > [!NOTE]
 > After configuring PSK on the agent, you must also configure the PSK identity and key in the Zabbix frontend: **Configuration → Hosts → Host → Encryption**. / Также настройте PSK в веб-интерфейсе: **Конфигурация → Хосты → Хост → Шифрование**.
 
-### Encryption Comparison / Сравнение методов шифрования
+### Encryption Comparison
 
 | Method / Метод | Description / Описание | Best For / Лучше для |
 |---------------|------------------------|---------------------|
@@ -276,13 +276,13 @@ TLSPSKFile=/etc/zabbix/zabbix_agentd.psk
 
 ## 5. Backup & Restore
 
-### Database Backup / Бэкап БД
+### Database Backup
 
 ```bash
-# MySQL full backup / Полный бэкап MySQL
+# MySQL full backup
 mysqldump -uzabbix -p<PASSWORD> --single-transaction --quick --lock-tables=false zabbix | gzip > zabbix_backup_$(date +%F).sql.gz
 
-# Config-only backup (smaller, faster) / Бэкап только конфигурации
+# Config-only backup (smaller, faster)
 mysqldump -uzabbix -p<PASSWORD> --single-transaction zabbix \
   hosts hosts_groups hosts_templates \
   items triggers actions \
@@ -290,17 +290,17 @@ mysqldump -uzabbix -p<PASSWORD> --single-transaction zabbix \
   | gzip > zabbix_config_backup_$(date +%F).sql.gz
 ```
 
-### Config Backup / Бэкап конфигов
+### Config Backup
 
 ```bash
-# Backup config files / Бэкап файлов конфигурации
+# Backup config files
 tar -czf zabbix_conf_backup_$(date +%F).tar.gz /etc/zabbix /usr/share/zabbix/conf /usr/lib/zabbix/
 ```
 
-### Restore / Восстановление
+### Restore
 
 ```bash
-# Restore database / Восстановить БД
+# Restore database
 systemctl stop zabbix-server
 zcat zabbix_backup_2024-01-01.sql.gz | mysql -uzabbix -p zabbix
 systemctl start zabbix-server
@@ -313,63 +313,63 @@ systemctl start zabbix-server
 
 ## 6. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. "Zabbix server is not running" in Frontend / "Zabbix сервер не запущен"
+#### 1. "Zabbix server is not running" in Frontend / "Zabbix
 
 ```bash
-# Check server status / Проверить статус сервера
+# Check server status
 systemctl status zabbix-server
 tail -50 /var/log/zabbix/zabbix_server.log
 
-# Check SELinux (RHEL) / Проверить SELinux
+# Check SELinux (RHEL)
 getenforce
 setsebool -P zabbix_can_network 1      # Allow network access / Разрешить доступ к сети
 setsebool -P httpd_can_connect_zabbix 1  # Allow Apache to connect / Разрешить Apache подключаться
 
-# Check DB connection / Проверить подключение к БД
+# Check DB connection
 mysql -uzabbix -p -e "SELECT 1" zabbix
 ```
 
-#### 2. Agent Not Reachable / Агент недоступен
+#### 2. Agent Not Reachable
 
 ```bash
-# Verify agent config / Проверить конфиг агента
+# Verify agent config
 grep Server /etc/zabbix/zabbix_agentd.conf   # Must match actual server IP / Должен совпадать с IP сервера
 
-# Test from server / Тест с сервера
+# Test from server
 zabbix_get -s <HOST_IP> -k "agent.ping"
 
-# Check firewall on agent host / Проверить фаервол на хосте агента
+# Check firewall on agent host
 firewall-cmd --list-all | grep 10050
 ss -tlnp | grep 10050
 ```
 
-#### 3. Poller Processes Busy / Процессы poller заняты
+#### 3. Poller Processes Busy
 
 ```bash
 # Check in web UI: Monitoring → Dashboard → "Zabbix internal process busy %"
-# Проверить в веб-интерфейсе: Мониторинг → Дашборд → "Zabbix internal process busy %"
+#
 
-# Increase pollers in zabbix_server.conf / Увеличить poller'ы
+# Increase pollers in zabbix_server.conf
 # StartPollers=20         (default: 5)
 # StartPollersUnreachable=5
 # CacheSize=256M          (default: 8M)
 systemctl restart zabbix-server
 ```
 
-### Debugging / Отладка
+### Debugging
 
 ```bash
-# Enable debug logging temporarily (Level 4) / Включить отладку временно
+# Enable debug logging temporarily (Level 4)
 zabbix_server -R log_level_increase
-# ... wait for issue / ждём проблему ...
+# ... wait for issue
 zabbix_server -R log_level_decrease
 
-# Increase log level for specific process / Увеличить уровень для конкретного процесса
+# Increase log level for specific process
 zabbix_server -R log_level_increase="poller"
 
-# Check runtime values / Проверить runtime-значения
+# Check runtime values
 zabbix_server -R diaginfo
 ```
 
@@ -401,7 +401,7 @@ zabbix_server -R diaginfo
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **Official Documentation:** https://www.zabbix.com/documentation/current/en
 - **Zabbix Downloads:** https://www.zabbix.com/download

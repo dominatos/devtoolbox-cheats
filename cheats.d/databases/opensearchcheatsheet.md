@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration / Установка и Настройка](#Installation%20&%20Configuration)
 2. [Cluster Management / Управление Кластером](#Cluster%20Management)
@@ -37,17 +37,17 @@ tags:
 
 ## Installation & Configuration
 
-### Install / Установка
+### Install
 
 ```bash
 env OPENSEARCH_INITIAL_ADMIN_PASSWORD=<PASSWORD> dpkg -i opensearch-2.19.2-linux-x64.deb # Install .deb with admin pass / Установка .deb с паролем
-# or / или
+# or
 tar -zxvf opensearch-1.3.0.tar.gz # Extract archive / Распаковка архива
 ./opensearch-tar-install.sh # Run installer / Запуск установщика
 docker run opensearchproject/opensearch:3.7.0 # Run in Docker / Запуск в Docker
 ```
 
-### System Tuning / Настройка системы
+### System Tuning
 
 ```bash
 # /etc/sysctl.d/99-opensearch.conf
@@ -55,7 +55,7 @@ vm.max_map_count = 262144
 vm.swappiness = 1
 fs.file-max = 262144
 
-# Apply sysctl / Применить sysctl
+# Apply sysctl
 sysctl --system
 ```
 
@@ -69,7 +69,7 @@ opensearch soft memlock unlimited
 opensearch hard memlock unlimited
 ```
 
-### Systemd Override / Systemd Переопределение
+### Systemd Override / Systemd
 
 `systemctl edit opensearch`
 
@@ -91,15 +91,15 @@ curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/_cat/nodes?v               
 curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/_cluster/settings                  # View cluster settings / Настройки кластера
 ```
 
-### Drain Node / Исключение ноды
+### Drain Node
 
 ```bash
-# Exclude node by name (drain) / Исключить ноду по имени
+# Exclude node by name (drain)
 curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{
   "transient": { "cluster.routing.allocation.exclude._name": "os-data-1" }
 }'
 
-# Check shards on node / Проверить шарды на ноде
+# Check shards on node
 curl -s localhost:9200/_cat/shards?v | grep os-data-1 || echo "empty"
 ```
 
@@ -107,32 +107,32 @@ curl -s localhost:9200/_cat/shards?v | grep os-data-1 || echo "empty"
 
 ## Index Management
 
-### Basics / Основы
+### Basics
 
 ```bash
 curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/_cat/indices?v                     # Indices table / Таблица индексов
 curl -sS -u 'admin:<PASSWORD>' -X DELETE http://localhost:9200/my-index                 # Delete index / Удалить индекс
 
-# Create index with settings / Создать индекс с настройками
+# Create index with settings
 curl -sS -u 'admin:<PASSWORD>' -X PUT http://localhost:9200/my-index \
   -H 'Content-Type: application/json' \
   -d '{ "settings": {"number_of_shards":1,"number_of_replicas":1} }'
 
-# Show mapping / Показать mapping
+# Show mapping
 curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/my-index/_mapping?pretty
 
-# Update mapping (add field) / Обновить mapping (добавить поле)
+# Update mapping (add field)
 curl -sS -u 'admin:<PASSWORD>' -X PUT http://localhost:9200/my-index/_mapping \
   -H 'Content-Type: application/json' \
   -d '{ "properties": { "tag": { "type": "keyword" } } }'
 
-# Force merge / Форс-мердж
+# Force merge
 curl -u 'admin:<PASSWORD>' -X POST "http://localhost:9200/my-index/_forcemerge?max_num_segments=1"
 ```
 
-### 📘 Reindexing Guide / Руководство по реиндексации
+### 📘 Reindexing Guide
 
-#### 1. Create Destination Index / Создание целевого индекса
+#### 1. Create Destination Index
 ```bash
 curl -u 'admin:<PASSWORD>' -X PUT "http://localhost:9200/logs-v2" -H 'Content-Type: application/json' -d '{
   "settings": {
@@ -144,19 +144,19 @@ curl -u 'admin:<PASSWORD>' -X PUT "http://localhost:9200/logs-v2" -H 'Content-Ty
 }'
 ```
 
-#### 2. Run Reindex / Запуск
+#### 2. Run Reindex
 ```bash
-# Basic / Базовый
+# Basic
 curl -u 'admin:<PASSWORD>' -X POST "http://localhost:9200/_reindex?refresh=true" -H 'Content-Type: application/json' -d '{
   "source": { "index": "logs-legacy" },
   "dest":   { "index": "logs-v2" }
 }'
 
-# Percentage/Async / Асинхронно
+# Percentage/Async
 curl -u 'admin:<PASSWORD>' -X POST "http://localhost:9200/_reindex?wait_for_completion=false" ...
 ```
 
-#### 3. Aliases / Алиасы (Zero Downtime)
+#### 3. Aliases
 ```bash
 curl -u 'admin:<PASSWORD>' -X POST "http://localhost:9200/_aliases" -H 'Content-Type: application/json' -d '{
   "actions": [
@@ -173,36 +173,36 @@ curl -u 'admin:<PASSWORD>' -X POST "http://localhost:9200/_aliases" -H 'Content-
 ### CRUD
 
 ```bash
-# Index/Replace (ID=1) / Создать/Заменить (ID=1)
+# Index/Replace (ID=1)
 curl -sS -u 'admin:<PASSWORD>' -X POST http://localhost:9200/my-index/_doc/1 \
   -H 'Content-Type: application/json' \
   -d '{ "title":"hello","tag":"demo","ts":"2025-08-27T10:00:00Z" }'
 
-# Get Document / Получить документ
+# Get Document
 curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/my-index/_doc/1
 
-# Partial Update / Частичное обновление
+# Partial Update
 curl -sS -u 'admin:<PASSWORD>' -X POST http://localhost:9200/my-index/_update/1 \
   -H 'Content-Type: application/json' \
   -d '{ "doc": { "tag":"updated" } }'
 
-# Delete Document / Удалить документ
+# Delete Document
 curl -sS -u 'admin:<PASSWORD>' -X DELETE http://localhost:9200/my-index/_doc/1
 ```
 
-### Search / Поиск
+### Search
 
 ```bash
-# Simple Match / Простой поиск
+# Simple Match
 curl -sS -u 'admin:<PASSWORD>' -X POST http://localhost:9200/my-index/_search \
   -H 'Content-Type: application/json' \
   -d '{ "query": { "match": { "title": "hello" } }, "size": 5 }'
 ```
 
-### Bulk / Массовая загрузка
+### Bulk
 
 ```bash
-# bulk.json format / формат
+# bulk.json format
 # { "index": { "_index":"my-index","_id":"2" } }
 # { "title":"bulk item 2","tag":"demo" }
 
@@ -214,42 +214,42 @@ curl -sS -u 'admin:<PASSWORD>' -X POST http://localhost:9200/_bulk \
 
 ## Backup & Restore
 
-### Snapshot Repository / Репозиторий
+### Snapshot Repository
 
 ```bash
-# Register FS Repository / Регистрация FS репозитория
+# Register FS Repository
 curl -X PUT "https://localhost:9200/_snapshot/my_backup_repository" \
      -H "Content-Type: application/json" \
      -u 'admin:<PASSWORD>' --insecure \
      -d '{ "type": "fs", "settings": { "location": "/var/backups/opensearch", "compress": true } }'
 
-# Register S3 Repository / Регистрация S3 репозитория
-# Use type "s3" and configure bucket/base_path / Используйте type "s3" и укажите bucket
+# Register S3 Repository
+# Use type "s3" and configure bucket/base_path
 ```
 
-### Snapshots / Снапшоты
+### Snapshots
 
 ```bash
-# Create Snapshot / Создать снапшот
+# Create Snapshot
 curl -X PUT "https://localhost:9200/_snapshot/my_backup_repository/snapshot_$(date +%Y-%m-%d)" \
      -H "Content-Type: application/json" \
      -u 'admin:<PASSWORD>' --insecure \
      -d '{ "indices": "*", "ignore_unavailable": true, "include_global_state": false }'
 
-# List Snapshots / Список снапшотов
+# List Snapshots
 curl -sS -u 'admin:<PASSWORD>' http://localhost:9200/_snapshot/my_backup_repository/_all?pretty
 ```
 
-### Restore / Восстановление
+### Restore
 
 ```bash
-# Restore All / Восстановить всё
+# Restore All
 curl -X POST "https://localhost:9200/_snapshot/my_backup_repository/snapshot_DATE/_restore" \
      -u 'admin:<PASSWORD>' --insecure \
      -H 'Content-Type: application/json' \
      -d '{ "indices": "*", "ignore_unavailable": true, "include_global_state": false }'
 
-# Restore with Rename / Восстановить с переименованием
+# Restore with Rename
 curl -X POST "https://localhost:9200/_snapshot/my_backup_repository/snapshot_DATE/_restore" \
      -u 'admin:<PASSWORD>' --insecure \
      -H 'Content-Type: application/json' \
@@ -260,7 +260,7 @@ curl -X POST "https://localhost:9200/_snapshot/my_backup_repository/snapshot_DAT
      }'
 ```
 
-### 🕒 Automation Script / Скрипт автоматизации
+### 🕒 Automation Script
 
 ```bash
 #!/bin/bash
@@ -271,7 +271,7 @@ curl -X PUT "https://localhost:9200/_snapshot/my_backup_repository/$SNAPSHOT_NAM
      -d '{ "indices": "*", "ignore_unavailable": true, "include_global_state": false }'
 echo "✅ Snapshot $SNAPSHOT_NAME is created"
 
-# Clean old snapshots (example > 7 days) / Очистка старых (> 7 дней)
+# Clean old snapshots (example > 7 days)
 OLD=$(date -d "-7 days" +%Y-%m-%d)
 curl -s -u 'admin:<PASSWORD>' -X DELETE "https://localhost:9200/_snapshot/my_backup_repository/snapshot_${OLD}*"
 ```
@@ -281,7 +281,7 @@ curl -s -u 'admin:<PASSWORD>' -X DELETE "https://localhost:9200/_snapshot/my_bac
 0 3 * * * /usr/local/bin/os-backup.sh >> /var/log/opensearch_backup.log 2>&1
 ```
 
-### 📡 NFS Setup for Shared Repo / Настройка NFS
+### 📡 NFS Setup for Shared Repo
 
 > **Goal/Цель**: `/mnt/backups` shared across all nodes. / `/mnt/backups` доступен на всех нодах.
 
@@ -308,25 +308,25 @@ sudo mount -a                                                       # Mount / П
 
 ## Security
 
-### User Management / Управление пользователями
+### User Management
 
 ```bash
-# Create Read-Only Role / Создать роль (Read-Only)
+# Create Read-Only Role
 curl -u 'admin:<PASSWORD>' -X PUT "http://localhost:9200/_plugins/_security/api/roles/ro-logs" \
   -H "Content-Type: application/json" -d '{
   "cluster_permissions": [],
   "index_permissions": [ { "index_patterns": ["logs-*"], "allowed_actions": ["read"] } ] }'
 
-# Create User / Создать пользователя
+# Create User
 curl -u 'admin:<PASSWORD>' -X PUT "http://localhost:9200/_plugins/_security/api/internalusers/alice" \
   -H "Content-Type: application/json" -d '{ "password": "<STRONG_PASSWORD>", "backend_roles": [], "description": "RO User" }'
 
-# Map User to Role / Привязать пользователя к роли
+# Map User to Role
 curl -u 'admin:<PASSWORD>' -X PUT "http://localhost:9200/_plugins/_security/api/rolesmapping/ro-logs" \
   -H "Content-Type: application/json" -d '{ "users": ["alice"], "backend_roles": [], "hosts": [] }'
 ```
 
-### Action Groups / Группы действий
+### Action Groups
 
 | Group | Actions | Desc (RU) |
 |---|---|---|
@@ -336,10 +336,10 @@ curl -u 'admin:<PASSWORD>' -X PUT "http://localhost:9200/_plugins/_security/api/
 | `manage` | create/del index, mappings | Управление индексами |
 | `all` | everything | Полный доступ |
 
-### Change Admin Password / Смена пароля Admin
+### Change Admin Password
 
 ```bash
-# Using securityadmin.sh (requires certificates) / Через скрипт (нужны сертификаты)
+# Using securityadmin.sh (requires certificates)
 OPENSEARCH_JAVA_HOME=/usr/share/opensearch/jdk /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh \
   -icl -cacert /etc/opensearch/root-ca.pem \
   -cert /etc/opensearch/kirk.pem -key /etc/opensearch/kirk-key.pem \
@@ -350,7 +350,7 @@ OPENSEARCH_JAVA_HOME=/usr/share/opensearch/jdk /usr/share/opensearch/plugins/ope
 
 ## Sysadmin Operations
 
-### Service & Logs / Сервис и Логи
+### Service & Logs
 
 ```bash
 systemctl start opensearch                                      # Start service / Запустить сервис
@@ -361,7 +361,7 @@ tail -f /var/log/opensearch/opensearch.log                      # Follow main lo
 grep "ERROR" /var/log/opensearch/opensearch.log                 # Find errors / Найти ошибки
 ```
 
-### Important Paths / Важные Пути
+### Important Paths
 
 *   **Config**: `/etc/opensearch/opensearch.yml` — Main config / Основной конфиг
 *   **JVM**: `/etc/opensearch/jvm.options` — Heap size & GC / Настройки Java
@@ -369,49 +369,49 @@ grep "ERROR" /var/log/opensearch/opensearch.log                 # Find errors / 
 *   **Data**: `/var/lib/opensearch/` — Data directory (Indices) / Данные (Индексы)
 *   **Home**: `/usr/share/opensearch/` — Binary home / Домашняя директория
 
-### JVM Tuning / Настройка JVM
+### JVM Tuning
 
 ```bash
 # Edit /etc/opensearch/jvm.options
 -Xms4g
 -Xmx4g
 # Rule: Set Xms and Xmx to 50% of RAM, but not more than 31GB
-# Правило: Ставьте Xms и Xmx = 50% RAM, но не больше 31GB
+#
 ```
 
-### Network & Firewall / Сеть и Файрвол
+### Network & Firewall
 
 ```bash
-# Ports / Порты
+# Ports
 # 9200: REST API (HTTP)
 # 9300: Transport (Inter-node communication)
 
-# Firewalld Rules / Правила Firewalld
+# Firewalld Rules
 firewall-cmd --permanent --add-port=9200/tcp
 firewall-cmd --permanent --add-port=9300/tcp
 firewall-cmd --reload
 ```
 
-### Keystore / Хранилище секретов
+### Keystore
 
 ```bash
-# List secrets / Список секретов
+# List secrets
 /usr/share/opensearch/bin/opensearch-keystore list
 
-# Add secret (e.g. s3 keys) / Добавить секрет
+# Add secret (e.g. s3 keys)
 /usr/share/opensearch/bin/opensearch-keystore add s3.client.default.access_key
 ```
 
-### Plugins / Плагины
+### Plugins
 
 ```bash
-# List plugins / Список плагинов
+# List plugins
 /usr/share/opensearch/bin/opensearch-plugin list
 
-# Install plugin / Установить плагин
+# Install plugin
 /usr/share/opensearch/bin/opensearch-plugin install analysis-icu
 
-# Remove plugin / Удалить плагин
+# Remove plugin
 /usr/share/opensearch/bin/opensearch-plugin remove analysis-icu
 ```
 
@@ -432,16 +432,16 @@ curl -s -o /dev/null -w 'dns:%{time_namelookup} total:%{time_total}\n' URL  # Ti
 ### Elasticdump
 
 ```bash
-# Ignore SSL / Игнорировать SSL
+# Ignore SSL
 export NODE_TLS_REJECT_UNAUTHORIZED=0
 
-# Export Mapping / Экспорт Mapping
+# Export Mapping
 elasticdump --input=https://admin:<PASSWORD>@localhost:9200/my-index --output=mapping.json --type=mapping
 
-# Export Data / Экспорт Данных
+# Export Data
 elasticdump --input=https://admin:<PASSWORD>@localhost:9200/my-index --output=data.json --type=data
 
-# Import / Импорт
+# Import
 elasticdump --input=data.json --output=https://admin:<PASSWORD>@target:9200/my-index --type=data
 ```
 

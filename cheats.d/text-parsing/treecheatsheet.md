@@ -12,21 +12,21 @@ tags:
 > **tree** — a recursive directory listing program that produces a depth-indented, colorized tree of files. Not part of coreutils; requires separate installation on most systems. Commonly used for project overviews, documentation, and quick filesystem audits. Actively maintained; modern alternative: `exa --tree` / `eza --tree` provides similar functionality with git integration.
 
 ## Table of Contents
-- [Basic Usage](#Basic%20Usage%20/%20Базовое%20использование)
+- [Basic Usage](#Basic%20Usage)
 - [Filters (Include/Exclude)](#Filters%20(Include/Exclude)%20/%20Фильтры%20(включение/исключение))
-- [Sorting & Order](#Sorting%20&%20Order%20/%20Сортировка%20и%20порядок)
-- [Metadata Columns](#Metadata%20Columns%20/%20Столбцы%20метаданных)
-- [Symlinks](#Symlinks%20/%20Символические%20ссылки)
-- [Color & Charsets](#Color%20&%20Charsets%20/%20Цвет%20и%20кодировки)
-- [Report & Output](#Report%20&%20Output%20/%20Отчёт%20и%20вывод)
+- [Sorting & Order](#Sorting%20&%20Order)
+- [Metadata Columns](#Metadata%20Columns)
+- [Symlinks](#Symlinks)
+- [Color & Charsets](#Color%20&%20Charsets)
+- [Report & Output](#Report%20&%20Output)
 - [HTML Output](#HTML%20Output%20/%20HTML%20вывод)
-- [Performance Tips](#Performance%20Tips%20/%20Советы%20по%20производительности)
-- [Practical Recipes](#Practical%20Recipes%20/%20Практические%20рецепты)
-- [Installation](#️%20Installation%20/%20Установка)
+- [Performance Tips](#Performance%20Tips)
+- [Practical Recipes](#Practical%20Recipes)
+- [Installation](#️%20Installation)
 
 ---
 
-## 📂 Basic Usage / Базовое использование
+## 📂 Basic Usage
 
 ```bash
 tree                          # Default recursive listing / Рекурсивный вывод по умолчанию
@@ -40,7 +40,7 @@ tree -x                       # Stay on current filesystem / Не выходит
 
 ---
 
-## 🔍 Filters (Include/Exclude) / Фильтры (включение/исключение)
+## 🔍 Filters (Include/Exclude)
 
 ```bash
 tree -I 'node_modules|.git'   # Ignore by pattern(s) / Исключить по шаблону(ам)
@@ -52,7 +52,7 @@ tree --filelimit 200          # Skip dirs with > N entries / Пропускат�
 
 ---
 
-## 📊 Sorting & Order / Сортировка и порядок
+## 📊 Sorting & Order
 
 ```bash
 tree -U                       # Do not sort (faster) / Не сортировать (быстрее)
@@ -65,7 +65,7 @@ tree --dirsfirst              # Dirs before files / Каталоги раньш�
 
 ---
 
-## 📋 Metadata Columns / Столбцы метаданных
+## 📋 Metadata Columns
 
 ```bash
 tree -s                       # Show size (bytes) / Показать размер в байтах
@@ -85,7 +85,7 @@ tree --device                 # Show device IDs / Показать ID устро
 
 ---
 
-## 🔗 Symlinks / Символические ссылки
+## 🔗 Symlinks
 
 ```bash
 tree -l                       # Follow symlinks / Ходить по симлинкам как по каталогам
@@ -94,7 +94,7 @@ tree -L 1 -l                  # Follow links but limit depth / По симлин
 
 ---
 
-## 🎨 Color & Charsets / Цвет и кодировки
+## 🎨 Color & Charsets
 
 ```bash
 tree -C                       # Force color / Насильно включить цвет
@@ -106,7 +106,7 @@ tree -N                       # Print raw characters / Печатать симв
 
 ---
 
-## 📄 Report & Output / Отчёт и вывод
+## 📄 Report & Output
 
 ```bash
 tree --noreport               # No "X directories, Y files" / Без итоговой строки-отчёта
@@ -117,7 +117,7 @@ tree -o out.txt               # Write to file (text) / Писать вывод �
 
 ---
 
-## 🌐 HTML Output / HTML вывод
+## 🌐 HTML Output / HTML
 
 ```bash
 tree -H . -o index.html       # Generate clickable HTML / Сгенерировать HTML с кликабельными ссылками
@@ -127,7 +127,7 @@ tree -h --du -H . -o sizes.html  # HTML + human dir sizes / HTML со сводн
 
 ---
 
-## ⚡ Performance Tips / Советы по производительности
+## ⚡ Performance Tips
 
 ```bash
 tree -L 2 -I '.git|node_modules|venv'   # Limit & ignore heavy dirs / Ограничить глубину и исключить тяжёлые каталоги
@@ -138,7 +138,7 @@ tree -L 1 -d                             # Quick top-level map / Быстрый 
 
 ---
 
-## 🧰 Practical Recipes / Практические рецепты
+## 🧰 Practical Recipes
 
 ```bash
 tree -L 2 -a --du -h                     # Depth 2 + hidden + human dir sizes / Глубина 2 + скрытые + удобные размеры
@@ -153,7 +153,7 @@ tree --fromfile list.txt                 # Read paths from file / Список �
 
 ---
 
-## ⚙️ Installation / Установка
+## ⚙️ Installation
 
 ```bash
 # Ubuntu/Debian
@@ -168,13 +168,13 @@ sudo pacman -S tree
 # macOS
 brew install tree
 
-# Check version / Проверить версию
+# Check version
 tree --version
 ```
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [tree — Source (Old Dominion University)](https://oldmanprogrammer.net/source.php?dir=projects/tree)
 - [tree — Wikipedia](https://en.wikipedia.org/wiki/Tree_(command))

@@ -42,24 +42,24 @@ tags:
 
 ## Installation
 
-### Install diff & patch / Установка diff и patch
+### Install diff & patch
 
 > [!NOTE]
 > `diff` and `patch` are part of GNU diffutils and are pre-installed on virtually all Linux distributions.
 > `diff` и `patch` входят в состав GNU diffutils и предустановлены практически во всех дистрибутивах Linux.
 
 ```bash
-# Verify installation / Проверить установку
+# Verify installation
 diff --version                                 # Show diff version / Версия diff
 patch --version                                # Show patch version / Версия patch
 
-# Install if missing / Установить если отсутствует
+# Install if missing
 sudo apt install diffutils patch               # Debian/Ubuntu
 sudo dnf install diffutils patch               # RHEL/Fedora
 sudo pacman -S diffutils patch                 # Arch Linux
 ```
 
-### Install Enhanced Tools / Установка улучшенных инструментов
+### Install Enhanced Tools
 ```bash
 sudo apt install colordiff diffstat            # Colored diff + statistics / Цветной diff + статистика
 sudo apt install meld                          # GUI diff/merge tool / GUI инструмент diff/merge
@@ -70,7 +70,7 @@ sudo apt install wdiff                         # Word-level diff / Diff на у�
 
 ## diff — Compare Files
 
-### Basic Comparison / Базовое сравнение
+### Basic Comparison
 ```bash
 diff file1.txt file2.txt                     # Compare two files / Сравнить два файла
 diff -q file1.txt file2.txt                   # Brief (quiet) mode / Краткий режим
@@ -80,7 +80,7 @@ diff -w file1.txt file2.txt                   # Ignore whitespace / Игнори
 diff -b file1.txt file2.txt                   # Ignore blank lines / Игнорировать пустые строки
 ```
 
-### Output Formats / Форматы вывода
+### Output Formats
 
 The unified format (`-u`) is the most widely used and recommended for patches and code review. Context format (`-c`) provides more surrounding context. Side-by-side (`-y`) is best for visual comparison in a terminal.
 
@@ -94,7 +94,7 @@ diff -y -W 200 file1.txt file2.txt            # Side-by-side wide / Бок о б
 diff --normal file1.txt file2.txt             # Normal format / Нормальный формат
 ```
 
-### Output Format Comparison / Сравнение форматов вывода
+### Output Format Comparison
 
 | Format | Flag | Description (EN / RU) | Best For / Лучше для |
 |--------|------|-----------------------|----------------------|
@@ -104,14 +104,14 @@ diff --normal file1.txt file2.txt             # Normal format / Нормальн
 | Normal | (default) | Line ranges with `<`/`>` / Диапазоны строк с `<`/`>` | Scripts, legacy tools / Скрипты, устаревшие инструменты |
 | Brief | `-q` | Only reports if files differ / Только сообщает о различиях | Quick checks / Быстрая проверка |
 
-### Save to Patch File / Сохранить в файл патча
+### Save to Patch File
 ```bash
 diff -u old.conf new.conf > change.patch      # Create unified patch / Создать унифицированный патч
 diff -Naur old/ new/ > changes.patch          # Recursive patch / Рекурсивный патч
 diff -u file1.txt file2.txt | tee change.patch  # Save and display / Сохранить и показать
 ```
 
-### Color Output / Цветной вывод
+### Color Output
 ```bash
 diff --color=always file1.txt file2.txt       # Colored diff / Цветной diff
 diff --color=auto file1.txt file2.txt         # Auto color / Авто цвет
@@ -122,7 +122,7 @@ colordiff file1.txt file2.txt                 # Using colordiff (requires packag
 
 ## patch — Apply Changes
 
-### Basic Patching / Базовое применение патчей
+### Basic Patching
 ```bash
 patch file.txt < change.patch                 # Apply patch / Применить патч
 patch -p0 < change.patch                      # Apply at current level / Применить на текущем уровне
@@ -130,7 +130,7 @@ patch -p1 < change.patch                      # Strip one directory / Убрат
 patch -p2 < change.patch                      # Strip two directories / Убрать два каталога
 ```
 
-### Reverse & Test / Откат и тестирование
+### Reverse & Test
 ```bash
 patch -R file.txt < change.patch              # Reverse patch / Откатить патч
 patch --dry-run -p1 < change.patch            # Test without applying / Тест без применения
@@ -146,20 +146,20 @@ patch -b -V numbered file.txt < change.patch  # Numbered backups / Нумеро�
 > Applying patches without backup (`-b`) in production can make rollback difficult if the patch fails partially.
 > Применение патчей без резервной копии (`-b`) в продакшене может затруднить откат при частичном сбое.
 
-### Interactive & Verbose / Интерактивный и подробный
+### Interactive & Verbose
 ```bash
 patch -i change.patch                         # Read from file / Читать из файла
 patch -v -p1 < change.patch                   # Verbose output / Подробный вывод
 patch -f -p1 < change.patch                   # Force (skip prompts) / Принудительно (пропустить подтверждения)
 ```
 
-### Directory Patching / Применение к каталогам
+### Directory Patching
 ```bash
 cd /path/to/project                           # Change to project / Перейти в проект
 patch -p1 < /path/to/changes.patch            # Apply patch / Применить патч
 ```
 
-### Patch Strip Level Explanation / Объяснение уровней strip патча
+### Patch Strip Level Explanation
 
 The `-pN` flag strips `N` leading path components from file paths in the patch. This is critical when the patch was generated in a different directory context.
 
@@ -175,7 +175,7 @@ The `-pN` flag strips `N` leading path components from file paths in the patch. 
 
 ## Directory Comparison
 
-### Recursive Comparison / Рекурсивное сравнение
+### Recursive Comparison
 ```bash
 diff -r dir1/ dir2/                           # Recursive diff / Рекурсивный diff
 diff -qr dir1/ dir2/                          # Brief recursive / Краткий рекурсивный
@@ -183,14 +183,14 @@ diff -ur dir1/ dir2/                          # Unified recursive / Унифиц
 diff -Naur dir1/ dir2/ > changes.patch        # Create patch / Создать патч
 ```
 
-### Exclude Patterns / Исключить шаблоны
+### Exclude Patterns
 ```bash
 diff -r --exclude=".git" dir1/ dir2/          # Exclude .git / Исключить .git
 diff -r --exclude="*.log" dir1/ dir2/         # Exclude log files / Исключить файлы логов
 diff -r --exclude-from=exclude.txt dir1/ dir2/  # Exclude from file / Исключить из файла
 ```
 
-### Only Show Differences / Только различия
+### Only Show Differences
 ```bash
 diff -qrl dir1/ dir2/                         # List different files / Список различающихся файлов
 diff -qr dir1/ dir2/ | grep "^Only in"        # Files only in one dir / Файлы только в одном каталоге
@@ -201,14 +201,14 @@ diff -qr dir1/ dir2/ | grep "differ$"         # Files that differ / Различ
 
 ## Git-Style Diffs
 
-### Git Diff Format / Формат Git diff
+### Git Diff Format
 ```bash
 diff -u --label="old version" --label="new version" file1.txt file2.txt  # Custom labels / Пользовательские метки
 git diff --no-index file1.txt file2.txt       # Git-style diff / Diff в стиле Git
 git diff --no-index --color-words file1.txt file2.txt  # Word diff / Diff по словам
 ```
 
-### Git Patch Creation / Создание патчей Git
+### Git Patch Creation
 ```bash
 git format-patch -1                           # Create patch from commit / Создать патч из коммита
 git format-patch HEAD~3..HEAD                 # Patches from last 3 commits / Патчи из последних 3 коммитов
@@ -216,7 +216,7 @@ git diff > changes.patch                      # Working tree diff / Diff раб�
 git diff --cached > staged.patch              # Staged changes / Staged изменения
 ```
 
-### Apply Git Patches / Применение Git патчей
+### Apply Git Patches
 ```bash
 git apply changes.patch                       # Apply patch / Применить патч
 git apply --check changes.patch               # Check if applicable / Проверить применимость
@@ -228,7 +228,7 @@ git am < email.patch                          # Apply mail format / Примен
 
 ## Advanced Usage
 
-### Ignore Specific Changes / Игнорировать конкретные изменения
+### Ignore Specific Changes
 ```bash
 diff -I "^#" file1.txt file2.txt              # Ignore lines starting with # / Игнорировать строки начинающиеся с #
 diff -I ".*timestamp.*" file1.txt file2.txt   # Ignore lines with pattern / Игнорировать строки с шаблоном
@@ -236,14 +236,14 @@ diff -B file1.txt file2.txt                   # Ignore blank lines / Игнор�
 diff -w -B file1.txt file2.txt                # Ignore whitespace and blank / Игнорировать пробелы и пустые
 ```
 
-### Context Lines / Контекстные строки
+### Context Lines
 ```bash
 diff -U 5 file1.txt file2.txt                 # 5 lines of context / 5 строк контекста
 diff -U 0 file1.txt file2.txt                 # No context / Без контекста
 diff -C 3 file1.txt file2.txt                 # 3 lines context format / 3 строки контекстного формата
 ```
 
-### Binary Files / Бинарные файлы
+### Binary Files
 ```bash
 diff --brief file1.bin file2.bin              # Binary comparison / Бинарное сравнение
 cmp file1.bin file2.bin                       # Byte-by-byte comparison / Побайтовое сравнение
@@ -251,7 +251,7 @@ cmp -l file1.bin file2.bin                    # List all differences / Спис�
 xxd file1.bin > /tmp/hex1.txt && xxd file2.bin > /tmp/hex2.txt && diff /tmp/hex1.txt /tmp/hex2.txt  # Hex diff / Hex сравнение
 ```
 
-### Diff Statistics / Статистика diff
+### Diff Statistics
 ```bash
 diff -u file1.txt file2.txt | diffstat        # Show statistics / Показать статистику
 diff -u file1.txt file2.txt | wc -l           # Count diff lines / Подсчитать строки diff
@@ -261,26 +261,26 @@ diff -u file1.txt file2.txt | wc -l           # Count diff lines / Подсчи�
 
 ## Real-World Examples
 
-### Compare Configuration Files / Сравнение файлов конфигурации
+### Compare Configuration Files
 ```bash
-# Compare configs and create patch / Сравнить конфигурации и создать патч
+# Compare configs and create patch
 diff -u /etc/nginx/nginx.conf.backup /etc/nginx/nginx.conf > nginx.patch
 
-# Apply to another server / Применить на другом сервере
+# Apply to another server
 scp nginx.patch <USER>@<HOST>:/tmp/
 ssh <USER>@<HOST> "cd /etc/nginx && sudo patch -p0 < /tmp/nginx.patch"
 ```
 
-### Sync Directory Changes / Синхронизация изменений каталогов
+### Sync Directory Changes
 ```bash
-# Create patch of all changes / Создать патч всех изменений
+# Create patch of all changes
 diff -Naur /var/www/old/ /var/www/new/ > website.patch
 
-# Apply to production / Применить в продакшене
+# Apply to production
 cd /var/www/html
 patch -p1 < website.patch
 
-# Verify / Проверить
+# Verify
 patch --dry-run -p1 < website.patch
 ```
 
@@ -288,81 +288,81 @@ patch --dry-run -p1 < website.patch
 > Always test patches on staging before applying to production web directories. A broken patch can cause website downtime.
 > Всегда тестируйте патчи на staging перед применением к продакшен веб-каталогам. Сломанный патч может вызвать простой сайта.
 
-### Code Review Workflow / Процесс ревью кода
+### Code Review Workflow
 ```bash
-# Generate review patch / Генерировать патч для ревью
+# Generate review patch
 diff -Naur src.old/ src.new/ > review.patch
 
-# Review changes / Проверить изменения
+# Review changes
 less review.patch
 vim review.patch
 
-# Apply if approved / Применить если одобрено
+# Apply if approved
 cd src.new/
 patch -R -p1 < review.patch  # Reverse if needed / Откатить если нужно
 ```
 
-### Migration Scripts / Скрипты миграции
+### Migration Scripts
 ```bash
-# Compare database schemas / Сравнить схемы баз данных
+# Compare database schemas
 diff -u schema.old.sql schema.new.sql > migration.patch
 
-# Generate SQL migration / Генерировать SQL миграцию
+# Generate SQL migration
 diff -u schema.old.sql schema.new.sql | grep "^+" | sed 's/^+//' > migration.sql
 ```
 
-### Security Audits / Аудит безопасности
+### Security Audits
 ```bash
-# Check for unauthorized changes / Проверить несанкционированные изменения
+# Check for unauthorized changes
 diff -qr /etc.backup/ /etc/ | tee /var/log/config-audit.log
 
-# Detailed diff of changed files / Подробный diff изменённых файлов
+# Detailed diff of changed files
 diff -ur /etc.backup/ /etc/ > /var/log/config-changes.patch
 ```
 
-### Automated Testing / Автоматическое тестирование
+### Automated Testing
 ```bash
-# Compare test outputs / Сравнить выводы тестов
+# Compare test outputs
 ./test.sh > output.new
 diff -u output.expected output.new
 if [ $? -eq 0 ]; then echo "PASS"; else echo "FAIL"; fi
 
-# Regression testing / Регрессионное тестирование
+# Regression testing
 diff -qr baselines/ results/ || echo "Regression detected"
 ```
 
-### Documentation Updates / Обновления документации
+### Documentation Updates
 ```bash
-# Track doc changes / Отслеживать изменения документации
+# Track doc changes
 diff -u README.md.old README.md > doc-updates.patch
 
-# Generate changelog from diff / Генерировать changelog из diff
+# Generate changelog from diff
 diff -u v1.0/ v2.0/ | grep "^+" | grep -v "^+++" > CHANGES.txt
 ```
 
-### Backup Verification / Проверка резервных копий
+### Backup Verification
 ```bash
-# Verify backup integrity / Проверить целостность резервной копии
+# Verify backup integrity
 diff -qr /data/ /backup/data/ | tee backup-verification.log
 
-# Find files missing in backup / Найти файлы отсутствующие в резервной копии
+# Find files missing in backup
 diff -qr /data/ /backup/data/ | grep "^Only in /data"
 ```
 
-### Container Image Layers / Слои образов контейнеров
+### Container Image Layers
 ```bash
-# Compare Dockerfiles / Сравнить Dockerfiles
+# Compare Dockerfiles
 diff -u Dockerfile.old Dockerfile.new > docker.patch
 
-# Compare container filesystems / Сравнить файловые системы контейнеров
+# Compare container filesystems
 docker export container1 | tar -x -C /tmp/c1
 docker export container2 | tar -x -C /tmp/c2
 diff -qr /tmp/c1 /tmp/c2
 ```
 
-### Multi-Server Consistency / Согласованность между серверами
+### Multi-Server Consistency
 ```bash
-# Check config consistency / Проверить согласованность конфигурации
+# Check config consistency
 for server in <HOST1> <HOST2> <HOST3>; do
   ssh <USER>@$server "cat /etc/app/config.yml" > config.$server
 done
@@ -374,7 +374,7 @@ diff -u config.<HOST1> config.<HOST3>
 
 ## Best Practices
 
-### General Recommendations / Общие рекомендации
+### General Recommendations
 
 - Always use `-u` for unified format — it's the standard for patches / Всегда используйте `-u` для унифицированного формата
 - Test patches with `--dry-run` before applying / Тестируйте патчи с `--dry-run` перед применением
@@ -383,7 +383,7 @@ diff -u config.<HOST1> config.<HOST3>
 - Exclude version control dirs (`.git`, `.svn`) / Исключайте каталоги контроля версий
 - Document patches with descriptive names / Документируйте патчи описательными именами
 
-### Useful diff Options / Полезные опции diff
+### Useful diff Options
 
 | Option | Description (EN / RU) |
 |--------|----------------------|
@@ -395,7 +395,7 @@ diff -u config.<HOST1> config.<HOST3>
 | `-i` | Ignore case / Игнорировать регистр |
 | `-w` | Ignore whitespace / Игнорировать пробелы |
 
-### Alternative Tools / Альтернативные инструменты
+### Alternative Tools
 
 | Tool | Description (EN / RU) | Use Case / Применение |
 |------|----------------------|----------------------|

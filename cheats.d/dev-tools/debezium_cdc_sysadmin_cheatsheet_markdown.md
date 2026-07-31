@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Architecture](#Architecture)
 2. [Installation & Configuration](#Installation%20&%20Configuration)
@@ -39,13 +39,13 @@ tags:
 
 ## Architecture
 
-### CDC Flow / Поток CDC
+### CDC Flow
 
 ```text
 Database → Transaction Logs (WAL/binlog/oplog) → Debezium Connector → Kafka Connect → Kafka Topics → Consumers / Search / Analytics
 ```
 
-### Supported Databases / Поддерживаемые БД
+### Supported Databases
 
 | Database | Transaction Log | Notes / Примечания |
 |---|---|---|
@@ -57,14 +57,14 @@ Database → Transaction Logs (WAL/binlog/oplog) → Debezium Connector → Kafk
 | SQL Server | CDC tables | SQL Server CDC feature |
 | Db2 | Transaction logs | Enterprise usage |
 
-### Layer 4 vs Layer 7 Balancing / Балансировка L4 vs L7
+### Layer 4 vs Layer 7 Balancing
 
 | Layer | Description EN | Описание RU | Best Use Case |
 |---|---|---|---|
 | Layer 4 | TCP-level balancing | Балансировка TCP уровня | Raw Kafka traffic |
 | Layer 7 | HTTP-aware balancing | HTTP-aware балансировка | Kafka Connect REST API |
 
-### Active vs Passive Health Checks / Активные vs Пассивные проверки
+### Active vs Passive Health Checks
 
 | Type | Description EN | Описание RU | Best For |
 |---|---|---|---|
@@ -75,7 +75,7 @@ Database → Transaction Logs (WAL/binlog/oplog) → Debezium Connector → Kafk
 
 ## Installation & Configuration
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Service / Сервис | Port / Порт | Description / Описание |
 |---|---|---|
@@ -86,7 +86,7 @@ Database → Transaction Logs (WAL/binlog/oplog) → Debezium Connector → Kafk
 | PostgreSQL | `5432` | PostgreSQL |
 | MySQL | `3306` | MySQL |
 
-### Docker Compose Deployment / Развёртывание через Docker Compose
+### Docker Compose Deployment
 
 `/opt/debezium/docker-compose.yml`
 
@@ -124,7 +124,7 @@ services:
       STATUS_STORAGE_TOPIC: connect_statuses
 ```
 
-### Start Services / Запуск сервисов
+### Start Services
 
 ```bash
 docker compose up -d  # Start stack / Запустить стек
@@ -140,7 +140,7 @@ connect     Up
 zookeeper   Up
 ```
 
-### PostgreSQL Configuration / Конфигурация PostgreSQL
+### PostgreSQL Configuration
 
 `/var/lib/pgsql/data/postgresql.conf`
 
@@ -160,7 +160,7 @@ host replication <USER> <IP>/32 md5  # Allow replication / Разрешить р
 systemctl restart postgresql  # Restart PostgreSQL / Перезапустить PostgreSQL
 ```
 
-### Create Replication User / Создание пользователя репликации
+### Create Replication User
 
 ```bash
 psql -U postgres
@@ -170,7 +170,7 @@ psql -U postgres
 CREATE ROLE <USER> WITH REPLICATION LOGIN PASSWORD '<PASSWORD>';
 ```
 
-### MySQL Configuration / Конфигурация MySQL
+### MySQL Configuration
 
 `/etc/my.cnf`
 
@@ -182,7 +182,7 @@ binlog_row_image=FULL          # Full row images / Полные образы с�
 expire_logs_days=7             # Retention / Хранение
 ```
 
-### Register Connector / Регистрация коннектора
+### Register Connector
 
 `/opt/debezium/connectors/postgres.json`
 
@@ -204,13 +204,13 @@ expire_logs_days=7             # Retention / Хранение
 ```
 
 ```bash
-# Register connector / Зарегистрировать коннектор
+# Register connector
 curl -X POST http://<HOST>:8083/connectors \
   -H "Content-Type: application/json" \
   --data @postgres.json
 ```
 
-### Verify Connector Status / Проверка статуса коннектора
+### Verify Connector Status
 
 ```bash
 curl http://<HOST>:8083/connectors/postgres-connector/status  # Check status / Проверить статус
@@ -231,7 +231,7 @@ Sample output:
 
 ## Core Management
 
-### List Kafka Topics / Список топиков Kafka
+### List Kafka Topics
 
 ```bash
 kafka-topics.sh \
@@ -239,7 +239,7 @@ kafka-topics.sh \
   --list                                                   # List all topics / Все топики
 ```
 
-### Consume Messages / Чтение сообщений
+### Consume Messages
 
 ```bash
 kafka-console-consumer.sh \
@@ -261,9 +261,9 @@ Sample output:
 }
 ```
 
-### Connector CRUD Operations / CRUD операции с коннекторами
+### Connector CRUD Operations / CRUD
 
-#### Create Connector / Создание коннектора
+#### Create Connector
 
 ```bash
 curl -X POST http://<HOST>:8083/connectors \
@@ -271,31 +271,31 @@ curl -X POST http://<HOST>:8083/connectors \
   --data @connector.json                                   # Create / Создать
 ```
 
-#### List Connectors / Список коннекторов
+#### List Connectors
 
 ```bash
 curl http://<HOST>:8083/connectors                         # List all / Список всех
 ```
 
-#### Get Connector Config / Получить конфиг
+#### Get Connector Config
 
 ```bash
 curl http://<HOST>:8083/connectors/<CONNECTOR>/config      # Get config / Получить конфиг
 ```
 
-#### Pause Connector / Пауза коннектора
+#### Pause Connector
 
 ```bash
 curl -X PUT http://<HOST>:8083/connectors/<CONNECTOR>/pause   # Pause / Пауза
 ```
 
-#### Resume Connector / Возобновление коннектора
+#### Resume Connector
 
 ```bash
 curl -X PUT http://<HOST>:8083/connectors/<CONNECTOR>/resume  # Resume / Возобновить
 ```
 
-#### Delete Connector / Удаление коннектора
+#### Delete Connector
 
 > [!WARNING]
 > Deleting connector offsets may cause full resnapshot or duplicate events.
@@ -309,9 +309,9 @@ curl -X DELETE http://<HOST>:8083/connectors/<CONNECTOR>   # Delete / Удали
 
 ## Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
-#### Docker Environment / Docker окружение
+#### Docker Environment / Docker
 
 ```bash
 docker ps                      # List containers / Список контейнеров
@@ -319,7 +319,7 @@ docker logs -f connect         # Follow logs / Смотреть логи
 docker restart connect         # Restart service / Перезапуск
 ```
 
-#### Systemd Environment / Systemd окружение
+#### Systemd Environment / Systemd
 
 ```bash
 systemctl status kafka-connect    # Check service / Проверить сервис
@@ -327,7 +327,7 @@ systemctl restart kafka-connect   # Restart service / Перезапустить
 journalctl -u kafka-connect -f   # Follow logs / Логи
 ```
 
-### Important Log Locations / Расположение логов
+### Important Log Locations
 
 | Path / Путь | Description / Описание |
 |---|---|
@@ -337,7 +337,7 @@ journalctl -u kafka-connect -f   # Follow logs / Логи
 | `/var/lib/postgresql/data/pg_wal/` | PostgreSQL WAL files / WAL файлы |
 | `/var/lib/mysql/` | MySQL binlogs / Бинлоги MySQL |
 
-### JVM Tuning / Настройка JVM
+### JVM Tuning
 
 `/etc/kafka/connect-distributed.properties`
 
@@ -345,7 +345,7 @@ journalctl -u kafka-connect -f   # Follow logs / Логи
 KAFKA_HEAP_OPTS="-Xms2G -Xmx2G"  # JVM heap size / Размер кучи JVM
 ```
 
-#### Recommended Heap Sizing / Рекомендуемый размер кучи
+#### Recommended Heap Sizing
 
 | RAM | Heap Recommendation / Рекомендация |
 |---|---|
@@ -353,7 +353,7 @@ KAFKA_HEAP_OPTS="-Xms2G -Xmx2G"  # JVM heap size / Размер кучи JVM
 | 8 GB | 2-4 GB |
 | 16 GB+ | 4-8 GB |
 
-### Check Kafka Consumer Lag / Проверка лага консьюмеров
+### Check Kafka Consumer Lag
 
 ```bash
 kafka-consumer-groups.sh \
@@ -362,7 +362,7 @@ kafka-consumer-groups.sh \
   --group connect-cluster                                  # Check lag / Проверить лаг
 ```
 
-### Network Checks / Проверки сети
+### Network Checks
 
 ```bash
 ss -lntp                          # Listening TCP ports / TCP порты
@@ -370,7 +370,7 @@ nc -zv <HOST> 9092                # Test Kafka port / Проверить Kafka
 curl http://<HOST>:8083/          # Test Connect API / Проверить API
 ```
 
-### Firewall Configuration / Настройка файрвола
+### Firewall Configuration
 
 #### firewalld
 
@@ -391,7 +391,7 @@ iptables -A INPUT -p tcp --dport 8083 -j ACCEPT            # Allow Connect
 
 ## Security
 
-### TLS Configuration / Конфигурация TLS
+### TLS Configuration
 
 `/etc/kafka/connect-distributed.properties`
 
@@ -406,7 +406,7 @@ ssl.keystore.password=<PASSWORD>
 > [!CAUTION]
 > Storing `ssl.truststore.password` and `ssl.keystore.password` in plaintext is unsafe in production. Replace inline passwords with provider-based secret lookups using Kafka Connect secrets management (`config.providers`), HashiCorp Vault, or Kubernetes Secrets.
 
-### Generate Java Keystore / Создание Java Keystore
+### Generate Java Keystore
 
 ```bash
 keytool -genkeypair \
@@ -415,13 +415,13 @@ keytool -genkeypair \
   -keystore kafka.keystore.jks                             # Generate keystore / Создать keystore
 ```
 
-### Verify Certificate / Проверка сертификата
+### Verify Certificate
 
 ```bash
 openssl s_client -connect <HOST>:9093                      # Verify TLS / Проверить TLS
 ```
 
-### Minimal Database Permissions / Минимальные права БД
+### Minimal Database Permissions
 
 #### PostgreSQL
 
@@ -442,7 +442,7 @@ ON *.* TO '<USER>'@'%';
 
 ## Backup & Restore
 
-### Backup Connector Configurations / Бэкап конфигураций
+### Backup Connector Configurations
 
 ```bash
 mkdir -p /opt/backups/debezium
@@ -451,29 +451,29 @@ curl http://<HOST>:8083/connectors/<CONNECTOR>/config \
   -o /opt/backups/debezium/<CONNECTOR>.json                # Save config / Сохранить конфиг
 ```
 
-### Backup Kafka Topics / Бэкап топиков Kafka
+### Backup Kafka Topics
 
 > [!CAUTION]
 > Using `tar` on `/var/lib/kafka/data` while Kafka is running can produce inconsistent snapshots. Filesystem backups should only be used when Kafka is stopped or quiesced. For production, rely on Kafka replication, use MirrorMaker2 for cross-cluster/topic replication, or use Kafka-aware backup tools that support consistent snapshots.
 
 ```bash
-# ONLY WHEN KAFKA IS STOPPED / ТОЛЬКО ПРИ ОСТАНОВЛЕННОМ KAFKA
+# ONLY WHEN KAFKA IS STOPPED
 tar czf kafka-data-backup.tar.gz /var/lib/kafka/data/      # Backup Kafka data / Бэкап данных Kafka
 ```
 
-### PostgreSQL Logical Backup / Логический бэкап PostgreSQL
+### PostgreSQL Logical Backup
 
 ```bash
 pg_dump -U <USER> appdb > appdb.sql                        # Dump database / Дамп БД
 ```
 
-### Restore PostgreSQL Backup / Восстановление PostgreSQL
+### Restore PostgreSQL Backup
 
 ```bash
 psql -U <USER> appdb < appdb.sql                           # Restore database / Восстановить БД
 ```
 
-### Snapshot Topics with MirrorMaker2 / Репликация через MirrorMaker2
+### Snapshot Topics with MirrorMaker2
 
 ```bash
 connect-mirror-maker.sh mm2.properties                     # Start MirrorMaker2 / Запустить MirrorMaker2
@@ -483,7 +483,7 @@ connect-mirror-maker.sh mm2.properties                     # Start MirrorMaker2 
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 | Problem / Проблема | Cause / Причина | Fix / Решение |
 |---|---|---|
@@ -493,44 +493,44 @@ connect-mirror-maker.sh mm2.properties                     # Start MirrorMaker2 
 | Lag increasing | Slow consumers / Медленные консьюмеры | Scale consumers / Масштабировать |
 | WAL growing | Connector stopped / Коннектор остановлен | Resume connector / Возобновить |
 
-### Check Connector Status / Проверить статус коннектора
+### Check Connector Status
 
 ```bash
 curl http://<HOST>:8083/connectors/<CONNECTOR>/status | jq  # Check status / Проверить статус
 ```
 
-### Validate Kafka Connectivity / Проверка связи с Kafka
+### Validate Kafka Connectivity
 
 ```bash
 kcat -b <HOST>:9092 -L                                     # List metadata / Метаданные
 ```
 
-### Check PostgreSQL Replication Slots / Проверка слотов репликации
+### Check PostgreSQL Replication Slots
 
 ```bash
 psql -U postgres -c "SELECT * FROM pg_replication_slots;"   # List slots / Список слотов
 ```
 
-### Check MySQL Binlog Status / Статус бинлога MySQL
+### Check MySQL Binlog Status
 
 ```bash
 mysql -e "SHOW MASTER STATUS;"                              # Binlog status / Статус бинлога
 ```
 
-### Monitor WAL Growth / Мониторинг роста WAL
+### Monitor WAL Growth
 
 ```bash
 du -sh /var/lib/postgresql/data/pg_wal/                     # WAL size / Размер WAL
 ```
 
-### Restart Failed Connector Task / Перезапуск задачи коннектора
+### Restart Failed Connector Task
 
 ```bash
 curl -X POST \
   http://<HOST>:8083/connectors/<CONNECTOR>/tasks/0/restart  # Restart task / Перезапуск
 ```
 
-### JVM Diagnostics / Диагностика JVM
+### JVM Diagnostics
 
 ```bash
 jcmd <PID> VM.flags                                        # JVM flags / Флаги JVM
@@ -542,7 +542,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 
 ## Production Runbooks
 
-### Connector Deployment Runbook / План развёртывания коннектора
+### Connector Deployment Runbook
 
 1. Validate database replication settings / Проверить настройки репликации
 2. Create dedicated replication user / Создать пользователя репликации
@@ -553,7 +553,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 7. Configure monitoring and alerting / Настроить мониторинг
 8. Configure backups / Настроить бэкапы
 
-### Connector Rollback Runbook / План отката коннектора
+### Connector Rollback Runbook
 
 > [!WARNING]
 > Incorrect rollback may cause duplicate or missing events.
@@ -566,7 +566,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 5. Validate offsets / Проверить офсеты
 6. Verify event ordering / Проверить порядок событий
 
-### Incident Response: Connector Down / Коннектор упал
+### Incident Response: Connector Down
 
 1. Check Docker/systemd status / Проверить статус
 2. Review logs / Просмотреть логи
@@ -576,7 +576,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 6. Resume connector / Возобновить коннектор
 7. Verify topic ingestion / Проверить поступление данных
 
-### Incident Response: WAL/Binlog Disk Full / Диск WAL/binlog полон
+### Incident Response: WAL/Binlog Disk Full
 
 > [!CAUTION]
 > Full WAL/binlog storage can stop database writes.
@@ -609,7 +609,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 
 ## Additional Notes
 
-### Important Kafka Internal Topics / Внутренние топики Kafka
+### Important Kafka Internal Topics
 
 | Topic / Топик | Purpose / Назначение |
 |---|---|
@@ -617,7 +617,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 | `connect_offsets` | Connector offsets / Офсеты коннекторов |
 | `connect_statuses` | Connector states / Состояния коннекторов |
 
-### Snapshot Modes / Режимы snapshot
+### Snapshot Modes
 
 | Mode / Режим | Description EN | Описание RU |
 |---|---|---|
@@ -626,7 +626,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 | `never` | No snapshot | Без snapshot |
 | `when_needed` | Snapshot if required | Snapshot при необходимости |
 
-### Event Operations / Операции событий
+### Event Operations
 
 | Code / Код | Meaning / Значение |
 |---|---|
@@ -635,7 +635,7 @@ jmap -heap <PID>                                           # Heap info / Инф�
 | `d` | Delete / Удаление |
 | `r` | Snapshot read / Чтение snapshot |
 
-### Best Practices / Лучшие практики
+### Best Practices
 
 - Use dedicated replication users / Используйте выделенных пользователей репликации
 - Enable TLS in production / Включите TLS в продакшене

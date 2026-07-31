@@ -24,7 +24,7 @@ tags:
 
 ## Architecture Overview
 
-### Component Summary / Компоненты
+### Component Summary
 
 | Component | Full Name | Function |
 |-----------|-----------|----------|
@@ -37,7 +37,7 @@ tags:
 
 ## VxVM — Volume Manager
 
-### Disk Management (vxdisk) / Управление дисками
+### Disk Management (vxdisk)
 
 ```bash
 vxdisk list                                     # List all disks / Список дисков
@@ -45,49 +45,49 @@ vxdisk -o alldgs list                           # Disks mapped to DGs / Диск
 vxdisksetup -i <DEVICE>                         # Initialize disk for VxVM / Инициализировать диск
 ```
 
-### Disk Groups (vxdg) / Дисковые группы
+### Disk Groups (vxdg)
 
 ```bash
-# Create Disk Group / Создать Disk Group
+# Create Disk Group
 vxdg init <DG_NAME> <DISK_NAME>=<DEVICE>
 
-# Add disk to existing DG / Добавить диск в существующий DG
+# Add disk to existing DG
 vxdg -g <DG_NAME> adddisk <DISK_NAME>=<DEVICE>
 
-# Import / Deport DG / Импортировать / Деимпортировать DG
+# Import / Deport DG
 vxdg import <DG_NAME>                           # Import (bring online) / Импортировать
 vxdg deport <DG_NAME>                           # Deport (take offline) / Деимпортировать
 
-# List all DGs / Список всех DG
+# List all DGs
 vxdg list
 ```
 
 > [!WARNING]
 > Deporting a DG takes all volumes in that group offline. Ensure no applications are using them before deporting.
 
-### Volumes (vxassist) / Тома
+### Volumes (vxassist)
 
 ```bash
-# Create volume / Создать том
+# Create volume
 vxassist -g <DG_NAME> make <VOL_NAME> 10g
 
-# Create mirrored volume / Создать зеркальный том
+# Create mirrored volume
 vxassist -g <DG_NAME> make <VOL_NAME> 10g layout=mirror
 
-# Grow volume online / Увеличить том онлайн
+# Grow volume online
 vxassist -g <DG_NAME> growto <VOL_NAME> 20g
 
-# Shrink volume (filesystem must be shrunk first) / Уменьшить том
+# Shrink volume (filesystem must be shrunk first)
 vxassist -g <DG_NAME> shrinkto <VOL_NAME> 8g
 
-# Add mirror to existing volume / Добавить зеркало
+# Add mirror to existing volume
 vxassist -g <DG_NAME> mirror <VOL_NAME>
 
-# Remove mirror / Удалить зеркало
+# Remove mirror
 vxassist -g <DG_NAME> remove mirror <VOL_NAME>
 ```
 
-### Volume States / Состояния томов
+### Volume States
 
 ```bash
 vxprint -ht                                     # Hierarchy view (all objects) / Иерархия всех объектов
@@ -101,7 +101,7 @@ vxprint -g <DG_NAME> -v                         # Volumes in DG / Тома в DG
 | `DEGRADED` | Mirror member missing / Зеркало неполное |
 | `FAILED` | I/O error / Ошибка ввода-вывода |
 
-### Device Paths / Пути устройств
+### Device Paths
 
 ```bash
 /dev/vx/dsk/<DG>/<VOL>    # Block device / Блочное устройство
@@ -112,53 +112,53 @@ vxprint -g <DG_NAME> -v                         # Volumes in DG / Тома в DG
 
 ## VxFS — Filesystem
 
-### Create & Mount / Создать и смонтировать
+### Create & Mount
 
 ```bash
-# Create VxFS filesystem / Создать файловую систему VxFS
+# Create VxFS filesystem
 mkfs -t vxfs /dev/vx/rdsk/<DG>/<VOL>
 
-# Mount / Смонтировать
+# Mount
 mount -t vxfs /dev/vx/dsk/<DG>/<VOL> /mnt/point
 
-# Add to /etc/fstab / Добавить в /etc/fstab
+# Add to /etc/fstab
 echo "/dev/vx/dsk/<DG>/<VOL>  /mnt/point  vxfs  defaults  0 0" >> /etc/fstab
 ```
 
-### Online Resize / Изменить размер онлайн
+### Online Resize
 
 > [!TIP]
 > VxFS supports online resize (grow/shrink) without unmounting — a major advantage in production environments.
 
 ```bash
-# Grow volume + filesystem together / Увеличить том и ФС одновременно
+# Grow volume + filesystem together
 vxassist -g <DG_NAME> growto <VOL_NAME> 20g
 fsadm -F vxfs -b 20g /mnt/point                # Grow FS to 20 GB / Увеличить ФС до 20 ГБ
 
-# Shrink — must shrink FS FIRST, then volume / Сначала ФС, потом том
+# Shrink — must shrink FS FIRST, then volume
 fsadm -F vxfs -b 8g /mnt/point                 # Shrink FS / Уменьшить ФС
 vxassist -g <DG_NAME> shrinkto <VOL_NAME> 8g   # Then shrink volume / Потом том
 ```
 
-### Snapshot (VxFS-level) / Снапшот на уровне VxFS
+### Snapshot (VxFS-level)
 
 ```bash
-# Create snapshot volume (same DG) / Создать снапшот-том
+# Create snapshot volume (same DG)
 vxassist -g <DG_NAME> make <SNAP_VOL> 2g layout=mirror
 
-# Mount snapshot / Смонтировать снапшот
+# Mount snapshot
 mount -t vxfs -o snapof=/mnt/point \
   /dev/vx/dsk/<DG>/<SNAP_VOL> /mnt/snap
 
-# List snapshots / Список снапшотов
+# List snapshots
 fsadm -S info /mnt/point
 
-# Remove snapshot / Удалить снапшот
+# Remove snapshot
 umount /mnt/snap
 vxedit -g <DG_NAME> rm <SNAP_VOL>
 ```
 
-### Filesystem Info / Информация о ФС
+### Filesystem Info
 
 ```bash
 df -h /mnt/point                                # Size and usage / Размер и использование
@@ -170,7 +170,7 @@ fsck -t vxfs /dev/vx/rdsk/<DG>/<VOL>           # Filesystem check (unmounted) / 
 
 ## Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
 systemctl status vxvm-boot                      # VxVM boot service / VxVM загрузка
@@ -178,7 +178,7 @@ systemctl status vxfs                           # VxFS mount service / VxFS мо
 /etc/init.d/vxvm-boot start                     # Start VxVM boot services / Запустить
 ```
 
-### VxVM Daemon / Демон VxVM
+### VxVM Daemon
 
 ```bash
 vxconfigd start                                 # Start VxVM config daemon / Запустить демон
@@ -186,7 +186,7 @@ vxconfigd stop                                  # Stop / Остановить
 vxconfigd -m enable                             # Start enabled / Запустить включенным
 ```
 
-### Log Locations / Пути логов
+### Log Locations
 
 ```bash
 /var/adm/messages          # System messages (Solaris legacy) / Системные сообщения
@@ -216,7 +216,7 @@ vxconfigd -m enable                             # Start enabled / Запусти
 
 ## Troubleshooting
 
-### Status Commands / Команды статуса
+### Status Commands
 
 ```bash
 vxprint -ht                                     # Full object hierarchy / Полная иерархия
@@ -225,20 +225,20 @@ vxprint -g <DG_NAME> -ht                        # Hierarchy for specific DG / И
 vxprint -g <DG_NAME> -v                         # Volume details / Детали томов
 ```
 
-### Disk & Volume Errors / Ошибки дисков и томов
+### Disk & Volume Errors
 
 ```bash
-# Check for failed disks / Проверить неисправные диски
+# Check for failed disks
 vxdisk list | grep -i fail
 
-# Recover a failed subdisk / Восстановить неисправный subdisk
+# Recover a failed subdisk
 vxrecover -g <DG_NAME>
 
-# Rescan disks (after adding hardware) / Пересканировать диски
+# Rescan disks (after adding hardware)
 vxdctl enable
 ```
 
-### DMP (Multipathing) / Многопутевание DMP
+### DMP (Multipathing)
 
 ```bash
 vxdmpadm listctlr all                           # List HBA controllers / Список HBA
@@ -247,16 +247,16 @@ vxdmpadm enable controller=<CTL>               # Enable path / Включить 
 vxdmpadm disable controller=<CTL>              # Disable path / Отключить путь
 ```
 
-### Common Fixes / Типичные решения
+### Common Fixes
 
 ```bash
-# DG not importing (disk DAEMONIZED state) / DG не импортируется
+# DG not importing (disk DAEMONIZED state) / DG
 vxdg import -f <DG_NAME>                        # Force import / Принудительный импорт
 
-# Volume in DISABLED state / Том в состоянии DISABLED
+# Volume in DISABLED state
 vxvol -g <DG_NAME> start <VOL_NAME>             # Start volume / Запустить том
 
-# Stale NFS mounts preventing deport / Устаревшие NFS монтирования
+# Stale NFS mounts preventing deport
 umount -f -l /mnt/point                         # Force unmount / Принудительное размонтирование
 ```
 

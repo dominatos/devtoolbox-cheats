@@ -35,7 +35,7 @@ Pacemaker is an advanced, open-source high-availability cluster resource manager
 
 ## Installation & Configuration
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Protocol | Purpose / Назначение |
 |:---|:---|:---|
@@ -44,7 +44,7 @@ Pacemaker is an advanced, open-source high-availability cluster resource manager
 | `5404` | UDP | Corosync multicast/unicast (receive) / Приём Corosync |
 | `5405` | UDP | Corosync multicast/unicast (send) / Отправка Corosync |
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # RHEL/AlmaLinux/Rocky
@@ -55,7 +55,7 @@ sudo apt update
 sudo apt install -y pacemaker corosync pcs fence-agents
 ```
 
-### Production Runbook: Initial Cluster Setup / Начальная настройка кластера
+### Production Runbook: Initial Cluster Setup
 
 1. **Set `hacluster` user password (all nodes) / Пароль пользователя `hacluster`:**
 
@@ -89,14 +89,14 @@ sudo apt install -y pacemaker corosync pcs fence-agents
    sudo pcs status  # Should show all nodes Online / Все узлы должны быть Online
    ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
 # firewalld (RHEL/CentOS/AlmaLinux)
 sudo firewall-cmd --permanent --add-service=high-availability  # Opens all HA ports / Открывает все HA-порты
 sudo firewall-cmd --reload
 
-# Or open ports individually / Или открыть порты отдельно
+# Or open ports individually
 sudo firewall-cmd --permanent --add-port=2224/tcp   # pcsd
 sudo firewall-cmd --permanent --add-port=3121/tcp   # Pacemaker Remote
 sudo firewall-cmd --permanent --add-port=5404/udp   # Corosync
@@ -110,7 +110,7 @@ sudo ufw allow 5404/udp   # Corosync
 sudo ufw allow 5405/udp   # Corosync
 ```
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File / Файл | Purpose / Назначение |
 |:---|:---|
@@ -125,7 +125,7 @@ sudo ufw allow 5405/udp   # Corosync
 
 ## Core Management (pcs)
 
-### Checking Cluster Status / Проверка статуса
+### Checking Cluster Status
 
 ```bash
 sudo pcs status                 # Full status overview / Полный статус
@@ -135,7 +135,7 @@ sudo pcs status nodes           # Node status only / Только статус �
 sudo pcs status resources       # Resource status only / Только статус ресурсов
 ```
 
-### Managing Cluster Services / Управление сервисами кластера
+### Managing Cluster Services
 
 ```bash
 sudo pcs cluster start --all    # Start on all nodes / Запустить везде
@@ -149,7 +149,7 @@ sudo pcs cluster destroy        # Destroy cluster config (!) / Удаление 
 > [!CAUTION]
 > `pcs cluster destroy` wipes out all cluster configurations on the node. This is irreversible and will stop all resources. Be very careful. / `pcs cluster destroy` удаляет всю конфигурацию кластера. Это необратимо и остановит все ресурсы.
 
-### Node Management / Управление узлами
+### Node Management
 
 ```bash
 sudo pcs node standby <NODE>      # Put node in standby (stops resources) / Перевод в спящий режим
@@ -158,7 +158,7 @@ sudo pcs node maintenance <NODE>  # Put node in maintenance (keeps resources run
 sudo pcs node unmaintenance <NODE>  # Exit maintenance mode / Выход из режима обслуживания
 ```
 
-### Standby vs Maintenance Mode / Сравнение режимов
+### Standby vs Maintenance Mode
 
 | Mode / Режим | Resources / Ресурсы | Monitoring / Мониторинг | Use Case / Применение |
 |:---|:---|:---|:---|
@@ -169,17 +169,17 @@ sudo pcs node unmaintenance <NODE>  # Exit maintenance mode / Выход из р
 
 ## Resource Management
 
-### Creating Resources / Создание ресурсов
+### Creating Resources
 
 ```bash
-# Virtual IP Example / Пример виртуального IP
+# Virtual IP Example
 sudo pcs resource create <VIP_NAME> ocf:heartbeat:IPaddr2 \
   ip=<VIP_ADDRESS> cidr_netmask=24 op monitor interval=30s
 
-# Systemd Service Example / Пример Systemd сервиса
+# Systemd Service Example
 sudo pcs resource create <SVC_NAME> systemd:<UNIT_NAME> op monitor interval=30s
 
-# Apache HTTPD Example / Пример Apache HTTPD
+# Apache HTTPD Example
 sudo pcs resource create <WEB_NAME> ocf:heartbeat:apache \
   configfile="/etc/httpd/conf/httpd.conf" statusurl="http://localhost/server-status" \
   op monitor interval=30s
@@ -188,7 +188,7 @@ sudo pcs resource create <WEB_NAME> ocf:heartbeat:apache \
 > [!TIP]
 > Use `pcs resource list` to list all configured resources and `pcs resource agents` to list available resource agents. Run `pcs resource describe <AGENT>` for detailed agent documentation. / Используйте `pcs resource list` для ресурсов и `pcs resource agents` для доступных агентов. `pcs resource describe <AGENT>` для документации.
 
-### Managing Resources / Управление ресурсами
+### Managing Resources
 
 ```bash
 sudo pcs resource enable <RES_NAME>      # Start a resource / Включить ресурс
@@ -203,7 +203,7 @@ sudo pcs resource cleanup <RES_NAME>     # Reset failure counters / Сброс �
 > [!WARNING]
 > After using `pcs resource move`, always run `pcs resource clear <RES_NAME>` to remove the temporary location constraint. Otherwise, the resource will never move back automatically. / После `pcs resource move` всегда выполняйте `pcs resource clear`, чтобы удалить временное ограничение.
 
-### Resource Groups / Группы ресурсов
+### Resource Groups
 
 Grouping ensures resources start sequentially on the same node and stop in reverse order. / Группировка обеспечивает последовательный запуск ресурсов на одном узле и остановку в обратном порядке.
 
@@ -212,7 +212,7 @@ sudo pcs resource group add <GROUP_NAME> <RES1> <RES2> <RES3>  # Create/add to g
 sudo pcs resource group remove <GROUP_NAME> <RES>               # Remove from group / Убрать из группы
 ```
 
-### Common Resource Agents / Основные агенты ресурсов
+### Common Resource Agents
 
 | Agent / Агент | Description / Описание | Use Case / Применение |
 |:---|:---|:---|
@@ -229,17 +229,17 @@ sudo pcs resource group remove <GROUP_NAME> <RES>               # Remove from gr
 
 Constraints control *where* and *when* resources can run. / Ограничения управляют *где* и *когда* ресурсы могут работать.
 
-### Location Constraints / Ограничения расположения
+### Location Constraints
 
 Prefer specific nodes for a resource. / Привязка ресурса к конкретным узлам.
 
 ```bash
 sudo pcs constraint location <RES_NAME> prefers <NODE>=<SCORE>
-# Example: Infinity score forces resource strictly on node1 / INFINITY строго привязывает ресурс к node1
+# Example: Infinity score forces resource strictly on node1 / INFINITY
 sudo pcs constraint location <RES_NAME> prefers node1=INFINITY
 ```
 
-### Order Constraints / Ограничения порядка
+### Order Constraints
 
 Specify start/stop sequence. / Порядок запуска/остановки.
 
@@ -248,7 +248,7 @@ sudo pcs constraint order start <RES1> then start <RES2>
 sudo pcs constraint order promote <MASTER_RES> then start <SLAVE_RES>
 ```
 
-### Colocation Constraints / Ограничения совместного размещения
+### Colocation Constraints
 
 Ensure resources run together (or apart). / Совместное (или раздельное) размещение ресурсов.
 
@@ -257,7 +257,7 @@ sudo pcs constraint colocation add <RES1> with <RES2> score=INFINITY   # MUST ru
 sudo pcs constraint colocation add <RES1> with <RES2> score=-INFINITY  # MUST NOT run together / НЕ ДОЛЖНЫ на одном узле
 ```
 
-### Constraint Scores Explained / Значения Score
+### Constraint Scores Explained
 
 | Score / Оценка | Meaning / Значение | Behavior / Поведение |
 |:---|:---|:---|
@@ -266,7 +266,7 @@ sudo pcs constraint colocation add <RES1> with <RES2> score=-INFINITY  # MUST NO
 | `100-1000` | Preference / Предпочтение | Preferred but not mandatory / Предпочтительно, но не обязательно |
 | `0` | No preference / Без предпочтения | No effect / Без эффекта |
 
-### View All Constraints / Просмотр всех ограничений
+### View All Constraints
 
 ```bash
 sudo pcs constraint --full    # Show all constraints with IDs / Показать все ограничения с ID
@@ -280,20 +280,20 @@ sudo pcs constraint remove <CONSTRAINT_ID>  # Remove a constraint / Удалит
 > [!WARNING]
 > High Availability clusters without STONITH/Fencing can suffer from split-brain data corruption. **Never disable STONITH in production!** / HA-кластеры без STONITH/Fencing подвержены расщеплению мозга (split-brain). **Никогда не отключайте STONITH в продакшене!**
 
-### Why STONITH is Critical / Зачем нужен STONITH
+### Why STONITH is Critical
 
 STONITH ("Shoot The Other Node In The Head") ensures that a malfunctioning node is forcefully powered off before its resources are recovered on another node. Without it, two nodes may simultaneously believe they own the same resource (e.g., a shared filesystem), leading to **data corruption**. / STONITH гарантирует, что неисправный узел будет принудительно отключён перед переносом ресурсов. Без него два узла могут одновременно владеть ресурсом, что приведёт к **повреждению данных**.
 
-### Disabling STONITH (Testing Only!) / Отключение STONITH (только для тестов)
+### Disabling STONITH (Testing Only!)
 
 ```bash
 sudo pcs property set stonith-enabled=false  # Only for lab/testing! / Только для лабораторий/тестов!
 ```
 
-### Configuring STONITH Devices / Настройка устройств Fencing
+### Configuring STONITH Devices
 
 ```bash
-# Example for VMware vCenter / Пример для VMware vCenter
+# Example for VMware vCenter
 sudo pcs stonith create vcenter_fence fence_vmware_rest \
     ipaddr=<VCENTER_IP> \
     login=<USER> \
@@ -301,7 +301,7 @@ sudo pcs stonith create vcenter_fence fence_vmware_rest \
     pcmk_host_map="node1:vm1;node2:vm2" \
     op monitor interval=60s
 
-# Example for IPMI/iLO/iDRAC / Пример для IPMI/iLO/iDRAC
+# Example for IPMI/iLO/iDRAC
 sudo pcs stonith create ipmi_fence fence_ipmilan \
     ipaddr=<IPMI_IP> \
     login=<USER> \
@@ -310,20 +310,20 @@ sudo pcs stonith create ipmi_fence fence_ipmilan \
     op monitor interval=60s
 ```
 
-### Testing STONITH / Проверка STONITH
+### Testing STONITH
 
 ```bash
-# List configured STONITH devices / Список настроенных устройств STONITH
+# List configured STONITH devices
 sudo pcs stonith status
 
-# Verify STONITH can reach the target / Проверить доступность цели
+# Verify STONITH can reach the target
 sudo pcs stonith fence <NODE> --off  # Will power off the node! / ВЫКЛЮЧИТ узел!
 ```
 
 > [!CAUTION]
 > `pcs stonith fence <NODE>` will actually reboot or power off the target node. Use only for testing in controlled environments. / `pcs stonith fence <NODE>` реально перезагрузит или выключит узел. Используйте только в контролируемой среде.
 
-### Common STONITH Agents / Основные STONITH-агенты
+### Common STONITH Agents
 
 | Agent / Агент | Target | Description / Описание |
 |:---|:---|:---|
@@ -341,7 +341,7 @@ sudo pcs stonith fence <NODE> --off  # Will power off the node! / ВЫКЛЮЧИ
 
 A cluster requires quorum (majority of voting nodes) to continue functioning and avoid split-brain. / Кластер требует кворума (большинства голосующих узлов) для продолжения работы.
 
-### Quorum Strategies / Стратегии кворума
+### Quorum Strategies
 
 | Feature / Понятие | Description / Описание | Good for... / Для чего |
 |:---|:---|:---|
@@ -349,7 +349,7 @@ A cluster requires quorum (majority of voting nodes) to continue functioning and
 | **QDevice** | A 3rd lightweight daemon (`corosync-qdevice`) on a neutral server that gives the tie-breaker vote. / 3-й легковесный демон-наблюдатель. | 2-node clusters + 1 tiny VPS / Даёт кворум 2 узлам |
 | **3+ Node Cluster** | Natural majority quorum. / Естественное большинство. | Production HA / Продакшен HA |
 
-### Two-Node Cluster Setup / Настройка для 2 узлов (без QDevice)
+### Two-Node Cluster Setup
 
 ```bash
 sudo pcs property set no-quorum-policy=ignore  # For 2-node clusters only / Только для 2-узловых кластеров
@@ -358,14 +358,14 @@ sudo pcs property set no-quorum-policy=ignore  # For 2-node clusters only / То
 > [!CAUTION]
 > If you set `no-quorum-policy=ignore`, having robust STONITH is **strictly mandatory**, otherwise you risk split-brain. / При `no-quorum-policy=ignore` наличие надёжного STONITH **строго обязательно**, иначе возможен split-brain.
 
-### QDevice Setup / Настройка QDevice
+### QDevice Setup
 
 ```bash
-# On the QDevice host (separate server) / На хосте QDevice (отдельный сервер)
+# On the QDevice host (separate server)
 sudo dnf install -y corosync-qnetd
 sudo pcs qdevice setup model net --enable --start
 
-# On one cluster node / На одном узле кластера
+# On one cluster node
 sudo pcs quorum device add model net host=<QDEVICE_HOST> algorithm=ffsplit
 ```
 
@@ -373,7 +373,7 @@ sudo pcs quorum device add model net host=<QDEVICE_HOST> algorithm=ffsplit
 
 ## Troubleshooting & Maintenance
 
-### Runbook: Handling a Failed Resource / Решение проблем с ресурсом
+### Runbook: Handling a Failed Resource
 
 1. **Identify the failure / Поиск ошибки:**
 
@@ -402,41 +402,41 @@ sudo pcs quorum device add model net host=<QDEVICE_HOST> algorithm=ffsplit
    sudo pcs status resources
    ```
 
-### Global Cluster Properties / Глобальные свойства кластера
+### Global Cluster Properties
 
 ```bash
 # Put entire cluster in maintenance mode (stops monitoring, freezes resources)
-# Обслуживание всего кластера (заморозка ресурсов, остановка мониторинга)
+#
 sudo pcs property set maintenance-mode=true
 
-# Disable maintenance mode / Возврат в обычный режим
+# Disable maintenance mode
 sudo pcs property set maintenance-mode=false
 
 # Prevent resources from moving after node recovers (prevents ping-pong effect)
-# Запрет переезда ресурсов обратно после возвращения узла
+#
 sudo pcs property set resource-stickiness=100
 
-# View all cluster properties / Просмотр всех свойств кластера
+# View all cluster properties
 sudo pcs property list
 ```
 
-### Cluster Configuration Backup / Резервное копирование конфигурации кластера
+### Cluster Configuration Backup
 
 ```bash
-# Export the CIB (Cluster Information Base) / Экспорт CIB
+# Export the CIB (Cluster Information Base)
 sudo pcs cluster cib-push --config cib_backup.xml --scope=configuration
 
-# Save current config to file / Сохранить текущий конфиг
+# Save current config to file
 sudo pcs config backup <BACKUP_FILE>
 
-# Restore config from backup / Восстановить конфиг из бэкапа
+# Restore config from backup
 sudo pcs config restore <BACKUP_FILE>
 ```
 
 > [!WARNING]
 > Restoring a CIB backup will overwrite all current resource and constraint definitions. / Восстановление CIB перезапишет все текущие определения ресурсов и ограничений.
 
-### Useful Diagnostic Commands / Полезные диагностические команды
+### Useful Diagnostic Commands
 
 ```bash
 sudo corosync-cmapctl | grep members   # List cluster members / Список участников кластера

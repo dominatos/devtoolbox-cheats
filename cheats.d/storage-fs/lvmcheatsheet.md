@@ -33,21 +33,21 @@ LVM is the default storage layout for RHEL/CentOS/Fedora and Ubuntu Server insta
 
 ## Table of Contents
 - [Quick Start](#Quick%20Start)
-- [Status & Diagnostics](#Status%20&%20Diagnostics%20/%20Проверка%20состояния%20дисков%20и%20LVM)
-- [Adding a New Disk](#Adding%20a%20New%20Disk%20/%20Добавление%20нового%20диска)
-- [Adding Disk to LVM](#Adding%20Disk%20to%20LVM%20/%20Добавление%20диска%20в%20LVM)
-- [Extending LV & Filesystem](#Extending%20LV%20&%20Filesystem%20/%20Расширение%20логического%20тома%20и%20файловой%20системы)
-- [Formatting & Mounting](#Formatting%20&%20Mounting%20/%20Форматирование%20и%20монтирование)
-- [LVM Snapshots](#LVM%20Snapshots%20/%20Снапшоты%20LVM)
-- [Thin Provisioning](#Thin%20Provisioning%20/%20Тонкое%20выделение)
-- [Removing Disk from LVM](#Removing%20Disk%20from%20LVM%20/%20Удаление%20диска%20из%20LVM)
-- [Creating New LVM from Scratch](#Creating%20New%20LVM%20from%20Scratch%20/%20Создание%20нового%20LVM%20с%20нуля)
-- [Filesystem Check & Repair](#Filesystem%20Check%20&%20Repair%20/%20Проверка%20и%20ремонт%20файловой%20системы)
-- [Useful Utilities](#Useful%20Utilities%20/%20Полезные%20утилиты)
-- [Automation Script](#Automation%20Script%20/%20Автоматизация%20—%20expand_data_storage.sh)
-- [Error Recovery](#Error%20Recovery%20/%20Восстановление%20при%20ошибках)
-- [Common Commands Reference](#Common%20Commands%20Reference%20/%20Часто%20используемые%20команды)
-- [LVM Architecture Comparison](#LVM%20Architecture%20Comparison%20/%20Сравнение%20архитектур%20хранения)
+- [Status & Diagnostics](#Status%20&%20Diagnostics)
+- [Adding a New Disk](#Adding%20a%20New%20Disk)
+- [Adding Disk to LVM](#Adding%20Disk%20to%20LVM)
+- [Extending LV & Filesystem](#Extending%20LV%20&%20Filesystem)
+- [Formatting & Mounting](#Formatting%20&%20Mounting)
+- [LVM Snapshots](#LVM%20Snapshots)
+- [Thin Provisioning](#Thin%20Provisioning)
+- [Removing Disk from LVM](#Removing%20Disk%20from%20LVM)
+- [Creating New LVM from Scratch](#Creating%20New%20LVM%20from%20Scratch)
+- [Filesystem Check & Repair](#Filesystem%20Check%20&%20Repair)
+- [Useful Utilities](#Useful%20Utilities)
+- [Automation Script](#Automation%20Script)
+- [Error Recovery](#Error%20Recovery)
+- [Common Commands Reference](#Common%20Commands%20Reference)
+- [LVM Architecture Comparison](#LVM%20Architecture%20Comparison)
 
 ---
 
@@ -64,7 +64,7 @@ sudo lvextend -r -L +10G /dev/vg0/data          # Extend LV and FS / Увели�
 
 ---
 
-## Status & Diagnostics / Проверка состояния дисков и LVM
+## Status & Diagnostics
 
 ```bash
 lsblk -f                  # Show block device tree with FS / Показать дерево устройств с ФС
@@ -88,7 +88,7 @@ pvdisplay                 # Detailed physical volume info / Подробност
 
 ---
 
-## Adding a New Disk / Добавление нового диска
+## Adding a New Disk
 
 ```bash
 lsblk                                   # List all block devices / Проверить наличие нового диска
@@ -103,7 +103,7 @@ lsblk /dev/sdd                          # Verify partition exists / Убедит
 
 ---
 
-## Adding Disk to LVM / Добавление диска в LVM
+## Adding Disk to LVM
 
 ```bash
 sudo pvcreate /dev/sdd1         # Create physical volume / Создать физический том
@@ -113,7 +113,7 @@ sudo vgs                        # Verify VG extended / Проверить, чт�
 
 ---
 
-## Extending LV & Filesystem / Расширение логического тома и файловой системы
+## Extending LV & Filesystem
 
 ```bash
 sudo lvextend -l +100%FREE /dev/<VG_NAME>/<LV_NAME>   # Extend LV to all free space / Увеличить LV на всё свободное место
@@ -128,7 +128,7 @@ df -h <MOUNT_POINT>                                    # Verify final size / П�
 
 ---
 
-## Formatting & Mounting / Форматирование и монтирование
+## Formatting & Mounting
 
 ```bash
 sudo mkfs.xfs /dev/<VG_NAME>/<LV_NAME>          # Make XFS filesystem / Создать XFS файловую систему
@@ -137,7 +137,7 @@ sudo nano /etc/fstab                              # Edit fstab for auto-mount / 
 sudo mount -a                                     # Test all mounts / Проверить корректность fstab
 ```
 
-### fstab Entry Example / Пример записи в fstab
+### fstab Entry Example
 `/etc/fstab`
 
 ```bash
@@ -150,22 +150,22 @@ sudo mount -a                                     # Test all mounts / Прове
 
 ---
 
-## LVM Snapshots / Снапшоты LVM
+## LVM Snapshots
 
 LVM snapshots create a point-in-time copy of a logical volume using Copy-on-Write (CoW).
 Снапшоты LVM создают копию логического тома на определённый момент времени с помощью Copy-on-Write (CoW).
 
 ```bash
-# Create a snapshot / Создать снапшот
+# Create a snapshot
 sudo lvcreate -L 5G -s -n data_snap /dev/vg0/data
 
-# List snapshots / Список снапшотов
+# List snapshots
 sudo lvs -o +snap_percent
 
-# Mount snapshot for backup / Смонтировать снапшот для бэкапа
+# Mount snapshot for backup
 sudo mount -o ro /dev/vg0/data_snap /mnt/snap
 
-# Remove snapshot / Удалить снапшот
+# Remove snapshot
 sudo lvremove /dev/vg0/data_snap
 ```
 
@@ -179,19 +179,19 @@ sudo lvremove /dev/vg0/data_snap
 
 ---
 
-## Thin Provisioning / Тонкое выделение
+## Thin Provisioning
 
 Thin provisioning allows you to allocate more storage than physically available, with space allocated on demand.
 Тонкое выделение позволяет выделить больше хранилища, чем физически доступно, с распределением по мере необходимости.
 
 ```bash
-# Create thin pool / Создать тонкий пул
+# Create thin pool
 sudo lvcreate -L 50G -T vg0/thinpool
 
-# Create thin volume (can exceed pool size) / Создать тонкий том
+# Create thin volume (can exceed pool size)
 sudo lvcreate -V 100G -T vg0/thinpool -n thinvol
 
-# Check thin pool usage / Проверить использование пула
+# Check thin pool usage
 sudo lvs -o +data_percent,metadata_percent
 ```
 
@@ -201,7 +201,7 @@ sudo lvs -o +data_percent,metadata_percent
 
 ---
 
-## Removing Disk from LVM / Удаление диска из LVM
+## Removing Disk from LVM
 
 > [!CAUTION]
 > `pvmove` migrates data off a PV — this can take a long time on large volumes. `vgreduce` permanently removes a PV from a VG. Ensure data is migrated before removing.
@@ -216,7 +216,7 @@ sudo pvremove /dev/sdd1             # Wipe LVM metadata / Удалить LVM м�
 
 ---
 
-## Creating New LVM from Scratch / Создание нового LVM с нуля
+## Creating New LVM from Scratch
 
 ```bash
 sudo pvcreate /dev/sdd1                              # Create PV / Создать PV
@@ -229,7 +229,7 @@ sudo mount /dev/backup-vg/backup /mnt/backup         # Mount filesystem / Смо
 
 ---
 
-## Filesystem Check & Repair / Проверка и ремонт файловой системы
+## Filesystem Check & Repair
 
 > [!WARNING]
 > Filesystem must be unmounted before running `e2fsck` or `xfs_repair`. Running on a mounted FS can cause data corruption.
@@ -242,7 +242,7 @@ sudo xfs_repair /dev/<VG_NAME>/<LV_NAME>   # Repair XFS (requires unmount) / Р�
 
 ---
 
-## Useful Utilities / Полезные утилиты
+## Useful Utilities
 
 ```bash
 lsblk -e7 -o NAME,SIZE,FSTYPE,MOUNTPOINT   # Clean block device list / Чистый вывод устройств
@@ -257,11 +257,11 @@ dmsetup ls                                  # List device-mapper devices / Сп�
 
 ---
 
-## Automation Script / Автоматизация — expand_data_storage.sh
+## Automation Script
 
 ```bash
 #!/bin/bash
-# Auto-extend LVM storage / Авто-добавление нового диска в VG и расширение ФС
+# Auto-extend LVM storage
 
 NEW_DISK=$(lsblk -ndo NAME,TYPE | awk '$2=="disk" && $1!="sda" && $1!="sdb" && $1!="sdc"{print "/dev/"$1; exit}')
 if [ -z "$NEW_DISK" ]; then
@@ -284,7 +284,7 @@ df -h <MOUNT_POINT>                                          # Check result / П
 
 ---
 
-## Error Recovery / Восстановление при ошибках
+## Error Recovery
 
 ```bash
 sudo vgcfgbackup                          # Backup LVM metadata / Создать резервную копию метаданных
@@ -299,7 +299,7 @@ sudo vgchange -ay                         # Activate all VGs / Активиро�
 > LVM automatically backs up metadata to `/etc/lvm/backup/` and archives to `/etc/lvm/archive/`. These backups are your lifeline for recovery.
 > LVM автоматически создаёт резервные копии метаданных в `/etc/lvm/backup/` и архивы в `/etc/lvm/archive/`. Эти копии — ваш спасательный круг.
 
-### Default LVM Paths / Пути по умолчанию LVM
+### Default LVM Paths
 
 | Path | Purpose (EN) | Назначение (RU) |
 | :--- | :--- | :--- |
@@ -311,7 +311,7 @@ sudo vgchange -ay                         # Activate all VGs / Активиро�
 
 ---
 
-## Common Commands Reference / Часто используемые команды
+## Common Commands Reference
 
 ```bash
 lvs                                        # List logical volumes / Показать логические тома
@@ -332,7 +332,7 @@ smartctl -a /dev/sdX                       # Check disk SMART health / Пров�
 
 ---
 
-## LVM Architecture Comparison / Сравнение архитектур хранения
+## LVM Architecture Comparison
 
 | Feature | Traditional Partitions | LVM | ZFS |
 | :--- | :--- | :--- | :--- |

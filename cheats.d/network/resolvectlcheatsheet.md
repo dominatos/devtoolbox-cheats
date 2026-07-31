@@ -29,7 +29,7 @@ tags:
 
 ## Basics & Status
 
-### Status Commands / Команды статуса
+### Status Commands
 ```bash
 resolvectl status                        # Show global and per-link DNS status / Показать общий статус DNS и по интерфейсам
 resolvectl status <INTERFACE>            # Show status for specific link / Показать статус конкретного интерфейса
@@ -39,7 +39,7 @@ resolvectl compat                        # Show nss-compat state / Показа�
 resolvectl --legend=no status            # Terse output without legend / Короткий вывод без легенды
 ```
 
-### Cache Management / Управление кэшем
+### Cache Management
 ```bash
 resolvectl flush-caches                  # Clear DNS cache / Очистить DNS-кэш
 resolvectl reset-statistics              # Reset statistics counters / Сбросить счётчики статистики
@@ -50,7 +50,7 @@ resolvectl reset-server-features         # Forget probed DNS server features / �
 
 ## DNS Queries
 
-### Basic Queries / Базовые запросы
+### Basic Queries
 ```bash
 resolvectl query <DOMAIN>                # Resolve A/AAAA records / Разрешить A/AAAA для домена
 resolvectl query -t <TYPE> <DOMAIN>      # Query specific RR type / Запросить конкретный тип записи
@@ -58,14 +58,14 @@ resolvectl query @<DNS_SERVER> <DOMAIN>  # Query via specific DNS server / Ре�
 resolvectl query --search <HOSTNAME>     # Use search domains for short name / Использовать поисковые домены для короткого имени
 ```
 
-### Query Options / Опции запросов
+### Query Options
 ```bash
 resolvectl -4 query <DOMAIN>             # IPv4-only resolution / Разрешать только по IPv4
 resolvectl -6 query <DOMAIN>             # IPv6-only resolution / Разрешать только по IPv6
 resolvectl -n query <DOMAIN>             # No-pager output / Вывод без пейджера
 ```
 
-### Record Type Examples / Примеры типов записей
+### Record Type Examples
 ```bash
 resolvectl query -t MX <DOMAIN>          # Query MX records / Запросить MX записи
 resolvectl query -t TXT <DOMAIN>         # Query TXT records / Запросить TXT записи
@@ -74,25 +74,25 @@ resolvectl query -t SRV <SERVICE>        # Query SRV records / Запросит�
 resolvectl query --class=CH -t TXT <DOMAIN>  # Custom class/type query / Кастомный класс/тип запроса
 ```
 
-### Special Queries / Специальные запросы
+### Special Queries
 ```bash
 resolvectl service <SERVICE_NAME>        # Resolve DNS-SD (SRV+TXT) / Разрешить сервис DNS-SD
 resolvectl tlsa <TLS_SERVICE>            # Query TLSA (DANE) records / Запросить записи TLSA
 resolvectl openpgp <DOMAIN>              # Query OPENPGPKEY record / Запросить OPENPGPKEY
 ```
 
-### Examples / Примеры
+### Examples
 ```bash
-# Query MX records / Запросить MX записи
+# Query MX records
 resolvectl query -t MX example.com
 
-# Use Cloudflare DNS / Использовать Cloudflare DNS
+# Use Cloudflare DNS
 resolvectl query @1.1.1.1 example.com
 
-# Query TLSA for HTTPS / Запросить TLSA для HTTPS
+# Query TLSA for HTTPS
 resolvectl tlsa _443._tcp.example.com
 
-# Discover HTTPS service / Обнаружить HTTPS сервис
+# Discover HTTPS service
 resolvectl service _https._tcp.example.com
 ```
 
@@ -107,7 +107,7 @@ resolvectl dns <INTERFACE> <DNS1> <DNS2>  # Set DNS servers for link / Уста�
 resolvectl dns <INTERFACE> ""            # Clear DNS servers / Очистить DNS-серверы
 ```
 
-### Search Domains / Поисковые домены
+### Search Domains
 ```bash
 resolvectl domain                        # List per-link search domains / Показать поисковые домены по интерфейсам
 resolvectl domain <INTERFACE> <DOMAIN>   # Set search domain / Задать поисковый домен
@@ -115,13 +115,13 @@ resolvectl domain <INTERFACE> ~<DOMAIN>  # Set routing-only domain / Задат�
 resolvectl domain <INTERFACE> <DOMAIN> ~<INTERNAL>  # Set search & routing domains / Задать поисковые и маршрутизируемые домены
 ```
 
-### Default Route / Маршрут по умолчанию
+### Default Route
 ```bash
 resolvectl default-route <INTERFACE> yes  # Mark link as default DNS route / Пометить интерфейс как дефолтный DNS-маршрут
 resolvectl default-route <INTERFACE> no   # Unmark as default / Снять отметку дефолтного
 ```
 
-### Revert Settings / Сброс настроек
+### Revert Settings
 ```bash
 resolvectl revert                        # Drop all runtime link settings / Сбросить все временные настройки интерфейсов
 resolvectl revert <INTERFACE>            # Revert single link / Сбросить настройки для одного интерфейса
@@ -132,14 +132,14 @@ resolvectl reload                        # Reload resolved configuration / Пе�
 
 ## DNSSEC & DNS-over-TLS
 
-### DNSSEC Configuration / Настройка DNSSEC
+### DNSSEC Configuration
 ```bash
 resolvectl dnssec <INTERFACE> yes        # Enable DNSSEC validation on link / Включить DNSSEC-валидацию для интерфейса
 resolvectl dnssec <INTERFACE> allow-downgrade  # Opportunistic DNSSEC / Оппортунистический режим DNSSEC
 resolvectl dnssec <INTERFACE> no         # Disable DNSSEC on link / Отключить DNSSEC для интерфейса
 ```
 
-### Negative Trust Anchors / Отрицательные якоря доверия
+### Negative Trust Anchors
 ```bash
 resolvectl nta list                      # List Negative Trust Anchors / Показать список NTA
 resolvectl nta add <DOMAIN>              # Add NTA (skip DNSSEC for zone) / Добавить NTA (пропуск DNSSEC для зоны)
@@ -157,19 +157,19 @@ resolvectl dnsovertls <INTERFACE> no     # Disable DNS-over-TLS / Отключи
 
 ## mDNS & LLMNR
 
-### LLMNR Configuration / Настройка LLMNR
+### LLMNR Configuration
 ```bash
 resolvectl llmnr <INTERFACE> yes         # Enable LLMNR on link / Включить LLMNR на интерфейсе
 resolvectl llmnr <INTERFACE> no          # Disable LLMNR on link / Выключить LLMNR на интерфейсе
 ```
 
-### Multicast DNS / Многоадресный DNS
+### Multicast DNS
 ```bash
 resolvectl mdns <INTERFACE> yes          # Enable Multicast DNS on link / Включить mDNS на интерфейсе
 resolvectl mdns <INTERFACE> no           # Disable Multicast DNS on link / Выключить mDNS на интерфейсе
 ```
 
-### Local Network Queries / Запросы локальной сети
+### Local Network Queries
 ```bash
 resolvectl query <HOSTNAME>.local        # Test mDNS/LLMNR host / Проверить резолвинг локального имени через mDNS/LLMNR
 resolvectl query _workstation._tcp.local  # Discover LAN workstations / Обнаружить рабочие станции в локальной сети
@@ -180,7 +180,7 @@ resolvectl service _workstation._tcp.local  # Discover LAN services / Обнар
 
 ## Service Management
 
-### systemd Service / Сервис systemd
+### systemd Service
 ```bash
 systemctl status systemd-resolved        # Check resolver service state / Проверить состояние службы резолвера
 sudo systemctl restart systemd-resolved  # Restart resolver service / Перезапустить службу резолвера
@@ -188,14 +188,14 @@ sudo systemctl enable systemd-resolved   # Enable on boot / Включить п�
 sudo systemctl disable systemd-resolved  # Disable on boot / Отключить при загрузке
 ```
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 ```bash
 sudoedit /etc/systemd/resolved.conf     # Edit persistent settings / Редактировать постоянные настройки resolved
 sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf  # Use resolved-managed resolv.conf / Подключить управляемый resolved resolv.conf
 sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf  # Use stub resolver / Использовать заглушку резолвера
 ```
 
-### Static Hosts / Статические хосты
+### Static Hosts
 ```bash
 resolvectl hosts                         # Show static hosts in memory / Показать загруженные статические записи hosts
 ```
@@ -204,79 +204,79 @@ resolvectl hosts                         # Show static hosts in memory / Пок�
 
 ## Real-World Examples
 
-### Configure Custom DNS / Настроить пользовательский DNS
+### Configure Custom DNS
 ```bash
-# Set Cloudflare DNS for eth0 / Установить Cloudflare DNS для eth0
+# Set Cloudflare DNS for eth0
 sudo resolvectl dns eth0 1.1.1.1 1.0.0.1
 
-# Set Google DNS for wlan0 / Установить Google DNS для wlan0
+# Set Google DNS for wlan0
 sudo resolvectl dns wlan0 8.8.8.8 8.8.4.4
 
-# Set Quad9 DNS for eth0 / Установить Quad9 DNS для eth0
+# Set Quad9 DNS for eth0
 sudo resolvectl dns eth0 9.9.9.9 149.112.112.112
 ```
 
-### VPN Split DNS / Разделённый DNS для VPN
+### VPN Split DNS
 ```bash
-# Route specific domain through VPN / Маршрутизировать конкретный домен через VPN
+# Route specific domain through VPN
 sudo resolvectl dns tun0 <VPN_DNS>
 sudo resolvectl domain tun0 ~<INTERNAL_DOMAIN>
 
-# Example: corporate VPN / Пример: корпоративный VPN
+# Example: corporate VPN
 sudo resolvectl dns tun0 10.0.0.1
 sudo resolvectl domain tun0 ~corp.example.com
 ```
 
-### Enable DNSSEC / Включить DNSSEC
+### Enable DNSSEC
 ```bash
-# Enable DNSSEC validation / Включить валидацию DNSSEC
+# Enable DNSSEC validation
 sudo resolvectl dnssec eth0 yes
 
-# Enable opportunistic DNSSEC / Включить оппортунистический DNSSEC
+# Enable opportunistic DNSSEC
 sudo resolvectl dnssec eth0 allow-downgrade
 
-# Add negative trust anchor for local domain / Добавить NTA для локального домена
+# Add negative trust anchor for local domain
 sudo resolvectl nta add example.local
 ```
 
-### DNS-over-TLS Setup / Настройка DNS-over-TLS
+### DNS-over-TLS Setup
 ```bash
-# Enable opportunistic DoT / Включить оппортунистический DoT
+# Enable opportunistic DoT
 sudo resolvectl dnsovertls eth0 opportunistic
 
-# Force DoT / Принудительный DoT
+# Force DoT
 sudo resolvectl dnsovertls eth0 yes
 
-# Configure Cloudflare DoT / Настроить Cloudflare DoT
+# Configure Cloudflare DoT
 sudoedit /etc/systemd/resolved.conf
 # Add: DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com
 sudo systemctl restart systemd-resolved
 ```
 
-### Troubleshooting DNS / Устранение проблем DNS
+### Troubleshooting DNS
 ```bash
-# Check current DNS status / Проверить текущий статус DNS
+# Check current DNS status
 resolvectl status | grep -A4 'Link'
 
-# Flush DNS cache / Очистить DNS-кэш
+# Flush DNS cache
 sudo resolvectl flush-caches
 
-# Test resolution / Тестировать разрешение
+# Test resolution
 resolvectl query example.com
 
-# Check which DNS server is used / Проверить какой DNS-сервер используется
+# Check which DNS server is used
 resolvectl query -t A example.com
 ```
 
-### Local Network Discovery / Обнаружение локальной сети
+### Local Network Discovery
 ```bash
-# Enable mDNS for local discovery / Включить mDNS для локального обнаружения
+# Enable mDNS for local discovery
 sudo resolvectl mdns eth0 yes
 
-# Query local host / Запросить локальный хост
+# Query local host
 resolvectl query myhost.local
 
-# Discover printers / Обнаружить принтеры
+# Discover printers
 resolvectl query _ipp._tcp.local
 ```
 
@@ -284,7 +284,7 @@ resolvectl query _ipp._tcp.local
 
 ## Reference Tables
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File | Description (EN / RU) |
 | :--- | :--- |
@@ -293,7 +293,7 @@ resolvectl query _ipp._tcp.local
 | `/run/systemd/resolve/stub-resolv.conf` | Stub resolver / Заглушка резолвера |
 | `/etc/resolv.conf` | System resolver config / Системная конфигурация резолвера |
 
-### Common DNS Servers / Распространённые DNS-серверы
+### Common DNS Servers
 
 | Provider | Primary | Secondary |
 | :--- | :--- | :--- |

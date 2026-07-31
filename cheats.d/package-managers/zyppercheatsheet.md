@@ -11,12 +11,12 @@ tags:
 
 ## Table of Contents
 - [Description](#Description)
-- [Configuration](#️%20Configuration%20/%20Конфигурация)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Configuration](#️%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 - [Comparison: Update vs Dup](#Comparison:%20Update%20vs%20Dup)
-- [Security](#Security%20/%20Безопасность)
+- [Security](#Security)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -34,13 +34,13 @@ tags:
 
 ---
 
-## ⚙️ Configuration / Конфигурация
+## ⚙️ Configuration
 
-### Main Configuration Files / Основные файлы конфигурации
+### Main Configuration Files
 `/etc/zypp/zypp.conf`
 `/etc/zypp/repos.d/*.repo`
 
-### Repository Management / Управление репозиториями
+### Repository Management
 ```bash
 sudo zypper repos (lr)                        # List repositories / Список репозиториев
 sudo zypper addrepo <URL> <ALIAS>             # Add repository / Добавить репозиторий
@@ -52,9 +52,9 @@ sudo zypper refresh (ref)                     # Refresh metadata / Обнови�
 
 ---
 
-## 🛠 Core Management / Основное управление
+## 🛠 Core Management
 
-### Update & Dist-Upgrade / Обновление
+### Update & Dist-Upgrade
 ```bash
 sudo zypper update (up)                       # Update installed packages / Обновить установленные пакеты
 sudo zypper dist-upgrade (dup)                # Full distribution upgrade / Полное обновление дистрибутива
@@ -62,7 +62,7 @@ sudo zypper patch                             # Install needed patches / Уст�
 sudo zypper list-patches (lp)                 # List needed patches / Список необходимых патчей
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo zypper install <PACKAGE> (in)            # Install package / Установить пакет
 sudo zypper install <PKG1> <PKG2>             # Install multiple / Установить несколько
@@ -71,7 +71,7 @@ sudo zypper remove --clean-deps <PACKAGE>     # Remove with dependencies / Уд�
 sudo zypper verify (ve)                       # Verify dependencies / Проверить зависимости
 ```
 
-### Search & Info / Поиск и информация
+### Search & Info
 ```bash
 zypper search <KEYWORD> (se)                  # Search packages / Поиск пакетов
 zypper info <PACKAGE> (if)                    # Show package details / Показать детали пакета
@@ -79,7 +79,7 @@ zypper search --installed-only                # List installed packages / Спи
 zypper search --provides <FILE>               # Find package owning file / Найти пакет, владеющий файлом
 ```
 
-### Patterns / Шаблоны
+### Patterns
 Patterns are groups of packages (e.g., "Lamp Server", "KDE Desktop"). / Шаблоны — это группы пакетов.
 
 ```bash
@@ -89,9 +89,9 @@ sudo zypper install -t pattern <PATTERN>      # Install pattern / Установ
 
 ---
 
-## 🔧 Sysadmin Operations / Операции системного администратора
+## 🔧 Sysadmin Operations
 
-### Clean & Locks / Очистка и блокировки
+### Clean & Locks
 ```bash
 sudo zypper clean (cc)                        # Clean local caches / Очистить локальные кэши
 sudo zypper addlock <PACKAGE> (al)            # Lock package (prevent changes) / Заблокировать пакет
@@ -99,7 +99,7 @@ sudo zypper removelock <PACKAGE> (rl)         # Remove lock / Снять бло�
 sudo zypper locks (ll)                        # List active locks / Список активных блокировок
 ```
 
-### Logs / Логи
+### Logs
 - **History Log:** `/var/log/zypp/history` - High-level history.
 - **Zypper Log:** `/var/log/zypper.log` - Detailed debugging log.
 
@@ -107,7 +107,7 @@ sudo zypper locks (ll)                        # List active locks / Список
 tail -f /var/log/zypp/history                 # Monitor package history / Мониторинг истории пакетов
 ```
 
-### Services (Snapper Integration) / Снапшоты (Интеграция Snapper)
+### Services (Snapper Integration)
 OpenSUSE automatically creates Btrfs snapshots before updates. / OpenSUSE автоматически создает снапшоты Btrfs перед обновлениями.
 
 ```bash
@@ -118,22 +118,22 @@ sudo snapper rollback <ID>                    # Rollback system / Откатит
 
 ---
 
-## 🚨 Troubleshooting / Устранение неполадок
+## 🚨 Troubleshooting
 
-### Repository Issues / Проблемы с репозиториями
+### Repository Issues
 If refresh fails or GPG checks fail:
 ```bash
 sudo zypper clean --all
 sudo zypper refresh --force                   # Force refresh / Принудительное обновление
 ```
 
-### Dependency Hell / Проблемы с зависимостями
+### Dependency Hell
 Zypper is interactive. If there is a conflict, it asks for a solution number. / Zypper интерактивен. Если есть конфликт, он просит выбрать номер решения.
 1. Deinstall conflicting item / Удалить конфликтующий элемент
 2. Keep obsolete item / Оставить устаревший элемент
 3. Breaking dependency / Нарушить зависимость (Not recommended / Не рекомендуется)
 
-### Check System Integrity / Проверка целостности системы
+### Check System Integrity
 ```bash
 sudo zypper verify                            # Check for broken dependencies / Проверка сломанных зависимостей
 sudo rpm -Va                                  # Verify all installed files / Проверка всех установленных файлов
@@ -151,9 +151,9 @@ sudo rpm -Va                                  # Verify all installed files / П�
 
 ---
 
-## 🔒 Security / Безопасность
+## 🔒 Security
 
-### Security Patches / Патчи безопасности
+### Security Patches
 Zypper separates "patches" from "updates". / Zypper разделяет "патчи" и "обновления".
 
 ```bash

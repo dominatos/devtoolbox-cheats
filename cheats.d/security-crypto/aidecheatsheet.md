@@ -18,7 +18,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -32,7 +32,7 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install AIDE / Установка AIDE
+### Install AIDE
 
 ```bash
 # RHEL/CentOS/AlmaLinux
@@ -45,28 +45,28 @@ apt install aide aide-common
 zypper install aide
 ```
 
-### Main Configuration File / Основной конфигурационный файл
+### Main Configuration File
 
 `/etc/aide.conf` (RHEL) or `/etc/aide/aide.conf` (Debian)
 
 ```ini
-# Database locations / Расположение баз данных
+# Database locations
 database_in=file:/var/lib/aide/aide.db.gz
 database_out=file:/var/lib/aide/aide.db.new.gz
 database_new=file:/var/lib/aide/aide.db.new.gz
 
-# Gzip compression level / Уровень сжатия gzip
+# Gzip compression level
 gzip_dbout=yes
 
-# Report settings / Настройки отчётов
+# Report settings
 report_url=file:/var/log/aide/aide.log
 report_url=stdout
 
-# Log verbosity (default: 5) / Уровень детализации логов
+# Log verbosity (default: 5)
 verbose=5
 ```
 
-### AIDE Check Attributes / Атрибуты проверки AIDE
+### AIDE Check Attributes
 
 | Attribute | Description / Описание |
 |-----------|------------------------|
@@ -88,46 +88,46 @@ verbose=5
 | `selinux` | SELinux context / Контекст SELinux |
 | `xattrs` | Extended attributes / Расширенные атрибуты |
 
-### Predefined Groups / Предопределённые группы
+### Predefined Groups
 
 ```ini
-# Common predefined attribute groups / Часто используемые группы атрибутов
-# NORMAL: check everything except access time / NORMAL: проверять всё кроме времени доступа
+# Common predefined attribute groups
+# NORMAL: check everything except access time / NORMAL:
 NORMAL = p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256
 
-# For log files (only check growing) / Для лог-файлов (только проверка роста)
+# For log files (only check growing)
 LOG = p+u+g+i+n+S
 
-# For data files (full check) / Для файлов данных (полная проверка)
+# For data files (full check)
 DATAONLY = p+n+u+g+s+acl+selinux+xattrs+sha256
 
-# Permissions only / Только права доступа
+# Permissions only
 PERMS = p+u+g+acl+selinux+xattrs
 ```
 
-### Rule Examples / Примеры правил
+### Rule Examples
 
 `/etc/aide.conf`
 
 ```ini
-# Monitor critical system directories / Мониторинг критических системных каталогов
+# Monitor critical system directories
 /etc    NORMAL
 /boot   NORMAL
 /usr/bin NORMAL
 /usr/sbin NORMAL
 /usr/lib NORMAL
 
-# Monitor config files strictly / Строгий мониторинг конфигов
+# Monitor config files strictly
 /etc/passwd NORMAL
 /etc/shadow NORMAL
 /etc/group  NORMAL
 /etc/sudoers NORMAL
 /etc/ssh/sshd_config NORMAL
 
-# Log files (only track growth) / Лог-файлы (только отслеживать рост)
+# Log files (only track growth)
 /var/log LOG
 
-# Exclude directories / Исключить каталоги
+# Exclude directories
 !/var/log/journal
 !/var/cache
 !/tmp
@@ -142,36 +142,36 @@ PERMS = p+u+g+acl+selinux+xattrs
 
 ## 2. Core Management
 
-### Initialize Database / Инициализация базы данных
+### Initialize Database
 
 > [!IMPORTANT]
 > Initialize AIDE on a known-clean system. The initial database becomes your trusted baseline. / Инициализируйте AIDE на заведомо чистой системе. Начальная БД станет вашим доверенным эталоном.
 
 ```bash
-# Initialize AIDE database / Инициализировать базу данных AIDE
+# Initialize AIDE database
 aide --init
 
-# On Debian/Ubuntu (aideinit wrapper) / На Debian/Ubuntu (обёртка aideinit)
+# On Debian/Ubuntu (aideinit wrapper)
 aideinit                  # Interactive init / Интерактивная инициализация
 aideinit -y -f            # Force reinit, auto yes / Принудительная переинициализация, без вопросов
 
-# Move new database to active position / Переместить новую БД в активную позицию
+# Move new database to active position
 cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 ```
 
-### Run Integrity Check / Запуск проверки целостности
+### Run Integrity Check
 
 ```bash
-# Run check / Запустить проверку
+# Run check
 aide --check
 
-# Check with explicit config (Debian path) / Проверка с явным конфигом (Debian)
+# Check with explicit config (Debian path)
 aide -C -c /etc/aide/aide.conf
 
-# Check with detailed output / Проверка с подробным выводом
+# Check with detailed output
 aide --check --verbose=20
 
-# Check specific config (RHEL path) / Проверка с конкретным конфигом (RHEL)
+# Check specific config (RHEL path)
 aide --check --config=/etc/aide.conf
 ```
 
@@ -186,23 +186,23 @@ Summary:
   Changed entries:		5
 ```
 
-### Update Database / Обновление базы данных
+### Update Database
 
 > [!WARNING]
 > Only update the database after verifying that all detected changes are legitimate. / Обновляйте базу данных только после проверки легитимности всех обнаруженных изменений.
 
 ```bash
-# Update database (creates new DB with current state) / Обновить БД
+# Update database (creates new DB with current state)
 aide --update
 
-# Replace old database with updated one / Заменить старую БД обновлённой
+# Replace old database with updated one
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 ```
 
-### Compare Two Databases / Сравнение двух баз данных
+### Compare Two Databases
 
 ```bash
-# Compare old and new databases / Сравнить старую и новую БД
+# Compare old and new databases
 aide --compare
 ```
 
@@ -210,13 +210,13 @@ aide --compare
 
 ## 3. Sysadmin Operations
 
-### Automated Daily Check (Cron) / Автоматическая ежедневная проверка (Cron)
+### Automated Daily Check (Cron)
 
 `/etc/cron.daily/aide-check` (make executable)
 
 ```bash
 #!/bin/bash
-# Daily AIDE integrity check / Ежедневная проверка целостности AIDE
+# Daily AIDE integrity check
 LOGFILE="/var/log/aide/aide-check-$(date +%F).log"
 MAILTO="root"
 
@@ -232,7 +232,7 @@ fi
 chmod +x /etc/cron.daily/aide-check
 ```
 
-### Systemd Timer Alternative / Альтернатива через systemd timer
+### Systemd Timer Alternative
 
 `/etc/systemd/system/aide-check.service`
 
@@ -268,7 +268,7 @@ systemctl enable --now aide-check.timer  # Enable timer / Включить та�
 systemctl list-timers aide-check*        # Verify timer / Проверить таймер
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description |
 |------|-------------|
@@ -283,24 +283,24 @@ systemctl list-timers aide-check*        # Verify timer / Проверить т�
 
 ## 4. Security
 
-### Best Practices / Лучшие практики
+### Best Practices
 
 > [!CAUTION]
 > Store the AIDE database on read-only media or a remote secure location. If an attacker can modify the AIDE database, the integrity check becomes useless. / Храните БД AIDE на носителе только для чтения или в удалённом безопасном месте.
 
 ```bash
-# Store database on read-only USB or remote / Хранить БД на USB или удалённо
+# Store database on read-only USB or remote
 scp /var/lib/aide/aide.db.gz <USER>@<SECURE_HOST>:/backup/aide/
 
-# Check with remote database / Проверка с удалённой БД
+# Check with remote database
 scp <USER>@<SECURE_HOST>:/backup/aide/aide.db.gz /tmp/aide.db.gz
 aide --check --config=/etc/aide.conf --before="database_in=file:/tmp/aide.db.gz"
 ```
 
-### Exclude Patterns for Noisy Directories / Исключения для шумных каталогов
+### Exclude Patterns for Noisy Directories
 
 ```ini
-# /etc/aide.conf - Exclude dynamic content / Исключения для динамического контента
+# /etc/aide.conf - Exclude dynamic content
 !/var/log/journal
 !/var/cache
 !/var/tmp
@@ -318,28 +318,28 @@ aide --check --config=/etc/aide.conf --before="database_in=file:/tmp/aide.db.gz"
 
 ## 5. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Too Many False Positives / Слишком много ложных срабатываний
+#### 1. Too Many False Positives
 
 ```bash
-# Review what's changing / Проверить что меняется
+# Review what's changing
 aide --check 2>&1 | grep -E "^(changed|added|removed):"
 
-# Adjust rules to exclude noisy paths / Настроить правила для исключения шумных путей
-# Add exclusions to /etc/aide.conf / Добавить исключения в aide.conf
+# Adjust rules to exclude noisy paths
+# Add exclusions to /etc/aide.conf
 ```
 
-#### 2. Database Initialization Takes Too Long / Инициализация БД занимает слишком долго
+#### 2. Database Initialization Takes Too Long
 
 ```bash
-# Check what directories are being scanned / Проверить какие каталоги сканируются
+# Check what directories are being scanned
 aide --init --verbose=20 2>&1 | tail -f
 
-# Reduce scope by excluding large dirs / Уменьшить область, исключив большие каталоги
+# Reduce scope by excluding large dirs
 ```
 
-#### 3. AIDE Returns Exit Codes / Коды возврата AIDE
+#### 3. AIDE Returns Exit Codes
 
 | Exit Code | Description / Описание |
 |-----------|------------------------|

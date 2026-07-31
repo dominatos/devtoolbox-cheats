@@ -11,12 +11,12 @@ tags:
 
 ## Table of Contents
 - [Description](#Description)
-- [Configuration](#️%20Configuration%20/%20Конфигурация)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Configuration](#️%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 - [Comparison: DNF vs YUM](#Comparison:%20DNF%20vs%20YUM)
-- [Security](#Security%20/%20Безопасность)
+- [Security](#Security)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -34,20 +34,20 @@ tags:
 
 ---
 
-## ⚙️ Configuration / Конфигурация
+## ⚙️ Configuration
 
-### Main Configuration Files / Основные файлы конфигурации
+### Main Configuration Files
 `/etc/dnf/dnf.conf`
 `/etc/yum.repos.d/*.repo`
 
-### Add Repository / Добавить репозиторий
+### Add Repository
 ```bash
 sudo dnf config-manager --add-repo <URL>      # Add repository / Добавить репозиторий
 sudo dnf config-manager --set-enabled <REPO_ID> # Enable repository / Включить репозиторий
 sudo dnf config-manager --set-disabled <REPO_ID> # Disable repository / Отключить репозиторий
 ```
 
-### Proxy Configuration / Настройка прокси
+### Proxy Configuration
 `/etc/dnf/dnf.conf`
 ```ini
 proxy=http://<HOST>:<PORT>
@@ -57,9 +57,9 @@ proxy_password=<PASSWORD>
 
 ---
 
-## 🛠 Core Management / Основное управление
+## 🛠 Core Management
 
-### Update & Upgrade / Обновление
+### Update & Upgrade
 ```bash
 sudo dnf check-update                         # Check for updates / Проверить наличие обновлений
 sudo dnf upgrade                              # Upgrade packages / Обновить пакеты
@@ -67,7 +67,7 @@ sudo dnf upgrade <PACKAGE>                    # Update specific package / Обн
 sudo dnf upgrade --refresh                    # Force metadata refresh / Принудительное обновление метаданных
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo dnf install <PACKAGE>                    # Install package / Установить пакет
 sudo dnf install <PKG1> <PKG2>                # Install multiple / Установить несколько
@@ -78,7 +78,7 @@ sudo dnf remove <PACKAGE>                     # Remove package / Удалить 
 sudo dnf autoremove                           # Remove unused dependencies / Удалить неиспользуемые зависимости
 ```
 
-### Search & Info / Поиск и информация
+### Search & Info
 ```bash
 dnf search <KEYWORD>                          # Search packages / Поиск пакетов
 dnf info <PACKAGE>                            # Show package details / Показать детали пакета
@@ -88,7 +88,7 @@ dnf repoquery --list <PACKAGE>                # List files in package / Спис
 dnf provides <FILE_PATH>                      # Find package owning file / Найти пакет, владеющий файлом
 ```
 
-### Groups / Группы
+### Groups
 Install collections of software (e.g., "Server with GUI", "Development Tools"). / Установка коллекций ПО.
 
 ```bash
@@ -100,16 +100,16 @@ sudo dnf group remove "<GROUP_NAME>"          # Remove group / Удалить г
 
 ---
 
-## 🔧 Sysadmin Operations / Операции системного администратора
+## 🔧 Sysadmin Operations
 
-### Clean & Maintenance / Очистка и обслуживание
+### Clean & Maintenance
 ```bash
 sudo dnf clean all                            # Remove cached data / Удалить кэшированные данные
 sudo dnf clean dbcache                        # Clean metadata / Очистить метаданные
 sudo dnf makecache                            # Update metadata cache / Обновить кэш метаданных
 ```
 
-### History & Undo / История и откат
+### History & Undo
 > [!IMPORTANT]
 > DNF keeps a history of transactions, allowing you to undo or redo changes. / DNF хранит историю транзакций, позволяя отменять или повторять изменения.
 
@@ -120,7 +120,7 @@ sudo dnf history undo <ID>                    # Undo transaction <ID> / Отме
 sudo dnf history rollback <ID>                # Rollback to before transaction <ID> / Откатить до транзакции <ID>
 ```
 
-### Modules / Модули
+### Modules
 Manage versions of applications (streams). / Управление версиями приложений (потоками).
 
 ```bash
@@ -131,7 +131,7 @@ sudo dnf module install <PACKAGE>:<STREAM>    # Install stream / Установ�
 sudo dnf module reset <PACKAGE>               # Reset module stream / Сбросить поток модуля
 ```
 
-### Logs / Логи
+### Logs
 - **DNF Log:** `/var/log/dnf.log` - Main log file.
 - **RPM Log:** `/var/log/dnf.rpm.log` - RPM transaction log.
 
@@ -141,9 +141,9 @@ tail -f /var/log/dnf.log                      # Monitor DNF activity / Мони�
 
 ---
 
-## 🚨 Troubleshooting / Устранение неполадок
+## 🚨 Troubleshooting
 
-### Metadata Issues / Проблемы с метаданными
+### Metadata Issues
 If you encounter synchronization errors:
 ```bash
 sudo dnf clean all
@@ -151,7 +151,7 @@ sudo rm -rf /var/cache/dnf
 sudo dnf makecache
 ```
 
-### RPM Database Recovery / Восстановление базы RPM
+### RPM Database Recovery
 > [!CAUTION]
 > Rebuilding the RPM database carries risks. Backup `/var/lib/rpm` first. / Перестройка базы RPM несет риски. Сделайте копию `/var/lib/rpm`.
 
@@ -159,7 +159,7 @@ sudo dnf makecache
 sudo rpm --rebuilddb                          # Rebuild database / Перестроить базу данных
 ```
 
-### Broken Dependencies / Сломанные зависимости
+### Broken Dependencies
 ```bash
 sudo dnf distro-sync                          # Synchronize packages to latest versions / Синхронизировать пакеты до последних версий
 sudo package-cleanup --problems               # List dependency problems / Список проблем с зависимостями
@@ -179,9 +179,9 @@ sudo package-cleanup --orphans                # List orphan packages / Спис�
 
 ---
 
-## 🔒 Security / Безопасность
+## 🔒 Security
 
-### GPG Keys / GPG Ключи
+### GPG Keys / GPG
 Manage keys used to verify packages. / Управление ключами для проверки пакетов.
 
 ```bash

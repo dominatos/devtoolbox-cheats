@@ -30,7 +30,7 @@ tags:
 
 ## Basic Viewing
 
-### Quick Access / Быстрый доступ
+### Quick Access
 
 ```bash
 journalctl                                # All logs / Все логи
@@ -39,14 +39,14 @@ journalctl -f                             # Follow (tail -f) / Следить в
 journalctl -n 100                         # Last 100 lines / Последние 100 строк
 ```
 
-### Reverse Order / Обратный порядок
+### Reverse Order
 
 ```bash
 journalctl -r                             # Newest first / Новые сначала
 journalctl -r -n 50                       # Last 50, newest first / Последние 50, новые сначала
 ```
 
-### Boot Logs / Логи загрузки
+### Boot Logs
 
 ```bash
 journalctl -b                             # Current boot / Текущая загрузка
@@ -59,7 +59,7 @@ journalctl --list-boots                   # List all boots / Список все
 
 ## Time Filters
 
-### Since / Until / С / До
+### Since / Until
 
 ```bash
 journalctl --since "1 hour ago"           # Last hour / Последний час
@@ -68,7 +68,7 @@ journalctl --since today                  # Since midnight / С полуночи
 journalctl --since yesterday              # Since yesterday / С вчера
 ```
 
-### Specific Date/Time / Конкретная дата/время
+### Specific Date/Time
 
 ```bash
 journalctl --since "2025-02-01"           # Since date / С даты
@@ -76,7 +76,7 @@ journalctl --since "2025-02-01 09:00:00"  # With time / С временем
 journalctl --since "2025-02-01" --until "2025-02-05"  # Date range / Диапазон дат
 ```
 
-### Relative Time / Относительное время
+### Relative Time
 
 ```bash
 journalctl --since "30 min ago"           # Last 30 minutes / Последние 30 минут
@@ -88,7 +88,7 @@ journalctl --since "-1 day"               # Alternative syntax / Альтерн�
 
 ## Unit Filters
 
-### By Service / По сервису
+### By Service
 
 ```bash
 journalctl -u nginx                       # Nginx logs / Логи nginx
@@ -97,14 +97,14 @@ journalctl -u nginx -u php-fpm            # Multiple units / Несколько 
 journalctl -u nginx -f                    # Follow nginx logs / Следить за nginx
 ```
 
-### By Unit Pattern / По шаблону юнита
+### By Unit Pattern
 
 ```bash
 journalctl -u 'docker*'                   # All docker units / Все docker юниты
 journalctl -u 'mysql*'                    # All mysql units / Все mysql юниты
 ```
 
-### Combine with Time / Комбинировать со временем
+### Combine with Time
 
 ```bash
 journalctl -u nginx --since "1 hour ago"  # Nginx last hour / Nginx за последний час
@@ -115,7 +115,7 @@ journalctl -u nginx -f --since "1 hour ago"  # Follow from 1 hour / Следит
 
 ## Priority & Field Filters
 
-### By Priority / По приоритету
+### By Priority
 
 ```bash
 journalctl -p err                         # Errors and above / Ошибки и выше
@@ -124,7 +124,7 @@ journalctl -p warning..emerg              # Range warning to emergency / От wa
 journalctl -p 0..3                        # By number (0=emerg, 7=debug) / По номеру
 ```
 
-### Priority Levels / Уровни приоритета
+### Priority Levels
 
 ```text
 0 = emerg     — System unusable / Система неработоспособна
@@ -137,7 +137,7 @@ journalctl -p 0..3                        # By number (0=emerg, 7=debug) / По 
 7 = debug     — Debug messages / Отладочные сообщения
 ```
 
-### By Field / По полю
+### By Field
 
 ```bash
 journalctl _PID=<PID>                     # By PID / По PID
@@ -147,7 +147,7 @@ journalctl _HOSTNAME=<HOST>               # By hostname / По имени хос
 journalctl _COMM=nginx                    # By command name / По имени команды
 ```
 
-### Combine Filters / Комбинирование фильтров
+### Combine Filters
 
 ```bash
 journalctl -u nginx -p err --since today  # Nginx errors today / Ошибки nginx за сегодня
@@ -158,7 +158,7 @@ journalctl _UID=1000 -p warning           # User warnings / Предупрежд
 
 ## Output Formats
 
-### Standard Formats / Стандартные форматы
+### Standard Formats
 
 ```bash
 journalctl -o short                       # Default format / Формат по умолчанию
@@ -169,7 +169,7 @@ journalctl -o json-pretty                 # Pretty JSON / Читаемый JSON
 journalctl -o cat                         # Message only / Только сообщение
 ```
 
-### Export / Экспорт
+### Export
 
 ```bash
 journalctl -u nginx > nginx.log           # Save to file / Сохранить в файл
@@ -181,13 +181,13 @@ journalctl --no-pager -u nginx            # No pager (for piping) / Без пе�
 
 ## Maintenance
 
-### Disk Usage / Использование диска
+### Disk Usage
 
 ```bash
 journalctl --disk-usage                   # Show journal size / Показать размер журнала
 ```
 
-### Cleanup / Очистка
+### Cleanup
 
 ```bash
 sudo journalctl --vacuum-size=500M        # Keep only 500MB / Оставить только 500MB
@@ -195,16 +195,16 @@ sudo journalctl --vacuum-time=7d          # Keep only 7 days / Оставить 
 sudo journalctl --vacuum-files=5          # Keep only 5 files / Оставить только 5 файлов
 ```
 
-### Persistent Storage / Постоянное хранение
+### Persistent Storage
 
 ```bash
-# Enable persistent journal / Включить постоянный журнал
+# Enable persistent journal
 sudo mkdir -p /var/log/journal
 sudo systemd-tmpfiles --create --prefix /var/log/journal
 sudo systemctl restart systemd-journald
 ```
 
-### Configuration / Конфигурация
+### Configuration
 
 `/etc/systemd/journald.conf`
 
@@ -220,20 +220,20 @@ MaxRetentionSec=1week                     # Max retention / Макс. хране
 
 ## Troubleshooting
 
-### Debug Service Failures / Отладка сбоёв сервисов
+### Debug Service Failures
 
 ```bash
-# Check failed units / Проверить проваленные юниты
+# Check failed units
 systemctl list-units --failed
 
-# Get logs for failed service / Получить логи проваленного сервиса
+# Get logs for failed service
 journalctl -u failed-service.service -xe
 
-# Get logs around failure time / Логи около времени сбоя
+# Get logs around failure time
 journalctl -u myapp --since "10 min ago" -n 100
 ```
 
-### Kernel Messages / Сообщения ядра
+### Kernel Messages
 
 ```bash
 journalctl -k                             # Kernel messages / Сообщения ядра
@@ -241,22 +241,22 @@ journalctl -k -b                          # Kernel since boot / Ядро с за
 journalctl -k -p err                      # Kernel errors / Ошибки ядра
 ```
 
-### Find Specific Events / Поиск конкретных событий
+### Find Specific Events
 
 ```bash
-# SSH login attempts / Попытки входа по SSH
+# SSH login attempts
 journalctl -u sshd --since today | grep "Accepted"
 
-# Failed logins / Неудачные входы
+# Failed logins
 journalctl -u sshd --since today | grep "Failed"
 
-# Out of memory / Нехватка памяти
+# Out of memory
 journalctl -k | grep -i "oom\|out of memory"
 ```
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Use `-u` for service logs, not `grep` in `/var/log`. / Используйте `-u` для логов сервисов.
 - Enable persistent journal for post-reboot debugging. / Включите постоянный журнал для отладки после перезагрузки.

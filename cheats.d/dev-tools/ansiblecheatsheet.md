@@ -20,58 +20,58 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Ad-Hoc Commands](#1.%20Ad-Hoc%20Commands%20/%20Ad-Hoc%20Команды)
-2. [Playbooks](#2.%20Playbooks%20/%20Плейбуки)
+2. [Playbooks](#2.%20Playbooks)
 3. [Ansible Galaxy](#3.%20Ansible%20Galaxy%20/%20Ansible%20Galaxy)
 4. [Ansible Vault](#4.%20Ansible%20Vault%20/%20Ansible%20Vault%20(Шифрование))
-5. [Configuration](#5.%20Configuration%20/%20Конфигурация)
+5. [Configuration](#5.%20Configuration)
 6. [Sysadmin Basics](#Sysadmin%20Basics)
 7. [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 
-## 1. Ad-Hoc Commands / Ad-Hoc Команды
+## 1. Ad-Hoc Commands / Ad-Hoc
 
-### Basic Connectivity / Пинг
+### Basic Connectivity
 ```bash
-# Ping all hosts / Пинг всех хостов
+# Ping all hosts
 ansible all -m ping -i <INVENTORY_FILE>
 ```
 
-### Module Execution / Заполнение модулей
+### Module Execution
 ```bash
-# Shell command / Команда shell
+# Shell command
 ansible all -m shell -a "uptime" -i hosts
 
-# Copy file / Копирование файла
+# Copy file
 ansible web -m copy -a "src=/etc/hosts dest=/tmp/hosts"
 
-# Install package (yum) / Установка пакета (yum)
+# Install package (yum)
 ansible db -m yum -a "name=nc state=present" --become
 ```
 
 ---
 
-## 2. Playbooks / Плейбуки
+## 2. Playbooks
 
-### Running Playbooks / Запуск плейбуков
+### Running Playbooks
 ```bash
-# Run / Запуск
+# Run
 ansible-playbook -i inventory site.yml
 
-# Check mode (Dry Run) / Режим проверки (Dry Run)
+# Check mode (Dry Run)
 ansible-playbook -i inventory site.yml --check
 
-# Limit to specific hosts / Ограничить конкретными хостами
+# Limit to specific hosts
 ansible-playbook -i inventory site.yml --limit web01
 
-# Debug (Verbose) / Отладка (Подробно)
+# Debug (Verbose)
 ansible-playbook site.yml -vvv
 ```
 
-### Example Playbook / Пример плейбука
+### Example Playbook
 ```yaml
 ---
 - name: Install Nginx
@@ -95,31 +95,31 @@ ansible-playbook site.yml -vvv
 ## 3. Ansible Galaxy / Ansible Galaxy
 
 ```bash
-# Install Role / Установить роль
+# Install Role
 ansible-galaxy install geerlingguy.nginx
 
-# Init new role structure / Создать структуру новой роли
+# Init new role structure
 ansible-galaxy init <ROLE_NAME>
 ```
 
 ---
 
-## 4. Ansible Vault / Ansible Vault (Шифрование)
+## 4. Ansible Vault / Ansible Vault
 
 ```bash
-# Encrypt file / Зашифровать файл
+# Encrypt file
 ansible-vault encrypt secrets.yml
 
-# Edit encrypted file / Редактировать зашифрованный файл
+# Edit encrypted file
 ansible-vault edit secrets.yml
 
-# Decrypt file / Расшифровать файл
+# Decrypt file
 ansible-vault decrypt secrets.yml
 
-# Run playbook with vault / Запуск плейбука с vault
+# Run playbook with vault
 ansible-playbook site.yml --ask-vault-pass
 
-# Use vault password file / Использовать файл с паролем vault
+# Use vault password file
 ansible-playbook site.yml --vault-password-file ~/.vault_pass
 ```
 
@@ -129,7 +129,7 @@ ansible-playbook site.yml --vault-password-file ~/.vault_pass
 
 ---
 
-## 5. Configuration / Конфигурация
+## 5. Configuration
 
 `/etc/ansible/ansible.cfg` or `./ansible.cfg`
 
@@ -145,7 +145,7 @@ private_key_file = ~/.ssh/id_rsa
 
 ## Sysadmin Basics
 
-### Default Paths / Стандартные пути
+### Default Paths
 
 | Path | Description (EN / RU) |
 |------|----------------------|
@@ -155,14 +155,14 @@ private_key_file = ~/.ssh/id_rsa
 | `/etc/ansible/hosts` | Default inventory / Инвентарь по умолчанию |
 | `~/.ansible/` | Cache, plugins, roles / Кэш, плагины, роли |
 
-### Default Ports / Стандартные порты
+### Default Ports
 
 | Port | Protocol | Description (EN / RU) |
 |------|----------|----------------------|
 | 22 | SSH | Default connection method / Метод подключения по умолчанию |
 | 5986 | WinRM (HTTPS) | Windows hosts / Хосты Windows |
 
-### Useful Diagnostic Commands / Полезные команды диагностики
+### Useful Diagnostic Commands
 ```bash
 ansible --version                              # Show version / Показать версию
 ansible all -m setup -i hosts                  # Gather facts / Собрать факты
@@ -195,7 +195,7 @@ ansible-config dump --only-changed             # Show changed config / Пока�
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **Ansible:** https://docs.ansible.com/
 - **Ansible Galaxy (Roles):** https://galaxy.ansible.com/

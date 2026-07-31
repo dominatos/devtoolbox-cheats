@@ -28,7 +28,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Timer Basics](#Timer%20Basics)
 2. [Creating Timers](#Creating%20Timers)
@@ -39,7 +39,7 @@ tags:
 
 ## Timer Basics
 
-### List Timers / Список таймеров
+### List Timers
 
 ```bash
 systemctl list-timers                         # List active timers / Список активных таймеров
@@ -47,7 +47,7 @@ systemctl list-timers --all                   # List all timers / Список �
 systemctl list-timers --state=failed          # Failed timers / Неудавшиеся таймеры
 ```
 
-### Timer Status / Статус таймера
+### Timer Status
 
 ```bash
 systemctl status my.timer                     # Show timer status / Показать статус таймера
@@ -60,7 +60,7 @@ journalctl -u my.service                      # Service logs / Логи серв
 
 ## Creating Timers
 
-### Timer Unit File / Файл таймера
+### Timer Unit File
 
 `/etc/systemd/system/my.timer`
 
@@ -77,7 +77,7 @@ RandomizedDelaySec=30min                      # Random delay / Случайна�
 WantedBy=timers.target
 ```
 
-### Service Unit File / Файл сервиса
+### Service Unit File
 
 `/etc/systemd/system/my.service`
 
@@ -92,7 +92,7 @@ User=backup
 Group=backup
 ```
 
-### OnCalendar Formats / Форматы OnCalendar
+### OnCalendar Formats
 
 ```bash
 OnCalendar=hourly                             # Every hour / Каждый час
@@ -106,7 +106,7 @@ OnCalendar=*-01-01 00:00:00                   # New Year / Новый год
 OnCalendar=*-*-01 02:00:00                    # 1st of month at 2 AM / 1-го числа в 2:00
 ```
 
-### Monotonic Timers / Монотонные таймеры
+### Monotonic Timers
 
 ```ini
 OnBootSec=15min                               # 15 min after boot / 15 мин после загрузки
@@ -115,7 +115,7 @@ OnUnitInactiveSec=30min                       # 30 min after last deactivation /
 OnStartupSec=5min                             # 5 min after systemd started / 5 мин после запуска systemd
 ```
 
-### Timer Type Comparison / Сравнение типов таймеров
+### Timer Type Comparison
 
 | Timer Type | Description (EN / RU) | Use Case / Когда использовать |
 | :--- | :--- | :--- |
@@ -128,7 +128,7 @@ OnStartupSec=5min                             # 5 min after systemd started / 5 
 
 ## Management
 
-### Enable & Start / Включить и запустить
+### Enable & Start
 
 ```bash
 sudo systemctl daemon-reload                  # Reload systemd / Перезагрузить systemd
@@ -137,7 +137,7 @@ sudo systemctl start my.timer                 # Start timer / Запустить
 sudo systemctl enable --now my.timer          # Enable and start / Включить и запустить
 ```
 
-### Control / Управление
+### Control
 
 ```bash
 sudo systemctl stop my.timer                  # Stop timer / Остановить таймер
@@ -145,26 +145,26 @@ sudo systemctl disable my.timer               # Disable timer / Отключит
 sudo systemctl restart my.timer               # Restart timer / Перезапустить таймер
 ```
 
-### Trigger Manually / Запустить вручную
+### Trigger Manually
 
 ```bash
 sudo systemctl start my.service               # Run service now / Запустить сервис сейчас
 ```
 
-### Verify Timer Schedule / Проверить расписание таймера
+### Verify Timer Schedule
 
 ```bash
-# Check next run time / Проверить следующий запуск
+# Check next run time
 systemd-analyze calendar '*-*-* 03:00:00'
 
-# Test timer expression / Тестировать выражение таймера
+# Test timer expression
 systemd-analyze calendar 'Mon,Wed,Fri 10:00'
 
-# Show timer next run / Показать следующий запуск таймера
+# Show timer next run
 systemctl list-timers backup.timer
 ```
 
-### Parse Calendar Specs / Разобрать спецификации календаря
+### Parse Calendar Specs
 
 ```bash
 systemd-analyze calendar daily                # Parse 'daily' / Разобрать 'daily'
@@ -176,7 +176,7 @@ systemd-analyze calendar 'Mon *-*-* 10:00'    # Parse expression / Разобр�
 
 ## Real-World Examples
 
-### Daily Backup / Ежедневное резервное копирование
+### Daily Backup
 
 `/etc/systemd/system/backup.timer`
 
@@ -205,12 +205,12 @@ User=backup
 ```
 
 ```bash
-# Enable / Включить
+# Enable
 sudo systemctl daemon-reload
 sudo systemctl enable --now backup.timer
 ```
 
-### Hourly Log Rotation / Ежечасная ротация логов
+### Hourly Log Rotation
 
 `/etc/systemd/system/logrotate.timer`
 
@@ -237,7 +237,7 @@ Type=oneshot
 ExecStart=/usr/sbin/logrotate /etc/logrotate.conf
 ```
 
-### Cleanup Old Files Every Week / Очистка старых файлов раз в неделю
+### Cleanup Old Files Every Week
 
 `/etc/systemd/system/cleanup.timer`
 
@@ -260,7 +260,7 @@ find /tmp -type f -mtime +7 -delete
 find /var/log -name "*.log.gz" -mtime +30 -delete
 ```
 
-### Database Backup Every 6 Hours / Резервное копирование БД каждые 6 часов
+### Database Backup Every 6 Hours
 
 `/etc/systemd/system/db-backup.timer`
 
@@ -289,7 +289,7 @@ User=postgres
 Environment="PGPASSWORD=<PASSWORD>"
 ```
 
-### Monitor Service Every 5 Minutes / Мониторинг сервиса каждые 5 минут
+### Monitor Service Every 5 Minutes
 
 `/etc/systemd/system/monitor.timer`
 
@@ -305,7 +305,7 @@ OnUnitActiveSec=5min
 WantedBy=timers.target
 ```
 
-### Certificate Renewal Daily / Обновление сертификатов ежедневно
+### Certificate Renewal Daily
 
 `/etc/systemd/system/certbot.timer`
 
@@ -336,7 +336,7 @@ ExecStartPost=/bin/systemctl reload nginx
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Use `Persistent=true` to run missed jobs. / Используйте `Persistent=true` для пропущенных задач.
 - Use `RandomizedDelaySec` to spread load. / Используйте `RandomizedDelaySec` для распределения нагрузки.

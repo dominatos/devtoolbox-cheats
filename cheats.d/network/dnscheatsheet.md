@@ -19,16 +19,16 @@ tags:
 - [DIG — DNS Lookup](#DIG%20—%20DNS%20Lookup)
 - [NSLOOKUP — Interactive DNS](#NSLOOKUP%20—%20Interactive%20DNS)
 - [HOST — Simple DNS](#HOST%20—%20Simple%20DNS)
-- [Record Types](#Record%20Types%20/%20Типы%20записей)
-- [Advanced Queries](#Advanced%20Queries%20/%20Продвинутые%20запросы)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Record Types](#Record%20Types)
+- [Advanced Queries](#Advanced%20Queries)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
 
 ---
 
 ## 🔍 DIG — DNS Lookup
 
-### Basic Queries / Базовые запросы
+### Basic Queries
 ```bash
 dig example.com                               # Default A record / A запись по умолчанию
 dig example.com +short                        # Short output / Короткий вывод
@@ -42,7 +42,7 @@ dig example.com CNAME                         # Canonical name / Канонич�
 dig example.com ANY                           # All records / Все типы записей
 ```
 
-### Specific DNS Server / Конкретный DNS сервер
+### Specific DNS Server
 ```bash
 dig @1.1.1.1 example.com                      # Query Cloudflare / Запрос Cloudflare
 dig @8.8.8.8 example.com                      # Query Google DNS / Запрос Google DNS
@@ -50,7 +50,7 @@ dig @208.67.222.222 example.com               # Query OpenDNS / Запрос Ope
 dig @<DNS_SERVER_IP> example.com              # Custom DNS / Пользовательский DNS
 ```
 
-### Query Options / Опции запросов
+### Query Options
 ```bash
 dig example.com +noall +answer                # Only answer section / Только раздел ответа
 dig example.com +trace                        # Full delegation trace / Полная трассировка делегации
@@ -62,13 +62,13 @@ dig example.com +timeout=5                    # Timeout 5s / Таймаут 5с
 dig example.com +tries=3                      # Retry count / Число попыток
 ```
 
-### Reverse DNS / Обратный DNS
+### Reverse DNS
 ```bash
 dig -x 1.2.3.4                                # Reverse lookup / Обратный поиск
 dig -x 1.2.3.4 +short                         # Short reverse / Короткий обратный
 ```
 
-### Batch Queries / Пакетные запросы
+### Batch Queries
 ```bash
 dig example.com MX +short                     # MX records / MX записи
 dig example.com NS +short                     # NS records / NS записи
@@ -79,7 +79,7 @@ dig example.com TXT +short                    # TXT records / TXT записи
 
 ## 🔎 NSLOOKUP — Interactive DNS
 
-### Basic Usage / Базовое использование
+### Basic Usage
 ```bash
 nslookup example.com                          # Default query / Запрос по умолчанию
 nslookup example.com 1.1.1.1                  # Specific DNS / Конкретный DNS
@@ -92,7 +92,7 @@ nslookup -type=SRV _service._tcp.example.com  # SRV record / SRV запись
 nslookup -type=PTR 4.3.2.1.in-addr.arpa       # Reverse DNS / Обратный DNS
 ```
 
-### Interactive Mode / Интерактивный режим
+### Interactive Mode
 ```bash
 nslookup
 > server 8.8.8.8                              # Change DNS server / Сменить DNS сервер
@@ -105,7 +105,7 @@ nslookup
 
 ## 🌐 HOST — Simple DNS
 
-### Basic Queries / Базовые запросы
+### Basic Queries
 ```bash
 host example.com                              # Default A record / A запись по умолчанию
 host -t A example.com                         # A record / A запись
@@ -117,13 +117,13 @@ host -t SOA example.com                       # SOA record / SOA запись
 host -t CNAME www.example.com                 # CNAME record / CNAME запись
 ```
 
-### Reverse Lookup / Обратный поиск
+### Reverse Lookup
 ```bash
 host 1.2.3.4                                  # Reverse DNS / Обратный DNS
 host -t PTR 1.2.3.4                           # PTR query / PTR запрос
 ```
 
-### Specific Server / Конкретный сервер
+### Specific Server
 ```bash
 host example.com 1.1.1.1                      # Query server / Запросить сервер
 host -a example.com                           # All records / Все записи
@@ -132,25 +132,25 @@ host -v example.com                           # Verbose output / Подробн�
 
 ---
 
-## 📋 Record Types / Типы записей
+## 📋 Record Types
 
-### Common Record Types / Распространённые типы
+### Common Record Types
 ```bash
-# A       - IPv4 address / IPv4 адрес
-# AAAA    - IPv6 address / IPv6 адрес
-# MX      - Mail exchanger / Почтовый обменник
-# NS      - Nameserver / DNS сервер
-# TXT     - Text record / Текстовая запись
-# CNAME   - Canonical name / Каноническое имя
-# SOA     - Start of authority / Начало зоны
-# PTR     - Pointer (reverse DNS) / Указатель (обратный DNS)
-# SRV     - Service locator / Локатор сервиса
-# CAA     - Certificate authority authorization / Авторизация центра сертификации
-# DNSKEY  - DNSSEC public key / Публичный ключ DNSSEC
-# DS      - Delegation signer / Делегированный подписант
+# A       - IPv4 address / IPv4
+# AAAA    - IPv6 address / IPv6
+# MX      - Mail exchanger
+# NS      - Nameserver / DNS
+# TXT     - Text record
+# CNAME   - Canonical name
+# SOA     - Start of authority
+# PTR     - Pointer (reverse DNS)
+# SRV     - Service locator
+# CAA     - Certificate authority authorization
+# DNSKEY  - DNSSEC public key
+# DS      - Delegation signer
 ```
 
-### SRV Record Format / Формат SRV записи
+### SRV Record Format
 ```bash
 dig _service._proto.name SRV                  # Generic SRV / Общий SRV
 dig _xmpp-server._tcp.example.com SRV         # XMPP server / XMPP сервер
@@ -160,15 +160,15 @@ dig _kerberos._tcp.example.com SRV            # Kerberos server / Kerberos се�
 
 ---
 
-## 🔬 Advanced Queries / Продвинутые запросы
+## 🔬 Advanced Queries
 
-### Trace Full Delegation / Трассировка полной делегации
+### Trace Full Delegation
 ```bash
 dig +trace example.com                        # Full trace / Полная трассировка
 dig +trace example.com | grep -A2 "example"   # Filter output / Фильтр вывода
 ```
 
-### DNSSEC Validation / Проверка DNSSEC
+### DNSSEC Validation
 ```bash
 dig example.com +dnssec                       # DNSSEC query / DNSSEC запрос
 dig example.com +dnssec +multiline            # Multiline output / Многострочный вывод
@@ -176,19 +176,19 @@ dig DNSKEY example.com                        # DNSSEC keys / DNSSEC ключи
 dig DS example.com                            # DS records / DS записи
 ```
 
-### Zone Transfer (AXFR) / Передача зоны (AXFR)
+### Zone Transfer (AXFR)
 ```bash
 dig @<NS_SERVER> example.com AXFR             # Zone transfer / Передача зоны
 dig @<NS_SERVER> example.com AXFR +short      # Short zone transfer / Короткая передача зоны
 ```
 
-### Query Statistics / Статистика запросов
+### Query Statistics
 ```bash
 dig example.com +stats                        # Query stats / Статистика запроса
 dig example.com +noall +stats                 # Only stats / Только статистика
 ```
 
-### Multiple Queries / Множественные запросы
+### Multiple Queries
 ```bash
 dig example.com A example.com MX              # Multiple types / Несколько типов
 dig @1.1.1.1 @8.8.8.8 example.com             # Multiple servers / Несколько серверов
@@ -196,23 +196,23 @@ dig @1.1.1.1 @8.8.8.8 example.com             # Multiple servers / Нескол�
 
 ---
 
-## 🐛 Troubleshooting / Устранение неполадок
+## 🐛 Troubleshooting
 
-### Check DNS Resolution / Проверка разрешения DNS
+### Check DNS Resolution
 ```bash
 dig example.com                               # Basic check / Базовая проверка
 dig example.com @8.8.8.8                      # Alternative DNS / Альтернативный DNS
 dig example.com +trace                        # Trace delegation / Трассировка делегации
 ```
 
-### Check Specific Record / Проверка конкретной записи
+### Check Specific Record
 ```bash
 dig example.com MX +short                     # MX records / MX записи
 dig example.com NS +short                     # NS records / NS записи
 dig example.com A +short                      # A records / A записи
 ```
 
-### DNS Propagation / Распространение DNS
+### DNS Propagation
 ```bash
 dig example.com @1.1.1.1                      # Cloudflare DNS / Cloudflare DNS
 dig example.com @8.8.8.8                      # Google DNS / Google DNS
@@ -220,19 +220,19 @@ dig example.com @208.67.222.222               # OpenDNS / OpenDNS
 dig example.com @<AUTHORITATIVE_NS>           # Authoritative NS / Авторитативный NS
 ```
 
-### Check TTL / Проверка TTL
+### Check TTL
 ```bash
 dig example.com | grep -A1 "ANSWER SECTION"   # Show TTL / Показать TTL
 dig example.com +noall +answer +ttlid         # TTL display / Отображение TTL
 ```
 
-### DNS Response Time / Время ответа DNS
+### DNS Response Time
 ```bash
 dig example.com +stats | grep "Query time"    # Query time / Время запроса
 time dig example.com +short                   # Total time / Общее время
 ```
 
-### Check Local DNS / Проверка локального DNS
+### Check Local DNS
 ```bash
 cat /etc/resolv.conf                          # Local DNS config / Локальная конфигурация DNS
 systemd-resolve --status                      # Systemd DNS status / Статус DNS systemd
@@ -241,9 +241,9 @@ resolvectl status                             # Alternative status / Альте�
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
-### Email Server Setup / Настройка почтового сервера
+### Email Server Setup
 ```bash
 dig example.com MX +short                     # Mail servers / Почтовые серверы
 dig example.com TXT +short | grep spf         # SPF record / SPF запись
@@ -251,13 +251,13 @@ dig _dmarc.example.com TXT +short             # DMARC record / DMARC запис�
 dig default._domainkey.example.com TXT +short # DKIM record / DKIM запись
 ```
 
-### SSL/TLS Certificate Validation / Проверка SSL/TLS сертификата
+### SSL/TLS Certificate Validation
 ```bash
 dig example.com CAA                           # CAA records / CAA записи
 dig _acme-challenge.example.com TXT           # LetsEncrypt validation / Проверка LetsEncrypt
 ```
 
-### Cloudflare Check / Проверка Cloudflare
+### Cloudflare Check
 ```bash
 dig example.com A +short                      # Check if Cloudflare / Проверка Cloudflare
 dig example.com NS +short                     # Cloudflare nameservers / NS Cloudflare
@@ -269,52 +269,52 @@ dig kubernetes.default.svc.cluster.local @10.96.0.10  # K8s service / Серви
 dig myapp.default.svc.cluster.local @10.96.0.10       # Custom service / Пользовательский сервис
 ```
 
-### Monitor DNS Changes / Мониторинг изменений DNS
+### Monitor DNS Changes
 ```bash
 watch -n 5 'dig example.com +short'           # Monitor every 5s / Мониторинг каждые 5с
 while true; do dig example.com +short; sleep 10; done  # Continuous monitoring / Непрерывный мониторинг
 ```
 
-### Batch DNS Lookup / Пакетный DNS поиск
+### Batch DNS Lookup
 ```bash
 for domain in example.com example.org example.net; do dig $domain A +short; done  # Multiple domains / Несколько доменов
 cat domains.txt | xargs -I{} dig {} A +short  # From file / Из файла
 ```
 
-### DNS Leak Test / Тест утечки DNS
+### DNS Leak Test
 ```bash
 dig whoami.akamai.net +short                  # Your resolver IP / IP вашего резолвера
 dig resolver.dnscrypt.info TXT +short         # DNSCrypt resolver / DNSCrypt резолвер
 dig o-o.myaddr.l.google.com TXT +short        # Google resolver check / Проверка Google резолвера
 ```
 
-### Root Nameservers / Корневые NS серверы
+### Root Nameservers
 ```bash
 dig . NS +short                               # Root nameservers / Корневые NS серверы
 dig @a.root-servers.net . NS                  # Query root server / Запрос корневого сервера
 ```
 
-### Check Subdomain / Проверка поддомена
+### Check Subdomain
 ```bash
 dig www.example.com                           # WWW subdomain / WWW поддомен
 dig mail.example.com                          # Mail subdomain / Mail поддомен
 dig api.example.com                           # API subdomain / API поддомен
 ```
 
-### DNS over HTTPS (DoH) / DNS через HTTPS
+### DNS over HTTPS (DoH) / DNS
 ```bash
 curl -H 'accept: application/dns-json' 'https://cloudflare-dns.com/dns-query?name=example.com&type=A'  # Cloudflare DoH / Cloudflare DoH
 curl -H 'accept: application/dns-json' 'https://dns.google/resolve?name=example.com&type=A'  # Google DoH / Google DoH
 ```
 
-## 💡 Best Practices / Лучшие практики
-# Always check authoritative nameservers / Всегда проверяйте авторитативные NS
-# Use +short for scripting / Используйте +short для скриптов
-# Check multiple DNS servers for propagation / Проверяйте несколько DNS серверов для распространения
-# Use +trace to debug delegation issues / Используйте +trace для отладки делегации
-# Monitor TTL for cache timing / Мониторьте TTL для кеширования
+## 💡 Best Practices
+# Always check authoritative nameservers
+# Use +short for scripting
+# Check multiple DNS servers for propagation
+# Use +trace to debug delegation issues
+# Monitor TTL for cache timing
 
-## 📋 Common DNS Servers / Распространённые DNS серверы
+## 📋 Common DNS Servers
 ```bash
 # 1.1.1.1, 1.0.0.1          — Cloudflare
 # 8.8.8.8, 8.8.4.4          — Google
@@ -323,11 +323,11 @@ curl -H 'accept: application/dns-json' 'https://dns.google/resolve?name=example.
 # 94.140.14.14, 94.140.15.15     — AdGuard
 ```
 
-## 🔧 Configuration Files / Файлы конфигурации
+## 🔧 Configuration Files
 ```bash
-# /etc/resolv.conf          — DNS resolver config / Конфигурация DNS резолвера
-# /etc/hosts                — Local DNS overrides / Локальные DNS переопределения
-# /etc/systemd/resolved.conf — Systemd DNS config / Конфигурация DNS systemd
+# /etc/resolv.conf          — DNS resolver config
+# /etc/hosts                — Local DNS overrides
+# /etc/systemd/resolved.conf — Systemd DNS config
 ```
 
 ## 📚 Documentation Links

@@ -15,29 +15,29 @@ tags:
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
-- [Core Management with mc](#Core%20Management%20with%20mc%20/%20Основное%20управление%20с%20mc)
-- [Bucket Operations](#Bucket%20Operations%20/%20Операции%20с%20бакетами)
-- [Object Operations](#Object%20Operations%20/%20Операции%20с%20объектами)
-- [Advanced Features](#Advanced%20Features%20/%20Продвинутые%20возможности)
-- [Administration](#Administration%20/%20Администрирование)
-- [AWS S3 Interoperability](#AWS%20S3%20Interoperability%20/%20Совместимость%20с%20AWS%20S3)
-- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools%20/%20Устранение%20неполадок)
-- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
+- [Core Management with mc](#Core%20Management%20with%20mc)
+- [Bucket Operations](#Bucket%20Operations)
+- [Object Operations](#Object%20Operations)
+- [Advanced Features](#Advanced%20Features)
+- [Administration](#Administration)
+- [AWS S3 Interoperability](#AWS%20S3%20Interoperability)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Comparison Tables](#Comparison%20Tables)
 
 ---
 
 ## Installation & Configuration
 
-### Install MinIO Server / Установка сервера MinIO
+### Install MinIO Server
 
-#### Standalone Mode / Автономный режим
+#### Standalone Mode
 ```bash
 wget https://dl.min.io/server/minio/release/linux-amd64/minio  # Download MinIO binary / Скачать MinIO
 chmod +x minio  # Make executable / Сделать исполняемым
 sudo mv minio /usr/local/bin/  # Move to PATH / Переместить в PATH
 ```
 
-#### Start MinIO Server / Запуск сервера MinIO
+#### Start MinIO Server
 ```bash
 export MINIO_ROOT_USER=<USER>        # Set admin username / Установить имя администратора
 export MINIO_ROOT_PASSWORD=<PASSWORD>  # Set admin password / Установить пароль администратора
@@ -48,16 +48,16 @@ minio server /mnt/data  # Start server with data directory / Запустить 
 - **Web Console:** `http://127.0.0.1:9000`
 - **API:** `http://127.0.0.1:9000`
 
-#### Distributed Mode (Cluster) / Распределённый режим (кластер)
+#### Distributed Mode (Cluster)
 ```bash
 minio server http://<NODE1>/export http://<NODE2>/export http://<NODE3>/export http://<NODE4>/export
-# Start distributed cluster / Запустить распределённый кластер
+# Start distributed cluster
 ```
 
 > [!NOTE]
 > MinIO requires at least 4 nodes for erasure coding. Use `{1...4}` notation for sequential nodes: `http://node{1...4}/export`
 
-### Install MinIO Client (mc) / Установка клиента MinIO
+### Install MinIO Client (mc)
 ```bash
 wget https://dl.min.io/client/mc/release/linux-amd64/mc  # Download mc binary / Скачать mc
 chmod +x mc  # Make executable / Сделать исполняемым
@@ -65,15 +65,15 @@ sudo mv mc /usr/local/bin/  # Move to PATH / Переместить в PATH
 mc --version  # Verify installation / Проверить установку
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 - **mc config:** `~/.mc/config.json`
 - **MinIO server config:** `~/.minio/` or `/etc/minio/`
 
 ---
 
-## Core Management with mc / Основное управление с mc
+## Core Management with mc
 
-### Add MinIO Server Alias / Добавить алиас сервера MinIO
+### Add MinIO Server Alias
 ```bash
 mc alias set <ALIAS> <URL> <ACCESS_KEY> <SECRET_KEY>  # Configure server alias / Настроить алиас сервера
 mc alias list  # List all configured aliases / Список всех настроенных алиасов
@@ -91,21 +91,21 @@ mc ls myminio  # List buckets / Список бакетов
 
 ---
 
-## Bucket Operations / Операции с бакетами
+## Bucket Operations
 
-### Create Bucket / Создать бакет
+### Create Bucket
 ```bash
 mc mb <ALIAS>/<BUCKET>  # Make bucket / Создать бакет
 mc mb myminio/photos  # Create "photos" bucket / Создать бакет "photos"
 ```
 
-### List Buckets / Список бакетов
+### List Buckets
 ```bash
 mc ls <ALIAS>  # List all buckets / Список всех бакетов
 mc ls myminio  # List buckets on myminio / Список бакетов на myminio
 ```
 
-### Delete Bucket / Удалить бакет
+### Delete Bucket
 ```bash
 mc rb <ALIAS>/<BUCKET>  # Remove empty bucket / Удалить пустой бакет
 mc rb <ALIAS>/<BUCKET> --force  # Force delete non-empty bucket / Принудительно удалить непустой бакет
@@ -116,33 +116,33 @@ mc rb <ALIAS>/<BUCKET> --force  # Force delete non-empty bucket / Принуди
 
 ---
 
-## Object Operations / Операции с объектами
+## Object Operations
 
-### Upload Files / Загрузить файлы
+### Upload Files
 ```bash
 mc cp <LOCAL_FILE> <ALIAS>/<BUCKET>/  # Copy file to bucket / Скопировать файл в бакет
 mc cp /local/file.txt myminio/mybucket/  # Upload single file / Загрузить один файл
 mc cp /local/dir/* myminio/mybucket/ --recursive  # Upload directory recursively / Загрузить директорию рекурсивно
 ```
 
-### Download Files / Скачать файлы
+### Download Files
 ```bash
 mc cp <ALIAS>/<BUCKET>/<OBJECT> <LOCAL_PATH>  # Download object / Скачать объект
 mc cp myminio/mybucket/file.txt /local/path/  # Download to local / Скачать локально
 ```
 
-### Move Objects / Переместить объекты
+### Move Objects
 ```bash
 mc mv <ALIAS>/<BUCKET>/<SRC> <ALIAS>/<BUCKET>/<DEST>  # Move object / Переместить объект
 ```
 
-### Delete Objects / Удалить объекты
+### Delete Objects
 ```bash
 mc rm <ALIAS>/<BUCKET>/<OBJECT>  # Remove object / Удалить объект
 mc rm <ALIAS>/<BUCKET>/<PREFIX> --recursive --force  # Delete all objects with prefix / Удалить все объекты с префиксом
 ```
 
-### View Object Content / Просмотреть содержимое объекта
+### View Object Content
 ```bash
 mc cat <ALIAS>/<BUCKET>/<OBJECT>  # Display object content / Показать содержимое объекта
 mc head <ALIAS>/<BUCKET>/<OBJECT>  # Show first 10KB / Показать первые 10KB
@@ -151,9 +151,9 @@ mc tail <ALIAS>/<BUCKET>/<OBJECT>  # Show last 10KB / Показать посл�
 
 ---
 
-## Advanced Features / Продвинутые возможности
+## Advanced Features
 
-### Mirror/Sync Operations / Зеркалирование/Синхронизация
+### Mirror/Sync Operations
 ```bash
 mc mirror <SRC> <DEST>  # Sync source to destination / Синхронизировать источник с назначением
 mc mirror /local/dir/ myminio/mybucket/  # Local → MinIO sync / Синхронизация локально → MinIO
@@ -165,14 +165,14 @@ mc mirror myminio/source/ myminio/backup/ --remove  # Remove extra files / Уд�
 > [!TIP]
 > Use `mc mirror` with `--watch` flag for continuous synchronization: `mc mirror --watch /local/dir/ myminio/mybucket/`
 
-### Versioning / Версионирование
+### Versioning
 ```bash
 mc version enable <ALIAS>/<BUCKET>  # Enable versioning / Включить версионирование
 mc version info <ALIAS>/<BUCKET>  # Show versioning status / Показать статус версионирования
 mc version list <ALIAS>/<BUCKET>  # List all versions / Список всех версий
 ```
 
-### Access Policies / Политики доступа
+### Access Policies
 ```bash
 mc policy set <POLICY> <ALIAS>/<BUCKET>  # Set bucket policy / Установить политику бакета
 mc policy list <ALIAS>/<BUCKET>  # List current policy / Показать текущую политику
@@ -195,16 +195,16 @@ mc policy set public myminio/mybucket  # Make bucket public / Сделать б�
 
 ---
 
-## Administration / Администрирование
+## Administration
 
-### Server Information / Информация о сервере
+### Server Information
 ```bash
 mc admin info <ALIAS>  # Show server info / Показать информацию о сервере
 mc admin top <ALIAS>  # Show real-time stats / Показать статистику в реальном времени
 mc admin trace <ALIAS>  # Trace API calls / Трассировать API вызовы
 ```
 
-### User Management / Управление пользователями
+### User Management
 ```bash
 mc admin user add <ALIAS> <USER> <PASSWORD>  # Add user / Добавить пользователя
 mc admin user list <ALIAS>  # List users / Список пользователей
@@ -213,14 +213,14 @@ mc admin user disable <ALIAS> <USER>  # Disable user / Отключить пол
 mc admin user enable <ALIAS> <USER>  # Enable user / Включить пользователя
 ```
 
-### Group Management / Управление группами
+### Group Management
 ```bash
 mc admin group add <ALIAS> <GROUP> <USER1> <USER2>  # Create group / Создать группу
 mc admin group remove <ALIAS> <GROUP>  # Remove group / Удалить группу
 mc admin group info <ALIAS> <GROUP>  # Show group members / Показать членов группы
 ```
 
-### Policy Management / Управление политиками
+### Policy Management
 ```bash
 mc admin policy set <ALIAS> <POLICY> user=<USER>  # Assign policy to user / Назначить политику пользователю
 mc admin policy set <ALIAS> <POLICY> group=<GROUP>  # Assign policy to group / Назначить политику группе
@@ -235,15 +235,15 @@ mc admin policy list <ALIAS>  # List all policies / Список всех пол
 
 ---
 
-## AWS S3 Interoperability / Совместимость с AWS S3
+## AWS S3 Interoperability
 
-### Configure AWS S3 Alias / Настроить алиас AWS S3
+### Configure AWS S3 Alias
 ```bash
 mc alias set aws s3.amazonaws.com <AWS_ACCESS_KEY> <AWS_SECRET_KEY>  # Add AWS S3 / Добавить AWS S3
 mc ls aws  # List S3 buckets / Список S3 бакетов
 ```
 
-### Copy Between MinIO and S3 / Копирование между MinIO и S3
+### Copy Between MinIO and S3
 ```bash
 mc cp /local/file.txt aws/mybucket/  # Upload to S3 / Загрузить в S3
 mc cp aws/mybucket/file.txt myminio/backup/  # Copy from S3 to MinIO / Копировать из S3 в MinIO
@@ -255,45 +255,45 @@ mc mirror aws/mybucket/ myminio/backup/  # Mirror S3 bucket to MinIO / Зерк�
 
 ---
 
-## Troubleshooting & Tools / Устранение неполадок
+## Troubleshooting & Tools
 
-### Common Issues / Типичные проблемы
+### Common Issues
 ```bash
-# Connection refused / Отказ в подключении
+# Connection refused
 mc alias list  # Verify alias configuration / Проверить конфигурацию алиаса
 curl http://127.0.0.1:9000/minio/health/live  # Check server health / Проверить здоровье сервера
 
-# Permission denied / Отказано в доступе
+# Permission denied
 mc admin user info myminio <USER>  # Check user permissions / Проверить права пользователя
 mc admin policy list myminio  # List available policies / Список доступных политик
 
-# Slow uploads/downloads / Медленная загрузка/скачивание
+# Slow uploads/downloads
 mc cp --limit-upload 100M /local/file.txt myminio/mybucket/  # Limit upload speed / Ограничить скорость загрузки
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 ```bash
 mc --debug cp /local/file.txt myminio/mybucket/  # Run with debug output / Запустить с отладочным выводом
 mc admin trace myminio  # Trace all API calls / Трассировать все API вызовы
 ```
 
-### Performance Tuning / Настройка производительности
+### Performance Tuning
 ```bash
 mc cp /local/bigfile.bin myminio/mybucket/ --attr "Cache-Control=max-age=90000"  # Set cache headers / Установить заголовки кэша
 ```
 
 ---
 
-## Comparison Tables / Таблицы сравнения
+## Comparison Tables
 
-### MinIO Deployment Modes / Режимы развёртывания MinIO
+### MinIO Deployment Modes
 
 | Mode | Nodes Required | Redundancy | Use Case |
 | :--- | :--- | :--- | :--- |
 | **Standalone** | 1 | None / Нет | Development, testing / Разработка, тестирование |
 | **Distributed (Erasure Coded)** | 4+ | High / Высокая | Production, high availability / Продакшн, высокая доступность |
 
-### mc vs AWS CLI / mc против AWS CLI
+### mc vs AWS CLI / mc
 
 | Feature | mc | AWS CLI |
 | :--- | :--- | :--- |
@@ -303,7 +303,7 @@ mc cp /local/bigfile.bin myminio/mybucket/ --attr "Cache-Control=max-age=90000" 
 | **Mirror Command** | Built-in / Встроенная | Requires sync / Требует sync |
 | **Speed** | Fast / Быстрый | Moderate / Умеренный |
 
-### Bucket Policies Comparison / Сравнение политик бакетов
+### Bucket Policies Comparison
 
 | Policy | Read Access | Write Access | Use Case |
 | :--- | :--- | :--- | :--- |
@@ -314,7 +314,7 @@ mc cp /local/bigfile.bin myminio/mybucket/ --attr "Cache-Control=max-age=90000" 
 
 ---
 
-## Best Practices / Лучшие практики
+## Best Practices
 
 1. **Always verify aliases** before destructive operations: `mc alias list`
 2. **Use `--watch` with mirror** for continuous sync: `mc mirror --watch /local/ myminio/backup/`
@@ -327,7 +327,7 @@ mc cp /local/bigfile.bin myminio/mybucket/ --attr "Cache-Control=max-age=90000" 
 
 ---
 
-## Additional Resources / Дополнительные ресурсы
+## Additional Resources
 
 - [MinIO Documentation](https://docs.min.io)
 - [mc Client Complete Guide](https://docs.min.io/docs/minio-client-complete-guide.html)

@@ -39,13 +39,13 @@ tags:
 - [Performance Tuning](#Performance%20Tuning)
 - [Logs & Monitoring](#Logs%20&%20Monitoring)
 - [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
-- [Logrotate Configuration](#Logrotate%20Configuration%20/%20Конфигурация%20Logrotate)
+- [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Debian/Ubuntu
@@ -56,7 +56,7 @@ sudo dnf install httpd                                   # Install Apache / Ус
 sudo systemctl enable httpd                              # Enable at boot / Автозапуск
 ```
 
-### Default Paths / Пути по умолчанию
+### Default Paths
 
 **Debian/Ubuntu:**
 `/etc/apache2/apache2.conf` — Main config / Основной конфиг
@@ -73,7 +73,7 @@ sudo systemctl enable httpd                              # Enable at boot / Ав
 `/var/www/html/` — Default document root / Корень по умолчанию
 `/var/log/httpd/` — Logs directory / Директория логов
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 - **80** — HTTP
 - **443** — HTTPS
@@ -82,7 +82,7 @@ sudo systemctl enable httpd                              # Enable at boot / Ав
 
 ## Core Management
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start apache2                             # Start service / Запустить сервис
@@ -95,7 +95,7 @@ sudo systemctl enable apache2                            # Enable at boot / Ав
 # RHEL/CentOS: replace apache2 with httpd
 ```
 
-### Configuration Testing / Проверка конфигурации
+### Configuration Testing
 
 ```bash
 sudo apachectl configtest                                # Test config / Проверка конфига
@@ -104,19 +104,19 @@ sudo apachectl -S                                        # Show vhost config / �
 sudo apache2ctl -M                                       # List loaded modules / Список модулей
 ```
 
-### Graceful Restart / Плавный перезапуск
+### Graceful Restart
 
 ```bash
 sudo apachectl graceful                                  # Graceful restart / Плавный перезапуск
 # Allows active connections to complete
-# Позволяет завершить активные соединения
+#
 ```
 
 ---
 
 ## Virtual Hosts
 
-### Basic HTTP Virtual Host / Базовый HTTP виртуальный хост
+### Basic HTTP Virtual Host
 `/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
@@ -136,7 +136,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 </VirtualHost>
 ```
 
-### Reverse Proxy Virtual Host / Виртуальный хост обратный прокси
+### Reverse Proxy Virtual Host
 `/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
@@ -152,7 +152,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 </VirtualHost>
 ```
 
-### HTTPS Virtual Host / HTTPS виртуальный хост
+### HTTPS Virtual Host / HTTPS
 `/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
@@ -175,7 +175,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 </VirtualHost>
 ```
 
-### HTTP to HTTPS Redirect / Редирект с HTTP на HTTPS
+### HTTP to HTTPS Redirect
 `/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
@@ -189,7 +189,7 @@ sudo apachectl graceful                                  # Graceful restart / П
 
 ## Modules Management
 
-### Enable/Disable Modules / Включить/выключить модули
+### Enable/Disable Modules
 
 ```bash
 # Debian/Ubuntu
@@ -203,13 +203,13 @@ sudo systemctl reload apache2                            # Reload after change /
 
 # RHEL/CentOS (edit /etc/httpd/conf.modules.d/*)
 # Manually uncomment/comment LoadModule directives
-# Вручную раскомментировать/закомментировать директивы LoadModule
+#
 ```
 
-### Essential Modules / Необходимые модули
+### Essential Modules
 
 ```bash
-# Common production modules / Часто используемые модули
+# Common production modules
 sudo a2enmod rewrite proxy proxy_http ssl headers deflate expires
 sudo systemctl reload apache2
 ```
@@ -226,7 +226,7 @@ sudo systemctl reload apache2
 
 ## SSL/TLS Configuration
 
-### Enable SSL/TLS / Включение SSL/TLS
+### Enable SSL/TLS
 
 ```bash
 sudo a2enmod ssl                                         # Enable SSL module / Включить модуль SSL
@@ -237,20 +237,20 @@ sudo systemctl reload apache2                            # Reload service / Пе
 ### Let's Encrypt (Certbot) / Let's Encrypt
 
 ```bash
-# Install Certbot / Установка Certbot
+# Install Certbot
 sudo apt install certbot python3-certbot-apache         # Debian/Ubuntu
 sudo dnf install certbot python3-certbot-apache         # RHEL/CentOS
 
-# Obtain certificate / Получить сертификат
+# Obtain certificate
 sudo certbot --apache -d <HOST> -d www.<HOST>           # Interactive / Интерактивно
 
-# Auto-renewal / Автообновление
+# Auto-renewal
 sudo certbot renew --dry-run                             # Test renewal / Тест обновления
 # Cron/systemd timer usually set up automatically
-# Cron/systemd таймер обычно настраивается автоматически
+# Cron/systemd
 ```
 
-### SSL Best Practices / Лучшие практики SSL
+### SSL Best Practices
 `/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
@@ -277,7 +277,7 @@ sudo certbot renew --dry-run                             # Test renewal / Тес
 
 ## Security & Access Control
 
-### Directory Access Control / Контроль доступа к директориям
+### Directory Access Control
 `.htaccess` or `/etc/apache2/sites-available/<HOST>.conf`
 
 ```apache
@@ -296,14 +296,14 @@ sudo certbot renew --dry-run                             # Test renewal / Тес
 </Directory>
 ```
 
-### Create Password File / Создание файла паролей
+### Create Password File
 
 ```bash
 sudo htpasswd -c /etc/apache2/.htpasswd <USER>           # Create file + user / Создать файл + пользователь
 sudo htpasswd /etc/apache2/.htpasswd <USER>              # Add another user / Добавить пользователя
 ```
 
-### Security Headers / Заголовки безопасности
+### Security Headers
 `/etc/apache2/conf-available/security.conf` or Vhost
 
 ```apache
@@ -316,7 +316,7 @@ sudo htpasswd /etc/apache2/.htpasswd <USER>              # Add another user / Д
 </IfModule>
 ```
 
-### Disable Directory Listing / Отключить листинг директорий
+### Disable Directory Listing
 `.htaccess` or Vhost
 
 ```apache
@@ -325,7 +325,7 @@ sudo htpasswd /etc/apache2/.htpasswd <USER>              # Add another user / Д
 </Directory>
 ```
 
-### Hide Apache Version / Скрыть версию Apache
+### Hide Apache Version
 `/etc/apache2/conf-available/security.conf`
 
 ```apache
@@ -338,7 +338,7 @@ ServerSignature Off                                      # Hide signature / Ск
 
 ## Performance Tuning
 
-### Enable Compression / Включить сжатие
+### Enable Compression
 `/etc/apache2/mods-available/deflate.conf` or Vhost
 
 ```apache
@@ -356,7 +356,7 @@ ServerSignature Off                                      # Hide signature / Ск
 </IfModule>
 ```
 
-### Browser Caching / Кеширование браузера
+### Browser Caching
 `/etc/apache2/mods-available/expires.conf` or Vhost
 
 ```apache
@@ -380,11 +380,11 @@ ServerSignature Off                                      # Hide signature / Ск
 </IfModule>
 ```
 
-### MPM Configuration / Конфигурация MPM
+### MPM Configuration
 `/etc/apache2/mods-available/mpm_*.conf`
 
 ```apache
-# MPM prefork (for mod_php) / MPM prefork (для mod_php)
+# MPM prefork (for mod_php) / MPM prefork
 <IfModule mpm_prefork_module>
   StartServers             5                             # Initial servers / Начальное число
   MinSpareServers          5                             # Min idle / Мин. простаивающих
@@ -393,7 +393,7 @@ ServerSignature Off                                      # Hide signature / Ск
   MaxConnectionsPerChild   0                             # Requests per child / Запросов на поток
 </IfModule>
 
-# MPM event (high performance) / MPM event (высокая производительность)
+# MPM event (high performance) / MPM event
 <IfModule mpm_event_module>
   StartServers             3
   MinSpareThreads         75
@@ -404,7 +404,7 @@ ServerSignature Off                                      # Hide signature / Ск
 </IfModule>
 ```
 
-### KeepAlive Settings / Настройки KeepAlive
+### KeepAlive Settings
 `/etc/apache2/apache2.conf`
 
 ```apache
@@ -417,7 +417,7 @@ KeepAliveTimeout 5                                       # Timeout in seconds / 
 
 ## Logs & Monitoring
 
-### Log Files / Файлы логов
+### Log Files
 
 ```bash
 # Debian/Ubuntu
@@ -430,29 +430,29 @@ sudo tail -f /var/log/httpd/access_log
 sudo tail -f /var/log/httpd/error_log
 ```
 
-### Custom Log Formats / Пользовательские форматы логов
+### Custom Log Formats
 `/etc/apache2/apache2.conf` or Vhost
 
 ```apache
-# Combined log format (default) / Комбинированный формат (по умолчанию)
+# Combined log format (default)
 LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 
-# Custom format with response time / Формат с временем ответа
+# Custom format with response time
 LogFormat "%h %l %u %t \"%r\" %>s %b %D" custom
 CustomLog ${APACHE_LOG_DIR}/<HOST>_access.log custom
 ```
 
-### Log Rotation / Ротация логов
+### Log Rotation
 
 ```bash
-# Usually handled by logrotate / Обычно обрабатывается logrotate
+# Usually handled by logrotate
 cat /etc/logrotate.d/apache2                             # View config / Посмотреть конфиг
 
-# Manual rotation / Ручная ротация
+# Manual rotation
 sudo logrotate -f /etc/logrotate.d/apache2               # Force rotation / Принудительная ротация
 ```
 
-### Apache Status Module / Модуль статуса Apache
+### Apache Status Module
 `/etc/apache2/mods-available/status.conf`
 
 ```bash
@@ -473,25 +473,25 @@ Access: `http://<HOST>/server-status`
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 ```bash
-# Port already in use / Порт уже используется
+# Port already in use
 sudo netstat -tlnp | grep :80                            # Check what's using port 80 / Проверить порт 80
 sudo lsof -i :80                                         # Alternative / Альтернатива
 
-# Permission denied / Доступ запрещен
+# Permission denied
 sudo chown -R www-data:www-data /var/www/<HOST>          # Fix ownership (Debian/Ubuntu)
 sudo chown -R apache:apache /var/www/<HOST>              # Fix ownership (RHEL/CentOS)
 sudo chmod -R 755 /var/www/<HOST>                        # Fix permissions / Исправить права
 
-# SELinux issues (RHEL/CentOS) / Проблемы SELinux
+# SELinux issues (RHEL/CentOS)
 sudo setenforce 0                                        # Temporarily disable / Временно отключить
 sudo setsebool -P httpd_can_network_connect on          # Allow network connections / Разрешить сеть
 sudo chcon -R -t httpd_sys_content_t /var/www/<HOST>    # Set context / Установить контекст
 ```
 
-### Enable/Disable Sites / Включить/выключить сайты
+### Enable/Disable Sites
 
 ```bash
 # Debian/Ubuntu
@@ -501,10 +501,10 @@ sudo systemctl reload apache2                            # Reload / Перечи
 
 # RHEL/CentOS
 # Manually manage files in /etc/httpd/conf.d/
-# Вручную управлять файлами в /etc/httpd/conf.d/
+#
 ```
 
-### Debug Configuration / Отладка конфигурации
+### Debug Configuration
 
 ```bash
 sudo apachectl -S                                        # Show vhost summary / Показать vhost
@@ -514,7 +514,7 @@ sudo apache2ctl -t -D DUMP_VHOSTS                        # Dump vhost config / �
 sudo apache2ctl -t -D DUMP_MODULES                       # Dump modules / Дамп модулей
 ```
 
-### Increase Error Log Verbosity / Увеличить подробность логов
+### Increase Error Log Verbosity
 `/etc/apache2/apache2.conf` or Vhost
 
 ```apache
@@ -524,7 +524,7 @@ LogLevel debug                                           # Debug mode / Режи
 LogLevel info ssl:warn                                   # Different levels per module / Разные уровни
 ```
 
-### Test Configuration Changes / Тест изменений конфигурации
+### Test Configuration Changes
 
 ```bash
 sudo apachectl configtest                                # Test config / Проверить конфиг
@@ -535,9 +535,9 @@ sudo systemctl reload apache2                            # Reload service / Пе
 
 ---
 
-## Quick Reference / Краткая справка
+## Quick Reference
 
-### Essential Commands / Основные команды
+### Essential Commands
 
 ```bash
 sudo apachectl configtest                                # Test config / Проверить конфиг
@@ -548,7 +548,7 @@ sudo a2enmod <MODULE>                                    # Enable module / Вк�
 sudo a2ensite <SITE>.conf                                # Enable site / Включить сайт
 ```
 
-### Best Practices / Лучшие практики
+### Best Practices
 
 - Always test config before reload: `apachectl configtest` / Всегда проверяй конфиг: `apachectl configtest`
 - Use `reload` instead of `restart` for zero downtime / Используй `reload` вместо `restart`
@@ -561,7 +561,7 @@ sudo a2ensite <SITE>.conf                                # Enable site / Вкл�
 
 ---
 
-## Logrotate Configuration / Конфигурация Logrotate
+## Logrotate Configuration
 
 ### Debian/Ubuntu
 

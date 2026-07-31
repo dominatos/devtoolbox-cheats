@@ -29,7 +29,7 @@ tags:
 
 ## Basic Commands
 
-### List & View / Список и просмотр
+### List & View
 ```bash
 sudo nft list tables                          # List all tables / Список всех таблиц
 sudo nft list ruleset                         # Show full ruleset / Показать полный набор правил
@@ -37,14 +37,14 @@ sudo nft list table inet filter               # List specific table / Списо
 sudo nft list chain inet filter input         # List specific chain / Список конкретной цепочки
 ```
 
-### Flush / Очистка
+### Flush
 ```bash
 sudo nft flush ruleset                        # Delete all rules / Удалить все правила
 sudo nft flush table inet filter              # Flush specific table / Очистить конкретную таблицу
 sudo nft flush chain inet filter input        # Flush specific chain / Очистить конкретную цепочку
 ```
 
-### Save & Restore / Сохранение и восстановление
+### Save & Restore
 ```bash
 sudo nft list ruleset > /etc/nftables.conf    # Save ruleset / Сохранить правила
 sudo nft -f /etc/nftables.conf                # Load ruleset / Загрузить правила
@@ -55,27 +55,27 @@ sudo sh -c 'nft list ruleset > /etc/nftables.conf'  # Persist rules / Сохра
 
 ## Tables & Chains
 
-### Create Tables / Создать таблицы
+### Create Tables
 ```bash
 sudo nft add table inet filter                # Create filter table / Создать таблицу filter
 sudo nft add table ip nat                     # Create NAT table (IPv4) / Создать таблицу NAT (IPv4)
 sudo nft add table ip6 filter                 # Create IPv6 filter table / Создать таблицу filter IPv6
 ```
 
-### Delete Tables / Удалить таблицы
+### Delete Tables
 ```bash
 sudo nft delete table inet filter             # Delete table / Удалить таблицу
 sudo nft delete table ip nat                  # Delete NAT table / Удалить таблицу NAT
 ```
 
-### Create Chains / Создать цепочки
+### Create Chains
 ```bash
 sudo nft 'add chain inet filter input { type filter hook input priority 0; policy drop; }'  # Input chain / Цепочка input
 sudo nft 'add chain inet filter forward { type filter hook forward priority 0; policy drop; }'  # Forward chain / Цепочка forward
 sudo nft 'add chain inet filter output { type filter hook output priority 0; policy accept; }'  # Output chain / Цепочка output
 ```
 
-### Chain Priorities / Приоритеты цепочек
+### Chain Priorities
 
 | Priority | Hook Point | Description (EN / RU) |
 | :--- | :--- | :--- |
@@ -92,14 +92,14 @@ sudo nft 'add chain inet filter output { type filter hook output priority 0; pol
 
 ## Rules
 
-### Basic Rules / Базовые правила
+### Basic Rules
 ```bash
 sudo nft add rule inet filter input ct state established,related accept  # Allow established / Разрешить established
 sudo nft add rule inet filter input ct state invalid drop                # Drop invalid / Отбросить недействительные
 sudo nft add rule inet filter input iif lo accept                        # Allow loopback / Разрешить loopback
 ```
 
-### Port Rules / Правила портов
+### Port Rules
 ```bash
 sudo nft add rule inet filter input tcp dport 22 accept                  # Allow SSH / Разрешить SSH
 sudo nft add rule inet filter input tcp dport { 80, 443 } accept         # Allow HTTP/HTTPS / Разрешить HTTP/HTTPS
@@ -107,27 +107,27 @@ sudo nft add rule inet filter input tcp dport 8000-9000 accept           # Allow
 sudo nft add rule inet filter input udp dport 53 accept                  # Allow DNS / Разрешить DNS
 ```
 
-### IP-Based Rules / Правила на основе IP
+### IP-Based Rules
 ```bash
 sudo nft add rule inet filter input ip saddr 192.168.1.0/24 accept       # Allow subnet / Разрешить подсеть
 sudo nft add rule inet filter input ip saddr <IP> drop                   # Block IP / Заблокировать IP
 sudo nft add rule inet filter input ip saddr { <IP1>, <IP2> } drop       # Block multiple IPs / Заблокировать несколько IP
 ```
 
-### Interface Rules / Правила интерфейсов
+### Interface Rules
 ```bash
 sudo nft add rule inet filter input iif eth0 accept                      # Allow from eth0 / Разрешить с eth0
 sudo nft add rule inet filter forward iif eth0 oif eth1 accept           # Forward eth0→eth1 / Пересылка eth0→eth1
 ```
 
-### Drop & Reject / Отбросить и отклонить
+### Drop & Reject
 ```bash
 sudo nft add rule inet filter input drop                                 # Drop packets / Отбросить пакеты
 sudo nft add rule inet filter input reject                               # Reject packets / Отклонить пакеты
 sudo nft add rule inet filter input tcp dport 23 reject                  # Reject telnet / Отклонить telnet
 ```
 
-### Handle-Based Deletion / Удаление по handle
+### Handle-Based Deletion
 ```bash
 sudo nft -a list chain inet filter input                                 # Show handles / Показать handles
 sudo nft delete rule inet filter input handle 5                          # Delete rule by handle / Удалить правило по handle
@@ -144,7 +144,7 @@ sudo nft 'add chain ip nat postrouting { type nat hook postrouting priority 100;
 sudo nft add rule ip nat postrouting oif eth0 masquerade                 # Masquerade / Masquerade
 ```
 
-### DNAT / Port Forwarding / Проброс портов
+### DNAT / Port Forwarding
 ```bash
 sudo nft 'add chain ip nat prerouting { type nat hook prerouting priority -100; }'  # Prerouting chain / Цепочка prerouting
 sudo nft add rule ip nat prerouting iif eth0 tcp dport 80 dnat to 192.168.1.10:8080  # Forward port 80→8080 / Переслать порт 80→8080
@@ -155,20 +155,20 @@ sudo nft add rule ip nat prerouting tcp dport 443 dnat to 192.168.1.10          
 
 ## Sets & Maps
 
-### Named Sets / Именованные множества
+### Named Sets
 ```bash
 sudo nft add set inet filter blacklist { type ipv4_addr\; }             # Create IP set / Создать набор IP
 sudo nft add element inet filter blacklist { <IP1>, <IP2> }             # Add IPs to set / Добавить IP в набор
 sudo nft add rule inet filter input ip saddr @blacklist drop            # Use set in rule / Использовать набор в правиле
 ```
 
-### Dynamic Sets / Динамические множества
+### Dynamic Sets
 ```bash
 sudo nft 'add set inet filter ssh_attackers { type ipv4_addr; flags timeout; }'  # Set with timeout / Набор с таймаутом
 sudo nft 'add rule inet filter input tcp dport 22 ct state new meter ssh_meter { ip saddr timeout 60s limit rate 5/minute } accept'  # Rate limit / Ограничение скорости
 ```
 
-### Maps / Карты
+### Maps
 ```bash
 sudo nft 'add map inet filter portmap { type inet_service : ipv4_addr; }'  # Create port map / Создать карту портов
 sudo nft 'add element inet filter portmap { 80 : 192.168.1.10, 443 : 192.168.1.11 }'  # Add mappings / Добавить сопоставления
@@ -179,21 +179,21 @@ sudo nft 'add rule ip nat prerouting dnat to tcp dport map @portmap'    # Use ma
 
 ## Migration from iptables
 
-### Translation Tools / Инструменты перевода
+### Translation Tools
 ```bash
 iptables-save > iptables.rules                # Save iptables rules / Сохранить правила iptables
 iptables-restore-translate -f iptables.rules > nftables.rules  # Translate to nftables / Перевести в nftables
 iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT  # Translate single rule / Перевести одно правило
 ```
 
-### Disable iptables / Отключить iptables
+### Disable iptables
 ```bash
 sudo systemctl stop iptables                  # Stop iptables / Остановить iptables
 sudo systemctl disable iptables               # Disable iptables / Отключить iptables
 sudo systemctl mask iptables                  # Mask iptables / Замаскировать iptables
 ```
 
-### Enable nftables / Включить nftables
+### Enable nftables
 ```bash
 sudo systemctl enable nftables                # Enable nftables / Включить nftables
 sudo systemctl start nftables                 # Start nftables / Запустить nftables
@@ -203,7 +203,7 @@ sudo systemctl start nftables                 # Start nftables / Запусти�
 
 ## Real-World Examples
 
-### Basic Firewall / Базовый файрвол
+### Basic Firewall
 `/etc/nftables.conf`
 
 ```bash
@@ -248,7 +248,7 @@ table inet filter {
 }
 ```
 
-### NAT Router / NAT роутер
+### NAT Router / NAT
 ```bash
 #!/usr/sbin/nft -f
 
@@ -279,7 +279,7 @@ table inet filter {
 }
 ```
 
-### Rate Limiting / Ограничение скорости
+### Rate Limiting
 ```bash
 #!/usr/sbin/nft -f
 
@@ -301,7 +301,7 @@ table inet filter {
 }
 ```
 
-### GeoIP Blocking / Блокировка по GeoIP
+### GeoIP Blocking
 ```bash
 #!/usr/sbin/nft -f
 
@@ -322,7 +322,7 @@ table inet filter {
 }
 ```
 
-### Docker Integration / Интеграция с Docker
+### Docker Integration
 ```bash
 #!/usr/sbin/nft -f
 
@@ -353,7 +353,7 @@ table ip nat {
 }
 ```
 
-### Kubernetes Integration / Интеграция с Kubernetes
+### Kubernetes Integration
 ```bash
 #!/usr/sbin/nft -f
 
@@ -377,7 +377,7 @@ table inet filter {
 
 ## Reference Tables
 
-### Table Families / Семейства таблиц
+### Table Families
 
 | Family | Description (EN / RU) |
 | :--- | :--- |
@@ -388,7 +388,7 @@ table inet filter {
 | **bridge** | Bridge packets / Bridge пакеты |
 | **netdev** | Ingress/egress / Ingress/egress |
 
-### Common Actions / Распространённые действия
+### Common Actions
 
 | Action | Description (EN / RU) |
 | :--- | :--- |
@@ -398,7 +398,7 @@ table inet filter {
 | **queue** | Send to userspace / Отправить в userspace |
 | **return** | Return to calling chain / Вернуться в вызывающую цепочку |
 
-### Debugging Flags / Флаги отладки
+### Debugging Flags
 
 | Flag | Description (EN / RU) |
 | :--- | :--- |

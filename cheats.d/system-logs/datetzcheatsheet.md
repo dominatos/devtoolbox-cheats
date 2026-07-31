@@ -28,7 +28,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [date Command](#date%20Command)
 2. [timedatectl](#timedatectl)
@@ -41,7 +41,7 @@ tags:
 
 ## date Command
 
-### Display Date / Показать дату
+### Display Date
 
 ```bash
 date                                          # Default format / Формат по умолчанию
@@ -51,7 +51,7 @@ date '+%F %T'                                 # Same as above / То же что
 date '+%s'                                    # Unix timestamp / Unix timestamp
 ```
 
-### UTC Time / UTC время
+### UTC Time / UTC
 
 ```bash
 date -u                                       # UTC time / UTC время
@@ -59,7 +59,7 @@ date -u '+%Y-%m-%dT%H:%M:%SZ'                 # ISO-8601 UTC / ISO-8601 UTC
 date --utc '+%s'                              # Unix timestamp UTC / Unix timestamp UTC
 ```
 
-### Convert Timestamp / Конвертировать timestamp
+### Convert Timestamp
 
 ```bash
 date -d '@1693152000'                         # Unix to date / Unix в дату
@@ -67,7 +67,7 @@ date -d '@1693152000' '+%Y-%m-%d %H:%M:%S'    # Unix to formatted / Unix в фо
 date -d '2023-08-27 10:00:00' '+%s'           # Date to Unix / Дата в Unix
 ```
 
-### Relative Dates / Относительные даты
+### Relative Dates
 
 ```bash
 date -d 'yesterday'                           # Yesterday / Вчера
@@ -78,7 +78,7 @@ date -d '+3 hours'                            # 3 hours from now / Через 3 
 date -d '1 week ago'                          # 1 week ago / Неделю назад
 ```
 
-### Custom Formats / Пользовательские форматы
+### Custom Formats
 
 ```bash
 date '+%A, %B %d, %Y'                         # Monday, January 01, 2024
@@ -91,7 +91,7 @@ date '+%Z %z'                                 # Timezone / Часовой поя
 
 ## timedatectl
 
-### Show Status / Показать статус
+### Show Status
 
 ```bash
 timedatectl                                   # Show time/date/timezone / Показать время/дату/часовой пояс
@@ -99,7 +99,7 @@ timedatectl status                            # Same as above / То же что
 timedatectl show                              # Machine-readable output / Машинно-читаемый вывод
 ```
 
-### Set Time / Установить время
+### Set Time
 
 ```bash
 sudo timedatectl set-time '2024-01-01 12:00:00'  # Set date and time / Установить дату и время
@@ -110,7 +110,7 @@ sudo timedatectl set-time '12:00:00'          # Set time only / Установи
 > Setting time manually will be overridden if NTP is enabled. Disable NTP first with `sudo timedatectl set-ntp false`.
 > Установка времени вручную будет перезаписана если NTP включен. Сначала отключите NTP.
 
-### Set Timezone / Установить часовой пояс
+### Set Timezone
 
 ```bash
 timedatectl list-timezones                    # List available timezones / Список доступных часовых поясов
@@ -130,7 +130,7 @@ timedatectl timesync-status                   # NTP sync status / Статус �
 
 ## Timezones
 
-### Show Time in Different TZ / Показать время в разных часовых поясах
+### Show Time in Different TZ
 
 ```bash
 TZ=Europe/London date                         # London time / Лондонское время
@@ -139,7 +139,7 @@ TZ=Asia/Tokyo date                            # Tokyo time / Токийское 
 TZ=UTC date                                   # UTC time / UTC время
 ```
 
-### List Timezones / Список часовых поясов
+### List Timezones
 
 ```bash
 timedatectl list-timezones                    # All timezones / Все часовые пояса
@@ -147,7 +147,7 @@ timedatectl list-timezones | grep Europe      # European timezones / Европ�
 timedatectl list-timezones | grep America     # American timezones / Американские часовые пояса
 ```
 
-### Timezone Files / Файлы часовых поясов
+### Timezone Files
 
 ```bash
 ls /usr/share/zoneinfo/                       # Timezone database / База данных часовых поясов
@@ -159,7 +159,7 @@ readlink /etc/localtime                       # Current timezone (all distros) /
 
 ## Format Specifiers
 
-### Common Format Specifiers / Распространённые спецификаторы формата
+### Common Format Specifiers
 
 | Specifier | Description (EN / RU) | Example |
 | :--- | :--- | :--- |
@@ -184,57 +184,57 @@ readlink /etc/localtime                       # Current timezone (all distros) /
 
 ## Real-World Examples
 
-### Backup Filenames / Имена файлов резервных копий
+### Backup Filenames
 
 ```bash
-# Create backup with timestamp / Создать резервную копию с timestamp
+# Create backup with timestamp
 BACKUP_DATE=$(date '+%Y%m%d_%H%M%S')
 tar -czf backup_${BACKUP_DATE}.tar.gz /data
 
-# Create daily backup / Создать ежедневную резервную копию
+# Create daily backup
 BACKUP_DATE=$(date '+%Y-%m-%d')
 tar -czf backup_${BACKUP_DATE}.tar.gz /data
 ```
 
-### Log Timestamps / Временные метки логов
+### Log Timestamps
 
 ```bash
-# Log with timestamp / Лог с временной меткой
+# Log with timestamp
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Log message" >> /var/log/app.log
 
-# ISO-8601 format / Формат ISO-8601
+# ISO-8601 format
 echo "[$(date -u '+%Y-%m-%dT%H:%M:%SZ')] UTC log" >> /var/log/app.log
 ```
 
-### Calculate Time Differences / Вычислить разницу во времени
+### Calculate Time Differences
 
 ```bash
-# Start time / Время начала
+# Start time
 START=$(date '+%s')
 
 # ... do work ...
 
-# End time / Время окончания
+# End time
 END=$(date '+%s')
 DIFF=$((END - START))
 echo "Execution time: $DIFF seconds"
 ```
 
-### Convert Between Formats / Конвертировать между форматами
+### Convert Between Formats
 
 ```bash
-# ISO to Unix / ISO в Unix
+# ISO to Unix / ISO
 ISO_DATE="2023-08-27 10:00:00"
 UNIX_TS=$(date -d "$ISO_DATE" '+%s')
 echo "Unix timestamp: $UNIX_TS"
 
-# Unix to ISO / Unix в ISO
+# Unix to ISO / Unix
 UNIX_TS=1693152000
 ISO_DATE=$(date -d "@$UNIX_TS" '+%Y-%m-%d %H:%M:%S')
 echo "ISO date: $ISO_DATE"
 ```
 
-### Multi-Timezone Monitoring / Мониторинг в нескольких часовых поясах
+### Multi-Timezone Monitoring
 
 ```bash
 #!/bin/bash
@@ -245,26 +245,26 @@ echo "London:     $(TZ=Europe/London date '+%Y-%m-%d %H:%M:%S %Z')"
 echo "Tokyo:      $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S %Z')"
 ```
 
-### Date Arithmetic / Арифметика дат
+### Date Arithmetic
 
 ```bash
-# First day of month / Первый день месяца
+# First day of month
 date -d "$(date '+%Y-%m-01')"
 
-# Last day of month / Последний день месяца
+# Last day of month
 date -d "$(date '+%Y-%m-01') +1 month -1 day"
 
-# 30 days ago / 30 дней назад
+# 30 days ago / 30
 date -d '30 days ago' '+%Y-%m-%d'
 
-# Next Sunday / Следующее воскресенье
+# Next Sunday
 date -d 'next Sunday'
 ```
 
-### Cron Job Logging / Логирование cron задач
+### Cron Job Logging
 
 ```bash
-# Log execution time / Логировать время выполнения
+# Log execution time
 0 2 * * * echo "Backup started at $(date '+\%Y-\%m-\%d \%H:\%M:\%S')" >> /var/log/backup.log && /usr/local/bin/backup.sh
 ```
 
@@ -272,33 +272,33 @@ date -d 'next Sunday'
 
 ## Troubleshooting
 
-### Check NTP Synchronization / Проверить синхронизацию NTP
+### Check NTP Synchronization
 
 ```bash
-# Check NTP status / Проверить статус NTP
+# Check NTP status
 timedatectl timesync-status
 
-# Check chronyd / Проверить chronyd
+# Check chronyd
 chronyc tracking
 
-# Check systemd-timesyncd / Проверить systemd-timesyncd
+# Check systemd-timesyncd
 systemctl status systemd-timesyncd
 ```
 
-### Fix Time Drift / Исправить дрейф времени
+### Fix Time Drift
 
 ```bash
-# Disable NTP / Отключить NTP
+# Disable NTP
 sudo timedatectl set-ntp false
 
-# Set correct time / Установить правильное время
+# Set correct time
 sudo timedatectl set-time '2024-01-01 12:00:00'
 
-# Re-enable NTP / Включить NTP снова
+# Re-enable NTP
 sudo timedatectl set-ntp true
 ```
 
-### Useful One-Liners / Полезные однострочники
+### Useful One-Liners
 
 ```bash
 date '+%Y%m%d%H%M%S'                          # Timestamp filename / Timestamp имя файла
@@ -309,7 +309,7 @@ echo $(($(date '+%s') / 86400))               # Days since epoch / Дней с �
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Use **ISO-8601 format** for portability. / Используйте формат ISO-8601 для переносимости.
 - Store timestamps in **UTC**. / Храните временные метки в UTC.

@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -34,7 +34,7 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install SNMPD / Установка SNMPD
+### Install SNMPD
 
 ```bash
 # RHEL/CentOS/AlmaLinux
@@ -47,44 +47,44 @@ apt install snmpd snmp libsnmp-dev snmp-mibs-downloader
 zypper install net-snmp
 ```
 
-### Main Configuration / Основная конфигурация
+### Main Configuration
 
 `/etc/snmp/snmpd.conf`
 
 ```ini
-# System information / Информация о системе
+# System information
 sysLocation    "Server Room, <LOCATION>"
 sysContact     "<USER> <admin@example.com>"
 sysName        <HOST>
 
-# SNMPv2c community string (read-only) / Строка сообщества SNMPv2c (только чтение)
+# SNMPv2c community string (read-only)
 rocommunity  <COMMUNITY_STRING>  <ALLOWED_NETWORK>/24
 # Example: rocommunity public 10.0.0.0/24
 
-# SNMPv2c community string (read-write) / Строка сообщества SNMPv2c (чтение-запись)
+# SNMPv2c community string (read-write)
 # rwcommunity <COMMUNITY_STRING> <ALLOWED_NETWORK>/24
 
-# Listen address / Адрес прослушивания
+# Listen address
 agentAddress  udp:<IP>:161,udp6:[::1]:161
 
-# Disk monitoring / Мониторинг дисков
+# Disk monitoring
 disk / 10%
 disk /var 10%
 disk /tmp 10%
 
-# Load average thresholds / Пороги средней нагрузки
+# Load average thresholds
 load 12 10 5
 
-# Process monitoring / Мониторинг процессов
+# Process monitoring
 proc sshd
 proc nginx
 proc mysqld
 
-# Extend with custom script / Расширение через скрипт
+# Extend with custom script
 extend custom_metric /usr/local/bin/custom_snmp_check.sh
 ```
 
-### SNMP Protocol Versions Comparison / Сравнение версий SNMP
+### SNMP Protocol Versions Comparison
 
 | Feature | SNMPv1 | SNMPv2c | SNMPv3 |
 |---------|--------|---------|--------|
@@ -97,23 +97,23 @@ extend custom_metric /usr/local/bin/custom_snmp_check.sh
 > [!WARNING]
 > SNMPv1/v2c community strings are sent in plaintext. Always use SNMPv3 in production environments. / Строки сообщества SNMPv1/v2c передаются в открытом виде. Всегда используйте SNMPv3 в продакшн.
 
-### SNMPv3 User Setup / Настройка пользователя SNMPv3
+### SNMPv3 User Setup
 
 ```bash
-# Stop the agent first / Сначала остановить агент
+# Stop the agent first
 systemctl stop snmpd
 
-# Create SNMPv3 user / Создать пользователя SNMPv3
+# Create SNMPv3 user
 net-snmp-create-v3-user -ro -a SHA -A <AUTH_PASSWORD> -x AES -X <PRIV_PASSWORD> <USER>
 
-# Start the agent / Запустить агент
+# Start the agent
 systemctl start snmpd
 ```
 
 `/etc/snmp/snmpd.conf` (SNMPv3 config):
 
 ```ini
-# SNMPv3 read-only user / Пользователь SNMPv3 только для чтения
+# SNMPv3 read-only user
 rouser <USER> priv
 ```
 
@@ -121,36 +121,36 @@ rouser <USER> priv
 
 ## 2. Core Management
 
-### SNMP Query Commands / Команды запросов SNMP
+### SNMP Query Commands
 
 ```bash
-# Walk entire OID tree (SNMPv2c) / Обход всего дерева OID
+# Walk entire OID tree (SNMPv2c)
 snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> .1
 
-# Get specific OID / Получить конкретный OID
+# Get specific OID
 snmpget -v2c -c <COMMUNITY_STRING> <HOST> sysDescr.0
 
-# Walk system subtree / Обход поддерева system
+# Walk system subtree
 snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> system
 
-# Walk interfaces / Обход интерфейсов
+# Walk interfaces
 snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> ifDescr
 
-# Get uptime / Получить uptime
+# Get uptime
 snmpget -v2c -c <COMMUNITY_STRING> <HOST> sysUpTime.0
 
-# Walk disk usage / Обход использования дисков
+# Walk disk usage
 snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> hrStorageDescr
 snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> hrStorageUsed
 
-# Walk CPU load / Обход загрузки CPU
+# Walk CPU load
 snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> laLoad
 
-# SNMPv3 query / Запрос SNMPv3
+# SNMPv3 query
 snmpwalk -v3 -u <USER> -l authPriv -a SHA -A <AUTH_PASSWORD> -x AES -X <PRIV_PASSWORD> <HOST> system
 ```
 
-### Common OIDs / Общие OID
+### Common OIDs
 
 | OID | Name | Description / Описание |
 |-----|------|------------------------|
@@ -169,7 +169,7 @@ snmpwalk -v3 -u <USER> -l authPriv -a SHA -A <AUTH_PASSWORD> -x AES -X <PRIV_PAS
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
 systemctl start snmpd      # Start / Запустить
@@ -179,25 +179,25 @@ systemctl enable snmpd     # Enable on boot / Автозапуск
 systemctl status snmpd     # Check status / Проверить статус
 ```
 
-### SNMP Trap Receiver / Приёмник SNMP-трапов
+### SNMP Trap Receiver
 
 ```bash
-# Install and enable trap daemon / Установить и включить демон трапов
+# Install and enable trap daemon
 systemctl enable --now snmptrapd
 ```
 
 `/etc/snmp/snmptrapd.conf`
 
 ```ini
-# Accept traps from community / Принимать трапы от community
+# Accept traps from community
 authCommunity log,execute,net <COMMUNITY_STRING>
 
-# Log traps to file / Логировать трапы в файл
+# Log traps to file
 [snmptrapd]
 doNotLogTraps no
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -206,22 +206,22 @@ doNotLogTraps no
 | `/var/log/snmpd.log` | Agent log (if configured) / Лог агента |
 | `/usr/share/snmp/mibs/` | MIB files / Файлы MIB |
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Allow SNMP agent / Разрешить SNMP-агент
+# Allow SNMP agent
 firewall-cmd --permanent --add-port=161/udp   # SNMP queries / Запросы SNMP
 firewall-cmd --permanent --add-port=162/udp   # SNMP traps / Трапы SNMP
 firewall-cmd --reload
 ```
 
-### Custom Extensions / Кастомные расширения
+### Custom Extensions
 
 ```bash
-# Example: custom script extension / Пример: расширение через скрипт
+# Example: custom script extension
 cat > /usr/local/bin/snmp_custom_check.sh << 'EOF'
 #!/bin/bash
-# Returns number of active connections / Возвращает число активных подключений
+# Returns number of active connections
 ss -tn state established | wc -l
 EOF
 chmod +x /usr/local/bin/snmp_custom_check.sh
@@ -234,7 +234,7 @@ extend active_connections /usr/local/bin/snmp_custom_check.sh
 ```
 
 ```bash
-# Query the custom extension / Запросить кастомное расширение
+# Query the custom extension
 snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> NET-SNMP-EXTEND-MIB::nsExtendOutputFull
 ```
 
@@ -242,16 +242,16 @@ snmpwalk -v2c -c <COMMUNITY_STRING> <HOST> NET-SNMP-EXTEND-MIB::nsExtendOutputFu
 
 ## 4. Security
 
-### Restrict Access / Ограничение доступа
+### Restrict Access
 
 `/etc/snmp/snmpd.conf`
 
 ```ini
-# Restrict to specific networks only / Ограничить доступ конкретными сетями
+# Restrict to specific networks only
 rocommunity <COMMUNITY_STRING> 10.0.0.0/24
 rocommunity <COMMUNITY_STRING> 192.168.1.0/24
 
-# Restrict OID view / Ограничить обзор OID
+# Restrict OID view
 view systemonly included .1.3.6.1.2.1.1
 view systemonly included .1.3.6.1.2.1.25.1
 rocommunity <COMMUNITY_STRING> default -V systemonly
@@ -264,43 +264,43 @@ rocommunity <COMMUNITY_STRING> default -V systemonly
 
 ## 5. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Agent Not Responding / Агент не отвечает
+#### 1. Agent Not Responding
 
 ```bash
-# Check if snmpd is running / Проверить, запущен ли snmpd
+# Check if snmpd is running
 systemctl status snmpd
 ss -ulnp | grep 161
 
-# Test locally / Тест локально
+# Test locally
 snmpwalk -v2c -c <COMMUNITY_STRING> localhost system
 
-# Check config syntax / Проверить синтаксис конфига
+# Check config syntax
 snmpd -C -c /etc/snmp/snmpd.conf -Le  # Check for errors / Проверить ошибки
 ```
 
-#### 2. Timeout / Таймаут
+#### 2. Timeout
 
 ```bash
-# Check firewall / Проверить фаервол
+# Check firewall
 firewall-cmd --list-all | grep 161
 
-# Check bind address / Проверить адрес привязки
+# Check bind address
 grep agentAddress /etc/snmp/snmpd.conf
 
-# Check from remote / Проверить удалённо
+# Check from remote
 snmpwalk -v2c -c <COMMUNITY_STRING> -t 10 <HOST> sysDescr.0
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 
 ```bash
-# Run snmpd in foreground with debug / Запустить snmpd в foreground с отладкой
+# Run snmpd in foreground with debug
 systemctl stop snmpd
 snmpd -f -Le -Dread_config,snmp_agent  # Debug specific subsystems / Отладка конкретных подсистем
 
-# Debug specific query / Отладка конкретного запроса
+# Debug specific query
 snmpwalk -v2c -c <COMMUNITY_STRING> -d <HOST> sysDescr.0
 ```
 
@@ -337,7 +337,7 @@ snmpwalk -v2c -c <COMMUNITY_STRING> -d <HOST> sysDescr.0
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **Net-SNMP Official Site:** http://www.net-snmp.org/
 - **Net-SNMP Documentation:** http://www.net-snmp.org/docs/man/

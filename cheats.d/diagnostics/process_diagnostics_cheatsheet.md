@@ -34,7 +34,7 @@ These tools (`ps`, `top`, `htop`, `pgrep`, `/proc`) are part of the `procps` pac
 
 ## Process Discovery & Identification
 
-### Search and List Processes / Поиск и перечисление процессов
+### Search and List Processes
 
 ```bash
 ps aux | grep <PROCESS_NAME>                    # List processes by name / Список процессов по имени
@@ -43,7 +43,7 @@ pidof <PROCESS_NAME>                             # Get PID only / Получит
 pstree -p <PID>                                 # Show process tree with PIDs / Показать дерево процессов с PID
 ```
 
-### Useful ps Format Strings / Полезные форматы ps
+### Useful ps Format Strings
 ```bash
 ps -eo pid,ppid,user,%cpu,%mem,vsz,rss,stat,start,time,comm --sort=-%cpu | head -20  # Top CPU consumers / Топ потребители CPU
 ps -eo pid,ppid,user,%cpu,%mem,vsz,rss,stat,start,time,comm --sort=-%mem | head -20  # Top RAM consumers / Топ потребители RAM
@@ -58,7 +58,7 @@ ps -eo pid,ppid,user,stat,wchan:20,cmd -p <PID>  # Process state with wait chann
 
 ## Process State & Activity
 
-### Monitor Process State / Мониторинг состояния процесса
+### Monitor Process State
 
 ```bash
 ps -o pid,state,wchan,cmd -p <PID>               # View process state and wait channel / Просмотр состояния и канала ожидания
@@ -77,7 +77,7 @@ cat /proc/<PID>/stack                           # Kernel call stack (if D/S stat
 > - `t` (Traced): Stopped by debugger (ptrace) / Остановлен отладчиком.
 > - `X` (Dead): Should never be seen / Не должен быть виден.
 
-### Execution Context / Контекст выполнения
+### Execution Context
 ```bash
 readlink /proc/<PID>/exe                        # Path to executable / Путь к исполняемому файлу
 cat /proc/<PID>/cmdline | xargs -0              # Full launch command / Полная команда запуска
@@ -93,7 +93,7 @@ cat /proc/<PID>/limits                          # Resource limits (ulimit) / Л�
 
 ## Resource Consumption (CPU, RAM, I/O)
 
-### Detailed CPU and RAM Usage / Детальное использование CPU и RAM
+### Detailed CPU and RAM Usage
 
 ```bash
 top -p <PID>                                    # Monitor specific PID / Мониторинг конкретного PID
@@ -102,7 +102,7 @@ grep VmRSS /proc/<PID>/status                    # Resident memory size (RAM) / 
 pmap -x <PID> | tail -n 1                       # Detailed memory map summary / Итоговая сводка карты памяти
 ```
 
-### Interactive Filters (Heavy Hitters) / Интерактивные фильтры
+### Interactive Filters (Heavy Hitters)
 
 | Tool / Инструмент | Key / Клавиша | Action (EN / RU) |
 | :--- | :--- | :--- |
@@ -117,7 +117,7 @@ pmap -x <PID> | tail -n 1                       # Detailed memory map summary / 
 | **htop** | `H` | Toggle threads visibility / Вкл/выкл отображение потоков |
 | **htop** | `t` | Toggle tree view (alternate) / Вид дерева (альтернативный) |
 
-### I/O Usage / Использование ввода-вывода
+### I/O Usage
 ```bash
 iotop -p <PID>                                  # Live I/O monitoring / Мониторинг I/O в реальном времени
 iotop -oP                                       # Only show processes doing I/O / Только процессы с I/O
@@ -134,7 +134,7 @@ read_bytes: 1048576     # Actual bytes read from disk / Реально проч�
 write_bytes: 524288     # Actual bytes written to disk / Реально записано на диск
 ```
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install htop iotop                     # Debian/Ubuntu
 sudo dnf install htop iotop                     # RHEL/Fedora
@@ -145,7 +145,7 @@ sudo pacman -S htop iotop                       # Arch
 
 ## Network & Ports Monitoring
 
-### Listeners and Connections / Слушатели и соединения
+### Listeners and Connections
 
 ```bash
 ss -tunap | grep <PID>                          # Current sockets by PID / Текущие сокеты по PID
@@ -157,21 +157,21 @@ lsof -i -nP -p <PID>                            # Network files opened by proces
 > `ss` is the modern replacement for `netstat` and is faster on systems with thousands of connections. `netstat` is part of `net-tools` which is deprecated but still widely available.
 > / `ss` — современная замена `netstat`, работает быстрее при тысячах соединений. `netstat` входит в `net-tools`, который считается устаревшим, но всё ещё доступен.
 
-### Process-Targeted Bandwidth / Пропускная способность процесса
+### Process-Targeted Bandwidth
 ```bash
 nethogs                                         # Monitor traffic per process / Мониторинг трафика по процессам
 iftop -P -i <INTERFACE> -f "port <PORT>"        # Traffic on specific port / Трафик на конкретном порту
-# Press 'P' in iftop to show ports / Нажмите 'P' в iftop для отображения портов
+# Press 'P' in iftop to show ports
 ```
 
-### Deep Packet Analysis / Глубокий анализ пакетов
+### Deep Packet Analysis
 ```bash
 tcpdump -i <INTERFACE> port <PORT> -n           # Capture port traffic / Захват трафика порта
 tcpdump -i <INTERFACE> port <PORT> -A           # Show payload in ASCII / Показать содержимое в ASCII
 tcpdump -i <INTERFACE> -w capture.pcap          # Save to file for Wireshark / Сохранить в файл для Wireshark
 ```
 
-### Comparison: ss vs netstat / Сравнение: ss vs netstat
+### Comparison: ss vs netstat
 
 | Feature / Функция | `ss` | `netstat` |
 | :--- | :--- | :--- |
@@ -185,7 +185,7 @@ tcpdump -i <INTERFACE> -w capture.pcap          # Save to file for Wireshark / �
 
 ## Thread Analysis
 
-### Thread Count and Details / Количество и детали потоков
+### Thread Count and Details
 
 ```bash
 ps -o nlwp,pid,cmd -p <PID>                     # Show thread count (NLWP) / Показать количество потоков
@@ -194,9 +194,9 @@ ls /proc/<PID>/task | wc -l                      # Count threads via procfs / П
 top -H -p <PID>                                 # Monitor individual threads / Мониторинг отдельных потоков
 ```
 
-### Thread State Inspection / Инспекция состояния потоков
+### Thread State Inspection
 ```bash
-# Check state of each thread / Проверить состояние каждого потока
+# Check state of each thread
 for tid in /proc/<PID>/task/*/; do
   echo "TID: $(basename $tid) State: $(cat ${tid}status | grep State)"
 done
@@ -206,7 +206,7 @@ done
 
 ## File Handles & Descriptors
 
-### Open Files Tracking / Отслеживание открытых файлов
+### Open Files Tracking
 
 ```bash
 lsof -p <PID>                                   # List all open files / Список всех открытых файлов
@@ -215,12 +215,12 @@ ls /proc/<PID>/fd | wc -l                       # Count open file descriptors / 
 fuser -v <PATH_TO_FILE>                         # Find process using a file / Найти процесс, использующий файл
 ```
 
-### File Descriptor Limits / Лимиты файловых дескрипторов
+### File Descriptor Limits
 ```bash
-# Check current limits for process / Проверить текущие лимиты процесса
+# Check current limits for process
 cat /proc/<PID>/limits | grep "Max open files"  # Per-process limit / Лимит процесса
 
-# System-wide limits / Системные лимиты
+# System-wide limits
 cat /proc/sys/fs/file-nr                        # allocated / unused / max / выделено / не использовано / максимум
 sysctl fs.file-max                              # System max open files / Системный максимум
 ```
@@ -233,7 +233,7 @@ sysctl fs.file-max                              # System max open files / Сис
 
 ## System Integration & Logging
 
-### Service Control & Logs / Управление сервисом и логи
+### Service Control & Logs
 
 ```bash
 systemctl status <SERVICE_NAME>                 # Check systemd status / Проверить статус systemd
@@ -244,37 +244,37 @@ journalctl -u <SERVICE_NAME> --since "1 hour ago" # Logs for last hour / Лог�
 journalctl -u <SERVICE_NAME> -p err             # Only error messages / Только ошибки
 ```
 
-### Common Log Locations / Типичные пути логов
+### Common Log Locations
 ```bash
-# /var/log/syslog          — Main system log / Основной системный лог (Debian/Ubuntu)
-# /var/log/messages        — Main system log / Основной системный лог (RHEL/CentOS)
-# /var/log/kern.log        — Kernel messages / Сообщения ядра
-# /var/log/dmesg           — Boot/hardware messages / Сообщения загрузки/оборудования
-# /var/log/auth.log        — Authentication log / Лог аутентификации
+# /var/log/syslog          — Main system log
+# /var/log/messages        — Main system log
+# /var/log/kern.log        — Kernel messages
+# /var/log/dmesg           — Boot/hardware messages
+# /var/log/auth.log        — Authentication log
 ```
 
 ---
 
 ## Case Study: MySQL Monitoring
 
-### Targeting MySQL Specifically / Специфический мониторинг MySQL
+### Targeting MySQL Specifically
 
 ```bash
-# 1. Identify MySQL process / Найти процесс MySQL
+# 1. Identify MySQL process
 pgrep -u mysql -fa
 
-# 2. Check MySQL threads / Проверить потоки MySQL
+# 2. Check MySQL threads
 ps -o nlwp,pid,cmd -p $(pgrep -u mysql -x mysqld)
 
-# 3. Monitor MySQL memory / Мониторинг памяти MySQL
+# 3. Monitor MySQL memory
 grep VmRSS /proc/$(pgrep -u mysql -x mysqld)/status
 
-# 4. MySQL network activity / Сетевая активность MySQL
+# 4. MySQL network activity
 ss -tunap | grep mysqld
 iftop -P -i <INTERFACE> -f "port 3306"          # Default MySQL port / Стандартный порт MySQL
 
-# 5. Internal MySQL Diagnostics / Внутренняя диагностика MySQL
-# Run inside mysql client / Выполнять внутри mysql-клиента
+# 5. Internal MySQL Diagnostics
+# Run inside mysql client
 mysql -u <USER> -p -e "SHOW PROCESSLIST;"       # List active threads / Список активных потоков
 mysql -u <USER> -p -e "SHOW ENGINE INNODB STATUS\G" # Detailed InnoDB state / Детальное состояние InnoDB
 ```
@@ -283,7 +283,7 @@ mysql -u <USER> -p -e "SHOW ENGINE INNODB STATUS\G" # Detailed InnoDB state / Д
 > MySQL uses a **One-Process-Many-Threads** model. Resource visibility in `top`/`htop` often combines all threads into the main process. Use `top -H` or MySQL's Performance Schema for granular internal thread info.
 > / MySQL использует модель **Один-Процесс-Много-Потоков**. В `top`/`htop` ресурсы всех потоков объединяются в основной процесс. Используйте `top -H` или Performance Schema MySQL для детализации.
 
-### MySQL Key Metrics to Watch / Ключевые метрики MySQL
+### MySQL Key Metrics to Watch
 
 | Metric / Метрика | How to Check / Как проверить | When to Alert / Когда тревога |
 | :--- | :--- | :--- |
@@ -297,7 +297,7 @@ mysql -u <USER> -p -e "SHOW ENGINE INNODB STATUS\G" # Detailed InnoDB state / Д
 
 ## Advanced Tracing & Debugging
 
-### Low-Level Activity / Низкоуровневая активность
+### Low-Level Activity
 
 ```bash
 strace -p <PID> -f -e trace=network,file        # Trace syscalls / Трассировка системных вызовов
@@ -313,12 +313,12 @@ gdb -p <PID>                                    # Attach debugger (EXPERT ONLY) 
 > `gdb -p` will **STOP the target process** until you type `continue`. On a database or web server, this means instant downtime for all clients.
 > / `gdb -p` **ОСТАНОВИТ целевой процесс** до команды `continue`. Для базы данных или веб-сервера это означает мгновенный простой для всех клиентов.
 
-### bpftrace (Modern Alternative) / bpftrace (Современная альтернатива)
+### bpftrace (Modern Alternative) / bpftrace
 ```bash
-# Count syscalls per process / Подсчёт системных вызовов по процессам
+# Count syscalls per process
 sudo bpftrace -e 'tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }'
 
-# Trace file opens for specific PID / Трассировать открытие файлов для PID
+# Trace file opens for specific PID
 sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat /pid == <PID>/ { printf("%s\n", str(args->filename)); }'
 ```
 
@@ -330,7 +330,7 @@ sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat /pid == <PID>/ { printf("
 
 ## Comparison Tables & Senior Tips
 
-### Comparison: Process Memory Metrics / Сравнение: Метрики памяти процессов
+### Comparison: Process Memory Metrics
 
 | Metric / Метрика | Name (EN / RU) | Description (EN / RU) | Use Case / Когда смотреть |
 | :--- | :--- | :--- | :--- |
@@ -344,7 +344,7 @@ sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat /pid == <PID>/ { printf("
 > **VIRT ≠ real memory usage.** A process can reserve 10 GB of virtual memory but only use 100 MB of RAM (RSS). Never alarm on high VIRT alone.
 > / **VIRT ≠ реальное потребление.** Процесс может зарезервировать 10 ГБ виртуальной памяти, но использовать лишь 100 МБ ОЗУ (RSS). Никогда не паникуйте из-за высокого VIRT.
 
-### Comparison: Process Monitoring Tools / Сравнение: Инструменты мониторинга
+### Comparison: Process Monitoring Tools
 
 | Tool / Инструмент | Type / Тип | Strengths (EN / RU) | Install |
 | :--- | :--- | :--- | :--- |
@@ -355,67 +355,67 @@ sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat /pid == <PID>/ { printf("
 | **glances** | Web/API | REST API, export, plugins / REST API, экспорт, плагины | `pip install glances` |
 | **nmon** | Performance | CSV export for analysis / CSV экспорт для анализа | `apt install nmon` |
 
-### Senior Tips / Советы для опытных
+### Senior Tips
 
-#### Soft vs Hard Limits / Мягкие и жёсткие лимиты
+#### Soft vs Hard Limits
 ```bash
 ulimit -Sn                                     # Soft open files limit / Мягкий лимит файлов
 ulimit -Hn                                     # Hard open files limit / Жёсткий лимит файлов
 # Soft limits can be raised by the process up to Hard limit
 # Hard limits can only be raised by root
-# Мягкие лимиты могут быть подняты процессом до жёсткого лимита
-# Жёсткие лимиты может поднять только root
+#
+#
 ```
 
-#### Zombie Processes / Зомби-процессы
+#### Zombie Processes
 ```bash
-# Find zombie processes / Найти зомби-процессы
+# Find zombie processes
 ps aux | awk '$8 == "Z" {print}'
 
-# Find parent of zombie / Найти родителя зомби
+# Find parent of zombie
 ps -o ppid= -p <ZOMBIE_PID>
 
 # A zombie doesn't consume CPU/RAM but takes a process table slot
 # Cleaning requires parent to wait() or killing the parent
-# Зомби не потребляет CPU/RAM, но занимает слот в таблице процессов
-# Очистка требует вызова wait() от родителя или убийства родителя
+#
+#
 ```
 
 > [!WARNING]
 > Do NOT blindly kill parent processes of zombies — the parent may be a critical service. First identify the parent with `ps -o ppid= -p <ZOMBIE_PID>` and check what it is.
 > / НЕ убивайте бездумно родительские процессы зомби — родитель может быть критически важным сервисом. Сначала определите родителя и проверьте, что это за процесс.
 
-#### D-State (Uninterruptible Sleep) / Состояние D (непрерываемый сон)
+#### D-State (Uninterruptible Sleep)
 ```bash
-# Find processes in D-state / Найти процессы в состоянии D
+# Find processes in D-state
 ps aux | awk '$8 ~ /D/ {print}'
 
-# Check what they're waiting for / Проверить чего они ждут
+# Check what they're waiting for
 cat /proc/<PID>/wchan                           # Wait channel / Канал ожидания
 cat /proc/<PID>/stack                           # Kernel stack / Стек ядра
 
 # D-state usually means wait for hardware I/O (disk/NFS)
 # The process CANNOT be killed by SIGKILL until I/O returns
-# Состояние D обычно означает ожидание I/O (диск/NFS)
-# Процесс НЕЛЬЗЯ убить сигналом SIGKILL до завершения I/O
+#
+#
 ```
 
 > [!CAUTION]
 > Processes stuck in D-state for extended periods often indicate hardware failure (dying disk, NFS server down, iSCSI timeout). Investigate the underlying storage layer, not the process itself.
 > / Процессы, надолго застрявшие в состоянии D, часто указывают на отказ оборудования (умирающий диск, NFS сервер недоступен, iSCSI таймаут). Расследуйте уровень хранения, а не сам процесс.
 
-#### Quick Diagnostic One-Liners / Быстрые диагностические команды
+#### Quick Diagnostic One-Liners
 ```bash
-# Top 10 CPU consuming processes / Топ-10 потребителей CPU
+# Top 10 CPU consuming processes
 ps -eo pid,%cpu,%mem,comm --sort=-%cpu | head -11
 
-# Top 10 RAM consuming processes / Топ-10 потребителей RAM
+# Top 10 RAM consuming processes
 ps -eo pid,%cpu,%mem,rss,comm --sort=-rss | head -11
 
-# Count all processes by user / Количество процессов по пользователям
+# Count all processes by user
 ps -eo user --no-headers | sort | uniq -c | sort -rn
 
-# Find processes with most open files / Процессы с наибольшим числом открытых файлов
+# Find processes with most open files
 for pid in /proc/[0-9]*/fd; do echo "$(ls $pid 2>/dev/null | wc -l) $pid"; done | sort -rn | head -10
 ```
 

@@ -12,23 +12,23 @@ tags:
 > **yq** — a portable, lightweight YAML/JSON/XML/CSV/TSV processor written in Go by Mike Farah. It uses jq-like syntax for querying, modifying, and converting structured data. Heavily used in Kubernetes/Helm workflows, CI/CD pipelines, and infrastructure-as-code. Actively maintained with frequent releases. Note: there are two tools named `yq` — this cheatsheet covers the Go version ([mikefarah/yq](https://github.com/mikefarah/yq)), not the Python wrapper ([kislyuk/yq](https://github.com/kislyuk/yq)).
 
 ## Table of Contents
-- [Basics](#Basics%20/%20Основы)
-- [Reading & Querying](#Reading%20&%20Querying%20/%20Чтение%20и%20запросы)
-- [Modifying YAML](#️%20Modifying%20YAML%20/%20Изменение%20YAML)
-- [Arrays & Objects](#Arrays%20&%20Objects%20/%20Массивы%20и%20объекты)
-- [Output Formats](#Output%20Formats%20/%20Форматы%20вывода)
-- [Merging & Combining](#Merging%20&%20Combining%20/%20Слияние%20и%20комбинирование)
-- [Kubernetes Examples](#️%20Kubernetes%20Examples%20/%20Примеры%20Kubernetes)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Data Transformation](#Data%20Transformation%20/%20Преобразование%20данных)
-- [Advanced Techniques](#Advanced%20Techniques%20/%20Продвинутые%20техники)
-- [Tips & Tricks](#Tips%20&%20Tricks%20/%20Советы%20и%20хитрости)
-- [Validation & Debugging](#Validation%20&%20Debugging%20/%20Проверка%20и%20отладка)
-- [Installation](#️%20Installation%20/%20Установка)
+- [Basics](#Basics)
+- [Reading & Querying](#Reading%20&%20Querying)
+- [Modifying YAML](#️%20Modifying%20YAML)
+- [Arrays & Objects](#Arrays%20&%20Objects)
+- [Output Formats](#Output%20Formats)
+- [Merging & Combining](#Merging%20&%20Combining)
+- [Kubernetes Examples](#️%20Kubernetes%20Examples)
+- [Real-World Examples](#Real-World%20Examples)
+- [Data Transformation](#Data%20Transformation)
+- [Advanced Techniques](#Advanced%20Techniques)
+- [Tips & Tricks](#Tips%20&%20Tricks)
+- [Validation & Debugging](#Validation%20&%20Debugging)
+- [Installation](#️%20Installation)
 
 ---
 
-## 📖 Basics / Основы
+## 📖 Basics
 
 ```bash
 yq '.' file.yaml                               # Pretty-print YAML / Красивый вывод YAML
@@ -42,7 +42,7 @@ yq -e '.key' file.yaml                         # Exit non-zero if not found / К
 
 ---
 
-## 🔍 Reading & Querying / Чтение и запросы
+## 🔍 Reading & Querying
 
 ```bash
 yq '.spec.replicas' deploy.yaml                # Read field / Прочитать поле
@@ -59,7 +59,7 @@ yq 'keys' file.yaml                            # All keys / Все ключи
 
 ---
 
-## ✏️ Modifying YAML / Изменение YAML
+## ✏️ Modifying YAML
 
 > [!WARNING]
 > The `-i` flag modifies files in-place. Always keep backups or use version control before bulk modifications.
@@ -77,7 +77,7 @@ yq '.metadata.annotations."example.com/key" = "value"' -i file.yaml  # Key with 
 
 ---
 
-## 📊 Arrays & Objects / Массивы и объекты
+## 📊 Arrays & Objects
 
 ```bash
 yq '.items[]' list.yaml                        # Iterate array / Перебрать массив
@@ -93,7 +93,7 @@ yq '.spec.template.spec.containers[].env += [{"name": "DEBUG", "value": "true"}]
 
 ---
 
-## 📤 Output Formats / Форматы вывода
+## 📤 Output Formats
 
 ```bash
 yq -o=json '.' file.yaml                       # Convert to JSON / Конвертировать в JSON
@@ -108,7 +108,7 @@ yq -p=xml '.' file.xml                         # XML to YAML / XML в YAML
 
 ---
 
-## 🔗 Merging & Combining / Слияние и комбинирование
+## 🔗 Merging & Combining
 
 ```bash
 yq ea '. as $item ireduce ({}; . *+ $item)' a.yaml b.yaml > merged.yaml  # Merge YAML files / Слить YAML-файлы
@@ -121,7 +121,7 @@ yq ea '. as $item ireduce ([]; . + $item)' *.yaml  # Merge multiple files / Сл
 
 ---
 
-## ☸️ Kubernetes Examples / Примеры Kubernetes
+## ☸️ Kubernetes Examples
 
 ```bash
 yq '.spec.replicas' deployment.yaml            # Get replica count / Получить количество реплик
@@ -136,7 +136,7 @@ kubectl get pods -o yaml | yq '.items[] | select(.status.phase != "Running") | .
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
 ```bash
 yq '.spec.replicas = 5' -i */deployment.yaml   # Update all deployments / Обновить все развёртывания
@@ -151,7 +151,7 @@ yq ea 'select(.kind == "Service")' *.yaml      # Filter all services / Отфи�
 
 ---
 
-## 🔄 Data Transformation / Преобразование данных
+## 🔄 Data Transformation
 
 ```bash
 yq '.items[] | {"name": .metadata.name, "ns": .metadata.namespace}' list.yaml  # Reshape objects / Изменить форму объектов
@@ -163,7 +163,7 @@ yq 'with_entries(select(.value != null))' file.yaml  # Remove null values / Уд
 
 ---
 
-## 💡 Advanced Techniques / Продвинутые техники
+## 💡 Advanced Techniques
 
 ```bash
 yq -n '.name = "example" | .version = "1.0"'   # Create YAML from scratch / Создать YAML с нуля
@@ -177,7 +177,7 @@ yq 'walk(if type == "string" then gsub("old"; "new") else . end)' file.yaml  # W
 
 ---
 
-## 🔧 Tips & Tricks / Советы и хитрости
+## 🔧 Tips & Tricks
 
 ```bash
 yq --version                                   # Check version / Проверить версию
@@ -192,7 +192,7 @@ yq --exit-status '.key' file.yaml || echo "Key not found"  # Check existence / �
 
 ---
 
-## 🔍 Validation & Debugging / Проверка и отладка
+## 🔍 Validation & Debugging
 
 ```bash
 yq eval '.' file.yaml > /dev/null              # Validate YAML syntax / Проверить синтаксис YAML
@@ -203,7 +203,7 @@ yq 'path(..)' file.yaml                        # Show all paths / Показат
 
 ---
 
-## ⚙️ Installation / Установка
+## ⚙️ Installation
 
 ```bash
 # Ubuntu/Debian (snap)
@@ -221,7 +221,7 @@ brew install yq
 # Binary (latest, any Linux)
 wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 
-# Check version / Проверить версию
+# Check version
 yq --version
 ```
 
@@ -230,7 +230,7 @@ yq --version
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [yq — GitHub repository](https://github.com/mikefarah/yq)
 - [yq Operators Reference](https://mikefarah.gitbook.io/yq/operators)

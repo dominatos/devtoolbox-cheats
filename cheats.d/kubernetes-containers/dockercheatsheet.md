@@ -26,16 +26,16 @@ Docker is an open-source platform for building, shipping, and running applicatio
 
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [Core Management](#Core%20Management)
-    - [Lifecycle](#Lifecycle%20/%20Жизненный%20цикл)
-    - [Containers](#Containers%20/%20Контейнеры)
-    - [Images](#Images%20/%20Образы)
-    - [Networks](#Networks%20/%20Сети)
-    - [Volumes](#Volumes%20/%20Тома)
-    - [Cleanup](#Cleanup%20/%20Очистка)
+    - [Lifecycle](#Lifecycle)
+    - [Containers](#Containers)
+    - [Images](#Images)
+    - [Networks](#Networks)
+    - [Volumes](#Volumes)
+    - [Cleanup](#Cleanup)
 - [Sysadmin Operations](#Sysadmin%20Operations)
-    - [Service Control](#Service%20Control%20/%20Управление%20сервисом)
-    - [Resource Tuning](#Resource%20Tuning%20/%20Настройка%20ресурсов)
-    - [Logging & Rotation](#Logging%20&%20Rotation%20/%20Логирование%20и%20ротация)
+    - [Service Control](#Service%20Control)
+    - [Resource Tuning](#Resource%20Tuning)
+    - [Logging & Rotation](#Logging%20&%20Rotation)
 - [Security](#Security)
 - [Backup & Restore](#Backup%20&%20Restore)
 - [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
@@ -48,17 +48,17 @@ Docker is an open-source platform for building, shipping, and running applicatio
 
 ## Installation & Configuration
 
-### Package Management / Установка пакетов
+### Package Management
 
 ```bash
-# Install Docker (Debian/Ubuntu) / Установка Docker (Debian/Ubuntu)
+# Install Docker (Debian/Ubuntu)
 apt-get update && apt-get install docker-ce docker-ce-cli containerd.io
 
-# Install Docker (RHEL/CentOS) / Установка Docker (RHEL/CentOS)
+# Install Docker (RHEL/CentOS)
 yum install docker-ce docker-ce-cli containerd.io
 ```
 
-### Configuration Files / Конфигурационные файлы
+### Configuration Files
 
 `/etc/docker/daemon.json`
 
@@ -82,7 +82,7 @@ yum install docker-ce docker-ce-cli containerd.io
 `~/.docker/config.json`
 *Client-side configuration (Auth tokens, aliases). / Клиентская конфигурация (токены авторизации, алиасы).*
 
-### Contexts / Контексты
+### Contexts
 
 Manage multiple Docker environments. / Управление несколькими окружениями Docker.
 
@@ -96,7 +96,7 @@ docker context use my-context                      # Switch context / Перек
 
 ## Core Management
 
-### Lifecycle / Жизненный цикл
+### Lifecycle
 
 ```bash
 docker run -d --name <CONTAINER_NAME> <IMAGE>      # Run container detached / Запуск контейнера в фоне
@@ -109,7 +109,7 @@ docker wait <CONTAINER_ID>                         # Block until container stops
 docker kill <CONTAINER_ID>                         # Kill container / Принудительно завершить контейнер
 ```
 
-### Containers / Контейнеры
+### Containers
 
 ```bash
 docker ps                                          # List running containers / Список запущенных контейнеров
@@ -128,7 +128,7 @@ docker exec -it <CONTAINER_ID> /bin/bash           # Open bash shell / Откр�
 docker exec -it <CONTAINER_ID> sh                  # Open sh shell / Открыть оболочку sh
 ```
 
-### Images / Образы
+### Images
 
 ```bash
 docker images                                      # List images / Список образов
@@ -141,7 +141,7 @@ docker build -t <IMAGE>:<TAG> .                    # Build from Dockerfile / С�
 docker buildx build --platform linux/amd64,linux/arm64 -t <IMAGE>:<TAG> . # Multi-arch build / Мульти-арх сборка
 ```
 
-### Networks / Сети
+### Networks
 
 | Driver | Description (EN / RU) | Use Case / Best for... |
 | :--- | :--- | :--- |
@@ -160,7 +160,7 @@ docker network disconnect <NET_NAME> <CONTAINER_ID> # Disconnect container / О�
 docker network rm <NET_NAME>                       # Remove network / Удалить сеть
 ```
 
-### Volumes / Тома
+### Volumes
 
 | Type | Description (EN / RU) | Use Case / Best for... |
 | :--- | :--- | :--- |
@@ -176,7 +176,7 @@ docker volume rm <VOL_NAME>                        # Remove volume / Удали�
 docker volume prune                                # Remove unused volumes / Удалить неиспользуемые тома
 ```
 
-### Cleanup / Очистка
+### Cleanup
 
 > [!WARNING]
 > Use prune commands with caution in production. They permanently delete data.
@@ -194,7 +194,7 @@ docker image prune -a                              # Remove unused images / Уд
 
 ## Sysadmin Operations
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 systemctl start docker                             # Start Docker / Запустить Docker
@@ -204,7 +204,7 @@ systemctl enable docker                            # Enable on boot / Включ
 systemctl status docker                            # Check status / Проверить статус
 ```
 
-### Resource Tuning / Настройка ресурсов
+### Resource Tuning
 
 Limit container resources via `docker run`. / Ограничение ресурсов контейнера через `docker run`.
 
@@ -215,7 +215,7 @@ Limit container resources via `docker run`. / Ограничение ресур�
 --pids-limit=100                                   # Limit PIDs / Лимит количества процессов
 ```
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port | Description (EN / RU) |
 | :--- | :--- |
@@ -223,7 +223,7 @@ Limit container resources via `docker run`. / Ограничение ресур�
 | **2376** | Docker daemon HTTPS (TLS) / Демон Docker HTTPS (TLS) |
 | **5000** | Docker Registry / Реестр Docker |
 
-### Logging & Rotation / Логирование и ротация
+### Logging & Rotation
 
 **Default Log Paths / Пути к логам по умолчанию**
 
@@ -237,7 +237,7 @@ Limit container resources via `docker run`. / Ограничение ресур�
 
 ## Security
 
-### User Wrapper / Управление правами пользователей
+### User Wrapper
 
 Manage strict permissions via user groups instead of `sudo`. / Управление правами через группы пользователей вместо `sudo`.
 
@@ -246,7 +246,7 @@ usermod -aG docker <USER>                          # Add user to docker group / 
 newgrp docker                                      # Activate group changes / Применить изменения группы
 ```
 
-### Registry Authentication / Аутентификация в реестре
+### Registry Authentication
 
 ```bash
 docker login <REGISTRY_URL>                        # Login / Вход
@@ -259,7 +259,7 @@ docker logout <REGISTRY_URL>                       # Logout / Выход
 cat ~/my-password.txt | docker login --username <USER> --password-stdin <REGISTRY_URL>
 ```
 
-### Content Trust / Подпись образов
+### Content Trust
 
 Enable enforcement of signed images. / Включить проверку подписанных образов.
 
@@ -271,7 +271,7 @@ export DOCKER_CONTENT_TRUST=1                      # Enable trust / Включи
 
 ## Backup & Restore
 
-### Image Backup / Резервная копия образов
+### Image Backup
 
 Transfer images between air-gapped systems. / Перенос образов между изолированными системами.
 
@@ -280,7 +280,7 @@ docker save -o <IMAGE_NAME>.tar <IMAGE_NAME>       # Save image to tar / Сох�
 docker load -i <IMAGE_NAME>.tar                    # Load image from tar / Загрузить образ из tar
 ```
 
-### Container Backup / Резервная копия контейнеров
+### Container Backup
 
 Export filesystem (without metadata/history). / Экспорт файловой системы (без метаданных/истории).
 
@@ -289,7 +289,7 @@ docker export <CONTAINER_ID> > <CONTAINER_NAME>.tar # Export container / Экс�
 docker import <CONTAINER_NAME>.tar                 # Import as image / Импорт как образ
 ```
 
-### Volume Backup / Резервная копия томов
+### Volume Backup
 
 Backup data from a volume using a helper container. / Бэкап данных из тома с помощью вспомогательного контейнера.
 
@@ -301,7 +301,7 @@ docker run --rm -v <VOL_NAME>:/volume -v $(pwd):/backup alpine tar cvf /backup/b
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 | Issue / Проблема | Fix / Решение |
 | :--- | :--- |
@@ -309,7 +309,7 @@ docker run --rm -v <VOL_NAME>:/volume -v $(pwd):/backup alpine tar cvf /backup/b
 | **Network Conflicts** | Check subnet overlap in `docker network inspect`. / Проверить пересечение подсетей. |
 | **OOMKilled** | Check `docker inspect <CONTAINER_ID>` → State → OOMKilled. / Проверить через `docker inspect`. |
 
-### Debug Tools / Инструменты отладки
+### Debug Tools
 
 ```bash
 docker events                                      # Stream server events / Поток событий сервера
@@ -318,7 +318,7 @@ ctop                                               # Top-like interface for cont
 dive <IMAGE>                                       # Inspect image layers / Инспекция слоёв образа
 ```
 
-### Debug Container / Отладочный контейнер
+### Debug Container
 
 Run a container with a custom entrypoint to debug startup issues. / Запуск контейнера с пользовательской точкой входа для отладки.
 
@@ -359,7 +359,7 @@ networks:
   app-net:
 ```
 
-### Compose CLI Basics / Базовые команды Compose
+### Compose CLI Basics
 
 ```bash
 docker compose up -d                               # Start detached / Запуск в фоне
@@ -368,12 +368,12 @@ docker compose logs -f                             # Follow logs / Следит�
 docker compose config                              # Validate config / Проверить конфиг
 ```
 
-### Environment Files / Файлы окружения
+### Environment Files
 
 `.env`
 
 ```dotenv
-# Example / Пример
+# Example
 POSTGRES_PASSWORD=<PASSWORD>
 APP_ENV=prod
 ```
@@ -382,7 +382,7 @@ APP_ENV=prod
 > `docker compose` automatically loads variables from `.env` in the project directory.
 > `docker compose` автоматически подхватывает переменные из `.env` в каталоге проекта.
 
-### Production-ish App + DB (Healthchecks + Safe Defaults) / Прод-подобный пример (Healthchecks + безопасные настройки)
+### Production-ish App + DB (Healthchecks + Safe Defaults)
 
 `docker-compose.yml`
 
@@ -442,7 +442,7 @@ networks:
 > `depends_on.condition: service_healthy` is supported by the Docker Compose implementation, but some orchestrators ignore it.
 > `depends_on.condition: service_healthy` поддерживается Docker Compose, но некоторые оркестраторы это игнорируют.
 
-### Dev/Prod Overrides / Разделение dev/prod через override
+### Dev/Prod Overrides
 
 `docker-compose.yml`
 
@@ -473,7 +473,7 @@ docker compose up -d                               # Uses override automatically
 docker compose -f docker-compose.yml -f docker-compose.override.yml up -d  # Explicit / Явно
 ```
 
-### Secrets (File-based) / Секреты (через файлы)
+### Secrets (File-based)
 
 `docker-compose.yml`
 
@@ -496,7 +496,7 @@ secrets:
 > Treat `./secrets/*` as sensitive. Do not commit it to Git.
 > `./secrets/*` — чувствительные данные. Не коммитьте в Git.
 
-### Profiles (Optional Services) / Профили (опциональные сервисы)
+### Profiles (Optional Services)
 
 `docker-compose.yml`
 
@@ -517,7 +517,7 @@ docker compose up -d                               # Start normal services / З�
 docker compose --profile debug up -d               # Include debug service / Запуск с debug-сервисом
 ```
 
-### Production Runbook (Deploy/Rollback) / Прод-ранбук (Deploy/Rollback)
+### Production Runbook (Deploy/Rollback)
 
 1. **Deploy / Деплой**
    1. `docker compose pull`  — Pull new images / Скачать новые образы
@@ -563,7 +563,7 @@ COPY app.jar /app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 ```
 
-### Node.js Multi-stage (Smaller Runtime) / Multi-stage Node.js (меньше образ)
+### Node.js Multi-stage (Smaller Runtime) / Multi-stage Node.js
 
 ```dockerfile
 FROM node:20-alpine AS build
@@ -585,7 +585,7 @@ HEALTHCHECK --interval=10s --timeout=3s --retries=5 CMD wget -qO- http://127.0.0
 CMD ["node", "dist/server.js"]
 ```
 
-### Python (Non-root + No cache) / Python (не root + без кэша)
+### Python (Non-root + No cache) / Python
 
 ```dockerfile
 FROM python:3.12-slim
@@ -605,7 +605,7 @@ EXPOSE 8000
 CMD ["python", "-m", "app"]
 ```
 
-### Go Multi-stage (Static Binary) / Go Multi-stage (статический бинарник)
+### Go Multi-stage (Static Binary) / Go Multi-stage
 
 ```dockerfile
 FROM golang:1.22-alpine AS build
@@ -623,7 +623,7 @@ EXPOSE 8080
 CMD ["/usr/local/bin/app"]
 ```
 
-### Distroless (Minimal Attack Surface) / Distroless (минимальная поверхность атаки)
+### Distroless (Minimal Attack Surface) / Distroless
 
 ```dockerfile
 FROM golang:1.22 AS build
@@ -642,7 +642,7 @@ ENTRYPOINT ["/app"]
 > Distroless images often have no shell/tools. Prefer external debugging containers (e.g. `alpine`) and good logging.
 > В distroless обычно нет shell/утилит. Для отладки используйте внешние debug-контейнеры и хорошие логи.
 
-### Build Args + Labels / Аргументы сборки + метки
+### Build Args + Labels
 
 ```dockerfile
 FROM alpine:3.20

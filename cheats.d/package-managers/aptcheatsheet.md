@@ -11,12 +11,12 @@ tags:
 
 ## Table of Contents
 - [Description](#Description)
-- [Configuration](#️%20Configuration%20/%20Конфигурация)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Configuration](#️%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 - [Comparison: Upgrade vs Dist-Upgrade](#Comparison:%20Upgrade%20vs%20Dist-Upgrade)
-- [Security](#Security%20/%20Безопасность)
+- [Security](#Security)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -34,22 +34,22 @@ tags:
 
 ---
 
-## ⚙️ Configuration / Конфигурация
+## ⚙️ Configuration
 
-### Main Configuration Files / Основные файлы конфигурации
+### Main Configuration Files
 `/etc/apt/sources.list`
 `/etc/apt/sources.list.d/*.list`
 `/etc/apt/apt.conf`
 `/etc/apt/apt.conf.d/`
 
-### Add Repository / Добавить репозиторий
+### Add Repository
 ```bash
 sudo add-apt-repository ppa:<USER>/<REPO>         # Add PPA / Добавить PPA
 sudo add-apt-repository --remove ppa:<USER>/<REPO> # Remove PPA / Удалить PPA
 sudo apt edit-sources                             # Edit sources manually / Редактировать источники вручную
 ```
 
-### Proxy Configuration / Настройка прокси
+### Proxy Configuration
 `/etc/apt/apt.conf.d/proxy.conf`
 ```bash
 Acquire::http::Proxy "http://<USER>:<PASSWORD>@<HOST>:<PORT>/";
@@ -58,9 +58,9 @@ Acquire::https::Proxy "http://<USER>:<PASSWORD>@<HOST>:<PORT>/";
 
 ---
 
-## 🛠 Core Management / Основное управление
+## 🛠 Core Management
 
-### Update & Upgrade / Обновление
+### Update & Upgrade
 ```bash
 sudo apt update                               # Update package lists / Обновить списки пакетов
 sudo apt upgrade                              # Upgrade packages / Обновить пакеты
@@ -69,7 +69,7 @@ sudo apt dist-upgrade                         # Distribution upgrade / Обно�
 sudo apt update && sudo apt upgrade -y        # Update and upgrade / Обновить списки и пакеты
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo apt install <PACKAGE>                    # Install package / Установить пакет
 sudo apt install <PKG1> <PKG2> <PKG3>         # Install multiple / Установить несколько
@@ -81,7 +81,7 @@ sudo apt autoremove                           # Remove unused dependencies / У�
 sudo apt autoremove --purge                   # Remove unused with configs / Удалить неиспользуемые с конфигами
 ```
 
-### Search & Info / Поиск и информация
+### Search & Info
 ```bash
 apt search <KEYWORD>                          # Search packages / Поиск пакетов
 apt show <PACKAGE>                            # Show package details / Показать детали пакета
@@ -97,15 +97,15 @@ dpkg -S <PATH/TO/FILE>                        # Find owner of file / Найти 
 
 ---
 
-## 🔧 Sysadmin Operations / Операции системного администратора
+## 🔧 Sysadmin Operations
 
-### Clean & Maintenance / Очистка и обслуживание
+### Clean & Maintenance
 ```bash
 sudo apt clean                                # Clear local repository of retrieved package files / Очистить локальный репозиторий скачанных файлов
 sudo apt autoclean                            # Clear old versions of downloaded packages / Очистить старые версии скачанных пакетов
 ```
 
-### Hold & Unhold / Удержание пакетов
+### Hold & Unhold
 Prevent a package from being automatically upgraded. / Предотвратить автоматическое обновление пакета.
 
 ```bash
@@ -114,7 +114,7 @@ sudo apt-mark unhold <PACKAGE>                # Allow upgrade / Разрешит
 apt-mark showhold                             # Show held packages / Показать удерживаемые пакеты
 ```
 
-### Logs / Логи
+### Logs
 - **History Log:** `/var/log/apt/history.log` - Record of installed/removed/upgraded packages.
 - **Term Log:** `/var/log/apt/term.log` - Terminal output of apt commands.
 
@@ -123,7 +123,7 @@ tail -f /var/log/apt/history.log              # Monitor package changes / Мон
 grep "install " /var/log/apt/history.log      # Search installed packages / Поиск установленных пакетов
 ```
 
-### Unattended Upgrades / Автоматические обновления
+### Unattended Upgrades
 `/etc/apt/apt.conf.d/50unattended-upgrades`
 
 Enable automatic updates for security patches. / Включить автоматические обновления для патчей безопасности.
@@ -131,15 +131,15 @@ Enable automatic updates for security patches. / Включить автомат
 ```bash
 sudo apt install unattended-upgrades
 sudo dpkg-reconfigure -plow unattended-upgrades
-# Check log / Проверка лога
+# Check log
 cat /var/log/unattended-upgrades/unattended-upgrades.log
 ```
 
 ---
 
-## 🚨 Troubleshooting / Устранение неполадок
+## 🚨 Troubleshooting
 
-### Lock File Issues / Проблемы с файлами блокировки
+### Lock File Issues
 > [!WARNING]
 > Only remove lock files if you are certain no other apt/dpkg process is running. / Удаляйте файлы блокировки только если уверены, что процесс apt/dpkg не запущен.
 
@@ -147,14 +147,14 @@ If you get "Could not get lock /var/lib/dpkg/lock":
 ```bash
 sudo lsof /var/lib/dpkg/lock                  # Check who holds the lock / Проверить, кто держит блокировку
 sudo kill -9 <PID>                            # Kill the process / Убить процесс
-# OR if no process is running / ИЛИ если процесс не запущен
+# OR if no process is running
 sudo rm /var/lib/apt/lists/lock
 sudo rm /var/cache/apt/archives/lock
 sudo rm /var/lib/dpkg/lock*
 sudo dpkg --configure -a                      # Fix interrupted installations / Исправить прерванные установки
 ```
 
-### Merge List Errors / Ошибки списков пакетов
+### Merge List Errors
 If you get "Problem with MergeList" or "Hash Sum Mismatch":
 ```bash
 sudo rm -rf /var/lib/apt/lists/*
@@ -162,7 +162,7 @@ sudo apt clean
 sudo apt update
 ```
 
-### Fix Broken Installs / Исправление сломанных установок
+### Fix Broken Installs
 ```bash
 sudo apt --fix-broken install                 # Fix missing dependencies / Исправить отсутствующие зависимости
 ```
@@ -180,14 +180,14 @@ sudo apt --fix-broken install                 # Fix missing dependencies / Ис�
 
 ---
 
-## 🔒 Security / Безопасность
+## 🔒 Security
 
-### Key Management / Управление ключами
+### Key Management
 Files in `/etc/apt/trusted.gpg.d/` or `/usr/share/keyrings/`.
 
 ```bash
 apt-key list                                  # List keys (deprecated) / Список ключей (устарело)
-# Modern way to add key / Современный способ добавить ключ:
+# Modern way to add key
 curl -fsSL https://<URL>/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/<REPO>-archive-keyring.gpg
 ```
 

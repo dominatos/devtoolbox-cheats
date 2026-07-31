@@ -18,7 +18,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -33,7 +33,7 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install pass / Установка pass
+### Install pass
 
 ```bash
 sudo apt install pass                         # Debian/Ubuntu
@@ -46,21 +46,21 @@ brew install pass                             # macOS
 > `pass` requires a GPG key. Generate one first with `gpg --gen-key` if you don't have one.
 > `pass` требует GPG ключ. Сначала создайте его с помощью `gpg --gen-key`.
 
-### Initialize Store / Инициализировать хранилище
+### Initialize Store
 
 ```bash
 pass init <GPG_KEY_ID>                        # Initialize with GPG key / Инициализировать с GPG ключом
 pass init <EMAIL>                             # Initialize with email / Инициализировать с email
 ```
 
-### Multiple Users / Несколько пользователей
+### Multiple Users
 
 ```bash
 pass init <KEY1> <KEY2> <KEY3>                # Multi-user store / Хранилище для нескольких пользователей
 pass init -p team/ <TEAM_KEY_ID>              # Initialize subdirectory / Инициализировать поддиректорию
 ```
 
-### Directory Structure / Структура директорий
+### Directory Structure
 
 | Path | Description (EN / RU) |
 |------|----------------------|
@@ -72,7 +72,7 @@ pass init -p team/ <TEAM_KEY_ID>              # Initialize subdirectory / Ини
 
 ## 2. Core Management
 
-### Insert Passwords / Вставить пароли
+### Insert Passwords
 
 ```bash
 pass insert site.com/user                     # Add entry (prompt) / Добавить запись (запрос пароля)
@@ -81,7 +81,7 @@ pass insert -e site.com/user                  # Insert from editor / Встав�
 echo "<PASSWORD>" | pass insert -e site.com/user  # Insert from stdin / Вставить из stdin
 ```
 
-### Generate Passwords / Сгенерировать пароли
+### Generate Passwords
 
 ```bash
 pass generate site.com/user 20                # Generate 20-char password / Пароль 20 символов
@@ -90,7 +90,7 @@ pass generate -n site.com/user 16             # No symbols / Без символ
 pass generate -c site.com/user 32             # Copy to clipboard / Скопировать в буфер
 ```
 
-### Show Passwords / Показать пароли
+### Show Passwords
 
 ```bash
 pass site.com/user                            # Show password / Показать пароль
@@ -99,7 +99,7 @@ pass -c site.com/user                         # Copy to clipboard / Скопир
 pass -c2 site.com/user                        # Copy 2nd line (OTP) / Скопировать 2-ю строку (OTP)
 ```
 
-### Edit & Remove / Редактировать и удалить
+### Edit & Remove
 
 ```bash
 pass edit site.com/user                       # Edit entry / Редактировать запись
@@ -111,7 +111,7 @@ pass rm -r site.com                           # Remove directory / Удалит�
 
 ## 3. Organization & Search
 
-### List Entries / Список записей
+### List Entries
 
 ```bash
 pass                                          # List all entries / Список всех записей
@@ -119,14 +119,14 @@ pass ls                                       # Same as above / То же что
 pass ls site.com                              # List subdirectory / Список поддиректории
 ```
 
-### Search / Поиск
+### Search
 
 ```bash
 pass find github                              # Find entries / Найти записи
 pass grep username                            # Search in passwords / Искать в паролях
 ```
 
-### Move & Copy / Переместить и скопировать
+### Move & Copy
 
 ```bash
 pass mv old-site.com new-site.com             # Move entry / Переместить запись
@@ -137,14 +137,14 @@ pass cp site.com/user site.com/backup         # Copy entry / Скопирова�
 
 ## 4. Git Integration
 
-### Initialize Git / Инициализировать Git
+### Initialize Git
 
 ```bash
 pass git init                                 # Initialize git repo / Инициализировать git
 pass git remote add origin <REPO_URL>         # Add remote / Добавить удалённый репозиторий
 ```
 
-### Git Operations / Git операции
+### Git Operations / Git
 
 ```bash
 pass git push                                 # Push changes / Отправить изменения
@@ -161,7 +161,7 @@ pass git status                               # Check status / Проверит�
 
 ## 5. Extensions
 
-### OTP (One-Time Password) / OTP (одноразовый пароль)
+### OTP (One-Time Password) / OTP
 
 ```bash
 pass otp insert site.com/user                 # Add OTP secret / Добавить OTP секрет
@@ -169,7 +169,7 @@ pass otp site.com/user                        # Generate OTP code / Сгенер
 pass otp -c site.com/user                     # Copy OTP to clipboard / Скопировать OTP в буфер
 ```
 
-### Import / Импорт
+### Import
 
 ```bash
 pass import keepass database.kdbx             # Import from KeePass / Импортировать из KeePass
@@ -177,7 +177,7 @@ pass import lastpass export.csv               # Import from LastPass / Импо�
 pass import 1password export.1pif             # Import from 1Password / Импортировать из 1Password
 ```
 
-### Common Extensions / Распространённые расширения
+### Common Extensions
 
 | Extension | Description (EN / RU) |
 |-----------|----------------------|
@@ -190,7 +190,7 @@ pass import 1password export.1pif             # Import from 1Password / Импо
 
 ## 6. Real-World Examples
 
-### Team Setup / Настройка для команды
+### Team Setup
 
 ```bash
 pass init <TEAM_GPG_KEY>
@@ -198,48 +198,48 @@ pass git init
 pass git remote add origin git@git.company.com:passwords.git
 pass git push -u origin main
 
-# Team workflow / Командный рабочий процесс
+# Team workflow
 pass insert servers/production-db
 pass git push
 
-# Other team members / Другие члены команды
+# Other team members
 pass git pull
 pass servers/production-db
 ```
 
-### Backup & Sync / Резервная копия и синхронизация
+### Backup & Sync
 
 ```bash
 pass git init
 pass git remote add origin git@github.com:<USER>/passwords.git
 pass git push
 
-# Sync on new machine / Синхронизация на новой машине
+# Sync on new machine
 git clone git@github.com:<USER>/passwords.git ~/.password-store
 pass
 ```
 
-### Script Integration / Интеграция со скриптами
+### Script Integration
 
 ```bash
 #!/bin/bash
-# Get password in script / Получить пароль в скрипте
+# Get password in script
 DB_PASS=$(pass database/production)
 mysql -u admin -p"$DB_PASS" production
 ```
 
-### Dmenu/Rofi Integration / Интеграция с Dmenu/Rofi
+### Dmenu/Rofi Integration
 
 ```bash
 #!/bin/bash
 pass -c $(pass ls | tail -n +2 | dmenu -p "Password:")
 ```
 
-### Browser Integration / Интеграция с браузером
+### Browser Integration
 
 ```bash
 # Install passff (Firefox) or browserpass (Chrome)
-# Store with URL / Сохранить с URL
+# Store with URL
 pass insert -m github.com/username
 # password
 # url: https://github.com
@@ -248,26 +248,26 @@ pass insert -m github.com/username
 
 ---
 
-### Basic Workflow / Базовый рабочий процесс
+### Basic Workflow
 
 ```bash
-# Initialize / Инициализировать
+# Initialize
 pass init <EMAIL>
 
-# Add passwords / Добавить пароли
+# Add passwords
 pass insert email/gmail
 pass insert social/github
 pass generate web/aws 32
 
-# Use passwords / Использовать пароли
+# Use passwords
 pass -c email/gmail              # Copy to clipboard / Скопировать в буфер
 pass social/github               # Show password / Показать пароль
 ```
 
-### Multiline Entries / Многострочные записи
+### Multiline Entries
 
 ```bash
-# Add entry with metadata / Добавить запись с метаданными
+# Add entry with metadata
 pass insert -m aws/production
 
 # Format:
@@ -276,20 +276,20 @@ pass insert -m aws/production
 # url: https://console.aws.amazon.com
 # region: us-east-1
 
-# Access / Доступ
+# Access
 pass aws/production              # Show all / Показать всё
 pass -c aws/production           # Copy password / Скопировать пароль
 pass -c2 aws/production          # Copy username / Скопировать имя пользователя
 ```
 
-### OTP Integration / Интеграция OTP
+### OTP Integration
 
 ```bash
-# Add OTP secret / Добавить OTP секрет
+# Add OTP secret
 pass otp insert github/user
 # Enter otpauth://totp/...
 
-# Generate codes / Генерировать коды
+# Generate codes
 pass otp github/user             # Show OTP code / Показать OTP код
 pass otp -c github/user          # Copy OTP code / Скопировать OTP код
 ```

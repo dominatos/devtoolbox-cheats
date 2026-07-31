@@ -36,18 +36,18 @@ tags:
 [smartctl(8)](https://man7.org/linux/man-pages/man8/smartctl.8.html) · [smartd(8)](https://man7.org/linux/man-pages/man8/smartd.8.html) · [mdadm(8)](https://man7.org/linux/man-pages/man8/mdadm.8.html) · [md(4)](https://man7.org/linux/man-pages/man4/md.4.html)
 
 ## Table of Contents
-- [Installation](#Installation%20/%20Установка)
-- [SMART Diagnostics](#SMART%20Diagnostics%20/%20Диагностика%20SMART)
-- [mdadm RAID Management](#mdadm%20RAID%20Management%20/%20Управление%20RAID)
-- [RAID Levels Comparison](#RAID%20Levels%20Comparison%20/%20Сравнение%20уровней%20RAID)
-- [Critical SMART Attributes](#Critical%20SMART%20Attributes%20/%20Критические%20SMART%20атрибуты)
-- [Monitoring & Alerts](#Monitoring%20&%20Alerts%20/%20Мониторинг%20и%20оповещения)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
+- [Installation](#Installation)
+- [SMART Diagnostics](#SMART%20Diagnostics)
+- [mdadm RAID Management](#mdadm%20RAID%20Management)
+- [RAID Levels Comparison](#RAID%20Levels%20Comparison)
+- [Critical SMART Attributes](#Critical%20SMART%20Attributes)
+- [Monitoring & Alerts](#Monitoring%20&%20Alerts)
+- [Real-World Examples](#Real-World%20Examples)
+- [Best Practices](#Best%20Practices)
 
 ---
 
-## Installation / Установка
+## Installation
 
 ```bash
 # Debian/Ubuntu
@@ -60,7 +60,7 @@ sudo dnf install smartmontools mdadm
 sudo pacman -S smartmontools mdadm
 ```
 
-### Default Ports & Services / Порты и сервисы по умолчанию
+### Default Ports & Services
 
 | Service | Port | Config File | Description (EN) | Описание (RU) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -69,9 +69,9 @@ sudo pacman -S smartmontools mdadm
 
 ---
 
-## SMART Diagnostics / Диагностика SMART
+## SMART Diagnostics
 
-### Basic SMART Info / Базовая SMART информация
+### Basic SMART Info
 
 ```bash
 sudo smartctl -a /dev/sda                     # Full SMART info / Полная SMART информация
@@ -86,7 +86,7 @@ sudo smartctl -A /dev/sda                     # Attributes / Атрибуты
 SMART overall-health self-assessment test result: PASSED
 ```
 
-### Run Tests / Запустить тесты
+### Run Tests
 
 ```bash
 sudo smartctl -t short /dev/sda               # Short test (~2 min) / Короткий тест (~2 мин)
@@ -99,7 +99,7 @@ sudo smartctl -X                              # Abort test / Прервать т
 > **Short test** — quick check (~2 minutes), verifies basic functionality. **Long test** — thorough surface scan (can take hours on large drives). **Conveyance test** — designed to detect damage during shipping.
 > **Короткий тест** — быстрая проверка (~2 мин). **Длинный тест** — полное сканирование поверхности (может занять часы). **Тест транспортировки** — обнаружение повреждений при перевозке.
 
-### View Test Results / Просмотр результатов тестов
+### View Test Results
 
 ```bash
 sudo smartctl -l selftest /dev/sda            # Self-test log / Лог само-тестов
@@ -107,7 +107,7 @@ sudo smartctl -l error /dev/sda               # Error log / Лог ошибок
 sudo smartctl -l selective /dev/sda           # Selective test log / Лог выборочных тестов
 ```
 
-### For NVMe Drives / Для NVMe дисков
+### For NVMe Drives
 
 ```bash
 sudo smartctl -a /dev/nvme0                   # NVMe SMART info / NVMe SMART информация
@@ -119,10 +119,10 @@ sudo nvme smart-log /dev/nvme0n1              # nvme-cli alternative / Альт�
 > NVMe drives use a different SMART attribute set. Key metrics: **Percentage Used** (drive wear, 100% = end of rated life), **Available Spare** (replacement blocks remaining), and **Temperature**.
 > NVMe используют другой набор SMART-атрибутов. Ключевые метрики: **Percentage Used** (износ), **Available Spare** (оставшиеся блоки замены), **Temperature**.
 
-### For RAID Controllers / Для RAID контроллеров
+### For RAID Controllers
 
 ```bash
-# Behind hardware RAID (specify device type) / За аппаратным RAID
+# Behind hardware RAID (specify device type)
 sudo smartctl -a /dev/sda -d megaraid,0       # LSI MegaRAID, disk 0
 sudo smartctl -a /dev/sda -d cciss,0          # HP SmartArray, disk 0
 sudo smartctl -a /dev/sda -d areca,1          # Areca, disk 1
@@ -130,9 +130,9 @@ sudo smartctl -a /dev/sda -d areca,1          # Areca, disk 1
 
 ---
 
-## mdadm RAID Management / Управление RAID
+## mdadm RAID Management
 
-### Check Status / Проверить статус
+### Check Status
 
 ```bash
 cat /proc/mdstat                              # RAID arrays status / Статус RAID массивов
@@ -150,7 +150,7 @@ md0 : active raid1 sda1[0] sdb1[1]
 > In `/proc/mdstat`, `[UU]` means all disks are up. `[U_]` means one disk is missing/failed. `[2/2]` shows active/total disks.
 > В `/proc/mdstat` `[UU]` означает все диски работают. `[U_]` — один диск отсутствует/неисправен. `[2/2]` — активных/всего.
 
-### Create RAID / Создать RAID
+### Create RAID
 
 ```bash
 sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sda1 /dev/sdb1  # RAID 1
@@ -158,7 +158,7 @@ sudo mdadm --create /dev/md0 --level=5 --raid-devices=3 /dev/sda1 /dev/sdb1 /dev
 sudo mdadm --create /dev/md0 --level=10 --raid-devices=4 /dev/sd[abcd]1  # RAID 10
 ```
 
-### Add/Remove Devices / Добавить/Удалить устройства
+### Add/Remove Devices
 
 > [!WARNING]
 > Marking a device as failed with `--fail` and removing it with `--remove` will degrade the array. Ensure you have a replacement ready.
@@ -170,7 +170,7 @@ sudo mdadm --fail /dev/md0 /dev/sdb1          # Mark as failed / Отметит�
 sudo mdadm --remove /dev/md0 /dev/sdb1        # Remove device / Удалить устройство
 ```
 
-### Manage Array / Управление массивом
+### Manage Array
 
 > [!CAUTION]
 > `mdadm --stop` will take the array offline. All I/O to the array will stop. Ensure no filesystems are mounted from this array before stopping.
@@ -182,7 +182,7 @@ sudo mdadm --assemble /dev/md0 /dev/sda1 /dev/sdb1  # Assemble array / Собр�
 sudo mdadm --assemble --scan                  # Auto-assemble all / Автособрать все
 ```
 
-### Configuration / Конфигурация
+### Configuration
 
 `/etc/mdadm/mdadm.conf`
 
@@ -197,7 +197,7 @@ sudo update-initramfs -u                      # Update initramfs / Обнови�
 
 ---
 
-## RAID Levels Comparison / Сравнение уровней RAID
+## RAID Levels Comparison
 
 | RAID Level | Min Disks | Redundancy (EN) | Избыточность (RU) | Usable Capacity | Best For |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -207,7 +207,7 @@ sudo update-initramfs -u                      # Update initramfs / Обнови�
 | **RAID 6** | 4 | Double parity — survives 2 disk failures | Двойная четность — выдерживает отказ 2 дисков | (N-2)/N | Large arrays, archival |
 | **RAID 10** | 4 | Mirror + Stripe — survives 1 disk per mirror | Зеркало + Чередование | 50% | Databases, high I/O |
 
-### RAID Performance Comparison / Сравнение производительности RAID
+### RAID Performance Comparison
 
 | RAID Level | Read Speed | Write Speed | Write Penalty | Rebuild Risk |
 | :--- | :--- | :--- | :--- | :--- |
@@ -223,7 +223,7 @@ sudo update-initramfs -u                      # Update initramfs / Обнови�
 
 ---
 
-## Critical SMART Attributes / Критические SMART атрибуты
+## Critical SMART Attributes
 
 | ID | Attribute | Description (EN) | Описание (RU) | Action Threshold |
 | :--- | :--- | :--- | :--- | :--- |
@@ -236,7 +236,7 @@ sudo update-initramfs -u                      # Update initramfs / Обнови�
 | 9 | `Power_On_Hours` | Total hours powered on | Общее время работы | Informational |
 | 12 | `Power_Cycle_Count` | Number of power cycles | Количество циклов питания | Informational |
 
-### SSD-Specific Attributes / Атрибуты SSD
+### SSD-Specific Attributes
 
 | ID | Attribute | Description (EN) | Описание (RU) | Action Threshold |
 | :--- | :--- | :--- | :--- | :--- |
@@ -247,9 +247,9 @@ sudo update-initramfs -u                      # Update initramfs / Обнови�
 
 ---
 
-## Monitoring & Alerts / Мониторинг и оповещения
+## Monitoring & Alerts
 
-### Enable SMART Monitoring / Включить SMART мониторинг
+### Enable SMART Monitoring
 
 ```bash
 sudo systemctl enable smartd                  # Enable smartd / Включить smartd
@@ -257,37 +257,37 @@ sudo systemctl start smartd                   # Start smartd / Запустит�
 sudo systemctl status smartd                  # Check status / Проверить статус
 ```
 
-### smartd Configuration / Конфигурация smartd
+### smartd Configuration
 
 `/etc/smartd.conf`
 
 ```bash
 /dev/sda -a -o on -S on -s (S/../.././02|L/../../6/03) -m <EMAIL>
-# -a: Monitor all attributes / Мониторить все атрибуты
-# -o on: Enable automatic offline tests / Включить автоматические offline тесты
-# -S on: Enable attribute autosave / Включить автосохранение атрибутов
-# -s: Schedule tests (short daily 2AM, long Saturday 3AM) / Запланировать тесты
-# -m: Email alerts / Email оповещения
+# -a: Monitor all attributes
+# -o on: Enable automatic offline tests
+# -S on: Enable attribute autosave
+# -s: Schedule tests (short daily 2AM, long Saturday 3AM)
+# -m: Email alerts / Email
 ```
 
-### Monitor All Disks / Мониторить все диски
+### Monitor All Disks
 
 `/etc/smartd.conf`
 
 ```bash
 DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -m <EMAIL>
-# DEVICESCAN: Auto-detect all drives / Автоопределение всех дисков
-# -n standby,q: Skip standby drives quietly / Пропускать спящие диски тихо
+# DEVICESCAN: Auto-detect all drives
+# -n standby,q: Skip standby drives quietly
 ```
 
-### mdadm Monitoring / Мониторинг mdadm
+### mdadm Monitoring
 
 ```bash
 sudo mdadm --monitor --scan --daemonize       # Start monitor daemon / Запустить демон мониторинга
 sudo mdadm --detail --test /dev/md0           # Test for degradation / Тест на деградацию
 ```
 
-### Logrotate for SMART / Logrotate для SMART
+### Logrotate for SMART / Logrotate
 
 `/etc/logrotate.d/smartd`
 
@@ -308,37 +308,37 @@ sudo mdadm --detail --test /dev/md0           # Test for degradation / Тест 
 
 ---
 
-## Real-World Examples / Примеры из практики
+## Real-World Examples
 
-### Daily SMART Check Script / Скрипт ежедневной проверки SMART
+### Daily SMART Check Script
 
 ```bash
 #!/bin/bash
-# Check all disks / Проверить все диски
+# Check all disks
 for disk in /dev/sd?; do
   echo "=== $disk ==="
   sudo smartctl -H "$disk" || echo "WARNING: $disk has issues"
 done
 ```
 
-### Create RAID 1 for System / Создать RAID 1 для системы
+### Create RAID 1 for System
 
 ```bash
-# Create RAID 1 / Создать RAID 1
+# Create RAID 1
 sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sda1 /dev/sdb1
 
-# Format / Форматировать
+# Format
 sudo mkfs.ext4 /dev/md0
 
-# Mount / Смонтировать
+# Mount
 sudo mount /dev/md0 /mnt/data
 
-# Save config / Сохранить конфиг
+# Save config
 sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
 sudo update-initramfs -u
 ```
 
-### Replace Failed Disk Runbook / Замена неисправного диска
+### Replace Failed Disk Runbook
 
 1. Check array status / Проверить статус массива:
 
@@ -385,67 +385,67 @@ sudo update-initramfs -u
 > During rebuild, the array has **no redundancy** (RAID 1) or reduced redundancy (RAID 5/6). Avoid heavy I/O and do NOT reboot unless absolutely necessary.
 > Во время восстановления массив не имеет **избыточности** (RAID 1) или имеет уменьшенную избыточность (RAID 5/6). Избегайте интенсивного I/O и НЕ перезагружайте без крайней необходимости.
 
-### RAID Performance Test / Тест производительности RAID
+### RAID Performance Test
 
 ```bash
-# Write test / Тест записи
+# Write test
 sudo dd if=/dev/zero of=/dev/md0 bs=1M count=1000 oflag=direct
 
-# Read test / Тест чтения
+# Read test
 sudo dd if=/dev/md0 of=/dev/null bs=1M count=1000 iflag=direct
 
-# Random I/O test / Тест случайного I/O
+# Random I/O test
 sudo fio --name=randwrite --ioengine=libaio --iodepth=16 --rw=randwrite \
   --bs=4k --direct=1 --size=1G --numjobs=4 --runtime=60 \
   --group_reporting --filename=/dev/md0
 ```
 
-### Monitor Disk Health / Мониторить здоровье дисков
+### Monitor Disk Health
 
 ```bash
-# Check critical attributes for all disks / Проверить критические атрибуты всех дисков
+# Check critical attributes for all disks
 for disk in /dev/sd?; do
   echo "=== $disk ==="
   sudo smartctl -A "$disk" | grep -E "Reallocated_Sector_Ct|Current_Pending_Sector|Offline_Uncorrectable|Temperature_Celsius"
 done
 ```
 
-### NVMe SMART Check / Проверка NVMe SMART
+### NVMe SMART Check
 
 ```bash
-# Basic check / Базовая проверка
+# Basic check
 sudo smartctl -a /dev/nvme0n1
 
-# Health percentage / Процент здоровья
+# Health percentage
 sudo smartctl -a /dev/nvme0n1 | grep "Percentage Used"
 
-# Temperature / Температура
+# Temperature
 sudo smartctl -a /dev/nvme0n1 | grep "Temperature"
 ```
 
-### Expand RAID Array / Расширить RAID массив
+### Expand RAID Array
 
 ```bash
-# Add device / Добавить устройство
+# Add device
 sudo mdadm --add /dev/md0 /dev/sdd1
 
-# Grow array / Расширить массив
+# Grow array
 sudo mdadm --grow /dev/md0 --raid-devices=4
 
-# Resize filesystem / Изменить размер файловой системы
+# Resize filesystem
 sudo resize2fs /dev/md0
 ```
 
-### Check RAID Consistency / Проверить целостность RAID
+### Check RAID Consistency
 
 ```bash
-# Start consistency check / Запустить проверку целостности
+# Start consistency check
 echo check > /sys/block/md0/md/sync_action
 
-# Monitor progress / Следить за прогрессом
+# Monitor progress
 cat /proc/mdstat
 
-# Check mismatch count / Проверить количество несовпадений
+# Check mismatch count
 cat /sys/block/md0/md/mismatch_cnt
 ```
 
@@ -455,7 +455,7 @@ cat /sys/block/md0/md/mismatch_cnt
 
 ---
 
-## Best Practices / Лучшие практики
+## Best Practices
 
 > [!IMPORTANT]
 > - Run **SMART tests regularly** (at least weekly) / Регулярно запускайте SMART тесты

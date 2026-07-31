@@ -11,10 +11,10 @@ tags:
 
 ## Table of Contents
 - [Description](#Description)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Advanced Operations](#Advanced%20Operations%20/%20Продвинутые%20операции)
+- [Core Management](#Core%20Management)
+- [Advanced Operations](#Advanced%20Operations)
 - [Comparison: AppImage vs Others](#Comparison:%20AppImage%20vs%20Others)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Troubleshooting](#Troubleshooting)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -29,9 +29,9 @@ tags:
 
 ---
 
-## 🛠 Core Management / Основное управление
+## 🛠 Core Management
 
-### Execution / Запуск
+### Execution
 AppImages are single files that just need to be made executable. / AppImages — это одиночные файлы, которые нужно просто сделать исполняемыми.
 
 ```bash
@@ -39,20 +39,20 @@ chmod +x <FILE>.AppImage                      # Make executable / Сделать
 ./<FILE>.AppImage                             # Run / Запустить
 ```
 
-### Installation (Integration) / Установка (Интеграция)
+### Installation (Integration)
 Since AppImages are not installed, "installation" means integrating them into the system menu. / Поскольку AppImages не устанавливаются, "установка" означает интеграцию их в системное меню.
 
 **Tools:**
 - **AppImageLauncher**: Monitors your Applications directory and integrates AppImages automatically. / Мониторит вашу директорию приложений и автоматически интегрирует AppImages.
 
-#### Install AppImageLauncher (Ubuntu/Debian) / Установка AppImageLauncher
+#### Install AppImageLauncher (Ubuntu/Debian)
 ```bash
 sudo add-apt-repository ppa:appimagelauncher-team/stable
 sudo apt update
 sudo apt install appimagelauncher
 ```
 
-#### Manual Desktop Entry Example / Пример ручной записи Desktop Entry
+#### Manual Desktop Entry Example
 File path: `~/.local/share/applications/<APP>.desktop`
 
 ```ini
@@ -66,29 +66,29 @@ Categories=Utility;
 
 ---
 
-## 🔧 Advanced Operations / Продвинутые операции
+## 🔧 Advanced Operations
 
-### Extract Contents / Извлечение содержимого
+### Extract Contents
 If you need to inspect the contents or modify the AppImage. / Если нужно проверить содержимое или изменить AppImage.
 
 ```bash
 ./<FILE>.AppImage --appimage-extract          # Extract to squashfs-root/ / Извлечь в squashfs-root/
 ```
 
-### Update / Обновление
+### Update
 AppImageUpdate lets you update AppImages using binary delta updates (only downloads changes). / AppImageUpdate позволяет обновлять AppImages используя бинарные дельта-обновления (скачивает только изменения).
 
 ```bash
-# Requires AppImageUpdate tool / Требуется инструмент AppImageUpdate
+# Requires AppImageUpdate tool
 ./AppImageUpdate-x86_64.AppImage <FILE>.AppImage
 ```
 
-### Portable Home / Портативная домашняя директория
+### Portable Home
 Create a directory with the same name as the AppImage plus `.home` to store configuration alongside the app. / Создайте директорию с тем же именем, что и AppImage плюс `.home`, чтобы хранить конфигурацию рядом с приложением.
 
 ```bash
 mkdir <FILE>.AppImage.home                    # Create portable home / Создать портативную домашнюю директорию
-# The app will now store config/data here instead of ~/.config / Приложение теперь будет хранить конфиг/данные здесь, а не в ~/.config
+# The app will now store config/data here instead of ~/.config
 ```
 
 ---
@@ -105,17 +105,17 @@ mkdir <FILE>.AppImage.home                    # Create portable home / Созд�
 
 ---
 
-## 🚨 Troubleshooting / Устранение неполадок
+## 🚨 Troubleshooting
 
-### FUSE Errors / Ошибки FUSE
+### FUSE Errors
 AppImages rely on FUSE (Filesystem in Userspace). If you get `dlopen(): error loading libfuse.so.2`: / AppImages полагаются на FUSE. Если вы получаете ошибку `libfuse.so.2`:
 
 ```bash
-# Ubuntu 22.04+ (Restores FUSE 2 support) / Восстанавливает поддержку FUSE 2
+# Ubuntu 22.04+ (Restores FUSE 2 support)
 sudo apt install libfuse2
 ```
 
-### Sandboxing (Firejail) / Изоляция (Firejail)
+### Sandboxing (Firejail)
 Since AppImages are not sandboxed, use Firejail for security. / Поскольку AppImages не изолированы, используйте Firejail для безопасности.
 
 ```bash

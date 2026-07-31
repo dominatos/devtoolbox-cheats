@@ -12,22 +12,22 @@ tags:
 > **grep** (Global Regular Expression Print) — the quintessential text-search utility, part of every POSIX system. GNU grep supports Basic (BRE), Extended (ERE, `-E`), Fixed-string (`-F`), and Perl-compatible (PCRE, `-P`) regular expressions. It is the go-to tool for searching files, filtering logs, and building shell pipelines. For significantly faster recursive searches (10-100×), consider [`ripgrep` (rg)](https://github.com/BurntSushi/ripgrep) — but `grep` remains the universal standard.
 
 ## Table of Contents
-- [Quick Reference](#Quick%20Reference%20/%20Краткая%20справка)
-- [Basics](#Basics%20/%20Основы)
-- [Regex Dialects](#Regex%20Dialects%20/%20Диалекты%20регулярных%20выражений)
-- [Files & Recursion](#Files%20&%20Recursion%20/%20Файлы%20и%20рекурсия)
-- [Output & Context](#Output%20&%20Context%20/%20Вывод%20и%20контекст)
-- [Counts & File Lists](#Counts%20&%20File%20Lists%20/%20Подсчёт%20и%20списки%20файлов)
-- [Words, Lines & Anchors](#Words,%20Lines%20&%20Anchors%20/%20Слова,%20строки%20и%20якоря)
-- [Case & Locale](#Case%20&%20Locale%20/%20Регистр%20и%20локаль)
-- [Multiline & NULL-Separated](#Multiline%20&%20NULL-Separated%20/%20Многострочные%20и%20NULL-разделители)
-- [Performance & Behavior](#Performance%20&%20Behavior%20/%20Производительность%20и%20поведение)
-- [Log & Streaming Examples](#Log%20&%20Streaming%20Examples%20/%20Логи%20и%20потоковая%20обработка)
-- [Common One-Liners](#Common%20One-Liners%20/%20Частые%20однострочники)
+- [Quick Reference](#Quick%20Reference)
+- [Basics](#Basics)
+- [Regex Dialects](#Regex%20Dialects)
+- [Files & Recursion](#Files%20&%20Recursion)
+- [Output & Context](#Output%20&%20Context)
+- [Counts & File Lists](#Counts%20&%20File%20Lists)
+- [Words, Lines & Anchors](#Words,%20Lines%20&%20Anchors)
+- [Case & Locale](#Case%20&%20Locale)
+- [Multiline & NULL-Separated](#Multiline%20&%20NULL-Separated)
+- [Performance & Behavior](#Performance%20&%20Behavior)
+- [Log & Streaming Examples](#Log%20&%20Streaming%20Examples)
+- [Common One-Liners](#Common%20One-Liners)
 
 ---
 
-## 🚀 Quick Reference / Краткая справка
+## 🚀 Quick Reference
 
 ```bash
 grep -Ev '^(#|$)' /etc/pdns/pdns.conf           # Show only active lines and hide commented / Показывает только активные строки, а закомментированные прячет
@@ -45,7 +45,7 @@ grep --color=auto -n '\berror\b' app.log        # Highlight whole-word 'error' /
 
 ---
 
-## 📖 Basics / Основы
+## 📖 Basics
 
 ```bash
 grep 'pattern' file.txt                         # Match lines (basic regex) / Совпадения (базовые регэкспы)
@@ -62,7 +62,7 @@ grep -q 'pattern' file.txt                      # Quiet; exit status only / Ти
 
 ---
 
-## 🧬 Regex Dialects / Диалекты регулярных выражений
+## 🧬 Regex Dialects
 
 ```bash
 grep -E 'a|b|c+' file.txt                       # Extended regex (egrep) / Расширенный синтаксис (egrep)
@@ -72,7 +72,7 @@ grep -P '(?<=user=)\w+' file.txt                # PCRE lookarounds / PCRE с loo
 
 ---
 
-## 📂 Files & Recursion / Файлы и рекурсия
+## 📂 Files & Recursion
 
 ```bash
 grep -r 'pattern' ./dir                         # Recursive (no symlinks) / Рекурсивно (без симлинков)
@@ -87,7 +87,7 @@ grep -a 'pattern' binfile                       # Force text for binary / Счи
 
 ---
 
-## 📋 Output & Context / Вывод и контекст
+## 📋 Output & Context
 
 ```bash
 grep -A2 'error' app.log                        # 2 lines After match / 2 строки после
@@ -103,7 +103,7 @@ grep --label='stdin' 'pattern' -                # Label for stdin / Метка �
 
 ---
 
-## 🔢 Counts & File Lists / Подсчёт и списки файлов
+## 🔢 Counts & File Lists
 
 ```bash
 grep -c 'pattern' file.txt                      # Count per file / Количество совпадений в файле
@@ -116,7 +116,7 @@ grep -Z -l 'pattern' . | xargs -0 ls -l         # NUL-delimited names / Имен
 
 ---
 
-## 🔤 Words, Lines & Anchors / Слова, строки и якоря
+## 🔤 Words, Lines & Anchors
 
 ```bash
 grep -w 'cat' file.txt                          # Whole word / Целое слово
@@ -127,7 +127,7 @@ grep -E 'error$' app.log                        # Anchor at end / Якорь в 
 
 ---
 
-## 🌐 Case & Locale / Регистр и локаль
+## 🌐 Case & Locale
 
 ```bash
 LC_ALL=C grep -i 'straße' file.txt              # ASCII case-folding / ASCII-фолдинг регистра
@@ -136,7 +136,7 @@ grep -i 'pattern' file.txt                      # Locale-aware case-insensitive 
 
 ---
 
-## 📄 Multiline & NULL-Separated / Многострочные и NULL-разделители
+## 📄 Multiline & NULL-Separated
 
 ```bash
 grep -z 'foo.*bar' file0                        # Read NUL-separated "lines" / NUL-разделители как строки
@@ -146,7 +146,7 @@ grep -Z 'pattern' files*                        # Print NUL after filename / NUL
 
 ---
 
-## ⚡ Performance & Behavior / Производительность и поведение
+## ⚡ Performance & Behavior
 
 ```bash
 grep --mmap 'pattern' bigfile                   # Allow mmap I/O / Разрешить mmap I/O
@@ -158,7 +158,7 @@ grep --text 'pattern' file.bin                  # Same as -a (treat as text) / �
 
 ---
 
-## 📊 Log & Streaming Examples / Логи и потоковая обработка
+## 📊 Log & Streaming Examples
 
 ```bash
 tail -f app.log | grep --line-buffered -E 'ERROR|WARN'  # Live filter logs / Живой фильтр логов
@@ -168,7 +168,7 @@ grep -r --include='*.log' -nE 'HTTP/[23]\.[01] 5..' /var/log  # Find 5xx respons
 
 ---
 
-## 💡 Common One-Liners / Частые однострочники
+## 💡 Common One-Liners
 
 ```bash
 grep -R --include='*.{py,sh}' -n 'TODO' .       # List TODOs in code / TODO в коде
@@ -179,7 +179,7 @@ grep -r -c 'pattern' .                           # Count matches per file / По
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [GNU grep Manual](https://www.gnu.org/software/grep/manual/grep.html)
 - [POSIX grep specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/grep.html)

@@ -26,7 +26,7 @@ tags:
 
 ## Installation & Configuration
 
-### Install / Установить
+### Install
 
 ```bash
 # Debian/Ubuntu
@@ -38,7 +38,7 @@ dnf install duplicity python3-boto3             # Install duplicity + S3 backend
 duplicity --version                             # Verify / Проверить
 ```
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 ```bash
 export AWS_ACCESS_KEY_ID=<ACCESS_KEY>           # AWS access key / AWS ключ доступа
@@ -54,7 +54,7 @@ export FTP_PASSWORD=<PASSWORD>                  # FTP password (if using FTP) / 
 
 ## GPG Key Setup
 
-### Generate GPG Key / Сгенерировать ключ GPG
+### Generate GPG Key
 
 ```bash
 gpg --full-generate-key                         # Generate new key / Сгенерировать новый ключ
@@ -62,7 +62,7 @@ gpg --list-keys                                 # List public keys / Списо�
 gpg --list-secret-keys                          # List secret keys / Список секретных ключей
 ```
 
-### Export/Import Keys / Экспорт/импорт ключей
+### Export/Import Keys
 
 ```bash
 gpg --export <KEY_ID> > publickey.gpg           # Export public key / Экспортировать публичный ключ
@@ -77,7 +77,7 @@ gpg --import publickey.gpg                      # Import key / Импортир�
 
 ## Backup Operations
 
-### Full Backup / Полный бэкап
+### Full Backup
 
 ```bash
 duplicity /data file:///backup                  # Local backup / Локальный бэкап
@@ -85,14 +85,14 @@ duplicity /data s3://s3.amazonaws.com/<BUCKET>  # S3 backup / Бэкап в S3
 duplicity /data sftp://<USER>@<HOST>/backup     # SFTP backup / SFTP бэкап
 ```
 
-### Incremental Backup / Инкрементальный бэкап
+### Incremental Backup
 
 ```bash
 duplicity incr /data file:///backup             # Force incremental / Принудительно инкрементальный
 duplicity /data file:///backup                  # Auto: inc if full exists / Авто: инкр. если есть полный
 ```
 
-### Advanced Backup Options / Расширенные опции
+### Advanced Backup Options
 
 ```bash
 duplicity /data file:///backup \
@@ -114,21 +114,21 @@ duplicity /data file:///backup \
 
 ## Restore Operations
 
-### Full Restore / Полное восстановление
+### Full Restore
 
 ```bash
 duplicity restore file:///backup /restore       # Restore latest / Восстановить последний
 duplicity restore s3://s3.amazonaws.com/<BUCKET> /restore  # From S3 / Из S3
 ```
 
-### Partial Restore / Частичное восстановление
+### Partial Restore
 
 ```bash
 duplicity restore --file-to-restore var/www file:///backup /restore
 duplicity restore --file-to-restore var/www file:///backup /restore/www  # To alt path / В другое место
 ```
 
-### Time-Based Restore / Восстановление по времени
+### Time-Based Restore
 
 ```bash
 duplicity restore --time 3D file:///backup /restore           # 3 days ago / 3 дня назад
@@ -154,7 +154,7 @@ duplicity verify --compare-data file:///backup /data  # Deep verify / Глубо
 
 ## Retention & Cleanup
 
-### Remove Old Backups / Удалить старые бэкапы
+### Remove Old Backups
 
 > [!WARNING]
 > Always use `--dry-run` first to preview what will be removed.
@@ -167,7 +167,7 @@ duplicity remove-all-but-n-full 3 file:///backup          # Keep last 3 full bac
 duplicity remove-all-inc-of-but-n-full 2 file:///backup   # Remove inc except last 2 full / инкр. кроме 2 полных
 ```
 
-### Cleanup Orphans / Очистка потерянных файлов
+### Cleanup Orphans
 
 ```bash
 duplicity cleanup --dry-run file:///backup      # Preview cleanup / Предпросмотр очистки
@@ -179,7 +179,7 @@ duplicity cleanup --force file:///backup        # Force cleanup / Принуди
 
 ## Backend URLs
 
-### URL Format Reference / Справка по форматам URL
+### URL Format Reference
 
 | Backend | URL Format | Notes |
 |---------|-----------|-------|
@@ -200,7 +200,7 @@ duplicity cleanup --force file:///backup        # Force cleanup / Принуди
 
 ## Performance & Encryption
 
-### Encryption / Шифрование
+### Encryption
 
 ```bash
 duplicity /data file:///backup \
@@ -212,14 +212,14 @@ duplicity /data file:///backup \
 duplicity /data file:///backup --no-encryption  # No encryption (not recommended / не рекомендуется)
 ```
 
-### Compression / Сжатие
+### Compression
 
 ```bash
 duplicity /data file:///backup --compression    # Enable compression (default) / Включить сжатие (по умолч.)
 duplicity /data file:///backup --no-compression # Disable compression / Отключить сжатие
 ```
 
-### Volume Size & Upload / Размер тома и загрузка
+### Volume Size & Upload
 
 ```bash
 duplicity /data file:///backup --volsize 200    # 200 MB volume size / Размер тома 200 МБ
@@ -298,7 +298,7 @@ systemctl start duplicity-backup.timer
 systemctl status duplicity-backup.timer
 ```
 
-### Cache Location / Директория кэша
+### Cache Location
 
 ```bash
 ~/.cache/duplicity/        # Default cache / Кэш по умолчанию
@@ -324,7 +324,7 @@ systemctl status duplicity-backup.timer
 
 ## Troubleshooting
 
-### Common Errors / Распространённые ошибки
+### Common Errors
 
 ```bash
 # "GPG error" / "Ошибка GPG"
@@ -332,7 +332,7 @@ gpg --list-keys                                 # Verify key exists / Прове
 gpg --list-secret-keys                          # Verify secret key / Секретный ключ
 export PASSPHRASE=<PASSWORD>                    # Set passphrase / Установить пароль
 
-# "Orphaned signature" / "Потерянная подпись"
+# "Orphaned signature" / "Потерянная
 duplicity cleanup --force file:///backup        # Remove orphaned files / Удалить потерянные
 
 # "No such file or directory" in backup
@@ -340,7 +340,7 @@ duplicity collection-status file:///backup      # Check collection / Прове�
 duplicity verify file:///backup /data           # Verify integrity / Проверить целостность
 ```
 
-### Verbose Output / Подробный вывод
+### Verbose Output
 
 ```bash
 duplicity -v5 /data file:///backup             # Info level / Уровень info
@@ -348,7 +348,7 @@ duplicity -v8 /data file:///backup             # Debug level / Уровень de
 duplicity -v9 /data file:///backup             # Full debug / Полная отладка
 ```
 
-### Dry Run / Пробный запуск
+### Dry Run
 
 ```bash
 duplicity --dry-run /data file:///backup        # Simulate backup / Симуляция бэкапа

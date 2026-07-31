@@ -49,14 +49,14 @@ tags:
 
 ## ZIP — Classic Archives
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install zip unzip                    # Debian/Ubuntu
 sudo dnf install zip unzip                    # RHEL/Fedora
 sudo pacman -S zip unzip                      # Arch Linux
 ```
 
-### Create Archives / Создание архивов
+### Create Archives
 ```bash
 zip archive.zip file.txt                     # Zip single file / Архивировать один файл
 zip -r archive.zip dir/                       # Zip recursively / Архивировать рекурсивно
@@ -65,7 +65,7 @@ zip -r -9 archive.zip dir/                    # Maximum compression / Макси
 zip -r -0 archive.zip dir/                    # Store only (no compression) / Только хранение
 ```
 
-### Update & Add / Обновление и добавление
+### Update & Add
 ```bash
 zip -u archive.zip newfile.txt                # Update archive / Обновить архив
 zip -d archive.zip file.txt                   # Delete from archive / Удалить из архива
@@ -73,7 +73,7 @@ zip -r archive.zip . -x "*.log"               # Exclude pattern / Исключи
 zip -r archive.zip dir/ -x "*/.git/*"         # Exclude .git / Исключить .git
 ```
 
-### Password Protection / Защита паролем
+### Password Protection
 ```bash
 zip -r -e archive.zip dir/                    # Encrypt with password / Зашифровать паролем
 zip -r -P <PASSWORD> archive.zip dir/         # Password in command / Пароль в команде
@@ -87,7 +87,7 @@ zip -r -P <PASSWORD> archive.zip dir/         # Password in command / Парол
 > ZIP's default encryption (ZipCrypto) is considered weak. For sensitive data, use 7z with AES-256 encryption (`-mhe=on`).
 > Шифрование ZIP по умолчанию (ZipCrypto) считается слабым. Для конфиденциальных данных используйте 7z с AES-256.
 
-### List & Test / Просмотр и тестирование
+### List & Test
 ```bash
 unzip -l archive.zip                          # List contents / Список содержимого
 unzip -t archive.zip                          # Test integrity / Проверить целостность
@@ -98,7 +98,7 @@ unzip -v archive.zip                          # Verbose list / Подробны�
 
 ## UNZIP — Extract ZIP
 
-### Basic Extraction / Базовая распаковка
+### Basic Extraction
 ```bash
 unzip archive.zip                             # Extract to current dir / Распаковать в текущую директорию
 unzip archive.zip -d out/                     # Extract to out/ / Распаковать в out/
@@ -107,7 +107,7 @@ unzip -o archive.zip                          # Overwrite without prompt / Пе�
 unzip -n archive.zip                          # Never overwrite / Никогда не перезаписывать
 ```
 
-### Selective Extraction / Выборочная распаковка
+### Selective Extraction
 ```bash
 unzip archive.zip file.txt                    # Extract single file / Распаковать один файл
 unzip archive.zip "*.txt"                     # Extract by pattern / Распаковать по шаблону
@@ -115,7 +115,7 @@ unzip archive.zip -x "*.log"                  # Exclude pattern / Исключи
 unzip archive.zip dir/                        # Extract directory / Распаковать каталог
 ```
 
-### Password-Protected / Защищённые паролем
+### Password-Protected
 ```bash
 unzip -P <PASSWORD> archive.zip               # Extract with password / Распаковать с паролем
 ```
@@ -124,14 +124,14 @@ unzip -P <PASSWORD> archive.zip               # Extract with password / Расп
 
 ## 7-Zip — High Compression
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install p7zip-full p7zip-rar         # Debian/Ubuntu
 sudo dnf install p7zip p7zip-plugins          # RHEL/Fedora
 sudo pacman -S p7zip                          # Arch Linux
 ```
 
-### Create Archives / Создание архивов
+### Create Archives
 ```bash
 7z a archive.7z file.txt                      # Create 7z archive / Создать 7z архив
 7z a archive.7z file1 dir/                    # Add files/dirs / Добавить файлы/каталоги
@@ -141,7 +141,7 @@ sudo pacman -S p7zip                          # Arch Linux
 7z a -ttar archive.tar dir/                   # Create TAR format / Создать формат TAR
 ```
 
-### Extract Archives / Распаковка архивов
+### Extract Archives
 ```bash
 7z x archive.7z                               # Extract with paths / Распаковать с путями
 7z e archive.7z                               # Extract to current dir / Распаковать в текущую директорию
@@ -154,20 +154,20 @@ sudo pacman -S p7zip                          # Arch Linux
 > `7z x` preserves directory structure, while `7z e` extracts all files flat into a single directory.
 > `7z x` сохраняет структуру каталогов, а `7z e` извлекает все файлы в одну директорию.
 
-### List & Test / Просмотр и тестирование
+### List & Test
 ```bash
 7z l archive.7z                               # List contents / Список содержимого
 7z t archive.7z                               # Test integrity / Проверить целостность
 7z l -slt archive.7z                          # Detailed list / Подробный список
 ```
 
-### Update & Delete / Обновление и удаление
+### Update & Delete
 ```bash
 7z u archive.7z newfile.txt                   # Update archive / Обновить архив
 7z d archive.7z file.txt                      # Delete from archive / Удалить из архива
 ```
 
-### Password & Encryption / Пароль и шифрование
+### Password & Encryption
 ```bash
 7z a -p<PASSWORD> archive.7z dir/             # Password protection / Защита паролем
 7z a -p<PASSWORD> -mhe=on archive.7z dir/     # Encrypt headers / Зашифровать заголовки
@@ -178,7 +178,7 @@ sudo pacman -S p7zip                          # Arch Linux
 > Use `-mhe=on` to encrypt file names in the archive header. Without it, file names are visible even without the password.
 > Используйте `-mhe=on` для шифрования имён файлов. Без этого имена файлов видны даже без пароля.
 
-### Compression Levels / Уровни сжатия
+### Compression Levels
 ```bash
 7z a -mx=0 archive.7z dir/                    # Copy (no compression) / Копирование (без сжатия)
 7z a -mx=1 archive.7z dir/                    # Fastest / Быстрое
@@ -190,14 +190,14 @@ sudo pacman -S p7zip                          # Arch Linux
 
 ## ZSTD — Modern Compression
 
-### Installation / Установка
+### Installation
 ```bash
 sudo apt install zstd                         # Debian/Ubuntu
 sudo dnf install zstd                         # RHEL/Fedora
 sudo pacman -S zstd                           # Arch Linux
 ```
 
-### Compress Files / Сжатие файлов
+### Compress Files
 ```bash
 zstd file.txt                                 # Compress file / Сжать файл
 zstd -19 file.txt                             # Max compression (level 19) / Максимальное сжатие
@@ -207,14 +207,14 @@ zstd -o output.zst file.txt                   # Specify output / Указать 
 zstd -v file.txt                              # Verbose / Подробный вывод
 ```
 
-### Decompress Files / Распаковка файлов
+### Decompress Files
 ```bash
 zstd -d file.zst                              # Decompress / Распаковать
 unzstd file.zst                               # Alternative / Альтернатива
 zstd -d -c file.zst > output.txt              # Decompress to stdout / Распаковать в stdout
 ```
 
-### Multiple Files / Несколько файлов
+### Multiple Files
 ```bash
 zstd *.txt                                    # Compress all txt / Сжать все txt
 zstd -d *.zst                                 # Decompress all zst / Распаковать все zst
@@ -225,7 +225,7 @@ zstd -rm *.txt                                # Compress and remove / Сжать
 > `zstd -rm` removes original files after compression. Use with caution in production.
 > `zstd -rm` удаляет оригинальные файлы после сжатия. Используйте с осторожностью.
 
-### Tar Integration / Интеграция с tar
+### Tar Integration
 ```bash
 tar --zstd -cvf archive.tar.zst dir/          # Create tar.zst / Создать tar.zst
 tar --zstd -xvf archive.tar.zst               # Extract tar.zst / Распаковать tar.zst
@@ -233,7 +233,7 @@ tar --use-compress-program=zstd -cvf archive.tar.zst dir/  # Alternative / Ал�
 tar -I zstd -xvf archive.tar.zst              # Alternative extraction / Альтернативная распаковка
 ```
 
-### Benchmarking / Бенчмарки
+### Benchmarking
 ```bash
 zstd -b file.txt                              # Benchmark compression / Бенчмарк сжатия
 zstd -b1:19 file.txt                          # Test levels 1-19 / Тест уровней 1-19
@@ -243,7 +243,7 @@ zstd -b1:19 file.txt                          # Test levels 1-19 / Тест ур
 
 ## Comparison & Benchmarks
 
-### Compression Ratio Comparison / Сравнение степени сжатия
+### Compression Ratio Comparison
 
 | Tool | Ratio | Compress Speed | Decompress Speed | Description (EN / RU) |
 |------|-------|---------------|-----------------|----------------------|
@@ -253,7 +253,7 @@ zstd -b1:19 file.txt                          # Test levels 1-19 / Тест ур
 | **7z** | ~4.5x | ~5 MB/s | ~100 MB/s | Best ratio, Windows friendly / Лучшее, совместим с Windows |
 | **zstd** | ~3x | ~400 MB/s | ~1000 MB/s | Very fast, good ratio / Очень быстрый, хорошее сжатие |
 
-### Use Cases / Случаи использования
+### Use Cases
 
 | Tool | Best For (EN / RU) |
 |------|---------------------|
@@ -264,7 +264,7 @@ zstd -b1:19 file.txt                          # Test levels 1-19 / Тест ур
 | **zstd** | Modern, fast, best balance / Современное, быстрое, лучший баланс |
 | **zip** | Universal, Windows compatible / Универсальное, совместимость с Windows |
 
-### Encryption Comparison / Сравнение шифрования
+### Encryption Comparison
 
 | Tool | Algorithm | Header Encryption | Security Level (EN / RU) |
 |------|-----------|-------------------|--------------------------|
@@ -277,80 +277,80 @@ zstd -b1:19 file.txt                          # Test levels 1-19 / Тест ур
 
 ## Real-World Examples
 
-### Backup with ZSTD / Резервная копия с ZSTD
+### Backup with ZSTD
 ```bash
-# Fast backup / Быстрая резервная копия
+# Fast backup
 tar --zstd -cvf backup-$(date +%F).tar.zst /home/<USER>
 
-# Maximum compression backup / Максимальное сжатие
+# Maximum compression backup
 tar -I "zstd -19 -T0" -cvf backup-$(date +%F).tar.zst /data
 
-# Extract / Распаковать
+# Extract
 tar --zstd -xvf backup-$(date +%F).tar.zst
 ```
 
-### Split Large Archives / Разделение больших архивов
+### Split Large Archives
 ```bash
-# Create split zip (100MB parts) / Разделённый zip (100MB)
+# Create split zip (100MB parts)
 zip -r -s 100m archive.zip /large/dir
 
-# 7z split (1GB parts) / 7z разделение (1GB)
+# 7z split (1GB parts) / 7z
 7z a -v1g archive.7z /large/dir
 
-# Rejoin split zip / Объединить разделённый zip
+# Rejoin split zip
 zip -F archive.zip --out complete.zip
 ```
 
-### Password-Protected Backups / Защищённые резервные копии
+### Password-Protected Backups
 ```bash
-# 7z encrypted backup / 7z зашифрованная резервная копия
+# 7z encrypted backup / 7z
 7z a -p<PASSWORD> -mhe=on backup.7z /sensitive/data
 
-# Zip encrypted / Zip зашифрованный
+# Zip encrypted / Zip
 zip -r -e backup.zip /sensitive/data
 ```
 
-### Cross-Platform Archives / Кроссплатформенные архивы
+### Cross-Platform Archives
 ```bash
-# For Windows compatibility / Для совместимости с Windows
+# For Windows compatibility
 zip -r archive.zip dir/
 
-# Best compression for Windows / Лучшее сжатие для Windows
+# Best compression for Windows
 7z a -t7z -mx=9 archive.7z dir/
 
-# Universal with good compression / Универсальное с хорошим сжатием
+# Universal with good compression
 tar -czf archive.tar.gz dir/
 ```
 
-### Log Compression / Сжатие логов
+### Log Compression
 ```bash
-# Compress old logs / Сжать старые логи
+# Compress old logs
 find /var/log -name "*.log" -mtime +7 -exec zstd -19 {} \;
 
-# Compress and remove originals / Сжать и удалить оригиналы
+# Compress and remove originals
 find /var/log -name "*.log" -mtime +7 -exec zstd --rm {} \;
 
-# Batch compress / Пакетное сжатие
+# Batch compress
 zstd -19 /var/log/*.log
 ```
 
-### Docker Image Archives / Архивы образов Docker
+### Docker Image Archives
 ```bash
-# Save and compress / Сохранить и сжать
+# Save and compress
 docker save myimage:latest | zstd -19 > myimage.tar.zst
 
-# Load / Загрузить
+# Load
 zstd -d -c myimage.tar.zst | docker load
 ```
 
-### Automated Rotation / Автоматическая ротация
+### Automated Rotation
 ```bash
-# Compress and keep 7 days / Сжать и хранить 7 дней
+# Compress and keep 7 days
 tar --zstd -cvf backup-$(date +%F).tar.zst /data
 find . -name "backup-*.tar.zst" -mtime +7 -delete
 ```
 
-### Verify Archive Integrity / Проверка целостности архива
+### Verify Archive Integrity
 ```bash
 unzip -t archive.zip                          # Verify zip / Проверить zip
 7z t archive.7z                               # Verify 7z / Проверить 7z
@@ -361,7 +361,7 @@ tar --zstd -tvf archive.tar.zst               # Verify tar.zst / Провери�
 
 ## Best Practices
 
-### General Recommendations / Общие рекомендации
+### General Recommendations
 
 - Use zstd for modern Linux systems / Используйте zstd для современных Linux систем
 - Use zip for Windows compatibility / Используйте zip для совместимости с Windows
@@ -371,7 +371,7 @@ tar --zstd -tvf archive.tar.zst               # Verify tar.zst / Провери�
 - Encrypt sensitive archives / Шифруйте чувствительные архивы
 - Use 7z with `-mhe=on` instead of ZIP for security / Используйте 7z с `-mhe=on` вместо ZIP для безопасности
 
-### Compression Levels / Уровни сжатия
+### Compression Levels
 
 | Tool | Levels | Default |
 |------|--------|---------|
@@ -380,7 +380,7 @@ tar --zstd -tvf archive.tar.zst               # Verify tar.zst / Провери�
 | zip | 0–9 | 6 |
 | gzip | 1–9 | 6 |
 
-### Default Extensions / Расширения по умолчанию
+### Default Extensions
 
 | Extension | Description (EN / RU) |
 |-----------|----------------------|

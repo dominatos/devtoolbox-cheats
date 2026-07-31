@@ -11,12 +11,12 @@ tags:
 
 ## Table of Contents
 - [Description](#Description)
-- [Configuration](#️%20Configuration%20/%20Конфигурация)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Configuration](#️%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 - [Comparison: Confinement Modes](#Comparison:%20Confinement%20Modes)
-- [Security](#Security%20/%20Безопасность)
+- [Security](#Security)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -31,15 +31,15 @@ tags:
 
 ---
 
-## ⚙️ Configuration / Конфигурация
+## ⚙️ Configuration
 
-### Main Configuration / Основная конфигурация
+### Main Configuration
 Snap is primarily configured via system settings or command line arguments, rather than text files. / Snap в основном настраивается через системные настройки или аргументы командной строки, а не через текстовые файлы.
 
 `/var/snap/` (User data and configs / Данные пользователя и конфиги)
 `/snap/` (Mount points for read-only squashfs images / Точки монтирования для read-only образов squashfs)
 
-### Proxy Configuration / Настройка прокси
+### Proxy Configuration
 ```bash
 sudo snap set system proxy.http="http://<HOST>:<PORT>"
 sudo snap set system proxy.https="http://<HOST>:<PORT>"
@@ -47,9 +47,9 @@ sudo snap set system proxy.https="http://<HOST>:<PORT>"
 
 ---
 
-## 🛠 Core Management / Основное управление
+## 🛠 Core Management
 
-### Install / Установка
+### Install
 ```bash
 sudo snap install <PACKAGE>                   # Install snap / Установить snap
 sudo snap install <PACKAGE> --classic         # Install with classic confinement / Установить с классической изоляцией
@@ -58,7 +58,7 @@ sudo snap install <PACKAGE> --beta            # Install from beta channel / Ус
 sudo snap install <PACKAGE> --candidate       # Install from candidate channel / Установить из канала candidate
 ```
 
-### Search & List / Поиск и список
+### Search & List
 ```bash
 snap find <KEYWORD>                           # Search for snaps / Поиск снапов
 snap list                                     # List installed snaps / Список установленных снапов
@@ -66,7 +66,7 @@ snap info <PACKAGE>                           # Show snap details / Показа
 snap download <PACKAGE>                       # Download snap file / Скачать файл снапа
 ```
 
-### Update & Refresh / Обновление
+### Update & Refresh
 Snap updates automatically. Manual control: / Snap обновляется автоматически. Ручное управление:
 
 ```bash
@@ -76,7 +76,7 @@ sudo snap revert <PACKAGE>                    # Revert to previous version / В�
 sudo snap switch --channel=<CHANNEL> <PACKAGE> # Switch channel / Переключить канал (stable, candidate, beta, edge)
 ```
 
-### Remove / Удаление
+### Remove
 ```bash
 sudo snap remove <PACKAGE>                    # Remove snap / Удалить snap
 sudo snap remove <PACKAGE> --purge            # Remove without saving snapshot / Удалить без сохранения снимка данных
@@ -84,9 +84,9 @@ sudo snap remove <PACKAGE> --purge            # Remove without saving snapshot /
 
 ---
 
-## 🔧 Sysadmin Operations / Операции системного администратора
+## 🔧 Sysadmin Operations
 
-### Services & Logs / Сервисы и логи
+### Services & Logs
 Snaps can register systemd services. / Snap-пакеты могут регистрировать сервисы systemd.
 
 ```bash
@@ -98,7 +98,7 @@ snap logs <SERVICE>                           # Show service logs / Показа
 snap logs -f <SERVICE>                        # Follow service logs / Следить за логами сервиса
 ```
 
-### Connections & Permissions / Соединения и права
+### Connections & Permissions
 Manage permissions (interfaces) for isolated apps. / Управление правами (интерфейсами) для изолированных приложений.
 
 ```bash
@@ -107,7 +107,7 @@ sudo snap connect <PACKAGE>:<PLUG> <SLOT>     # Connect interface manually / П�
 sudo snap disconnect <PACKAGE>:<PLUG>         # Disconnect interface / Отключить интерфейс
 ```
 
-### Snapshots (Backups) / Снимки (Резервные копии)
+### Snapshots (Backups)
 Automatic snapshots on remove. Manual management: / Автоматические снимки при удалении. Ручное управление:
 
 ```bash
@@ -119,21 +119,21 @@ sudo snap forget <ID>                         # Delete snapshot / Удалить
 
 ---
 
-## 🚨 Troubleshooting / Устранение неполадок
+## 🚨 Troubleshooting
 
-### Debugging / Отладка
+### Debugging
 ```bash
 snap debug confinement                        # Print confinement mode / Показать режим изоляции
 snap debug connectivity                       # Check connectivity / Проверить соединение
 snap run --shell <PACKAGE>                    # Run shell inside snap environment / Запустить оболочку внутри окружения snap
 ```
 
-### Disk Space / Дисковое пространство
+### Disk Space
 Snap keeps old versions. To free space: / Snap хранит старые версии. Чтобы освободить место:
 
 ```bash
 sudo snap set system refresh.retain=2         # Keep only 2 versions / Хранить только 2 версии
-# Manually remove disabled snaps / Вручную удалить отключенные снапы
+# Manually remove disabled snaps
 snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision; do sudo snap remove "$snapname" --revision="$revision"; done
 ```
 
@@ -149,9 +149,9 @@ snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision;
 
 ---
 
-## 🔒 Security / Безопасность
+## 🔒 Security
 
-### Sandbox / Песочница
+### Sandbox
 Snaps run in a sandbox using AppArmor, Seccomp, and cgroups. / Snap-пакеты запускаются в песочнице, используя AppArmor, Seccomp и cgroups.
 
 Check current mode:

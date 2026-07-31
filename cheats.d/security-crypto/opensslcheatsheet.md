@@ -18,7 +18,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Random & Hash Generation](#1.%20Random%20&%20Hash%20Generation)
 2. [Certificate Operations](#2.%20Certificate%20Operations)

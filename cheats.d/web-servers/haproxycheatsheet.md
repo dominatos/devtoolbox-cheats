@@ -48,7 +48,7 @@ tags:
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Debian/Ubuntu
@@ -63,7 +63,7 @@ sudo systemctl enable haproxy                           # Enable at boot / Ав�
 
 ## Core Management
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start haproxy                            # Start service / Запустить сервис
@@ -73,29 +73,29 @@ sudo systemctl reload haproxy                           # Reload config / Пер
 sudo systemctl status haproxy                           # Service status / Статус сервиса
 ```
 
-### Configuration Testing / Проверка конфигурации
+### Configuration Testing
 
 ```bash
 haproxy -c -f /etc/haproxy/haproxy.cfg                  # Test config / Проверка конфига
 haproxy -f /etc/haproxy/haproxy.cfg -c -db              # Debug mode / Режим отладки
 ```
 
-### Zero-Downtime Reload / Reload без простоя
+### Zero-Downtime Reload / Reload
 
 ```bash
-# Validate config / Проверка конфига
+# Validate config
 haproxy -c -f /etc/haproxy/haproxy.cfg
 
-# Reload (systemd) / Reload через systemd
+# Reload (systemd) / Reload
 sudo systemctl reload haproxy
 
-# Manual reload / Ручной reload
+# Manual reload
 haproxy -f /etc/haproxy/haproxy.cfg -p /run/haproxy.pid -sf $(cat /run/haproxy.pid)
 ```
 
 ---
 
-### Runtime Management / Рантайм управление
+### Runtime Management
 
 **Runtime commands** are used to manage a **running HAProxy** instance via the admin/stat socket **without reload or restart**.
 **Runtime-команды** — это команды управления **работающим HAProxy** через admin/stat socket **без reload и restart**.
@@ -105,7 +105,7 @@ haproxy -f /etc/haproxy/haproxy.cfg -p /run/haproxy.pid -sf $(cat /run/haproxy.p
 
 ---
 
-#### Admin Socket / Админ-сокет
+#### Admin Socket
 `/etc/haproxy/haproxy.cfg` (global section)
 
 Typical configuration in `global` section:
@@ -127,9 +127,9 @@ echo "<command>" | socat - /run/haproxy.sock
 
 ---
 
-#### Core Runtime Commands / Основные команды
+#### Core Runtime Commands
 
-##### Disable server / Отключить сервер
+##### Disable server
 ```bash
 echo "disable server bk_web/web2" | socat - /run/haproxy.sock
 ```
@@ -138,35 +138,35 @@ echo "disable server bk_web/web2" | socat - /run/haproxy.sock
 *   Сервер помечается как `MAINT`. Новые соединения не принимаются.
 *   Активные соединения **не рвутся**.
 
-##### Enable server / Включить сервер
+##### Enable server
 ```bash
 echo "enable server bk_web/web2" | socat - /run/haproxy.sock
 ```
 *   Server returns to the pool. Traffic is distributed again.
 *   Сервер возвращается в пул. Трафик снова распределяется.
 
-##### Set server weight / Изменить вес
+##### Set server weight
 ```bash
 echo "set server bk_web/web2 weight 5" | socat - /run/haproxy.sock
 ```
 *   Used for gradual rollout, canary, or node degradation.
 *   Используется для плавного вывода, canary-релизов или деградации нод.
 
-##### Show server state / Состояние серверов
+##### Show server state
 ```bash
 echo "show servers state" | socat - /run/haproxy.sock
 ```
 *   Shows state (`UP`, `DOWN`, `MAINT`) and effective weight.
 *   Показывает состояние (`UP`, `DOWN`, `MAINT`) и текущий вес.
 
-##### Show stick-table / Показать stick-таблицу
+##### Show stick-table
 ```bash
 echo "show table fe_guard" | socat - /run/haproxy.sock
 ```
 *   Used for debugging rate-limits and bans.
 *   Критично для отладки rate-limit и банов.
 
-##### Show stat / Показать статистику
+##### Show stat
 ```bash
 echo "show stat" | socat - /run/haproxy.sock
 ```
@@ -175,27 +175,27 @@ echo "show stat" | socat - /run/haproxy.sock
 
 ---
 
-#### Dangerous Runtime Commands / Опасные команды ⚠️
+#### Dangerous Runtime Commands
 
 > [!WARNING]
 > These commands can impact production if used without full understanding.
 > Эти команды **могут уронить прод**, если использовать без понимания.
 
-##### Clear stick-table / Очистить таблицу
+##### Clear stick-table
 ```bash
 echo "clear table fe_guard" | socat - /run/haproxy.sock
 ```
 *   **Risk**: Removes all bans and resets rate-limit counters.
 *   **Опасность**: Снимаются все баны, обнуляются счётчики.
 
-##### Shutdown sessions / Разорвать сессии
+##### Shutdown sessions
 ```bash
 echo "shutdown sessions server bk_web/web2" | socat - /run/haproxy.sock
 ```
 *   **Risk**: **Immediately drops all active connections**.
 *   **Опасность**: **Немедленно рвёт все активные соединения**.
 
-##### Disable backend / Отключить бэкенд
+##### Disable backend
 ```bash
 echo "disable backend bk_web" | socat - /run/haproxy.sock
 ```
@@ -204,7 +204,7 @@ echo "disable backend bk_web" | socat - /run/haproxy.sock
 
 ---
 
-#### Important Notes / Важные замечания
+#### Important Notes
 
 *   Changes are **not persistent**. They disappear on reload/restart.
 *   Изменения **не сохраняются** в конфиге. Пропадают при reload/restart.
@@ -213,15 +213,15 @@ echo "disable backend bk_web" | socat - /run/haproxy.sock
 
 ---
 
-#### Production Runbook / Сценарии для продакшена
+#### Production Runbook
 
-##### Zero-Downtime Deploy / Деплой без простоя
+##### Zero-Downtime Deploy
 1. `disable server bk_web/web2`
 2. Wait for `conn_cur = 0`. / Дождаться завершения соединений.
 3. Deploy / Update. / Деплой / Обновление.
 4. `enable server bk_web/web2`
 
-##### Emergency (Immediate Removal) / Авария (Срочно убрать ноду)
+##### Emergency (Immediate Removal)
 1. `shutdown sessions server bk_web/web2`
 2. `disable server bk_web/web2`
 
@@ -229,7 +229,7 @@ echo "disable backend bk_web" | socat - /run/haproxy.sock
 
 ## Sysadmin Operations
 
-### Default Paths / Пути по умолчанию
+### Default Paths
 
 `/etc/haproxy/haproxy.cfg` — Main config / Основной конфиг
 `/run/haproxy.sock` — Runtime socket / Рантайм сокет
@@ -237,7 +237,7 @@ echo "disable backend bk_web" | socat - /run/haproxy.sock
 `/var/log/haproxy.log` — Log file / Лог файл
 `/etc/haproxy/certs/` — SSL certificates / SSL сертификаты
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 - **80** — HTTP (configurable in frontend)
 - **443** — HTTPS (configurable in frontend)
@@ -250,7 +250,7 @@ echo "disable backend bk_web" | socat - /run/haproxy.sock
 **EN:** HAProxy operates as: **input → rules → output**
 **RU:** HAProxy работает как: **вход → правила → выход**
 
-### Mental Map / Ментальная карта
+### Mental Map
 
 * **global** — Process & OS: logs, master-worker, runtime socket / Процесс и ОС
 * **defaults** — Timeouts, log format, common options / Таймауты, общие опции
@@ -384,7 +384,7 @@ listen stats
 
 ### Load Balancing Algorithms
 
-### Common Algorithms / Основные алгоритмы
+### Common Algorithms
 
 | Algorithm | Description (EN) | Description (RU) | Use Case |
 | :--- | :--- | :--- | :--- |
@@ -396,7 +396,7 @@ listen stats
 | **hdr(name)** | Hashes a specific HTTP header (e.g., `hdr(User-Agent)`). | Хеширует конкретный HTTP заголовок (например, `User-Agent`). | Specialized routing / Специальная маршрутизация |
 | **random** | Randomly chooses a server. Consistent hashing available. | Случайный выбор сервера. Доступно консистентное хеширование. | Large farms / Большие фермы |
 
-### Configuration Example / Пример конфигурации
+### Configuration Example
 
 ```cfg
 backend bk_web
@@ -421,12 +421,12 @@ backend bk_web
 
 ## Security
 
-### ACL & Routing / ACL и маршрутизация
+### ACL & Routing / ACL
 
 Access Control Lists (ACLs) are the core of HAProxy's flexibility. They define conditions to route traffic, block requests, or modify headers.
 ACL - это основа гибкости HAProxy. Они определяют условия для маршрутизации трафика, блокировки запросов или изменения заголовков.
 
-### 1. Basic Syntax / Базовый синтаксис
+### 1. Basic Syntax
 
 `acl <acl_name> <criterion> [flags] [operator] <value> ...`
 
@@ -435,7 +435,7 @@ ACL - это основа гибкости HAProxy. Они определяют 
 *   **flags**: `-i` (ignore case), `-m` (match method). / Флаги: `-i` (без учета регистра).
 *   **value**: Pattern to match. / Значение для проверки.
 
-### 2. Logical Operators / Логические операторы
+### 2. Logical Operators
 
 *   **AND**: Implicit (listing ACLs one after another). / Неявный (перечисление ACL подряд).
 *   **OR**: `||` or `or`. / `||` или `or`.
@@ -446,7 +446,7 @@ http-request deny if is_admin !is_internal_ip      # Deny if admin AND NOT inter
 http-request deny if bad_bot || bad_referer        # Deny if bad bot OR bad referer
 ```
 
-### 3. Common Matching Methods / Методы сравнения
+### 3. Common Matching Methods
 
 | Suffix | Meaning | Example |
 | :--- | :--- | :--- |
@@ -458,7 +458,7 @@ http-request deny if bad_bot || bad_referer        # Deny if bad bot OR bad refe
 | **_dir** | Subdirectory match / Подпапка | `path_dir api` (matches `/api/foo`) |
 | **_dom** | Domain match / Домен | `hdr_dom(host) example.com` |
 
-### 4. Common Criteria / Основные критерии
+### 4. Common Criteria
 
 | Criterion | Description (EN) | Description (RU) |
 | :--- | :--- | :--- |
@@ -472,7 +472,7 @@ http-request deny if bad_bot || bad_referer        # Deny if bad bot OR bad refe
 | **ssl_fc_sni** | SNI value sent by client. | Значение SNI от клиента. |
 | **dst_port** | Destination port. | Порт назначения. |
 
-### 5. Detailed Examples / Подробные примеры
+### 5. Detailed Examples
 
 ```cfg
 frontend fe_main
@@ -516,9 +516,9 @@ frontend fe_main
 
 ---
 
-### SSL/TLS Configuration / Конфигурация SSL/TLS
+### SSL/TLS Configuration
 
-### HTTPS Termination / Терминация HTTPS
+### HTTPS Termination
 
 ```cfg
 frontend fe_https
@@ -530,7 +530,7 @@ frontend fe_https
   default_backend bk_app
 ```
 
-### HTTP → HTTPS Redirect / Редирект HTTP→HTTPS
+### HTTP → HTTPS Redirect
 
 ```cfg
 frontend fe_http
@@ -538,7 +538,7 @@ frontend fe_http
   http-request redirect scheme https code 301 unless { ssl_fc }
 ```
 
-### TLS Passthrough (L4) / Сквозной TLS
+### TLS Passthrough (L4)
 
 ```cfg
 defaults
@@ -557,7 +557,7 @@ backend bk_tls_www
   server w1 <IP1>:443 check
 ```
 
-### SSL Best Practices / Лучшие практики SSL
+### SSL Best Practices
 
 ```cfg
 global
@@ -574,12 +574,12 @@ frontend fe_secure
 
 ## Optimization & Features
 
-### Health Checks / Проверки состояния
+### Health Checks
 
 Health checks determine if a server is available to receive traffic.
 Проверки здоровья определяют, доступен ли сервер для приема трафика.
 
-### Active vs Passive Health Checks / Активные vs Пассивные проверки
+### Active vs Passive Health Checks
 
 | Feature | Active Checks | Passive Checks |
 | :--- | :--- | :--- |
@@ -589,7 +589,7 @@ Health checks determine if a server is available to receive traffic.
 | **Config** | `check inter 2s fall 3 rise 2` | `observe layer4\|layer7` |
 | **Use case** | Preferred for production. | Supplement to active checks. |
 
-### 1. Active Health Checks (Polling) / Активные проверки (Опрос)
+### 1. Active Health Checks (Polling)
 
 The `check` keyword enables active periodic checks. HAProxy probes the server.
 Ключевое слово `check` включает активные периодические проверки. HAProxy опрашивает сервер.
@@ -607,7 +607,7 @@ backend bk_pool
 *   `fall <count>`: Number of failed checks to mark server DOWN. / Число неудач для статуса DOWN.
 *   `port <port>`: Port to check (if different from traffic port). / Порт проверки (если отличается).
 
-### 2. HTTP Health Check / HTTP проверка
+### 2. HTTP Health Check / HTTP
 
 Checks a specific URL endpoint instead of just TCP connection.
 Проверяет конкретный URL вместо простого TCP соединения.
@@ -624,7 +624,7 @@ backend bk_app
 *   `option httpchk <Method> <URI> <Version>`
 *   `http-check expect`: Condition for success (status code, string, regex).
 
-### 3. Passive Health Checks (Traffic Observation) / Пассивные проверки (Наблюдение)
+### 3. Passive Health Checks (Traffic Observation)
 
 Monitors real traffic. If requests fail, the server is marked down or ignored temporarily.
 Мониторит реальный трафик. Если запросы падают, сервер помечается недоступным или временно игнорируется.
@@ -647,7 +647,7 @@ backend bk_passive
     *   `mark-down`: Mark server dead.
     *   `fastinter`: Switch to faster active checks (if `check` is enabled).
 
-### 4. Agent Check (Sidecar) / Проверка через Агента
+### 4. Agent Check (Sidecar)
 
 HAProxy connects to a specific port where an agent (like `xinetd` script) reports status.
 HAProxy подключается к порту, где агент сообщает статус (текстом: `up`, `down`, `maint`, `ready`).
@@ -657,7 +657,7 @@ backend bk_agent
   server app1 10.0.0.1:80 check agent-check agent-port 9999 agent-inter 5s
 ```
 
-### 5. Advanced Parameters / Продвинутые параметры
+### 5. Advanced Parameters
 
 *   `check-ssl`: Force SSL for health checks.
 *   `check-send-proxy`: Send PROXY protocol header during check.
@@ -668,7 +668,7 @@ backend bk_agent
 
 ---
 
-### Detailed Example / Подробный пример
+### Detailed Example
 
 ```cfg
 backend bk_production
@@ -690,12 +690,12 @@ backend bk_production
 
 ---
 
-### Stick Tables & Rate Limiting / Stick-таблицы и ограничение скорости
+### Stick Tables & Rate Limiting / Stick-таблицы
 
 Stick tables are HAProxy's in-memory key-value storage. They allow making decisions based on past client behavior (requests, errors, rates), not just the current request.
 Stick-таблицы — это in-memory хранилище HAProxy. Они позволяют принимать решения на основе истории поведения клиента (запросы, ошибки, скорость), а не только текущего запроса.
 
-### 1. Core Concepts / Основные концепции
+### 1. Core Concepts
 
 | Element | Description (EN) | Description (RU) |
 | :--- | :--- | :--- |
@@ -704,7 +704,7 @@ Stick-таблицы — это in-memory хранилище HAProxy. Они п�
 | **Expire** | Time to keep inactive entries. | Время хранения неактивных записей. |
 | **Size** | Max number of entries in RAM. | Макс. число записей в памяти. |
 
-### 2. Basic Configuration / Базовая конфигурация
+### 2. Basic Configuration
 
 ```cfg
 backend bk_app
@@ -715,7 +715,7 @@ backend bk_app
   stick on src
 ```
 
-### 3. Rate Limiting Example / Пример ограничения скорости
+### 3. Rate Limiting Example
 
 Block clients exceeding 50 requests per 10 seconds.
 Блокировка клиентов, превышающих 50 запросов за 10 секунд.
@@ -739,7 +739,7 @@ frontend fe_http
   default_backend bk_app
 ```
 
-### 4. Sticky Sessions (Persistence) / Липкие сессии
+### 4. Sticky Sessions (Persistence)
 
 Ensure a client always hits the same server.
 Гарантия того, что клиент всегда попадает на один и тот же сервер.
@@ -768,7 +768,7 @@ backend bk_app
   server s2 10.0.0.2:80 check
 ```
 
-### 5. What Can Be Stored? / Что можно хранить?
+### 5. What Can Be Stored?
 
 | Store | Purpose (EN) | Purpose (RU) |
 | :--- | :--- | :--- |
@@ -779,7 +779,7 @@ backend bk_app
 | `bytes_in_rate(<period>)` | Traffic ingress rate. | Скорость входящего трафика. |
 | `gpc0`, `gpc1` | General Purpose Counters. | Счетчики общего назначения. |
 
-### 6. Custom Logic (GPC) / Пользовательская логика
+### 6. Custom Logic (GPC)
 
 Example: Ban IP after 5 failed logins.
 Пример: Бан IP после 5 неудачных логинов.
@@ -800,7 +800,7 @@ frontend fe_login
   http-request deny if is_banned
 ```
 
-### 7. Tables vs Cookies / Таблицы против Кук
+### 7. Tables vs Cookies
 
 | Feature | Stick Tables | Cookies |
 | :--- | :--- | :--- |
@@ -811,7 +811,7 @@ frontend fe_login
 
 ---
 
-### DDoS Protection / Защита от DDoS
+### DDoS Protection
 
 ```cfg
 frontend fe_protected
@@ -831,7 +831,7 @@ frontend fe_protected
 
 ---
 
-### Caching / Кэширование
+### Caching
 
 Built-in HTTP cache / Встроенный HTTP кэш
 
@@ -850,9 +850,9 @@ backend bk_www
 
 ---
 
-### Logging / Логирование
+### Logging
 
-### Basic Logging / Базовое логирование
+### Basic Logging
 
 ```cfg
 global
@@ -864,14 +864,14 @@ defaults
   # option tcplog                                       # TCP log format / Лог TCP
 ```
 
-### Custom Log Format / Пользовательский формат
+### Custom Log Format
 
 ```cfg
 defaults
   log-format "%ci:%cp -> %fi:%fp [%tr] %ST %HM %HP %HU ua=%{+Q}HV:user-agent req_id=%ID"
 ```
 
-### Log Variables / Переменные логов
+### Log Variables
 
 - `%ci` — Client IP / IP клиента
 - `%cp` — Client port / Порт клиента
@@ -886,7 +886,7 @@ defaults
 
 ## Production Scenarios & Templates
 
-### 1) Basic HTTP Load Balancer / Базовая HTTP-балансировка
+### 1) Basic HTTP Load Balancer
 
 ```cfg
 global
@@ -913,7 +913,7 @@ backend bk_web
 
 ---
 
-### 2) HTTPS Termination + HTTP/2 / Терминация HTTPS
+### 2) HTTPS Termination + HTTP/2
 
 ```cfg
 global
@@ -947,7 +947,7 @@ backend bk_www
 
 ---
 
-### 3) Static Cache + Compression / Кэш статики + компрессия
+### 3) Static Cache + Compression
 
 ```cfg
 cache static_cache
@@ -984,7 +984,7 @@ backend bk_api
 
 ---
 
-### 4) Sticky Sessions (Cookie) / Липкие сессии
+### 4) Sticky Sessions (Cookie)
 
 ```cfg
 frontend fe_app
@@ -1000,7 +1000,7 @@ backend bk_app
 
 ---
 
-### 5) WebSocket Proxy / WebSocket прокси
+### 5) WebSocket Proxy / WebSocket
 
 ```cfg
 frontend fe_ws
@@ -1021,7 +1021,7 @@ backend bk_site
 
 ---
 
-### 6) Canary / Blue-Green Deployment / Канареечный релиз
+### 6) Canary / Blue-Green Deployment
 
 ```cfg
 frontend fe_edge
@@ -1038,7 +1038,7 @@ backend bk_canary
 
 ---
 
-### 7) Multi-Host Routing (Map File) / Маршрутизация по Host
+### 7) Multi-Host Routing (Map File)
 
 **`/etc/haproxy/domains.map`:**
 
@@ -1072,7 +1072,7 @@ backend bk_default
 
 ### Quick Templates
 
-### Minimal Reverse Proxy / Минимальный реверс-прокси
+### Minimal Reverse Proxy
 
 ```cfg
 global
@@ -1099,7 +1099,7 @@ backend bk_app
 
 ---
 
-### Production Template / Шаблон для продакшена
+### Production Template
 
 ```cfg
 global
@@ -1148,29 +1148,29 @@ listen stats
 
 ## Troubleshooting & Tools
 
-### HATop Monitoring / Мониторинг через HATop
+### HATop Monitoring
 
 HATop is an interactive ncurses client for real-time HAProxy monitoring. / HATop — это интерактивный ncurses-клиент для мониторинга HAProxy в реальном времени.
 
-#### Installation / Установка
+#### Installation
 ```bash
 sudo apt install hatop                                  # Debian/Ubuntu
 sudo dnf install hatop                                  # RHEL/CentOS
 ```
 
-#### Basic Usage / Базовое использование
+#### Basic Usage
 ```bash
-# Connect to stats socket / Подключиться к сокету статистики
+# Connect to stats socket
 hatop -s /run/haproxy.sock
 
-# Connect with specific update interval / Подключиться с интервалом обновления
+# Connect with specific update interval
 hatop -s /run/haproxy.sock -i 1
 
-# Start in specific mode (1-5) / Запустить в конкретном режиме
+# Start in specific mode (1-5)
 hatop -s /run/haproxy.sock -m 2
 ```
 
-#### Hotkeys / Горячие клавиши
+#### Hotkeys
 - `1-5` — Switch display modes / Переключить режим отображения
 - `TAB` — Cycle forward through modes / Переключить режим вперед
 - `h` — Help screen / Экран помощи
@@ -1179,7 +1179,7 @@ hatop -s /run/haproxy.sock -m 2
 - `F9` — Enable server (READY) / Включить сервер
 - `F7/F8` — Increase/Decrease weight / Увеличить/Уменьшить вес
 
-#### What to look at (Monitoring) / На что смотреть (Мониторинг)
+#### What to look at (Monitoring)
 - **Mode 1 (STATUS)**:
     - `Weight`: Traffic distribution check. / Проверка распределения трафика.
     - `Status`: Look for `UP` vs `DOWN`/`MAINT`. / Текущее состояние ноды.
@@ -1193,53 +1193,53 @@ hatop -s /run/haproxy.sock -m 2
     - `Resp`: L7 errors from backend (5xx). / Ошибки L7 (ответы 5xx).
     - `Retr`: Retries. High number indicates unstable backend. / Повторные попытки.
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 ```bash
-# 503 errors / Ошибки 503
-# Check backend servers health / Проверить здоровье backend серверов
+# 503 errors
+# Check backend servers health
 echo "show stat" | socat - /run/haproxy.sock | grep DOWN
 
 # Redirects to 127.0.0.1:8080 (Tomcat)
 # Enable RemoteIpValve or set proxyName/proxyPort in server.xml
-# Включить RemoteIpValve или установить proxyName/proxyPort
+#
 
-# Sticky sessions not working / Липкость не работает
+# Sticky sessions not working
 # Check jvmRoute matches cookie in Tomcat
-# Проверить совпадение jvmRoute и cookie
+#
 
-# Certificate errors / Ошибки сертификатов
+# Certificate errors
 # Check certificate bundle includes full chain
-# Проверить что сертификат включает полную цепочку
+#
 ls -la /etc/haproxy/certs/
 
-# Port already in use / Порт уже используется
+# Port already in use
 sudo netstat -tlnp | grep :80                          # Check port / Проверить порт
 sudo lsof -i :80                                       # Alternative / Альтернатива
 ```
 
-### Debug Commands / Команды отладки
+### Debug Commands
 
 ```bash
-# Test configuration / Тест конфигурации
+# Test configuration
 haproxy -c -f /etc/haproxy/haproxy.cfg
 
-# Show vhost summary / Показать vhost
+# Show vhost summary
 echo "show info" | socat - /run/haproxy.sock
 
-# Show backend status / Показать статус backend
+# Show backend status
 echo "show stat" | socat - /run/haproxy.sock
 
-# Enable debug logging / Включить отладочное логирование
+# Enable debug logging
 # Add to global section:
 # debug
 
-# Check systemd status / Проверить статус systemd
+# Check systemd status
 sudo systemctl status haproxy -l
 sudo journalctl -u haproxy -f                          # Follow logs / Следить за логами
 ```
 
-### Best Practices / Лучшие практики
+### Best Practices
 
 - Always validate config before reload: `haproxy -c -f /etc/haproxy/haproxy.cfg`
 - Use `systemctl reload` for zero-downtime / Используй `reload` для безразрывности
@@ -1253,7 +1253,7 @@ sudo journalctl -u haproxy -f                          # Follow logs / След�
 
 ---
 
-## Production Checklist / Чеклист для продакшена
+## Production Checklist
 
 - [ ] `master-worker` enabled / `master-worker` включён
 - [ ] Runtime socket configured / Runtime socket настроен

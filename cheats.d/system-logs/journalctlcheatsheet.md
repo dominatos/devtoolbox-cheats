@@ -47,7 +47,7 @@ tags:
 
 ## Basic Commands
 
-### View Logs / Просмотр логов
+### View Logs
 
 ```bash
 journalctl                                    # Show all logs / Показать все логи
@@ -57,7 +57,7 @@ journalctl -r                                 # Reverse order (newest first) / �
 journalctl -n 50                              # Show last 50 lines / Показать последние 50 строк
 ```
 
-### Kernel Messages / Сообщения ядра
+### Kernel Messages
 
 ```bash
 journalctl -k                                 # Kernel messages / Сообщения ядра
@@ -65,7 +65,7 @@ journalctl -k -f                              # Follow kernel messages / Сле�
 journalctl -k --since today                   # Today's kernel messages / Сегодняшние сообщения ядра
 ```
 
-### Boot Logs / Логи загрузки
+### Boot Logs
 
 ```bash
 journalctl -b                                 # Current boot / Текущая загрузка
@@ -78,7 +78,7 @@ journalctl --list-boots                       # List all boots / Список в
 
 ## Filtering
 
-### By Unit / По юниту
+### By Unit
 
 ```bash
 journalctl -u nginx                           # Nginx service logs / Логи сервиса Nginx
@@ -87,7 +87,7 @@ journalctl -u docker.service -f               # Follow Docker logs / Следо�
 journalctl -u nginx -u php-fpm                # Multiple units / Несколько юнитов
 ```
 
-### By Time / По времени
+### By Time
 
 ```bash
 journalctl --since "2025-08-01"               # Since date / С даты
@@ -98,7 +98,7 @@ journalctl --since "10 minutes ago"           # Last 10 minutes / Последн
 journalctl --since "2 hours ago"              # Last 2 hours / Последние 2 часа
 ```
 
-### By Priority / По приоритету
+### By Priority
 
 ```bash
 journalctl -p err                             # Errors and above / Ошибки и выше
@@ -108,7 +108,7 @@ journalctl -p emerg                           # Emergency only / Только к
 journalctl -p warning..emerg                  # Range / Диапазон
 ```
 
-### Priority Levels / Уровни приоритета
+### Priority Levels
 
 | Level | Name | Description (EN / RU) |
 | :--- | :--- | :--- |
@@ -121,7 +121,7 @@ journalctl -p warning..emerg                  # Range / Диапазон
 | 6 | `info` | Informational / Информационные |
 | 7 | `debug` | Debug messages / Отладочные сообщения |
 
-### By Identifier / По идентификатору
+### By Identifier
 
 ```bash
 journalctl -t sshd                            # SSH daemon / SSH демон
@@ -132,7 +132,7 @@ journalctl _HOSTNAME=<HOST>                   # By hostname / По имени х
 journalctl _SYSTEMD_UNIT=sshd.service         # By unit field / По полю юнита
 ```
 
-### Combined Filters / Комбинированные фильтры
+### Combined Filters
 
 ```bash
 journalctl -u nginx --since today -p err      # Nginx errors today / Ошибки Nginx сегодня
@@ -140,7 +140,7 @@ journalctl -u ssh --since "1 hour ago" -f     # Recent SSH logs / Недавни
 journalctl _UID=1000 -p warning               # User warnings / Предупреждения пользователя
 ```
 
-### Search in Logs / Поиск в логах
+### Search in Logs
 
 ```bash
 journalctl -u nginx | grep "error"            # Grep for pattern / Grep по шаблону
@@ -151,7 +151,7 @@ journalctl -u nginx -g "error|failed"         # Builtin grep (regex) / Встр�
 
 ## Output Formats
 
-### Standard Output / Стандартный вывод
+### Standard Output
 
 ```bash
 journalctl -o short                           # Default format / Формат по умолчанию
@@ -162,7 +162,7 @@ journalctl -o json-pretty                     # Pretty JSON / Красивый J
 journalctl -o cat                             # Only message text / Только текст сообщения
 ```
 
-### Special Formats / Специальные форматы
+### Special Formats
 
 ```bash
 journalctl -xe                                # With explanations + errors / С объяснениями + ошибки
@@ -170,7 +170,7 @@ journalctl -l                                 # Full output (no ellipsis) / По
 journalctl --no-pager                         # Don't use pager / Не использовать pager
 ```
 
-### Export / Экспорт
+### Export
 
 ```bash
 journalctl -u nginx > nginx.log               # Save to file / Сохранить в файл
@@ -182,14 +182,14 @@ journalctl --no-pager -u nginx                # No pager (for piping) / Без �
 
 ## Disk Management
 
-### Disk Usage / Использование диска
+### Disk Usage
 
 ```bash
 journalctl --disk-usage                       # Show disk usage / Показать использование диска
 journalctl --verify                           # Verify journal files / Проверить файлы журнала
 ```
 
-### Vacuum / Очистка
+### Vacuum
 
 ```bash
 sudo journalctl --vacuum-time=2weeks          # Keep last 2 weeks / Оставить последние 2 недели
@@ -200,13 +200,13 @@ sudo journalctl --vacuum-files=10             # Keep max 10 files / Остави
 > [!CAUTION]
 > Vacuuming permanently deletes old journal entries. There is no undo. / Очистка необратимо удаляет старые записи журнала.
 
-### Rotation / Ротация
+### Rotation
 
 ```bash
 sudo systemctl kill --kill-who=main --signal=SIGUSR2 systemd-journald.service  # Force rotation / Принудительная ротация
 ```
 
-### Persistent Configuration / Постоянная конфигурация
+### Persistent Configuration
 
 `/etc/systemd/journald.conf`
 
@@ -225,7 +225,7 @@ ForwardToSyslog=no                            # Don't duplicate to syslog / Не
 sudo systemctl restart systemd-journald       # Apply changes / Применить изменения
 ```
 
-### Enable Persistent Storage / Включить постоянное хранение
+### Enable Persistent Storage
 
 ```bash
 sudo mkdir -p /var/log/journal                # Create journal directory / Создать директорию журнала
@@ -237,85 +237,85 @@ sudo systemctl restart systemd-journald       # Restart journald / Переза�
 
 ## Real-World Examples
 
-### Debug Service Issues / Отладка проблем сервисов
+### Debug Service Issues
 
 ```bash
-# Check failed service / Проверить упавший сервис
+# Check failed service
 journalctl -u nginx.service --since today -p err
 
-# Follow service startup / Следовать за запуском сервиса
+# Follow service startup
 journalctl -u nginx -f -n 100
 
-# Find service crashes / Найти крашы сервиса
+# Find service crashes
 journalctl -u nginx.service | grep -i "core\|segfault\|crash"
 ```
 
-### System Boot Issues / Проблемы загрузки системы
+### System Boot Issues
 
 ```bash
-# Check last boot / Проверить последнюю загрузку
+# Check last boot
 journalctl -b -p err
 
-# Compare boots / Сравнить загрузки
+# Compare boots
 journalctl -b 0 -p err  # Current / Текущая
 journalctl -b -1 -p err  # Previous / Предыдущая
 
-# Boot timeline / Временная шкала загрузки
+# Boot timeline
 systemd-analyze critical-chain
 ```
 
-### Security Audit / Аудит безопасности
+### Security Audit
 
 ```bash
-# SSH login attempts / Попытки SSH входа
+# SSH login attempts
 journalctl -u ssh.service | grep "Failed password"
 
-# Sudo usage / Использование sudo
+# Sudo usage
 journalctl _COMM=sudo --since today
 
-# Authentication logs / Логи аутентификации
+# Authentication logs
 journalctl -t sshd -t sudo --since yesterday
 ```
 
-### Application Debugging / Отладка приложений
+### Application Debugging
 
 ```bash
-# Docker container logs / Логи контейнеров Docker
+# Docker container logs
 journalctl CONTAINER_NAME=myapp -f
 
-# Follow multiple services / Следовать за несколькими сервисами
+# Follow multiple services
 journalctl -u nginx -u php-fpm -f
 
-# Grep in logs / Grep в логах
+# Grep in logs / Grep
 journalctl -u myapp | grep "ERROR\|FATAL"
 ```
 
-### Performance Issues / Проблемы производительности
+### Performance Issues
 
 ```bash
-# OOM (Out of Memory) issues / Проблемы с памятью
+# OOM (Out of Memory) issues
 journalctl -k | grep -i "out of memory\|oom"
 
-# Find high CPU usage / Найти высокое использование CPU
+# Find high CPU usage
 journalctl --since "1 hour ago" | grep -i "cpu\|load"
 ```
 
-### Monitoring / Мониторинг
+### Monitoring
 
 ```bash
-# Watch for errors / Следить за ошибками
+# Watch for errors
 journalctl -f -p err
 
-# Monitor specific pattern / Мониторить конкретный паттерн
+# Monitor specific pattern
 journalctl -f | grep -i "error\|fail\|critical"
 
-# Count errors per service / Подсчитать ошибки по сервисам
+# Count errors per service
 journalctl -p err --since today --no-pager | awk '/\[.*\]/ {print $6}' | sort | uniq -c | sort -nr
 ```
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Use `--since` and `--until` to limit output. / Используйте `--since` и `--until` для ограничения вывода.
 - Use `-p` to filter by priority. / Используйте `-p` для фильтрации по приоритету.

@@ -62,7 +62,7 @@ kubectl top pods -n demo                        # Pods CPU/mem / Ресурсы 
 
 ## Contexts, Clusters, Namespaces
 
-### Context Management / Управление контекстами
+### Context Management
 
 ```bash
 kubectl config view                                   # Show kubeconfig / Показать kubeconfig
@@ -233,33 +233,33 @@ kubectl get deploy -A -o wide | grep -v "1/1"         # Find unhealthy deploys /
 
 ## Sysadmin Essentials
 
-### Kubeconfig & Authentication / Kubeconfig и аутентификация
+### Kubeconfig & Authentication / Kubeconfig
 
 ```bash
 ~/.kube/config                                        # Default kubeconfig path / Путь kubeconfig по умолчанию
 /etc/kubernetes/                                      # Kubernetes config dir / Директория конфигурации Kubernetes
 export KUBECONFIG=/path/to/config                     # Set custom kubeconfig / Установить кастомный kubeconfig
 
-# Verify certificate expiration / Проверка срока действия сертификата
+# Verify certificate expiration
 kubectl config view --raw -o jsonpath='{.users[0].user.client-certificate-data}' | base64 -d | openssl x509 -noout -dates
 ```
 
 > [!TIP]
 > Very handy script for [GNOME Argos](https://github.com/p-e-w/argos) to switch contexts if you manage different clusters: [Kubernetes Config Switcher for Argos](https://github.com/dominatos/Kubernetes-Config-Switcher-for-Argos)
 
-### API Server & Cluster Health / API сервер и здоровье кластера
+### API Server & Cluster Health / API
 
 ```bash
 kubectl cluster-info                                  # Cluster endpoints / Эндпоинты кластера
 kubectl get componentstatuses                         # Component health / Здоровье компонентов
 kubectl version --short                               # Client/server version / Версия клиент/сервер
 
-# API server direct access / Прямой доступ к API серверу
+# API server direct access
 kubectl proxy --port=8080                             # Start API proxy / Запустить прокси API
 curl http://localhost:8080/api/v1/namespaces          # Access via proxy / Доступ через прокси
 ```
 
-### Common Ports / Порты по умолчанию
+### Common Ports
 
 | Port | Description (EN / RU) |
 | :--- | :--- |
@@ -269,7 +269,7 @@ curl http://localhost:8080/api/v1/namespaces          # Access via proxy / До�
 | **2379** | etcd client / Клиент etcd |
 | **2380** | etcd peer / Пир etcd |
 
-### Resource Quotas & Limits / Квоты и лимиты ресурсов
+### Resource Quotas & Limits
 
 ```bash
 kubectl get resourcequotas -A                         # All resource quotas / Все квоты ресурсов
@@ -277,17 +277,17 @@ kubectl describe quota -n default                     # Quota details / Дета
 kubectl get limitrange -A                             # Limit ranges / Диапазоны лимитов
 ```
 
-### Troubleshooting Commands / Команды устранения неполадок
+### Troubleshooting Commands
 
 ```bash
 kubectl get events --all-namespaces --sort-by='.lastTimestamp' # Recent events / Последние события
 kubectl describe node NODE | grep -A 5 Conditions    # Node conditions / Состояние ноды
 kubectl get pods --all-namespaces -o wide | grep -v Running # Non-running pods / Незапущенные pod-ы
 
-# Debug pod network / Отладка сети pod-а
+# Debug pod network
 kubectl run debug --rm -it --image=nicolaka/netshoot -- bash
 
-# Check pod resource requests/limits / Проверка запросов и лимитов ресурсов
+# Check pod resource requests/limits
 kubectl describe pod POD | grep -A 10 "Limits\|Requests"
 ```
 

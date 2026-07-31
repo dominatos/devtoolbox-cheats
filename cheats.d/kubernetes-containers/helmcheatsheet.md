@@ -51,7 +51,7 @@ helm search hub wordpress                                  # Search Artifact Hub
 
 ## Chart Operations
 
-### Install & Upgrade / Установка и обновление
+### Install & Upgrade
 
 ```bash
 helm install my-nginx bitnami/nginx                        # Install chart / Установить чарт
@@ -62,7 +62,7 @@ helm upgrade --install my-app ./chart -n demo              # Upsert release / У
 helm upgrade --install my-app ./chart -n demo -f values.yaml # With values / С values
 ```
 
-### List & Status / Список и статус
+### List & Status
 
 ```bash
 helm list -A                                               # List all releases / Список всех релизов
@@ -71,7 +71,7 @@ helm status my-app -n demo                                 # Release status / С
 helm history my-app -n demo                                # Release history / История релиза
 ```
 
-### Rollback & Uninstall / Откат и удаление
+### Rollback & Uninstall
 
 ```bash
 helm rollback my-app -n demo                               # Rollback to previous / Откат к предыдущей версии
@@ -148,7 +148,7 @@ helm show all bitnami/nginx                                # Show all info / П�
 
 ## Sysadmin Essentials
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 
 ```bash
 ~/.config/helm/                                            # Helm config directory / Директория конфигурации Helm
@@ -156,7 +156,7 @@ helm show all bitnami/nginx                                # Show all info / П�
 ~/.local/share/helm/                                       # Helm data directory / Директория данных Helm
 ```
 
-### OCI Registry Patterns / Работа с OCI реестром
+### OCI Registry Patterns
 
 ```bash
 helm registry login <REGISTRY_URL>                         # Login to OCI registry / Войти в OCI реестр
@@ -166,39 +166,39 @@ helm pull oci://<REGISTRY_URL>/charts/mychart --version 1.0.0 # Pull OCI chart /
 helm push mychart-1.0.0.tgz oci://<REGISTRY_URL>/charts    # Push to OCI / Отправить в OCI
 ```
 
-### Troubleshooting / Устранение неполадок
+### Troubleshooting
 
 ```bash
-# Check Helm version / Проверка версии Helm
+# Check Helm version
 helm version
 
-# Verify chart integrity / Проверка целостности чарта
+# Verify chart integrity
 helm verify mychart-1.0.0.tgz
 
-# Get release info (stored as K8s secrets) / Информация о релизе (хранится как K8s секреты)
+# Get release info (stored as K8s secrets)
 kubectl get secret -n demo -l owner=helm
 
-# Force delete stuck release / Принудительное удаление застрявшего релиза
+# Force delete stuck release
 kubectl delete secret -n demo sh.helm.release.v1.<RELEASE_NAME>.v<VERSION>
 ```
 
 > [!CAUTION]
 > Manually deleting Helm release secrets will break Helm's release tracking. Only do this as a last resort when `helm uninstall` fails. / Ручное удаление секретов релиза нарушит отслеживание Helm. Используйте только как крайнюю меру.
 
-### Best Practices / Лучшие практики
+### Best Practices
 
 ```bash
-# Always use --atomic for production deployments / Всегда используйте --atomic для продакшн развёртываний
+# Always use --atomic for production deployments
 helm upgrade --install my-app ./chart --atomic --timeout 5m
 
-# Use --wait for complete rollout / Используйте --wait для полного развёртывания
+# Use --wait for complete rollout
 helm upgrade --install my-app ./chart --wait --timeout 5m
 
-# Create namespace if not exists / Создать namespace если не существует
+# Create namespace if not exists
 helm upgrade --install my-app ./chart -n demo --create-namespace
 ```
 
-### Production Runbook (Deploy/Rollback) / Прод-ранбук (Deploy/Rollback)
+### Production Runbook (Deploy/Rollback)
 
 1. **Deploy / Деплой:**
    1. `helm repo update` — Update chart repos / Обновить репозитории

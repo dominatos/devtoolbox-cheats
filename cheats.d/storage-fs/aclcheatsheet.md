@@ -26,21 +26,21 @@ ACLs are implemented via POSIX.1e (withdrawn draft) and are supported on all maj
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
-- [Basic Commands](#Basic%20Commands%20/%20Основные%20команды)
-- [ACL Symbols and Values](#ACL%20Symbols%20and%20Values%20/%20Символы%20и%20значения%20ACL)
-- [Usage Examples](#Usage%20Examples%20/%20Примеры%20использования)
+- [Basic Commands](#Basic%20Commands)
+- [ACL Symbols and Values](#ACL%20Symbols%20and%20Values)
+- [Usage Examples](#Usage%20Examples)
 - [Default ACLs (Inheritance)](#Default%20ACLs%20(Inheritance)%20/%20ACL%20по%20умолчанию%20(Наследование))
-- [ACL Mask](#ACL%20Mask%20/%20Маска%20ACL)
-- [Utilities and Useful Flags](#Utilities%20and%20Useful%20Flags%20/%20Утилиты%20и%20полезные%20флаги)
-- [Combining with chmod](#Combining%20with%20chmod%20/%20Совмещение%20с%20chmod)
-- [Backup & Restore ACLs](#Backup%20&%20Restore%20ACLs%20/%20Резервное%20копирование%20и%20восстановление%20ACL)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [ACL Mask](#ACL%20Mask)
+- [Utilities and Useful Flags](#Utilities%20and%20Useful%20Flags)
+- [Combining with chmod](#Combining%20with%20chmod)
+- [Backup & Restore ACLs](#Backup%20&%20Restore%20ACLs)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 
 ## Installation & Configuration
 
-### Install ACL Package / Установка пакета ACL
+### Install ACL Package
 
 ```bash
 sudo apt install acl                              # Debian/Ubuntu
@@ -48,7 +48,7 @@ sudo dnf install acl                              # RHEL/Fedora/CentOS
 sudo pacman -S acl                                # Arch Linux
 ```
 
-### Verify ACL Support / Проверка поддержки ACL
+### Verify ACL Support
 
 ```bash
 mount | grep acl                                  # Check if acl option is enabled / Проверить опцию acl
@@ -61,7 +61,7 @@ tune2fs -l /dev/sda1 | grep "Default mount"       # Check default ext4 mount opt
 
 ---
 
-## Basic Commands / Основные команды
+## Basic Commands
 
 ```bash
 getfacl <FILE_OR_DIR>            # Show ACLs of file or directory
@@ -85,7 +85,7 @@ setfacl -d -m u:<USER>:rw <DIR> # Default ACL: new files inherit permissions
 
 ---
 
-## ACL Symbols and Values / Символы и значения ACL
+## ACL Symbols and Values
 
 | Symbol | Permission (EN) | Описание (RU) |
 | :--- | :--- | :--- |
@@ -97,51 +97,51 @@ setfacl -d -m u:<USER>:rw <DIR> # Default ACL: new files inherit permissions
 
 ---
 
-## Usage Examples / Примеры использования
+## Usage Examples
 
 ```bash
 # Give user read/write to logs directory recursively
-# Дать пользователю чтение/запись в каталог logs рекурсивно
+#
 setfacl -R -m u:<USER>:rwX /opt/<APP>/logs
 
 # Set default ACL for directory (all new files inherit rw)
-# Установить ACL по умолчанию (новые файлы наследуют rw)
+#
 setfacl -R -d -m u:<USER>:rwX /opt/<APP>/logs
 
 # Remove ACL entry for user
-# Удалить ACL-запись для пользователя
+#
 setfacl -x u:<USER> /opt/<APP>/logs
 
 # Give group read-only access recursively
-# Дать группе только чтение рекурсивно
+#
 setfacl -R -m g:<GROUP>:r /project
 
 # Give multiple users different access
-# Дать разным пользователям разный доступ
+#
 setfacl -m u:<USER1>:rwx,u:<USER2>:r /shared/data
 
 # View ACL including default entries recursively
-# Посмотреть ACL рекурсивно, включая записи по умолчанию
+#
 getfacl -R /opt/<APP>/logs
 ```
 
 ---
 
-## Default ACLs (Inheritance) / ACL по умолчанию (Наследование)
+## Default ACLs (Inheritance) / ACL
 
 Default ACLs are set on directories and determine the ACLs that new files and subdirectories inherit.
 ACL по умолчанию устанавливаются на каталоги и определяют ACL, которые наследуют новые файлы и подкаталоги.
 
 ```bash
-# Set default ACL on directory / Установить ACL по умолчанию
+# Set default ACL on directory
 setfacl -d -m u:<USER>:rwX /shared/project
 
-# Set default ACL for group / Установить ACL по умолчанию для группы
+# Set default ACL for group
 setfacl -d -m g:<GROUP>:rx /shared/project
 
-# Verify default ACLs / Проверить ACL по умолчанию
+# Verify default ACLs
 getfacl /shared/project
-# Output includes lines prefixed with "default:" / Вывод содержит строки с "default:"
+# Output includes lines prefixed with "default:"
 ```
 
 > [!TIP]
@@ -150,20 +150,20 @@ getfacl /shared/project
 
 ---
 
-## ACL Mask / Маска ACL
+## ACL Mask
 
 The mask defines the **maximum effective permissions** for named users, named groups, and the owning group. It acts as a filter.
 Маска определяет **максимальные эффективные разрешения** для именованных пользователей, групп и группы владельца. Она действует как фильтр.
 
 ```bash
-# Set mask to read-only / Установить маску только на чтение
+# Set mask to read-only
 setfacl -m m::r <FILE>
 
-# Set mask to read-write / Установить маску на чтение-запись
+# Set mask to read-write
 setfacl -m m::rw <FILE>
 
 # View effective permissions (getfacl shows #effective: comments)
-# Просмотр эффективных разрешений (getfacl показывает #effective: комментарии)
+#
 getfacl <FILE>
 ```
 
@@ -173,7 +173,7 @@ getfacl <FILE>
 
 ---
 
-## Utilities and Useful Flags / Утилиты и полезные флаги
+## Utilities and Useful Flags
 
 > [!WARNING]
 > `setfacl -b` removes **all** extended ACLs from a file or directory — use with caution in production.
@@ -197,7 +197,7 @@ getfacl -t <FILE_OR_DIR>        # Tabular format / Табличный форма
 
 ---
 
-## Combining with chmod / Совмещение с chmod
+## Combining with chmod
 
 ```bash
 chmod 750 <FILE>                  # Standard Unix permissions
@@ -213,13 +213,13 @@ setfacl -m u:<USER>:rw <FILE>    # Add extra ACL for user on top of chmod
 
 ---
 
-## Backup & Restore ACLs / Резервное копирование и восстановление ACL
+## Backup & Restore ACLs
 
 ```bash
-# Backup ACLs for a directory tree / Сохранить ACL для дерева каталогов
+# Backup ACLs for a directory tree
 getfacl -R /path/to/dir > acl_backup.txt
 
-# Restore ACLs from backup / Восстановить ACL из резервной копии
+# Restore ACLs from backup
 setfacl --restore=acl_backup.txt
 ```
 
@@ -229,28 +229,28 @@ setfacl --restore=acl_backup.txt
 
 ---
 
-## Troubleshooting / Устранение неполадок
+## Troubleshooting
 
-### ACL Not Working / ACL не работает
+### ACL Not Working / ACL
 
 ```bash
-# Check if filesystem supports ACL / Проверить поддержку ACL
+# Check if filesystem supports ACL
 mount | grep <MOUNT_POINT>
 
-# Remount with ACL support / Перемонтировать с поддержкой ACL
+# Remount with ACL support
 sudo mount -o remount,acl <MOUNT_POINT>
 
-# Check if acl package is installed / Проверить установку пакета acl
+# Check if acl package is installed
 which getfacl setfacl
 ```
 
-### Verify ACL in Action / Проверить ACL в действии
+### Verify ACL in Action
 
 ```bash
-# Check file for ACL presence / Проверить наличие ACL на файле
+# Check file for ACL presence
 ls -la <FILE>                     # Look for '+' at end of permissions / Ищите '+' в конце прав
 
-# Detailed ACL view / Детальный просмотр ACL
+# Detailed ACL view
 getfacl <FILE>
 ```
 

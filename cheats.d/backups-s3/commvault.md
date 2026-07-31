@@ -31,7 +31,7 @@ tags:
 
 ## Installation & Configuration
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Service / Сервис | Description (EN / RU) |
 | :--- | :--- | :--- |
@@ -40,18 +40,18 @@ tags:
 | `81` | Web Console | Optional HTTP / Опционально HTTP |
 | `443` | Command Center | HTTPS Web UI / Веб-интерфейс HTTPS |
 
-### Core Registry Paths / Основные пути в реестре (Linux)
+### Core Registry Paths
 `/etc/CommVaultRegistry`
 
 ```bash
 cat /etc/CommVaultRegistry/Galaxy/Instance001/.properties  # View instance properties / Просмотреть свойства инстанса
 ```
 
-### System Tuning / Настройка системы
+### System Tuning
 `/etc/sysctl.conf`
 
 ```bash
-# Recommended for MediaAgent / Рекомендуется для MediaAgent
+# Recommended for MediaAgent
 net.ipv4.ip_local_port_range = 1024 65535
 fs.file-max = 655360
 ```
@@ -60,15 +60,15 @@ fs.file-max = 655360
 
 ## Core Management
 
-### CLI Login / Вход через CLI
+### CLI Login
 `/opt/commvault/Base`
 
 ```bash
 ./qlogin -cs <HOST> -u <USER>  # Basic login / Базовый вход
-# Password will be prompted / Пароль будет запрошен
+# Password will be prompted
 ```
 
-### Resource Listing / Просмотр ресурсов
+### Resource Listing
 
 ```bash
 ./qlist client  # List all clients / Список всех клиентов
@@ -76,7 +76,7 @@ fs.file-max = 655360
 ./qlist job -c <HOST>  # List active jobs for client / Список активных заданий клиента
 ```
 
-### Job Control / Управление заданиями
+### Job Control
 
 ```bash
 ./qoperation job_control -j <JOB_ID> -o suspend  # Suspend job / Приостановить задание
@@ -92,7 +92,7 @@ fs.file-max = 655360
 
 ## Sysadmin Operations
 
-### Service Control / Управление сервисами
+### Service Control
 
 ```bash
 commvault status   # Check overall status / Проверить общий статус
@@ -101,7 +101,7 @@ commvault start    # Start all services / Запустить все сервис
 commvault restart  # Restart services / Перезапустить сервисы
 ```
 
-### Log Locations / Расположение логов
+### Log Locations
 `/var/log/commvault/Log_Files` (Simpana 11)
 
 ```bash
@@ -110,7 +110,7 @@ tail -f EvMgrC.log     # Event manager logs / Логи менеджера соб
 tail -f install.log    # Installation diagnostics / Диагностика установки
 ```
 
-### Infrastructure Components / Компоненты инфраструктуры
+### Infrastructure Components
 
 | Component / Компонент | Description (EN / RU) | Use Case / Когда использовать |
 | :--- | :--- | :--- |
@@ -122,13 +122,13 @@ tail -f install.log    # Installation diagnostics / Диагностика ус�
 
 ## Security & Auth
 
-### Certificate Management / Управление сертификатами
+### Certificate Management
 
 ```bash
 ./qoperation qreinit_cert -c <HOST>  # Reinitialize certificate / Переинициализировать сертификат
 ```
 
-### User Permissions / Права пользователей
+### User Permissions
 
 ```bash
 ./qlist usergroup  # View user groups / Просмотреть группы пользователей
@@ -138,7 +138,7 @@ tail -f install.log    # Installation diagnostics / Диагностика ус�
 
 ## Performance Tuning
 
-### Data Streams Configuration / Настройка потоков данных (Multi-streaming)
+### Data Streams Configuration
 
 To increase backup speed, you can configure the number of parallel connections (streams).
 / Для увеличения скорости бэкапа можно настроить количество параллельных соединений (потоков).
@@ -155,11 +155,11 @@ To increase backup speed, you can configure the number of parallel connections (
 3.  **Storage Device** tab > **Data Transfer Option** sub-tab.
 4.  Set **Max Number of Data Pipes** / **Number of Data Readers**.
 
-### Registry Tuning (Linux/Windows) / Настройка через реестр
+### Registry Tuning (Linux/Windows)
 `/etc/CommVaultRegistry/Galaxy/Instance001/.properties`
 
 ```bash
-# Increase parallel transfer limit on Agent / Увеличить лимит параллельной передачи на агенте
+# Increase parallel transfer limit on Agent
 nMaxParallelTransfers 8  # Set to desired number / Установите желаемое число
 ```
 
@@ -167,7 +167,7 @@ nMaxParallelTransfers 8  # Set to desired number / Установите жела
 > **Number of Data Readers** should not exceed the number of CPU cores or available network bandwidth.
 > / **Количество читателей данных** не должно превышать количество ядер CPU или доступную пропускную способность сети.
 
-### Low Impact Backups / Бэкап с низким влиянием на систему
+### Low Impact Backups
 
 To minimize impact on production workloads during business hours.
 / Для минимизации влияния на рабочие нагрузки в рабочее время.
@@ -194,7 +194,7 @@ To minimize impact on production workloads during business hours.
 
 ## Database Protection
 
-### MongoDB Protection / Защита MongoDB
+### MongoDB Protection
 
 Commvault supports both traditional and IntelliSnap (hardware-based) backups for MongoDB.
 / Commvault поддерживает как традиционное, так и аппаратное (IntelliSnap) резервное копирование для MongoDB.
@@ -221,7 +221,7 @@ Commvault supports both traditional and IntelliSnap (hardware-based) backups for
 ./qoperation backup -c <HOST> -a "BigData Apps" -i "MongoDB" -t FULL  # Trigger Full / Запустить полный бэкап
 ```
 
-### MySQL & PostgreSQL / Защита MySQL и PostgreSQL
+### MySQL & PostgreSQL
 
 1.  **Binaries:** Specify paths to `mysqldump` or `pg_dump` in subclient properties.
     / **Бинарные файлы:** Укажите пути к `mysqldump` или `pg_dump` в свойствах subclient.
@@ -231,7 +231,7 @@ Commvault supports both traditional and IntelliSnap (hardware-based) backups for
 **Service Accounts / Сервисные учетные записи:**
 
 ```bash
-# Verify mysql access / Проверить доступ к mysql
+# Verify mysql access
 mysql -u <USER> -p<PASSWORD> -e "SHOW DATABASES;"
 ```
 
@@ -243,7 +243,7 @@ mysql -u <USER> -p<PASSWORD> -e "SHOW DATABASES;"
 
 ## Backup & Restore
 
-### Backup Types Comparison / Сравнение типов бэкапа
+### Backup Types Comparison
 
 | Type / Тип | Description (EN / RU) | Best for... / Лучше всего для... |
 | :--- | :--- | :--- |
@@ -251,7 +251,7 @@ mysql -u <USER> -p<PASSWORD> -e "SHOW DATABASES;"
 | **Incremental** | Only changed data / Только измененные данные | Daily window / Ежедневное окно |
 | **Synthetic Full** | Combines Incr+Full on MA / Собирает Incr+Full на MediaAgent | Reducing client load / Снижение нагрузки на клиент |
 
-### Production Runbook: Agent Deployment / Инструкция: Развертывание агента
+### Production Runbook: Agent Deployment
 
 1.  **Preparation:** Verify ports `8400` and `8403` are open in firewall.
     / **Подготовка:** Проверьте доступность портов `8400` и `8403`.
@@ -270,13 +270,13 @@ mysql -u <USER> -p<PASSWORD> -e "SHOW DATABASES;"
 
 ## Troubleshooting
 
-### Diagnostic Tools / Инструменты диагностики
+### Diagnostic Tools
 
 ```bash
 /opt/commvault/Base/cvcheck -all  # Comprehensive health check / Комплексная проверка здоровья
 ```
 
-### Network Connectivity / Сетевая связность
+### Network Connectivity
 
 ```bash
 ./CvPing <CS_HOST> -p 8400  # Internal ping tool / Внутренняя утилита пинга
@@ -290,7 +290,7 @@ mysql -u <USER> -p<PASSWORD> -e "SHOW DATABASES;"
 
 ## Additional Notes
 
-### Log Rotation / Ротация логов
+### Log Rotation
 
 Commvault manages its own log rotation inside `/var/log/commvault/Log_Files`.
 If you need to use system logrotate:

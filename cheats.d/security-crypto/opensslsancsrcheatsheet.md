@@ -18,7 +18,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Basics & Overview](#1.%20Basics%20&%20Overview)
 2. [Configuration File](#2.%20Configuration%20File)
@@ -32,7 +32,7 @@ tags:
 
 ## 1. Basics & Overview
 
-### What is SAN? / Что такое SAN?
+### What is SAN?
 
 **Subject Alternative Name (SAN)** allows a single certificate to secure multiple domain names.
 **Альтернативное имя субъекта (SAN)** позволяет одному сертификату защищать несколько доменных имён.
@@ -42,7 +42,7 @@ tags:
 - Wildcard + specific domains / Wildcard + конкретные домены
 - IPs + domains (less common) / IP + домены (реже)
 
-### Common DN Fields / Распространённые поля DN
+### Common DN Fields
 
 | Field | Description (EN / RU) |
 |-------|----------------------|
@@ -53,7 +53,7 @@ tags:
 | `OU` | Organizational Unit / Подразделение |
 | `CN` | Common Name (primary domain) / Основное имя (основной домен) |
 
-### File Types / Типы файлов
+### File Types
 
 | File | Description (EN / RU) |
 |------|----------------------|
@@ -66,7 +66,7 @@ tags:
 
 ## 2. Configuration File
 
-### Basic SAN Configuration / Базовая конфигурация SAN
+### Basic SAN Configuration
 
 `openssl-san.cnf`
 
@@ -95,7 +95,7 @@ DNS.3 = api.<DOMAIN>
 DNS.4 = mail.<DOMAIN>
 ```
 
-### Example Configuration / Пример конфигурации
+### Example Configuration
 
 `openssl-san.cnf`
 
@@ -124,7 +124,7 @@ DNS.3 = api.example.com
 DNS.4 = *.example.com              # Wildcard / Wildcard
 ```
 
-### With IP Addresses / С IP-адресами
+### With IP Addresses
 
 ```ini
 [alt_names]
@@ -138,7 +138,7 @@ IP.2  = <ANOTHER_IP>
 
 ## 3. Generating CSR
 
-### Generate New Key + CSR / Создать новый ключ + CSR
+### Generate New Key + CSR
 
 ```bash
 openssl req -new -newkey rsa:2048 -nodes \
@@ -147,7 +147,7 @@ openssl req -new -newkey rsa:2048 -nodes \
   -config openssl-san.cnf
 ```
 
-### Generate CSR from Existing Key / CSR из существующего ключа
+### Generate CSR from Existing Key / CSR
 
 ```bash
 openssl req -new -key <EXISTING_KEY>.pem \
@@ -155,7 +155,7 @@ openssl req -new -key <EXISTING_KEY>.pem \
   -config openssl-san.cnf
 ```
 
-### Generate 4096-bit Key / Создать ключ 4096-бит
+### Generate 4096-bit Key
 
 ```bash
 openssl req -new -newkey rsa:4096 -nodes \
@@ -164,7 +164,7 @@ openssl req -new -newkey rsa:4096 -nodes \
   -config openssl-san.cnf
 ```
 
-### Generate ECC Key (Modern) / Создать ECC ключ (современный)
+### Generate ECC Key (Modern)
 
 ```bash
 openssl req -new -newkey ec:<(openssl ecparam -name prime256v1) -nodes \
@@ -181,26 +181,26 @@ openssl req -new -newkey ec:<(openssl ecparam -name prime256v1) -nodes \
 
 ## 4. Verification
 
-### View CSR Details / Просмотр деталей CSR
+### View CSR Details
 
 ```bash
 openssl req -text -noout -in <CSR_FILE>.pem  # View CSR / Просмотр CSR
 openssl req -text -noout -in <CSR_FILE>.pem | grep -A1 "Subject Alternative Name"  # View SANs only / Только SANs
 ```
 
-### Verify CSR Signature / Проверить подпись CSR
+### Verify CSR Signature
 
 ```bash
 openssl req -verify -in <CSR_FILE>.pem -noout  # Verify CSR / Проверить CSR
 ```
 
-### Extract Public Key from CSR / Извлечь публичный ключ
+### Extract Public Key from CSR
 
 ```bash
 openssl req -in <CSR_FILE>.pem -pubkey -noout  # Extract public key / Извлечь публичный ключ
 ```
 
-### View Private Key / Просмотр приватного ключа
+### View Private Key
 
 ```bash
 openssl rsa -in <KEYFILE>.pem -text -noout  # View RSA key / Просмотр RSA ключа
@@ -211,7 +211,7 @@ openssl ec -in <KEYFILE>.pem -text -noout   # View EC key / Просмотр EC 
 
 ## 5. Real-World Examples
 
-### Web Server with Multiple Subdomains / Веб-сервер с несколькими поддоменами
+### Web Server with Multiple Subdomains
 
 ```bash
 cat > openssl-san.cnf <<EOF
@@ -248,10 +248,10 @@ openssl req -new -newkey rsa:2048 -nodes \
 openssl req -text -noout -in example.com.csr | grep -A1 "Subject Alternative Name"
 ```
 
-### Microservices with Internal IPs / Микросервисы с внутренними IP
+### Microservices with Internal IPs
 
 ```bash
-# Create config with IPs / Создать конфиг с IP
+# Create config with IPs
 cat > openssl-san-internal.cnf <<EOF
 [req]
 default_bits       = 2048
@@ -277,14 +277,14 @@ IP.1  = <INTERNAL_IP_1>
 IP.2  = <INTERNAL_IP_2>
 EOF
 
-# Generate / Создать
+# Generate
 openssl req -new -newkey rsa:2048 -nodes \
   -keyout internal.key \
   -out internal.csr \
   -config openssl-san-internal.cnf
 ```
 
-### Self-Signed Certificate with SAN / Самоподписанный сертификат с SAN
+### Self-Signed Certificate with SAN
 
 ```bash
 openssl req -x509 -newkey rsa:2048 -nodes \
@@ -297,7 +297,7 @@ openssl req -x509 -newkey rsa:2048 -nodes \
 openssl x509 -in selfsigned.crt -text -noout | grep -A1 "Subject Alternative Name"
 ```
 
-### Wildcard + Specific Domains / Wildcard + конкретные домены
+### Wildcard + Specific Domains / Wildcard +
 
 ```bash
 cat > openssl-san-wildcard.cnf <<EOF

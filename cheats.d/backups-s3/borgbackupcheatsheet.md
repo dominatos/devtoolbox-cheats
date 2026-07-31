@@ -28,7 +28,7 @@ tags:
 
 ## Installation & Configuration
 
-### Install / Установить
+### Install
 
 ```bash
 # Debian/Ubuntu
@@ -37,14 +37,14 @@ apt install borgbackup                          # Install borg / Установ�
 # RHEL/AlmaLinux/Rocky
 dnf install borgbackup                          # Install borg / Установить borg
 
-# From binary (static, no dependencies) / Из бинарника
+# From binary (static, no dependencies)
 wget https://github.com/borgbackup/borg/releases/download/1.2.6/borg-linux64
 chmod +x borg-linux64
 mv borg-linux64 /usr/local/bin/borg
 borg --version                                  # Verify / Проверить
 ```
 
-### Initialize Repository / Инициализировать репозиторий
+### Initialize Repository
 
 ```bash
 borg init --encryption=repokey /backup          # Init with repokey (key stored in repo) / Ключ в репозитории
@@ -52,7 +52,7 @@ borg init --encryption=keyfile /backup          # Init with keyfile (key stored 
 borg init --encryption=none /backup             # Init without encryption (not recommended) / Без шифрования
 ```
 
-### Encryption Mode Comparison / Сравнение режимов шифрования
+### Encryption Mode Comparison
 
 | Mode | Key Location | Passphrase | Use Case |
 |------|-------------|------------|----------|
@@ -76,7 +76,7 @@ borg check --repository-only /backup           # Quick check (no archive read) /
 borg compact /backup                            # Reclaim space after delete/prune / Освободить место
 ```
 
-### Key Management / Управление ключами
+### Key Management
 
 ```bash
 borg key export /backup backup.key              # Export key / Экспортировать ключ
@@ -88,7 +88,7 @@ borg key change-passphrase /backup              # Change passphrase / Измен
 
 ## Create Archives
 
-### Basic Backup / Базовый бэкап
+### Basic Backup
 
 ```bash
 borg create /backup::archive-{now} /var/www     # Create archive / Создать архив
@@ -96,7 +96,7 @@ borg create /backup::daily-{now:%Y-%m-%d} /data # With date tag / С датой
 borg create /backup::backup-{hostname}-{now} /data  # With hostname / С hostname
 ```
 
-### Advanced Options / Расширенные опции
+### Advanced Options
 
 ```bash
 borg create /backup::archive-{now} /data \
@@ -110,7 +110,7 @@ borg create /backup::archive-{now} /data \
   --compression lz4                             # With stats and progress / Со статистикой и прогрессом
 ```
 
-### Exclude from File / Исключения из файла
+### Exclude from File
 
 `/etc/borg/exclude.txt`
 
@@ -147,14 +147,14 @@ borg diff /backup::archive1 archive2            # Compare two archives / Сра�
 
 ## Extract & Restore
 
-### Full Restore / Полное восстановление
+### Full Restore
 
 ```bash
 cd /restore && borg extract /backup::archive-name   # Extract to current dir / Извлечь в текущую директорию
 cd /restore && borg extract /backup::latest          # Extract latest archive / Последний архив
 ```
 
-### Partial Restore / Частичное восстановление
+### Partial Restore
 
 ```bash
 borg extract /backup::archive-name /var/www     # Extract specific path / Конкретный путь
@@ -166,7 +166,7 @@ borg extract /backup::archive-name --numeric-ids  # Preserve numeric UIDs / Чи
 
 ## Pruning & Retention
 
-### Prune Archives / Удалить архивы
+### Prune Archives
 
 ```bash
 borg prune /backup --keep-daily=7               # Keep 7 daily / Сохранить 7 дневных
@@ -174,7 +174,7 @@ borg prune /backup --keep-weekly=4              # Keep 4 weekly / Сохрани
 borg prune /backup --keep-monthly=12            # Keep 12 monthly / Сохранить 12 месячных
 ```
 
-### Combined Retention Policy / Комбинированная политика
+### Combined Retention Policy
 
 ```bash
 borg prune /backup --dry-run --list --stats \
@@ -187,7 +187,7 @@ borg prune /backup --dry-run --list --stats \
 > [!WARNING]
 > Always use `--dry-run` to preview what will be deleted before running `prune` for real.
 
-### Delete Archive / Удалить архив
+### Delete Archive
 
 > [!CAUTION]
 > `borg delete /backup` without `::archive-name` deletes the **entire repository**.
@@ -201,7 +201,7 @@ borg compact /backup                            # Reclaim freed space / Осво
 
 ## Compression & Encryption
 
-### Compression Comparison / Сравнение компрессии
+### Compression Comparison
 
 | Method | Speed | Ratio | Best For |
 |--------|-------|-------|----------|
@@ -229,12 +229,12 @@ borg create /backup::archive-{now} /data --compression lzma,6    # Max / Мак�
 borg init --encryption=repokey ssh://<USER>@<HOST>/backup
 borg create ssh://<USER>@<HOST>/backup::archive-{now} /data
 
-# Using environment variable / Через переменную окружения
+# Using environment variable
 export BORG_REPO=ssh://<USER>@<HOST>/backup
 borg create ::archive-{now} /data
 ```
 
-### S3 (via rclone mount) / S3 через монтирование rclone
+### S3 (via rclone mount) / S3
 
 ```bash
 rclone mount s3:bucket /mnt/s3-borg --daemon   # Mount S3 first / Сначала смонтировать S3
@@ -273,7 +273,7 @@ borg create /backup::archive-{now} /data \
 
 ## Sysadmin Operations
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 ```bash
 export BORG_REPO=/backup                        # Default repo / Репозиторий по умолчанию
@@ -282,7 +282,7 @@ export BORG_PASSCOMMAND="cat /root/.borg-passphrase"  # Read from file / Из ф
 export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes     # Allow relocated repo / Перемещённый репозиторий
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 
 ```bash
 ~/.config/borg/keys/       # Key storage (keyfile mode) / Хранилище ключей
@@ -364,18 +364,18 @@ systemctl status borg-backup.timer             # Check status / Проверит
 
 ## Troubleshooting
 
-### Common Errors / Распространённые ошибки
+### Common Errors
 
 ```bash
-# "Failed to create/acquire the lock" / "Не удалось получить блокировку"
+# "Failed to create/acquire the lock" / "Не
 borg break-lock /backup                         # Remove stale lock / Удалить блокировку
 
-# "Repository was relocated" / "Репозиторий был перемещён"
+# "Repository was relocated" / "Репозиторий
 export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
 borg list /backup
 ```
 
-### Repair Operations / Операции восстановления
+### Repair Operations
 
 ```bash
 borg check /backup                              # Check integrity / Проверить целостность
@@ -383,7 +383,7 @@ borg check --repair /backup                     # Repair (use only when check fa
 borg compact /backup                            # Compact after repair / Упаковать после восстановления
 ```
 
-### Verbose Output & Debug / Подробный вывод
+### Verbose Output & Debug
 
 ```bash
 borg create /backup::archive-{now} /data -v     # Verbose / Подробный вывод
@@ -391,7 +391,7 @@ borg create /backup::archive-{now} /data --debug  # Debug / Отладка
 borg create /backup::archive-{now} /data --list    # List all processed files / Список файлов
 ```
 
-### Performance Tips / Советы по производительности
+### Performance Tips
 
 ```bash
 borg create /backup::archive-{now} /data \

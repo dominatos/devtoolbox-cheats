@@ -27,7 +27,7 @@ tags:
 
 ## Architecture Overview
 
-### Components & Default Ports / Компоненты и порты по умолчанию
+### Components & Default Ports
 
 | Component | Description / Описание | Default Port |
 |-----------|------------------------|-------------|
@@ -43,7 +43,7 @@ tags:
 
 ## Installation
 
-### Bareos (Recommended / Рекомендуется)
+### Bareos (Recommended
 
 ```bash
 # Debian/Ubuntu (Debian 12 example)
@@ -62,7 +62,7 @@ dnf install bareos bareos-database-postgresql  # Install / Установить
 apt install bacula bacula-director-mysql bacula-sd bacula-fd
 ```
 
-### Initialize Catalog Database / Инициализация базы каталога
+### Initialize Catalog Database
 
 ```bash
 /usr/lib/bareos/scripts/create_bareos_database     # Create DB / Создать БД
@@ -78,7 +78,7 @@ apt install bacula bacula-director-mysql bacula-sd bacula-fd
 bconsole                                        # Start console / Запустить консоль
 ```
 
-### Common bconsole Commands / Основные команды bconsole
+### Common bconsole Commands
 
 ```bash
 status dir                                      # Director status / Статус директора
@@ -93,7 +93,7 @@ help                                            # Show all commands / Все к�
 
 ## Job Management
 
-### Run Jobs / Запустить задачи
+### Run Jobs
 
 ```bash
 run                                             # Run job (interactive wizard) / Интерактивный запуск
@@ -103,7 +103,7 @@ run job=BackupClient1 level=Incremental yes     # Incremental / Инкремен
 run job=BackupClient1 level=Differential yes    # Differential / Дифференциальный
 ```
 
-### List & Monitor Jobs / Список и мониторинг задач
+### List & Monitor Jobs
 
 ```bash
 list jobs                                       # All jobs / Все задачи
@@ -113,7 +113,7 @@ status dir running                              # Running jobs only / Тольк
 list joblog jobid=<JOB_ID>                      # Log for specific job / Лог задачи
 ```
 
-### Cancel & Delete / Отменить и удалить
+### Cancel & Delete
 
 > [!WARNING]
 > `delete job` removes the job record from the catalog permanently. The data on volumes is not immediately freed — run `prune` or `purge` afterward.
@@ -127,7 +127,7 @@ delete job jobid=<JOB_ID>                       # Delete job from catalog / Уд
 
 ## Volume & Pool Management
 
-### List Volumes / Список томов
+### List Volumes
 
 ```bash
 list volumes                                    # All volumes / Все тома
@@ -135,7 +135,7 @@ list volumes pool=Full                          # Volumes in specific pool / Т�
 list media                                      # List media / Список носителей
 ```
 
-### Volume Operations / Операции с томами
+### Volume Operations
 
 ```bash
 label                                           # Label new volume / Пометить новый том
@@ -143,14 +143,14 @@ update volume=Vol-0001                          # Update volume properties / О�
 prune volume=Vol-0001                           # Remove expired job records / Удалить устаревшие записи
 
 # Purge removes ALL job data from volume — use with caution!
-# / Purge удаляет ВСЕ данные задач из тома — используйте осторожно!
+# / Purge
 purge volume=Vol-0001
 ```
 
 > [!CAUTION]
 > `purge volume` removes ALL backup records referencing that volume from the catalog, making recovery impossible. Only use when decommissioning a volume.
 
-### Pool Management / Управление пулами
+### Pool Management
 
 ```bash
 list pools                                      # List pools / Список пулов
@@ -161,7 +161,7 @@ update pool=Full                                # Update pool settings / Обн�
 
 ## Restore Operations
 
-### Interactive Restore / Интерактивное восстановление
+### Interactive Restore
 
 ```bash
 restore                                         # Restore wizard / Мастер восстановления
@@ -169,14 +169,14 @@ restore all                                     # Restore all files / Восст
 restore select                                  # Select files interactively / Выбрать файлы
 ```
 
-### Restore by Job ID / Восстановление по ID задачи
+### Restore by Job ID
 
 ```bash
 restore jobid=<JOB_ID>                          # Restore from job / Восстановить из задачи
 restore jobid=<JOB_ID> where=/tmp/restore       # Restore to alternate path / В другое место
 ```
 
-### Restore Latest / Восстановление последней версии
+### Restore Latest
 
 ```bash
 restore client=client1-fd select all done yes  # Restore latest / Восстановить последний
@@ -198,7 +198,7 @@ query                                           # Custom SQL query / Касто�
 
 ## Client Operations
 
-### File Daemon Service / Сервис File Daemon
+### File Daemon Service
 
 ```bash
 systemctl status bareos-fd                      # Check FD status / Проверить статус
@@ -206,7 +206,7 @@ systemctl start bareos-fd                       # Start FD / Запустить
 systemctl enable bareos-fd                      # Enable at boot / Включить при загрузке
 ```
 
-### Estimate Backup Size / Оценить размер бэкапа
+### Estimate Backup Size
 
 ```bash
 estimate job=BackupClient1                      # Estimate all / Оценить всё
@@ -217,7 +217,7 @@ estimate job=BackupClient1 level=Full           # Estimate full backup / Оце�
 
 ## Configuration Essentials
 
-### Director Configuration / Конфигурация директора
+### Director Configuration
 
 `/etc/bareos/bareos-dir.d/`
 
@@ -237,11 +237,11 @@ Job {
 }
 ```
 
-### Storage Daemon Configuration / Конфигурация Storage Daemon
+### Storage Daemon Configuration
 
 `/etc/bareos/bareos-sd.d/`
 
-### Client (File Daemon) Configuration / Конфигурация клиента
+### Client (File Daemon) Configuration
 
 `/etc/bareos/bareos-fd.d/`
 
@@ -258,7 +258,7 @@ Client {
 }
 ```
 
-### FileSet Example / Пример FileSet
+### FileSet Example
 
 `/etc/bareos/bareos-dir.d/fileset/`
 
@@ -285,7 +285,7 @@ FileSet {
 
 ## Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
 systemctl status bareos-dir                     # Director status / Статус директора
@@ -294,7 +294,7 @@ systemctl status bareos-fd                      # File Daemon status / Стат�
 systemctl restart bareos-dir                    # Restart director / Перезапустить директора
 ```
 
-### Logs & Monitoring / Логи и мониторинг
+### Logs & Monitoring
 
 ```bash
 journalctl -u bareos-dir                        # Director logs / Логи директора
@@ -303,7 +303,7 @@ journalctl -u bareos-fd                         # FD logs / Логи FD
 tail -f /var/log/bareos/bareos.log              # Bareos combined log / Общий лог
 ```
 
-### Log Paths / Пути логов
+### Log Paths
 
 ```bash
 /var/log/bareos/bareos.log         # Main log / Основной лог
@@ -334,23 +334,23 @@ tail -f /var/log/bareos/bareos.log              # Bareos combined log / Общи
 
 ## Troubleshooting
 
-### Common Issues / Распространённые проблемы
+### Common Issues
 
 ```bash
-# "No Jobs running" / "Нет запущенных задач"
+# "No Jobs running" / "Нет
 status dir                                      # Check director / Проверить директора
 messages                                        # Check messages / Проверить сообщения
 
-# "Could not connect to client" / "Нет подключения к клиенту"
+# "Could not connect to client" / "Нет
 systemctl status bareos-fd                      # Client FD running? / FD запущен?
 telnet <CLIENT_IP> 9102                         # Test TCP connectivity / Тест соединения
 
-# "Volume errors" / "Ошибки тома"
+# "Volume errors" / "Ошибки
 list volumes                                    # Check volume status / Статус томов
 update volume                                   # Fix volume status / Исправить статус
 ```
 
-### Catalog Maintenance / Обслуживание каталога
+### Catalog Maintenance
 
 ```bash
 bareos-dbcheck                                  # Check catalog integrity / Проверить каталог
@@ -359,7 +359,7 @@ prune jobs                                      # Remove expired job records / �
 prune volumes                                   # Remove expired volumes / Удалить устаревшие тома
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 
 ```bash
 bareos-dir -d 100 -f                            # Debug director / Отладка директора

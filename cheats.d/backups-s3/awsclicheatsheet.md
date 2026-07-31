@@ -26,7 +26,7 @@ tags:
 
 ## Installation & Configuration
 
-### Install / Установить
+### Install
 
 ```bash
 # Debian/Ubuntu
@@ -35,16 +35,16 @@ apt install awscli                              # Install AWS CLI v1 / Уста�
 # RHEL/AlmaLinux/Rocky
 dnf install awscli                              # Install AWS CLI v1 / Установить AWS CLI v1
 
-# Via pip (v2 recommended) / Через pip (рекомендуется v2)
+# Via pip (v2 recommended)
 pip3 install awscli                             # Install via pip / Установить через pip
 
-# AWS CLI v2 (official binary) / Официальный бинарник v2
+# AWS CLI v2 (official binary)
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip && sudo ./aws/install
 aws --version                                   # Verify installation / Проверить установку
 ```
 
-### Configure / Настроить
+### Configure
 
 ```bash
 aws configure                                   # Interactive setup / Интерактивная настройка
@@ -57,7 +57,7 @@ aws configure list                              # Show current config / Пока
 aws configure get region                        # Get specific value / Получить конкретное значение
 ```
 
-### Profiles / Профили
+### Profiles
 
 ```bash
 aws configure --profile production              # Create profile / Создать профиль
@@ -65,14 +65,14 @@ aws s3 ls --profile production                  # Use profile / Использо
 export AWS_PROFILE=production                   # Set default profile / Установить профиль по умолчанию
 ```
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 ```bash
 ~/.aws/credentials    # Access keys / Ключи доступа
 ~/.aws/config         # Region, output, profiles / Регион, формат вывода, профили
 ```
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 ```bash
 export AWS_ACCESS_KEY_ID=<ACCESS_KEY>           # Access key / Ключ доступа
@@ -84,14 +84,14 @@ export AWS_DEFAULT_REGION=<REGION>              # Default region / Регион 
 
 ## S3 Bucket Operations
 
-### Create Bucket / Создать bucket
+### Create Bucket
 
 ```bash
 aws s3 mb s3://<BUCKET>                         # Make bucket / Создать bucket
 aws s3 mb s3://<BUCKET> --region <REGION>       # Specific region / Конкретный регион
 ```
 
-### List Buckets / Список buckets
+### List Buckets
 
 ```bash
 aws s3 ls                                       # List all buckets / Список всех buckets
@@ -99,7 +99,7 @@ aws s3 ls s3://<BUCKET>                         # List objects / Список о
 aws s3 ls s3://<BUCKET>/path/                   # List specific prefix / Список по префиксу
 ```
 
-### Delete Bucket / Удалить bucket
+### Delete Bucket
 
 > [!WARNING]
 > `--force` deletes all objects in the bucket first, then removes the bucket. This is irreversible.
@@ -113,7 +113,7 @@ aws s3 rb s3://<BUCKET> --force                 # Force delete with all objects 
 
 ## Upload & Download
 
-### Upload (put) / Загрузить
+### Upload (put)
 
 ```bash
 aws s3 cp file.txt s3://<BUCKET>/               # Upload file / Загрузить файл
@@ -121,14 +121,14 @@ aws s3 cp /data s3://<BUCKET>/data --recursive  # Upload directory / Загру�
 aws s3 cp file.txt s3://<BUCKET>/ --storage-class GLACIER  # To Glacier / В Glacier
 ```
 
-### Download (get) / Скачать
+### Download (get)
 
 ```bash
 aws s3 cp s3://<BUCKET>/file.txt .              # Download file / Скачать файл
 aws s3 cp s3://<BUCKET>/data /restore --recursive  # Download directory / Скачать директорию
 ```
 
-### Move & Remove / Переместить и удалить
+### Move & Remove
 
 > [!CAUTION]
 > `aws s3 rm --recursive` deletes all objects under a prefix immediately with no confirmation.
@@ -143,20 +143,20 @@ aws s3 rm s3://<BUCKET>/path --recursive        # Delete directory / Удали�
 
 ## Sync Operations
 
-### Sync Local → S3 / Синхронизация в S3
+### Sync Local → S3
 
 ```bash
 aws s3 sync /data s3://<BUCKET>/data            # Sync to S3 / Синхронизация в S3
 aws s3 sync /data s3://<BUCKET>/data --delete   # Delete files removed locally / Удалить удалённые
 ```
 
-### Sync S3 → Local / Синхронизация из S3
+### Sync S3 → Local
 
 ```bash
 aws s3 sync s3://<BUCKET>/data /restore         # Sync from S3 / Синхронизация из S3
 ```
 
-### Advanced Sync / Расширенная синхронизация
+### Advanced Sync
 
 ```bash
 aws s3 sync /data s3://<BUCKET>/ \
@@ -175,7 +175,7 @@ aws s3 sync /data s3://<BUCKET>/ --dryrun       # Preview changes / Предва
 
 ## Storage Classes
 
-### Storage Class Comparison / Сравнение классов хранения
+### Storage Class Comparison
 
 | Class | Description / Описание | Min Duration | Use Case |
 |-------|------------------------|--------------|----------|
@@ -186,14 +186,14 @@ aws s3 sync /data s3://<BUCKET>/ --dryrun       # Preview changes / Предва
 | `GLACIER` | Archive, 1–5h retrieval / Архив, извлечение 1–5ч | 90 days | Long-term archive |
 | `DEEP_ARCHIVE` | Cheapest, 12h retrieval / Дешевейший, 12ч доступ | 180 days | Compliance, rarely accessed |
 
-### Set Storage Class on Upload / Установить класс при загрузке
+### Set Storage Class on Upload
 
 ```bash
 aws s3 cp file.txt s3://<BUCKET>/ --storage-class STANDARD_IA  # IA class / IA класс
 aws s3 cp file.txt s3://<BUCKET>/ --storage-class GLACIER       # Glacier / Glacier
 ```
 
-### Change Storage Class / Изменить класс хранения
+### Change Storage Class
 
 ```bash
 aws s3api copy-object \
@@ -207,7 +207,7 @@ aws s3api copy-object \
 
 ## Lifecycle Policies
 
-### Apply Lifecycle Rule / Применить правило lifecycle
+### Apply Lifecycle Rule
 
 ```bash
 aws s3api put-bucket-lifecycle-configuration \
@@ -235,7 +235,7 @@ aws s3api put-bucket-lifecycle-configuration \
 }
 ```
 
-### View Lifecycle / Просмотр lifecycle
+### View Lifecycle
 
 ```bash
 aws s3api get-bucket-lifecycle-configuration --bucket <BUCKET>  # Get lifecycle / Получить lifecycle
@@ -245,7 +245,7 @@ aws s3api get-bucket-lifecycle-configuration --bucket <BUCKET>  # Get lifecycle 
 
 ## Versioning & Encryption
 
-### Enable Versioning / Включить версионирование
+### Enable Versioning
 
 ```bash
 aws s3api put-bucket-versioning \
@@ -256,7 +256,7 @@ aws s3api get-bucket-versioning --bucket <BUCKET>   # Check status / Прове�
 aws s3api list-object-versions --bucket <BUCKET>    # List versions / Список версий
 ```
 
-### Enable Server-Side Encryption / Включить шифрование
+### Enable Server-Side Encryption
 
 ```bash
 aws s3api put-bucket-encryption \
@@ -276,7 +276,7 @@ aws s3api get-bucket-encryption --bucket <BUCKET>   # Check encryption / Про�
 
 ## Multipart Uploads
 
-### How It Works / Принцип работы
+### How It Works
 
 > AWS CLI automatically uses multipart upload for files > 8 MB. Use `aws s3api` for manual control.
 
@@ -284,28 +284,28 @@ aws s3api get-bucket-encryption --bucket <BUCKET>   # Check encryption / Про�
 aws s3 cp large-file.iso s3://<BUCKET>/         # Auto multipart / Авто multipart (>8MB)
 ```
 
-### Manual Multipart / Ручная загрузка по частям
+### Manual Multipart
 
 ```bash
-# 1. Initiate upload / Инициировать загрузку
+# 1. Initiate upload
 aws s3api create-multipart-upload --bucket <BUCKET> --key large-file.iso
 
-# 2. Upload parts / Загрузить части
+# 2. Upload parts
 aws s3api upload-part \
   --bucket <BUCKET> --key large-file.iso \
   --part-number 1 --body part1 \
   --upload-id <UPLOAD_ID>
 
-# 3. Complete upload / Завершить загрузку
+# 3. Complete upload
 aws s3api complete-multipart-upload \
   --bucket <BUCKET> --key large-file.iso \
   --upload-id <UPLOAD_ID> \
   --multipart-upload file://parts.json
 
-# List incomplete uploads / Список незавершённых
+# List incomplete uploads
 aws s3api list-multipart-uploads --bucket <BUCKET>
 
-# Abort upload / Прервать загрузку
+# Abort upload
 aws s3api abort-multipart-upload \
   --bucket <BUCKET> --key large-file.iso \
   --upload-id <UPLOAD_ID>
@@ -315,14 +315,14 @@ aws s3api abort-multipart-upload \
 
 ## Sysadmin Operations
 
-### Automated Backup Script / Автоматический скрипт бэкапа
+### Automated Backup Script
 
 `/usr/local/bin/s3-backup.sh`
 
 ```bash
 #!/bin/bash
 # S3 daily backup with 30-day rolling cleanup
-# / Ежедневный бэкап в S3 с ротацией 30 дней
+#
 
 set -euo pipefail
 
@@ -333,13 +333,13 @@ LOG="/var/log/s3-backup.log"
 
 echo "$(date): Starting backup of $SOURCE → s3://$BUCKET/backups/$DATE/" >> "$LOG"
 
-# Sync to S3 / Синхронизация в S3
+# Sync to S3
 aws s3 sync "$SOURCE" "s3://$BUCKET/backups/$DATE/" \
   --storage-class STANDARD_IA \
   --exclude "*.tmp" \
   --exclude ".cache/*" >> "$LOG" 2>&1
 
-# Remove old backups (>30 days) / Удалить старые бэкапы (>30 дней)
+# Remove old backups (>30 days)
 aws s3 ls "s3://$BUCKET/backups/" | while read -r line; do
   backup_date=$(echo "$line" | awk '{print $2}' | tr -d '/')
   if [[ -n "$backup_date" ]] && \
@@ -356,7 +356,7 @@ echo "$(date): Backup complete." >> "$LOG"
 chmod +x /usr/local/bin/s3-backup.sh
 ```
 
-### IAM Policy for Backup User / IAM политика для пользователя бэкапа
+### IAM Policy for Backup User / IAM
 
 `/tmp/s3-backup-policy.json`
 
@@ -381,16 +381,16 @@ chmod +x /usr/local/bin/s3-backup.sh
 }
 ```
 
-### Cron Schedule / Расписание cron
+### Cron Schedule
 
 `/etc/cron.d/s3-backup`
 
 ```
-# S3 daily backup at 02:00 / Ежедневный бэкап в S3 в 02:00
+# S3 daily backup at 02:00
 0 2 * * * root /usr/local/bin/s3-backup.sh
 ```
 
-### Logrotate Configuration / Конфигурация logrotate
+### Logrotate Configuration
 
 `/etc/logrotate.d/s3-backup`
 
@@ -410,37 +410,37 @@ chmod +x /usr/local/bin/s3-backup.sh
 
 ## Troubleshooting
 
-### Common Errors / Распространённые ошибки
+### Common Errors
 
 ```bash
-# Error: "AccessDenied" / "Доступ запрещён"
+# Error: "AccessDenied" / "Доступ
 aws iam get-user                                # Verify credentials / Проверить учётные данные
 aws iam list-attached-user-policies --user-name <USER>  # Check policies / Проверить политики
 
-# Error: "NoSuchBucket" / "Bucket не существует"
+# Error: "NoSuchBucket" / "Bucket
 aws s3 ls                                       # List all buckets / Список всех buckets
 aws s3 mb s3://<BUCKET>                         # Create bucket / Создать bucket
 
-# Slow transfers / Медленные передачи
+# Slow transfers
 aws configure set default.s3.max_concurrent_requests 20  # Increase concurrency / Увеличить параллелизм
 aws configure set default.s3.multipart_threshold 64MB    # Adjust multipart threshold / Порог multipart
 ```
 
-### Verify Upload / Проверить загрузку
+### Verify Upload
 
 ```bash
 aws s3 ls s3://<BUCKET>/file.txt               # Check existence / Проверить существование
 aws s3api head-object --bucket <BUCKET> --key file.txt  # Get metadata / Получить метаданные
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 
 ```bash
 aws s3 ls --debug                               # Full debug log / Полный отладочный лог
 aws s3 sync /data s3://<BUCKET>/ --dryrun       # Dry run / Пробный запуск
 ```
 
-### Performance Tuning / Настройка производительности
+### Performance Tuning
 
 ```bash
 aws configure set default.s3.max_concurrent_requests 50  # Max concurrent / Макс параллельных

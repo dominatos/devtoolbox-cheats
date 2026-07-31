@@ -47,16 +47,16 @@ kubectl get svc -o jsonpath='{.items[*].spec.clusterIP}'                        
 ## Resource Filtering
 
 ```bash
-# Get pods by phase / Получить pod-ы по фазе
+# Get pods by phase
 kubectl get pods -o jsonpath='{.items[?(@.status.phase=="Running")].metadata.name}'
 
-# Get pods with restarts > 0 / Получить pod-ы с перезапусками > 0
+# Get pods with restarts > 0
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[0].restartCount}{"\n"}{end}' | awk '$2>0'
 
-# Get services of type LoadBalancer / Получить сервисы типа LoadBalancer
+# Get services of type LoadBalancer
 kubectl get svc -o jsonpath='{.items[?(@.spec.type=="LoadBalancer")].metadata.name}'
 
-# Get pods without ready status / Получить pod-ы без статуса ready
+# Get pods without ready status
 kubectl get pods -o jsonpath='{.items[?(@.status.conditions[?(@.type=="Ready")].status!="True")].metadata.name}'
 ```
 
@@ -65,19 +65,19 @@ kubectl get pods -o jsonpath='{.items[?(@.status.conditions[?(@.type=="Ready")].
 ## Node Information
 
 ```bash
-# Node names and kubelet versions / Имена узлов и версии kubelet
+# Node names and kubelet versions
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.nodeInfo.kubeletVersion}{"\n"}{end}'
 
-# Node capacity (CPU & memory) / Ёмкость узла (CPU и память)
+# Node capacity (CPU & memory) / Ёмкость
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\tCPU: "}{.status.capacity.cpu}{"\tMem: "}{.status.capacity.memory}{"\n"}{end}'
 
-# Node allocatable resources / Доступные ресурсы узла
+# Node allocatable resources
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.allocatable.cpu}{"\t"}{.status.allocatable.memory}{"\n"}{end}'
 
-# Node external IPs / Внешние IP узлов
+# Node external IPs
 kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}'
 
-# Node OS information / Информация об ОС узла
+# Node OS information
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.nodeInfo.osImage}{"\n"}{end}'
 ```
 
@@ -86,19 +86,19 @@ kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.n
 ## Container & Image Queries
 
 ```bash
-# Deployment → images / Деплой → образы
+# Deployment → images
 kubectl get deploy -o jsonpath='{range .items[*]}{.metadata.name}{" -> "}{.spec.template.spec.containers[*].image}{"\n"}{end}'
 
-# All container images in namespace / Все образы контейнеров в namespace
+# All container images in namespace
 kubectl get pods -o jsonpath='{.items[*].spec.containers[*].image}' | tr ' ' '\n' | sort -u
 
-# Container resource requests / Запросы ресурсов контейнеров
+# Container resource requests
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{range .spec.containers[*]}{"\t"}{.name}{" CPU: "}{.resources.requests.cpu}{" Mem: "}{.resources.requests.memory}{"\n"}{end}{end}'
 
-# Container resource limits / Лимиты ресурсов контейнеров
+# Container resource limits
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{range .spec.containers[*]}{"\t"}{.name}{" CPU: "}{.resources.limits.cpu}{" Mem: "}{.resources.limits.memory}{"\n"}{end}{end}'
 
-# Pod image pull policy / Политика загрузки образов pod-ов
+# Pod image pull policy
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[*].imagePullPolicy}{"\n"}{end}'
 ```
 
@@ -107,16 +107,16 @@ kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.cont
 ## Custom Columns
 
 ```bash
-# Custom columns for pods / Кастомные колонки для pod-ов
+# Custom columns for pods
 kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:.status.phase,IP:.status.podIP,NODE:.spec.nodeName
 
-# Custom columns for nodes / Кастомные колонки для узлов
+# Custom columns for nodes
 kubectl get nodes -o custom-columns=NAME:.metadata.name,CPU:.status.capacity.cpu,MEMORY:.status.capacity.memory
 
-# Deployments with replicas / Deployment-ы с репликами
+# Deployments with replicas / Deployment-ы
 kubectl get deploy -o custom-columns=NAME:.metadata.name,REPLICAS:.spec.replicas,AVAILABLE:.status.availableReplicas
 
-# Services with type and IPs / Сервисы с типом и IP
+# Services with type and IPs
 kubectl get svc -o custom-columns=NAME:.metadata.name,TYPE:.spec.type,CLUSTER-IP:.spec.clusterIP,EXTERNAL-IP:.status.loadBalancer.ingress[0].ip
 ```
 
@@ -125,22 +125,22 @@ kubectl get svc -o custom-columns=NAME:.metadata.name,TYPE:.spec.type,CLUSTER-IP
 ## Troubleshooting JSONPath
 
 ```bash
-# Pretty print JSON structure / Вывод структуры JSON
+# Pretty print JSON structure
 kubectl get pod POD -o json | jq .
 
-# Test JSONPath expressions / Тестирование JSONPath выражений
+# Test JSONPath expressions
 kubectl get pod POD -o jsonpath='{.metadata.name}'
 kubectl get pod POD -o jsonpath='{.status.phase}'
 
-# Common errors / Часто встречающиеся ошибки:
-# - Missing quotes around JSONPath expression / Отсутствие кавычек вокруг JSONPath выражения
-# - Incorrect array indexing / Неправильная индексация массива
-# - Missing range for multi-item output / Отсутствие range для вывода нескольких элементов
+# Common errors
+# - Missing quotes around JSONPath expression
+# - Incorrect array indexing
+# - Missing range for multi-item output
 
-# Combine with jq for complex queries / Комбинация с jq для сложных запросов
+# Combine with jq for complex queries
 kubectl get pods -o json | jq '.items[] | select(.status.phase=="Running") | .metadata.name'
 
-# Use grep/awk with JSONPath / Использование grep/awk с JSONPath
+# Use grep/awk with JSONPath
 kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\n"}{end}' | grep Running
 ```
 

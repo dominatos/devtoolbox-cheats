@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -36,7 +36,7 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Systemd Service Unit / Юнит Systemd
+### Systemd Service Unit
 `/etc/systemd/system/kafka.service`
 
 ```ini
@@ -52,7 +52,7 @@ User=kafka
 Group=kafka
 Environment="JAVA_HOME=/usr/lib/jvm/jre-11-openjdk"
 Environment="KAFKA_HEAP_OPTS=-Xmx1G -Xms1G"
-# JMX Port for monitoring / Порт JMX для мониторинга
+# JMX Port for monitoring
 Environment="JMX_PORT=9999"
 ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
 ExecStop=/opt/kafka/bin/kafka-server-stop.sh
@@ -62,48 +62,48 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-### Essential `server.properties` Settings / Основные настройки
+### Essential `server.properties` Settings
 `/opt/kafka/config/server.properties`
 
 ```properties
-# Valid broker id (unique) / Уникальный ID брокера
+# Valid broker id (unique)
 broker.id=1
 
-# Listeners / Слушатели
+# Listeners
 listeners=PLAINTEXT://<IP>:9092
 advertised.listeners=PLAINTEXT://<HOST>:9092
 
-# Zookeeper connection (if not using KRaft) / Подключение к Zookeeper
+# Zookeeper connection (if not using KRaft)
 zookeeper.connect=<IP1>:2181,<IP2>:2181,<IP3>:2181/kafka
 
-# Log data directories / Директории для логов (данных)
+# Log data directories
 log.dirs=/var/lib/kafka/data
 
-# Auto topic creation (Production: false) / Автосоздание топиков (В проде: false)
+# Auto topic creation (Production: false)
 auto.create.topics.enable=false
 
-# Delete topic enable / Разрешить удаление топиков
+# Delete topic enable
 delete.topic.enable=true
 ```
 
-### KRaft Cluster Initialization / Инициализация кластера KRaft
+### KRaft Cluster Initialization
 Modern Kafka (KRaft mode) requires log directories to be formatted with a unique Cluster ID before the server can start. / Современная Kafka (режим KRaft) требует форматирования директорий логов с уникальным ID кластера перед запуском сервера.
 
 **Step 1: Generate a unique Cluster ID / Шаг 1: Генерация уникального ID кластера**
 ```bash
-# Generate a unique production-safe UUID / Генерация уникального UUID для продакшена
+# Generate a unique production-safe UUID
 KAFKA_CLUSTER_ID="$(/opt/kafka/bin/kafka-storage.sh random-uuid)"
 ```
 
 **Step 2: Format the storage directory / Шаг 2: Форматирование директории хранилища**
 ```bash
-# Initialize directories and write meta.properties / Инициализация директорий и запись meta.properties
+# Initialize directories and write meta.properties
 /opt/kafka/bin/kafka-storage.sh format -t $KAFKA_CLUSTER_ID -c /opt/kafka/config/server.properties
 ```
 
 **Step 3: Start the Kafka Broker / Шаг 3: Запуск брокера Kafka**
 ```bash
-# Launch the active broker process / Запуск активного процесса брокера
+# Launch the active broker process
 /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
 ```
 
@@ -111,7 +111,7 @@ KAFKA_CLUSTER_ID="$(/opt/kafka/bin/kafka-storage.sh random-uuid)"
 
 ## 2. Core Management
 
-### Core Concepts & Flags / Основные концепции и флаги
+### Core Concepts & Flags
 | Flag / Флаг | Description (EN) | Описание (RU) | Use Case / Best for... |
 | --- | --- | --- | --- |
 | `--bootstrap-server` | Entry point to cluster for dynamic discovery | Точка входа в кластер для динамического обнаружения | Client connections |
@@ -120,74 +120,74 @@ KAFKA_CLUSTER_ID="$(/opt/kafka/bin/kafka-storage.sh random-uuid)"
 | `--replication-factor` | Redundancy metric (copies of a partition) | Метрика избыточности (копии раздела) | High availability/failover |
 | `--group` | Identifier to bundle consumer instances | Идентификатор группы консьюмеров | Workload balancing |
 
-### Topics / Топики
+### Topics
 
 ```bash
-# List all topics / Список всех топиков
+# List all topics
 kafka-topics.sh --bootstrap-server <HOST>:9092 --list
 
-# Create basic topic / Создать базовый топик
+# Create basic topic
 kafka-topics.sh --bootstrap-server <HOST>:9092 --create --topic <TOPIC_NAME>
 
-# Create multi-partition topic / Создать топик с несколькими разделами и репликами
+# Create multi-partition topic
 kafka-topics.sh --bootstrap-server <HOST>:9092 --create --topic <TOPIC_NAME> \
   --partitions 5 --replication-factor 2
 
-# Describe topic architecture (reveals ISR, leaders) / Подробная архитектура топика
+# Describe topic architecture (reveals ISR, leaders)
 kafka-topics.sh --bootstrap-server <HOST>:9092 --describe --topic <TOPIC_NAME>
 
-# Delete topic / Удалить топик
+# Delete topic
 kafka-topics.sh --bootstrap-server <HOST>:9092 --delete --topic <TOPIC_NAME>
 ```
 
-### Dynamic Configuration Management / Динамическое управление конфигурацией
+### Dynamic Configuration Management
 Alter configurations live at runtime without rolling restarts. / Изменение конфигураций в реальном времени без перезапуска.
 
 ```bash
-# Describe dynamic overrides / Посмотреть динамические переопределения
+# Describe dynamic overrides
 kafka-configs.sh --bootstrap-server <HOST>:9092 --entity-type topics --entity-name <TOPIC_NAME> --describe
 
-# Alter configurations dynamically (e.g., retention & size) / Динамическое изменение конфигураций
+# Alter configurations dynamically (e.g., retention & size)
 kafka-configs.sh --bootstrap-server <HOST>:9092 --entity-type topics --entity-name <TOPIC_NAME> \
   --alter --add-config retention.ms=3600000,max.message.bytes=2097152
 
-# Delete a dynamic override / Удалить динамическое переопределение
+# Delete a dynamic override
 kafka-configs.sh --bootstrap-server <HOST>:9092 --entity-type topics --entity-name <TOPIC_NAME> \
   --alter --delete-config retention.ms
 ```
 
-### Producers & Consumers / Продюсеры и Консьюмеры
+### Producers & Consumers
 
 **Producers / Продюсеры**
 ```bash
-# Standard Interactive Producer / Стандартный интерактивный продюсер
+# Standard Interactive Producer
 kafka-console-producer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME>
 
-# Safe Producer (acks=all ensures disk write) / Безопасный продюсер (гарантия записи на диск)
+# Safe Producer (acks=all ensures disk write)
 kafka-console-producer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> \
   --producer-property acks=all
 
-# Produce with explicit keys (forces ordering) / Продюсер с явными ключами (гарантирует порядок)
+# Produce with explicit keys (forces ordering)
 kafka-console-producer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> \
   --property parse.key=true --property key.separator=:
 
-# Produce forcing round-robin (for testing load-balancing) / Принудительный round-robin
+# Produce forcing round-robin (for testing load-balancing)
 kafka-console-producer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> \
   --producer-property partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner
 ```
 
 **Consumers / Консьюмеры**
 ```bash
-# Live Real-Time Consumer (from now) / Консьюмер в реальном времени (с текущего момента)
+# Live Real-Time Consumer (from now)
 kafka-console-consumer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME>
 
-# Historical Log Dump (from start) / Чтение исторических логов с начала
+# Historical Log Dump (from start)
 kafka-console-consumer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> --from-beginning
 
-# Read last N messages / Прочитать последние N сообщений
+# Read last N messages
 kafka-console-consumer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> --max-messages 10
 
-# Advanced Meta-Data Formatter (displays keys/partitions) / Расширенный форматтер метаданных
+# Advanced Meta-Data Formatter (displays keys/partitions)
 kafka-console-consumer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> \
   --formatter kafka.tools.DefaultMessageFormatter \
   --property print.timestamp=true --property print.key=true \
@@ -198,7 +198,7 @@ kafka-console-consumer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> \
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
 systemctl start kafka    # Start Kafka / Запустить Kafka
@@ -208,19 +208,19 @@ systemctl status kafka   # Status / Статус
 journalctl -u kafka -f   # Follow logs / Смотреть логи
 ```
 
-### Consumer Groups & Management / Группы консьюмеров и управление
+### Consumer Groups & Management
 
 **Scenario A: Load-Balancing** - Same group ID divides the workload across instances. / Одинаковый ID группы распределяет нагрузку.
 **Scenario B: Fan-Out / Pub-Sub** - Different group IDs process independent feeds. / Разные ID групп обрабатывают данные независимо.
 
 ```bash
-# Consume in a specific group / Чтение в определенной группе
+# Consume in a specific group
 kafka-console-consumer.sh --bootstrap-server <HOST>:9092 --topic <TOPIC_NAME> --group <GROUP_NAME>
 
-# List all active consumer groups / Список всех активных групп консьюмеров
+# List all active consumer groups
 kafka-consumer-groups.sh --bootstrap-server <HOST>:9092 --list
 
-# Describe specific group (Check lag) / Описание конкретной группы (Проверка лага)
+# Describe specific group (Check lag)
 kafka-consumer-groups.sh --bootstrap-server <HOST>:9092 --describe --group <GROUP_NAME>
 ```
 
@@ -235,16 +235,16 @@ kafka-consumer-groups.sh --bootstrap-server <HOST>:9092 --describe --group <GROU
 > You **must shut down** all active consumer instances belonging to the group before resetting offsets. / Необходимо **остановить** все активные инстансы консьюмеров группы перед сбросом офсетов.
 
 ```bash
-# Dry Run Reset (Safe Verification) / Пробный сброс (безопасная проверка)
+# Dry Run Reset (Safe Verification)
 kafka-consumer-groups.sh --bootstrap-server <HOST>:9092 --group <GROUP_NAME> \
   --reset-offsets --to-earliest --topic <TOPIC_NAME> --dry-run
 
-# Execute Reset (Apply Commit) / Выполнить сброс
+# Execute Reset (Apply Commit)
 kafka-consumer-groups.sh --bootstrap-server <HOST>:9092 --group <GROUP_NAME> \
   --reset-offsets --to-earliest --topic <TOPIC_NAME> --execute
 ```
 
-### Partition Rebalancing & Replication / Ребалансировка разделов и репликация
+### Partition Rebalancing & Replication
 Use the 3-step lifecycle when data is uneven or to increase redundancy. / Используйте 3-шаговый цикл при неравномерных данных или для увеличения избыточности.
 
 1. **Step 1: Generate Execution Map / Шаг 1: Генерация карты выполнения**
@@ -273,7 +273,7 @@ Use the 3-step lifecycle when data is uneven or to increase redundancy. / Исп
      --reassignment-json-file migration-plan.json --verify
    ```
 
-### Broker Lifecycle Management / Управление жизненным циклом брокера
+### Broker Lifecycle Management
 
 **Rolling Restart of Brokers / Постепенный перезапуск брокеров**
 1. **Verify Health**: No under-replicated partitions. / **Проверка**: Нет недореплицированных разделов.
@@ -294,7 +294,7 @@ Use the 3-step lifecycle when data is uneven or to increase redundancy. / Исп
    ```
 4. Stop broker once metrics drop to zero. / Остановите брокер.
 
-### Zero-Downtime Cluster Upgrades / Обновление кластера без простоев
+### Zero-Downtime Cluster Upgrades
 Requires sequence to prevent protocol mismatch. / Требует строгой последовательности для избежания несовместимости протоколов.
 
 | Step / Шаг | Core Action (EN) | Действие (RU) |
@@ -305,14 +305,14 @@ Requires sequence to prevent protocol mismatch. / Требует строгой 
 | 4. Protocol Advance | Update `server.properties`: `inter.broker.protocol.version=<NEW_VERS>` | Обновление версии протокола в конфигурации |
 | 5. Final Restart | Perform final rolling restart to activate new features. | Финальный перезапуск для активации новых функций. |
 
-### JVM & Performance / JVM и Производительность
+### JVM & Performance / JVM
 
 > [!TIP]
 > **Heap Size:** Start with 6GB-30GB depending on RAM. Do not exceed 32GB (Compressed oops).
 > **GC:** G1GC is recommended for Kafka.
 
 ```bash
-# Check JVM usage via jstat / Проверка использования JVM через jstat
+# Check JVM usage via jstat
 jstat -gc <PID> 1000
 ```
 
@@ -320,23 +320,23 @@ jstat -gc <PID> 1000
 
 ## 4. Security
 
-### ACL Configuration / Настройка ACL
+### ACL Configuration
 (Requires `authorizer.class.name` configured in server.properties)
 
 ```bash
-# Add Producer ACL / Добавить ACL для продюсера
+# Add Producer ACL
 kafka-acls.sh --bootstrap-server <HOST>:9092 --add --allow-principal User:<USER> \
   --producer --topic <TOPIC_NAME>
 
-# Add Consumer ACL / Добавить ACL для консьюмера
+# Add Consumer ACL
 kafka-acls.sh --bootstrap-server <HOST>:9092 --add --allow-principal User:<USER> \
   --consumer --topic <TOPIC_NAME> --group <GROUP_NAME>
 
-# List ACLs / Список ACL
+# List ACLs
 kafka-acls.sh --bootstrap-server <HOST>:9092 --list
 ```
 
-### SSL/TLS Basics / Основы SSL/TLS
+### SSL/TLS Basics
 
 Locations:
 - Keystore: `/var/private/ssl/kafka.server.keystore.jks`
@@ -356,20 +356,20 @@ ssl.truststore.password=<SECRET_KEY>
 
 ## 5. Backup & Restore
 
-### MirrorMaker (Replication) / Репликация через MirrorMaker
+### MirrorMaker (Replication)
 Replicate topics from one cluster to another. / Репликация топиков из одного кластера в другой.
 
 ```bash
-# Run MirrorMaker 2 / Запуск MirrorMaker 2
+# Run MirrorMaker 2
 ./bin/connect-mirror-maker.sh mm2.properties
 ```
 
-### File System Backup / Бэкап файловой системы
+### File System Backup
 Ideally, backup the `log.dirs` only when Kafka is stopped to ensure consistency.
 В идеале, делайте бэкап `log.dirs` только при остановленной Kafka для обеспечения целостности.
 
 ```bash
-# Snapshot logs dir / Снапшот директории логов
+# Snapshot logs dir
 tar -czf kafka_data_backup_$(date +%F).tar.gz /var/lib/kafka/data
 ```
 
@@ -377,7 +377,7 @@ tar -czf kafka_data_backup_$(date +%F).tar.gz /var/lib/kafka/data
 
 ## 6. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 1.  **Under-replicated Partitions / Недореплицированные разделы**
     ```bash
@@ -393,7 +393,7 @@ tar -czf kafka_data_backup_$(date +%F).tar.gz /var/lib/kafka/data
     Usually means the broker hosting the leader partition is down.
     Обычно означает, что брокер с лидер-разделом упал.
 
-### Diagnostic Tools / Инструменты диагностики
+### Diagnostic Tools
 
 *   **kcat (kafkacat)**: Versatile CLI client. / Универсальный CLI клиент.
     ```bash

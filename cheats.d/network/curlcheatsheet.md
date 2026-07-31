@@ -16,30 +16,30 @@ tags:
 📚 **Official Docs / Официальная документация:** [curl.se](https://curl.se/docs/)
 
 ## Table of Contents
-- [Basics](#Basics%20/%20Основы)
-- [Output & Files](#Output%20&%20Files%20/%20Вывод%20и%20файлы)
-- [Headers](#Headers%20/%20Заголовки)
+- [Basics](#Basics)
+- [Output & Files](#Output%20&%20Files)
+- [Headers](#Headers)
 - [HTTP Methods](#HTTP%20Methods%20/%20HTTP-методы)
-- [Sending Data](#Sending%20Data%20/%20Отправка%20данных)
-- [Cookies](#Cookies%20/%20Куки)
-- [Authentication](#Authentication%20/%20Аутентификация)
-- [Proxy](#Proxy%20/%20Прокси)
-- [Redirects](#Redirects%20/%20Редиректы)
-- [Compression & Content](#️%20Compression%20&%20Content%20/%20Сжатие%20и%20контент)
-- [Timeouts, Retries & Rates](#⏱️%20Timeouts,%20Retries%20&%20Rates%20/%20Таймауты,%20повторы%20и%20скорость)
-- [Debug & Metrics](#Debug%20&%20Metrics%20/%20Отладка%20и%20метрики)
+- [Sending Data](#Sending%20Data)
+- [Cookies](#Cookies)
+- [Authentication](#Authentication)
+- [Proxy](#Proxy)
+- [Redirects](#Redirects)
+- [Compression & Content](#️%20Compression%20&%20Content)
+- [Timeouts, Retries & Rates](#⏱️%20Timeouts,%20Retries%20&%20Rates)
+- [Debug & Metrics](#Debug%20&%20Metrics)
 - [DNS & Network Tricks](#DNS%20&%20Network%20Tricks%20/%20DNS%20и%20сетевые%20трюки)
 - [TLS & Security](#TLS%20&%20Security%20/%20TLS%20и%20безопасность)
-- [Parallel Requests](#Parallel%20Requests%20/%20Параллельные%20запросы)
-- [Config & Netrc](#️%20Config%20&%20Netrc%20/%20Конфигурация%20и%20netrc)
+- [Parallel Requests](#Parallel%20Requests)
+- [Config & Netrc](#️%20Config%20&%20Netrc)
 - [API & JSON Examples](#API%20&%20JSON%20Examples%20/%20API%20и%20примеры%20JSON)
-- [Uploads](#Uploads%20/%20Загрузки)
+- [Uploads](#Uploads)
 - [FTP, SFTP & SMTP](#FTP,%20SFTP%20&%20SMTP)
-- [Useful Combos](#Useful%20Combos%20/%20Полезные%20комбинации)
+- [Useful Combos](#Useful%20Combos)
 
 ---
 
-## 📘 Basics / Основы
+## 📘 Basics
 
 ```bash
 curl https://example.com                        # Simple GET, print body / Простой GET, печать тела
@@ -62,7 +62,7 @@ curl --no-progress-meter https://example.com    # Hide progress meter / Скры
 
 ---
 
-## 📂 Output & Files / Вывод и файлы
+## 📂 Output & Files
 
 ```bash
 curl -o <FILE>.html https://example.com         # Save to custom name / Сохранить в указанный файл
@@ -78,7 +78,7 @@ curl --output-dir downloads -O https://<HOST>/<FILE>.tar.gz  # Output directory 
 
 ---
 
-## 📋 Headers / Заголовки
+## 📋 Headers
 
 ```bash
 curl -H 'Accept: application/json' https://example.com  # Add request header / Добавить заголовок
@@ -91,7 +91,7 @@ curl --compressed https://example.com  # Ask compressed response / Запрос�
 
 ---
 
-## 🔧 HTTP Methods / HTTP-методы
+## 🔧 HTTP Methods
 
 ```bash
 curl -X GET https://api.example.com/items       # Explicit GET / Явный GET
@@ -103,7 +103,7 @@ curl -X DELETE https://api.example.com/items/1  # DELETE / Удаление
 
 ---
 
-## 📤 Sending Data / Отправка данных
+## 📤 Sending Data
 
 ```bash
 curl -d 'a=1&b=2' https://api.example.com  # POST form urlencoded / POST форма application/x-www-form-urlencoded
@@ -122,7 +122,7 @@ echo 'streamed-data' | curl -T - https://<HOST>/put  # Upload from stdin / За�
 
 ---
 
-## 🍪 Cookies / Куки
+## 🍪 Cookies
 
 ```bash
 curl -b 'sid=123; theme=dark' https://example.com  # Send cookies inline / Отправить куки строкой
@@ -134,7 +134,7 @@ curl --cookie-jar jar.txt https://example.com  # Alias for -c / Синоним -
 
 ---
 
-## 🔐 Authentication / Аутентификация
+## 🔐 Authentication
 
 ```bash
 curl -u <user>:<pass> https://example.com  # HTTP Basic auth / Базовая авторизация
@@ -148,7 +148,7 @@ curl --oauth2-bearer <TOKEN> https://api.example.com  # OAuth2 Bearer / OAuth2 �
 
 ---
 
-## 🌐 Proxy / Прокси
+## 🌐 Proxy
 
 ```bash
 curl -x http://<proxy>:3128 https://example.com  # HTTP proxy / HTTP-прокси
@@ -160,7 +160,7 @@ curl --proxy-header 'Header: value' -x http://p:3128 https://example.com  # Head
 
 ---
 
-## 🔀 Redirects / Редиректы
+## 🔀 Redirects
 
 ```bash
 curl -L https://t.co/xxx  # Follow 3xx redirects / Следовать 3xx-редиректам
@@ -171,7 +171,7 @@ curl --max-redirs 5 -L https://example.com  # Limit redirects / Ограничи
 
 ---
 
-## 🗜️ Compression & Content / Сжатие и контент
+## 🗜️ Compression & Content
 
 ```bash
 curl --compressed https://example.com  # Request compressed / Запросить сжатый ответ
@@ -182,7 +182,7 @@ curl --no-buffer https://example.com/stream  # Disable output buffering / Отк
 
 ---
 
-## ⏱️ Timeouts, Retries & Rates / Таймауты, повторы и скорость
+## ⏱️ Timeouts, Retries & Rates
 
 ```bash
 curl --connect-timeout 5 https://example.com  # Conn timeout (s) / Таймаут соединения (с)
@@ -198,7 +198,7 @@ curl --speed-time 30 --speed-limit 1024 https://<HOST>/<FILE>  # Abort if <1KB/s
 
 ---
 
-## 🐛 Debug & Metrics / Отладка и метрики
+## 🐛 Debug & Metrics
 
 ```bash
 curl -v https://example.com  # Verbose / Подробный вывод
@@ -213,7 +213,7 @@ curl -s -o /dev/null -w '{"code":%{http_code},"total":%{time_total}}\n' https://
 
 ---
 
-## 🌐 DNS & Network Tricks / DNS и сетевые трюки
+## 🌐 DNS & Network Tricks / DNS
 
 ```bash
 curl --resolve example.com:443:<IP> https://example.com  # Override DNS for host:port / Переопределить DNS для host:port
@@ -226,7 +226,7 @@ curl --globoff 'https://example.com/file[1-3].txt'  # Disable URL globbing / О�
 
 ---
 
-## 🔒 TLS & Security / TLS и безопасность
+## 🔒 TLS & Security / TLS
 
 ```bash
 curl --cacert ca.pem https://example.com  # Trust custom CA / Доверять заданному CA
@@ -240,7 +240,7 @@ curl --ciphers 'TLS_AES_128_GCM_SHA256' https://example.com  # Restrict cipher s
 
 ---
 
-## ⚡ Parallel Requests / Параллельные запросы
+## ⚡ Parallel Requests
 
 ```bash
 curl --parallel --parallel-max 5 -K urls.txt  # Parallel from config / Параллельно из файла конфигов
@@ -249,7 +249,7 @@ curl --parallel -O https://h/a.bin -O https://h/b.bin -O https://h/c.bin  # Para
 
 ---
 
-## ⚙️ Config & Netrc / Конфигурация и netrc
+## ⚙️ Config & Netrc
 
 ```bash
 curl --config ~/.curlrc https://example.com  # Load options from config / Загрузить опции из конфигурации
@@ -259,7 +259,7 @@ curl --netrc-file .netrc https://example.com  # Custom netrc path / Заданн
 
 ---
 
-## 🔌 API & JSON Examples / API и примеры JSON
+## 🔌 API & JSON Examples / API
 
 ```bash
 curl --json @payload.json https://api.example.com/v1/items  # POST JSON from file / POST JSON из файла
@@ -272,7 +272,7 @@ curl -s https://ifconfig.co/json  # Quick IP info in JSON / Быстрая ин�
 
 ---
 
-## 📤 Uploads / Загрузки
+## 📤 Uploads
 
 ```bash
 curl -T ./<FILE>.bin https://upload.example.com/put  # Upload via PUT / Загрузка через PUT
@@ -295,7 +295,7 @@ curl --mail-from from@ex.com --mail-rcpt to@ex.com --upload-file msg.txt smtp://
 
 ---
 
-## 🌟 Useful Combos / Полезные комбинации
+## 🌟 Useful Combos
 
 ```bash
 curl -sSL https://get.example.sh | bash  # Download & execute (be careful) / Скачивание и запуск (осторожно)

@@ -27,7 +27,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [nice — CPU Priority](#ionice%20&%20nice%20—%20CPU%20&%20I/O%20Priority%20Control)
 2. [renice — Change Priority](#renice%20—%20Change%20Priority)
@@ -39,7 +39,7 @@ tags:
 
 ## nice — CPU Priority
 
-### Basic Usage / Базовое использование
+### Basic Usage
 
 nice starts a process with modified CPU priority (niceness).
 nice запускает процесс с изменённым приоритетом CPU (niceness).
@@ -51,7 +51,7 @@ nice -n 19 <COMMAND>                      # Lowest priority / Минимальн
 sudo nice -n -20 <COMMAND>                # Highest priority (root) / Максимальный приоритет (root)
 ```
 
-### Niceness Values / Значения niceness
+### Niceness Values
 
 ```text
 -20 = Highest priority / Максимальный приоритет (только root)
@@ -62,7 +62,7 @@ Negative values = Higher priority / Отрицательные = выше при
 Positive values = Lower priority / Положительные = ниже приоритет
 ```
 
-### Examples / Примеры
+### Examples
 
 ```bash
 nice -n 19 tar czf backup.tgz /data       # Low priority backup / Бэкап с низким приоритетом
@@ -74,7 +74,7 @@ sudo nice -n -5 nginx                     # Higher priority nginx / Nginx с в�
 
 ## renice — Change Priority
 
-### By PID / По PID
+### By PID
 
 ```bash
 renice -n 10 -p <PID>                     # Set niceness 10 / Установить niceness 10
@@ -82,20 +82,20 @@ sudo renice -n -5 -p <PID>                # Higher priority (root) / Повыс�
 renice -n 19 -p <PID>                     # Lowest priority / Минимальный приоритет
 ```
 
-### By User / По пользователю
+### By User
 
 ```bash
 renice -n 10 -u <USER>                    # All user processes / Все процессы пользователя
 sudo renice -n -5 -u root                 # All root processes / Все процессы root
 ```
 
-### By Process Group / По группе процессов
+### By Process Group
 
 ```bash
 renice -n 10 -g <PGID>                    # All in group / Все в группе
 ```
 
-### Check Current Priority / Проверить текущий приоритет
+### Check Current Priority
 
 ```bash
 ps -l -p <PID>                            # NI column shows niceness / Столбец NI показывает niceness
@@ -106,7 +106,7 @@ top                                       # NI column in top / Столбец NI
 
 ## ionice — I/O Priority
 
-### Basic Usage / Базовое использование
+### Basic Usage
 
 ionice controls I/O (disk) scheduling priority.
 ionice управляет приоритетом ввода-вывода (диск).
@@ -117,7 +117,7 @@ ionice -p <PID>                           # Show priority of PID / Показа�
 ionice -c <CLASS> -n <LEVEL> <COMMAND>    # Set class and level / Установить класс и уровень
 ```
 
-### I/O Classes (-c) / Классы I/O
+### I/O Classes (-c)
 
 | Class | Name | Description (EN / RU) |
 | :--- | :--- | :--- |
@@ -125,7 +125,7 @@ ionice -c <CLASS> -n <LEVEL> <COMMAND>    # Set class and level / Установ
 | 2 | `best-effort` | Default, adjustable via -n (0–7) / По умолчанию, настраивается через -n |
 | 3 | `idle` | Only when disk is idle / Только когда диск свободен |
 
-### I/O Levels (-n) / Уровни I/O
+### I/O Levels (-n)
 
 ```text
 0 = Highest priority (for class 2) / Максимальный приоритет (для класса 2)
@@ -136,7 +136,7 @@ ionice -c <CLASS> -n <LEVEL> <COMMAND>    # Set class and level / Установ
 > I/O classes only work with CFQ and BFQ schedulers. Check with `cat /sys/block/sda/queue/scheduler`. Modern NVMe drives often use `none` (no I/O scheduler), making ionice ineffective.
 > Классы I/O работают только с CFQ и BFQ. Проверьте: `cat /sys/block/sda/queue/scheduler`.
 
-### Examples / Примеры
+### Examples
 
 ```bash
 ionice -c3 rsync -a /mnt/data /backup     # Idle class backup / Бэкап в классе idle
@@ -145,7 +145,7 @@ ionice -c2 -n0 dd if=/dev/zero of=/dev/sda  # High priority dd / dd с высо�
 ionice -p <PID>                            # Show priority of PID / Показать приоритет PID
 ```
 
-### For Running Processes / Для запущенных процессов
+### For Running Processes
 
 ```bash
 ionice -c3 -p <PID>                       # Set PID to idle class / Установить PID в класс idle
@@ -156,34 +156,34 @@ ionice -c2 -n7 -p <PID>                   # Set PID to low priority / Устан
 
 ## Combined Usage
 
-### Low CPU + Low I/O / Низкий CPU + низкий I/O
+### Low CPU + Low I/O
 
 ```bash
 ionice -c3 nice -n19 tar czf /backup.tgz /data
-# Minimal CPU and disk impact / Минимальное влияние на CPU и диск
+# Minimal CPU and disk impact
 
 ionice -c3 nice -n19 rsync -a /source /dest
-# Background rsync / Фоновый rsync
+# Background rsync
 
 ionice -c2 -n7 nice -n10 find / -type f -mtime +30 > old_files.txt
-# Low priority file search / Поиск файлов с низким приоритетом
+# Low priority file search
 ```
 
-### High Priority (Admin) / Высокий приоритет (Админ)
+### High Priority (Admin)
 
 ```bash
 sudo ionice -c1 -n0 nice -n-10 <CRITICAL_COMMAND>
-# Maximum priority (use with caution) / Максимальный приоритет (осторожно!)
+# Maximum priority (use with caution)
 ```
 
 > [!CAUTION]
 > Realtime I/O class (`-c1`) can starve other processes of disk I/O, potentially causing system hangs. Use only when absolutely necessary.
 > Класс realtime (`-c1`) может лишить другие процессы доступа к диску, вызвав зависание.
 
-### Verification / Проверка
+### Verification
 
 ```bash
-# Check both CPU and I/O priority / Проверить приоритеты CPU и I/O
+# Check both CPU and I/O priority
 ps -o pid,ni,comm -p <PID>                # CPU niceness / CPU niceness
 ionice -p <PID>                           # I/O priority / Приоритет I/O
 ```
@@ -192,7 +192,7 @@ ionice -p <PID>                           # I/O priority / Приоритет I/
 
 ## Best Practices
 
-### Recommended Priorities / Рекомендуемые приоритеты
+### Recommended Priorities
 
 | Task | nice | ionice | Priority Level |
 | :--- | :--- | :--- | :--- |
@@ -202,21 +202,21 @@ ionice -p <PID>                           # I/O priority / Приоритет I/
 | Database | `-n -5` | `-c2 -n0` | Higher / Повышенный |
 | Critical apps | `-n -10` | `-c1` | Highest / Максимальный |
 
-### Use Cases / Варианты использования
+### Use Cases
 
 ```bash
-# Backup scripts / Скрипты бэкапа
+# Backup scripts
 ionice -c3 nice -n19 /usr/local/bin/backup.sh
 
-# Cron jobs / Задачи cron
+# Cron jobs
 # Add to crontab: 0 3 * * * ionice -c3 nice -n19 /path/to/script.sh
 
-# Database dumps / Дампы БД
+# Database dumps
 ionice -c2 -n7 nice -n10 pg_dump mydb > backup.sql
 ionice -c2 -n7 nice -n10 mysqldump --all-databases > backup.sql
 ```
 
-### Notes / Примечания
+### Notes
 
 - ionice works with block devices (HDD, SSD, NVMe) / работает с блочными устройствами
 - Uses I/O scheduler (cfq, bfq, mq-deadline) / использует I/O scheduler

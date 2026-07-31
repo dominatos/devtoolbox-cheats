@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -36,18 +36,18 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install Nagios Core / Установка Nagios Core
+### Install Nagios Core
 
 ```bash
 # RHEL/AlmaLinux — install from EPEL or compile from source
-# Установка из EPEL или компиляция из исходников
+#
 dnf install epel-release
 dnf install nagios nagios-plugins-all nagios-plugins-nrpe
 
 # Debian/Ubuntu
 apt install nagios4 nagios-plugins nagios-nrpe-plugin
 
-# From source (any distro) / Из исходников
+# From source (any distro)
 wget "https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.5.0/nagios-4.5.0.tar.gz"
 tar -xzf nagios-4.5.0.tar.gz
 cd nagios-4.5.0
@@ -56,7 +56,7 @@ make all
 make install install-init install-commandmode install-config install-webconf
 ```
 
-### Main Config Files / Основные файлы конфигурации
+### Main Config Files
 
 Root directory: `/usr/local/nagios/etc/` or `/etc/nagios/`
 
@@ -70,7 +70,7 @@ Root directory: `/usr/local/nagios/etc/` or `/etc/nagios/`
 | `cgi.cfg` | CGI/Web interface config / Конфиг веб-интерфейса |
 | `resource.cfg` | User macros ($USERn$) / Пользовательские макросы |
 
-### Host Definition Example / Пример определения хоста
+### Host Definition Example
 
 `/usr/local/nagios/etc/objects/servers.cfg`
 
@@ -101,38 +101,38 @@ define service {
 }
 ```
 
-### User Management / Управление пользователями (Web UI)
+### User Management
 
 Using `htpasswd` for Basic Auth. / Использование `htpasswd` для Basic Auth.
 
 ```bash
-# Create initial nagiosadmin user / Создать начального пользователя nagiosadmin
+# Create initial nagiosadmin user
 htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
 
-# Add new user / Добавить нового пользователя
+# Add new user
 htpasswd /usr/local/nagios/etc/htpasswd.users <USER>
 
-# Don't forget to add contacts in objects/contacts.cfg / Не забудьте добавить контакты в contacts.cfg
+# Don't forget to add contacts in objects/contacts.cfg
 ```
 
 ---
 
 ## 2. Core Management
 
-### Verify Config / Проверка конфигурации
+### Verify Config
 
 > [!IMPORTANT]
 > Always verify configuration before restarting Nagios. A bad config will prevent the service from starting. / Всегда проверяйте конфигурацию перед перезапуском.
 
 ```bash
-# Validate configuration / Проверить конфигурацию
+# Validate configuration
 /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
 
-# Quick test (returns exit code 0 on success) / Быстрый тест
+# Quick test (returns exit code 0 on success)
 nagios -v /etc/nagios/nagios.cfg && echo "Config OK" || echo "Config ERROR"
 ```
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 systemctl start nagios     # Start / Запустить
@@ -147,31 +147,31 @@ systemctl status nagios    # Check status / Проверить статус
 
 ## 3. Sysadmin Operations
 
-### Plugins / Плагины
+### Plugins
 
 Nagios plugins are located in `/usr/local/nagios/libexec/` or `/usr/lib64/nagios/plugins/`.
 
 ```bash
-# Test Ping / Тест пинга
+# Test Ping
 ./check_ping -H <HOST> -w 100.0,20% -c 500.0,60% -p 5
 
-# Test HTTP / Тест HTTP
+# Test HTTP
 ./check_http -H <HOST> -u /
 
-# Test Disk / Тест диска
+# Test Disk
 ./check_disk -w 20% -c 10% -p /
 
-# Test SMTP / Тест SMTP
+# Test SMTP
 ./check_smtp -H <HOST>
 
-# Test DNS / Тест DNS
+# Test DNS
 ./check_dns -H <HOST> -s <DNS_SERVER>
 
-# Test TCP port / Тест TCP порта
+# Test TCP port
 ./check_tcp -H <HOST> -p 443
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -184,30 +184,30 @@ Nagios plugins are located in `/usr/local/nagios/libexec/` or `/usr/lib64/nagios
 | `/usr/local/nagios/libexec/` | Plugins / Плагины |
 | `/usr/local/nagios/share/` | Web UI files / Файлы веб-интерфейса |
 
-### Log Monitoring / Мониторинг логов
+### Log Monitoring
 
 ```bash
-# Follow main log / Следить за основным логом
+# Follow main log
 tail -f /usr/local/nagios/var/nagios.log
 
-# Search for errors / Поиск ошибок
+# Search for errors
 grep -i error /usr/local/nagios/var/nagios.log | tail -20
 
-# Check notification history / Проверить историю уведомлений
+# Check notification history
 grep NOTIFICATION /usr/local/nagios/var/nagios.log | tail -20
 ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Allow web UI / Разрешить веб-интерфейс
+# Allow web UI
 firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
 
-# Allow NRPE / Разрешить NRPE
+# Allow NRPE
 firewall-cmd --permanent --add-port=5666/tcp
 
-# Allow NSCA (passive checks) / Разрешить NSCA (пассивные проверки)
+# Allow NSCA (passive checks)
 firewall-cmd --permanent --add-port=5667/tcp
 firewall-cmd --reload
 ```
@@ -216,50 +216,50 @@ firewall-cmd --reload
 
 ## 4. NRPE Remote Monitoring
 
-### NRPE Architecture / Архитектура NRPE
+### NRPE Architecture
 
 | Component | Description / Описание |
 |-----------|------------------------|
 | NRPE Plugin (Server) | Installed on Nagios server, sends commands / На сервере Nagios |
 | NRPE Daemon (Client) | Installed on remote host, executes checks / На удалённом хосте |
 
-### Install NRPE Agent / Установка агента NRPE
+### Install NRPE Agent
 
 ```bash
-# On monitored host / На контролируемом хосте
+# On monitored host
 dnf install nrpe nagios-plugins-all    # RHEL/AlmaLinux
 apt install nagios-nrpe-server nagios-plugins   # Debian/Ubuntu
 ```
 
-### NRPE Configuration / Конфигурация NRPE
+### NRPE Configuration
 
 `/etc/nagios/nrpe.cfg`
 
 ```ini
-# Allow Nagios server IP / Разрешить IP сервера Nagios
+# Allow Nagios server IP
 allowed_hosts=127.0.0.1,<NAGIOS_SERVER_IP>
 
-# Command definitions / Определения команд
+# Command definitions
 command[check_load]=/usr/lib64/nagios/plugins/check_load -r -w .15,.10,.05 -c .30,.25,.20
 command[check_disk]=/usr/lib64/nagios/plugins/check_disk -w 20% -c 10% -p /
 command[check_procs]=/usr/lib64/nagios/plugins/check_procs -w 250 -c 400
 ```
 
 ```bash
-# Start NRPE service / Запустить NRPE
+# Start NRPE service
 systemctl enable --now nrpe
 ```
 
-### Check NRPE Status / Проверка статуса NRPE
+### Check NRPE Status
 
 Run from Nagios Server to Client. / Запуск с сервера Nagios на клиент.
 
 ```bash
-# Check NRPE connection / Проверить подключение NRPE
+# Check NRPE connection
 /usr/local/nagios/libexec/check_nrpe -H <CLIENT_IP>
 # Expected output: NRPE v4.x.x
 
-# Run remote check / Запустить удалённую проверку
+# Run remote check
 /usr/local/nagios/libexec/check_nrpe -H <CLIENT_IP> -c check_load
 /usr/local/nagios/libexec/check_nrpe -H <CLIENT_IP> -c check_disk
 ```
@@ -268,20 +268,20 @@ Run from Nagios Server to Client. / Запуск с сервера Nagios на �
 
 ## 5. Security
 
-### Web UI Authentication / Аутентификация веб-интерфейса
+### Web UI Authentication
 
 ```bash
-# Change nagiosadmin password / Сменить пароль nagiosadmin
+# Change nagiosadmin password
 htpasswd /usr/local/nagios/etc/htpasswd.users nagiosadmin
 ```
 
-### NRPE Security / Безопасность NRPE
+### NRPE Security
 
 > [!WARNING]
 > Always restrict `allowed_hosts` in NRPE config to your Nagios server IP only. An unrestricted NRPE allows remote command execution. / Всегда ограничивайте `allowed_hosts` только IP сервера Nagios.
 
 ```ini
-# In nrpe.cfg / В nrpe.cfg
+# In nrpe.cfg
 allowed_hosts=127.0.0.1,<NAGIOS_SERVER_IP>
 dont_blame_nrpe=0    # Disable command arguments / Отключить аргументы команд (безопасно)
 ```
@@ -290,30 +290,30 @@ dont_blame_nrpe=0    # Disable command arguments / Отключить аргум
 
 ## 6. Maintenance
 
-### Acknowledge Alert (CLI) / Подтверждение алерта (CLI)
+### Acknowledge Alert (CLI)
 
 Via external command file (cmd.cgi). / Через файл внешних команд.
 
 ```bash
-# Acknowledge host problem / Подтвердить проблему хоста
+# Acknowledge host problem
 now=$(date +%s)
 commandfile='/usr/local/nagios/var/rw/nagios.cmd'
 printf "[%lu] ACKNOWLEDGE_HOST_PROBLEM;<HOST>;1;1;1;<USER>;Admin Ack\n" $now > $commandfile
 
-# Acknowledge service problem / Подтвердить проблему сервиса
+# Acknowledge service problem
 printf "[%lu] ACKNOWLEDGE_SVC_PROBLEM;<HOST>;CPU Load;1;1;1;<USER>;Investigating\n" $now > $commandfile
 ```
 
-### Schedule Downtime / Плановое обслуживание
+### Schedule Downtime
 
 ```bash
-# Schedule host downtime / Запланировать обслуживание хоста
+# Schedule host downtime
 now=$(date +%s)
 end=$(date -d '+2 hours' +%s)
 printf "[%lu] SCHEDULE_HOST_DOWNTIME;<HOST>;%lu;%lu;1;0;7200;<USER>;Maintenance window\n" $now $now $end > $commandfile
 ```
 
-### Performance Data / Данные производительности
+### Performance Data
 
 Nagios writes perfdata to `host-perfdata` and `service-perfdata` files if enabled. Processed by PNP4Nagios or Graphite. / Nagios пишет perfdata в файлы, если включено. Обрабатывается PNP4Nagios или Graphite.
 
@@ -321,51 +321,51 @@ Nagios writes perfdata to `host-perfdata` and `service-perfdata` files if enable
 
 ## 7. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. "Failed to start nagios" / Nagios не запускается
+#### 1. "Failed to start nagios" / Nagios
 
 ```bash
-# Always check config first / Всегда проверяйте конфиг
+# Always check config first
 /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
 
-# Check permissions / Проверить права
+# Check permissions
 ls -la /usr/local/nagios/var/rw/nagios.cmd
 chown nagios:nagios /usr/local/nagios/var/rw/nagios.cmd
 ```
 
-#### 2. Web UI Not Loading / Веб-интерфейс не загружается
+#### 2. Web UI Not Loading
 
 ```bash
-# Check Apache / Проверить Apache
+# Check Apache
 systemctl status httpd
 systemctl status apache2
 
-# Check CGI configuration / Проверить конфигурацию CGI
+# Check CGI configuration
 cat /etc/httpd/conf.d/nagios.conf
 ```
 
-#### 3. No Notifications / Нет уведомлений
+#### 3. No Notifications
 
 ```bash
-# Check notification log / Проверить лог уведомлений
+# Check notification log
 grep NOTIFICATION /usr/local/nagios/var/nagios.log | tail -20
 
-# Check notification settings / Проверить настройки уведомлений
+# Check notification settings
 grep notification /usr/local/nagios/etc/objects/contacts.cfg
 ```
 
-#### 4. Agent (NRPE) Not Responding / Агент (NRPE) не отвечает
+#### 4. Agent (NRPE) Not Responding
 
 ```bash
-# Test NRPE from server / Тест NRPE с сервера
+# Test NRPE from server
 /usr/local/nagios/libexec/check_nrpe -H <CLIENT_IP>
 
-# On client: check NRPE service / На клиенте: проверить сервис NRPE
+# On client: check NRPE service
 systemctl status nrpe
 ss -tlnp | grep 5666
 
-# Check firewall on client / Проверить фаервол на клиенте
+# Check firewall on client
 firewall-cmd --list-all | grep 5666
 ```
 
@@ -394,7 +394,7 @@ firewall-cmd --list-all | grep 5666
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **Official Documentation:** https://www.nagios.org/documentation/
 - **Nagios Core Manual:** https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/

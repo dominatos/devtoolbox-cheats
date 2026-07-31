@@ -11,22 +11,22 @@ tags:
 
 # 📗 Linux Basics 2 — Next Steps
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
-1. [Permissions & Owners](#Permissions%20&%20Owners%20/%20Права%20и%20Владельцы)
-2. [Users & Groups](#Users%20&%20Groups%20/%20Пользователи%20и%20Группы)
-3. [Processes](#Processes%20/%20Процессы)
-4. [Network Basics](#Network%20Basics%20/%20Сеть%20(База))
-5. [Archives](#Archives%20/%20Архивы)
-6. [Disk & Memory](#Disk%20&%20Memory%20/%20Диск%20и%20Память)
-7. [System Information](#System%20Information%20/%20Информация%20о%20Системе)
-8. [Helpful Shortcuts](#Helpful%20Shortcuts%20/%20Полезные%20Сокращения)
+1. [Permissions & Owners](#Permissions%20&%20Owners)
+2. [Users & Groups](#Users%20&%20Groups)
+3. [Processes](#Processes)
+4. [Network Basics](#Network%20Basics))
+5. [Archives](#Archives)
+6. [Disk & Memory](#Disk%20&%20Memory)
+7. [System Information](#System%20Information)
+8. [Helpful Shortcuts](#Helpful%20Shortcuts)
 
 ---
 
-## Permissions & Owners / Права и Владельцы
+## Permissions & Owners
 
-### Permission Basics / Основы прав
+### Permission Basics
 
 ```bash
 ls -l                                          # Long list / Длинный список
@@ -37,7 +37,7 @@ chmod u+r,g-w,o-x file                         # Symbolic perms / Символь
 chmod -R 755 /path/dir                         # Recursive perms / Рекурсивно применить
 ```
 
-### Ownership / Владение
+### Ownership
 
 ```bash
 sudo chown <USER> file                         # Change owner / Сменить владельца
@@ -45,7 +45,7 @@ sudo chown -R <USER>:<GROUP> dir               # Chown + group (rec) / Влад�
 chgrp developers file                          # Change group / Сменить группу
 ```
 
-### Permission Reference / Справка по правам
+### Permission Reference
 
 | Numeric | Symbolic | Description / Описание |
 |---------|----------|------------------------|
@@ -56,7 +56,7 @@ chgrp developers file                          # Change group / Сменить �
 
 ---
 
-## Users & Groups / Пользователи и Группы
+## Users & Groups
 
 ```bash
 whoami                                         # Current user / Текущий пользователь
@@ -66,7 +66,7 @@ sudo usermod -aG docker $USER                  # Add to group / Добавить
 newgrp docker                                  # Apply new group / Применить группу без релогина
 ```
 
-### User Management / Управление пользователями
+### User Management
 
 ```bash
 sudo useradd -m <USER>                         # Create user with home dir / Создать пользователя
@@ -77,7 +77,7 @@ sudo usermod -aG <GROUP> <USER>                # Add user to group / Добав�
 
 ---
 
-## Processes / Процессы
+## Processes
 
 ```bash
 ps aux | grep nginx                            # Search process / Найти процесс
@@ -97,7 +97,7 @@ sudo renice -n 10 -p 1234                      # Change priority / Измени�
 
 ---
 
-## Network Basics / Сеть (База)
+## Network Basics
 
 ```bash
 ip a                                           # IP addresses / IP-адреса
@@ -109,7 +109,7 @@ ss -tulpn | grep ':22'                         # Who listens 22 / Кто слу�
 
 ---
 
-## Archives / Архивы
+## Archives
 
 ```bash
 tar -xzvf file.tar.gz                          # Extract tar.gz / Распаковать .tar.gz
@@ -119,7 +119,7 @@ unzip archive.zip -d out/                      # Unzip to out/ / Распако�
 gzip -k file && gunzip file.gz                 # Gzip/ungzip / Сжать/распаковать
 ```
 
-### Common Archive Formats / Распространённые форматы
+### Common Archive Formats
 
 | Format | Compress / Сжатие | Extract / Распаковка |
 |--------|-------------------|----------------------|
@@ -130,7 +130,7 @@ gzip -k file && gunzip file.gz                 # Gzip/ungzip / Сжать/рас
 
 ---
 
-## Disk & Memory / Диск и Память
+## Disk & Memory
 
 ```bash
 df -h                                          # Filesystems usage / Использование ФС
@@ -143,7 +143,7 @@ findmnt                                        # Tree of mounts / Дерево �
 
 ---
 
-## System Information / Информация о Системе
+## System Information
 
 ```bash
 uname -a                                       # Kernel info / Информация о ядре
@@ -161,7 +161,7 @@ lspci                                          # PCI devices / PCI устрой�
 
 ---
 
-## Helpful Shortcuts / Полезные Сокращения
+## Helpful Shortcuts
 
 | Shortcut | Action / Действие |
 |----------|-------------------|

@@ -16,19 +16,19 @@ This cheatsheet provides a side-by-side translation reference for migrating fire
 📚 **Official Docs / Официальная документация:** [Moving from iptables to nftables](https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_iptables_to_nftables)
 
 ## Table of Contents
-- [Translation Basics](#Translation%20Basics%20/%20Основы%20перевода)
-- [Basic Rules](#Basic%20Rules%20/%20Базовые%20правила)
-- [Chain Management](#️%20Chain%20Management%20/%20Управление%20цепочками)
-- [NAT Rules](#NAT%20Rules%20/%20Правила%20NAT)
-- [Connection Tracking](#Connection%20Tracking%20/%20Отслеживание%20соединений)
-- [Advanced Matching](#Advanced%20Matching%20/%20Расширенное%20сопоставление)
-- [Migration Tools](#️%20Migration%20Tools%20/%20Инструменты%20миграции)
+- [Translation Basics](#Translation%20Basics)
+- [Basic Rules](#Basic%20Rules)
+- [Chain Management](#️%20Chain%20Management)
+- [NAT Rules](#NAT%20Rules)
+- [Connection Tracking](#Connection%20Tracking)
+- [Advanced Matching](#Advanced%20Matching)
+- [Migration Tools](#️%20Migration%20Tools)
 
 ---
 
-## 📘 Translation Basics / Основы перевода
+## 📘 Translation Basics
 
-### Key Differences / Ключевые отличия
+### Key Differences
 ```bash
 # iptables: Separate tables (filter, nat, mangle, raw)
 # nftables: Unified inet family with configurable chains
@@ -40,7 +40,7 @@ This cheatsheet provides a side-by-side translation reference for migrating fire
 # nftables: Cleaner, more consistent syntax
 ```
 
-### Table/Chain Family Mapping / Соответствие таблиц/семейств
+### Table/Chain Family Mapping
 ```bash
 # iptables -t filter  → nft add table inet filter
 # iptables -t nat     → nft add table inet nat
@@ -50,9 +50,9 @@ This cheatsheet provides a side-by-side translation reference for migrating fire
 
 ---
 
-## 🔧 Basic Rules / Базовые правила
+## 🔧 Basic Rules
 
-### Allow SSH / Разрешить SSH
+### Allow SSH
 ```bash
 # iptables
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
@@ -61,7 +61,7 @@ iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 nft add rule inet filter input tcp dport 22 accept
 ```
 
-### Allow HTTP and HTTPS / Разрешить HTTP и HTTPS
+### Allow HTTP and HTTPS
 ```bash
 # iptables
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
@@ -71,7 +71,7 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 nft add rule inet filter input tcp dport { 80, 443 } accept
 ```
 
-### Allow Ping (ICMP) / Разрешить ping (ICMP)
+### Allow Ping (ICMP)
 ```bash
 # iptables
 iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
@@ -81,7 +81,7 @@ nft add rule inet filter input icmp type echo-request accept
 nft add rule inet filter input icmpv6 type echo-request accept
 ```
 
-### Drop All / Отбросить всё
+### Drop All
 ```bash
 # iptables
 iptables -A INPUT -j DROP
@@ -92,9 +92,9 @@ nft add rule inet filter input drop
 
 ---
 
-## ⛓️ Chain Management / Управление цепочками
+## ⛓️ Chain Management
 
-### Default Policy / Политика по умолчанию
+### Default Policy
 ```bash
 # iptables
 iptables -P INPUT DROP
@@ -107,7 +107,7 @@ nft add chain inet filter forward { type filter hook forward priority 0; policy 
 nft add chain inet filter output { type filter hook output priority 0; policy accept; }
 ```
 
-### Create Custom Chain / Создать пользовательскую цепочку
+### Create Custom Chain
 ```bash
 # iptables
 iptables -N CUSTOM_CHAIN
@@ -118,7 +118,7 @@ nft add chain inet filter custom_chain
 nft add rule inet filter input jump custom_chain
 ```
 
-### Insert Rule at Position / Вставить правило в позицию
+### Insert Rule at Position
 ```bash
 # iptables
 iptables -I INPUT 1 -p tcp --dport 22 -j ACCEPT
@@ -129,9 +129,9 @@ nft insert rule inet filter input position 0 tcp dport 22 accept
 
 ---
 
-## 🔀 NAT Rules / Правила NAT
+## 🔀 NAT Rules
 
-### SNAT (Source NAT) / SNAT (NAT источника)
+### SNAT (Source NAT) / SNAT (NAT
 ```bash
 # iptables
 iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source <EXTERNAL_IP>
@@ -140,7 +140,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source <EXTERNAL_IP>
 nft add rule inet nat postrouting oifname "eth0" snat to <EXTERNAL_IP>
 ```
 
-### MASQUERADE / Маскарадинг
+### MASQUERADE
 ```bash
 # iptables
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -149,7 +149,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 nft add rule inet nat postrouting oifname "eth0" masquerade
 ```
 
-### DNAT (Port Forwarding) / DNAT (проброс портов)
+### DNAT (Port Forwarding) / DNAT
 ```bash
 # iptables
 iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination <INTERNAL_IP>:8080
@@ -158,7 +158,7 @@ iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination <INTERN
 nft add rule inet nat prerouting tcp dport 80 dnat to <INTERNAL_IP>:8080
 ```
 
-### Redirect (Port Redirect) / Перенаправление портов
+### Redirect (Port Redirect)
 ```bash
 # iptables
 iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
@@ -169,9 +169,9 @@ nft add rule inet nat prerouting tcp dport 80 redirect to :8080
 
 ---
 
-## 🔗 Connection Tracking / Отслеживание соединений
+## 🔗 Connection Tracking
 
-### Allow Established/Related / Разрешить established/related
+### Allow Established/Related
 ```bash
 # iptables
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
@@ -180,7 +180,7 @@ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 nft add rule inet filter input ct state established,related accept
 ```
 
-### Drop Invalid Packets / Отбросить недействительные пакеты
+### Drop Invalid Packets
 ```bash
 # iptables
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
@@ -189,7 +189,7 @@ iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 nft add rule inet filter input ct state invalid drop
 ```
 
-### Track New Connections / Отслеживать новые соединения
+### Track New Connections
 ```bash
 # iptables
 iptables -A INPUT -m conntrack --ctstate NEW -p tcp --dport 22 -j ACCEPT
@@ -200,9 +200,9 @@ nft add rule inet filter input ct state new tcp dport 22 accept
 
 ---
 
-## 🎯 Advanced Matching / Расширенное сопоставление
+## 🎯 Advanced Matching
 
-### Match Source IP / Сопоставить IP источника
+### Match Source IP
 ```bash
 # iptables
 iptables -A INPUT -s <IP>/24 -j ACCEPT
@@ -211,7 +211,7 @@ iptables -A INPUT -s <IP>/24 -j ACCEPT
 nft add rule inet filter input ip saddr <IP>/24 accept
 ```
 
-### Match Destination IP / Сопоставить IP назначения
+### Match Destination IP
 ```bash
 # iptables
 iptables -A INPUT -d <IP> -j ACCEPT
@@ -220,7 +220,7 @@ iptables -A INPUT -d <IP> -j ACCEPT
 nft add rule inet filter input ip daddr <IP> accept
 ```
 
-### Match Multiple Ports / Сопоставить несколько портов
+### Match Multiple Ports
 ```bash
 # iptables
 iptables -A INPUT -p tcp -m multiport --dports 80,443,8080 -j ACCEPT
@@ -229,7 +229,7 @@ iptables -A INPUT -p tcp -m multiport --dports 80,443,8080 -j ACCEPT
 nft add rule inet filter input tcp dport { 80, 443, 8080 } accept
 ```
 
-### Match Port Range / Сопоставить диапазон портов
+### Match Port Range
 ```bash
 # iptables
 iptables -A INPUT -p tcp --dport 8000:9000 -j ACCEPT
@@ -238,7 +238,7 @@ iptables -A INPUT -p tcp --dport 8000:9000 -j ACCEPT
 nft add rule inet filter input tcp dport 8000-9000 accept
 ```
 
-### Match Interface / Сопоставить интерфейс
+### Match Interface
 ```bash
 # iptables
 iptables -A INPUT -i eth0 -j ACCEPT
@@ -247,7 +247,7 @@ iptables -A INPUT -i eth0 -j ACCEPT
 nft add rule inet filter input iifname "eth0" accept
 ```
 
-### Rate Limiting / Ограничение частоты
+### Rate Limiting
 ```bash
 # iptables
 iptables -A INPUT -p tcp --dport 22 -m limit --limit 3/min -j ACCEPT
@@ -256,65 +256,65 @@ iptables -A INPUT -p tcp --dport 22 -m limit --limit 3/min -j ACCEPT
 nft add rule inet filter input tcp dport 22 limit rate 3/minute accept
 ```
 
-### String Matching / Сопоставление строк
+### String Matching
 ```bash
 # iptables
 iptables -A INPUT -p tcp --dport 80 -m string --string "malicious" --algo bm -j DROP
 
 # nftables
 # Note: nftables doesn't have built-in string matching; use userspace tools
-# Примечание: в nftables нет встроенного сопоставления строк; используйте инструменты пользовательского пространства
+#
 ```
 
 ---
 
-# 🛠️ Migration Tools / Инструменты миграции
+# 🛠️ Migration Tools
 
 ### iptables-translate / iptables-translate
 ```bash
-# Translate single iptables rule / Перевести одно правило iptables
+# Translate single iptables rule
 iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
 
-# Output / Вывод:
+# Output
 # nft add rule ip filter INPUT tcp dport 22 counter accept
 ```
 
 ### iptables-restore-translate / iptables-restore-translate
 ```bash
-# Translate entire ruleset / Перевести весь набор правил
+# Translate entire ruleset
 iptables-save > /tmp/iptables.rules
 iptables-restore-translate -f /tmp/iptables.rules > /tmp/nftables.conf
 
-# Load translated rules / Загрузить переведённые правила
+# Load translated rules
 nft -f /tmp/nftables.conf
 ```
 
 ### ip6tables-translate / ip6tables-translate
 ```bash
-# Translate IPv6 rules / Перевести правила IPv6
+# Translate IPv6 rules
 ip6tables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
 
-# Output / Вывод:
+# Output
 # nft add rule ip6 filter INPUT tcp dport 22 counter accept
 ```
 
-### Manual Migration Steps / Шаги ручной миграции
+### Manual Migration Steps
 ```bash
-# 1. Export current iptables rules / Экспортировать текущие правила iptables
+# 1. Export current iptables rules
 iptables-save > /tmp/iptables-backup.rules
 ip6tables-save > /tmp/ip6tables-backup.rules
 
-# 2. Translate to nftables / Перевести в nftables
+# 2. Translate to nftables
 iptables-restore-translate -f /tmp/iptables-backup.rules > /tmp/nftables.conf
 ip6tables-restore-translate -f /tmp/ip6tables-backup.rules >> /tmp/nftables.conf
 
-# 3. Review and edit / Проверить и отредактировать
+# 3. Review and edit
 vim /tmp/nftables.conf
 
-# 4. Test nftables rules / Тестировать правила nftables
+# 4. Test nftables rules
 nft -f /tmp/nftables.conf
 
-# 5. Save nftables configuration / Сохранить конфигурацию nftables
+# 5. Save nftables configuration
 cp /tmp/nftables.conf /etc/nftables.conf
 systemctl enable nftables
 systemctl start nftables
@@ -322,9 +322,9 @@ systemctl start nftables
 
 ---
 
-## 🔄 Complete Example Comparison / Полный пример сравнения
+## 🔄 Complete Example Comparison
 
-### iptables Ruleset / Набор правил iptables
+### iptables Ruleset
 ```bash
 iptables -P INPUT DROP
 iptables -P FORWARD DROP
@@ -338,7 +338,7 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 iptables -A INPUT -j DROP
 ```
 
-### nftables Equivalent / Эквивалент nftables
+### nftables Equivalent
 ```bash
 nft add table inet filter
 
@@ -353,22 +353,22 @@ nft add rule inet filter input tcp dport { 80, 443 } accept
 nft add rule inet filter input drop
 ```
 
-## 💡 Best Practices / Лучшие практики
-# Use iptables-translate for initial migration / Используйте iptables-translate для начальной миграции
-# Test nftables rules before disabling iptables / Тестируйте правила nftables перед отключением iptables
-# Use inet family for dual-stack (IPv4+IPv6) / Используйте семейство inet для dual-stack
-# Group related rules in custom chains / Группируйте связанные правила в пользовательские цепочки
-# Use sets for multiple IPs/ports efficiently / Используйте наборы для эффективной работы с несколькими IP/портами
-# Document migration for rollback / Документируйте миграцию для отката
+## 💡 Best Practices
+# Use iptables-translate for initial migration
+# Test nftables rules before disabling iptables
+# Use inet family for dual-stack (IPv4+IPv6)
+# Group related rules in custom chains
+# Use sets for multiple IPs/ports efficiently
+# Document migration for rollback
 
-## 🔧 Configuration Files / Файлы конфигурации
+## 🔧 Configuration Files
 ```bash
-# /etc/nftables.conf                        — Main nftables configuration / Основная конфигурация nftables
-# /tmp/iptables-backup.rules                — iptables backup / Резервная копия iptables
-# /tmp/nftables.conf                        — Translated nftables config / Переведённая конфигурация nftables
+# /etc/nftables.conf                        — Main nftables configuration
+# /tmp/iptables-backup.rules                — iptables backup
+# /tmp/nftables.conf                        — Translated nftables config
 ```
 
-## 📋 Quick Reference Chart / Краткая справочная таблица
+## 📋 Quick Reference Chart
 ```bash
 # iptables -A         → nft add rule
 # iptables -I         → nft insert rule

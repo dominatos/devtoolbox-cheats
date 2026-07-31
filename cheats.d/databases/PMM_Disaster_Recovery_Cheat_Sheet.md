@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Architecture](#Architecture)
 2. [Installation & Configuration](#Installation%20&%20Configuration)
@@ -40,7 +40,7 @@ tags:
 
 ## Architecture
 
-### PMM Internal Components / Внутренние компоненты PMM
+### PMM Internal Components
 
 | Component / Компонент | Purpose / Назначение |
 |---|---|
@@ -52,7 +52,7 @@ tags:
 | PMM UI plugins | Main PMM interface / Интерфейс PMM |
 | Supervisord | Internal service management / Управление сервисами |
 
-### Service Dependency Chain / Цепочка зависимостей
+### Service Dependency Chain
 
 ```text
 PostgreSQL → Grafana datasource init → PMM plugin init → PMM UI available
@@ -62,7 +62,7 @@ PostgreSQL → Grafana datasource init → PMM plugin init → PMM UI available
 > If PostgreSQL fails, the entire PMM UI cascade will fail. Grafana depends on PostgreSQL for datasource configuration.
 > Если PostgreSQL не стартует, весь каскад PMM UI выйдет из строя.
 
-### Internal Paths / Внутренние пути
+### Internal Paths
 
 | Path / Путь | Purpose / Назначение |
 |---|---|
@@ -71,7 +71,7 @@ PostgreSQL → Grafana datasource init → PMM plugin init → PMM UI available
 | `/srv/grafana` | Grafana configs and plugins / Конфиги Grafana |
 | `/srv/logs` | PMM internal logs / Логи PMM |
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |---|---|
@@ -83,7 +83,7 @@ PostgreSQL → Grafana datasource init → PMM plugin init → PMM UI available
 
 ## Installation & Configuration
 
-### Volume Strategy / Стратегия томов
+### Volume Strategy
 
 > [!WARNING]
 > **Always use named volumes, never bind mounts.** Bind mounts cause data corruption if the compose directory is copied.
@@ -118,7 +118,7 @@ volumes:
   pmm-data:
 ```
 
-### Start Services / Запуск сервисов
+### Start Services
 
 ```bash
 docker compose up -d       # Start PMM / Запустить PMM
@@ -140,7 +140,7 @@ docker run --rm percona/pmm-server:3 id pmm  # Check UID / Проверить UI
 
 ## Core Management
 
-### Internal Service Control / Управление сервисами
+### Internal Service Control
 
 ```bash
 docker exec pmm-server supervisorctl status              # List services / Список сервисов
@@ -149,7 +149,7 @@ docker exec pmm-server supervisorctl restart postgresql   # Restart PostgreSQL
 docker exec pmm-server supervisorctl restart grafana      # Restart Grafana
 ```
 
-### Health Checks / Проверки здоровья
+### Health Checks
 
 ```bash
 curl -k https://localhost/pmm/server-status                # PMM status / Статус PMM
@@ -161,7 +161,7 @@ curl -k -I https://localhost/pmm-ui/graph/                 # PMM UI check / Пр
 
 ## Sysadmin Operations
 
-### Log Locations / Расположение логов
+### Log Locations
 
 | Log / Лог | Path (inside container) / Путь |
 |---|---|
@@ -175,7 +175,7 @@ docker exec pmm-server tail -f /srv/logs/grafana.log      # Follow Grafana log /
 docker exec pmm-server tail -f /srv/logs/postgresql.log    # Follow PG log / Логи PostgreSQL
 ```
 
-### Docker Volume Inspection / Инспекция томов
+### Docker Volume Inspection
 
 ```bash
 docker volume ls                                           # List volumes / Список томов
@@ -183,7 +183,7 @@ docker volume inspect pmm-data                             # Inspect PMM volume 
 docker inspect pmm-server | jq '.[0].Mounts'               # Check mounts / Монтирования
 ```
 
-### Shell Access / Доступ в контейнер
+### Shell Access
 
 ```bash
 docker exec -it pmm-server bash                            # Enter container / Войти в контейнер
@@ -191,7 +191,7 @@ mount | grep srv                                           # Check mounts / То
 ls -lah /srv/postgres14                                    # Check PG data / Данные PostgreSQL
 ```
 
-### Network & Firewall / Сеть и файрвол
+### Network & Firewall
 
 ```bash
 sudo ufw allow 443/tcp                                    # UFW: allow PMM / Разрешить PMM
@@ -202,7 +202,7 @@ sudo firewall-cmd --permanent --add-port=443/tcp && sudo firewall-cmd --reload  
 
 ## Security
 
-### Grafana Password Reset / Сброс пароля Grafana
+### Grafana Password Reset
 
 ```bash
 docker exec pmm-server grafana-cli \
@@ -215,10 +215,10 @@ docker exec pmm-server grafana-cli \
 > Change the default PMM admin password immediately after deployment.
 > Смените пароль по умолчанию сразу после развёртывания.
 
-### Unsigned Plugins / Неподписанные плагины
+### Unsigned Plugins
 
 ```yaml
-# Required in docker-compose.yml / Обязательно в docker-compose.yml
+# Required in docker-compose.yml
 GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: pmm-app,pmm-qan-app-panel
 ```
 
@@ -226,7 +226,7 @@ GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: pmm-app,pmm-qan-app-panel
 
 ## Backup & Restore
 
-### Full Backup / Полный бэкап
+### Full Backup
 
 ```bash
 docker run --rm \
@@ -235,7 +235,7 @@ docker run --rm \
   alpine tar czf /backup/pmm-backup-$(date +%Y%m%d_%H%M%S).tar.gz /data
 ```
 
-### Restore / Восстановление
+### Restore
 
 ```bash
 docker compose down                                        # Stop PMM / Остановить PMM
@@ -248,7 +248,7 @@ docker run --rm \
 docker compose up -d                                       # Start PMM / Запустить PMM
 ```
 
-### Automated Backup Script / Скрипт автобэкапа
+### Automated Backup Script
 
 `/usr/local/bin/pmm-backup.sh`
 
@@ -287,7 +287,7 @@ fi
 
 ## Troubleshooting & Tools
 
-### Diagnostic Commands / Команды диагностики
+### Diagnostic Commands
 
 ```bash
 docker logs pmm-server | grep -Ei 'postgres|grafana|error|panic|wal|permission'  # Find errors / Поиск ошибок
@@ -295,7 +295,7 @@ docker exec pmm-server supervisorctl status                                     
 docker volume inspect pmm-data                                                    # Verify volume / Проверка тома
 ```
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 | Problem / Проблема | Symptom / Симптом | Fix / Решение |
 |---|---|---|
@@ -309,7 +309,7 @@ docker volume inspect pmm-data                                                  
 
 ## Production Runbooks
 
-### Runbook: Full PMM Emergency Recovery / Полное аварийное восстановление
+### Runbook: Full PMM Emergency Recovery
 
 > [!CAUTION]
 > This involves destructive operations on PostgreSQL WAL. Ensure backups exist first.
@@ -374,7 +374,7 @@ docker volume inspect pmm-data                                                  
    docker exec pmm-server supervisorctl status
    ```
 
-### Runbook: PostgreSQL WAL Recovery / Восстановление WAL
+### Runbook: PostgreSQL WAL Recovery
 
 > [!WARNING]
 > `pg_resetwal` may cause data inconsistency. Use only when PostgreSQL refuses to start.
@@ -397,7 +397,7 @@ docker volume inspect pmm-data                                                  
    docker run --rm -v pmm-data:/data alpine sh -c 'rm -rf /data/postgres14'
    ```
 
-### Runbook: Volume Migration (Bind → Named) / Миграция томов
+### Runbook: Volume Migration (Bind → Named)
 
 1. **Stop deployment:**
    ```bash
@@ -419,7 +419,7 @@ docker volume inspect pmm-data                                                  
    docker exec pmm-server supervisorctl status
    ```
 
-### Recovery Timeline / Время восстановления
+### Recovery Timeline
 
 | Step / Шаг | Time / Время |
 |---|---|
@@ -435,17 +435,17 @@ docker volume inspect pmm-data                                                  
 
 ## Disaster Recovery Case Study
 
-### What Happened / Что произошло
+### What Happened
 
 PMM 3.x was running in Docker Compose with ~33 GB Prometheus metrics, active Grafana dashboards, and QAN data.
 
 A second deployment was started from a **copied directory** using **bind mounts** (`./data:/srv`). Both deployments wrote to the same PostgreSQL data simultaneously.
 
-### Root Cause / Причина
+### Root Cause
 
 Two PMM instances accessing the same PostgreSQL data directory caused WAL corruption, invalid checkpoints, and cascading PMM failure.
 
-### Symptoms / Симптомы
+### Symptoms
 
 ```text
 PostgreSQL:  PANIC: could not locate valid checkpoint record
@@ -453,11 +453,11 @@ Grafana:     {"code":7,"error":"Access denied"}
 PMM UI:      404 page not found
 ```
 
-### Resolution / Решение
+### Resolution
 
 Recovered using the Emergency Recovery runbook above. Migrated to named volumes.
 
-### Lessons Learned / Выводы
+### Lessons Learned
 
 1. Named volumes > bind mounts — isolated per project / Изолированы по проекту
 2. PMM runs as UID 1000 — all `/srv` data must be `1000:1000`
@@ -491,7 +491,7 @@ Recovered using the Emergency Recovery runbook above. Migrated to named volumes.
 
 ## Additional Notes
 
-### Validation Checklist / Чеклист
+### Validation Checklist
 
 - [ ] `curl -k https://localhost/pmm/server-status` → 200
 - [ ] `curl -k https://localhost/grafana/api/health` → OK
@@ -501,7 +501,7 @@ Recovered using the Emergency Recovery runbook above. Migrated to named volumes.
 - [ ] Admin password changed from default
 - [ ] Backup cron configured
 
-### Production Tips / Рекомендации
+### Production Tips
 
 - Use named Docker volumes for all PMM data
 - Configure daily backups with retention

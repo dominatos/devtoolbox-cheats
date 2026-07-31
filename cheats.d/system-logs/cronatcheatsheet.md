@@ -30,7 +30,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Crontab Management](#Crontab%20Management)
 2. [Schedule Syntax](#Schedule%20Syntax)
@@ -52,7 +52,7 @@ tags:
 
 ## Crontab Management
 
-### Crontab Commands / Команды crontab
+### Crontab Commands
 
 ```bash
 crontab -e                                      # Edit current user's crontab / Редактировать crontab текущего пользователя
@@ -73,7 +73,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 
 ## Schedule Syntax
 
-### Cron Field Reference / Поля расписания cron
+### Cron Field Reference
 
 ```text
 ┌──────── minute (0–59)
@@ -85,7 +85,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 * * * * * <command>
 ```
 
-### Field Operators / Операторы полей
+### Field Operators
 
 | Operator | Description (EN / RU) | Example |
 | :--- | :--- | :--- |
@@ -98,7 +98,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 
 ## Shortcut Macros
 
-### Predefined Schedules / Предустановленные расписания
+### Predefined Schedules
 
 ```bash
 @reboot /opt/job.sh                             # Run once at boot / Запуск единожды при старте системы
@@ -115,7 +115,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 
 ## Common Schedule Patterns
 
-### Basic Patterns / Базовые шаблоны
+### Basic Patterns
 
 ```bash
 0 * * * * /opt/job.sh                           # Top of every hour / В начале каждого часа
@@ -125,7 +125,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 0 4 1 * * /opt/job.sh                           # Monthly at 04:00 on day 1 / Ежемесячно в 04:00 первого числа
 ```
 
-### Business Hours / Рабочие часы
+### Business Hours
 
 ```bash
 0 9-18 * * * /opt/job.sh                        # Hourly 09–18 / Каждый час с 09 до 18
@@ -137,7 +137,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 0 8 * * MON-FRI /opt/workday_0800.sh            # Workdays at 08:00 / По будням в 08:00
 ```
 
-### Multi-Day / Комбинации дней
+### Multi-Day
 
 ```bash
 0 0 1-7 * * /opt/job.sh                         # First seven days monthly / Первые семь дней месяца в полночь
@@ -147,7 +147,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 0 0,12 1-10,15 * * /opt/job.sh                  # 00:00 and 12:00 on dates / В 00:00 и 12:00 в указанные дни
 ```
 
-### Advanced Patterns / Продвинутые шаблоны
+### Advanced Patterns
 
 ```bash
 0 0 29 2 * /opt/leapday.sh                      # Run on Feb 29 / Запуск только 29 февраля (високосный)
@@ -156,7 +156,7 @@ crontab -u <USER> -l                            # List another user's crontab / 
 */20 * * * * test $(date +%u) -lt 6 && /opt/weekday_only.sh  # Weekdays via date %u / Будни через проверку дня недели
 ```
 
-### Staggering / Распределение нагрузки
+### Staggering
 
 ```bash
 30 23 * * * sleep $((RANDOM%900)); /opt/spread.sh  # Spread starts within 15m / Равномерный сдвиг старта до 15 минут
@@ -167,7 +167,7 @@ RANDOM_DELAY=45 @daily /opt/heavy.sh            # Cronie: randomize start up to 
 
 ## Environment Variables
 
-### Crontab Environment / Переменные окружения crontab
+### Crontab Environment
 
 ```bash
 SHELL=/bin/bash                                 # Use bash for advanced features / Использовать bash
@@ -179,14 +179,14 @@ MAILTO=                                         # Disable email for all jobs / �
 MAILTO=<EMAIL>                                  # Per-job email recipient / Указать получателя почты для задач
 ```
 
-### Timezone Overrides / Переопределение часового пояса
+### Timezone Overrides
 
 ```bash
 CRON_TZ=UTC 0 0 * * * /opt/utc_daily.sh        # Run at UTC midnight / Запускать в полночь по UTC (обход DST)
 TZ=Europe/Rome 30 7 * * * /opt/local_job.sh     # Run at 07:30 Europe/Rome / Запуск в 07:30 по Europe/Rome
 ```
 
-### Locale & Permissions / Локаль и права
+### Locale & Permissions
 
 ```bash
 LC_ALL=C 0 * * * * /opt/locale_neutral.sh       # Run with C locale / Запускать с нейтральной локалью C
@@ -194,7 +194,7 @@ LANG=en_US.UTF-8 5 0 * * * /opt/unicode_job.sh  # Ensure UTF-8 environment / Г�
 umask 027; 0 1 * * * /opt/secure_task.sh        # Tight default permissions / Жёсткие права для создаваемых файлов
 ```
 
-### Priority / Приоритет
+### Priority
 
 ```bash
 nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / Уменьшить приоритеты CPU и IO
@@ -204,7 +204,7 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 
 ## Locking & Overlap Prevention
 
-### flock — Prevent Overlapping Runs / Предотвращение наложения
+### flock — Prevent Overlapping Runs
 
 ```bash
 * * * * * /usr/bin/flock -n /tmp/job.lock /opt/job.sh              # No-overlap via flock / Исключить наложения через flock
@@ -213,7 +213,7 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 0 * * * * /usr/bin/flock -n /run/locks/once.lock bash -lc '/opt/rotate.sh >>/var/log/rot.log 2>&1'  # Lock and shell-wrapped / Блокировка и запуск через bash с логом
 ```
 
-### timeout + flock / Таймаут с блокировкой
+### timeout + flock
 
 ```bash
 * * * * * /usr/bin/timeout 180 /usr/bin/flock -n /run/locks/guard.lock /opt/guarded.sh  # Timeout plus lock / Таймаут и блокировка одновременно
@@ -222,7 +222,7 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 0 2 * * * /usr/bin/timeout 3600 /opt/heavy_job.sh >>/var/log/heavy.log 2>&1  # Cap runtime to 1h / Ограничить время выполнения одним часом
 ```
 
-### Skip Conditions / Условия пропуска
+### Skip Conditions
 
 ```bash
 */5 * * * * [ $(pgrep -c -f "script.sh") -eq 0 ] && /opt/script.sh    # Skip if process exists / Пропускать, если процесс запущен
@@ -232,14 +232,14 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 0 0 * * * test -x /usr/local/bin/run-one && run-one /opt/solo.sh      # Ubuntu run-one / Ubuntu: предотвращение дублей
 ```
 
-### Chained Jobs / Цепочки заданий
+### Chained Jobs
 
 ```bash
 0 2 * * * /opt/first.sh && touch /tmp/ok.flag                        # Create success flag / Создать флаг успешного выполнения
 15 2 * * * [ -f /tmp/ok.flag ] && /opt/second.sh && rm /tmp/ok.flag  # Conditional follow-up / Запустить вторую задачу при наличии флага
 ```
 
-### Load-Aware Execution / Запуск с учётом нагрузки
+### Load-Aware Execution
 
 ```bash
 0 22 * * * [ $(awk '{print 100-$NF}' /proc/loadavg | cut -d. -f1) -lt 30 ] && /opt/backup.sh  # Run on low CPU load / Бэкап при низкой загрузке CPU
@@ -249,7 +249,7 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 
 ## Logging & Output
 
-### Redirections / Перенаправления
+### Redirections
 
 ```bash
 0 2 * * * /opt/task.sh >> /var/log/task.log 2>&1           # Append stdout+stderr to file / Добавлять stdout и stderr в файл лога
@@ -262,7 +262,7 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 > In crontab, the `%` character is treated as a newline — always escape it with `\%`.
 > В crontab символ `%` интерпретируется как перенос строки — всегда экранируйте как `\%`.
 
-### Syslog Integration / Интеграция с syslog
+### Syslog Integration
 
 ```bash
 * * * * * /usr/bin/logger --tag cron-heartbeat "tick"       # Syslog heartbeat each minute / Минутный сигнал в syslog
@@ -271,14 +271,14 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 0 0 * * * /usr/bin/logger --priority local7.info "Cron is alive"  # Heartbeat log / Лог-индикатор работы cron
 ```
 
-### Timestamped Logs / Логи с метками времени
+### Timestamped Logs
 
 ```bash
 0 0 * * * (/bin/date; echo ran) >>/var/log/cron_$(date +\%F).log 2>&1  # Daily dated logfile / Ежедневный лог с датой
 0 6 * * * /usr/bin/bash -lc 'printf "%s\n" "backup start $(date -Is)"' >>/var/log/backup_timestamps.log  # Timestamped marker / Маркер с временной меткой ISO
 ```
 
-### Error Trapping / Перехват ошибок
+### Error Trapping
 
 ```bash
 0 0 * * * /usr/bin/bash -lc 'trap "echo FAIL" ERR; /opt/critical.sh' >>/var/log/critical.log 2>&1  # Trap errors in shell / Ловить ошибки в bash
@@ -288,7 +288,7 @@ nice -n 10 ionice -c2 -n7 /opt/job.sh           # Lower CPU and IO priority / У
 
 ## at — One-Shot Jobs
 
-### Basic at Usage / Базовое использование at
+### Basic at Usage
 
 ```bash
 echo "echo hi >> /tmp/hi" | at now + 5 minutes  # One-shot job in 5 minutes / Одноразовая задача через 5 минут
@@ -301,7 +301,7 @@ atq && atrm <JOBID>                             # List and remove / Показ �
 
 ## Anacron
 
-### Anacron Configuration / Конфигурация anacron
+### Anacron Configuration
 
 `/etc/anacrontab`
 
@@ -314,7 +314,7 @@ RANDOM_DELAY=30                                  # Anacron: randomize delays / �
 START_HOURS_RANGE=6-22                           # Anacron: run only 06–22 / Запускать задачи в интервале 06–22
 ```
 
-### Anacron Commands / Команды anacron
+### Anacron Commands
 
 ```bash
 anacron -fn                                      # Force run now, no timestamps / Принудительный запуск без отметок времени
@@ -328,7 +328,7 @@ MAILTO=<EMAIL> anacron -s                        # Mail results when serialized 
 
 ## System Cron Directories
 
-### Cron Directory Structure / Структура директорий cron
+### Cron Directory Structure
 
 ```bash
 /etc/crontab                                    # System crontab with user field / Системный crontab с полем пользователя
@@ -337,10 +337,10 @@ MAILTO=<EMAIL> anacron -s                        # Mail results when serialized 
 /etc/cron.daily/app-backup                      # Daily backup script / Ежедневный бэкап через скрипт
 ```
 
-### System Crontab Examples / Примеры системного crontab
+### System Crontab Examples
 
 ```bash
-# /etc/crontab — includes user field / включает поле пользователя
+# /etc/crontab — includes user field
 0 2 * * * root /opt/job.sh                      # System crontab with user field / Системный crontab
 5 0 * * * root /usr/sbin/logrotate /etc/logrotate.conf  # System logrotate nightly / Ночной logrotate
 
@@ -348,7 +348,7 @@ MAILTO=<EMAIL> anacron -s                        # Mail results when serialized 
 0 2 * * * appuser /usr/local/bin/task            # Cron.d file for appuser / Файл в cron.d для appuser
 ```
 
-### run-parts — Batch Execution / Пакетный запуск
+### run-parts — Batch Execution
 
 ```bash
 0 3 * * * /usr/bin/run-parts /etc/cron.daily    # Run scripts in cron.daily / Запуск скриптов каталога cron.daily
@@ -362,7 +362,7 @@ run-parts --test /etc/cron.daily                # List scripts without running /
 
 ## Access Control
 
-### User Access / Доступ пользователей
+### User Access
 
 ```bash
 /etc/cron.allow                                 # Whitelist: users allowed cron / Белый список пользователей
@@ -378,7 +378,7 @@ echo baduser >> /etc/cron.deny                  # Deny a specific user / Зап�
 
 ## Backup & Restore
 
-### Crontab Backup / Резервное копирование crontab
+### Crontab Backup
 
 ```bash
 crontab -l > /var/backups/crontab.$(date +%F)   # Backup user crontab / Сохранить crontab в файл
@@ -390,7 +390,7 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 
 ## Real-World Examples
 
-### Infrastructure Maintenance / Обслуживание инфраструктуры
+### Infrastructure Maintenance
 
 ```bash
 0 2 * * * /usr/bin/flock -n /run/locks/backup.lock /opt/backup.sh >>/var/log/backup.log 2>&1  # Daily backup with lock / Ежедневный бэкап с блокировкой
@@ -398,21 +398,21 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 0 1 * * * /usr/bin/rsync -a --delete /data/ /mnt/backup/ >>/var/log/rsync_local.log 2>&1  # Mirror to local backup / Зеркалирование в локальный бэкап
 ```
 
-### Database Backups / Бэкапы баз данных
+### Database Backups
 
 ```bash
 0 1 * * * /usr/bin/pg_dumpall > /var/backups/pg/all.sql 2>>/var/log/pg_dump.err  # Postgres dump nightly / Ночной дамп Postgres
 30 2 * * * /usr/bin/mysqldump --all-databases | gzip > /var/backups/mysql/all.sql.gz  # MySQL dump nightly / Ночной дамп MySQL
 ```
 
-### Certificate & TLS / Сертификаты
+### Certificate & TLS
 
 ```bash
 0 0 * * 0 /usr/bin/certbot renew --quiet && /usr/sbin/nginx -s reload  # Renew TLS then reload / Обновить сертификаты и перезапустить nginx
 0 */6 * * * /usr/bin/certbot renew --post-hook "/usr/bin/systemctl reload nginx"  # Renew with post-hook / Обновить с пост-хук
 ```
 
-### Disk & Log Cleanup / Очистка дисков и логов
+### Disk & Log Cleanup
 
 ```bash
 0 3 1 * * find /var/log/app -name "*.log" -mtime +30 -exec gzip {} \;  # Compress old logs / Сжимать логи старше 30 дней
@@ -424,7 +424,7 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 0 2 * * * /usr/bin/find /var/www -type f -name '*.tmp' -delete          # Clean web temp files / Очистка временных файлов
 ```
 
-### System Maintenance / Системное обслуживание
+### System Maintenance
 
 ```bash
 0 3 * * 1 /usr/sbin/fstrim -av >>/var/log/fstrim.log 2>&1             # Weekly TRIM for SSD / Еженедельный TRIM для SSD
@@ -433,7 +433,7 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 0 1 * * * /usr/bin/docker system prune -af >>/var/log/docker_prune.log 2>&1  # Docker prune nightly / Ночная очистка Docker
 ```
 
-### Monitoring & Health Checks / Мониторинг
+### Monitoring & Health Checks
 
 ```bash
 */15 * * * * /usr/bin/curl -fsS https://<HOST>/health || /usr/bin/logger --tag health "FAIL"  # HTTP healthcheck / HTTP-проверка
@@ -444,7 +444,7 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 */30 6-22 * * * /usr/bin/ntpq -p | /usr/bin/logger --tag ntp           # Monitor NTP peers / Мониторить пиров NTP
 ```
 
-### Logrotate & Cache / Ротация и кэш
+### Logrotate & Cache
 
 ```bash
 0 0 * * * /usr/bin/logrotate -f /etc/logrotate.d/myapp               # Force rotate custom logs / Принудительная ротация
@@ -454,13 +454,13 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 15 1 * * * /usr/bin/rsnapshot daily                                   # Trigger rsnapshot daily / Запуск дневного rsnapshot
 ```
 
-### Size-Based Rotation / Ротация по размеру
+### Size-Based Rotation
 
 ```bash
 0 0 * * * /usr/bin/test "$(stat -c%s /var/log/app.log)" -gt 104857600 && /opt/rotate_large.sh  # Rotate if >100MB / Ротировать лог при превышении 100 МБ
 ```
 
-### Clean Environment / Чистое окружение
+### Clean Environment
 
 ```bash
 0 0 * * * /usr/bin/env -i PATH=/usr/bin:/bin /opt/clean_env.sh       # Run with clean environment / Выполнять в «чистом» окружении
@@ -468,14 +468,14 @@ crontab -u <USER> -l | sed 's/^/# /'           # Export as commented preview / �
 0 0 * * * /usr/bin/flock -n /run/locks/pid.lock sh -c '[ -e /run/my.pid ] || /opt/start.sh'  # PID-guarded start / Защита от дублей через PID
 ```
 
-### Timezone-Aware / Учёт часового пояса
+### Timezone-Aware
 
 ```bash
 CRON_TZ=UTC 55 23 * * * /usr/bin/rsync -a /data/ <USER>@<HOST>:/data_utc  # Run in UTC before day end / В UTC за 5 мин до полуночи
 TZ=UTC 0 9 * * MON /usr/bin/bash -lc '/opt/report_utc.sh'            # Weekly report in UTC / Еженедельный отчёт в 09:00 UTC
 ```
 
-### Email Notifications / Уведомления по почте
+### Email Notifications
 
 ```bash
 0 0 * * * echo "test" | /usr/bin/mail -s "Cron test" <EMAIL>          # Send test email / Отправить тестовую почту
@@ -485,7 +485,7 @@ TZ=UTC 0 9 * * MON /usr/bin/bash -lc '/opt/report_utc.sh'            # Weekly re
 
 ## Troubleshooting & Debugging
 
-### Check Cron Logs / Проверка логов cron
+### Check Cron Logs
 
 ```bash
 grep CRON /var/log/syslog | tail -n 100         # Inspect cron messages (Debian) / Просмотреть сообщения cron (Debian/Ubuntu)
@@ -493,7 +493,7 @@ journalctl -u cron                              # Review cron unit logs / Лог
 journalctl -u crond                             # Review crond logs (RHEL) / Логи демона crond (RHEL/CentOS)
 ```
 
-### Debug Markers / Маркеры отладки
+### Debug Markers
 
 ```bash
 * * * * * date +%F\ %T >> /tmp/cron.tick        # Dry-run tick marker / Маркер-тикер для проверки запуска по минутам
@@ -505,7 +505,7 @@ journalctl -u crond                             # Review crond logs (RHEL) / Л�
 
 ## Logrotate for Cron
 
-### Cron Log Rotation Config / Конфигурация ротации логов cron
+### Cron Log Rotation Config
 
 `/etc/logrotate.d/cron`
 
@@ -526,7 +526,7 @@ journalctl -u crond                             # Review crond logs (RHEL) / Л�
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Always use **full paths** to commands in crontab (`/usr/bin/rsync`, not `rsync`). / Всегда используйте полные пути к командам.
 - Set a proper `PATH` at the top of your crontab. / Установите правильный `PATH` в начале crontab.

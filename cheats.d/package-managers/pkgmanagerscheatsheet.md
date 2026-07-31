@@ -18,10 +18,10 @@ tags:
 - [Snap — Universal Packages](#Snap%20—%20Universal%20Packages)
 - [Flatpak — Application Sandboxes](#Flatpak%20—%20Application%20Sandboxes)
 - [AppImage — Portable Apps](#AppImage%20—%20Portable%20Apps)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Cross-Reference Comparison](#Cross-Reference%20Comparison%20/%20Сравнение%20менеджеров%20пакетов)
-- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
-- [Configuration Files](#Configuration%20Files%20/%20Файлы%20конфигурации)
+- [Real-World Examples](#Real-World%20Examples)
+- [Cross-Reference Comparison](#Cross-Reference%20Comparison)
+- [Best Practices](#Best%20Practices)
+- [Configuration Files](#Configuration%20Files)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -39,7 +39,7 @@ For detailed cheatsheets on each package manager, see dedicated files in this di
 
 # 📦 APT — Debian/Ubuntu
 
-### Update & Upgrade / Обновление
+### Update & Upgrade
 ```bash
 sudo apt update                               # Update package lists / Обновить списки пакетов
 sudo apt upgrade                              # Upgrade packages / Обновить пакеты
@@ -48,7 +48,7 @@ sudo apt dist-upgrade                         # Distribution upgrade / Обно�
 sudo apt update && sudo apt upgrade -y        # Update and upgrade / Обновить и обновить пакеты
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo apt install <PACKAGE>                    # Install package / Установить пакет
 sudo apt install <PKG1> <PKG2> <PKG3>         # Install multiple / Установить несколько
@@ -58,7 +58,7 @@ sudo apt autoremove                           # Remove unused dependencies / У�
 sudo apt autoremove --purge                   # Remove unused with configs / Удалить неиспользуемые с конфигами
 ```
 
-### Search & Info / Поиск и информация
+### Search & Info
 ```bash
 apt search <KEYWORD>                          # Search packages / Поиск пакетов
 apt show <PACKAGE>                            # Show package details / Показать детали пакета
@@ -67,21 +67,21 @@ apt list --upgradable                         # List upgradable packages / Сп�
 apt-cache policy <PACKAGE>                    # Show available versions / Показать доступные версии
 ```
 
-### Clean & Maintenance / Очистка и обслуживание
+### Clean & Maintenance
 ```bash
 sudo apt clean                                # Clear downloaded packages / Очистить скачанные пакеты
 sudo apt autoclean                            # Clear old packages / Очистить старые пакеты
 sudo apt autoremove                           # Remove orphaned packages / Удалить осиротевшие пакеты
 ```
 
-### Hold & Unhold / Удержание
+### Hold & Unhold
 ```bash
 sudo apt-mark hold <PACKAGE>                  # Prevent upgrade / Предотвратить обновление
 sudo apt-mark unhold <PACKAGE>                # Allow upgrade / Разрешить обновление
 apt-mark showhold                             # Show held packages / Показать удерживаемые пакеты
 ```
 
-### Repositories / Репозитории
+### Repositories
 ```bash
 sudo add-apt-repository ppa:<USER>/<REPO>     # Add PPA / Добавить PPA
 sudo add-apt-repository --remove ppa:<USER>/<REPO>  # Remove PPA / Удалить PPA
@@ -92,7 +92,7 @@ sudo apt edit-sources                         # Edit sources / Редактир�
 
 # 🔴 DNF — RHEL/Fedora
 
-### Update & Upgrade / Обновление
+### Update & Upgrade
 ```bash
 sudo dnf update                               # Update packages / Обновить пакеты
 sudo dnf upgrade                              # Upgrade packages / Обновить пакеты
@@ -100,7 +100,7 @@ sudo dnf check-update                         # Check for updates / Провер
 sudo dnf update <PACKAGE>                     # Update specific package / Обновить конкретный пакет
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo dnf install <PACKAGE>                    # Install package / Установить пакет
 sudo dnf install <PKG1> <PKG2>                # Install multiple / Установить несколько
@@ -108,7 +108,7 @@ sudo dnf remove <PACKAGE>                     # Remove package / Удалить 
 sudo dnf autoremove                           # Remove unused dependencies / Удалить неиспользуемые зависимости
 ```
 
-### Search & Info / Поиск и информация
+### Search & Info
 ```bash
 dnf search <KEYWORD>                          # Search packages / Поиск пакетов
 dnf info <PACKAGE>                            # Show package info / Показать информацию о пакете
@@ -117,21 +117,21 @@ dnf list available                            # List available packages / Спи
 dnf history                                   # Show transaction history / Показать историю транзакций
 ```
 
-### Groups / Группы
+### Groups
 ```bash
 dnf group list                                # List package groups / Список групп пакетов
 sudo dnf group install "Development Tools"    # Install package group / Установить группу пакетов
 sudo dnf group remove "Development Tools"     # Remove package group / Удалить группу пакетов
 ```
 
-### Clean & Maintenance / Очистка и обслуживание
+### Clean & Maintenance
 ```bash
 sudo dnf clean all                            # Clean cache / Очистить кэш
 sudo dnf autoremove                           # Remove orphaned packages / Удалить осиротевшие пакеты
 sudo dnf makecache                            # Rebuild cache / Перестроить кэш
 ```
 
-### Modules / Модули
+### Modules
 ```bash
 dnf module list                               # List modules / Список модулей
 sudo dnf module enable <PACKAGE>:<STREAM>     # Enable module stream / Включить поток модуля
@@ -142,7 +142,7 @@ sudo dnf module install <PACKAGE>:<STREAM>    # Install module / Установ�
 
 # 🔵 Pacman — Arch Linux
 
-### Update & Upgrade / Обновление
+### Update & Upgrade
 ```bash
 sudo pacman -Syu                              # Sync and upgrade / Синхронизировать и обновить
 sudo pacman -Sy                               # Sync package database / Синхронизировать базу пакетов
@@ -150,7 +150,7 @@ sudo pacman -Su                               # Upgrade packages / Обнови�
 sudo pacman -Syyu                             # Force refresh and upgrade / Принудительное обновление
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo pacman -S <PACKAGE>                      # Install package / Установить пакет
 sudo pacman -S <PKG1> <PKG2>                  # Install multiple / Установить несколько
@@ -159,7 +159,7 @@ sudo pacman -Rs <PACKAGE>                     # Remove with unused deps / Уда
 sudo pacman -Rns <PACKAGE>                    # Remove with deps and configs / Удалить с зависимостями и конфигами
 ```
 
-### Search & Info / Поиск и информация
+### Search & Info
 ```bash
 pacman -Ss <KEYWORD>                          # Search packages / Поиск пакетов
 pacman -Si <PACKAGE>                          # Show package info / Показать информацию о пакете
@@ -168,14 +168,14 @@ pacman -Qe                                    # List explicitly installed / Сп
 pacman -Qdt                                   # List orphaned packages / Список осиротевших пакетов
 ```
 
-### Clean & Maintenance / Очистка и обслуживание
+### Clean & Maintenance
 ```bash
 sudo pacman -Sc                               # Clean package cache / Очистить кэш пакетов
 sudo pacman -Scc                              # Clean all cache / Очистить весь кэш
 sudo pacman -Rns $(pacman -Qdtq)              # Remove orphans / Удалить осиротевшие
 ```
 
-### AUR Helper (yay) / Помощник AUR (yay)
+### AUR Helper (yay)
 ```bash
 yay -Syu                                      # Update all (AUR + official) / Обновить всё (AUR + официальные)
 yay -S <AUR_PACKAGE>                          # Install from AUR / Установить из AUR
@@ -186,7 +186,7 @@ yay -Rns <PACKAGE>                            # Remove package / Удалить 
 
 # 🟢 Zypper — OpenSUSE
 
-### Update & Upgrade / Обновление
+### Update & Upgrade
 ```bash
 sudo zypper refresh                           # Refresh repositories / Обновить репозитории
 sudo zypper update                            # Update packages / Обновить пакеты
@@ -194,7 +194,7 @@ sudo zypper dup                               # Distribution upgrade / Обно�
 sudo zypper patch                             # Install security patches / Установить патчи безопасности
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo zypper install <PACKAGE>                 # Install package / Установить пакет
 sudo zypper in <PACKAGE>                      # Short form / Короткая форма
@@ -202,7 +202,7 @@ sudo zypper remove <PACKAGE>                  # Remove package / Удалить 
 sudo zypper rm <PACKAGE>                      # Short form / Короткая форма
 ```
 
-### Search & Info / Поиск и информация
+### Search & Info
 ```bash
 zypper search <KEYWORD>                       # Search packages / Поиск пакетов
 zypper se <KEYWORD>                           # Short form / Короткая форма
@@ -210,7 +210,7 @@ zypper info <PACKAGE>                         # Show package info / Показа
 zypper if <PACKAGE>                           # Short form / Короткая форма
 ```
 
-### Clean & Maintenance / Очистка и обслуживание
+### Clean & Maintenance
 ```bash
 sudo zypper clean                             # Clean cache / Очистить кэш
 sudo zypper verify                            # Verify dependencies / Проверить зависимости
@@ -220,7 +220,7 @@ sudo zypper verify                            # Verify dependencies / Прове
 
 # 📦 Snap — Universal Packages
 
-### Installation / Установка
+### Installation
 ```bash
 sudo snap install <PACKAGE>                   # Install snap / Установить snap
 sudo snap install <PACKAGE> --classic         # Classic confinement / Классическая изоляция
@@ -228,33 +228,33 @@ sudo snap install <PACKAGE> --edge            # Install edge channel / Уста�
 sudo snap install <PACKAGE> --beta            # Install beta channel / Установить beta канал
 ```
 
-### List & Info / Список и информация
+### List & Info
 ```bash
 snap list                                     # List installed snaps / Список установленных snaps
 snap find <KEYWORD>                           # Search snaps / Поиск snaps
 snap info <PACKAGE>                           # Show snap info / Показать информацию о snap
 ```
 
-### Update & Refresh / Обновление
+### Update & Refresh
 ```bash
 sudo snap refresh                             # Update all snaps / Обновить все snaps
 sudo snap refresh <PACKAGE>                   # Update specific snap / Обновить конкретный snap
 sudo snap revert <PACKAGE>                    # Revert to previous version / Вернуться к предыдущей версии
 ```
 
-### Remove / Удаление
+### Remove
 ```bash
 sudo snap remove <PACKAGE>                    # Remove snap / Удалить snap
 sudo snap remove <PACKAGE> --purge            # Remove with data / Удалить с данными
 ```
 
-### Channels / Каналы
+### Channels
 ```bash
 sudo snap switch <PACKAGE> --channel=stable   # Switch channel / Сменить канал
 snap changes                                  # Show recent changes / Показать последние изменения
 ```
 
-### Services / Сервисы
+### Services
 ```bash
 snap services                                 # List snap services / Список сервисов snap
 sudo snap start <SERVICE>                     # Start service / Запустить сервис
@@ -266,34 +266,34 @@ sudo snap restart <SERVICE>                   # Restart service / Перезап
 
 # 📦 Flatpak — Application Sandboxes
 
-### Installation / Установка
+### Installation
 ```bash
 flatpak install flathub <APP_ID>              # Install from Flathub / Установить из Flathub
 flatpak install flathub org.gimp.GIMP         # Example: GIMP / Пример: GIMP
 flatpak install --user <APP_ID>               # Install for user / Установить для пользователя
 ```
 
-### List & Search / Список и поиск
+### List & Search
 ```bash
 flatpak list                                  # List installed apps / Список установленных приложений
 flatpak search <KEYWORD>                      # Search apps / Поиск приложений
 flatpak info <APP_ID>                         # Show app info / Показать информацию о приложении
 ```
 
-### Update / Обновление
+### Update
 ```bash
 flatpak update                                # Update all apps / Обновить все приложения
 flatpak update <APP_ID>                       # Update specific app / Обновить конкретное приложение
 ```
 
-### Run & Uninstall / Запуск и удаление
+### Run & Uninstall
 ```bash
 flatpak run <APP_ID>                          # Run application / Запустить приложение
 flatpak uninstall <APP_ID>                    # Uninstall app / Удалить приложение
 flatpak uninstall --unused                    # Remove unused runtimes / Удалить неиспользуемые runtimes
 ```
 
-### Remotes / Удалённые репозитории
+### Remotes
 ```bash
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo  # Add Flathub / Добавить Flathub
 flatpak remote-list                           # List remotes / Список удалённых репозиториев
@@ -304,7 +304,7 @@ flatpak remote-delete <REMOTE>                # Remove remote / Удалить �
 
 # 📦 AppImage — Portable Apps
 
-### Usage / Использование
+### Usage
 ```bash
 chmod +x <FILE>.AppImage                      # Make executable / Сделать исполняемым
 ./<FILE>.AppImage                             # Run AppImage / Запустить AppImage
@@ -312,9 +312,9 @@ chmod +x <FILE>.AppImage                      # Make executable / Сделать
 ./<FILE>.AppImage --appimage-help             # Show help / Показать помощь
 ```
 
-### Integration / Интеграция
+### Integration
 ```bash
-# AppImageLauncher for system integration / AppImageLauncher для системной интеграции
+# AppImageLauncher for system integration / AppImageLauncher
 sudo add-apt-repository ppa:appimagelauncher-team/stable
 sudo apt update
 sudo apt install appimagelauncher
@@ -322,9 +322,9 @@ sudo apt install appimagelauncher
 
 ---
 
-# 🌟 Real-World Examples / Примеры из практики
+# 🌟 Real-World Examples
 
-### Full System Update / Полное обновление системы
+### Full System Update
 ```bash
 # Debian/Ubuntu
 sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
@@ -339,7 +339,7 @@ sudo pacman -Syu --noconfirm
 sudo zypper refresh && sudo zypper update -y
 ```
 
-### Install Development Tools / Установка инструментов разработки
+### Install Development Tools
 ```bash
 # Debian/Ubuntu
 sudo apt install build-essential git vim curl wget
@@ -356,7 +356,7 @@ sudo zypper install -t pattern devel_basis
 sudo zypper install git vim curl wget
 ```
 
-### Clean System / Очистка системы
+### Clean System
 ```bash
 # Debian/Ubuntu
 sudo apt autoremove --purge -y
@@ -375,45 +375,45 @@ sudo pacman -Rns $(pacman -Qdtq)
 sudo zypper clean
 ```
 
-### Automated Updates / Автоматические обновления
+### Automated Updates
 ```bash
-# Debian/Ubuntu with unattended-upgrades / Debian/Ubuntu с unattended-upgrades
+# Debian/Ubuntu with unattended-upgrades / Debian/Ubuntu
 sudo apt install unattended-upgrades
 sudo dpkg-reconfigure -plow unattended-upgrades
 
-# RHEL/Fedora with dnf-automatic / RHEL/Fedora с dnf-automatic
+# RHEL/Fedora with dnf-automatic / RHEL/Fedora
 sudo dnf install dnf-automatic
 sudo systemctl enable --now dnf-automatic.timer
 ```
 
-### Rollback Package / Откат пакета
+### Rollback Package
 ```bash
-# DNF history / История DNF
+# DNF history
 sudo dnf history
 sudo dnf history undo <ID>
 
-# APT downgrade / Понижение версии APT
+# APT downgrade
 sudo apt install <PACKAGE>=<VERSION>
 ```
 
-### Multi-Package Manager / Несколько менеджеров пакетов
+### Multi-Package Manager
 ```bash
-# Install Docker on Ubuntu / Установить Docker на Ubuntu
-# 1. APT for system packages / APT для системных пакетов
+# Install Docker on Ubuntu
+# 1. APT for system packages / APT
 sudo apt update && sudo apt install docker.io
 
-# 2. Snap for isolated apps / Snap для изолированных приложений
+# 2. Snap for isolated apps / Snap
 sudo snap install spotify
 
-# 3. Flatpak for desktop apps / Flatpak для приложений рабочего стола
+# 3. Flatpak for desktop apps / Flatpak
 flatpak install flathub org.videolan.VLC
 ```
 
 ---
 
-## 📊 Cross-Reference Comparison / Сравнение менеджеров пакетов
+## 📊 Cross-Reference Comparison
 
-### Equivalent Commands / Эквивалентные команды
+### Equivalent Commands
 
 | Operation / Операция | APT (Debian/Ubuntu) | DNF (RHEL/Fedora) | Pacman (Arch) | Zypper (SUSE) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -429,7 +429,7 @@ flatpak install flathub org.videolan.VLC
 | **Clean cache** | `apt clean` | `dnf clean all` | `pacman -Sc` | `zypper clean` |
 | **File owner** | `dpkg -S <FILE>` | `dnf provides <FILE>` | `pacman -Qo <FILE>` | `zypper se --provides <FILE>` |
 
-### Universal Package Managers Comparison / Сравнение универсальных менеджеров
+### Universal Package Managers Comparison
 
 | Feature | Snap | Flatpak | AppImage |
 | :--- | :--- | :--- | :--- |
@@ -443,7 +443,7 @@ flatpak install flathub org.videolan.VLC
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 > [!IMPORTANT]
 > Following these practices keeps your system secure and clean. / Следование этим практикам поддерживает вашу систему в безопасности и чистоте.
@@ -457,7 +457,7 @@ flatpak install flathub org.videolan.VLC
 
 ---
 
-## 🔧 Configuration Files / Файлы конфигурации
+## 🔧 Configuration Files
 
 | Package Manager | Main Config | Repositories |
 | :--- | :--- | :--- |

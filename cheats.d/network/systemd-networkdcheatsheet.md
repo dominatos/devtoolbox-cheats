@@ -15,39 +15,39 @@ tags:
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Core Management](#Core%20Management)
 - [Network Configuration Files](#Network%20Configuration%20Files)
-- [Advanced Networking](#Advanced%20Networking%20/%20Продвинутые%20настройки)
-- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools%20/%20Устранение%20неполадок)
-- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
+- [Advanced Networking](#Advanced%20Networking)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Comparison Tables](#Comparison%20Tables)
 
 ---
 
 ## Installation & Configuration
 
-### Enable systemd-networkd / Включение systemd-networkd
+### Enable systemd-networkd
 ```bash
 sudo systemctl enable --now systemd-networkd  # Enable and start / Включить и запустить
 sudo systemctl enable --now systemd-resolved  # Enable DNS resolution / Включить DNS
 sudo systemctl status systemd-networkd        # Check status / Проверить статус
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 - **System configs:** `/etc/systemd/network/`
 - **Network device files:** `/etc/systemd/network/*.netdev`
 - **Network config files:** `/etc/systemd/network/*.network`
 - **Runtime configs:** `/run/systemd/network/` (volatile)
 
-### Log Locations / Расположение логов
+### Log Locations
 ```bash
 journalctl -u systemd-networkd -f  # Follow networkd logs / Смотреть логи
 ```
 
 ---
 
-## Core Management / Основное управление
+## Core Management
 
-### Status Commands / Команды статуса
+### Status Commands
 ```bash
 networkctl status                   # Overall network status / Общий статус сети
 networkctl list                     # List all interfaces / Список интерфейсов
@@ -62,7 +62,7 @@ IDX LINK   TYPE     OPERATIONAL SETUP
   2 enp0s3 ether    routable    configured
 ```
 
-### Reload Configuration / Перезагрузить конфигурацию
+### Reload Configuration
 ```bash
 sudo networkctl reload              # Reload all configs / Перезагрузить конфигурации
 sudo systemctl restart systemd-networkd  # Restart service / Перезапустить сервис
@@ -72,7 +72,7 @@ sudo systemctl restart systemd-networkd  # Restart service / Перезапус�
 
 ## Network Configuration Files
 
-### DHCP Configuration / Конфигурация DHCP
+### DHCP Configuration
 `/etc/systemd/network/20-wired.network`
 
 ```ini
@@ -87,7 +87,7 @@ DHCP=yes  # Enable DHCP / Включить DHCP
 sudo systemctl restart systemd-networkd  # Apply config / Применить конфигурацию
 ```
 
-### Static IP Configuration / Статический IP
+### Static IP Configuration
 `/etc/systemd/network/20-wired.network`
 
 ```ini
@@ -101,7 +101,7 @@ DNS=8.8.8.8               # DNS server / DNS сервер
 DNS=8.8.4.4
 ```
 
-### Multiple IP Addresses / Несколько IP адресов
+### Multiple IP Addresses
 `/etc/systemd/network/20-wired.network`
 
 ```ini
@@ -116,7 +116,7 @@ Gateway=192.168.1.1
 DNS=8.8.8.8
 ```
 
-### Static Routes / Статические маршруты
+### Static Routes
 `/etc/systemd/network/20-wired.network`
 
 ```ini
@@ -134,9 +134,9 @@ Gateway=192.168.1.254     # Via gateway / Через шлюз
 
 ---
 
-## Advanced Networking / Продвинутые настройки
+## Advanced Networking
 
-### Bridge Configuration / Настройка моста
+### Bridge Configuration
 
 **Step 1: Create bridge device / Создать устройство моста**
 
@@ -178,7 +178,7 @@ Bridge=br0  # Add to bridge / Добавить в мост
 sudo systemctl restart systemd-networkd  # Apply / Применить
 ```
 
-### Bond (Link Aggregation) / Объединение каналов
+### Bond (Link Aggregation)
 
 **Step 1: Create bond device / Создать устройство bond**
 
@@ -231,7 +231,7 @@ Name=enp0s8  # Second interface / Второй интерфейс
 Bond=bond0
 ```
 
-### VLAN Configuration / Настройка VLAN
+### VLAN Configuration
 
 **Step 1: Create VLAN device / Создать устройство VLAN**
 
@@ -272,24 +272,24 @@ VLAN=vlan10  # Attach VLAN / Привязать VLAN
 
 ---
 
-## Troubleshooting & Tools / Устранение неполадок
+## Troubleshooting & Tools
 
-### Common Issues / Типичные проблемы
+### Common Issues
 ```bash
-# Interface not managed / Интерфейс не управляется
+# Interface not managed
 networkctl status <INTERFACE>  # Check interface status / Проверить статус
 sudo systemctl restart systemd-networkd  # Restart service / Перезапустить
 
-# DNS not resolving / DNS не работает
+# DNS not resolving / DNS
 sudo systemctl enable --now systemd-resolved  # Enable resolved / Включить resolved
 sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf  # Link resolv.conf / Привязать resolv.conf
 
-# Configuration not applying / Конфигурация не применяется
+# Configuration not applying
 sudo networkctl reload  # Reload configs / Перезагрузить конфигурации
 journalctl -u systemd-networkd --no-pager | tail -50  # Check logs / Проверить логи
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 ```bash
 sudo systemctl edit systemd-networkd --full  # Edit service file / Редактировать файл сервиса
 # Add: Environment=SYSTEMD_LOG_LEVEL=debug
@@ -298,16 +298,16 @@ sudo systemctl restart systemd-networkd  # Restart with debug / Перезапу
 journalctl -u systemd-networkd -f  # Watch debug logs / Смотреть отладочные логи
 ```
 
-### Verify Configuration Syntax / Проверить синтаксис конфигурации
+### Verify Configuration Syntax
 ```bash
 sudo systemd-analyze verify /etc/systemd/network/*.network  # Verify syntax / Проверить синтаксис
 ```
 
 ---
 
-## Comparison Tables / Таблицы сравнения
+## Comparison Tables
 
-### systemd-networkd vs NetworkManager / Сравнение с NetworkManager
+### systemd-networkd vs NetworkManager
 
 | Feature | systemd-networkd | NetworkManager |
 | :--- | :--- | :--- |
@@ -318,7 +318,7 @@ sudo systemd-analyze verify /etc/systemd/network/*.network  # Verify syntax / П
 | **Dependencies** | Minimal / Минимальные | Many / Много |
 | **VPN Support** | Manual / Ручная | Plugin-based / На основе плагинов |
 
-### Bond Modes / Режимы Bond
+### Bond Modes
 
 | Mode | systemd-networkd Value | Description (EN / RU) |
 | :--- | :--- | :--- |

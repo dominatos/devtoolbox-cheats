@@ -17,15 +17,15 @@ NetworkManager provides graphical and text-based user interfaces for network con
 - [Installation & Configuration](#Installation%20&%20Configuration)
 - [GUI Tools](#GUI%20Tools%20/%20GUI%20инструменты)
 - [Text UI (nmtui)](#Text%20UI%20(nmtui)%20/%20Текстовый%20интерфейс)
-- [Dispatcher Scripts](#Dispatcher%20Scripts%20/%20Скрипты%20диспетчера)
-- [Connection Management](#Connection%20Management%20/%20Управление%20соединениями)
-- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools%20/%20Устранение%20неполадок)
+- [Dispatcher Scripts](#Dispatcher%20Scripts)
+- [Connection Management](#Connection%20Management)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
 
 ---
 
 ## Installation & Configuration
 
-### Install NetworkManager GUI Tools / Установка GUI инструментов
+### Install NetworkManager GUI Tools
 ```bash
 # Debian / Ubuntu
 sudo apt install -y network-manager network-manager-gnome  # Install NM + applet / Установить NM + апплет
@@ -36,22 +36,22 @@ sudo dnf install -y NetworkManager NetworkManager-wifi NetworkManager-tui  # Ins
 sudo dnf install -y network-manager-applet  # GNOME applet / GNOME апплет
 ```
 
-### Enable NetworkManager / Включение NetworkManager
+### Enable NetworkManager
 ```bash
 sudo systemctl enable --now NetworkManager  # Enable and start / Включить и запустить
 sudo systemctl status NetworkManager          # Check status / Проверить статус
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 - **Main config:** `/etc/NetworkManager/NetworkManager.conf`
 - **Connection files:** `/etc/NetworkManager/system-connections/`
 - **Dispatcher scripts:** `/etc/NetworkManager/dispatcher.d/`
 
 ---
 
-## GUI Tools / GUI инструменты
+## GUI Tools / GUI
 
-### nm-connection-editor / Редактор соединений
+### nm-connection-editor
 ```bash
 nm-connection-editor  # Launch connection editor / Запустить редактор соединений
 ```
@@ -62,12 +62,12 @@ nm-connection-editor  # Launch connection editor / Запустить редак
 - Set up WiFi, VPN, mobile broadband
 - Configure firewall zones
 
-### GNOME Network Settings / Настройки сети GNOME
+### GNOME Network Settings
 ```bash
 gnome-control-center network  # Launch GNOME network settings / Запустить настройки сети
 ```
 
-### Network Manager Applet / Апплет NetworkManager
+### Network Manager Applet
 ```bash
 nm-applet  # Start system tray applet / Запустить апплет в трее
 ```
@@ -80,9 +80,9 @@ nm-applet  # Start system tray applet / Запустить апплет в тр�
 
 ---
 
-## Text UI (nmtui) / Текстовый интерфейс
+## Text UI (nmtui)
 
-### Launch nmtui / Запустить nmtui
+### Launch nmtui
 ```bash
 nmtui  # Launch text UI / Запустить текстовый интерфейс
 ```
@@ -92,7 +92,7 @@ nmtui  # Launch text UI / Запустить текстовый интерфей
 2. **Activate a connection** — Connect/disconnect
 3. **Set system hostname** — Change hostname
 
-### Common Workflows / Типичные сценарии
+### Common Workflows
 
 #### Create Ethernet Connection (nmtui)
 1. Select **"Edit a connection"**
@@ -112,14 +112,14 @@ nmtui  # Launch text UI / Запустить текстовый интерфей
 
 ---
 
-## Dispatcher Scripts / Скрипты диспетчера
+## Dispatcher Scripts
 
-### Create Dispatcher Script / Создать скрипт диспетчера
+### Create Dispatcher Script
 `/etc/NetworkManager/dispatcher.d/99-custom-script`
 
 ```bash
 #!/bin/bash
-# Dispatcher script example / Пример скрипта диспетчера
+# Dispatcher script example
 
 INTERFACE=$1  # Interface name / Имя интерфейса
 ACTION=$2     # Action (up, down, vpn-up, vpn-down) / Действие
@@ -147,7 +147,7 @@ sudo chmod +x /etc/NetworkManager/dispatcher.d/99-custom-script  # Make executab
 > [!NOTE]
 > Dispatcher scripts run as root and receive the interface name and action as arguments.
 
-### Common Dispatcher Use Cases / Типичные случаи использования
+### Common Dispatcher Use Cases
 - Update DNS settings when VPN connects
 - Mount network shares when connected to specific network
 - Adjust firewall rules based on network location
@@ -155,9 +155,9 @@ sudo chmod +x /etc/NetworkManager/dispatcher.d/99-custom-script  # Make executab
 
 ---
 
-## Connection Management / Управление соединениями
+## Connection Management
 
-### NetworkManager Configuration File / Файл конфигурации
+### NetworkManager Configuration File
 `/etc/NetworkManager/NetworkManager.conf`
 
 ```ini
@@ -176,7 +176,7 @@ wifi.powersave=2  # WiFi powersave (2=enabled) / Энергосбережени�
 sudo systemctl restart NetworkManager  # Apply config / Применить конфигурацию
 ```
 
-### Connection File Example / Пример файла соединения
+### Connection File Example
 `/etc/NetworkManager/system-connections/office-wifi.nmconnection`
 
 ```ini
@@ -210,38 +210,38 @@ sudo chmod 600 /etc/NetworkManager/system-connections/*  # Secure permissions / 
 
 ---
 
-## Troubleshooting & Tools / Устранение неполадок
+## Troubleshooting & Tools
 
-### Common Issues / Типичные проблемы
+### Common Issues
 ```bash
-# WiFi not working / WiFi не работает
+# WiFi not working / WiFi
 sudo systemctl restart NetworkManager  # Restart NetworkManager / Перезапустить NM
 sudo rfkill unblock wifi                # Unblock WiFi / Разблокировать WiFi
 
-# Connection managed by other service / Соединение управляется другим сервисом
+# Connection managed by other service
 sudo nmcli device set <DEVICE> managed yes  # Force NM management / Принудительное управление
 
-# No network icon in tray / Нет иконки сети в трее
+# No network icon in tray
 nm-applet &  # Start applet / Запустить апплет
 ```
 
-### Debug Logging / Отладочное логирование
+### Debug Logging
 ```bash
 sudo nmcli general logging level DEBUG  # Enable debug logging / Включить отладку
 journalctl -u NetworkManager -f          # Follow logs / Смотреть логи
 sudo nmcli general logging level INFO    # Restore normal logging / Восстановить обычное логирование
 ```
 
-### View Connection Secrets / Просмотреть секреты соединений
+### View Connection Secrets
 ```bash
 nmcli -s connection show <CONN>  # Show with secrets / Показать с секретами (требует sudo)
 ```
 
 ---
 
-## Comparison Tables / Таблицы сравнения
+## Comparison Tables
 
-### NetworkManager Tools Comparison / Сравнение инструментов
+### NetworkManager Tools Comparison
 
 | Tool | Interface | Best For | WiFi Support |
 | :--- | :--- | :--- | :--- |

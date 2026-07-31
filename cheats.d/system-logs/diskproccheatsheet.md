@@ -31,14 +31,14 @@ These are part of GNU coreutils (`du`, `df`), the `lsof` package, and `procps-ng
 - [Filesystem Info (df)](#Filesystem%20Info%20(df))
 - [Open Files (lsof)](#Open%20Files%20(lsof))
 - [Process Info (ps)](#Process%20Info%20(ps))
-- [Real-time Monitoring](#Real-time%20monitoring%20/%20Мониторинг%20в%20реальном%20времени)
+- [Real-time Monitoring](#Real-time%20monitoring)
 - [Troubleshooting](#Troubleshooting)
 
 ---
 
 ## Disk Usage (du)
 
-### Basic Usage / Базовое использование
+### Basic Usage
 
 ```bash
 du -sh *                                  # Size of each item / Размер каждого элемента
@@ -47,7 +47,7 @@ du -sh /var/log                           # Specific directory / Конкрет�
 du -h --max-depth=1                       # One level deep / На один уровень
 ```
 
-### Advanced / Продвинутое
+### Advanced
 
 ```bash
 du -ah /var | sort -rh | head -20         # Top 20 largest / Топ 20 крупнейших
@@ -56,7 +56,7 @@ du -c /home/*                             # Total for multiple dirs / Итого
 du -x /                                   # Same filesystem only / Только одна ФС
 ```
 
-### Sample Output / Пример вывода
+### Sample Output
 
 ```text
 4.0K    file.txt
@@ -73,7 +73,7 @@ du -x /                                   # Same filesystem only / Только 
 
 ## Filesystem Info (df)
 
-### Basic Usage / Базовое использование
+### Basic Usage
 
 ```bash
 df -h                                     # Human-readable / Читаемый формат
@@ -82,7 +82,7 @@ df -i                                     # Inode usage / Использован
 df -h /                                   # Specific mount / Конкретная точка
 ```
 
-### Advanced / Продвинутое
+### Advanced
 
 ```bash
 df -h --output=source,size,used,avail,pcent,target  # Custom columns / Выборочные столбцы
@@ -90,7 +90,7 @@ df -t ext4                                # Only ext4 / Только ext4
 df -x tmpfs -x devtmpfs                   # Exclude virtual FS / Исключить виртуальные ФС
 ```
 
-### Sample Output / Пример вывода
+### Sample Output
 
 ```text
 Filesystem      Size  Used Avail Use% Mounted on
@@ -106,7 +106,7 @@ Filesystem      Size  Used Avail Use% Mounted on
 
 ## Open Files (lsof)
 
-### By Port / По порту
+### By Port
 
 ```bash
 lsof -i :80                               # Port 80 / Порт 80
@@ -115,7 +115,7 @@ lsof -i :22                               # SSH connections / SSH соедине
 lsof -i tcp:8080                          # TCP port 8080 / TCP порт 8080
 ```
 
-### By Process / По процессу
+### By Process
 
 ```bash
 lsof -p <PID>                             # Files by PID / Файлы по PID
@@ -123,7 +123,7 @@ lsof -c nginx                             # Files by command / Файлы по �
 lsof -u <USER>                            # Files by user / Файлы по пользователю
 ```
 
-### Special Cases / Особые случаи
+### Special Cases
 
 ```bash
 lsof +L1                                  # Deleted but open files / Удалённые но открытые
@@ -131,7 +131,7 @@ lsof +D /var/log                          # All files in dir / Все файлы
 lsof /path/to/file                        # Who uses this file / Кто использует файл
 ```
 
-### Network / Сеть
+### Network
 
 ```bash
 lsof -i                                   # All network connections / Все сетевые соединения
@@ -143,7 +143,7 @@ lsof -i @<IP>                             # Connections to IP / Соединен
 
 ## Process Info (ps)
 
-### Basic Usage / Базовое использование
+### Basic Usage
 
 ```bash
 ps aux                                    # All processes / Все процессы
@@ -152,7 +152,7 @@ ps -ef                                    # Full format / Полный форм�
 ps -u <USER>                              # By user / По пользователю
 ```
 
-### Resource Sorting / Сортировка по ресурсам
+### Resource Sorting
 
 ```bash
 ps aux --sort=-%mem | head                # Top memory consumers / Топ по памяти
@@ -160,7 +160,7 @@ ps aux --sort=-%cpu | head                # Top CPU consumers / Топ по CPU
 ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head  # Custom columns / Выборочные столбцы
 ```
 
-### Process Tree / Дерево процессов
+### Process Tree
 
 ```bash
 ps auxf                                   # Process tree / Дерево процессов
@@ -168,7 +168,7 @@ ps -ejH                                   # Hierarchical view / Иерархич
 pstree -p                                 # Visual tree with PIDs / Дерево с PID
 ```
 
-### Find Specific / Поиск конкретных
+### Find Specific
 
 ```bash
 pgrep -a nginx                            # PIDs with command / PID с командой
@@ -189,7 +189,7 @@ top -p <PID>                              # Monitor specific PID / Монито�
 top -u <USER>                             # Filter by user / Фильтр по пользователю
 ```
 
-### top Shortcuts / Горячие клавиши top
+### top Shortcuts
 
 ```text
 M — Sort by memory / Сортировка по памяти
@@ -200,7 +200,7 @@ q — Quit / Выход
 c — Toggle full command / Показать полную команду
 ```
 
-### Other Tools / Другие инструменты
+### Other Tools
 
 ```bash
 watch -n 1 'df -h'                        # Watch disk usage / Наблюдать за дисками
@@ -213,60 +213,60 @@ dstat                                     # Combined CPU/disk/net stats / Ком
 
 ## Troubleshooting
 
-### Disk Full / Диск заполнен
+### Disk Full
 
 ```bash
-# Find large directories / Найти большие директории
+# Find large directories
 du -sh /var/* | sort -rh | head -10
 
-# Find large files / Найти большие файлы
+# Find large files
 find / -xdev -type f -size +100M -exec ls -lh {} \;
 
-# Check for deleted but open / Проверить удалённые но открытые
+# Check for deleted but open
 lsof +L1 | awk '{print $7, $9}' | sort -rn | head
 
-# Inode exhaustion / Исчерпание inodes
+# Inode exhaustion
 df -i
 find / -xdev -printf '%h\n' | sort | uniq -c | sort -rn | head -20
 ```
 
-### High CPU / Высокая нагрузка CPU
+### High CPU
 
 ```bash
-# Find top CPU processes / Топ процессов по CPU
+# Find top CPU processes
 ps aux --sort=-%cpu | head -10
 
-# Real-time monitoring / Мониторинг в реальном времени
+# Real-time monitoring
 top -bn1 | head -20
 ```
 
-### Memory Issues / Проблемы с памятью
+### Memory Issues
 
 ```bash
-# Memory overview / Обзор памяти
+# Memory overview
 free -h
 
-# Top memory processes / Топ процессов по памяти
+# Top memory processes
 ps aux --sort=-%mem | head -10
 
-# Detailed memory info / Подробная информация о памяти
+# Detailed memory info
 cat /proc/meminfo
 ```
 
-### Process Using Resource / Процесс использующий ресурс
+### Process Using Resource
 
 ```bash
-# What's using this file / Что использует этот файл
+# What's using this file
 fuser -v /path/to/file
 
-# What's holding this port / Что занимает этот порт
+# What's holding this port
 ss -tlnp | grep :8080
 lsof -i :8080
 ```
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Use `htop` for interactive monitoring. / Используйте `htop` для интерактивного мониторинга.
 - Combine `ps` with `grep` for filtering. / Комбинируйте `ps` с `grep` для фильтрации.

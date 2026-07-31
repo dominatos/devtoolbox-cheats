@@ -17,7 +17,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -30,7 +30,7 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install Utilities / Установка утилит
+### Install Utilities
 
 ```bash
 sudo apt install apache2-utils   # Debian/Ubuntu
@@ -38,7 +38,7 @@ sudo dnf install httpd-tools     # RHEL/CentOS/Fedora
 apk add apache2-utils            # Alpine Linux
 ```
 
-### Algorithm Comparison / Сравнение алгоритмов
+### Algorithm Comparison
 
 | Algorithm | Flag | Security | Recommendation / Рекомендация |
 |-----------|------|----------|-------------------------------|
@@ -51,7 +51,7 @@ apk add apache2-utils            # Alpine Linux
 
 ## 2. Core Management
 
-### Create New File / Создать новый файл
+### Create New File
 
 > [!WARNING]
 > The `-c` flag creates a new file. If the file exists, it is **overwritten**!
@@ -61,20 +61,20 @@ apk add apache2-utils            # Alpine Linux
 htpasswd -c .htpasswd <USER>          # Create new file + add user / Создать файл и добавить пользователя
 ```
 
-### Add/Update User / Добавить/Обновить пользователя
+### Add/Update User
 
 ```bash
 htpasswd .htpasswd <USER>             # Add or update user / Добавить или обновить пользователя
 ```
 
-### Verify & Delete / Проверка и удаление
+### Verify & Delete
 
 ```bash
 htpasswd -v .htpasswd <USER>          # Verify password / Проверить пароль
 htpasswd -D .htpasswd <USER>          # Delete user / Удалить пользователя
 ```
 
-### Batch Mode / Пакетный режим
+### Batch Mode
 
 > [!CAUTION]
 > The password will be visible in bash history!
@@ -89,7 +89,7 @@ htpasswd -B -C 10 .htpasswd <USER>            # Bcrypt cost 10 / Сложнос�
 
 ## 3. Sysadmin Operations
 
-### Force Specific Algorithm / Принудительный алгоритм
+### Force Specific Algorithm
 
 ```bash
 htpasswd -B .htpasswd <USER>          # Bcrypt (Recommended) / Bcrypt (Рекомендуется)
@@ -97,14 +97,14 @@ htpasswd -m .htpasswd <USER>          # MD5 (Legacy) / MD5 (Устарело)
 htpasswd -s .htpasswd <USER>          # SHA-512 / SHA-512
 ```
 
-### Output to Console / Вывод в консоль
+### Output to Console
 
 ```bash
 htpasswd -bn <USER> <PASSWORD>        # Generate to stdout / Сгенерировать в stdout
 htpasswd -bnB <USER> <PASSWORD>       # Bcrypt to stdout / Bcrypt в stdout
 ```
 
-### Scripted User Creation / Создание пользователей скриптом
+### Scripted User Creation
 
 ```bash
 for user in alice bob charlie; do
@@ -127,7 +127,7 @@ done
 
 ## 4. Security
 
-### File Permissions / Права доступа
+### File Permissions
 
 ```bash
 chmod 640 .htpasswd                   # Read for owner+group / Чтение для владельца+группа

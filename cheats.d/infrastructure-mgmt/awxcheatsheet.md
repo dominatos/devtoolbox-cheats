@@ -39,19 +39,19 @@ AWX is the open-source upstream project for **Red Hat Ansible Automation Platfor
 > [!IMPORTANT]
 > AWX 18+ requires Kubernetes (K8s/K3s/Minikube) or Docker Compose for deployment. Standalone RPM/DEB installs are no longer supported. / AWX 18+ требует Kubernetes или Docker Compose для развёртывания.
 
-### Install via AWX Operator (Kubernetes) / Установка через AWX Operator
+### Install via AWX Operator (Kubernetes)
 
 ```bash
-# Install K3s (lightweight Kubernetes) / Установить K3s
+# Install K3s (lightweight Kubernetes)
 curl -sfL https://get.k3s.io | sh -
 
-# Install AWX Operator via Helm / Установить AWX Operator через Helm
+# Install AWX Operator via Helm
 helm repo add awx-operator https://ansible.github.io/awx-operator/
 helm repo update
 helm install awx-operator awx-operator/awx-operator -n awx --create-namespace
 ```
 
-### AWX Instance CR / Ресурс AWX Instance
+### AWX Instance CR
 
 `awx-instance.yaml`
 
@@ -69,32 +69,32 @@ spec:
 ```
 
 ```bash
-# Deploy AWX instance / Развернуть AWX
+# Deploy AWX instance
 kubectl apply -f awx-instance.yaml -n awx
 
-# Check deployment status / Проверить статус развёртывания
+# Check deployment status
 kubectl get pods -n awx -w
 
-# Get admin password / Получить пароль администратора
+# Get admin password
 kubectl get secret awx-admin-password -n awx -o jsonpath='{.data.password}' | base64 -d; echo
 ```
 
-### Install via Docker Compose / Установка через Docker Compose
+### Install via Docker Compose
 
 ```bash
-# Clone AWX repository / Клонировать репозиторий AWX
+# Clone AWX repository
 git clone -b <VERSION_TAG> https://github.com/ansible/awx.git
 cd awx
 
-# Copy and edit inventory / Скопировать и отредактировать inventory
+# Copy and edit inventory
 cp tools/docker-compose/inventory.example tools/docker-compose/inventory
 
-# Build and start / Собрать и запустить
+# Build and start
 make docker-compose-build
 make docker-compose
 ```
 
-### Deployment Methods Comparison / Сравнение методов развёртывания
+### Deployment Methods Comparison
 
 | Method / Метод | Complexity / Сложность | Production Ready | Best for / Лучше для... |
 |:---|:---|:---|:---|
@@ -103,17 +103,17 @@ make docker-compose
 | **Docker Compose** | Low / Низкая | ⚠️ Dev/Test only | Development, PoC / Разработка, PoC |
 | **Minikube + Operator** | Medium / Средняя | ❌ No | Local testing / Локальное тестирование |
 
-### Essential Configuration / Основная конфигурация
+### Essential Configuration
 
 AWX settings are managed via the Web UI or REST API. Key settings:
 
 ```bash
-# Configure AWX settings via CLI / Настроить AWX через CLI
+# Configure AWX settings via CLI
 awx-manage shell_plus  # Django management shell / Управляющая оболочка Django
 ```
 
 ```python
-# In Django shell / В оболочке Django
+# In Django shell
 from awx.conf.models import Setting
 Setting.objects.filter(key='AWX_TASK_ENV').update(value={'ANSIBLE_TIMEOUT': '60'})
 ```
@@ -122,10 +122,10 @@ Setting.objects.filter(key='AWX_TASK_ENV').update(value={'ANSIBLE_TIMEOUT': '60'
 
 ## Core Management
 
-### Web UI Access / Доступ к веб-интерфейсу
+### Web UI Access
 
 ```bash
-# Web UI endpoints / Адреса веб-интерфейса
+# Web UI endpoints
 http://<HOST>:8052/           # Web UI
 https://<HOST>:8053/          # HTTPS (if configured / если настроен)
 http://<HOST>:8052/api/v2/    # REST API
@@ -134,50 +134,50 @@ http://<HOST>:8052/api/v2/    # REST API
 ### awx CLI (tower-cli replacement) / CLI awx
 
 ```bash
-# Install awx CLI / Установить awx CLI
+# Install awx CLI
 pip install awxkit
 
-# Configure connection / Настроить подключение
+# Configure connection
 export TOWER_HOST=http://<HOST>:8052
 export TOWER_USERNAME=<USER>
 export TOWER_PASSWORD=<PASSWORD>
 ```
 
-### Common CLI Commands / Основные команды CLI
+### Common CLI Commands
 
 ```bash
-# List organizations / Список организаций
+# List organizations
 awx organizations list
 
-# List projects / Список проектов
+# List projects
 awx projects list
 
-# List inventories / Список инвентарей
+# List inventories
 awx inventories list
 
-# List job templates / Список шаблонов задач
+# List job templates
 awx job_templates list
 
-# Launch a job / Запустить задачу
+# Launch a job
 awx job_templates launch <TEMPLATE_ID> --monitor
 
-# List running jobs / Список запущенных задач
+# List running jobs
 awx jobs list --status running
 
-# Cancel a job / Отменить задачу
+# Cancel a job
 awx jobs cancel <JOB_ID>
 
-# List hosts in inventory / Список хостов в инвентаре
+# List hosts in inventory
 awx hosts list --inventory <INVENTORY_ID>
 
-# List credentials / Список учётных данных
+# List credentials
 awx credentials list
 
-# List workflow templates / Список шаблонов workflow
+# List workflow templates
 awx workflow_job_templates list
 ```
 
-### AWX Object Hierarchy / Иерархия объектов AWX
+### AWX Object Hierarchy
 
 | Object | Description / Описание | Parent |
 |:---|:---|:---|
@@ -189,7 +189,7 @@ awx workflow_job_templates list
 | Job Template | Playbook + Inventory + Credential / Шаблон задачи | Project |
 | Workflow | Chain of Job Templates / Цепочка шаблонов задач | Organization |
 
-### Credential Types / Типы учётных данных
+### Credential Types
 
 | Type | Use Case / Применение |
 |:---|:---|
@@ -204,36 +204,36 @@ awx workflow_job_templates list
 
 ## Sysadmin Operations
 
-### Service Management (Kubernetes) / Управление сервисами (Kubernetes)
+### Service Management (Kubernetes)
 
 ```bash
-# Check AWX pods / Проверить поды AWX
+# Check AWX pods
 kubectl get pods -n awx
 
-# Check service status / Проверить статус сервисов
+# Check service status
 kubectl get svc -n awx
 
-# View AWX task pod logs / Логи пода задач AWX
+# View AWX task pod logs
 kubectl logs -f deployment/awx-task -n awx
 
-# View AWX web pod logs / Логи веб-пода AWX
+# View AWX web pod logs
 kubectl logs -f deployment/awx-web -n awx
 
-# Restart AWX deployment / Перезапустить AWX
+# Restart AWX deployment
 kubectl rollout restart deployment/awx-web -n awx
 kubectl rollout restart deployment/awx-task -n awx
 
-# Scale AWX workers / Масштабировать воркеры
+# Scale AWX workers
 kubectl scale deployment awx-task --replicas=3 -n awx
 ```
 
-### Django Management Commands / Команды управления Django
+### Django Management Commands
 
 ```bash
-# Enter AWX task container / Войти в контейнер задач AWX
+# Enter AWX task container
 kubectl exec -it deployment/awx-task -n awx -- bash
 
-# Useful awx-manage commands inside container / Полезные команды awx-manage
+# Useful awx-manage commands inside container
 awx-manage inventory_import --source=/path/to/hosts --inventory-name="<INVENTORY>"  # Import inventory / Импорт инвентаря
 awx-manage createsuperuser                            # Create admin user / Создать суперпользователя
 awx-manage changepassword <USER>                      # Change password / Сменить пароль
@@ -246,7 +246,7 @@ awx-manage update_password --username=admin --password=<PASSWORD>  # Reset admin
 > [!WARNING]
 > `cleanup_jobs` permanently deletes job history. Make sure to configure appropriate retention. / `cleanup_jobs` безвозвратно удаляет историю задач. Настройте подходящий период хранения.
 
-### Important Paths (Container) / Важные пути (контейнер)
+### Important Paths (Container)
 
 | Path / Путь | Description / Описание |
 |:---|:---|
@@ -257,16 +257,16 @@ awx-manage update_password --username=admin --password=<PASSWORD>  # Reset admin
 | `/etc/tower/settings.py` | AWX settings / Настройки AWX |
 | `/etc/tower/conf.d/` | Custom settings fragments / Фрагменты настроек |
 
-### Log Locations / Расположение логов
+### Log Locations
 
 ```bash
-# AWX task logs / Логи задач AWX
+# AWX task logs
 kubectl logs deployment/awx-task -n awx --tail=100
 
-# AWX web logs / Логи веб-сервера AWX
+# AWX web logs
 kubectl logs deployment/awx-web -n awx --tail=100
 
-# Inside container / Внутри контейнера
+# Inside container
 tail -f /var/log/tower/tower.log              # Main app log / Основной лог
 tail -f /var/log/tower/callback_receiver.log  # Callback receiver / Приёмник callback
 tail -f /var/log/tower/dispatcher.log         # Task dispatcher / Диспетчер задач
@@ -277,20 +277,20 @@ tail -f /var/log/tower/rsyslog.err            # Rsyslog errors / Ошибки rs
 
 ## Security
 
-### User & Team Management / Управление пользователями и командами
+### User & Team Management
 
 ```bash
-# Create user via CLI / Создать пользователя через CLI
+# Create user via CLI
 awx users create --username <USER> --password <PASSWORD> --email <EMAIL>
 
-# List users / Список пользователей
+# List users
 awx users list
 
-# Add user to team / Добавить пользователя в команду
+# Add user to team
 awx teams associate --user <USER_ID> <TEAM_ID>
 ```
 
-### Role-Based Access Control (RBAC) / Ролевой доступ (RBAC)
+### Role-Based Access Control (RBAC)
 
 | Role | Scope / Область | Description / Описание |
 |:---|:---|:---|
@@ -301,7 +301,7 @@ awx teams associate --user <USER_ID> <TEAM_ID>
 | Update | Project | Can update from SCM / Может обновлять из SCM |
 | Read | Any object | View-only / Только просмотр |
 
-### LDAP/AD Integration / Интеграция с LDAP/AD
+### LDAP/AD Integration
 
 Configure via Web UI: **Settings → Authentication → LDAP**
 
@@ -320,18 +320,18 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=users,dc=example,dc=com", ldap.SCOPE_SUBT
 
 ## Backup & Restore
 
-### Backup PostgreSQL / Резервная копия PostgreSQL
+### Backup PostgreSQL
 
 ```bash
-# From Kubernetes / Из Kubernetes
+# From Kubernetes
 kubectl exec -it deployment/awx-postgres-13 -n awx -- \
   pg_dump -U awx -d awx | gzip > /backup/awx_db_$(date +%F).sql.gz
 
-# Backup AWX secrets / Бэкап секретов AWX
+# Backup AWX secrets
 kubectl get secret -n awx -o yaml > /backup/awx_secrets_$(date +%F).yaml
 ```
 
-### Production Runbook: Full Backup / Полное резервное копирование
+### Production Runbook: Full Backup
 
 1. **Backup the database / Сделать бэкап БД:**
 
@@ -353,7 +353,7 @@ kubectl get secret -n awx -o yaml > /backup/awx_secrets_$(date +%F).yaml
    gunzip -t /backup/awx_db_$(date +%F).sql.gz  # Test gzip integrity / Проверить целостность gzip
    ```
 
-### Restore Runbook / Сценарий восстановления
+### Restore Runbook
 
 > [!CAUTION]
 > Restore will overwrite all current data. Perform only on a clean system or after understanding the full impact. / Восстановление перезапишет все данные. Выполняйте только на чистой системе.
@@ -382,49 +382,49 @@ kubectl get secret -n awx -o yaml > /backup/awx_secrets_$(date +%F).yaml
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Jobs Stuck in "Pending" / Задачи зависли в "Pending"
+#### 1. Jobs Stuck in "Pending"
 
 ```bash
-# Check task pod logs / Проверить логи пода задач
+# Check task pod logs
 kubectl logs deployment/awx-task -n awx --tail=50 | grep -i error
 
-# Check dispatcher / Проверить диспетчер
+# Check dispatcher
 kubectl exec -it deployment/awx-task -n awx -- awx-manage list_instances
 
-# Restart task pod / Перезапустить под задач
+# Restart task pod
 kubectl rollout restart deployment/awx-task -n awx
 ```
 
-#### 2. Project Sync Fails / Ошибка синхронизации проекта
+#### 2. Project Sync Fails
 
 ```bash
-# Check SCM credentials / Проверить SCM-credentials
+# Check SCM credentials
 awx credentials get <CREDENTIAL_ID>
 
-# Test Git connectivity from container / Тест подключения к Git из контейнера
+# Test Git connectivity from container
 kubectl exec -it deployment/awx-task -n awx -- git ls-remote <REPO_URL>
 
-# Clear project cache / Очистить кэш проекта
+# Clear project cache
 kubectl exec -it deployment/awx-task -n awx -- rm -rf /var/lib/awx/projects/<PROJECT_NAME>
 ```
 
 > [!WARNING]
 > Clearing project cache forces a full re-clone from SCM on next sync. Ensure SCM connectivity before clearing. / Очистка кэша проекта приведёт к полному повторному клонированию из SCM.
 
-#### 3. High Memory Usage / Высокое потребление памяти
+#### 3. High Memory Usage
 
 ```bash
-# Check pod resource usage / Проверить потребление ресурсов пода
+# Check pod resource usage
 kubectl top pods -n awx
 
-# Cleanup old jobs / Очистить старые задачи
+# Cleanup old jobs
 kubectl exec -it deployment/awx-task -n awx -- awx-manage cleanup_jobs --days=14
 kubectl exec -it deployment/awx-task -n awx -- awx-manage cleanup_activitystream --days=30
 ```
 
-### Common Issues Quick Reference / Краткий справочник проблем
+### Common Issues Quick Reference
 
 | Issue / Проблема | Fix / Решение |
 |:---|:---|
@@ -435,21 +435,21 @@ kubectl exec -it deployment/awx-task -n awx -- awx-manage cleanup_activitystream
 | **LDAP login fails** | Check LDAP config in `/etc/tower/conf.d/ldap.py` / Проверить конфиг LDAP |
 | **API returns 401** | Token may be expired; regenerate via `/api/v2/tokens/` / Токен мог истечь; перегенерировать |
 
-### API Examples / Примеры API
+### API Examples
 
 ```bash
-# Get API token / Получить API-токен
+# Get API token
 curl -s -X POST http://<HOST>:8052/api/v2/tokens/ \
   -H "Content-Type: application/json" \
   -u "<USER>:<PASSWORD>" | jq .token
 
-# Launch job template via API / Запустить шаблон задачи через API
+# Launch job template via API
 curl -s -X POST http://<HOST>:8052/api/v2/job_templates/<TEMPLATE_ID>/launch/ \
   -H "Authorization: Bearer <TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{"extra_vars": {"env": "production"}}'
 
-# Check job status / Проверить статус задачи
+# Check job status
 curl -s http://<HOST>:8052/api/v2/jobs/<JOB_ID>/ \
   -H "Authorization: Bearer <TOKEN>" | jq '.status, .failed'
 ```

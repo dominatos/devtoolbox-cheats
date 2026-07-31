@@ -52,7 +52,7 @@ tags:
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Debian/Ubuntu
@@ -63,7 +63,7 @@ sudo dnf install nginx                                   # Install Nginx / Ус�
 sudo systemctl enable nginx                              # Enable at boot / Автозапуск
 ```
 
-### Default Paths / Пути по умолчанию
+### Default Paths
 
 **Main config / Основной конфиг:**
 `/etc/nginx/nginx.conf`
@@ -79,7 +79,7 @@ sudo systemctl enable nginx                              # Enable at boot / Ав
 **Default document root / Корень по умолчанию:**
 `/usr/share/nginx/html/` or `/var/www/html/`
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 - **80** — HTTP
 - **443** — HTTPS
@@ -88,7 +88,7 @@ sudo systemctl enable nginx                              # Enable at boot / Ав
 
 ## Core Management
 
-### Service Control / Управление
+### Service Control
 
 ```bash
 sudo systemctl start nginx                               # Start service / Запустить сервис
@@ -99,7 +99,7 @@ sudo systemctl status nginx                              # Service status / Ст
 sudo systemctl enable nginx                              # Enable at boot / Автозапуск
 ```
 
-### Configuration Testing / Проверка конфигурации
+### Configuration Testing
 
 ```bash
 sudo nginx -t                                            # Test config / Проверить конфиг
@@ -107,7 +107,7 @@ sudo nginx -T                                            # Test and dump config 
 sudo nginx -s reload                                     # Reload signal / Сигнал перезагрузки
 ```
 
-### Logs / Логи
+### Logs
 
 ```bash
 sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log  # Tail logs / Хвост логов
@@ -119,7 +119,7 @@ sudo tail -f /var/log/nginx/error.log                   # Error log / Лог о�
 
 ## Basic Reverse Proxy
 
-### Basic Reverse Proxy vhost / Базовый reverse proxy
+### Basic Reverse Proxy vhost
 
 ```nginx
 server {
@@ -143,7 +143,7 @@ server {
 
 ## Load Balancing
 
-### Load Balancing Algorithms / Алгоритмы балансировки
+### Load Balancing Algorithms
 
 | Algorithm | Description (EN) | Description (RU) | Use Case |
 | :--- | :--- | :--- | :--- |
@@ -157,7 +157,7 @@ server {
 > **Active health checks** are available only in **Nginx Plus** (commercial). Open-source Nginx supports only **passive health checks** (`max_fails` / `fail_timeout`).
 > **Активные проверки здоровья** доступны только в **Nginx Plus**. OSS-версия поддерживает только **пассивные** (`max_fails` / `fail_timeout`).
 
-### Round Robin (Default) / Балансировщик (Round Robin)
+### Round Robin (Default)
 
 ```nginx
 upstream backend_pool {
@@ -181,7 +181,7 @@ server {
 
 ---
 
-### Least Connections / Минимум соединений
+### Least Connections
 
 ```nginx
 upstream backend_pool {
@@ -193,7 +193,7 @@ upstream backend_pool {
 
 ---
 
-### Sticky Sessions (IP Hash) / Привязка по IP
+### Sticky Sessions (IP Hash)
 
 ```nginx
 upstream backend_pool {
@@ -209,7 +209,7 @@ upstream backend_pool {
 
 ---
 
-### Passive Health Checks / Пассивные health checks
+### Passive Health Checks
 
 ```nginx
 upstream backend_pool {
@@ -251,7 +251,7 @@ server {
 
 ---
 
-### HTTP → HTTPS Redirect / Редирект на HTTPS
+### HTTP → HTTPS Redirect
 
 ```nginx
 server {
@@ -265,7 +265,7 @@ server {
 
 ## WebSocket & Special Protocols
 
-### WebSocket Proxy / WebSocket прокси
+### WebSocket Proxy / WebSocket
 
 ```nginx
 location /ws/ {
@@ -280,7 +280,7 @@ location /ws/ {
 
 ## Static Files & Optimization
 
-### Static Files / Статические файлы
+### Static Files
 
 ```nginx
 server {
@@ -298,7 +298,7 @@ server {
 
 ---
 
-### Gzip Compression / Сжатие
+### Gzip Compression
 
 ```nginx
 gzip on;                                                 # Enable gzip
@@ -308,7 +308,7 @@ gzip_min_length 1024;                                    # Min size
 
 ---
 
-### Rate Limiting / Ограничение запросов
+### Rate Limiting
 
 ```nginx
 limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;  # Define zone
@@ -325,7 +325,7 @@ server {
 
 ## Security & Access Control
 
-### Basic Auth / Базовая авторизация
+### Basic Auth
 
 ```nginx
 location /admin/ {
@@ -336,7 +336,7 @@ location /admin/ {
 
 ---
 
-### Security Headers / Заголовки безопасности
+### Security Headers
 
 ```nginx
 add_header X-Frame-Options DENY;                         # Clickjacking protection
@@ -346,7 +346,7 @@ add_header Referrer-Policy no-referrer;                  # Referrer policy
 
 ---
 
-### Deny by IP / Блокировка IP
+### Deny by IP
 
 ```nginx
 deny <IP>;                                               # Block IP
@@ -355,7 +355,7 @@ allow all;
 
 ---
 
-### Maintenance Mode / Режим обслуживания
+### Maintenance Mode
 
 ```nginx
 if (-f /var/www/maintenance.flag) {
@@ -374,7 +374,7 @@ location @maintenance {
 
 ## Caching & Performance
 
-### Caching Proxy / Кеширование
+### Caching Proxy
 
 ```nginx
 proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=mycache:10m inactive=60m;
@@ -388,7 +388,7 @@ location / {
 
 ---
 
-### PHP-FPM / PHP обработка
+### PHP-FPM / PHP
 
 ```nginx
 location ~ \.php$ {
@@ -432,7 +432,7 @@ server {
 
 ---
 
-### map (preferred over if) / map вместо if
+### map (preferred over if) / map
 
 ```nginx
 map $http_user_agent $is_bot {
@@ -449,7 +449,7 @@ server {
 
 ---
 
-### Upstream Backup Server / Резервный backend
+### Upstream Backup Server
 
 ```nginx
 upstream backend_pool {
@@ -461,7 +461,7 @@ upstream backend_pool {
 
 ---
 
-### slow_start (Nginx Plus) / Плавное включение backend
+### slow_start (Nginx Plus)
 
 ```nginx
 upstream backend_pool {
@@ -476,7 +476,7 @@ upstream backend_pool {
 
 ---
 
-### mirror (Traffic Shadowing) / Зеркалирование трафика
+### mirror (Traffic Shadowing)
 
 ```nginx
 location / {
@@ -494,7 +494,7 @@ location /mirror {
 
 ---
 
-### sub_filter (Response rewrite) / Переписывание ответа
+### sub_filter (Response rewrite)
 
 ```nginx
 sub_filter 'http://<OLD_HOST>' 'https://<NEW_HOST>';
@@ -605,7 +605,7 @@ server_tokens off;                                       # Hide nginx version
 
 ---
 
-### Production Checklist / Чеклист для продакшена
+### Production Checklist
 
 - [ ] real_ip configured / real_ip настроен
 - [ ] rate limit enabled / rate limit включён
@@ -619,7 +619,7 @@ server_tokens off;                                       # Hide nginx version
 
 ## Logs & Monitoring
 
-### Logs per vhost / Логи на виртуальный хост
+### Logs per vhost
 
 ```nginx
 access_log /var/log/nginx/site_access.log combined;
@@ -637,7 +637,7 @@ sudo nginx -t && sudo systemctl reload nginx
 
 ---
 
-### Nginx Health Status Page / Страница статуса Nginx
+### Nginx Health Status Page
 
 ```nginx
 location /server_status {
@@ -651,7 +651,7 @@ location /server_status {
 
 ## Troubleshooting & Tools
 
-### Tips / Советы
+### Tips
 
 - Prefer `map` over `if` / Используй `map`, а не `if`
 - Always run `nginx -t` / Всегда проверяй конфиг

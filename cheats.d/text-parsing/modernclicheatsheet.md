@@ -19,17 +19,17 @@ tags:
 - [fd — Fast Find](#fd%20—%20Fast%20Find)
 - [bat — Better Cat](#bat%20—%20Better%20Cat)
 - [eza — Better ls](#eza%20—%20Better%20ls)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
-- [Aliases](#Use%20eza%20aliases%20for%20enhanced%20ls%20/%20Используйте%20алиасы%20eza%20для%20улучшенного%20ls)
-- [Tool Comparison](#Tool%20Comparison%20/%20Сравнение%20инструментов)
-- [Installation](#️%20Installation%20/%20Установка)
+- [Real-World Examples](#Real-World%20Examples)
+- [Best Practices](#Best%20Practices)
+- [Aliases](#Use%20eza%20aliases%20for%20enhanced%20ls)
+- [Tool Comparison](#Tool%20Comparison)
+- [Installation](#️%20Installation)
 
 ---
 
 ## 🔍 ripgrep — Fast Search
 
-### Basic Search / Базовый поиск
+### Basic Search
 
 ```bash
 rg 'pattern'                                  # Search in current dir / Поиск в текущей директории
@@ -39,7 +39,7 @@ rg -w 'word'                                  # Match whole words / Совпад
 rg -v 'pattern'                               # Invert match / Обратное совпадение
 ```
 
-### Advanced Search / Продвинутый поиск
+### Advanced Search
 
 ```bash
 rg 'pattern' -n                               # Show line numbers / Показать номера строк
@@ -49,7 +49,7 @@ rg 'pattern' -g '!node_modules'               # Exclude pattern / Исключи
 rg 'pattern' -t py                            # File type (Python) / Тип файла (Python)
 ```
 
-### Output Control / Управление выводом
+### Output Control
 
 ```bash
 rg 'pattern' -l                               # Files with matches / Файлы с совпадениями
@@ -60,7 +60,7 @@ rg 'pattern' -B 3                             # Show 3 lines before / Показ
 rg 'pattern' -C 3                             # Show 3 lines context / Показать 3 строки контекста
 ```
 
-### Multiple Patterns / Несколько паттернов
+### Multiple Patterns
 
 ```bash
 rg 'pattern1|pattern2'                        # OR search / ИЛИ поиск
@@ -68,7 +68,7 @@ rg -e 'pattern1' -e 'pattern2'                # Multiple patterns / Нескол
 rg 'pattern' --and 'other'                    # AND search / И поиск
 ```
 
-### Replacement / Замена
+### Replacement
 
 ```bash
 rg 'pattern' -r 'replacement' --passthru      # Replace (dry-run) / Замена (тестовый прогон)
@@ -79,7 +79,7 @@ rg 'pattern' -r 'replacement' --passthru | sponge file.txt  # Replace in file / 
 
 ## 📂 fd — Fast Find
 
-### Basic Find / Базовый поиск
+### Basic Find
 
 ```bash
 fd pattern                                    # Find pattern / Найти паттерн
@@ -88,7 +88,7 @@ fd -t d pattern                               # Directories only / Только 
 fd -t l pattern                               # Symlinks only / Только символические ссылки
 ```
 
-### Extensions / Расширения
+### Extensions
 
 ```bash
 fd -e log                                     # Find .log files / Найти .log файлы
@@ -96,7 +96,7 @@ fd -e py -e js                                # Multiple extensions / Неско
 fd . /path                                    # Find in path / Найти в пути
 ```
 
-### Advanced Options / Продвинутые опции
+### Advanced Options
 
 ```bash
 fd -H pattern                                 # Include hidden files / Включить скрытые файлы
@@ -105,7 +105,7 @@ fd -g '*.log' -g '!old*'                      # Glob patterns / Glob патте�
 fd -d 3 pattern                               # Max depth 3 / Макс глубина 3
 ```
 
-### Execute Commands / Выполнить команды
+### Execute Commands
 
 ```bash
 fd -t f -x cat {}                             # Execute on each / Выполнить на каждом
@@ -117,7 +117,7 @@ fd -e py -x python {}                         # Run Python files / Запуст�
 
 ## 🎨 bat — Better Cat
 
-### Basic Usage / Базовое использование
+### Basic Usage
 
 ```bash
 bat file.txt                                  # Show file / Показать файл
@@ -126,28 +126,28 @@ bat --style=plain file.txt                    # Same as above / То же что
 bat -n file.txt                               # Show line numbers only / Показать только номера строк
 ```
 
-### Language / Syntax / Язык / Синтаксис
+### Language / Syntax
 
 ```bash
 bat -l python file.txt                        # Force Python syntax / Принудительно Python синтаксис
 bat --list-languages                          # List supported languages / Список поддерживаемых языков
 ```
 
-### Themes / Темы
+### Themes
 
 ```bash
 bat --theme=TwoDark file.txt                  # Use theme / Использовать тему
 bat --list-themes                             # List available themes / Список доступных тем
 ```
 
-### Paging / Пагинация
+### Paging
 
 ```bash
 bat --paging=never file.txt                   # No pager / Без pager
 bat --paging=always file.txt                  # Force pager / Принудительно pager
 ```
 
-### Integration / Интеграция
+### Integration
 
 ```bash
 export BAT_THEME="Monokai Extended"           # Set default theme / Установить тему по умолчанию
@@ -159,7 +159,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"  # Use as man pager / Испо
 
 ## 📊 eza — Better ls
 
-### Basic Listing / Базовый список
+### Basic Listing
 
 ```bash
 eza                                           # List files / Список файлов
@@ -168,7 +168,7 @@ eza -la                                       # Long + all files / Длинны�
 eza -lh                                       # Long + human-readable / Длинный + удобочитаемый
 ```
 
-### Tree View / Вид дерева
+### Tree View
 
 ```bash
 eza --tree                                    # Tree view / Вид дерева
@@ -176,14 +176,14 @@ eza --tree -L 2                               # Tree depth 2 / Глубина д
 eza --tree -I 'node_modules|.git'             # Tree with ignore / Дерево с игнорированием
 ```
 
-### Git Integration / Интеграция с Git
+### Git Integration
 
 ```bash
 eza -l --git                                  # Show git status / Показать git статус
 eza -l --git-ignore                           # Respect .gitignore / Учитывать .gitignore
 ```
 
-### Sorting / Сортировка
+### Sorting
 
 ```bash
 eza -l --sort=modified                        # Sort by modification time / Сортировать по времени модификации
@@ -191,7 +191,7 @@ eza -l --sort=size                            # Sort by size / Сортиров�
 eza -l --sort=extension                       # Sort by extension / Сортировать по расширению
 ```
 
-### Colors & Icons / Цвета и иконки
+### Colors & Icons
 
 ```bash
 eza -l --color=always                         # Force colors / Принудительно цвета
@@ -201,121 +201,121 @@ eza -l --color-scale                          # Color by size / Цвет по р
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
-### Code Search / Поиск кода
+### Code Search
 
 ```bash
-# Find TODOs / Найти TODO
+# Find TODOs
 rg 'TODO|FIXME|XXX' -n
 
-# Find function definition / Найти определение функции
+# Find function definition
 rg 'def myfunction' -t py
 
-# Search excluding tests / Поиск исключая тесты
+# Search excluding tests
 rg 'pattern' -g '!*test*'
 
-# Case-insensitive search in JS / Поиск без учёта регистра в JS
+# Case-insensitive search in JS
 rg -i 'console.log' -t js
 ```
 
-### File Operations / Операции с файлами
+### File Operations
 
 ```bash
-# Find and delete old logs / Найти и удалить старые логи
+# Find and delete old logs
 fd -e log -X rm
 
-# Find large files / Найти большие файлы
+# Find large files
 fd -t f -x du -h {} | sort -hr | head -20
 
-# Find recent files / Найти недавние файлы
+# Find recent files
 fd -t f --changed-within 1d
 
-# Batch rename / Пакетное переименование
+# Batch rename
 fd -e txt -x mv {} {.}.bak
 ```
 
-### Development Workflow / Рабочий процесс разработки
+### Development Workflow
 
 ```bash
-# Find all Python files / Найти все Python файлы
+# Find all Python files
 fd -e py -X bat
 
-# Search and replace / Поиск и замена
+# Search and replace
 rg 'old_function' -l | xargs sed -i 's/old_function/new_function/g'
 
-# Count lines of code / Подсчитать строки кода
+# Count lines of code
 fd -e py -X wc -l | awk '{sum+=$1} END {print sum}'
 ```
 
-### Log Analysis / Анализ логов
+### Log Analysis
 
 ```bash
-# Search errors in logs / Поиск ошибок в логах
+# Search errors in logs
 rg 'ERROR|FATAL' -t log
 
-# Find errors with context / Найти ошибки с контекстом
+# Find errors with context
 rg 'ERROR' -C 5 /var/log/app.log
 
-# Count error types / Подсчитать типы ошибок
+# Count error types
 rg 'ERROR' /var/log/app.log | cut -d':' -f3 | sort | uniq -c
 ```
 
-### Git Workflows / Git рабочие процессы
+### Git Workflows / Git
 
 ```bash
-# Search in git-tracked files only / Поиск только в отслеживаемых файлах
+# Search in git-tracked files only
 rg 'pattern' --type-add 'tracked:include:$(git ls-files)'
 
-# Show modified files / Показать измененные файлы
+# Show modified files
 eza -l --git --git-ignore
 
-# Tree view of project / Вид дерева проекта
+# Tree view of project
 eza --tree -L 3 -I 'node_modules|.git|dist'
 ```
 
-### System Administration / Системное администрирование
+### System Administration
 
 ```bash
-# Find config files / Найти конфигурационные файлы
+# Find config files
 fd -H -e conf -e config
 
-# Search in system logs / Поиск в системных логах
+# Search in system logs
 rg 'error' /var/log/ -g '*.log'
 
-# Find SUID binaries / Найти SUID бинарники
+# Find SUID binaries
 fd -t x -x test -u {} \; -print
 ```
 
-### Combining Tools / Комбинирование инструментов
+### Combining Tools
 
 ```bash
-# Search and open in editor / Поиск и открытие в редакторе
+# Search and open in editor
 rg -l 'pattern' | fzf | xargs vim
 
-# Find and preview files / Найти и предпросмотр файлов
+# Find and preview files
 fd -e md | fzf --preview 'bat --color=always {}'
 
-# Interactive file search / Интерактивный поиск файлов
+# Interactive file search
 fd -t f | fzf --preview 'bat --color=always --line-range :50 {}'
 ```
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 ```bash
-# Use ripgrep instead of grep for speed / Используйте ripgrep вместо grep для скорости
-# Use fd instead of find for simplicity / Используйте fd вместо find для простоты
-# Set bat as default pager / Установите bat как pager по умолчанию
-# Use eza aliases for enhanced ls / Используйте алиасы eza для улучшенного ls
-# Combine tools with fzf for interactivity / Комбинируйте инструменты с fzf для интерактивности
-# Use --hidden and -I carefully / Используйте --hidden и -I осторожно
+# Use ripgrep instead of grep for speed
+# Use fd instead of find for simplicity
+# Set bat as default pager
+# Use eza aliases for enhanced ls
+# Combine tools with fzf for interactivity
+# Use --hidden and -I carefully
 ```
 
 ---
 
-## 🔧 Aliases / Алиасы
+## 🔧 Aliases
 
 ```bash
 alias cat='bat -p'
@@ -330,7 +330,7 @@ alias find='fd'
 
 ---
 
-## 📋 Tool Comparison / Сравнение инструментов
+## 📋 Tool Comparison
 
 | Classic Tool | Modern Tool | Advantage / Преимущество |
 |-------------|-------------|--------------------------|
@@ -341,7 +341,7 @@ alias find='fd'
 
 ---
 
-## ⚠️ Installation / Установка
+## ⚠️ Installation
 
 ```bash
 # Ubuntu/Debian
@@ -368,7 +368,7 @@ brew install ripgrep fd bat eza
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [ripgrep — GitHub](https://github.com/BurntSushi/ripgrep)
 - [fd — GitHub](https://github.com/sharkdp/fd)

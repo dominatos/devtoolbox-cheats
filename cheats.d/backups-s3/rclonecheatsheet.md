@@ -26,7 +26,7 @@ tags:
 
 ## Installation & Configuration
 
-### Install / Установить
+### Install
 
 ```bash
 # Debian/Ubuntu
@@ -35,13 +35,13 @@ apt install rclone                              # Install rclone / Устано�
 # RHEL/AlmaLinux/Rocky
 dnf install rclone                              # Install rclone / Установить
 
-# Official install script (always latest) / Официальный скрипт (всегда актуальная версия)
+# Official install script (always latest)
 curl https://rclone.org/install.sh | sudo bash
 
 rclone version                                  # Verify / Проверить версию
 ```
 
-### Configure Remote / Настроить remote
+### Configure Remote
 
 ```bash
 rclone config                                   # Interactive setup / Интерактивная настройка
@@ -54,7 +54,7 @@ rclone listremotes                              # List configured remotes / Сп
 
 ## Remote Management
 
-### Supported Providers (60+) / Поддерживаемые провайдеры
+### Supported Providers (60+)
 
 ```bash
 rclone config providers                         # List all providers / Список всех провайдеров
@@ -62,7 +62,7 @@ rclone config providers                         # List all providers / Спис�
 
 Key providers: Amazon S3, Google Drive, OneDrive, Dropbox, Azure Blob, Backblaze B2, MinIO, SFTP, WebDAV, GCS, and 50+ more.
 
-### Create Remote Non-Interactively / Создать remote без диалога
+### Create Remote Non-Interactively
 
 ```bash
 # AWS S3
@@ -80,7 +80,7 @@ rclone config create minio s3 \
   endpoint=https://<MINIO_HOST>                 # Create MinIO remote / Создать MinIO remote
 ```
 
-### Manage Remotes / Управление remotes
+### Manage Remotes
 
 ```bash
 rclone config delete <REMOTE>                   # Delete remote / Удалить remote
@@ -91,7 +91,7 @@ rclone config update <REMOTE> key=value         # Update remote / Обновит
 
 ## File Operations
 
-### List / Список
+### List
 
 ```bash
 rclone ls remote:bucket/path                    # List objects with size / Список с размером
@@ -100,14 +100,14 @@ rclone lsl remote:bucket/path                   # List with size + time / Раз
 rclone tree remote:bucket/path                  # Tree view / Древовидный вид
 ```
 
-### Size & Statistics / Размер и статистика
+### Size & Statistics
 
 ```bash
 rclone size remote:bucket/path                  # Total size / Общий размер
 rclone ncdu remote:bucket/path                  # Interactive disk usage / Интерактивный просмотр
 ```
 
-### Check & Compare / Проверить и сравнить
+### Check & Compare
 
 ```bash
 rclone check /local remote:bucket/path          # Compare files / Сравнить файлы
@@ -119,7 +119,7 @@ rclone hashsum MD5 remote:bucket/path           # Hash checksums / Контро�
 
 ## Copy & Sync
 
-### Copy vs Sync — Important Difference / Важное различие
+### Copy vs Sync — Important Difference
 
 | Command | Behavior / Поведение | Deletes destination extras? |
 |---------|----------------------|----------------------------|
@@ -136,7 +136,7 @@ rclone copy remote:bucket/path /restore --progress  # Copy remote → local / Re
 rclone sync /data remote:bucket/path --progress     # Sync (dest matches source) / Синхронизация
 ```
 
-### Move & Delete / Переместить и удалить
+### Move & Delete
 
 > [!CAUTION]
 > `rclone purge` deletes the directory and all its contents immediately — no confirmation.
@@ -148,7 +148,7 @@ rclone purge remote:bucket/path                 # Delete dir + contents / Уда
 rclone cleanup remote:                          # Remove old versions / Очистить старые версии
 ```
 
-### Dedupe / Дедупликация
+### Dedupe
 
 ```bash
 rclone dedupe remote:bucket/path                # Remove duplicate files / Удалить дубликаты
@@ -160,7 +160,7 @@ rclone dedupe --dedupe-mode largest remote:bucket/ # Keep largest / Сохран
 
 ## Advanced Operations
 
-### Mount as Filesystem / Монтировать как файловую систему
+### Mount as Filesystem
 
 ```bash
 rclone mount remote:bucket/path /mnt/remote --daemon   # Mount / Монтировать
@@ -168,7 +168,7 @@ rclone mount remote:bucket /mnt --vfs-cache-mode writes  # With write cache / С
 fusermount -u /mnt/remote                              # Unmount / Размонтировать
 ```
 
-### Serve Protocols / Раздача по протоколам
+### Serve Protocols
 
 ```bash
 rclone serve http remote:bucket --addr :8080    # Serve over HTTP / Раздача через HTTP
@@ -177,7 +177,7 @@ rclone serve ftp remote:bucket --addr :2121     # Serve FTP / FTP
 rclone serve restic remote:bucket --addr :8080  # Serve for restic REST / Для restic
 ```
 
-### Filtering / Фильтрация
+### Filtering
 
 ```bash
 rclone copy /data remote:bucket --include "*.jpg"     # Include pattern / Включить паттерн
@@ -186,7 +186,7 @@ rclone copy /data remote:bucket --filter-from /etc/rclone/filter.txt  # Filter f
 rclone copy /data remote:bucket --max-age 7d          # Only last 7 days / За последние 7 дней
 ```
 
-### Bandwidth Control / Управление пропускной способностью
+### Bandwidth Control
 
 ```bash
 rclone copy /data remote:bucket --bwlimit 10M   # Limit to 10 MB/s / Ограничить 10 МБ/с
@@ -199,7 +199,7 @@ rclone copy /data remote:bucket --bwlimit "08:00,512k 12:00,10M 18:00,30M 23:00,
 
 ## S3-Specific
 
-### AWS S3 Config / Конфигурация AWS S3
+### AWS S3 Config
 
 `~/.config/rclone/rclone.conf`
 
@@ -213,7 +213,7 @@ region = <REGION>
 storage_class = STANDARD
 ```
 
-### Storage Classes / Классы хранения
+### Storage Classes
 
 ```bash
 rclone copy /data s3:bucket --s3-storage-class STANDARD       # Standard / Стандартный
@@ -222,7 +222,7 @@ rclone copy /data s3:bucket --s3-storage-class GLACIER        # Glacier archive 
 rclone copy /data s3:bucket --s3-storage-class DEEP_ARCHIVE   # Deep Archive / Глубокий архив
 ```
 
-### MinIO / Custom S3 Endpoint / Кастомный S3 endpoint
+### MinIO / Custom S3 Endpoint
 
 `~/.config/rclone/rclone.conf`
 
@@ -235,7 +235,7 @@ secret_access_key = <SECRET_KEY>
 endpoint = https://<MINIO_HOST>
 ```
 
-### Server-Side Encryption / Серверное шифрование
+### Server-Side Encryption
 
 ```bash
 rclone copy /data s3:bucket --s3-server-side-encryption AES256   # S3 SSE-S3 / S3 шифрование
@@ -246,7 +246,7 @@ rclone copy /data s3:bucket --s3-sse-kms-key-id <KMS_KEY_ID>     # SSE-KMS / KMS
 
 ## Encryption
 
-### Create Encrypted Remote / Создать зашифрованный remote
+### Create Encrypted Remote
 
 ```bash
 rclone config create crypt crypt \
@@ -257,7 +257,7 @@ rclone config create crypt crypt \
   password2=<PASSWORD2>                         # Create crypt remote / Создать зашифрованный remote
 ```
 
-### Encryption Modes / Режимы шифрования
+### Encryption Modes
 
 | Mode | Effect |
 |------|--------|
@@ -265,7 +265,7 @@ rclone config create crypt crypt \
 | `obfuscate` | Obfuscates names (reversible, not secure) |
 | `off` | No filename encryption, data still encrypted |
 
-### Use Encrypted Remote / Использовать зашифрованный remote
+### Use Encrypted Remote
 
 ```bash
 rclone copy /data crypt:                        # Copy to encrypted remote / Копировать в зашифрованный
@@ -290,7 +290,7 @@ rclone copy /data remote:bucket \
   --log-level INFO                              # Log to file / Логирование в файл
 ```
 
-### Remote Control (RC) / Удалённое управление
+### Remote Control (RC)
 
 ```bash
 rclone rcd --rc-addr :5572                      # Start RC server / Запустить RC сервер
@@ -351,14 +351,14 @@ systemctl start rclone-sync.timer
 systemctl status rclone-sync.timer
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 
 ```bash
 ~/.config/rclone/rclone.conf      # User config / Конфиг пользователя
 /root/.config/rclone/rclone.conf  # Root config / Конфиг root
 ```
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 ```bash
 export RCLONE_CONFIG=/path/to/rclone.conf       # Custom config file / Кастомный файл конфига
@@ -385,18 +385,18 @@ export RCLONE_CONFIG_PASS=<PASSWORD>            # Encrypted config password / П
 
 ## Troubleshooting
 
-### Common Errors / Распространённые ошибки
+### Common Errors
 
 ```bash
-# "Failed to create file system" / "Не удалось создать файловую систему"
+# "Failed to create file system" / "Не
 rclone config show                              # Verify config / Проверить конфигурацию
 rclone listremotes                              # Check remote exists / Проверить remote
 
-# "403 Forbidden" (S3) / "403 Запрещено"
+# "403 Forbidden" (S3) / "403
 # Check IAM permissions — need s3:GetObject, s3:PutObject, s3:ListBucket
 ```
 
-### Retries & Timeouts / Повторы и таймауты
+### Retries & Timeouts
 
 ```bash
 rclone copy /data remote:bucket --retries 10            # Retry failed ops / Повторить при ошибке
@@ -404,21 +404,21 @@ rclone copy /data remote:bucket --timeout 5m            # Operation timeout / Т
 rclone copy /data remote:bucket --contimeout 10s        # Connection timeout / Таймаут подключения
 ```
 
-### Dry Run / Пробный запуск
+### Dry Run
 
 ```bash
 rclone copy /data remote:bucket --dry-run       # Preview copy / Предварительный просмотр
 rclone sync /data remote:bucket --dry-run -v    # Preview what would be deleted / Что будет удалено
 ```
 
-### Debug / Отладка
+### Debug
 
 ```bash
 rclone copy /data remote:bucket -vv --dump headers  # HTTP headers / HTTP заголовки
 rclone copy /data remote:bucket --dump bodies        # HTTP bodies / HTTP тела
 ```
 
-### Performance Tuning / Настройка производительности
+### Performance Tuning
 
 ```bash
 rclone copy /data remote:bucket --transfers 32  # Parallel transfers / Параллельные передачи

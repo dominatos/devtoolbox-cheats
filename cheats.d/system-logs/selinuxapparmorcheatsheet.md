@@ -33,7 +33,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [SELinux](#SELinux)
 2. [AppArmor](#AppArmor)
@@ -44,7 +44,7 @@ tags:
 
 ## SELinux
 
-### Check Status / Проверить статус
+### Check Status
 
 ```bash
 getenforce                                    # Current mode / Текущий режим
@@ -52,14 +52,14 @@ sestatus                                      # Detailed status / Подробн
 sestatus -v                                   # Verbose status / Подробный статус
 ```
 
-### Change Mode / Изменить режим
+### Change Mode
 
 ```bash
 sudo setenforce 0                             # Permissive (temporary) / Разрешительный (временно)
 sudo setenforce 1                             # Enforcing (temporary) / Принудительный (временно)
 ```
 
-### SELinux Modes / Режимы SELinux
+### SELinux Modes
 
 | Mode | Description (EN / RU) | Use Case / Когда использовать |
 | :--- | :--- | :--- |
@@ -70,18 +70,18 @@ sudo setenforce 1                             # Enforcing (temporary) / Прин
 > [!CAUTION]
 > Never disable SELinux in production. Use **Permissive** mode for debugging instead. Switching from Disabled to Enforcing requires a full filesystem relabel and reboot. / Никогда не отключайте SELinux в продакшене.
 
-### Permanent Mode Change / Постоянное изменение режима
+### Permanent Mode Change
 
 `/etc/selinux/config`
 
 ```bash
-# Edit /etc/selinux/config / Редактировать /etc/selinux/config
+# Edit /etc/selinux/config
 sudo vi /etc/selinux/config
 # SELINUX=enforcing|permissive|disabled
 sudo reboot
 ```
 
-### Check Contexts / Проверить контексты
+### Check Contexts
 
 ```bash
 ls -Z /path/to/file                           # File context / Контекст файла
@@ -90,7 +90,7 @@ id -Z                                         # User context / Контекст 
 ss -Z                                         # Socket contexts / Контексты сокетов
 ```
 
-### Change Contexts / Изменить контексты
+### Change Contexts
 
 ```bash
 sudo chcon -t httpd_sys_content_t /var/www/html/file  # Change file type / Изменить тип файла
@@ -99,7 +99,7 @@ sudo restorecon -v /var/www/html/file         # Restore default context / Вос
 sudo restorecon -R -v /var/www/html           # Recursive restore / Рекурсивное восстановление
 ```
 
-### Booleans / Булевы значения
+### Booleans
 
 ```bash
 getsebool -a                                  # List all booleans / Список всех булевых
@@ -108,7 +108,7 @@ sudo setsebool httpd_can_network_connect on   # Enable (temporary) / Включ�
 sudo setsebool -P httpd_can_network_connect on  # Enable (permanent) / Включить (постоянно)
 ```
 
-### Common SELinux Booleans / Распространённые булевы SELinux
+### Common SELinux Booleans
 
 | Boolean | Description (EN / RU) |
 | :--- | :--- |
@@ -118,7 +118,7 @@ sudo setsebool -P httpd_can_network_connect on  # Enable (permanent) / Вклю�
 | `mysql_connect_any` | Allow MySQL connect anywhere / Разрешить MySQL подключаться куда угодно |
 | `selinuxuser_execmod` | Allow user exec modification / Разрешить пользователю модификацию exec |
 
-### Audit Logs / Логи аудита
+### Audit Logs
 
 ```bash
 sudo ausearch -m avc -ts recent               # Recent AVC denials / Недавние AVC отказы
@@ -127,7 +127,7 @@ sudo sealert -a /var/log/audit/audit.log      # Analyze audit log / Анализ
 sudo grep 'avc: denied' /var/log/audit/audit.log  # Find denials / Найти отказы
 ```
 
-### Policy Management / Управление политикой
+### Policy Management
 
 ```bash
 sudo semodule -l                              # List modules / Список модулей
@@ -139,14 +139,14 @@ sudo semodule -r my-policy                    # Remove module / Удалить �
 
 ## AppArmor
 
-### Check Status / Проверить статус
+### Check Status
 
 ```bash
 sudo aa-status                                # AppArmor status / Статус AppArmor
 sudo apparmor_status                          # Alternative / Альтернатива
 ```
 
-### Profile Modes / Режимы профилей
+### Profile Modes
 
 ```bash
 sudo aa-enforce /usr/sbin/nginx               # Enforce mode / Режим enforce
@@ -154,7 +154,7 @@ sudo aa-complain /usr/sbin/nginx              # Complain mode / Режим compl
 sudo aa-disable /usr/sbin/nginx               # Disable profile / Отключить профиль
 ```
 
-### Manage Profiles / Управление профилями
+### Manage Profiles
 
 ```bash
 sudo aa-unconfined                            # List unconfined processes / Список процессов без профиля
@@ -162,7 +162,7 @@ ls /etc/apparmor.d/                           # List profiles / Список п�
 sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.nginx  # Reload profile / Перезагрузить профиль
 ```
 
-### Log Analysis / Анализ логов
+### Log Analysis
 
 ```bash
 sudo aa-logprof                               # Interactive log analysis / Интерактивный анализ логов
@@ -170,30 +170,30 @@ sudo aa-genprof /usr/bin/myapp                # Generate profile / Генери�
 sudo grep 'apparmor="DENIED"' /var/log/syslog  # Find denials / Найти отказы
 ```
 
-### Create Profile / Создать профиль
+### Create Profile
 
 ```bash
-# Generate profile / Генерировать профиль
+# Generate profile
 sudo aa-genprof /usr/bin/myapp
 
-# 1. Put in complain mode / 1. Переключить в режим complain
-# 2. Run the application / 2. Запустить приложение
-# 3. Scan logs with aa-logprof / 3. Сканировать логи с aa-logprof
-# 4. Allow/deny accesses / 4. Разрешить/запретить доступы
-# 5. Save profile / 5. Сохранить профиль
+# 1. Put in complain mode / 1.
+# 2. Run the application / 2.
+# 3. Scan logs with aa-logprof / 3.
+# 4. Allow/deny accesses / 4.
+# 5. Save profile / 5.
 ```
 
 ---
 
 ## Troubleshooting
 
-### SELinux Denials / SELinux отказы
+### SELinux Denials / SELinux
 
 ```bash
-# Check denials / Проверить отказы
+# Check denials
 sudo ausearch -m avc -ts recent
 
-# Generate policy / Генерировать политику
+# Generate policy
 sudo audit2allow -a                           # Show rules / Показать правила
 sudo audit2allow -a -M my-policy              # Create module / Создать модуль
 sudo semodule -i my-policy.pp                 # Install module / Установить модуль
@@ -202,32 +202,32 @@ sudo semodule -i my-policy.pp                 # Install module / Установ�
 > [!WARNING]
 > Use `audit2allow` carefully — it can create overly permissive policies. Always review generated rules before installing. / Используйте `audit2allow` осторожно — может создать слишком разрешительные политики.
 
-### Common SELinux Fixes / Распространённые исправления SELinux
+### Common SELinux Fixes
 
 ```bash
-# Web server can't access files / Веб сервер не может получить доступ к файлам
+# Web server can't access files
 sudo restorecon -R -v /var/www/html
 
-# Web server can't connect to network / Веб сервер не может подключиться к сети
+# Web server can't connect to network
 sudo setsebool -P httpd_can_network_connect on
 
-# Web server can't send mail / Веб сервер не может отправлять почту
+# Web server can't send mail
 sudo setsebool -P httpd_can_sendmail on
 ```
 
-### AppArmor Denials / AppArmor отказы
+### AppArmor Denials / AppArmor
 
 ```bash
-# Check denials / Проверить отказы
+# Check denials
 sudo grep 'apparmor="DENIED"' /var/log/syslog | tail
 
-# Switch to complain mode / Переключить в режим complain
+# Switch to complain mode
 sudo aa-complain /usr/sbin/nginx
 
-# Test / Тест
+# Test
 # ... run application ...
 
-# Update profile / Обновить профиль
+# Update profile
 sudo aa-logprof
 ```
 
@@ -235,75 +235,75 @@ sudo aa-logprof
 
 ## Real-World Examples
 
-### Enable SELinux for Nginx / Включить SELinux для Nginx
+### Enable SELinux for Nginx
 
 ```bash
-# Check status / Проверить статус
+# Check status
 getenforce
 
-# Allow network connections / Разрешить сетевые соединения
+# Allow network connections
 sudo setsebool -P httpd_can_network_connect on
 
-# Allow proxy connections / Разрешить прокси соединения
+# Allow proxy connections
 sudo setsebool -P httpd_can_network_relay on
 
-# Fix file contexts / Исправить контексты файлов
+# Fix file contexts
 sudo restorecon -R -v /var/www/html
 sudo restorecon -R -v /etc/nginx
 ```
 
-### AppArmor for Custom Application / AppArmor для пользовательского приложения
+### AppArmor for Custom Application / AppArmor
 
 ```bash
-# Generate profile / Генерировать профиль
+# Generate profile
 sudo aa-genprof /usr/local/bin/myapp
 
-# Run application / Запустить приложение
+# Run application
 /usr/local/bin/myapp
 
-# Scan logs / Сканировать логи
+# Scan logs
 sudo aa-logprof
 
-# Enforce profile / Применить профиль
+# Enforce profile
 sudo aa-enforce /usr/local/bin/myapp
 ```
 
-### Debug SELinux Issues / Отладка проблем SELinux
+### Debug SELinux Issues
 
 ```bash
-# Set to permissive / Установить в permissive
+# Set to permissive
 sudo setenforce 0
 
-# Test application / Тестировать приложение
+# Test application
 # ... application works now ...
 
-# Check audit log / Проверить лог аудита
+# Check audit log
 sudo sealert -a /var/log/audit/audit.log
 
-# Fix issues / Исправить проблемы
+# Fix issues
 sudo restorecon -R -v /path/to/files
 sudo setsebool -P some_boolean on
 
-# Re-enable enforcing / Включить enforcing снова
+# Re-enable enforcing
 sudo setenforce 1
 ```
 
-### Container SELinux / SELinux для контейнеров
+### Container SELinux / SELinux
 
 ```bash
-# Docker container contexts / Контексты Docker контейнеров
+# Docker container contexts
 ls -Z /var/lib/docker/
 
-# Allow Docker container access / Разрешить доступ Docker контейнеров
+# Allow Docker container access
 sudo setsebool -P container_manage_cgroup on
 
-# Fix container volume contexts / Исправить контексты volume контейнеров
+# Fix container volume contexts
 sudo chcon -Rt svirt_sandbox_file_t /path/to/volume
 ```
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - **Never** disable SELinux/AppArmor in production. / Никогда не отключайте в продакшене.
 - Use **permissive/complain** mode for debugging. / Используйте permissive/complain для отладки.
@@ -318,7 +318,7 @@ sudo chcon -Rt svirt_sandbox_file_t /path/to/volume
 
 ---
 
-## Configuration Files / Файлы конфигурации
+## Configuration Files
 
 | Path | Purpose (EN) | Назначение (RU) |
 | :--- | :--- | :--- |

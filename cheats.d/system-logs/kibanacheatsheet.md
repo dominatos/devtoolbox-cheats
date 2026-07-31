@@ -46,7 +46,7 @@ tags:
 
 ## Discovery & Search
 
-### Default Ports & Services / Порты и сервисы по умолчанию
+### Default Ports & Services
 
 | Service | Port | Config File | Description (EN) | Описание (RU) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -54,38 +54,38 @@ tags:
 | Elasticsearch | `9200` | `/etc/elasticsearch/elasticsearch.yml` | ES REST API | REST API Elasticsearch |
 | Logstash | `5044` | `/etc/logstash/logstash.yml` | Beats input | Ввод от Beats |
 
-### KQL (Kibana Query Language) / Язык запросов KQL
+### KQL (Kibana Query Language)
 
 Used in the "Search" bar. / Используется в строке "Search".
 
 ```text
-# Exact match / Точное совпадение
+# Exact match
 status: 200
 
-# Text search / Текстовый поиск
+# Text search
 message: "error"
 
-# Boolean logic / Логика
+# Boolean logic
 status: 500 AND method: "POST"
 status: 404 OR status: 503
 NOT status: 200
 
-# Range / Диапазон
+# Range
 bytes > 1000
 response_time >= 500
 
-# Wildcard / Маска
+# Wildcard
 host: web*
 machinename: *"prod"*
 
-# Exist check (Field is present) / Проверка на существование
+# Exist check (Field is present)
 _exists_: "user_id"
 
-# Nested fields / Вложенные поля
+# Nested fields
 http.response.status_code: 404
 ```
 
-### Time Filter / Фильтр времени
+### Time Filter
 
 Always verify the time picker in the top right corner! / Всегда проверяйте выбор времени в верхнем правом углу!
 *   `Last 15 minutes` (Default)
@@ -96,7 +96,7 @@ Always verify the time picker in the top right corner! / Всегда прове
 
 ## Management
 
-### Index Patterns / Шаблоны индексов
+### Index Patterns
 
 **Stack Management > Index Patterns**
 
@@ -104,7 +104,7 @@ Define how Kibana accesses indices. / Определяет, как Kibana обр
 *   Pattern: `logstash-*` (Matches `logstash-2023.10.01`, etc.)
 *   Time field: `@timestamp`
 
-### Saved Objects / Сохраненные объекты
+### Saved Objects
 
 **Stack Management > Saved Objects**
 
@@ -115,7 +115,7 @@ Define how Kibana accesses indices. / Определяет, как Kibana обр
 
 ## Sysadmin Operations
 
-### Installation / Установка
+### Installation
 
 ```bash
 # Debian/Ubuntu
@@ -128,7 +128,7 @@ sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 sudo dnf install kibana
 ```
 
-### Config File / Файл конфигурации
+### Config File
 
 `/etc/kibana/kibana.yml`
 
@@ -136,18 +136,18 @@ sudo dnf install kibana
 server.port: 5601
 server.host: "0.0.0.0"                        # Listen on all interfaces / Слушать на всех интерфейсах
 
-# Elasticsearch connection / Подключение к Elasticsearch
+# Elasticsearch connection
 elasticsearch.hosts: ["http://<ES_IP>:9200"]
 elasticsearch.username: "kibana_system"
 elasticsearch.password: "<PASSWORD>"
 
-# TLS/SSL (production recommended) / TLS/SSL (рекомендуется для продакшена)
+# TLS/SSL (production recommended) / TLS/SSL
 # server.ssl.enabled: true
 # server.ssl.certificate: /path/to/cert.pem
 # server.ssl.key: /path/to/key.pem
 ```
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
 sudo systemctl start kibana                   # Start Kibana / Запустить Kibana
@@ -163,12 +163,12 @@ journalctl -u kibana --since "1 hour ago"     # Recent logs / Недавние �
 
 ## Troubleshooting
 
-### Status Page / Страница статуса
+### Status Page
 
 UI: `http://<KIBANA_HOST>:5601/status`
 Checks plugin status and Elasticsearch connectivity. / Проверяет статус плагинов и связь с Elasticsearch.
 
-### Common Errors / Частые ошибки
+### Common Errors
 
 1.  **"Kibana server is not ready yet"**
     *   Elasticsearch is down or initializing. / Elasticsearch упал или инициализируется.
@@ -217,7 +217,7 @@ Checks plugin status and Elasticsearch connectivity. / Проверяет ста
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Always verify the **time picker** in the top right corner of Discover. / Всегда проверяйте выбор времени.
 - Use `systemctl status kibana` to check health before debugging UI issues. / Проверяйте статус сервиса.

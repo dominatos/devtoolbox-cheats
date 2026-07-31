@@ -34,7 +34,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Service Unit Template](#Service%20Unit%20Template)
 2. [Timer Unit Template](#Timer%20Unit%20Template)
@@ -47,7 +47,7 @@ tags:
 
 ## Service Unit Template
 
-### Basic Service / Базовый сервис
+### Basic Service
 
 `/etc/systemd/system/myapp.service`
 
@@ -71,7 +71,7 @@ RestartSec=5s                                 # Delay before restart / Заде�
 WantedBy=multi-user.target                    # Enable target / Цель включения
 ```
 
-### Service with Environment / Сервис с переменными окружения
+### Service with Environment
 
 ```ini
 [Service]
@@ -80,7 +80,7 @@ Environment="DB_HOST=<HOST>" "DB_PORT=5432"   # Multiple / Несколько
 EnvironmentFile=/etc/myapp/env                # From file / Из файла
 ```
 
-### Service Types / Типы сервисов
+### Service Types
 
 | Type | Description (EN / RU) | Use Case |
 | :--- | :--- | :--- |
@@ -95,7 +95,7 @@ EnvironmentFile=/etc/myapp/env                # From file / Из файла
 
 ## Timer Unit Template
 
-### Basic Timer / Базовый таймер
+### Basic Timer
 
 `/etc/systemd/system/backup.timer`
 
@@ -112,7 +112,7 @@ Unit=backup.service                           # Service to trigger / Серви�
 WantedBy=timers.target
 ```
 
-### OnCalendar Examples / Примеры расписаний
+### OnCalendar Examples
 
 | Expression | Schedule (EN / RU) |
 | :--- | :--- |
@@ -124,7 +124,7 @@ WantedBy=timers.target
 | `weekly` | Weekly / Еженедельно |
 | `hourly` | Hourly / Ежечасно |
 
-### Interval Timer / Таймер по интервалу
+### Interval Timer
 
 ```ini
 [Timer]
@@ -137,7 +137,7 @@ OnStartupSec=10min                            # After systemd starts / Посл�
 
 ## Socket Unit Template
 
-### TCP Socket / TCP сокет
+### TCP Socket / TCP
 
 `/etc/systemd/system/myapp.socket`
 
@@ -153,7 +153,7 @@ Accept=no                                     # Single process / Один про
 WantedBy=sockets.target
 ```
 
-### Unix Socket / Unix сокет
+### Unix Socket / Unix
 
 ```ini
 [Socket]
@@ -167,7 +167,7 @@ SocketMode=0660                               # Socket permissions / Права 
 
 ## Common Directives
 
-### [Unit] Section / Секция [Unit]
+### [Unit] Section
 
 ```ini
 Description=                                  # Human-readable name / Читаемое имя
@@ -179,7 +179,7 @@ Wants=                                        # Soft dependency / Мягкая �
 Conflicts=                                    # Cannot run with / Конфликтует с
 ```
 
-### [Service] Section / Секция [Service]
+### [Service] Section
 
 ```ini
 ExecStartPre=                                 # Before ExecStart / Перед ExecStart
@@ -192,7 +192,7 @@ StandardError=journal                         # Errors to journal / Ошибки
 SyslogIdentifier=myapp                        # Journal identifier / Идентификатор в журнале
 ```
 
-### Restart Policies / Политики рестарта
+### Restart Policies
 
 | Policy | Description (EN / RU) |
 | :--- | :--- |
@@ -202,7 +202,7 @@ SyslogIdentifier=myapp                        # Journal identifier / Идент�
 | `on-abnormal` | On signal/timeout / При сигнале/таймауте |
 | `always` | Always restart / Всегда рестартовать |
 
-### Security Hardening / Усиление безопасности
+### Security Hardening
 
 ```ini
 NoNewPrivileges=true                          # Block privilege escalation / Блок повышения привилегий
@@ -216,7 +216,7 @@ ReadOnlyPaths=/etc                            # Read-only paths / Пути то�
 
 ## Unit Management
 
-### Reload and Enable / Перезагрузка и включение
+### Reload and Enable
 
 ```bash
 sudo systemctl daemon-reload                  # Reload unit files / Перезагрузить юниты
@@ -225,7 +225,7 @@ sudo systemctl enable --now myapp             # Enable and start / Включи�
 sudo systemctl disable myapp                  # Disable at boot / Отключить при загрузке
 ```
 
-### Control Service / Управление сервисом
+### Control Service
 
 ```bash
 sudo systemctl start myapp                    # Start service / Запустить сервис
@@ -235,7 +235,7 @@ sudo systemctl reload myapp                   # Reload config / Перезагр
 sudo systemctl status myapp                   # Check status / Проверить статус
 ```
 
-### Timer Management / Управление таймерами
+### Timer Management
 
 ```bash
 sudo systemctl enable backup.timer            # Enable timer / Включить таймер
@@ -248,7 +248,7 @@ systemctl list-timers --all                   # All timers / Все таймер
 
 ## Troubleshooting
 
-### Check Logs / Проверка логов
+### Check Logs
 
 ```bash
 journalctl -u myapp.service                   # Service logs / Логи сервиса
@@ -257,7 +257,7 @@ journalctl -u myapp.service --since today     # Today's logs / Логи за с�
 systemctl status myapp                        # Quick status / Быстрый статус
 ```
 
-### Validate Unit / Валидация юнита
+### Validate Unit
 
 ```bash
 systemd-analyze verify /etc/systemd/system/myapp.service  # Check syntax / Проверить синтаксис
@@ -265,7 +265,7 @@ systemctl cat myapp                           # Show unit content / Показа
 systemctl show myapp                          # Show all properties / Показать свойства
 ```
 
-### Debug / Отладка
+### Debug
 
 ```bash
 systemctl list-dependencies myapp             # Show dependencies / Показать зависимости
@@ -275,7 +275,7 @@ systemctl reset-failed                        # Reset failed state / Сброс�
 
 ---
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Always run `daemon-reload` after changes. / Всегда `daemon-reload` после изменений.
 - Use `Type=notify` for apps that support it. / Используйте `Type=notify` для поддерживающих его.

@@ -12,31 +12,31 @@ tags:
 > **Vim** (Vi IMproved) — the ubiquitous modal text editor, available on virtually every Unix/Linux system. Vim’s modal editing (Normal, Insert, Visual, Command) provides exceptional editing speed once mastered. It is the de facto standard for quick edits over SSH, config file changes, and emergency recovery. Actively maintained; the modern fork [**Neovim**](https://neovim.io/) (`nvim`) adds Lua scripting, built-in LSP, and async plugins while maintaining full Vim compatibility.
 
 ## Table of Contents
-- [Open / Save / Quit](#Open%20/%20Save%20/%20Quit%20/%20Открытие%20/%20Сохранение%20/%20Выход)
-- [Modes](#Modes%20/%20Режимы)
-- [Navigation & Movement](#Navigation%20&%20Movement%20/%20Навигация%20и%20перемещения)
-- [Marks & Jumps](#Marks%20&%20Jumps%20/%20Метки%20и%20прыжки)
-- [Search](#Search%20/%20Поиск)
-- [Replace](#Replace%20/%20Замены)
-- [Editing](#️%20Editing%20/%20Редактирование)
-- [Visual & Block Ops](#️%20Visual%20&%20Block%20Ops%20/%20Операции%20в%20визуальном/блочном%20режимах)
-- [Registers & Clipboard](#Registers%20&%20Clipboard%20/%20Регистры%20и%20буфер%20обмена)
+- [Open / Save / Quit](#Open)
+- [Modes](#Modes)
+- [Navigation & Movement](#Navigation%20&%20Movement)
+- [Marks & Jumps](#Marks%20&%20Jumps)
+- [Search](#Search)
+- [Replace](#Replace)
+- [Editing](#️%20Editing)
+- [Visual & Block Ops](#️%20Visual%20&%20Block%20Ops)
+- [Registers & Clipboard](#Registers%20&%20Clipboard)
 - [Windows (splits)](#Windows%20(splits)%20/%20Окна%20(сплиты))
-- [Tabs](#Tabs%20/%20Вкладки)
-- [Buffers](#Buffers%20/%20Буферы)
-- [Folding](#Folding%20/%20Сворачивание)
-- [Quickfix & Grep](#Quickfix%20&%20Grep%20/%20Окно%20результатов%20и%20поиск%20по%20файлам)
-- [Diff](#Diff%20/%20Сравнение)
+- [Tabs](#Tabs)
+- [Buffers](#Buffers)
+- [Folding](#Folding)
+- [Quickfix & Grep](#Quickfix%20&%20Grep)
+- [Diff](#Diff)
 - [Netrw (file browser)](#Netrw%20(file%20browser)%20/%20Файловый%20браузер)
-- [External & Filters](#️%20External%20&%20Filters%20/%20Внешние%20команды%20и%20фильтры)
-- [Sessions & Workdirs](#Sessions%20&%20Workdirs%20/%20Сессии%20и%20каталоги)
-- [Indent & Whitespace](#Indent%20&%20Whitespace%20/%20Отступы%20и%20пробелы)
-- [Spell](#Spell%20/%20Орфография)
-- [QoL Options](#️%20QoL%20Options%20/%20Полезные%20опции)
+- [External & Filters](#️%20External%20&%20Filters)
+- [Sessions & Workdirs](#Sessions%20&%20Workdirs)
+- [Indent & Whitespace](#Indent%20&%20Whitespace)
+- [Spell](#Spell)
+- [QoL Options](#️%20QoL%20Options)
 
 ---
 
-## 📂 Open / Save / Quit / Открытие / Сохранение / Выход
+## 📂 Open / Save / Quit
 
 ```bash
 vim file.txt                                     # Open file / Открыть файл
@@ -52,7 +52,7 @@ vim file.txt                                     # Open file / Открыть ф
 
 ---
 
-## 🎭 Modes / Режимы
+## 🎭 Modes
 
 ```bash
 i / a / o / O                                    # Insert before/after/new line / Вставка до/после/новая строка
@@ -63,7 +63,7 @@ v / V / Ctrl+v                                   # Visual char/line/block / Ви
 
 ---
 
-## 🧭 Navigation & Movement / Навигация и перемещения
+## 🧭 Navigation & Movement
 
 ```bash
 h j k l                                          # Left/down/up/right / Влево/вниз/вверх/вправо
@@ -82,7 +82,7 @@ Ctrl+b / Ctrl+f                                  # Page up/down / Страниц
 
 ---
 
-## 📌 Marks & Jumps / Метки и прыжки
+## 📌 Marks & Jumps
 
 ```bash
 m{a-z}                                           # Set mark / Поставить метку
@@ -96,7 +96,7 @@ Ctrl+o / Ctrl+i                                  # Older/newer jump / Назад
 
 ---
 
-## 🔍 Search / Поиск
+## 🔍 Search
 
 ```bash
 /pattern                                         # Search forward / Поиск вперёд
@@ -109,7 +109,7 @@ n / N                                            # Next/prev match / След./�
 
 ---
 
-## 🔄 Replace / Замены
+## 🔄 Replace
 
 ```bash
 :%s/foo/bar/g                                    # Replace all / Замена во всём файле
@@ -121,7 +121,7 @@ n / N                                            # Next/prev match / След./�
 
 ---
 
-## ✏️ Editing / Редактирование
+## ✏️ Editing
 
 ```bash
 x                                                # Delete char / Удалить символ
@@ -142,7 +142,7 @@ xp                                               # Swap two chars / Поменя
 
 ---
 
-## 👁️ Visual & Block Ops / Операции в визуальном/блочном режимах
+## 👁️ Visual & Block Ops
 
 ```bash
 I / A  (in Ctrl+v)                               # Insert/append on block / Вставка/добавление в столбец
@@ -151,7 +151,7 @@ I / A  (in Ctrl+v)                               # Insert/append on block / Вс
 
 ---
 
-## 📋 Registers & Clipboard / Регистры и буфер обмена
+## 📋 Registers & Clipboard
 
 ```bash
 :reg                                             # Show registers / Показать регистры
@@ -162,7 +162,7 @@ I / A  (in Ctrl+v)                               # Insert/append on block / Вс
 
 ---
 
-## 🪟 Windows (splits) / Окна (сплиты)
+## 🪟 Windows (splits)
 
 ```bash
 :split / :vsplit                                 # Split horizontally/vertically / Гор./верт. сплит
@@ -174,7 +174,7 @@ Ctrl+w = / :res +/-N / :vert res N               # Equalize / resize / Выра�
 
 ---
 
-## 📑 Tabs / Вкладки
+## 📑 Tabs
 
 ```bash
 :tabnew / :tabclose / :tabonly                   # New / close / only / Новая / закрыть / только эта
@@ -183,7 +183,7 @@ Ctrl+w = / :res +/-N / :vert res N               # Equalize / resize / Выра�
 
 ---
 
-## 📦 Buffers / Буферы
+## 📦 Buffers
 
 ```bash
 :ls                                              # List buffers / Список буферов
@@ -193,7 +193,7 @@ Ctrl+w = / :res +/-N / :vert res N               # Equalize / resize / Выра�
 
 ---
 
-## 📁 Folding / Сворачивание
+## 📁 Folding
 
 ```bash
 za / zc / zo                                     # Toggle / close / open fold / Перекл./закр./откр. свёртку
@@ -202,7 +202,7 @@ za / zc / zo                                     # Toggle / close / open fold / 
 
 ---
 
-## 🔎 Quickfix & Grep / Окно результатов и поиск по файлам
+## 🔎 Quickfix & Grep
 
 ```bash
 :vimgrep /pat/ **/*.py                           # Grep into quickfix / Поиск в файлах (quickfix)
@@ -212,7 +212,7 @@ za / zc / zo                                     # Toggle / close / open fold / 
 
 ---
 
-## 🔀 Diff / Сравнение
+## 🔀 Diff
 
 ```bash
 :diffsplit {file}                                # Open diff split / Открыть сравнение
@@ -222,7 +222,7 @@ do / dp                                          # Obtain/put change / Прин�
 
 ---
 
-## 📂 Netrw (file browser) / Файловый браузер
+## 📂 Netrw (file browser)
 
 ```bash
 :Ex / :Sex / :Vex                                # Explore / split / vsplit / Проводник
@@ -231,7 +231,7 @@ do / dp                                          # Obtain/put change / Прин�
 
 ---
 
-## ⚙️ External & Filters / Внешние команды и фильтры
+## ⚙️ External & Filters
 
 ```bash
 :!{cmd}                                          # Run shell cmd / Команда оболочки
@@ -241,7 +241,7 @@ do / dp                                          # Obtain/put change / Прин�
 
 ---
 
-## 💾 Sessions & Workdirs / Сессии и каталоги
+## 💾 Sessions & Workdirs
 
 ```bash
 :mksession! sess.vim                             # Save session / Сохранить сессию
@@ -251,7 +251,7 @@ do / dp                                          # Obtain/put change / Прин�
 
 ---
 
-## 📏 Indent & Whitespace / Отступы и пробелы
+## 📏 Indent & Whitespace
 
 ```bash
 :set et sw=2 ts=2 sts=2                          # Spaces & widths / Пробелы и ширины табов
@@ -261,7 +261,7 @@ do / dp                                          # Obtain/put change / Прин�
 
 ---
 
-## 🔤 Spell / Орфография
+## 🔤 Spell
 
 ```bash
 :setlocal spell spelllang=en,ru,it               # Enable spell / Включить проверку
@@ -271,7 +271,7 @@ z= / zg / zw                                     # Suggestions / add / mark wron
 
 ---
 
-## 🛠️ QoL Options / Полезные опции
+## 🛠️ QoL Options
 
 ```bash
 :set nu rnu                                      # Abs + relative numbers / Абс. + относ. номера
@@ -282,7 +282,7 @@ z= / zg / zw                                     # Suggestions / add / mark wron
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [Vim Official Documentation](https://www.vim.org/docs.php)
 - [Vim Tips Wiki](https://vim.fandom.com/wiki/Vim_Tips_Wiki)

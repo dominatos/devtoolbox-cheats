@@ -19,7 +19,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -36,10 +36,10 @@ tags:
 > [!IMPORTANT]
 > CloudStack Management Server requires Java 11+ and MySQL 5.7+ / MariaDB 10.4+. Hypervisor hosts run the CloudStack Agent (KVM) or are managed via vCenter (VMware). / CloudStack Management Server требует Java 11+ и MySQL 5.7+.
 
-### Repository Setup (RHEL/AlmaLinux) / Настройка репозиториев
+### Repository Setup (RHEL/AlmaLinux)
 
 ```bash
-# Add CloudStack repository / Добавить репозиторий CloudStack
+# Add CloudStack repository
 cat > /etc/yum.repos.d/cloudstack.repo << 'EOF'
 [cloudstack]
 name=cloudstack
@@ -51,16 +51,16 @@ EOF
 dnf clean all && dnf makecache  # Refresh repos / Обновить кэш репозиториев
 ```
 
-### Repository Setup (Debian/Ubuntu) / Настройка репозиториев
+### Repository Setup (Debian/Ubuntu)
 
 ```bash
-# Add CloudStack APT repository / Добавить APT-репозиторий CloudStack
+# Add CloudStack APT repository
 echo "deb http://download.cloudstack.org/ubuntu jammy 4.18" > /etc/apt/sources.list.d/cloudstack.list
 wget -qO - http://download.cloudstack.org/release.asc | apt-key add -
 apt update
 ```
 
-### Install Management Server / Установка Management Server
+### Install Management Server
 
 ```bash
 # RHEL/Rocky/Alma
@@ -70,14 +70,14 @@ dnf install cloudstack-management cloudstack-common
 apt install cloudstack-management cloudstack-common
 ```
 
-### Database Setup / Настройка базы данных
+### Database Setup
 
 ```bash
-# Install and start MySQL/MariaDB / Установить и запустить MySQL/MariaDB
+# Install and start MySQL/MariaDB
 dnf install mariadb-server
 systemctl enable --now mariadb
 
-# Secure installation / Безопасная установка
+# Secure installation
 mysql_secure_installation
 ```
 
@@ -93,36 +93,36 @@ binlog-format='ROW'
 ```
 
 ```bash
-# Initialize CloudStack database / Инициализировать БД CloudStack
+# Initialize CloudStack database
 cloudstack-setup-databases cloud:<PASSWORD>@localhost --deploy-as=root:<ROOT_PASSWORD>
 
-# Setup management server / Настроить Management Server
+# Setup management server
 cloudstack-setup-management
 ```
 
-### Essential Configuration / Основная конфигурация
+### Essential Configuration
 
 `/etc/cloudstack/management/server.properties`
 
 ```ini
-# Database connection / Подключение к БД
+# Database connection
 db.cloud.host=localhost
 db.cloud.port=3306
 db.cloud.username=cloud
 db.cloud.password=<PASSWORD>
 
-# JVM settings / Настройки JVM
+# JVM settings
 Xmx=2g
 Xms=1g
 ```
 
-### Install KVM Agent (Hypervisor Host) / Установка KVM-агента
+### Install KVM Agent (Hypervisor Host)
 
 ```bash
-# On each KVM host / На каждом KVM-хосте
+# On each KVM host
 dnf install cloudstack-agent
 
-# Configure libvirt / Настроить libvirt
+# Configure libvirt
 cat >> /etc/libvirt/libvirtd.conf << 'EOF'
 listen_tls = 0
 listen_tcp = 1
@@ -138,7 +138,7 @@ systemctl restart libvirtd
 
 ## 2. Core Management
 
-### Web UI Access / Доступ к веб-интерфейсу
+### Web UI Access
 
 ```bash
 http://<HOST>:8080/client         # Management UI / Панель управления
@@ -153,53 +153,53 @@ https://<HOST>:8443/client        # HTTPS Management UI
 CloudMonkey is the official CLI for CloudStack API. / CloudMonkey — официальный CLI для API CloudStack.
 
 ```bash
-# Install CloudMonkey / Установить CloudMonkey
+# Install CloudMonkey
 pip install cloudmonkey
 
-# Configure CLI / Настроить CLI
+# Configure CLI
 cmk set url http://<HOST>:8080/client/api
 cmk set apikey <API_KEY>
 cmk set secretkey <SECRET_KEY>
 cmk set display json
 ```
 
-### Common CloudMonkey Commands / Основные команды CloudMonkey
+### Common CloudMonkey Commands
 
 ```bash
-# List zones / Список зон
+# List zones
 cmk list zones
 
-# List virtual machines / Список виртуальных машин
+# List virtual machines
 cmk list virtualmachines listall=true
 
-# List hosts / Список хостов
+# List hosts
 cmk list hosts type=Routing
 
-# List service offerings / Список пакетов услуг
+# List service offerings
 cmk list serviceofferings
 
-# List templates / Список шаблонов
+# List templates
 cmk list templates templatefilter=all
 
-# List networks / Список сетей
+# List networks
 cmk list networks listall=true
 
-# Deploy a VM / Создать ВМ
+# Deploy a VM
 cmk deploy virtualmachine serviceofferingid=<UUID> templateid=<UUID> zoneid=<UUID> name=<VM_NAME>
 
-# Start/Stop/Reboot VM / Запуск/Остановка/Перезагрузка ВМ
+# Start/Stop/Reboot VM
 cmk start virtualmachine id=<VM_UUID>
 cmk stop  virtualmachine id=<VM_UUID>
 cmk reboot virtualmachine id=<VM_UUID>
 
-# Destroy VM / Удалить ВМ
+# Destroy VM
 cmk destroy virtualmachine id=<VM_UUID> expunge=true
 ```
 
 > [!CAUTION]
 > `expunge=true` permanently deletes the VM and its root disk. There is no recovery after this. / `expunge=true` безвозвратно удаляет ВМ и её корневой диск.
 
-### VM Lifecycle States / Состояния жизненного цикла ВМ
+### VM Lifecycle States
 
 | State | Description / Описание |
 |-------|------------------------|
@@ -214,7 +214,7 @@ cmk destroy virtualmachine id=<VM_UUID> expunge=true
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
 # Management Server / Management server
@@ -224,12 +224,12 @@ systemctl restart cloudstack-management   # Restart / Перезапустить
 systemctl status cloudstack-management    # Status / Статус
 systemctl enable cloudstack-management    # Enable on boot / Автозапуск
 
-# KVM Agent (on hypervisor hosts) / KVM-агент (на гипервизорах)
+# KVM Agent (on hypervisor hosts) / KVM-агент
 systemctl restart cloudstack-agent        # Restart agent / Перезапустить агент
 systemctl status cloudstack-agent         # Check status / Проверить статус
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description |
 |------|-------------|
@@ -242,54 +242,54 @@ systemctl status cloudstack-agent         # Check status / Проверить с
 | `/usr/share/cloudstack-common/scripts/` | CloudStack scripts / Скрипты CloudStack |
 | `/var/lib/cloudstack/` | CloudStack data / Данные CloudStack |
 
-### Log Locations / Расположение логов
+### Log Locations
 
 ```bash
-# Main management server log / Основной лог management server
+# Main management server log
 tail -f /var/log/cloudstack/management/management-server.log
 
-# API access log / Лог доступа к API
+# API access log
 tail -f /var/log/cloudstack/management/apilog.log
 
-# Agent log (on hypervisor) / Лог агента (на гипервизоре)
+# Agent log (on hypervisor)
 tail -f /var/log/cloudstack/agent/agent.log
 
-# System VM logs / Логи системных ВМ
+# System VM logs
 tail -f /var/log/cloudstack/management/systemvm.log
 ```
 
-### System VM Management / Управление системными ВМ
+### System VM Management
 
 ```bash
-# List system VMs / Список системных ВМ
+# List system VMs
 cmk list systemvms
 
-# List routers / Список маршрутизаторов
+# List routers
 cmk list routers listall=true
 
-# Restart system VM / Перезапустить системную ВМ
+# Restart system VM
 cmk destroy systemvm id=<SYSTEM_VM_UUID>   # It auto-re-creates / Автоматически пересоздаётся
 
-# Restart virtual router / Перезапустить виртуальный маршрутизатор
+# Restart virtual router
 cmk restart router id=<ROUTER_UUID>
 ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Management Server ports / Порты Management Server
+# Management Server ports
 firewall-cmd --permanent --add-port=8080/tcp   # HTTP UI
 firewall-cmd --permanent --add-port=8443/tcp   # HTTPS UI
 firewall-cmd --permanent --add-port=8250/tcp   # Agent communication / Связь с агентами
 firewall-cmd --permanent --add-port=9090/tcp   # Console proxy / Консольный прокси
 
-# KVM Host ports / Порты KVM-хоста
+# KVM Host ports
 firewall-cmd --permanent --add-port=16509/tcp  # Libvirt / libvirt
 firewall-cmd --permanent --add-port=49152-49261/tcp  # Live migration / Живая миграция
 firewall-cmd --reload
 ```
 
-### JVM / Performance Tuning / Настройка JVM
+### JVM / Performance Tuning
 
 `/etc/default/cloudstack-management` (Debian) or `/etc/sysconfig/cloudstack-management` (RHEL)
 
@@ -304,26 +304,26 @@ JAVA_OPTS="-Xms2g -Xmx4g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+HeapDumpOnOu
 
 ## 4. Security
 
-### API Keys / Ключи API
+### API Keys
 
 ```bash
-# Register user API keys / Зарегистрировать API-ключи пользователя
+# Register user API keys
 cmk register userkeys id=<USER_UUID>
 
-# List user's API keys / Показать API-ключи пользователя
+# List user's API keys
 cmk list users id=<USER_UUID>
 ```
 
-### Domain & Account Management / Управление доменами и аккаунтами
+### Domain & Account Management
 
 ```bash
-# List domains / Список доменов
+# List domains
 cmk list domains listall=true
 
-# Create domain / Создать домен
+# Create domain
 cmk create domain name=<DOMAIN_NAME>
 
-# Create account / Создать аккаунт
+# Create account
 cmk create account username=<USER> password=<PASSWORD> email=<EMAIL> \
   firstname=<FIRST_NAME> lastname=<LAST_NAME> accounttype=0 domainid=<DOMAIN_UUID>
 ```
@@ -334,28 +334,28 @@ cmk create account username=<USER> password=<PASSWORD> email=<EMAIL> \
 | `1` | Root admin / Администратор root |
 | `2` | Domain admin / Администратор домена |
 
-### SSL/TLS Configuration / Настройка SSL/TLS
+### SSL/TLS Configuration
 
 `/etc/cloudstack/management/server.properties`
 
 ```ini
-# Enable HTTPS / Включить HTTPS
+# Enable HTTPS
 https.enable=true
 https.port=8443
 
-# Keystore settings / Настройки keystore
+# Keystore settings
 https.keystore=/etc/cloudstack/management/cloud.jks
 https.keystore.password=<PASSWORD>
 ```
 
 ```bash
-# Generate keystore / Сгенерировать keystore
+# Generate keystore
 keytool -genkey -keyalg RSA -keysize 2048 -alias cloudstack \
   -keystore /etc/cloudstack/management/cloud.jks \
   -storepass <PASSWORD> -keypass <PASSWORD> \
   -dname "CN=<HOST>, OU=IT, O=<ORG>, L=<CITY>, S=<STATE>, C=<COUNTRY_CODE>"
 
-# Import existing certificate / Импортировать существующий сертификат
+# Import existing certificate
 keytool -import -alias cloudstack -file /path/to/cert.pem \
   -keystore /etc/cloudstack/management/cloud.jks -storepass <PASSWORD>
 ```
@@ -367,7 +367,7 @@ keytool -import -alias cloudstack -file /path/to/cert.pem \
 > [!CAUTION]
 > Always stop the management server before performing database backups to ensure data consistency. / Всегда останавливайте management server перед бэкапом БД.
 
-### Database Backup Runbook / Сценарий резервного копирования
+### Database Backup Runbook
 
 1. **Stop management server / Остановить management server:**
 
@@ -394,7 +394,7 @@ tar -czf /backup/cloudstack_conf_$(date +%F).tar.gz /etc/cloudstack/
 systemctl start cloudstack-management
 ```
 
-### Database Restore / Восстановление БД
+### Database Restore
 
 ```bash
 systemctl stop cloudstack-management
@@ -406,61 +406,61 @@ systemctl start cloudstack-management
 
 ## 6. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Management Server Won't Start / Management server не запускается
+#### 1. Management Server Won't Start / Management server
 
 ```bash
-# Check Java version / Проверить версию Java
+# Check Java version
 java -version   # Must be 11+ / Должна быть 11+
 
-# Check logs for errors / Проверить логи
+# Check logs for errors
 tail -100 /var/log/cloudstack/management/management-server.log | grep -i "error\|exception"
 
-# Check DB connectivity / Проверить подключение к БД
+# Check DB connectivity
 mysql -u cloud -p<PASSWORD> -e "SELECT 1" cloud
 ```
 
-#### 2. Agent Disconnected / Агент отключён
+#### 2. Agent Disconnected
 
 ```bash
-# On hypervisor host / На гипервизоре
+# On hypervisor host
 systemctl status cloudstack-agent
 tail -50 /var/log/cloudstack/agent/agent.log | grep -i error
 
-# Verify management server reachability / Проверить доступность management server
+# Verify management server reachability
 curl -s http://<MANAGEMENT_HOST>:8080 | head -5
 
-# Check libvirt / Проверить libvirt
+# Check libvirt
 virsh list --all   # Should work without errors / Должно работать без ошибок
 ```
 
-#### 3. System VM Not Starting / Системная ВМ не запускается
+#### 3. System VM Not Starting
 
 ```bash
-# Check system VM template / Проверить шаблон системной ВМ
+# Check system VM template
 cmk list templates templatefilter=all keyword=systemvm
 
-# Check secondary storage / Проверить вторичное хранилище
+# Check secondary storage
 cmk list imageStores
 
-# Check console proxy / Проверить консольный прокси
+# Check console proxy
 cmk list systemvms systemvmtype=consoleproxy
 ```
 
-#### 4. VMware to CloudStack Migration: GRUB Boot Failure / Ошибка загрузки GRUB после миграции
+#### 4. VMware to CloudStack Migration: GRUB Boot Failure
 
 If a VM migrated from VMware fails to boot after an OS upgrade (e.g., Ubuntu `do-release-upgrade`), the GRUB bootloader may be pointed to the wrong disk (e.g., VMware used SCSI `/dev/sda`, KVM uses a different disk like `/dev/sdb` or `/dev/vda`).
 
 ```bash
-# Verify current GRUB install devices / Проверить текущий диск установки GRUB
+# Verify current GRUB install devices
 debconf-show grub-pc | grep install_devices
 
 # If it shows an old disk (e.g., /dev/sda) instead of the correct one (e.g., /dev/sdb):
-# Change GRUB install device / Изменить диск установки GRUB
+# Change GRUB install device
 echo "grub-pc grub-pc/install_devices multiselect /dev/sdb" | debconf-set-selections
 
-# Re-install GRUB and update config / Переустановить GRUB и обновить конфиг
+# Re-install GRUB and update config
 grub-install /dev/sdb
 update-grub
 ```
@@ -468,16 +468,16 @@ update-grub
 > [!TIP]
 > **CloudStack Template/VM Setting:** When importing the VM or template, ensure the **Root Disk Controller** is explicitly set to `scsi` (or `virtio`) depending on your KVM configuration to maintain device naming consistency. / При импорте шаблона или ВМ укажите Root Disk Controller = `scsi`.
 
-### Useful API Queries / Полезные API-запросы
+### Useful API Queries
 
 ```bash
-# Check cloud infrastructure capacity / Проверить ёмкость инфраструктуры
+# Check cloud infrastructure capacity
 cmk list capacity
 
-# List events (audit log) / Список событий (аудит)
+# List events (audit log)
 cmk list events level=ERROR startdate=$(date -d '-1 day' +%Y-%m-%d)
 
-# List async jobs / Список асинхронных задач
+# List async jobs
 cmk list asyncjobs listall=true
 ```
 
@@ -515,7 +515,7 @@ cmk list asyncjobs listall=true
 
 ---
 
-## 📖 Documentation / Документация
+## 📖 Documentation
 
 - **Apache CloudStack Documentation:** https://docs.cloudstack.apache.org/
 - **CloudStack Administration Guide:** https://docs.cloudstack.apache.org/en/latest/adminguide/

@@ -11,11 +11,11 @@ tags:
 
 ## Table of Contents
 - [Description](#Description)
-- [Configuration](#️%20Configuration%20/%20Конфигурация)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Security & Verification](#Security%20&%20Verification%20/%20Безопасность%20и%20проверка)
+- [Configuration](#️%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
+- [Security & Verification](#Security%20&%20Verification)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -33,20 +33,20 @@ tags:
 
 ---
 
-## ⚙️ Configuration / Конфигурация
+## ⚙️ Configuration
 
-### Main Configuration Files / Основные файлы конфигурации
+### Main Configuration Files
 `/etc/pacman.conf`
 `/etc/pacman.d/mirrorlist`
 
-### Mirrorlist Management / Управление зеркалами
+### Mirrorlist Management
 Generate mirrorlist using `reflector`. / Генерация списка зеркал с помощью `reflector`.
 
 ```bash
 sudo reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
-### Parallel Downloads / Параллельные загрузки
+### Parallel Downloads
 To speed up downloads, enable parallel downloads in `/etc/pacman.conf`. / Чтобы ускорить загрузку, включите параллельные загрузки в `/etc/pacman.conf`.
 
 ```ini
@@ -56,9 +56,9 @@ ParallelDownloads = 5
 
 ---
 
-## 🛠 Core Management / Основное управление
+## 🛠 Core Management
 
-### Sync & Upgrade / Синхронизация и обновление
+### Sync & Upgrade
 > [!WARNING]
 > Never run `pacman -Sy` (sync only) without upgrading (`-u`). Partial upgrades are unsupported and can break your system. / Никогда не запускайте `pacman -Sy` без обновления (`-u`). Частичные обновления не поддерживаются и могут сломать систему.
 
@@ -69,7 +69,7 @@ sudo pacman -Sy                               # Sync repositories (DO NOT USE be
 sudo pacman -Su                               # Upgrade packages (without sync) / Обновить пакеты (без синхронизации)
 ```
 
-### Install & Remove / Установка и удаление
+### Install & Remove
 ```bash
 sudo pacman -S <PACKAGE>                      # Install package / Установить пакет
 sudo pacman -S <PKG1> <PKG2>                  # Install multiple / Установить несколько
@@ -80,7 +80,7 @@ sudo pacman -Rs <PACKAGE>                     # Remove with unused dependencies 
 sudo pacman -Rns <PACKAGE>                    # Remove with deps and configs (Cleanest) / Удалить с зависимостями и конфигами
 ```
 
-### Search & Query / Поиск и запросы
+### Search & Query
 ```bash
 pacman -Ss <KEYWORD>                          # Search in repositories / Поиск в репозиториях
 pacman -Si <PACKAGE>                          # Info about package in repo / Инфо о пакете в репозитории
@@ -94,9 +94,9 @@ pacman -Qkk <PACKAGE>                         # Verify package files / Пров�
 
 ---
 
-## 🔧 Sysadmin Operations / Операции системного администратора
+## 🔧 Sysadmin Operations
 
-### Clean & Maintenance / Очистка и обслуживание
+### Clean & Maintenance
 Manage disk space used by pacman cache. / Управление дисковым пространством, используемым кэшем pacman.
 
 ```bash
@@ -106,7 +106,7 @@ sudo paccache -r                              # Keep only last 3 versions (requi
 sudo pacman -Rns $(pacman -Qdtq)              # Remove all orphans / Удалить всех сирот
 ```
 
-### AUR Helpers (Yay/Paru) / Помощники AUR
+### AUR Helpers (Yay/Paru)
 AUR (Arch User Repository) contains community packages. / AUR содержит пакеты сообщества.
 
 ```bash
@@ -116,7 +116,7 @@ yay -Rns <PACKAGE>                            # Remove package / Удалить 
 yay -Yc                                       # Clean unused AUR dependencies / Очистить неиспользуемые зависимости AUR
 ```
 
-### Logs / Логи
+### Logs
 - **Pacman Log:** `/var/log/pacman.log` - History of pacman actions.
 
 ```bash
@@ -126,15 +126,15 @@ grep "installed" /var/log/pacman.log | tail     # Show recently installed packag
 
 ---
 
-## 🚨 Troubleshooting / Устранение неполадок
+## 🚨 Troubleshooting
 
-### Lock File / Файл блокировки
+### Lock File
 If pacman is interrupted:
 ```bash
 sudo rm /var/lib/pacman/db.lck                # Remove lock file / Удалить файл блокировки
 ```
 
-### Keyring Issues / Проблемы с ключами
+### Keyring Issues
 If you get "signature from ... is unknown trust":
 ```bash
 sudo pacman -Sy archlinux-keyring             # Update keyring first / Сначала обновить связку ключей
@@ -143,7 +143,7 @@ sudo pacman-key --populate archlinux          # Populate keys / Заполнит
 sudo pacman-key --refresh-keys                # Refresh keys / Обновить ключи
 ```
 
-### File Conflicts / Конфликты файлов
+### File Conflicts
 If "exists in filesystem":
 ```bash
 sudo pacman -S --overwrite='*' <PACKAGE>      # Force overwrite files / Принудительно перезаписать файлы
@@ -151,7 +151,7 @@ sudo pacman -S --overwrite='*' <PACKAGE>      # Force overwrite files / Прин
 
 ---
 
-## 🔒 Security & Verification / Безопасность и проверка
+## 🔒 Security & Verification
 Check for modified configuration files (`.pacnew`). / Проверка измененных конфигурационных файлов.
 
 ```bash

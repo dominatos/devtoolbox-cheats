@@ -44,7 +44,7 @@ tags:
 
 ## Installation & Configuration
 
-### Default Paths / Пути по умолчанию
+### Default Paths
 
 | Path / Путь | Purpose / Назначение |
 |-------------|----------------------|
@@ -56,7 +56,7 @@ tags:
 | `$DOMAIN_HOME/servers/` | Server instances / Экземпляры серверов |
 | `$DOMAIN_HOME/servers/*/logs/` | Server logs / Логи серверов |
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -65,7 +65,7 @@ tags:
 | `5556` | Node Manager / Менеджер узлов |
 | `7003-7XXX` | Managed Servers (configurable) / Управляемые серверы |
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 ```bash
 export ORACLE_HOME=/u01/oracle                          # Oracle installation / Установка Oracle
@@ -74,7 +74,7 @@ export DOMAIN_HOME=/u01/oracle/user_projects/domains/<DOMAIN_NAME>  # Domain hom
 export JAVA_HOME=/u01/oracle/java/jdk                   # Java home / Путь к Java
 ```
 
-### Set Domain Environment / Установка окружения домена
+### Set Domain Environment
 
 Run this before any commands. / Запустите это перед любыми командами.
 
@@ -86,28 +86,28 @@ source /u01/oracle/user_projects/domains/<DOMAIN_NAME>/bin/setDomainEnv.sh
 
 ## Server Lifecycle
 
-### Node Manager / Менеджер узлов
+### Node Manager
 
 Before starting servers, ensure Node Manager is running. / Убедитесь, что Node Manager запущен.
 
 ```bash
-# Start Node Manager / Запуск Node Manager
+# Start Node Manager
 nohup $WL_HOME/server/bin/startNodeManager.sh > nm.log 2>&1 &
 ```
 
-### Start/Stop Scripts / Скрипты запуска/остановки
+### Start/Stop Scripts
 
 ```bash
-# Start Admin Server / Запуск Admin Server
+# Start Admin Server
 $DOMAIN_HOME/bin/startWebLogic.sh
 
-# Stop Admin Server / Остановка Admin Server
+# Stop Admin Server
 $DOMAIN_HOME/bin/stopWebLogic.sh
 
-# Start Managed Server / Запуск Managed Server
+# Start Managed Server
 $DOMAIN_HOME/bin/startManagedWebLogic.sh <SERVER_NAME> <ADMIN_URL>
 
-# Stop Managed Server / Остановка Managed Server
+# Stop Managed Server
 $DOMAIN_HOME/bin/stopManagedWebLogic.sh <SERVER_NAME> <ADMIN_URL>
 ```
 
@@ -115,7 +115,7 @@ $DOMAIN_HOME/bin/stopManagedWebLogic.sh <SERVER_NAME> <ADMIN_URL>
 > Always stop Managed Servers before the Admin Server. Stopping the Admin Server first may leave Managed Servers in an inconsistent state.
 > Всегда останавливайте Managed Server'ы перед Admin Server'ом.
 
-### Check Running Status / Проверка статуса
+### Check Running Status
 
 ```bash
 ps aux | grep weblogic                                   # Check process / Проверить процесс
@@ -127,51 +127,51 @@ netstat -tlnp | grep :7001                               # Check port / Пров
 
 ## WLST (WebLogic Scripting Tool)
 
-### Interactive Mode / Интерактивный режим
+### Interactive Mode
 ```bash
 java weblogic.WLST
 ```
 
-### Common Commands / Частые команды
+### Common Commands
 
 ```python
-# Connect / Подключение
+# Connect
 connect('<USER>', '<PASSWORD>', 't3://<ADM_HOST>:<PORT>')
 
-# Server Status / Статус сервера
+# Server Status
 state('<SERVER_NAME>')
 
-# Start/Stop Server / Запуск/Остановка сервера
+# Start/Stop Server
 start('<SERVER_NAME>')
 shutdown('<SERVER_NAME>')
 
-# Deploy App / Деплой приложения
+# Deploy App
 deploy('<APP_NAME>', '/path/to/app.war', targets='<CLUSTER_NAME>')
 
-# Undeploy App / Удаление приложения
+# Undeploy App
 undeploy('<APP_NAME>')
 
-# List servers / Список серверов
+# List servers
 cd('Servers')
 ls()
 
-# List deployments / Список деплоев
+# List deployments
 cd('AppDeployments')
 ls()
 
-# Read server state / Статус всех серверов
+# Read server state
 domainRuntime()
 cd('ServerLifeCycleRuntimes')
 ls()
 ```
 
-### Scripted WLST (Non-interactive) / Скриптовый режим
+### Scripted WLST (Non-interactive)
 
 ```bash
-# Run a WLST script / Запуск скрипта WLST
+# Run a WLST script
 java weblogic.WLST /path/to/script.py
 
-# One-liner status check / Однострочная проверка
+# One-liner status check
 java weblogic.WLST -e "connect('<USER>','<PASSWORD>','t3://<HOST>:<PORT>'); state('<SERVER_NAME>')"
 ```
 
@@ -179,15 +179,15 @@ java weblogic.WLST -e "connect('<USER>','<PASSWORD>','t3://<HOST>:<PORT>'); stat
 
 ## Security
 
-### Users & Roles / Пользователи и роли
+### Users & Roles
 
 ```bash
-# Access Admin Console / Доступ к Admin Console
+# Access Admin Console
 # URL: http://<HOST>:7001/console
 # Default security realm: myrealm
 # Navigate: Security Realms → myrealm → Users and Groups
 
-# Create boot.properties for auto-login / Создание boot.properties
+# Create boot.properties for auto-login
 mkdir -p $DOMAIN_HOME/servers/<SERVER_NAME>/security
 cat > $DOMAIN_HOME/servers/<SERVER_NAME>/security/boot.properties << EOF
 username=<USER>
@@ -200,18 +200,18 @@ chmod 600 $DOMAIN_HOME/servers/<SERVER_NAME>/security/boot.properties
 > `boot.properties` stores credentials in plain text initially. WebLogic encrypts them on first boot. Ensure proper file permissions.
 > `boot.properties` хранит учётные данные в открытом виде до первого запуска. Убедитесь в правильных правах доступа.
 
-### SSL/TLS Configuration / Конфигурация SSL/TLS
+### SSL/TLS Configuration
 
 ```bash
-# Create keystore / Создать keystore
+# Create keystore
 keytool -genkey -alias wls -keyalg RSA -keysize 2048 \
   -keystore $DOMAIN_HOME/identity.jks -storepass <PASSWORD>
 
-# Import certificate / Импортировать сертификат
+# Import certificate
 keytool -import -alias wls -file certificate.crt \
   -keystore $DOMAIN_HOME/identity.jks -storepass <PASSWORD>
 
-# List certificates / Список сертификатов
+# List certificates
 keytool -list -keystore $DOMAIN_HOME/identity.jks -storepass <PASSWORD>
 ```
 
@@ -219,7 +219,7 @@ keytool -list -keystore $DOMAIN_HOME/identity.jks -storepass <PASSWORD>
 
 ## Maintenance & Monitoring
 
-### Log Files / Файлы логов
+### Log Files
 
 | Log / Лог | Path / Путь |
 |-----------|-------------|
@@ -230,14 +230,14 @@ keytool -list -keystore $DOMAIN_HOME/identity.jks -storepass <PASSWORD>
 | GC log / Лог GC | `$DOMAIN_HOME/servers/<SERVER_NAME>/logs/gc.log` |
 
 ```bash
-# View live logs / Просмотр логов в реальном времени
+# View live logs
 tail -f $DOMAIN_HOME/servers/AdminServer/logs/AdminServer.log
 
-# Filter for errors / Поиск ошибок
+# Filter for errors
 grep -i "ERROR\|BEA-" $DOMAIN_HOME/servers/AdminServer/logs/AdminServer.log
 ```
 
-### JVM Tuning / Настройка JVM
+### JVM Tuning
 
 Set in `setDomainEnv.sh` or `USER_MEM_ARGS`.
 
@@ -253,48 +253,48 @@ export USER_MEM_ARGS="$USER_MEM_ARGS -XX:HeapDumpPath=$DOMAIN_HOME/servers/<SERV
 
 ## Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 ```bash
-# Port already in use / Порт уже используется
+# Port already in use
 sudo netstat -tlnp | grep :7001                          # Check port / Проверить порт
 sudo lsof -i :7001                                       # Alternative / Альтернатива
 
-# Server stuck in STARTING state / Сервер завис в STARTING
-# Check for lock files / Проверить lock-файлы
+# Server stuck in STARTING state
+# Check for lock files
 ls -la $DOMAIN_HOME/servers/<SERVER_NAME>/tmp/
-# Remove lock files if needed / Удалить lock-файлы при необходимости
+# Remove lock files if needed
 
-# OutOfMemoryError / Ошибка памяти
-# Increase heap in USER_MEM_ARGS / Увеличить heap в USER_MEM_ARGS
+# OutOfMemoryError
+# Increase heap in USER_MEM_ARGS
 # Check for memory leaks in deployed applications
 ```
 
-### Thread Dump / Дамп потоков
+### Thread Dump
 
 ```bash
-# Get PID / Получить PID
+# Get PID
 ps aux | grep weblogic
 
-# Generate thread dump / Создать дамп потоков
+# Generate thread dump
 kill -3 <PID>                                            # Output to server log
 jstack <PID> > thread_dump.txt                          # Save to file / Сохранить в файл
 ```
 
-### Heap Dump / Дамп кучи
+### Heap Dump
 
 ```bash
-# Generate heap dump / Создать дамп кучи
+# Generate heap dump
 jmap -dump:format=b,file=/tmp/heap_dump.bin <PID>
 
 # Analyze with Eclipse MAT or VisualVM
-# Анализ с помощью Eclipse MAT или VisualVM
+#
 ```
 
-### Debug Logging / Отладочное логирование
+### Debug Logging
 
 ```python
-# Via WLST — Enable debug logging / Включить отладочное логирование
+# Via WLST — Enable debug logging
 connect('<USER>', '<PASSWORD>', 't3://<HOST>:<PORT>')
 edit()
 startEdit()

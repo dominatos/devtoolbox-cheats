@@ -16,17 +16,17 @@ tags:
 📚 **Official Docs / Официальная документация:** [autossh(1)](https://www.harding.motd.ca/autossh/)
 
 ## Table of Contents
-- [Basic Tunneling](#Basic%20Tunneling%20/%20Базовое%20туннелирование)
-- [Persistent Tunnels](#Persistent%20Tunnels%20/%20Постоянные%20туннели)
-- [Monitoring & Debugging](#Monitoring%20&%20Debugging%20/%20Мониторинг%20и%20отладка)
-- [Systemd Integration](#Systemd%20Integration%20/%20Интеграция%20с%20systemd)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Basic Tunneling](#Basic%20Tunneling)
+- [Persistent Tunnels](#Persistent%20Tunnels)
+- [Monitoring & Debugging](#Monitoring%20&%20Debugging)
+- [Systemd Integration](#Systemd%20Integration)
+- [Real-World Examples](#Real-World%20Examples)
 
 ---
 
-## 🔧 Basic Tunneling / Базовое туннелирование
+## 🔧 Basic Tunneling
 
-### Local Port Forwarding / Локальная переадресация портов
+### Local Port Forwarding
 ```bash
 autossh -M 0 -N -L 8080:127.0.0.1:80 <USER>@<HOST>  # Forward local 8080→remote 80 / Переслать локальный 8080→удалённый 80
 autossh -M 0 -N -L 3306:localhost:3306 <USER>@<HOST>  # MySQL tunnel / MySQL туннель
@@ -34,14 +34,14 @@ autossh -M 0 -N -L 5432:localhost:5432 <USER>@<HOST>  # PostgreSQL tunnel / Post
 autossh -M 0 -N -L 0.0.0.0:8080:localhost:80 <USER>@<HOST>  # Bind to all interfaces / Привязать ко всем интерфейсам
 ```
 
-### Remote Port Forwarding / Удалённая переадресация портов
+### Remote Port Forwarding
 ```bash
 autossh -M 0 -N -R 2222:127.0.0.1:22 <USER>@<HOST>  # Forward remote 2222→local 22 / Переслать удалённый 2222→локальный 22
 autossh -M 0 -N -R 8080:localhost:80 <USER>@<HOST>  # Expose local web server / Выставить локальный веб сервер
 autossh -M 0 -N -R 0.0.0.0:9000:localhost:9000 <USER>@<HOST>  # Bind to all remote interfaces / Привязать ко всем удалённым интерфейсам
 ```
 
-### Dynamic Port Forwarding (SOCKS) / Динамическая переадресация (SOCKS)
+### Dynamic Port Forwarding (SOCKS)
 ```bash
 autossh -M 0 -N -D 1080 <USER>@<HOST>          # SOCKS proxy on port 1080 / SOCKS прокси на порту 1080
 autossh -M 0 -N -D 0.0.0.0:1080 <USER>@<HOST>  # SOCKS proxy on all interfaces / SOCKS прокси на всех интерфейсах
@@ -49,37 +49,37 @@ autossh -M 0 -N -D 0.0.0.0:1080 <USER>@<HOST>  # SOCKS proxy on all interfaces /
 
 ---
 
-## 🔄 Persistent Tunnels / Постоянные туннели
+## 🔄 Persistent Tunnels
 
-### Monitoring Options / Опции мониторинга
+### Monitoring Options
 ```bash
 autossh -M 0 -N -L 8080:localhost:80 <USER>@<HOST>  # Disable monitoring port (recommended) / Отключить порт мониторинга (рекомендуется)
 autossh -M 20000 -N -L 8080:localhost:80 <USER>@<HOST>  # Use monitoring port 20000 / Использовать порт мониторинга 20000
 ```
 
-### ServerAliveInterval / Интервал проверки сервера
+### ServerAliveInterval
 ```bash
 autossh -M 0 -N -o "ServerAliveInterval=30" -o "ServerAliveCountMax=3" -L 8080:localhost:80 <USER>@<HOST>
-# Check every 30s, fail after 3 attempts / Проверять каждые 30с, упасть после 3 попыток
+# Check every 30s, fail after 3 attempts
 ```
 
-### ExitOnForwardFailure / Выход при ошибке переадресации
+### ExitOnForwardFailure
 ```bash
 autossh -M 0 -N -o "ExitOnForwardFailure=yes" -L 8080:localhost:80 <USER>@<HOST>
-# Exit if port forwarding fails / Выйти если переадресация порта не удалась
+# Exit if port forwarding fails
 ```
 
 ---
 
-## 📊 Monitoring & Debugging / Мониторинг и отладка
+## 📊 Monitoring & Debugging
 
-### Verbose Mode / Подробный режим
+### Verbose Mode
 ```bash
 autossh -M 0 -N -v -L 8080:localhost:80 <USER>@<HOST>  # Verbose / Подробный
 autossh -M 0 -N -vv -L 8080:localhost:80 <USER>@<HOST>  # Very verbose / Очень подробный
 ```
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 ```bash
 export AUTOSSH_DEBUG=1                        # Enable debug / Включить отладку
 export AUTOSSH_LOGFILE=/var/log/autossh.log   # Log to file / Логировать в файл
@@ -87,7 +87,7 @@ export AUTOSSH_POLL=60                        # Poll interval / Интервал
 export AUTOSSH_GATETIME=0                     # No wait before first connection / Не ждать перед первым соединением
 ```
 
-### Check Connection / Проверить соединение
+### Check Connection
 ```bash
 ps aux | grep autossh                         # Check if running / Проверить работает ли
 netstat -tlnp | grep 8080                     # Check port / Проверить порт
@@ -96,9 +96,9 @@ ss -tlnp | grep 8080                          # Alternative / Альтернат
 
 ---
 
-## 🔧 Systemd Integration / Интеграция с systemd
+## 🔧 Systemd Integration
 
-### Create Systemd Service / Создать Systemd сервис
+### Create Systemd Service
 ```ini
 # /etc/systemd/system/autossh-tunnel.service
 [Unit]
@@ -117,7 +117,7 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-### Manage Service / Управление сервисом
+### Manage Service
 ```bash
 sudo systemctl daemon-reload                  # Reload systemd / Перезагрузить systemd
 sudo systemctl start autossh-tunnel           # Start service / Запустить сервис
@@ -128,99 +128,99 @@ sudo journalctl -u autossh-tunnel -f          # Follow logs / Следовать
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
-### Database Access / Доступ к базе данных
+### Database Access
 ```bash
-# MySQL tunnel / MySQL туннель
+# MySQL tunnel / MySQL
 autossh -M 0 -N -L 3306:127.0.0.1:3306 <USER>@<DB_SERVER>
-# Connect: mysql -h 127.0.0.1 -P 3306 / Подключиться: mysql -h 127.0.0.1 -P 3306
+# Connect: mysql -h 127.0.0.1 -P 3306
 
-# PostgreSQL tunnel / PostgreSQL туннель
+# PostgreSQL tunnel / PostgreSQL
 autossh -M 0 -N -L 5432:localhost:5432 <USER>@<DB_SERVER>
-# Connect: psql -h 127.0.0.1 -p 5432 / Подключиться: psql -h 127.0.0.1 -p 5432
+# Connect: psql -h 127.0.0.1 -p 5432
 
-# MongoDB tunnel / MongoDB туннель
+# MongoDB tunnel / MongoDB
 autossh -M 0 -N -L 27017:localhost:27017 <USER>@<DB_SERVER>
-# Connect: mongosh --host 127.0.0.1 --port 27017 / Подключиться: mongosh --host 127.0.0.1 --port 27017
+# Connect: mongosh --host 127.0.0.1 --port 27017
 ```
 
-### Reverse Tunnel for Remote Access / Обратный туннель для удалённого доступа
+### Reverse Tunnel for Remote Access
 ```bash
-# From local machine / С локальной машины
+# From local machine
 autossh -M 0 -N -R 2222:localhost:22 <USER>@<JUMP_HOST>
 
-# From jump host / С jump хоста
+# From jump host
 ssh -p 2222 <LOCAL_USER>@localhost
 ```
 
-### SOCKS Proxy for Browsing / SOCKS прокси для браузинга
+### SOCKS Proxy for Browsing / SOCKS
 ```bash
-# Start SOCKS proxy / Запустить SOCKS прокси
+# Start SOCKS proxy
 autossh -M 0 -N -D 1080 <USER>@<PROXY_HOST>
 
-# Configure browser / Настроить браузер
+# Configure browser
 # SOCKS5: localhost:1080
 
-# Or use with curl / Или использовать с curl
+# Or use with curl
 curl --socks5 localhost:1080 https://api.example.com
 ```
 
-### Multi-Hop Tunnel / Многошаговый туннель
+### Multi-Hop Tunnel
 ```bash
-# Via bastion host / Через bastion хост
+# Via bastion host
 autossh -M 0 -N -L 8080:internal-server:80 -J <USER>@<BASTION> <USER>@<INTERNAL>
 
-# Alternative with ProxyJump / Альтернатива с ProxyJump
+# Alternative with ProxyJump
 autossh -M 0 -N -o "ProxyJump=<USER>@<BASTION>" -L 8080:localhost:80 <USER>@<INTERNAL>
 ```
 
-### Docker API Access / Доступ к Docker API
+### Docker API Access
 ```bash
-# Tunnel Docker socket / Туннель Docker socket
+# Tunnel Docker socket
 autossh -M 0 -N -L 2375:localhost:2375 <USER>@<DOCKER_HOST>
 
-# Use Docker / Использовать Docker
+# Use Docker
 export DOCKER_HOST=tcp://localhost:2375
 docker ps
 ```
 
-### Kubernetes API Access / Доступ к Kubernetes API
+### Kubernetes API Access
 ```bash
-# Tunnel K8s API / Туннель K8s API
+# Tunnel K8s API
 autossh -M 0 -N -L 6443:localhost:6443 <USER>@<K8S_MASTER>
 
-# Use kubectl / Использовать kubectl
+# Use kubectl
 kubectl --server=https://localhost:6443 get pods
 ```
 
-### Web Development Preview / Предпросмотр веб-разработки
+### Web Development Preview
 ```bash
-# Expose local dev server / Выставить локальный dev сервер
+# Expose local dev server
 autossh -M 0 -N -R 8080:localhost:3000 <USER>@<PUBLIC_SERVER>
 
-# Access from: http://<PUBLIC_SERVER>:8080 / Доступ с: http://<PUBLIC_SERVER>:8080
+# Access from: http://<PUBLIC_SERVER>:8080
 ```
 
-### VNC Tunnel / VNC туннель
+### VNC Tunnel / VNC
 ```bash
-# Tunnel VNC / Туннель VNC
+# Tunnel VNC
 autossh -M 0 -N -L 5900:localhost:5900 <USER>@<VNC_SERVER>
 
-# Connect with VNC client / Подключиться с VNC клиентом
+# Connect with VNC client
 vncviewer localhost:5900
 ```
 
-### Redis Tunnel / Redis туннель
+### Redis Tunnel / Redis
 ```bash
-# Tunnel Redis / Туннель Redis
+# Tunnel Redis
 autossh -M 0 -N -L 6379:localhost:6379 <USER>@<REDIS_SERVER>
 
-# Connect / Подключиться
+# Connect
 redis-cli -h 127.0.0.1 -p 6379
 ```
 
-### Multiple Tunnels in One Connection / Несколько туннелей в одном соединении
+### Multiple Tunnels in One Connection
 ```bash
 autossh -M 0 -N \
   -L 3306:localhost:3306 \
@@ -229,7 +229,7 @@ autossh -M 0 -N \
   <USER>@<SERVER>
 ```
 
-### SSH Config Integration / Интеграция с SSH Config
+### SSH Config Integration
 ```bash
 # ~/.ssh/config
 Host tunnel
@@ -240,11 +240,11 @@ Host tunnel
   ServerAliveCountMax 3
   ExitOnForwardFailure yes
 
-# Use with autossh / Использовать с autossh
+# Use with autossh
 autossh -M 0 -N tunnel
 ```
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Always use `-M 0` (disable monitoring port) / Всегда используйте `-M 0` (отключить порт мониторинга)
 - Set `ServerAliveInterval` for reliability / Устанавливайте `ServerAliveInterval` для надёжности
@@ -252,7 +252,7 @@ autossh -M 0 -N tunnel
 - Use SSH config for cleaner commands / Используйте SSH config для чистых команд
 - Set `ExitOnForwardFailure=yes` for critical tunnels / Устанавливайте `ExitOnForwardFailure=yes` для критических туннелей
 
-## 🔧 SSH Config Options / Опции SSH Config
+## 🔧 SSH Config Options
 
 | Option | Description (EN / RU) |
 |--------|----------------------|
@@ -263,7 +263,7 @@ autossh -M 0 -N tunnel
 | `RemoteForward` | Remote port forward / Удалённая переадресация |
 | `DynamicForward` | SOCKS proxy / SOCKS прокси |
 
-## 📋 Common Use Cases / Распространённые случаи использования
+## 📋 Common Use Cases
 
 | Use Case | Flag |
 |----------|------|
@@ -273,7 +273,7 @@ autossh -M 0 -N tunnel
 | Reverse shell | `-R 2222:localhost:22` |
 | VNC access | `-L 5900:localhost:5900` |
 
-## ⚠️ Security Notes / Заметки по безопасности
+## ⚠️ Security Notes
 
 - Only bind to localhost when possible / Привязывайтесь только к localhost когда возможно
 - Use SSH keys instead of passwords / Используйте SSH ключи вместо паролей

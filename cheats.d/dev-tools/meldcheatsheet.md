@@ -19,17 +19,17 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
-1. [Installation / Установка](#Installation%20/%20Установка)
-2. [Basic CLI Usage / Основы CLI](#Basic%20CLI%20Usage%20/%20Основы%20CLI)
-3. [Version Control Integration / Интеграция с Git/SVN](#Version%20Control%20Integration%20/%20Интеграция%20с%20Git/SVN)
-4. [Keyboard Shortcuts / Горячие клавиши](#Keyboard%20Shortcuts%20/%20Горячие%20клавиши)
-5. [Directory Comparison / Сравнение директорий](#Directory%20Comparison%20/%20Сравнение%20директорий)
+1. [Installation / Установка](#Installation)
+2. [Basic CLI Usage / Основы CLI](#Basic%20CLI%20Usage)
+3. [Version Control Integration / Интеграция с Git/SVN](#Version%20Control%20Integration)
+4. [Keyboard Shortcuts / Горячие клавиши](#Keyboard%20Shortcuts)
+5. [Directory Comparison / Сравнение директорий](#Directory%20Comparison)
 
 ---
 
-## Installation / Установка
+## Installation
 
 ```bash
 # Ubuntu/Debian
@@ -45,40 +45,40 @@ brew install --cask meld
 
 ---
 
-## Basic CLI Usage / Основы CLI
+## Basic CLI Usage
 
 Meld is primarily a GUI tool, but passing arguments from the command line is the most common way to launch it.
 Meld — это прежде всего GUI-инструмент, но запуск из командной строки — самый частый способ использования.
 
 ```bash
-# Compare two files (2-way diff) / Сравнение двух файлов
+# Compare two files (2-way diff)
 meld file1.txt file2.txt
 
-# Compare three files (3-way diff) / Сравнение трёх файлов
+# Compare three files (3-way diff)
 meld file1.txt file2.txt file3.txt
 
-# View uncommitted changes in current Git/SVN repo / Просмотр несохраненных изменений
+# View uncommitted changes in current Git/SVN repo
 meld .
 
-# Launch without files / Запуск пустого окна
+# Launch without files
 meld
 ```
 
-### Auto-Merge Flag / Флаг авто-слияния
+### Auto-Merge Flag
 
 If you want Meld to automatically merge non-conflicting changes when comparing three files (usually in a VCS conflict scenario):
 Если вы хотите, чтобы Meld автоматически сливал бесконфликтные изменения при сравнении трёх файлов:
 
 ```bash
-# Typical auto-merge syntax / Синтаксис авто-слияния
+# Typical auto-merge syntax
 meld --auto-merge <BASE> <LOCAL> <REMOTE> -o <MERGED_OUTPUT>
 ```
 
 ---
 
-## Version Control Integration / Интеграция с Git/SVN
+## Version Control Integration
 
-### Setting Meld as Git Diff Tool / Meld как Git Diff
+### Setting Meld as Git Diff Tool / Meld
 
 To use Meld whenever you run `git difftool`:
 
@@ -88,13 +88,13 @@ git config --global difftool.prompt false      # Replaces prompt with instant Me
 ```
 
 ```bash
-# Usage / Использование
+# Usage
 git difftool                       # Diff working tree vs index / Сравнить рабочую копию
 git difftool --cached              # Diff index vs HEAD / Сравнить индекс (staged)
 git difftool <COMMIT_A> <COMMIT_B> # Diff between two commits / Сравнить коммиты
 ```
 
-### Setting Meld as Git Merge Tool / Meld как Git Merge
+### Setting Meld as Git Merge Tool / Meld
 
 To use Meld to resolve merge conflicts (`git mergetool`):
 
@@ -104,7 +104,7 @@ git config --global mergetool.prompt false
 ```
 
 ```bash
-# Usage / Использование
+# Usage
 git merge <BRANCH_NAME>
 # If conflict occurs:
 git mergetool
@@ -114,7 +114,7 @@ git mergetool
 > When resolving conflicts in a 3-way merge window, the middle pane is usually the final output file where you should combine changes. Left is usually LOCAL (your branch), Right is usually REMOTE (incoming branch).
 > При разрешении конфликтов в 3-стороннем окне, средняя панель — это обычно итоговый файл. Слева — LOCAL (ваша ветка), справа — REMOTE (входящая ветка).
 
-### Diff Tool Comparison / Сравнение инструментов сравнения
+### Diff Tool Comparison
 
 | Tool | Type | Description (EN / RU) | Best For |
 |------|------|----------------------|----------|
@@ -126,7 +126,7 @@ git mergetool
 
 ---
 
-## Keyboard Shortcuts / Горячие клавиши
+## Keyboard Shortcuts
 
 | Key / Клавиша | Action (EN / RU) |
 |---------------|------------------|
@@ -141,20 +141,20 @@ git mergetool
 
 ---
 
-## Directory Comparison / Сравнение директорий
+## Directory Comparison
 
 Meld can compare entire folder structures.
 Meld может сравнивать целые структуры папок.
 
 ```bash
-# Compare two directories / Сравнить две директории
+# Compare two directories
 meld /path/to/dirA/ /path/to/dirB/
 
-# Compare three directories / Сравнить три директории
+# Compare three directories
 meld /path/to/dir1 /path/to/dir2 /path/to/dir3
 ```
 
-### Filtering Options / Настройки фильтрации
+### Filtering Options
 
 By default, Meld filters out some file types (object files, binaries).
 You can toggle custom text filters via `Preferences -> Text Filters`.
@@ -166,7 +166,7 @@ You can toggle custom text filters via `Preferences -> Text Filters`.
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **Meld:** https://meldmerge.org/
 - **Meld Help:** https://meldmerge.org/help/

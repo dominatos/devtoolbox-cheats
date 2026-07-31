@@ -12,20 +12,20 @@ tags:
 > **jq** — a lightweight, command-line JSON processor written in C. It uses a functional, pipeline-oriented query language for slicing, filtering, mapping, and transforming structured JSON data. Widely used in CI/CD pipelines, API automation, Kubernetes/Docker scripting, and log analysis. Actively maintained; for YAML processing, use [`yq`](https://github.com/mikefarah/yq). Alternative: [`gojq`](https://github.com/itchyny/gojq) (Go reimplementation with YAML support).
 
 ## Table of Contents
-- [Basics](#Basics%20/%20Основы)
-- [Selecting & Filtering](#Selecting%20&%20Filtering%20/%20Выбор%20и%20фильтрация)
-- [Transforming Data](#Transforming%20Data%20/%20Преобразование%20данных)
-- [Arrays & Objects](#Arrays%20&%20Objects%20/%20Массивы%20и%20объекты)
-- [Aggregation & Math](#Aggregation%20&%20Math%20/%20Агрегация%20и%20математика)
-- [Advanced Queries](#Advanced%20Queries%20/%20Продвинутые%20запросы)
-- [Output Formatting](#Output%20Formatting%20/%20Форматирование%20вывода)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Advanced Techniques](#Advanced%20Techniques%20/%20Продвинутые%20техники)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Basics](#Basics)
+- [Selecting & Filtering](#Selecting%20&%20Filtering)
+- [Transforming Data](#Transforming%20Data)
+- [Arrays & Objects](#Arrays%20&%20Objects)
+- [Aggregation & Math](#Aggregation%20&%20Math)
+- [Advanced Queries](#Advanced%20Queries)
+- [Output Formatting](#Output%20Formatting)
+- [Real-World Examples](#Real-World%20Examples)
+- [Advanced Techniques](#Advanced%20Techniques)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 
-## 📖 Basics / Основы
+## 📖 Basics
 
 ```bash
 jq '.' file.json                               # Pretty-print JSON / Красивый вывод JSON
@@ -40,7 +40,7 @@ jq '.items[2:5]' file.json                     # Array slice / Срез масс
 
 ---
 
-## 🔍 Selecting & Filtering / Выбор и фильтрация
+## 🔍 Selecting & Filtering
 
 ```bash
 jq '.items[]' file.json                        # Iterate array elements / Перебрать элементы
@@ -56,7 +56,7 @@ jq '.items[] | select(.status != "deleted")' file.json  # Not equal / Не ра�
 
 ---
 
-## 🔄 Transforming Data / Преобразование данных
+## 🔄 Transforming Data
 
 ```bash
 jq '.items[] | {id, email}' file.json          # Pick specific fields / Выбрать конкретные поля
@@ -72,7 +72,7 @@ jq '.items[] | if .active then .status = "live" else .status = "paused" end' fil
 
 ---
 
-## 📊 Arrays & Objects / Массивы и объекты
+## 📊 Arrays & Objects
 
 ```bash
 jq '.items | length' file.json                 # Array length / Длина массива
@@ -91,7 +91,7 @@ jq '.items | values' file.json                 # Object values / Значени�
 
 ---
 
-## 🧮 Aggregation & Math / Агрегация и математика
+## 🧮 Aggregation & Math
 
 ```bash
 jq '[.items[].price] | add' file.json          # Sum prices / Сумма цен
@@ -106,7 +106,7 @@ jq '.items[] | .total = (.price * .quantity)' file.json  # Calculate field / В�
 
 ---
 
-## 🔬 Advanced Queries / Продвинутые запросы
+## 🔬 Advanced Queries
 
 ```bash
 jq '.items[] | select(.tags[] | contains("prod"))' file.json  # Filter nested arrays / Фильтр вложенных массивов
@@ -123,7 +123,7 @@ jq 'paths(type == "number")' file.json         # Find all number paths / Най�
 
 ---
 
-## 📤 Output Formatting / Форматирование вывода
+## 📤 Output Formatting
 
 ```bash
 jq -r '.items[] | "\(.name): \(.price)"' file.json  # Custom string format / Произвольный формат строки
@@ -140,7 +140,7 @@ jq -r '.items[] | [.id, .name, .price] | @tsv' file.json  # Array to TSV / Ма�
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
 ```bash
 curl -s https://api.example.com/users | jq '.[] | {id, email}'  # API response filter / Фильтр API ответа
@@ -157,7 +157,7 @@ echo '{"users": [{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]}' | j
 
 ---
 
-## 💡 Advanced Techniques / Продвинутые техники
+## 💡 Advanced Techniques
 
 ```bash
 jq -n --arg name "Alice" --arg email "alice@example.com" '{name: $name, email: $email}'  # Build JSON from args / Создать JSON из аргументов
@@ -174,7 +174,7 @@ jq -c '.[]' file.json | parallel -j 4 'process {}'  # Parallel processing / Па
 
 ---
 
-## 🔧 Troubleshooting / Устранение неполадок
+## 🔧 Troubleshooting
 
 ```bash
 jq --version                                   # Check version / Проверить версию
@@ -186,7 +186,7 @@ jq 'paths' file.json                           # Show all paths / Показат
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [jq Official Manual](https://jqlang.github.io/jq/manual/)
 - [jq — GitHub repository](https://github.com/jqlang/jq)

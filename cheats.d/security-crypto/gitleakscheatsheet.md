@@ -63,7 +63,7 @@ Status / Актуальность:
 
 ## Installation & Configuration
 
-### Gitleaks — Установка / Installation
+### Gitleaks —
 
 Default ports: N/A (CLI tool)
 Config file: `.gitleaks.toml` (project root)
@@ -72,7 +72,7 @@ Config file: `.gitleaks.toml` (project root)
 # macOS
 brew install gitleaks  # Install via Homebrew / Установка через Homebrew
 
-# Linux — download binary / Скачать бинарник
+# Linux — download binary
 wget https://github.com/gitleaks/gitleaks/releases/download/v8.18.2/gitleaks_8.18.2_linux_x64.tar.gz
 tar -xzf gitleaks_8.18.2_linux_x64.tar.gz
 sudo mv gitleaks /usr/local/bin/
@@ -84,38 +84,38 @@ docker pull zricethezav/gitleaks:latest  # Pull Docker image / Скачать Do
 scoop install gitleaks
 ```
 
-### TruffleHog — Установка / Installation
+### TruffleHog —
 
 ```bash
-# Go version (recommended) / Go-версия (рекомендуется)
+# Go version (recommended) / Go-версия
 brew install truffleHog
 
-# Python legacy version / Python-версия (устаревшая)
+# Python legacy version / Python-версия
 pip install truffleHog
 
 # Docker
 docker pull trufflesecurity/trufflehog:latest
 ```
 
-### git-secrets (AWS) — Установка / Installation
+### git-secrets (AWS) —
 
 ```bash
 # macOS
 brew install git-secrets
 
-# Linux — from source / Из исходников
+# Linux — from source
 git clone https://github.com/awslabs/git-secrets.git
 cd git-secrets
 sudo make install
 ```
 
-### detect-secrets (Yelp) — Установка / Installation
+### detect-secrets (Yelp) —
 
 ```bash
 pip install detect-secrets  # Install via pip / Установка через pip
 ```
 
-### GitGuardian CLI (ggshield) — Установка / Installation
+### GitGuardian CLI (ggshield) —
 
 ```bash
 # macOS
@@ -125,7 +125,7 @@ brew install gitguardian/tap/ggshield
 pip install ggshield
 ```
 
-### git-filter-repo — Установка / Installation
+### git-filter-repo —
 
 ```bash
 # pip
@@ -134,19 +134,19 @@ pip3 install git-filter-repo  # Install via pip / Установка через 
 # macOS
 brew install git-filter-repo
 
-# Manual download / Ручная установка
+# Manual download
 wget https://raw.githubusercontent.com/newren/git-filter-repo/main/git-filter-repo
 chmod +x git-filter-repo
 sudo mv git-filter-repo /usr/local/bin/
 ```
 
-### BFG Repo-Cleaner — Установка / Installation
+### BFG Repo-Cleaner —
 
 ```bash
 # macOS
 brew install bfg
 
-# Manual (requires Java) / Ручная установка (требуется Java)
+# Manual (requires Java)
 wget https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
 ```
 
@@ -154,7 +154,7 @@ wget https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
 
 ## Scanning Tools Overview
 
-### Comparison Table — Сравнительная таблица инструментов сканирования
+### Comparison Table —
 
 | Tool | Language | Method | Verified Secrets | Baseline Support | Best For / Лучше всего для |
 |------|----------|--------|------------------|------------------|---------------------------|
@@ -168,7 +168,7 @@ wget https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
 > For most projects, start with **gitleaks** for speed, and run **TruffleHog** with `--only-verified` for a second pass to reduce false positives.
 > Для большинства проектов используйте **gitleaks** для скорости, а затем **TruffleHog** с `--only-verified` для снижения ложных срабатываний.
 
-### History Cleaning Methods — Сравнение методов очистки истории
+### History Cleaning Methods —
 
 | Method | Speed | Complexity | Safety | Recommendation / Рекомендация |
 |--------|-------|------------|--------|------------------------------|
@@ -180,7 +180,7 @@ wget https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
 
 ## Automated Scanning
 
-### Gitleaks — Сканирование / Scanning
+### Gitleaks —
 
 ```bash
 gitleaks detect --source . --verbose  # Basic scan / Базовое сканирование
@@ -200,7 +200,7 @@ gitleaks detect --source . --log-opts="-- . ':!*.test.js'"  # Ignore specific fi
 gitleaks protect --staged --verbose  # Pre-commit mode (scan staged) / Режим pre-commit (сканировать staged)
 ```
 
-#### Gitleaks Configuration / Конфигурация Gitleaks
+#### Gitleaks Configuration
 `.gitleaks.toml`
 
 ```bash
@@ -230,7 +230,7 @@ entropy = 3.5
 
 ---
 
-### TruffleHog — Сканирование / Scanning
+### TruffleHog —
 
 ```bash
 trufflehog git file://. --since-commit HEAD~100 --only-verified  # Scan recent commits (verified only) / Сканирование последних коммитов
@@ -248,12 +248,12 @@ trufflehog github --org=<HOST> --token=<SECRET_KEY>  # Scan GitHub organization 
 
 ---
 
-### git-secrets (AWS) — Использование / Usage
+### git-secrets (AWS) —
 
 ```bash
 git secrets --install  # Install hooks into repo / Установить хуки в репозиторий
 
-# Install globally for all new repos / Установить глобально для всех новых репозиториев
+# Install globally for all new repos
 git secrets --install ~/.git-templates/git-secrets
 git config --global init.templateDir ~/.git-templates/git-secrets
 
@@ -269,7 +269,7 @@ git secrets --list  # List registered patterns / Список зарегистр
 
 ---
 
-### detect-secrets (Yelp) — Использование / Usage
+### detect-secrets (Yelp) —
 
 ```bash
 detect-secrets scan > .secrets.baseline  # Create baseline / Создать baseline
@@ -287,7 +287,7 @@ detect-secrets scan --exclude-files '\.example$' --exclude-files 'test/.*'  # Ex
 
 ---
 
-### GitGuardian CLI (ggshield) — Использование / Usage
+### GitGuardian CLI (ggshield) —
 
 ```bash
 ggshield auth login  # Authenticate / Авторизация
@@ -305,9 +305,9 @@ ggshield secret scan docker nginx:latest  # Scan Docker image / Сканиров
 
 ## Manual Search
 
-### Basic Git Commands — Базовые Git-команды
+### Basic Git Commands —
 
-#### Search by Content / Поиск по содержимому
+#### Search by Content
 
 ```bash
 git log -p --all -S "<SEARCH_STRING>"  # Search for string in history / Поиск строки во всей истории
@@ -319,7 +319,7 @@ git log -p --all -S "<SECRET_KEY>" | grep -B 3 -A 3 "<SECRET_KEY>"  # Search wit
 git log --all --grep="password"  # Search in commit messages / Поиск в сообщениях коммитов
 ```
 
-#### Search in Specific Files / Поиск в конкретных файлах
+#### Search in Specific Files
 
 ```bash
 git log --all --full-history -p -- path/to/file.conf  # File history / История конкретного файла
@@ -331,7 +331,7 @@ git show <COMMIT_HASH>:path/to/file  # Show file at specific commit / Показ
 git log --diff-filter=D --summary | grep delete  # Find when a file was deleted / Найти когда файл был удалён
 ```
 
-#### Search Deleted Files / Поиск удалённых файлов
+#### Search Deleted Files
 
 ```bash
 git log --diff-filter=D --summary | grep delete | awk '{print $4}'  # List all deleted files / Список всех удалённых файлов
@@ -341,9 +341,9 @@ git checkout <COMMIT_HASH>^ -- path/to/deleted/file  # Restore deleted file for 
 
 ---
 
-### Pattern Search — Поиск по паттернам
+### Pattern Search —
 
-#### Private Keys / Приватные ключи
+#### Private Keys
 
 ```bash
 git log -p --all | grep -i "BEGIN.*PRIVATE" -B 5 -A 10  # Any private key / Любой приватный ключ
@@ -351,7 +351,7 @@ git log -p --all | grep -i "BEGIN RSA PRIVATE KEY"  # RSA key / RSA-ключ
 git log -p --all | grep -i "BEGIN OPENSSH PRIVATE KEY"  # OpenSSH key / OpenSSH-ключ
 ```
 
-#### Passwords & Tokens / Пароли и токены
+#### Passwords & Tokens
 
 ```bash
 git log -p --all | grep -Ei "(password|passwd|pwd)\s*[:=]" -B 2 -A 2  # Passwords / Пароли
@@ -359,7 +359,7 @@ git log -p --all | grep -Ei "(api[_-]?key|token|secret)\s*[:=]" -B 2 -A 2  # API
 git log -p --all | grep -Ei "authorization\s*:\s*bearer" -i  # Bearer tokens / Bearer-токены
 ```
 
-#### Credentials in URLs / Реквизиты доступа в URL
+#### Credentials in URLs
 
 ```bash
 git log -p --all | grep -E "https?://[^:]+:[^@]+@" -B 2 -A 2  # URL with embedded credentials / URL со встроенными реквизитами
@@ -392,33 +392,33 @@ git log -p --all | grep -E "eyJ[A-Za-z0-9_-]*\.eyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*
 
 ---
 
-### Search by File Type / Поиск по типу файла
+### Search by File Type
 
 ```bash
-# Config files / Конфиг-файлы
+# Config files
 git log -p --all -- "*.conf" "*.config" "*.ini" "*.yaml" "*.yml" "*.toml"
 
-# Environment files / Файлы окружения
+# Environment files
 git log -p --all -- "*.env" "*.env.*" ".envrc"
 
-# Credential files / Файлы с реквизитами
+# Credential files
 git log -p --all -- "*credentials*" "*secret*" "*password*"
 
 # SSH keys / SSH-ключи
 git log -p --all -- "*.pem" "*.key" "*id_rsa*" "*id_ed25519*"
 
-# Certificate files / Файлы сертификатов
+# Certificate files
 git log -p --all -- "*.p12" "*.pfx" "*.jks" "*.keystore"
 
-# Backup files (often contain secrets) / Резервные копии (часто содержат секреты)
+# Backup files (often contain secrets)
 git log -p --all -- "*.bak" "*.backup" "*.old" "*~"
 ```
 
 ---
 
-### Advanced Search / Расширенный поиск
+### Advanced Search
 
-#### By Author and Date / По автору и дате
+#### By Author and Date
 
 ```bash
 git log -p --all --author="<USER>@<HOST>" | grep -i "password"  # Commits by author / Коммиты конкретного автора
@@ -428,7 +428,7 @@ git log -p --all --since="2024-01-01" --until="2024-12-31" | grep -i "secret"  #
 git log --all --shortstat | grep -B 1 "100[0-9]\+ insertion"  # Large commits (potential dumps) / Большие коммиты (потенциальные дампы)
 ```
 
-#### Stash and Reflog / Stash и Reflog
+#### Stash and Reflog / Stash
 
 ```bash
 git stash list  # List stashes / Список сохранённых stash
@@ -446,9 +446,9 @@ git show HEAD@{5}:path/to/file  # Show file from reflog entry / Показать
 > **All methods below rewrite Git history.** After cleaning, you MUST `force push` and all collaborators MUST re-clone or `git reset --hard`. Coordinate with your team before proceeding!
 > **Все методы ниже перезаписывают историю Git.** После очистки необходим `force push`, и все участники ДОЛЖНЫ заново клонировать репозиторий или выполнить `git reset --hard`. Согласуйте с командой перед началом!
 
-### Method 1: git-filter-repo (Recommended) / git-filter-repo (Рекомендуется)
+### Method 1: git-filter-repo (Recommended) / git-filter-repo
 
-#### Remove Files / Удаление файлов
+#### Remove Files
 
 ```bash
 git filter-repo --path path/to/secret.conf --invert-paths  # Remove single file / Удалить один файл
@@ -460,10 +460,10 @@ git filter-repo --path-glob '*.env' --invert-paths  # Remove by pattern / Уда
 git filter-repo --path secrets/ --invert-paths  # Remove entire directory / Удалить целую директорию
 ```
 
-#### Replace Content / Заменить содержимое в файлах
+#### Replace Content
 
 ```bash
-# Create expressions file / Создайте файл с заменами (expressions.txt)
+# Create expressions file
 # Format: literal:old_text==>new_text or regex:pattern==>replacement
 ```
 
@@ -479,13 +479,13 @@ literal:smtp.gmail.com==>smtp.example.com
 git filter-repo --replace-text expressions.txt  # Apply replacements / Применить замены
 ```
 
-#### Remove Large Files / Удалить большие файлы
+#### Remove Large Files
 
 ```bash
 git filter-repo --strip-blobs-bigger-than 10M  # Remove files > 10MB / Удалить файлы больше 10MB
 ```
 
-#### Fix Author Info / Исправить информацию об авторе
+#### Fix Author Info
 
 `mailmap.txt`
 
@@ -498,7 +498,7 @@ Correct Name <USER>@<HOST> Old Name <USER>@<HOST>
 git filter-repo --mailmap mailmap.txt  # Apply mailmap / Применить mailmap
 ```
 
-#### Combined Operations / Комбинированные операции
+#### Combined Operations
 
 ```bash
 git filter-repo \
@@ -512,7 +512,7 @@ git filter-repo \
 
 ### Method 2: BFG Repo-Cleaner / BFG Repo-Cleaner
 
-#### Remove Files / Удаление файлов
+#### Remove Files
 
 ```bash
 bfg --delete-files secret.conf  # Single file / Один файл
@@ -522,10 +522,10 @@ bfg --delete-folders secrets  # Delete folders / Удалить папки
 bfg --delete-folders "{logs,temp,cache}"  # Multiple folders / Несколько папок
 ```
 
-#### Replace Strings / Заменить строки
+#### Replace Strings
 
 ```bash
-# Create file with secrets (one per line) / Создайте файл с секретами (по одному на строку)
+# Create file with secrets (one per line)
 echo "<PASSWORD>" > passwords.txt
 echo "<SECRET_KEY>" >> passwords.txt
 echo "<SECRET_KEY>" >> passwords.txt
@@ -533,7 +533,7 @@ echo "<SECRET_KEY>" >> passwords.txt
 bfg --replace-text passwords.txt  # Replace with ***REMOVED*** / Заменить на ***REMOVED***
 ```
 
-#### Remove Large Files / Удалить большие файлы
+#### Remove Large Files
 
 ```bash
 bfg --strip-blobs-bigger-than 10M  # Remove files > 10MB / Удалить файлы больше 10MB
@@ -548,13 +548,13 @@ bfg --strip-blobs-bigger-than 10M  # Remove files > 10MB / Удалить фай
 
 ---
 
-### Method 3: git filter-branch (Legacy — Not Recommended) / git filter-branch (Устаревший — не рекомендуется)
+### Method 3: git filter-branch (Legacy — Not Recommended) / git filter-branch
 
 > [!WARNING]
 > `git filter-branch` is slow, error-prone, and officially deprecated. Use `git-filter-repo` instead.
 > `git filter-branch` медленный, подвержен ошибкам и официально устарел. Используйте `git-filter-repo`.
 
-#### Remove File / Удалить файл
+#### Remove File
 
 ```bash
 git filter-branch --force --index-filter \
@@ -562,7 +562,7 @@ git filter-branch --force --index-filter \
   --prune-empty --tag-name-filter cat -- --all
 ```
 
-#### Remove Directory / Удалить папку
+#### Remove Directory
 
 ```bash
 git filter-branch --force --index-filter \
@@ -570,7 +570,7 @@ git filter-branch --force --index-filter \
   --prune-empty --tag-name-filter cat -- --all
 ```
 
-#### Replace Content / Заменить содержимое
+#### Replace Content
 
 ```bash
 git filter-branch --tree-filter \
@@ -578,7 +578,7 @@ git filter-branch --tree-filter \
   --prune-empty --tag-name-filter cat -- --all
 ```
 
-#### Cleanup after filter-branch / Очистка после filter-branch
+#### Cleanup after filter-branch
 
 ```bash
 rm -rf .git/refs/original/
@@ -588,26 +588,26 @@ git gc --prune=now --aggressive
 
 ---
 
-### Post-Cleanup Finalization / Финализация после очистки
+### Post-Cleanup Finalization
 
 > [!CAUTION]
 > `--force` push will overwrite remote history. Ensure all collaborators are notified!
 > `--force` push перезапишет удалённую историю. Убедитесь что все участники уведомлены!
 
 ```bash
-# 1. Verify result / Проверить результат
+# 1. Verify result
 gitleaks detect --source . --verbose
 git log --all --oneline | head -20
 
-# 2. Force push (CAREFUL!) / Force push (ОСТОРОЖНО!)
+# 2. Force push (CAREFUL!) / Force push
 git push origin --force --all
 git push origin --force --tags
 
-# 3. Collaborators must re-clone / Участники должны переклонировать:
+# 3. Collaborators must re-clone
 rm -rf local-repo
 git clone https://github.com/<USER>/<HOST>.git
 
-# Or reset / Или сбросить:
+# Or reset
 cd local-repo
 git fetch origin
 git reset --hard origin/main
@@ -633,11 +633,11 @@ aws iam delete-access-key --access-key-id <SECRET_KEY>  # Delete key / Удал�
 
 aws iam create-access-key  # Create new / Создать новый
 
-# Key rotation (best practice) / Ротация ключей (best practice)
+# Key rotation (best practice)
 aws iam create-access-key --user-name <USER>
-# Update applications with the new key / Обновите приложения с новым ключом
+# Update applications with the new key
 aws iam update-access-key --access-key-id <SECRET_KEY> --status Inactive
-# Test / Тестируйте
+# Test
 aws iam delete-access-key --access-key-id <SECRET_KEY>
 ```
 
@@ -647,23 +647,23 @@ aws iam delete-access-key --access-key-id <SECRET_KEY>
 # Web UI:
 # Settings → Developer settings → Personal access tokens → Revoke
 
-# Or via API / Или через API:
+# Or via API
 curl -X DELETE \
   -H "Authorization: token <SECRET_KEY>" \
   https://api.github.com/applications/<SECRET_KEY>/token
 
-# Create new / Создать новый:
+# Create new
 # Settings → Developer settings → Personal access tokens → Generate new token
 ```
 
-### Telegram Bot Token / Токен бота Telegram
+### Telegram Bot Token
 
 ```bash
 # @BotFather
 /mybots
-# Select bot / Выберите бота
+# Select bot
 # API Token → Revoke current token
-# Generate new / Сгенерируйте новый
+# Generate new
 ```
 
 ### Google Cloud / OAuth
@@ -671,7 +671,7 @@ curl -X DELETE \
 ```bash
 # Web UI:
 # Google Cloud Console → APIs & Services → Credentials
-# Find compromised credential → Delete / Найдите скомпрометированный credential → Удалите
+# Find compromised credential → Delete
 
 # gcloud CLI
 gcloud auth revoke <USER>@<HOST>  # Revoke auth / Отозвать авторизацию
@@ -693,7 +693,7 @@ vim ~/.ssh/authorized_keys  # Remove public key / Удалить публичн�
 ssh-keygen -t ed25519 -C "<USER>@<HOST>"  # Generate new key pair / Создать новую пару ключей
 ```
 
-### Database Passwords / Пароли БД
+### Database Passwords
 
 ```bash
 -- MySQL/MariaDB
@@ -707,13 +707,13 @@ ALTER USER <USER> WITH PASSWORD '<PASSWORD>';
 db.updateUser("<USER>", {pwd: "<PASSWORD>"})
 ```
 
-### Docker Registry Tokens / Токены Docker Registry
+### Docker Registry Tokens
 
 ```bash
 # Docker Hub: Account Settings → Security → Access Tokens → Revoke
 
 # Harbor / Private registry:
-# Delete robot account and recreate / Удалить robot account и создать заново
+# Delete robot account and recreate
 ```
 
 ### NPM Token / NPM-токен
@@ -728,9 +728,9 @@ npm token create --publish  # Create new (publish) / Создать (publish)
 
 ## Prevention & Best Practices
 
-### Pre-commit Hooks / Pre-commit хуки
+### Pre-commit Hooks / Pre-commit
 
-#### Using pre-commit Framework / Использование pre-commit framework
+#### Using pre-commit Framework
 
 ```bash
 pip install pre-commit  # Install / Установка
@@ -766,14 +766,14 @@ pre-commit install  # Install hooks / Установить хуки
 pre-commit run --all-files  # Run manually / Запустить вручную
 ```
 
-#### Custom Bash Pre-commit Hook / Пользовательский bash pre-commit хук
+#### Custom Bash Pre-commit Hook
 
 `.git/hooks/pre-commit`
 
 ```bash
 #!/bin/bash
 
-# Check for gitleaks / Проверка на gitleaks
+# Check for gitleaks
 if command -v gitleaks &> /dev/null; then
     gitleaks protect --staged --verbose
     if [ $? -ne 0 ]; then
@@ -782,7 +782,7 @@ if command -v gitleaks &> /dev/null; then
     fi
 fi
 
-# Check for large files / Проверка на большие файлы
+# Check for large files
 MAX_SIZE=1048576  # 1MB in bytes / 1MB в байтах
 for file in $(git diff --cached --name-only); do
     if [ -f "$file" ]; then
@@ -794,7 +794,7 @@ for file in $(git diff --cached --name-only); do
     fi
 done
 
-# Check for private keys / Проверка на приватные ключи
+# Check for private keys
 if git diff --cached | grep -E "BEGIN.*PRIVATE KEY"; then
     echo "❌ Private key detected in commit!"
     exit 1
@@ -810,12 +810,12 @@ chmod +x .git/hooks/pre-commit  # Make executable / Сделать исполн�
 
 ---
 
-### .gitignore — Recommended Template / Рекомендуемый шаблон
+### .gitignore — Recommended Template
 
 `.gitignore`
 
 ```bash
-# Secrets and credentials / Секреты и реквизиты
+# Secrets and credentials
 .env
 .env.*
 !.env.example
@@ -829,7 +829,7 @@ id_rsa*
 id_ed25519*
 id_ecdsa*
 
-# Configs with secrets / Конфиги с секретами
+# Configs with secrets
 *secret*
 *password*
 *credential*
@@ -837,19 +837,19 @@ config/secrets.yml
 config/database.yml
 !config/database.yml.example
 
-# Cloud provider configs / Конфиги облачных провайдеров
+# Cloud provider configs
 .aws/
 .azure/
 .gcloud/
 credentials.json
 service-account.json
 
-# Logs (may contain secrets) / Логи (могут содержать секреты)
+# Logs (may contain secrets)
 *.log
 logs/
 *.log.*
 
-# Backups / Резервные копии
+# Backups
 *.bak
 *.backup
 *.old
@@ -857,7 +857,7 @@ logs/
 *.swp
 *.swo
 
-# Directories / Директории
+# Directories
 secrets/
 private/
 .secrets/
@@ -876,12 +876,12 @@ Thumbs.db
 
 ---
 
-### Git Attributes for Sensitive Files / Git Attributes для чувствительных файлов
+### Git Attributes for Sensitive Files / Git Attributes
 
 `.gitattributes`
 
 ```bash
-# Never show diff for these files / Никогда не показывать diff для этих файлов
+# Never show diff for these files
 *.pem diff=secret
 *.key diff=secret
 *secret* diff=secret
@@ -897,9 +897,9 @@ Thumbs.db
 
 ---
 
-### Environment-Based Configuration / Конфигурация через переменные окружения
+### Environment-Based Configuration
 
-#### Using dotenv / Использование dotenv
+#### Using dotenv
 
 `.env` (add to `.gitignore`)
 
@@ -952,7 +952,7 @@ kubectl create secret generic mysecret --from-literal=password=<PASSWORD>  # Cre
 
 ## GitHub-Specific Tools
 
-### GitHub Secret Scanning / Сканирование секретов GitHub
+### GitHub Secret Scanning
 
 Automatically active for public repositories / Автоматически активно для публичных репозиториев.
 
@@ -977,7 +977,7 @@ curl -X PUT \
 
 ## CI/CD Integration
 
-### GitHub Actions Secret Scanning Workflow / GitHub Actions для сканирования секретов
+### GitHub Actions Secret Scanning Workflow / GitHub Actions
 
 `.github/workflows/secret-scan.yml`
 
@@ -1057,12 +1057,12 @@ vault kv get secret/myapp  # Retrieve secret / Получить секрет
 ### AWS Secrets Manager
 
 ```bash
-# Create secret / Создать секрет
+# Create secret
 aws secretsmanager create-secret \
     --name MySecret \
     --secret-string '{"username":"<USER>","password":"<PASSWORD>"}'
 
-# Retrieve secret / Получить секрет
+# Retrieve secret
 aws secretsmanager get-secret-value --secret-id MySecret
 ```
 
@@ -1092,7 +1092,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DATABASE_PASSWORD = os.getenv('DB_PASSWORD')
 
-# NEVER / НИКОГДА:
+# NEVER
 # SECRET_KEY = 'django-insecure-hardcoded-key-123'
 ```
 
@@ -1137,7 +1137,7 @@ func main() {
 production:
   password: <%= ENV['DATABASE_PASSWORD'] %>
 
-# NEVER / НИКОГДА:
+# NEVER
 # password: hardcoded_password_123
 ```
 
@@ -1160,37 +1160,37 @@ $apiKey = $_ENV['API_KEY'];
 
 ## Pre-Publication Checklist
 
-### Minimal Checklist / Минимальный чеклист
+### Minimal Checklist
 
 ```bash
-# 1. Scan / Сканирование
+# 1. Scan
 gitleaks detect --source . --verbose
 trufflehog git file://. --only-verified
 
-# 2. Manual check critical files / Ручная проверка критичных файлов
+# 2. Manual check critical files
 git log -p --all -- "*.env" "*.conf" "*.yaml"
 git log -p --all -- "*secret*" "*password*" "*credential*"
 
-# 3. Verify .gitignore / Проверить .gitignore
+# 3. Verify .gitignore
 cat .gitignore | grep -E "(env|secret|password|key|credential)"
 
-# 4. Remove temporary files and logs / Удалить временные файлы и логи
+# 4. Remove temporary files and logs
 git clean -fdx
 rm -rf logs/ *.log tmp/ temp/
 
-# 5. Create example files / Создать example-файлы
+# 5. Create example files
 cp .env .env.example
-# Replace real values with placeholders / Заменить реальные значения на плейсхолдеры
+# Replace real values with placeholders
 
-# 6. Commit changes / Коммит изменений
+# 6. Commit changes
 git add .gitignore *.example
 git commit -m "Prepare for public release"
 
-# 7. Final scan / Финальное сканирование
+# 7. Final scan
 gitleaks detect --source . --verbose
 ```
 
-### Extended Checklist / Расширенный чеклист
+### Extended Checklist
 
 - [ ] Run `gitleaks detect` / Запустить `gitleaks detect`
 - [ ] Run `trufflehog` / Запустить `trufflehog`
@@ -1218,7 +1218,7 @@ gitleaks detect --source . --verbose
 
 ## Emergency Incident Runbook
 
-### Production Runbook: Secret Leak Response / Экстренный протокол при утечке секретов
+### Production Runbook: Secret Leak Response
 
 > [!CAUTION]
 > If secrets have been pushed to a **public** repository, they are already compromised. Bots continuously scan GitHub for leaked credentials. Revoke and rotate ALL exposed secrets immediately — do NOT rely solely on history cleanup.
@@ -1262,7 +1262,7 @@ gitleaks detect --source . --verbose
 
 ## Minimal Cleanup Workflow
 
-### Exact Short Steps / Короткая пошаговая процедура
+### Exact Short Steps
 
 Use this flow when a secret has already landed in Git history and you need a fast, practical cleanup sequence.
 Используйте этот сценарий, когда секрет уже попал в историю Git и нужен быстрый практический порядок действий.
@@ -1325,47 +1325,47 @@ gitleaks detect -v  # Re-scan after rewrite / Повторно проскани�
 
 ## Quick Reference
 
-### Scan (pick one) / Сканирование (выберите один)
+### Scan (pick one)
 
 ```bash
 gitleaks detect --source . --verbose  # Fastest / Самый быстрый
-# or / или
+# or
 trufflehog git file://. --only-verified  # Most accurate / Самый точный
-# or / или
+# or
 detect-secrets scan  # Baseline support / Поддержка baseline
 ```
 
-### Clean History (pick one) / Очистка истории (выберите один)
+### Clean History (pick one)
 
 ```bash
-# Modern (recommended) / Современный (рекомендуется)
+# Modern (recommended)
 git filter-repo --path secret.conf --invert-paths
 
-# Simple / Простой
+# Simple
 bfg --delete-files secret.conf
 git reflog expire --expire=now --all && git gc --prune=now --aggressive
 
-# Legacy (not recommended) / Устаревший (не рекомендуется)
+# Legacy (not recommended)
 git filter-branch --index-filter 'git rm --cached --ignore-unmatch secret.conf' --prune-empty -- --all
 ```
 
-### After Cleanup / После очистки
+### After Cleanup
 
 ```bash
 gitleaks detect --source . --verbose  # Verify / Проверка
 
-# Force push (CAREFUL!) / Force push (ОСТОРОЖНО!)
+# Force push (CAREFUL!) / Force push
 git push origin --force --all
 git push origin --force --tags
 ```
 
-### Prevention / Предотвращение
+### Prevention
 
 ```bash
 pip install pre-commit  # Install pre-commit / Установить pre-commit
 pre-commit install  # Activate hooks / Активировать хуки
 
-# Add to .gitignore / Добавить в .gitignore
+# Add to .gitignore
 echo ".env" >> .gitignore
 echo "*.log" >> .gitignore
 echo "*secret*" >> .gitignore
@@ -1375,7 +1375,7 @@ echo "*secret*" >> .gitignore
 
 ## Sysadmin Operations
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Tool / Service | Default Port / Порт по умолчанию | Notes / Примечания |
 |----------------|----------------------------------|--------------------|
@@ -1386,7 +1386,7 @@ echo "*secret*" >> .gitignore
 | GitHub Secret Scanning | N/A | SaaS feature in GitHub / SaaS-функция GitHub |
 | HashiCorp Vault | `8200/tcp` | API and UI / API и UI |
 
-### Log Locations / Расположение логов
+### Log Locations
 
 | Tool | Log Location / Расположение лога |
 |------|----------------------------------|
@@ -1398,7 +1398,7 @@ echo "*secret*" >> .gitignore
 | GitHub Actions | GitHub UI → Actions tab |
 | Vault | `/var/log/vault/vault_audit.log` (when configured) |
 
-### Service Control / Управление сервисом
+### Service Control
 
 `/etc/systemd/system/vault.service` or `/lib/systemd/system/vault.service`
 
@@ -1409,7 +1409,7 @@ systemctl reload vault  # Reload config if supported / Перечитать ко
 journalctl -u vault -n 100 --no-pager  # Recent logs / Последние логи
 ```
 
-### Logrotate Configuration / Конфигурация Logrotate
+### Logrotate Configuration
 
 `/etc/logrotate.d/vault`
 
@@ -1437,7 +1437,7 @@ journalctl -u vault -n 100 --no-pager  # Recent logs / Последние лог
 
 ## Resources & Links
 
-### Tools / Инструменты
+### Tools
 
 - [gitleaks](https://github.com/gitleaks/gitleaks)
 - [TruffleHog](https://github.com/trufflesecurity/trufflehog)
@@ -1446,13 +1446,13 @@ journalctl -u vault -n 100 --no-pager  # Recent logs / Последние лог
 - [git-filter-repo](https://github.com/newren/git-filter-repo)
 - [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/)
 
-### Documentation / Документация
+### Documentation
 
 - [GitHub Secret Scanning](https://docs.github.com/en/code-security/secret-scanning)
 - [GitLab Secret Detection](https://docs.gitlab.com/ee/user/application_security/secret_detection/)
 - [Pre-commit framework](https://pre-commit.com/)
 
-### Secret Pattern Lists / Списки секретных паттернов
+### Secret Pattern Lists
 
 - [GitGuardian Secret Patterns](https://github.com/GitGuardian/ggshield/tree/main/ggshield/core/scan/secret/secret_patterns)
 - [Gitleaks Rules](https://github.com/gitleaks/gitleaks/blob/master/config/gitleaks.toml)

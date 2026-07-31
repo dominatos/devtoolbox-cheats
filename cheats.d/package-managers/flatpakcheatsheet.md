@@ -11,11 +11,11 @@ tags:
 
 ## Table of Contents
 - [Description](#Description)
-- [Configuration](#️%20Configuration%20/%20Конфигурация)
-- [Core Management](#Core%20Management%20/%20Основное%20управление)
-- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
+- [Configuration](#️%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
 - [Comparison: Flatpak vs Snap](#Comparison:%20Flatpak%20vs%20Snap)
-- [Security](#Security%20/%20Безопасность)
+- [Security](#Security)
 - [Documentation Links](#Documentation%20Links)
 
 ---
@@ -30,9 +30,9 @@ tags:
 
 ---
 
-## ⚙️ Configuration / Конфигурация
+## ⚙️ Configuration
 
-### Remotes (Repositories) / Удалённые репозитории (Remotes)
+### Remotes (Repositories)
 Manage where Flatpak downloads applications from (e.g., Flathub). / Управление источниками загрузки приложений (например, Flathub).
 
 ```bash
@@ -42,34 +42,34 @@ flatpak remote-delete <REMOTE>                # Remove remote / Удалить �
 flatpak remote-modify <REMOTE> --enable       # Enable remote / Включить репозиторий
 ```
 
-### Locations / Расположение
+### Locations
 - **System Installation:** `/var/lib/flatpak/`
 - **User Installation:** `~/.local/share/flatpak/`
 
 ---
 
-## 🛠 Core Management / Основное управление
+## 🛠 Core Management
 
-### Install / Установка
+### Install
 ```bash
 flatpak install flathub <APP_ID>              # Install from specific remote / Установить из конкретного репозитория
 flatpak install <App_ID>                      # Search and install / Найти и установить
 flatpak install --user <APP_ID>               # Install for current user only / Установить только для текущего пользователя
 ```
 
-### Run / Запуск
+### Run
 ```bash
 flatpak run <APP_ID>                          # Launch application / Запустить приложение
 flatpak run --command=bash <APP_ID>           # Run shell inside container / Запустить оболочку внутри контейнера
 ```
 
-### Update / Обновление
+### Update
 ```bash
 flatpak update                                # Update all installed apps and runtimes / Обновить все установленные приложения и runtimes
 flatpak update <APP_ID>                       # Update specific app / Обновить конкретное приложение
 ```
 
-### List & Search / Список и поиск
+### List & Search
 ```bash
 flatpak list                                  # List installed apps / Список установленных приложений
 flatpak list --app                            # List only apps (hide runtimes) / Список только приложений
@@ -77,7 +77,7 @@ flatpak search <KEYWORD>                      # Search for apps / Поиск п�
 flatpak info <APP_ID>                         # Show detailed info / Показать детальную информацию
 ```
 
-### Remove / Удаление
+### Remove
 ```bash
 flatpak uninstall <APP_ID>                    # Remove application / Удалить приложение
 flatpak uninstall --unused                    # Remove unused runtimes (Important!) / Удалить неиспользуемые runtimes (Важно!)
@@ -86,9 +86,9 @@ flatpak uninstall --delete-data <APP_ID>      # Remove app and its data / Уда
 
 ---
 
-## 🔧 Sysadmin Operations / Операции системного администратора
+## 🔧 Sysadmin Operations
 
-### Permissions (Overrides) / Права (Переопределения)
+### Permissions (Overrides)
 Manage sandbox permissions (filesystem, network, device access). / Управление правами песочницы (файловая система, сеть, доступ к устройствам).
 
 ```bash
@@ -98,7 +98,7 @@ sudo flatpak override <APP_ID> --socket=wayland # Allow access to Wayland / Ра
 sudo flatpak override --reset <APP_ID>        # Reset permissions to default / Сбросить права к значениям по умолчанию
 ```
 
-### Troubleshooting / Устранение неполадок
+### Troubleshooting
 Repair installation errors. / Исправление ошибок установки.
 
 ```bash
@@ -106,7 +106,7 @@ flatpak repair                                # Deduplicate and repair installat
 flatpak repair --user                         # Repair user installation / Исправление установки пользователя
 ```
 
-### Processes / Процессы
+### Processes
 ```bash
 flatpak ps                                    # List running flatpak instances / Список запущенных экземпляров flatpak
 flatpak kill <APP_ID>                         # Kill running instance / Убить запущенный экземпляр
@@ -125,12 +125,12 @@ flatpak kill <APP_ID>                         # Kill running instance / Убит
 
 ---
 
-## 🔒 Security / Безопасность
+## 🔒 Security
 
-### Isolation / Изоляция
+### Isolation
 Flatpaks are sandboxed by default. They cannot see host processes or files unless explicitly allowed. / Flatpaks изолированы по умолчанию. Они не видят процессы хоста или файлы, если это явно не разрешено.
 
-### Verification / Проверка
+### Verification
 Check commit checksums. / Проверка контрольных сумм коммитов.
 
 ```bash

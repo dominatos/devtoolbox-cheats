@@ -42,7 +42,7 @@ tags:
 
 ## Installation
 
-### Install zstd / Установка zstd
+### Install zstd
 ```bash
 # Debian/Ubuntu
 sudo apt install zstd                          # Install zstd / Установить zstd
@@ -53,7 +53,7 @@ sudo dnf install zstd                          # Install zstd / Установи
 # Arch Linux
 sudo pacman -S zstd                            # Install zstd / Установить zstd
 
-# Verify installation / Проверить установку
+# Verify installation
 zstd --version                                 # Show zstd version / Версия zstd
 tar --version                                  # Ensure GNU tar 1.31+ / Убедиться в GNU tar 1.31+
 ```
@@ -66,19 +66,19 @@ tar --version                                  # Ensure GNU tar 1.31+ / Убед
 
 ## Basic Commands
 
-### Method 1: Explicit Compressor / Явный компрессор
+### Method 1: Explicit Compressor
 ```bash
 tar -I zstd -cvf <ARCHIVE>.tar.zst <DIR>/     # Pack dir → .tar.zst / Упаковать dir → .tar.zst
 tar -I unzstd -xvf <ARCHIVE>.tar.zst          # Extract .tar.zst / Распаковать .tar.zst
 ```
 
-### Method 2: GNU tar Flags / Флаги GNU tar
+### Method 2: GNU tar Flags
 ```bash
 tar --zstd -cvf <ARCHIVE>.tar.zst <DIR>/      # Pack with --zstd / Упаковать с --zstd
 tar --zstd -xvf <ARCHIVE>.tar.zst             # Extract / Распаковать
 ```
 
-### Method Comparison / Сравнение методов
+### Method Comparison
 
 | Method | Compatibility (EN / RU) | Advantage / Преимущество |
 |--------|------------------------|--------------------------|
@@ -86,7 +86,7 @@ tar --zstd -xvf <ARCHIVE>.tar.zst             # Extract / Распаковать
 | `--zstd` | GNU tar 1.31+ | Cleaner syntax / Более чистый синтаксис |
 | `tar -a` | GNU tar 1.31+ | Auto-detect by extension / Автоопределение по расширению |
 
-### List Contents / Просмотр содержимого
+### List Contents
 ```bash
 tar -I zstd -tvf <ARCHIVE>.tar.zst | less    # List contents / Показать содержимое
 tar --zstd -tvf <ARCHIVE>.tar.zst            # Alternative / Альтернатива
@@ -96,30 +96,30 @@ tar --zstd -tvf <ARCHIVE>.tar.zst            # Alternative / Альтернат�
 
 ## Compression Levels
 
-### Available Levels / Доступные уровни
+### Available Levels
 ```bash
-# Zstandard levels: 1-19 (default: 3) / Уровни Zstandard: 1-19 (по умолчанию: 3)
-# Higher = better compression, slower / Выше = лучшее сжатие, медленнее
-# Lower = faster, larger files / Ниже = быстрее, больше файлы
+# Zstandard levels: 1-19 (default: 3)
+# Higher = better compression, slower
+# Lower = faster, larger files
 ```
 
-### Fast Compression / Быстрое сжатие
+### Fast Compression
 ```bash
 tar -I 'zstd -1' -cvf <ARCHIVE>.tar.zst <DIR>/  # Fast compression / Быстрое сжатие
 tar -I 'zstd -3' -cvf <ARCHIVE>.tar.zst <DIR>/  # Balanced (default) / Сбалансированное (по умолчанию)
 ```
 
-### Maximum Compression / Максимальное сжатие
+### Maximum Compression
 ```bash
 tar -I 'zstd -19' -cvf <ARCHIVE>.tar.zst <DIR>/  # Max compression / Максимальное сжатие
 ```
 
-### Default Level / Уровень по умолчанию
+### Default Level
 ```bash
 tar -I zstd -cvf <ARCHIVE>.tar.zst <DIR>/     # Default (level 3) / По умолчанию (уровень 3)
 ```
 
-### Compression Level Comparison / Сравнение уровней сжатия
+### Compression Level Comparison
 
 The key insight is that zstd at level 1 is already comparable to gzip in ratio but **3-5x faster**. Level 3 (default) matches bzip2 ratio at much higher speed. Only use level 19 for archival storage where speed doesn't matter.
 
@@ -136,7 +136,7 @@ The key insight is that zstd at level 1 is already comparable to gzip in ratio b
 
 ## Advanced Usage
 
-### Multi-threaded Compression / Многопоточное сжатие
+### Multi-threaded Compression
 ```bash
 tar -cv <DIR>/ | zstd -T0 -19 -o <ARCHIVE>.tar.zst  # Use all cores / Использовать все ядра
 tar -cv <DIR>/ | zstd -T4 -o <ARCHIVE>.tar.zst      # Use 4 threads / Использовать 4 потока
@@ -146,41 +146,41 @@ tar -cv <DIR>/ | zstd -T4 -o <ARCHIVE>.tar.zst      # Use 4 threads / Испол
 > `-T0` automatically uses all available CPU cores, dramatically speeding up compression of large datasets. This is one of zstd's biggest advantages over gzip.
 > `-T0` автоматически использует все доступные ядра CPU, значительно ускоряя сжатие больших данных. Это одно из главных преимуществ zstd над gzip.
 
-### Streaming Operations / Поточные операции
+### Streaming Operations
 ```bash
-# Create archive from stream / Создать архив из потока
+# Create archive from stream
 tar -cv <DIR>/ | zstd -T0 -19 -o <ARCHIVE>.tar.zst
 
-# Extract from stream / Распаковать из потока
+# Extract from stream
 zstdcat <ARCHIVE>.tar.zst | tar -xv
 zstd -dc <ARCHIVE>.tar.zst | tar -xv  # Alternative / Альтернатива
 ```
 
-### Pipe to Remote Server / Передать на удалённый сервер
+### Pipe to Remote Server
 ```bash
 tar -cv <DIR>/ | zstd | ssh <USER>@<HOST> 'cat > archive.tar.zst'  # Send to remote / Отправить на удалённый
 ssh <USER>@<HOST> 'zstdcat archive.tar.zst' | tar -xv  # Extract from remote / Распаковать с удалённого
 ```
 
-### Exclude Patterns / Исключить паттерны
+### Exclude Patterns
 ```bash
 tar -cv --exclude='*.log' --exclude='node_modules' <DIR>/ | zstd -o <ARCHIVE>.tar.zst  # Exclude patterns / Исключить паттерны
 ```
 
-### Compression with Progress / Сжатие с прогрессом
+### Compression with Progress
 ```bash
 tar -cv <DIR>/ | pv | zstd -T0 -o <ARCHIVE>.tar.zst  # Show progress (requires pv) / Показать прогресс (требуется pv)
 ```
 
-### Dictionary-Based Compression / Сжатие на основе словаря
+### Dictionary-Based Compression
 ```bash
-# Train a dictionary on sample files / Обучить словарь на образцах файлов
+# Train a dictionary on sample files
 zstd --train samples/* -o dict.zstd
 
-# Compress with dictionary / Сжать со словарём
+# Compress with dictionary
 tar -cv <DIR>/ | zstd -D dict.zstd -o <ARCHIVE>.tar.zst
 
-# Decompress with dictionary / Распаковать со словарём
+# Decompress with dictionary
 zstd -D dict.zstd -dc <ARCHIVE>.tar.zst | tar -xv
 ```
 
@@ -192,18 +192,18 @@ zstd -D dict.zstd -dc <ARCHIVE>.tar.zst | tar -xv
 
 ## Backup Operations
 
-### Daily Backup with Rotation / Ежедневный бэкап с ротацией
+### Daily Backup with Rotation
 ```bash
-# Fast backup / Быстрая резервная копия
+# Fast backup
 tar --zstd -cvf backup-$(date +%F).tar.zst /home/<USER>
 
-# Maximum compression backup / Максимальное сжатие резервной копии
+# Maximum compression backup
 tar -I "zstd -19 -T0" -cvf backup-$(date +%F).tar.zst /data
 
-# Extract / Распаковать
+# Extract
 tar --zstd -xvf backup-$(date +%F).tar.zst
 
-# Rotate old backups / Ротация старых бэкапов
+# Rotate old backups
 find /backup/ -name "backup-*.tar.zst" -mtime +7 -delete
 ```
 
@@ -211,7 +211,7 @@ find /backup/ -name "backup-*.tar.zst" -mtime +7 -delete
 > The `find -delete` command permanently removes old backups. Always verify your retention policy before enabling rotation.
 > Команда `find -delete` безвозвратно удаляет старые бэкапы. Всегда проверяйте политику хранения перед включением ротации.
 
-### Verify Archive Integrity / Проверка целостности архива
+### Verify Archive Integrity
 ```bash
 tar --zstd -tvf <ARCHIVE>.tar.zst > /dev/null  # Test integrity / Проверить целостность
 zstd -t <ARCHIVE>.tar.zst                      # Test zstd layer / Проверить слой zstd
@@ -221,7 +221,7 @@ zstd -t <ARCHIVE>.tar.zst                      # Test zstd layer / Провер�
 
 ## Best Practices
 
-### General Recommendations / Общие рекомендации
+### General Recommendations
 
 - Use `--zstd` for GNU tar 1.31+ / Используйте `--zstd` для GNU tar 1.31+
 - Use `-T0` for multi-core compression / Используйте `-T0` для многоядерного сжатия
@@ -230,7 +230,7 @@ zstd -t <ARCHIVE>.tar.zst                      # Test zstd layer / Провер�
 - Zstd is faster than gzip/bzip2 at comparable ratios / Zstd быстрее чем gzip/bzip2 при сопоставимых коэффициентах
 - Always verify archives after creation / Всегда проверяйте архивы после создания
 
-### Quick Comparison / Быстрое сравнение
+### Quick Comparison
 
 | Format | Speed | Ratio | Description (EN / RU) |
 |--------|-------|-------|----------------------|

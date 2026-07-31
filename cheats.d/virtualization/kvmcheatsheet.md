@@ -48,7 +48,7 @@ tags:
 
 ## Installation & Configuration
 
-### Install KVM Stack / Установка стека KVM
+### Install KVM Stack
 
 #### Debian / Ubuntu
 ```bash
@@ -62,13 +62,13 @@ sudo dnf install -y @virtualization  # Install virtualization group / Устан
 sudo dnf install -y libguestfs-tools virt-install  # Image tools / Инструменты для образов
 ```
 
-### Enable Libvirt Service / Включение сервиса Libvirt
+### Enable Libvirt Service
 ```bash
 sudo systemctl enable --now libvirtd  # Enable and start / Включить и запустить
 sudo systemctl status libvirtd        # Check status / Проверить статус
 ```
 
-### Verify KVM Support / Проверка поддержки KVM
+### Verify KVM Support
 ```bash
 egrep -c '(vmx|svm)' /proc/cpuinfo   # Must return > 0 / Должно вернуть > 0
 lsmod | grep kvm                       # Check loaded modules / Проверить загруженные модули
@@ -82,21 +82,21 @@ QEMU: Checking if device /dev/kvm exists       : PASS
 QEMU: Checking if device /dev/kvm is accessible: PASS
 ```
 
-### Add User to libvirt Group / Добавить пользователя в группу
+### Add User to libvirt Group
 ```bash
 sudo usermod -aG libvirt <USER>       # Add user to group / Добавить в группу
 sudo usermod -aG kvm <USER>           # Add to kvm group / Добавить в группу kvm
 newgrp libvirt                         # Apply without logout / Применить без перелогина
 ```
 
-### Configuration Paths / Пути конфигурации
+### Configuration Paths
 - **Libvirt config:** `/etc/libvirt/libvirtd.conf`
 - **QEMU config:** `/etc/libvirt/qemu.conf`
 - **VM definitions:** `/etc/libvirt/qemu/<VM_NAME>.xml`
 - **Default storage pool:** `/var/lib/libvirt/images/`
 - **Default network:** `/etc/libvirt/qemu/networks/default.xml`
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 | Port | Protocol | Description (EN / RU) |
 | :--- | :--- | :--- |
 | 16509 | TCP | Libvirt remote (unencrypted) / Удалённое подключение |
@@ -104,12 +104,12 @@ newgrp libvirt                         # Apply without logout / Применит
 | 5900+ | TCP | VNC console / VNC консоль |
 | 5800+ | TCP | SPICE console / SPICE консоль |
 
-### Log Locations / Расположение логов
+### Log Locations
 - **Libvirt daemon:** `/var/log/libvirt/libvirtd.log`
 - **Per-VM QEMU logs:** `/var/log/libvirt/qemu/<VM_NAME>.log`
 - **Journal:** `journalctl -u libvirtd`
 
-### Logrotate Configuration / Конфигурация Logrotate
+### Logrotate Configuration
 `/etc/logrotate.d/libvirtd`
 
 ```bash
@@ -131,9 +131,9 @@ newgrp libvirt                         # Apply without logout / Применит
 
 ## Core Management
 
-### Create VM with virt-install / Создать ВМ с virt-install
+### Create VM with virt-install
 ```bash
-# Create VM from ISO / Создать ВМ из ISO
+# Create VM from ISO
 sudo virt-install \
   --name <VM_NAME> \
   --ram 2048 \
@@ -145,7 +145,7 @@ sudo virt-install \
   --cdrom /var/lib/libvirt/images/<ISO_FILE> \
   --boot hd,cdrom
 
-# Create VM from existing disk image / Создать ВМ из готового образа
+# Create VM from existing disk image
 sudo virt-install \
   --name <VM_NAME> \
   --ram 4096 \
@@ -160,7 +160,7 @@ sudo virt-install \
 > [!TIP]
 > Use `virt-install --os-variant list` (or `osinfo-query os`) to list all supported OS variants. Choosing the correct variant optimizes virtio drivers and clock settings.
 
-### VM Lifecycle (virsh) / Жизненный цикл ВМ
+### VM Lifecycle (virsh)
 ```bash
 virsh list --all                       # List all VMs / Список всех ВМ
 virsh start <VM_NAME>                  # Start VM / Запустить ВМ
@@ -178,7 +178,7 @@ virsh autostart --disable <VM_NAME>    # Disable autostart / Отключить 
 > virsh destroy <VM_NAME>               # Force stop (DANGER) / Принудительное выключение
 > ```
 
-### VM Information / Информация о ВМ
+### VM Information
 ```bash
 virsh dominfo <VM_NAME>                # Show VM details / Показать детали ВМ
 virsh domblklist <VM_NAME>             # List block devices / Список дисков
@@ -187,7 +187,7 @@ virsh vcpuinfo <VM_NAME>               # vCPU mapping / Маппинг vCPU
 virsh dumpxml <VM_NAME>                # Full XML dump / Полный XML дамп
 ```
 
-### Delete VM / Удалить ВМ
+### Delete VM
 ```bash
 virsh destroy <VM_NAME>                # Force stop first / Сначала выключить
 virsh undefine <VM_NAME> --remove-all-storage  # Delete VM + disks / Удалить ВМ и диски
@@ -197,13 +197,13 @@ virsh undefine <VM_NAME> --nvram       # For UEFI VMs / Для UEFI ВМ
 > [!WARNING]
 > `--remove-all-storage` permanently deletes all attached disk images. This is **irreversible**.
 
-### Console Access / Доступ к консоли
+### Console Access
 ```bash
 virsh console <VM_NAME>                # Serial console / Серийная консоль (Ctrl+] to exit)
 virt-viewer <VM_NAME>                  # GUI console / Графическая консоль
 ```
 
-### Modify VM Resources / Изменить ресурсы ВМ
+### Modify VM Resources
 ```bash
 virsh setvcpus <VM_NAME> 4 --config    # Set vCPUs (next boot) / Установить vCPU
 virsh setmaxmem <VM_NAME> 8G --config  # Set max RAM (next boot) / Установить макс. RAM
@@ -215,7 +215,7 @@ virsh edit <VM_NAME>                   # Edit XML directly / Редактиро�
 
 ## Storage Management
 
-### Storage Pools / Пулы хранилища
+### Storage Pools
 ```bash
 virsh pool-list --all                  # List all pools / Список всех пулов
 virsh pool-define-as <POOL> dir --target /var/lib/libvirt/images/  # Define pool / Определить пул
@@ -224,7 +224,7 @@ virsh pool-start <POOL>                # Start pool / Запустить пул
 virsh pool-autostart <POOL>            # Enable autostart / Автозапуск пула
 ```
 
-### Disk Image Operations / Операции с образами дисков
+### Disk Image Operations
 ```bash
 qemu-img create -f qcow2 <DISK>.qcow2 20G   # Create 20G disk / Создать диск 20G
 qemu-img info <DISK>.qcow2                    # Show image info / Информация об образе
@@ -235,7 +235,7 @@ qemu-img convert -f raw -O qcow2 <SRC>.raw <DST>.qcow2  # Convert format / Ко�
 > [!WARNING]
 > Shrinking a qcow2 image is dangerous and can corrupt data. Always grow, never shrink without a full backup.
 
-### Attach/Detach Disks / Подключить/Отключить диски
+### Attach/Detach Disks
 ```bash
 virsh attach-disk <VM_NAME> /path/to/<DISK>.qcow2 vdb --subdriver qcow2 --persistent  # Attach disk / Подключить диск
 virsh detach-disk <VM_NAME> vdb --persistent  # Detach disk / Отключить диск
@@ -245,7 +245,7 @@ virsh detach-disk <VM_NAME> vdb --persistent  # Detach disk / Отключить
 
 ## Networking
 
-### Virtual Networks / Виртуальные сети
+### Virtual Networks
 ```bash
 virsh net-list --all                   # List networks / Список сетей
 virsh net-info default                 # Network details / Детали сети
@@ -254,7 +254,7 @@ virsh net-start default                # Start network / Запустить се
 virsh net-autostart default            # Enable autostart / Включить автозапуск
 ```
 
-### Bridge Networking / Мост (бриджевая сеть)
+### Bridge Networking
 `/etc/netplan/01-netcfg.yaml` (Ubuntu/Netplan)
 
 ```yaml
@@ -283,7 +283,7 @@ sudo netplan apply  # Apply bridge config / Применить конфигур�
 
 Creating VM templates allows rapid provisioning of identical, clean machines. The workflow involves preparing a base VM, cleaning it with `virt-sysprep`, and cloning it.
 
-### Production Runbook: Create a VM Template / Создание шаблона ВМ
+### Production Runbook: Create a VM Template
 
 1. **Install base VM / Установить базовую ВМ**
    ```bash
@@ -331,9 +331,9 @@ Creating VM templates allows rapid provisioning of identical, clean machines. Th
    sudo chmod 444 /var/lib/libvirt/images/template-ubuntu2204.qcow2  # Read-only / Только чтение
    ```
 
-### Clone from Template / Клонирование из шаблона
+### Clone from Template
 
-#### Method 1: virt-clone (Full Copy / Полная копия)
+#### Method 1: virt-clone (Full Copy
 ```bash
 sudo virt-clone \
   --original template-ubuntu2204 \
@@ -341,15 +341,15 @@ sudo virt-clone \
   --file /var/lib/libvirt/images/<NEW_VM_NAME>.qcow2  # Full clone / Полная копия
 ```
 
-#### Method 2: Linked Clone with Backing File (Fast / Быстрое связанное клонирование)
+#### Method 2: Linked Clone with Backing File (Fast
 ```bash
-# Create linked clone (thin provisioning) / Создать связанный клон
+# Create linked clone (thin provisioning)
 sudo qemu-img create -f qcow2 \
   -b /var/lib/libvirt/images/template-ubuntu2204.qcow2 \
   -F qcow2 \
   /var/lib/libvirt/images/<NEW_VM_NAME>.qcow2
 
-# Import the linked clone as a new VM / Импортировать связанный клон как новую ВМ
+# Import the linked clone as a new VM
 sudo virt-install \
   --name <NEW_VM_NAME> \
   --ram 2048 --vcpus 2 \
@@ -363,7 +363,7 @@ sudo virt-install \
 > [!TIP]
 > **Linked clones** use the template as a read-only backing file and only store the delta (differences). They are much faster to create and save disk space, but depend on the template image remaining intact.
 
-### Customize Clone with virt-customize / Кастомизация клона
+### Customize Clone with virt-customize
 ```bash
 sudo virt-customize -a /var/lib/libvirt/images/<NEW_VM_NAME>.qcow2 \
   --hostname <NEW_HOSTNAME> \
@@ -373,7 +373,7 @@ sudo virt-customize -a /var/lib/libvirt/images/<NEW_VM_NAME>.qcow2 \
   --install nginx,htop
 ```
 
-### Clone Method Comparison / Сравнение методов клонирования
+### Clone Method Comparison
 
 | Method | Speed (EN / RU) | Disk Usage | Independence | Best Use Case |
 | :--- | :--- | :--- | :--- | :--- |
@@ -384,7 +384,7 @@ sudo virt-customize -a /var/lib/libvirt/images/<NEW_VM_NAME>.qcow2 \
 
 ## Snapshots & Backup
 
-### Snapshot Management / Управление снимками
+### Snapshot Management
 ```bash
 virsh snapshot-create-as <VM_NAME> --name "<SNAP_NAME>" --description "Before upgrade"  # Create / Создать
 virsh snapshot-list <VM_NAME>                     # List snapshots / Список снимков
@@ -395,14 +395,14 @@ virsh snapshot-delete <VM_NAME> --snapshotname "<SNAP_NAME>"  # Delete / Уда�
 > [!CAUTION]
 > Reverting a snapshot discards all changes made after the snapshot was taken. This is irreversible.
 
-### Backup VM Disk / Бэкап диска ВМ
+### Backup VM Disk
 ```bash
 virsh shutdown <VM_NAME>               # Shutdown first / Сначала выключить
 sudo cp /var/lib/libvirt/images/<VM_NAME>.qcow2 /backup/<VM_NAME>_$(date +%F).qcow2  # Copy disk / Скопировать диск
 virsh dumpxml <VM_NAME> > /backup/<VM_NAME>.xml  # Backup XML config / Бэкап конфигурации
 ```
 
-### Restore VM from Backup / Восстановление ВМ из бэкапа
+### Restore VM from Backup
 ```bash
 sudo cp /backup/<VM_NAME>.qcow2 /var/lib/libvirt/images/  # Restore disk / Восстановить диск
 virsh define /backup/<VM_NAME>.xml     # Restore config / Восстановить конфигурацию
@@ -413,7 +413,7 @@ virsh start <VM_NAME>                  # Start VM / Запустить ВМ
 
 ## Performance Tuning
 
-### CPU Pinning / Привязка CPU
+### CPU Pinning
 `/etc/libvirt/qemu/<VM_NAME>.xml`
 
 ```xml
@@ -426,7 +426,7 @@ virsh start <VM_NAME>                  # Start VM / Запустить ВМ
 </cputune>
 ```
 
-### Hugepages / Огромные страницы памяти
+### Hugepages
 ```bash
 echo 1024 | sudo tee /proc/sys/vm/nr_hugepages  # Allocate 2MB hugepages / Выделить hugepages
 grep HugePages /proc/meminfo                      # Verify / Проверить
@@ -440,13 +440,13 @@ grep HugePages /proc/meminfo                      # Verify / Проверить
 </memoryBacking>
 ```
 
-### VirtIO Drivers / Драйверы VirtIO
+### VirtIO Drivers
 
 > [!TIP]
 > Always use **virtio** for disk and network devices. VirtIO is paravirtualized and significantly faster than emulated IDE/e1000 devices.
 
 ```bash
-# Check current disk bus type / Проверить тип шины диска
+# Check current disk bus type
 virsh dumpxml <VM_NAME> | grep "target dev" | grep "bus"
 ```
 
@@ -454,7 +454,7 @@ virsh dumpxml <VM_NAME> | grep "target dev" | grep "bus"
 
 ## Security
 
-### TLS for Remote Libvirt / TLS для удалённого доступа
+### TLS for Remote Libvirt / TLS
 `/etc/libvirt/libvirtd.conf`
 
 ```bash
@@ -465,7 +465,7 @@ cert_file = "/etc/pki/libvirt/servercert.pem"
 ca_file = "/etc/pki/CA/cacert.pem"
 ```
 
-### SELinux / sVirt Labels / Метки безопасности
+### SELinux / sVirt Labels
 ```bash
 sudo getenforce                        # Check SELinux status / Проверить статус SELinux
 ls -lZ /var/lib/libvirt/images/        # Check sVirt labels / Проверить метки sVirt
@@ -476,20 +476,20 @@ sudo restorecon -Rv /var/lib/libvirt/images/  # Restore contexts / Восста�
 
 ## Troubleshooting & Tools
 
-### Common Issues / Типичные проблемы
+### Common Issues
 ```bash
-# VM won't start: permission denied on disk / ВМ не стартует: нет прав на диск
+# VM won't start: permission denied on disk
 sudo chown qemu:qemu /var/lib/libvirt/images/<VM_NAME>.qcow2
 sudo chmod 660 /var/lib/libvirt/images/<VM_NAME>.qcow2
 
-# Check QEMU log for errors / Проверить лог QEMU
+# Check QEMU log for errors
 sudo cat /var/log/libvirt/qemu/<VM_NAME>.log | tail -50
 
-# Network issues: restart libvirt network / Проблемы с сетью: перезапуск сети
+# Network issues: restart libvirt network
 virsh net-destroy default && virsh net-start default
 ```
 
-### Useful Diagnostic Commands / Полезные диагностические команды
+### Useful Diagnostic Commands
 ```bash
 virsh nodeinfo                         # Host hardware info / Информация о хосте
 virsh capabilities                     # Hypervisor capabilities / Возможности гипервизора
@@ -501,7 +501,7 @@ virt-top                               # Real-time VM monitor / Монитори
 
 ## Comparison Tables
 
-### Virtualization Approach Comparison / Сравнение подходов виртуализации
+### Virtualization Approach Comparison
 
 | Feature | KVM (Type-1) | VirtualBox (Type-2) | Docker (Containers) |
 | :--- | :--- | :--- | :--- |
@@ -510,7 +510,7 @@ virt-top                               # Real-time VM monitor / Монитори
 | **Use Case** | Production servers / Продакшн серверы | Desktop testing / Тестирование на десктопе | Microservices / Микросервисы |
 | **Overhead** | Low / Низкие | Medium / Средние | Minimal / Минимальные |
 
-### Network Mode Comparison / Сравнение сетевых режимов
+### Network Mode Comparison
 
 | Mode | Description (EN / RU) | Best Use Case |
 | :--- | :--- | :--- |

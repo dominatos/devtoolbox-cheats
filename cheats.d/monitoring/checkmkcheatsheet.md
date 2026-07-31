@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [OMD Site Management](#2.%20OMD%20Site%20Management)
@@ -36,13 +36,13 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install Checkmk Server / Установка сервера Checkmk
+### Install Checkmk Server
 
 > [!TIP]
 > Download the correct edition and OS version from the official site: https://checkmk.com/download / Скачайте нужную редакцию и версию ОС с официального сайта.
 
 ```bash
-# RHEL/AlmaLinux 9 (Raw Edition) / Установка Raw Edition
+# RHEL/AlmaLinux 9 (Raw Edition)
 wget "https://download.checkmk.com/checkmk/2.3.0/check-mk-raw-2.3.0-el9-38.x86_64.rpm"
 dnf install check-mk-raw-*.rpm
 
@@ -52,19 +52,19 @@ dpkg -i check-mk-raw-*.deb
 apt -f install  # Fix dependencies / Установить зависимости
 ```
 
-### Install Checkmk Agent / Установка агента Checkmk
+### Install Checkmk Agent
 
 Download from your Checkmk site URL: `http://<HOST>/<SITE>/check_mk/agents/`
 
 ```bash
-# RPM (RHEL/AlmaLinux) / Установка RPM
+# RPM (RHEL/AlmaLinux)
 rpm -Uvh check-mk-agent-*.noarch.rpm
 
-# DEB (Debian/Ubuntu) / Установка DEB
+# DEB (Debian/Ubuntu)
 dpkg -i check-mk-agent_*.deb
 ```
 
-### Editions Comparison / Сравнение редакций
+### Editions Comparison
 
 | Feature / Особенность | Raw (Open Source) | Enterprise |
 |----------------------|-------------------|------------|
@@ -82,33 +82,33 @@ dpkg -i check-mk-agent_*.deb
 
 Checkmk uses OMD (Open Monitoring Distribution) to manage monitoring "sites" (instances). Each site is an isolated environment with its own configuration, users, and data. / Checkmk использует OMD для управления «сайтами» (инстансами) мониторинга.
 
-### Create & Manage Sites / Создание и управление сайтами
+### Create & Manage Sites
 
 ```bash
-# List all sites / Список всех сайтов
+# List all sites
 omd sites
 
-# Create new site / Создать новый сайт
+# Create new site
 omd create <SITE_NAME>
 
-# Start/Stop site / Запуск/Остановка сайта
+# Start/Stop site
 omd start <SITE_NAME>
 omd stop <SITE_NAME>
 
-# Restart site / Перезапуск сайта
+# Restart site
 omd restart <SITE_NAME>
 
-# Site status / Статус сайта
+# Site status
 omd status <SITE_NAME>
 
-# Configure site interactively / Конфигурация сайта интерактивно
+# Configure site interactively
 omd config <SITE_NAME>
 
-# Update site to new version / Обновить сайт до новой версии
+# Update site to new version
 omd update <SITE_NAME>
 ```
 
-### Switch to Site User / Переключение на пользователя сайта
+### Switch to Site User
 
 All `cmk` commands must be run as the site user. / Все команды `cmk` запускаются от пользователя сайта.
 
@@ -116,7 +116,7 @@ All `cmk` commands must be run as the site user. / Все команды `cmk` �
 su - <SITE_NAME>
 ```
 
-### Important OMD Paths / Важные пути OMD
+### Important OMD Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -137,34 +137,34 @@ su - <SITE_NAME>
 All commands below are run as site user (`su - <SITE_NAME>`). / Все команды ниже запускаются от пользователя сайта.
 
 ```bash
-# Service discovery (inventory) / Обнаружение сервисов (инвентаризация)
+# Service discovery (inventory)
 cmk -I <HOST>              # Discover new services / Обнаружить новые сервисы
 cmk -II <HOST>             # Full re-discovery / Полное переобнаружение
 cmk --detect-plugins <HOST>  # Detect available plugins / Определить доступные плагины
 
-# Activate changes / Активировать изменения
+# Activate changes
 cmk -R                    # Reload configuration / Перезагрузить конфигурацию
 cmk -O                    # Restart core / Перезапустить ядро
 cmk -G                    # Generate config only (no reload) / Только сгенерировать конфиг
 
-# Debugging / Отладка
+# Debugging
 cmk -v <HOST>             # Verbose check / Подробная проверка
 cmk --debug -vvn <HOST>   # Detailed debug check / Детальная отладка
 cmk -D <HOST>             # Show host info / Показать информацию о хосте
 
-# Agent output / Вывод агента
+# Agent output
 cmk -d <HOST>             # Fetch raw agent output / Получить сырой вывод агента
 ```
 
-### Web UI Access / Доступ к веб-интерфейсу
+### Web UI Access
 
 ```bash
-# Default URL / URL по умолчанию
+# Default URL / URL
 http://<HOST>/<SITE>/check_mk/
 # Default credentials: cmkadmin / <PASSWORD_SET_AT_CREATION>
 ```
 
-### Local Checks / Локальные проверки
+### Local Checks
 
 Place executable scripts in `/usr/lib/check_mk_agent/local/` on monitored hosts. / Поместите исполняемые скрипты в эту папку на контролируемых хостах.
 
@@ -173,12 +173,12 @@ Status codes: `0` (OK), `1` (WARN), `2` (CRIT), `3` (UNKNOWN)
 
 ```bash
 #!/bin/bash
-# Example local check / Пример локальной проверки
+# Example local check
 echo "0 MyService count=42 OK - Service is running fine"
 ```
 
 ```bash
-# Set executable permission / Установить разрешение на исполнение
+# Set executable permission
 chmod +x /usr/lib/check_mk_agent/local/myscript
 ```
 
@@ -186,21 +186,21 @@ chmod +x /usr/lib/check_mk_agent/local/myscript
 
 ## 4. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
-# Manage via OMD (preferred) / Управление через OMD (предпочтительно)
+# Manage via OMD (preferred)
 omd start <SITE_NAME>       # Start all site services / Запустить все сервисы сайта
 omd stop <SITE_NAME>        # Stop all site services / Остановить все сервисы
 omd restart <SITE_NAME>     # Restart all site services / Перезапустить все сервисы
 omd status <SITE_NAME>      # Check status / Проверить статус
 
-# Or via systemd (starts all sites) / Или через systemd (запускает все сайты)
+# Or via systemd (starts all sites)
 systemctl start apache2     # Start web server / Запустить веб-сервер
 systemctl status apache2    # Check web server status / Статус веб-сервера
 ```
 
-### Log Locations / Расположение логов
+### Log Locations
 
 Logs are stored in the site's `~/var/log/` directory. / Логи хранятся в каталоге `~/var/log/` сайта.
 
@@ -214,24 +214,24 @@ Logs are stored in the site's `~/var/log/` directory. / Логи хранятс�
 | `~/var/log/liveproxyd.log` | Livestatus proxy / Прокси Livestatus | Enterprise |
 
 ```bash
-# View logs as site user / Просмотр логов от пользователя сайта
+# View logs as site user
 su - <SITE_NAME>
 tail -f var/log/cmc.log       # Enterprise core log / Лог ядра Enterprise
 tail -f var/log/nagios.log    # Raw core log / Лог ядра Raw
 tail -f var/log/web.log       # Web UI log / Лог веб-интерфейса
 ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Allow web UI / Разрешить веб-интерфейс
+# Allow web UI
 firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
 
-# Allow agent port / Разрешить порт агента
+# Allow agent port
 firewall-cmd --permanent --add-port=6556/tcp
 
-# Distributed monitoring (Livestatus) / Распределённый мониторинг
+# Distributed monitoring (Livestatus)
 firewall-cmd --permanent --add-port=6557/tcp
 firewall-cmd --reload
 ```
@@ -240,22 +240,22 @@ firewall-cmd --reload
 
 ## 5. Security
 
-### User Management / Управление пользователями
+### User Management
 
 ```bash
-# Reset cmkadmin password / Сброс пароля cmkadmin
+# Reset cmkadmin password
 su - <SITE_NAME>
 cmk-passwd cmkadmin
 
-# Or via htpasswd (for Nagios core) / Или через htpasswd (для ядра Nagios)
+# Or via htpasswd (for Nagios core)
 htpasswd ~/etc/htpasswd cmkadmin
 ```
 
-### LDAP Integration / Интеграция LDAP
+### LDAP Integration
 
 Configure via Web UI: **Setup → Users → LDAP & Active Directory**
 
-### Agent Encryption / Шифрование агента
+### Agent Encryption
 
 > [!TIP]
 > In Checkmk 2.2+, use the built-in Agent Controller with TLS for encrypted agent communication. This is the preferred method over legacy symmetric encryption. / В Checkmk 2.2+ используйте Agent Controller с TLS.
@@ -264,23 +264,23 @@ Configure via Web UI: **Setup → Users → LDAP & Active Directory**
 
 ## 6. Backup & Restore
 
-### OMD Backup / Бэкап OMD
+### OMD Backup
 
 ```bash
-# Backup site to file / Бэкап сайта в файл
+# Backup site to file
 omd backup <SITE_NAME> /backup/checkmk_<SITE_NAME>_$(date +%F).tar.gz
 
-# Restore site from backup / Восстановить сайт из бэкапа
+# Restore site from backup
 omd restore <SITE_NAME> /backup/checkmk_<SITE_NAME>.tar.gz
 ```
 
 > [!WARNING]
 > `omd backup` stops the site during backup. Schedule during maintenance windows. / `omd backup` останавливает сайт на время бэкапа. Планируйте на время обслуживания.
 
-### Manual Config Backup / Ручной бэкап конфигурации
+### Manual Config Backup
 
 ```bash
-# Backup configuration only / Бэкап только конфигурации
+# Backup configuration only
 su - <SITE_NAME>
 tar -czf /backup/checkmk_config_$(date +%F).tar.gz etc/check_mk/ etc/nagios/ etc/htpasswd
 ```
@@ -289,52 +289,52 @@ tar -czf /backup/checkmk_config_$(date +%F).tar.gz etc/check_mk/ etc/nagios/ etc
 
 ## 7. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. "Checkmk server is not running" in Web UI / "Checkmk сервер не запущен" в веб-интерфейсе
+#### 1. "Checkmk server is not running" in Web UI / "Checkmk
 
 ```bash
-# Check site status / Проверить статус сайта
+# Check site status
 omd status <SITE_NAME>
 
-# Check SELinux (RHEL) / Проверить SELinux
+# Check SELinux (RHEL)
 getenforce
 setsebool -P httpd_can_network_connect 1  # Allow Apache to connect / Разрешить Apache подключения
 ```
 
-#### 2. Agent Not Reachable / Агент недоступен
+#### 2. Agent Not Reachable
 
 ```bash
-# Test agent from server / Тест агента с сервера
+# Test agent from server
 su - <SITE_NAME>
 cmk -d <HOST>               # Fetch agent output / Получить вывод агента
 cmk --debug -vvn <HOST>     # Detailed debug / Подробная отладка
 
-# Test from network / Тест по сети
+# Test from network
 nc -w 5 <HOST> 6556 | head -20
 ```
 
-#### 3. Performance Issues / Проблемы производительности
+#### 3. Performance Issues
 
 ```bash
-# Check helper usage (Enterprise) / Проверить утилизацию хелперов
+# Check helper usage (Enterprise)
 su - <SITE_NAME>
 cmk --check-helper-usage
 
-# Increase checkers in global settings / Увеличить число checker'ов
+# Increase checkers in global settings
 # Setup → General → Global Settings → Monitoring Core → Number of checker helpers
 ```
 
-### Debugging / Отладка
+### Debugging
 
 ```bash
-# Enable debug logging temporarily / Включить отладочное логирование временно
+# Enable debug logging temporarily
 su - <SITE_NAME>
 
-# Verbose check of specific host / Подробная проверка конкретного хоста
+# Verbose check of specific host
 cmk --debug -vvn <HOST>
 
-# Check core status / Статус ядра
+# Check core status
 omd status
 ```
 
@@ -350,7 +350,7 @@ No external logrotate configuration is typically needed for Checkmk. / Внеш�
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **Official Documentation:** https://docs.checkmk.com/
 - **Checkmk Downloads:** https://checkmk.com/download

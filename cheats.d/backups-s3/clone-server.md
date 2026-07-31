@@ -27,7 +27,7 @@ tags:
 
 ## Installation & Configuration
 
-### Dependencies / Зависимости
+### Dependencies
 
 ```bash
 # Debian/Ubuntu
@@ -37,14 +37,14 @@ apt update && apt install tar openssh-client   # Install tar + SSH / Устан�
 yum install tar openssh-clients                # Install tar + SSH / Установка tar + SSH
 ```
 
-### SSH Performance Tuning / Настройка производительности SSH
+### SSH Performance Tuning
 
 ```bash
 # Lighter cipher for fast networks (less secure — use only in trusted LAN)
-# / Более лёгкий шифр для быстрых сетей (менее безопасно — только в доверенной LAN)
+#
 ssh -oCiphers=aes128-ctr <USER>@<HOST>
 
-# Disable SSH compression (faster on fast networks) / Отключить сжатие SSH (быстрее на быстрых сетях)
+# Disable SSH compression (faster on fast networks)
 ssh -oCompression=no <USER>@<HOST>
 ```
 
@@ -52,24 +52,24 @@ ssh -oCompression=no <USER>@<HOST>
 
 ## Core Management (Tar & Backups)
 
-### Basic Backup Commands / Основные команды бэкапа
+### Basic Backup Commands
 
 ```bash
 # Full system backup excluding virtual/system directories
-# / Полный бэкап системы, исключая виртуальные/системные директории
+#
 tar -cvpzf "backup-$(date +%m-%d-%Y-%H%M).tar.gz" \
     --exclude=/backup.tar.gz \
     --exclude=/dev --exclude=/boot --exclude=/proc --exclude=/sys \
     --exclude=/mnt --exclude=/lost+found \
     --one-file-system /
 
-# Backup specific directory (e.g., web root) / Бэкап конкретной директории
+# Backup specific directory (e.g., web root)
 tar -czvf "backup-$(date +%m-%d-%Y-%H%M).tar.gz" \
     --exclude={./public_html/templates/cache,./public_html/templates/compiled,./public_html/images} \
     ./public_html
 ```
 
-### Unpacking & Restoring / Распаковка и восстановление
+### Unpacking & Restoring
 
 ```bash
 tar -xvf backup.tar.gz                          # Extract archive / Распаковать архив
@@ -83,13 +83,13 @@ tar -C /dest -xvf backup.tar.gz                 # Extract to specific directory 
 > [!IMPORTANT]
 > This method clones the filesystem directly across the network over SSH. Ensure the target server has identical or compatible hardware (especially for the bootloader). Run from the **source** server only.
 
-### Clone Entire Server via SSH / Клонировать сервер через SSH
+### Clone Entire Server via SSH
 
 > [!CAUTION]
 > This overwrites everything on the target server. Always verify `<REMOTE_IP>` before running. There is no undo.
 
 ```bash
-# Execute on SOURCE server / Выполнить на ИСХОДНОМ сервере
+# Execute on SOURCE server
 cd / && \
 tar cvpzf - \
   --exclude=/dev \
@@ -107,10 +107,10 @@ tar cvpzf - \
   / | ssh -T root@<REMOTE_IP> 'tar -C / -xvpz'
 ```
 
-### Cleanup After Cloning / Очистка после клонирования
+### Cleanup After Cloning
 
 ```bash
-# Remove temporary maildrop files / Удалить временные файлы почты
+# Remove temporary maildrop files
 find /var/spool/postfix/maildrop/ -type f -exec rm {} \;
 ```
 
@@ -118,22 +118,22 @@ find /var/spool/postfix/maildrop/ -type f -exec rm {} \;
 
 ## Database Management (MySQL/MariaDB)
 
-### Secure Credential Management / Безопасное управление учётными данными
+### Secure Credential Management
 
 > [!TIP]
 > Never use `-p<PASSWORD>` directly in shell commands or scripts — it appears in process listings and shell history. Use `mysql_config_editor` or `.my.cnf` instead.
 
-#### Using mysql_config_editor (Recommended / Рекомендуется)
+#### Using mysql_config_editor (Recommended
 
 ```bash
-# Create login profile (password prompted interactively) / Создать профиль (пароль запрашивается)
+# Create login profile (password prompted interactively)
 mysql_config_editor set --login-path=backup --host=localhost --user=root --password
 
-# Use login path for dumps / Использовать профиль для дампов
+# Use login path for dumps
 mysqldump --login-path=backup --all-databases | gzip > all-databases.sql.gz
 ```
 
-#### Using .my.cnf / Использование .my.cnf
+#### Using .my.cnf
 
 `/root/.my.cnf`
 
@@ -147,16 +147,16 @@ password=<PASSWORD>
 chmod 600 /root/.my.cnf                         # Restrict permissions / Ограничить права
 ```
 
-### Backup & Restore / Бэкап и восстановление
+### Backup & Restore
 
 ```bash
-# Dump all databases / Дамп всех баз данных
+# Dump all databases
 mysqldump -u root -p --all-databases | gzip > "/mysql-backup-$(date +%F).sql.gz"
 
-# Restore from SQL file / Восстановить из SQL файла
+# Restore from SQL file
 mysql -u root -p < file.sql
 
-# Restore from compressed SQL / Из сжатого SQL
+# Restore from compressed SQL
 gunzip -cd mysql-backup.sql.gz | mysql -u root -p
 ```
 
@@ -164,14 +164,14 @@ gunzip -cd mysql-backup.sql.gz | mysql -u root -p
 
 ## Automation & Scripts
 
-### Integrated Backup Script / Интегрированный скрипт бэкапа
+### Integrated Backup Script
 
 `/usr/local/bin/server-backup.sh`
 
 ```bash
 #!/bin/bash
 # Automated backup script: DB dump + filesystem archive
-# / Автоматический бэкап: дамп БД + архив файловой системы
+#
 
 set -euo pipefail
 
@@ -183,15 +183,15 @@ NOW=$(date +%d%m%Y-%H%M%S)
 FILENAME="server-backup"
 FULL_PATH="$BACKUP_DIR/$FILENAME-$NOW"
 
-# Database dump / Дамп базы данных
-# NOTE: Use --login-path for production / Используйте --login-path в продакшне
+# Database dump
+# NOTE: Use --login-path for production
 mysqldump --no-tablespaces -y -u <USER> -p<PASSWORD> -h <SOURCE_IP> <DB_NAME> > "$FULL_PATH.sql"
 
-# Compress SQL dump / Сжать дамп SQL
+# Compress SQL dump
 zip -j "$FULL_PATH.zip" "$FULL_PATH.sql"
 rm "$FULL_PATH.sql"
 
-# Create system archive / Системный архив
+# Create system archive
 tar -cvpzf "$FULL_PATH.tar.gz" \
     --exclude=/var/spool/postfix/maildrop/ \
     --exclude=/dev --exclude=/boot \
@@ -203,7 +203,7 @@ tar -cvpzf "$FULL_PATH.tar.gz" \
     --exclude="$BACKUP_DIR"/* \
     --one-file-system /
 
-# Optional: Upload to remote server / Опционально: отправить на удалённый сервер
+# Optional: Upload to remote server
 # scp -P 22 "$FULL_PATH.tar.gz" backup_user@<HOST>:/path/to/backups/
 echo "$(date): Backup complete: $FULL_PATH"
 ```
@@ -212,12 +212,12 @@ echo "$(date): Backup complete: $FULL_PATH"
 chmod +x /usr/local/bin/server-backup.sh
 ```
 
-### Cron Schedule / Расписание cron
+### Cron Schedule
 
 `/etc/cron.d/server-backup`
 
 ```
-# Full server backup daily at 01:00 / Полный бэкап сервера ежедневно в 01:00
+# Full server backup daily at 01:00
 0 1 * * * root /usr/local/bin/server-backup.sh >> /var/log/server-backup.log 2>&1
 ```
 
@@ -241,7 +241,7 @@ chmod +x /usr/local/bin/server-backup.sh
 
 ## Advanced Operations (Multi-volume)
 
-### Using tarcat / Использование tarcat
+### Using tarcat
 
 Used to concatenate GNU tar multi-volume archives / Объединение многотомных архивов GNU tar.
 
@@ -279,7 +279,7 @@ done
 
 ```bash
 chmod +x /usr/local/bin/tarcat
-# Usage / Использование:
+# Usage
 tarcat archive-* | tar -xf -
 ```
 
@@ -298,14 +298,14 @@ tarcat archive-* | tar -xf -
 
 ## Sysadmin Operations
 
-### Network & IP Updates After Cloning / Обновление IP после клонирования
+### Network & IP Updates After Cloning
 
 ```bash
-# Bulk replace old IP in config files / Массовая замена старого IP в конфигурационных файлах
+# Bulk replace old IP in config files
 find /etc/ -type f -exec sed -i 's/<SOURCE_IP>/<REMOTE_IP>/g' {} \;
 ```
 
-### Path & Log Reference / Справка по путям и логам
+### Path & Log Reference
 
 ```bash
 /var/log/syslog           # System log (Debian/Ubuntu) / Системный лог
@@ -314,14 +314,14 @@ find /etc/ -type f -exec sed -i 's/<SOURCE_IP>/<REMOTE_IP>/g' {} \;
 /var/log/server-backup.log  # Script log (if configured) / Лог скрипта
 ```
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 ```bash
 # SSH: 22
 # MySQL/MariaDB: 3306
 ```
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
 systemctl restart sshd                          # Restart SSH / Перезапустить SSH

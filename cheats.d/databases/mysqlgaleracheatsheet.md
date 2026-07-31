@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#Installation%20&%20Configuration)
 2. [Core Management & UID](#Core%20Management%20&%20UID)
@@ -35,7 +35,7 @@ tags:
 
 ## Installation & Configuration
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -44,7 +44,7 @@ tags:
 | `4568` | Incremental State Transfer (IST) / Частичная передача состояния |
 | `4444` | State Snapshot Transfer (SST) / Полная передача состояния |
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Debian/Ubuntu
@@ -55,7 +55,7 @@ sudo apt install -y galera-4 mysql-server mysql-client rsync socat
 sudo dnf install -y galera mysql-server mysql rsync socat
 ```
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | File / Файл | Purpose / Назначение |
 |-------------|----------------------|
@@ -64,31 +64,31 @@ sudo dnf install -y galera mysql-server mysql rsync socat
 | `/var/lib/mysql/` | Data directory / Каталог данных |
 | `/var/log/mysql/error.log` | Error log / Лог ошибок |
 
-### Node Configuration / Конфигурация узла
+### Node Configuration
 
 `/etc/mysql/conf.d/galera.cnf`
 
 ```ini
 [mysqld]
-# --- Galera Provider / Провайдер Galera ---
+# --- Galera Provider
 wsrep_on=ON
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 # For RHEL/AlmaLinux use: /usr/lib64/galera/libgalera_smm.so
 
-# --- Cluster Configuration / Настройка кластера ---
+# --- Cluster Configuration
 wsrep_cluster_name="galera_cluster_prod"
 wsrep_cluster_address="gcomm://<NODE1_IP>,<NODE2_IP>,<NODE3_IP>"
 
-# --- Node Specific Settings / Специфичные настройки узла ---
+# --- Node Specific Settings
 wsrep_node_name="<HOSTNAME_THIS_NODE>"
 wsrep_node_address="<THIS_NODE_IP>"
 
-# --- SST Method / Метод полной синхронизации ---
+# --- SST Method
 wsrep_sst_method=rsync
 # Alternative: xtrabackup-v2 or mariabackup
 # wsrep_sst_auth="<SST_USER>:<SST_PASSWORD>"
 
-# --- InnoDB Requirements / Требования InnoDB ---
+# --- InnoDB Requirements
 binlog_format=ROW
 default_storage_engine=InnoDB
 innodb_autoinc_lock_mode=2
@@ -98,7 +98,7 @@ innodb_flush_log_at_trx_commit=0
 > [!IMPORTANT]
 > `wsrep_cluster_name` must be **identical** on all nodes. `binlog_format` must be `ROW` to ensure replication consistency.
 
-### SST Method Comparison / Сравнение методов SST
+### SST Method Comparison
 
 | Method | Description (EN / RU) | Use Case / В каких случаях применять |
 |--------|-----------------------|--------------------------------------|
@@ -113,13 +113,13 @@ innodb_flush_log_at_trx_commit=0
 > [!NOTE]
 > **Galera UID (UUID)** is an important concept in cluster synchronization. The UUID identifies the cluster state. It is stored in the `grastate.dat` file.
 
-### First Node Bootstrap / Первый запуск кластера
+### First Node Bootstrap
 
 > [!CAUTION]
 > Bootstrapping creates a new Primary Component. **Only do this once** on the node with the most up-to-date data. Bootstrapping on a stale node will cause data loss!
 
 ```bash
-# Bootstrap the first node (creates cluster) / Запуск первого узла
+# Bootstrap the first node (creates cluster)
 sudo systemctl set-environment MYSQLD_OPTS="--wsrep-new-cluster"
 sudo systemctl start mysql
 sudo systemctl unset-environment MYSQLD_OPTS
@@ -128,14 +128,14 @@ sudo systemctl unset-environment MYSQLD_OPTS
 sudo mysqld_bootstrap
 ```
 
-### Joining Subsequent Nodes / Подключение остальных узлов
+### Joining Subsequent Nodes
 
 ```bash
 # Start MySQL normally on Node 2 and Node 3
 sudo systemctl start mysql
 ```
 
-### Cluster Status Checking / Проверка статуса кластера
+### Cluster Status Checking
 
 ```sql
 -- Check cluster size (amount of nodes) / Проверка количества узлов
@@ -151,7 +151,7 @@ SHOW STATUS LIKE 'wsrep_cluster_state_uuid';
 SHOW STATUS LIKE 'wsrep_ready';
 ```
 
-### Galera UID and State / Galera UID и состояние (`grastate.dat`)
+### Galera UID and State / Galera UID
 
 `/var/lib/mysql/grastate.dat`
 
@@ -177,7 +177,7 @@ safe_to_bootstrap: 0
 
 ## Sysadmin Operations
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl status mysql    # Check status / Статус
@@ -189,10 +189,10 @@ sudo systemctl restart mysql   # Restart / Рестарт (triggers state transf
 > [!WARNING]
 > Do NOT restart all nodes at once. Use a rolling restart: restart Node 1, wait for `wsrep_local_state_comment` to be `Synced`, then restart Node 2, etc.
 
-### Log Locations / Расположение логов
+### Log Locations
 
 ```bash
-# MySQL Error log (Contains Galera/wsrep messages) / Лог ошибок MySQL
+# MySQL Error log (Contains Galera/wsrep messages)
 sudo tail -f /var/log/mysql/error.log
 
 # General query and slow queries (if enabled)
@@ -200,7 +200,7 @@ sudo tail -f /var/log/mysql/mysql.log
 sudo tail -f /var/log/mysql/mysql-slow.log
 ```
 
-### Network & Firewall / Сеть и брандмауэр
+### Network & Firewall
 
 ```bash
 # UFW (Ubuntu/Debian)
@@ -221,7 +221,7 @@ sudo firewall-cmd --reload
 
 ## Security
 
-### SST User Credentials / Пользователь для SST
+### SST User Credentials
 
 If using `xtrabackup` or `mariabackup` for `wsrep_sst_method`, you must create an SST user on the first node before bootstrapping others.
 
@@ -232,7 +232,7 @@ GRANT RELOAD, LOCK TABLES, PROCESS, REPLICATION CLIENT ON *.* TO '<SST_USER>'@'l
 FLUSH PRIVILEGES;
 ```
 
-### Securing Cluster Traffic / Шифрование трафика кластера
+### Securing Cluster Traffic
 
 To secure Galera replication traffic (node-to-node), add SSL configuration.
 
@@ -247,17 +247,17 @@ wsrep_provider_options="socket.ssl=yes;socket.ssl_key=/etc/ssl/mysql/server-key.
 
 ## Backup & Restore
 
-### Logical Dump (mysqldump) / Логический дамп
+### Logical Dump (mysqldump)
 
 ```bash
-# Dump all databases / Дамп всех баз
+# Dump all databases
 mysqldump -u root -p<PASSWORD> --all-databases --single-transaction --routines --events > /backup/mysql_full_$(date +%F).sql
 
-# Restore / Восстановление
+# Restore
 mysql -u root -p<PASSWORD> < /backup/mysql_full_<DATE>.sql
 ```
 
-### Runbook: Hot Backup with XtraBackup / Резервное копирование XtraBackup
+### Runbook: Hot Backup with XtraBackup
 
 1. **Install XtraBackup / Установить XtraBackup:**
    ```bash
@@ -276,7 +276,7 @@ mysql -u root -p<PASSWORD> < /backup/mysql_full_<DATE>.sql
 
 ## Troubleshooting & Tools
 
-### Split-Brain Avoidance / Избежание Split-Brain
+### Split-Brain Avoidance
 
 A split-brain occurs if the cluster splits into two or more independent parts, none of which has a quorum.
 
@@ -289,7 +289,7 @@ sudo apt install galera-arbitrator-4
 sudo systemctl enable --now garbd
 ```
 
-### Dealing with Desync / Устранение рассинхронизации
+### Dealing with Desync
 
 If node state is `Donor/Desynced` or it refuses to start due to inconsistent state:
 
@@ -306,7 +306,7 @@ If node state is `Donor/Desynced` or it refuses to start due to inconsistent sta
    sudo systemctl start mysql
    ```
 
-### Check InnoDB Lock Issues / Проверка блокировок InnoDB
+### Check InnoDB Lock Issues
 
 ```sql
 SHOW ENGINE INNODB STATUS\G

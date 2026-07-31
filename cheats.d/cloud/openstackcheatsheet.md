@@ -20,7 +20,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -37,7 +37,7 @@ tags:
 > [!IMPORTANT]
 > OpenStack deployment is complex. For production, use deployment tools like **Kolla-Ansible**, **TripleO**, **Charmed OpenStack (Juju)**, or **OpenStack-Ansible**. Manual installation is only recommended for learning. / Развёртывание OpenStack сложное. Для прода используйте Kolla-Ansible, TripleO или OpenStack-Ansible.
 
-### Deployment Methods Comparison / Сравнение методов развёртывания
+### Deployment Methods Comparison
 
 | Method | Description (EN / RU) | Best For |
 |--------|----------------------|----------|
@@ -48,17 +48,17 @@ tags:
 | **Packstack** | Quick RDO-based deployment for RHEL/CentOS / Быстрое развёртывание на RDO | Small labs, PoC |
 | **MicroStack (Sunbeam)** | Snap-based minimal cloud / Минимальное облако через Snap | Edge, single-node |
 
-### DevStack (Development / Lab) / DevStack (Разработка / Лаборатория)
+### DevStack (Development / Lab) / DevStack (Разработка
 
 ```bash
-# Install prerequisites / Установить зависимости
+# Install prerequisites
 sudo apt install -y git python3-pip  # Debian/Ubuntu
 
-# Clone DevStack / Клонировать DevStack
+# Clone DevStack
 git clone https://opendev.org/openstack/devstack.git
 cd devstack
 
-# Create config / Создать конфигурацию
+# Create config
 cat > local.conf << 'EOF'
 [[local|localrc]]
 ADMIN_PASSWORD=<PASSWORD>
@@ -66,7 +66,7 @@ DATABASE_PASSWORD=<PASSWORD>
 RABBIT_PASSWORD=<PASSWORD>
 SERVICE_PASSWORD=<PASSWORD>
 HOST_IP=<IP>
-# Enable services / Включить сервисы
+# Enable services
 enable_service n-cpu n-api n-sch n-cond
 enable_service g-api g-reg
 enable_service q-svc q-agt q-dhcp q-l3 q-meta
@@ -74,34 +74,34 @@ enable_service c-api c-vol c-sch
 enable_service horizon
 EOF
 
-# Run DevStack / Запустить DevStack
+# Run DevStack
 ./stack.sh
 ```
 
 > [!WARNING]
 > DevStack is **NOT** suitable for production. It installs everything on a single node and does not survive reboots cleanly. / DevStack **НЕ** подходит для продакшена.
 
-### Kolla-Ansible (Production) / Kolla-Ansible (Продакшен)
+### Kolla-Ansible (Production) / Kolla-Ansible
 
 ```bash
-# Install Kolla-Ansible / Установить Kolla-Ansible
+# Install Kolla-Ansible
 pip install kolla-ansible
 
-# Generate config files / Сгенерировать конфигурационные файлы
+# Generate config files
 kolla-ansible install-deps
 kolla-ansible genconfig
 
-# Deploy / Развернуть
+# Deploy
 kolla-ansible -i multinode bootstrap-servers   # Prepare hosts / Подготовить хосты
 kolla-ansible -i multinode prechecks           # Pre-flight checks / Предварительная проверка
 kolla-ansible -i multinode deploy              # Deploy services / Развернуть сервисы
 kolla-ansible -i multinode post-deploy         # Post-deploy config / Пост-настройка
 ```
 
-### Install OpenStack Client / Установка клиента OpenStack
+### Install OpenStack Client
 
 ```bash
-# pip (recommended) / pip (рекомендуется)
+# pip (recommended) / pip
 pip install python-openstackclient
 
 # Debian/Ubuntu
@@ -111,7 +111,7 @@ apt install python3-openstackclient
 dnf install python3-openstackclient
 ```
 
-### Authentication Setup / Настройка аутентификации
+### Authentication Setup
 
 `~/admin-openrc.sh`
 
@@ -130,10 +130,10 @@ export OS_IDENTITY_API_VERSION=3
 ```
 
 ```bash
-# Source RC file to authenticate / Загрузить RC-файл для аутентификации
+# Source RC file to authenticate
 source ~/admin-openrc.sh
 
-# Verify authentication / Проверить аутентификацию
+# Verify authentication
 openstack token issue  # Should return a token / Должен вернуть токен
 ```
 
@@ -141,7 +141,7 @@ openstack token issue  # Should return a token / Должен вернуть т�
 
 ## 2. Core Management
 
-### OpenStack Core Services Overview / Обзор основных сервисов
+### OpenStack Core Services Overview
 
 | Service | Project | Port | Description (EN / RU) |
 |---------|---------|------|----------------------|
@@ -155,19 +155,19 @@ openstack token issue  # Should return a token / Должен вернуть т�
 | Orchestration | Heat | `8004` | Infrastructure-as-Code templates / Шаблоны IaC |
 | Placement | Placement | `8778` | Resource inventory tracking / Учёт ресурсов |
 
-### Compute (Nova) / Вычисления (Nova)
+### Compute (Nova)
 
 ```bash
-# List instances / Список инстансов
+# List instances
 openstack server list
 
-# List instances (all projects — admin only) / Все проекты (только админ)
+# List instances (all projects — admin only)
 openstack server list --all-projects
 
-# Show instance details / Детали инстанса
+# Show instance details
 openstack server show <VM_NAME>
 
-# Create instance / Создать инстанс
+# Create instance
 openstack server create \
   --flavor <FLAVOR> \
   --image <IMAGE> \
@@ -176,150 +176,150 @@ openstack server create \
   --security-group <SEC_GROUP> \
   <VM_NAME>
 
-# Start / Stop / Reboot instance / Запуск / Остановка / Перезагрузка
+# Start / Stop / Reboot instance
 openstack server start <VM_NAME>    # Start / Запустить
 openstack server stop <VM_NAME>     # Stop / Остановить
 openstack server reboot <VM_NAME>   # Soft reboot / Мягкая перезагрузка
 openstack server reboot --hard <VM_NAME>  # Hard reboot / Жёсткая перезагрузка
 
-# Resize instance / Изменить размер
+# Resize instance
 openstack server resize --flavor <NEW_FLAVOR> <VM_NAME>
 openstack server resize confirm <VM_NAME>   # Confirm resize / Подтвердить
 openstack server resize revert <VM_NAME>    # Revert resize / Откатить
 
-# Live migration / Живая миграция
+# Live migration
 openstack server migrate --live-migration --host <TARGET_HOST> <VM_NAME>
 
-# Delete instance / Удалить инстанс
+# Delete instance
 openstack server delete <VM_NAME>
 
-# Console URL (VNC) / Ссылка на консоль (VNC)
+# Console URL (VNC)
 openstack console url show <VM_NAME>
 
-# Console log / Лог консоли
+# Console log
 openstack console log show <VM_NAME>
 ```
 
 > [!CAUTION]
 > `openstack server delete` permanently destroys the instance and its root disk. Attached volumes may persist depending on `delete_on_termination` setting. / `openstack server delete` безвозвратно удаляет инстанс и его корневой диск.
 
-### Flavors / Флейворы (Конфигурации)
+### Flavors
 
 ```bash
-# List flavors / Список флейворов
+# List flavors
 openstack flavor list
 
-# Create flavor (admin) / Создать флейвор (админ)
+# Create flavor (admin)
 openstack flavor create --ram 4096 --vcpus 2 --disk 40 m1.medium
 
-# Show flavor details / Детали флейвора
+# Show flavor details
 openstack flavor show m1.medium
 
-# Delete flavor / Удалить флейвор
+# Delete flavor
 openstack flavor delete m1.medium
 ```
 
-### Image (Glance) / Образы (Glance)
+### Image (Glance)
 
 ```bash
-# List images / Список образов
+# List images
 openstack image list
 
-# Upload image / Загрузить образ
+# Upload image
 openstack image create "Ubuntu-24.04" \
   --file ubuntu-24.04-server-cloudimg-amd64.img \
   --disk-format qcow2 \
   --container-format bare \
   --public
 
-# Download image / Скачать образ
+# Download image
 openstack image save --file /tmp/image.qcow2 <IMAGE_ID>
 
-# Delete image / Удалить образ
+# Delete image
 openstack image delete <IMAGE_ID>
 
-# Set image properties / Установить свойства образа
+# Set image properties
 openstack image set --property hw_disk_bus=scsi <IMAGE_ID>
 ```
 
-### Networking (Neutron) / Сети (Neutron)
+### Networking (Neutron)
 
 ```bash
-# List networks / Список сетей
+# List networks
 openstack network list
 
-# List subnets / Список подсетей
+# List subnets
 openstack subnet list
 
-# Create network / Создать сеть
+# Create network
 openstack network create <NET_NAME>
 
-# Create subnet / Создать подсеть
+# Create subnet
 openstack subnet create --network <NET_NAME> \
   --subnet-range 192.168.1.0/24 \
   --gateway 192.168.1.1 \
   --dns-nameserver 8.8.8.8 \
   <SUBNET_NAME>
 
-# Create router / Создать маршрутизатор
+# Create router
 openstack router create <ROUTER_NAME>
 openstack router set --external-gateway <EXT_NET> <ROUTER_NAME>
 openstack router add subnet <ROUTER_NAME> <SUBNET_NAME>
 
-# List floating IPs / Список плавающих IP
+# List floating IPs
 openstack floating ip list
 
-# Allocate floating IP / Выделить плавающий IP
+# Allocate floating IP
 openstack floating ip create <EXT_NET>
 
-# Assign floating IP to instance / Назначить плавающий IP инстансу
+# Assign floating IP to instance
 openstack server add floating ip <VM_NAME> <FLOATING_IP>
 
-# Security groups / Группы безопасности
+# Security groups
 openstack security group list
 openstack security group rule create --proto tcp --dst-port 22 <SEC_GROUP>   # Allow SSH
 openstack security group rule create --proto icmp <SEC_GROUP>                # Allow ping
 ```
 
-### Storage (Cinder) / Хранилище (Cinder)
+### Storage (Cinder)
 
 ```bash
-# List volumes / Список томов
+# List volumes
 openstack volume list
 
-# Create volume / Создать том
+# Create volume
 openstack volume create --size 10 <VOL_NAME>
 
-# Create volume from image / Том из образа
+# Create volume from image
 openstack volume create --size 20 --image <IMAGE> <VOL_NAME>
 
-# Attach volume to instance / Подключить том к инстансу
+# Attach volume to instance
 openstack server add volume <VM_NAME> <VOL_NAME>
 
-# Detach volume / Отключить том
+# Detach volume
 openstack server remove volume <VM_NAME> <VOL_NAME>
 
-# Create volume snapshot / Создать снимок тома
+# Create volume snapshot
 openstack volume snapshot create --volume <VOL_NAME> <SNAP_NAME>
 
-# Delete volume / Удалить том
+# Delete volume
 openstack volume delete <VOL_NAME>
 ```
 
 > [!WARNING]
 > You cannot delete a volume that is attached to an instance. Detach it first. / Нельзя удалить том, подключённый к инстансу. Сначала отключите его.
 
-### Keypairs / Ключевые пары
+### Keypairs
 
 ```bash
-# List keypairs / Список ключевых пар
+# List keypairs
 openstack keypair list
 
-# Create keypair / Создать ключевую пару
+# Create keypair
 openstack keypair create <KEY_NAME> > ~/.ssh/<KEY_NAME>.pem
 chmod 600 ~/.ssh/<KEY_NAME>.pem
 
-# Import existing key / Импортировать существующий ключ
+# Import existing key
 openstack keypair create --public-key ~/.ssh/id_rsa.pub <KEY_NAME>
 ```
 
@@ -327,40 +327,40 @@ openstack keypair create --public-key ~/.ssh/id_rsa.pub <KEY_NAME>
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисами
+### Service Management
 
 ```bash
-# Keystone (Identity) / Keystone (Идентификация)
+# Keystone (Identity) / Keystone
 systemctl status apache2            # Keystone runs under Apache / Keystone работает под Apache
 systemctl restart apache2           # Restart Keystone / Перезапустить Keystone
 
-# Nova (Compute) / Nova (Вычисления)
+# Nova (Compute) / Nova
 systemctl status nova-api           # API service / API-сервис
 systemctl status nova-scheduler     # Scheduler / Планировщик
 systemctl status nova-conductor     # Conductor / Conductor
 systemctl status nova-compute       # Compute agent (on each node) / Агент (на каждом узле)
 systemctl restart nova-api nova-scheduler nova-conductor
 
-# Neutron (Network) / Neutron (Сеть)
+# Neutron (Network) / Neutron
 systemctl status neutron-server           # API server / API-сервер
 systemctl status neutron-linuxbridge-agent  # L2 agent / L2-агент
 systemctl status neutron-dhcp-agent       # DHCP agent / DHCP-агент
 systemctl status neutron-l3-agent         # L3/router agent / L3-агент
 systemctl status neutron-metadata-agent   # Metadata agent / Агент метаданных
 
-# Glance (Image) / Glance (Образы)
+# Glance (Image) / Glance
 systemctl status glance-api         # Image API / API образов
 
-# Cinder (Block Storage) / Cinder (Блочное хранилище)
+# Cinder (Block Storage) / Cinder
 systemctl status cinder-api         # API / API
 systemctl status cinder-scheduler   # Scheduler / Планировщик
 systemctl status cinder-volume      # Volume manager / Менеджер томов
 
-# Horizon (Dashboard) / Horizon (Веб-панель)
+# Horizon (Dashboard) / Horizon
 systemctl status apache2            # Horizon runs under Apache / Horizon под Apache
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -378,22 +378,22 @@ systemctl status apache2            # Horizon runs under Apache / Horizon под
 | `/var/lib/nova/instances/` | VM instance data / Данные инстансов |
 | `/var/lib/glance/images/` | Glance image storage / Хранилище образов |
 
-### Log Locations / Расположение логов
+### Log Locations
 
 ```bash
-# Nova logs / Логи Nova
+# Nova logs
 tail -f /var/log/nova/nova-api.log           # API log / Лог API
 tail -f /var/log/nova/nova-compute.log       # Compute log / Лог compute
 tail -f /var/log/nova/nova-scheduler.log     # Scheduler log / Лог планировщика
 
-# Neutron logs / Логи Neutron
+# Neutron logs
 tail -f /var/log/neutron/server.log          # Neutron server / Сервер Neutron
 tail -f /var/log/neutron/l3-agent.log        # L3 agent / L3-агент
 tail -f /var/log/neutron/dhcp-agent.log      # DHCP agent / DHCP-агент
 
 # Keystone / Keystone
 tail -f /var/log/keystone/keystone.log       # Keystone log / Лог Keystone
-# or via Apache / или через Apache
+# or via Apache
 tail -f /var/log/apache2/keystone*.log
 
 # Glance / Glance
@@ -404,31 +404,31 @@ tail -f /var/log/cinder/cinder-api.log       # Cinder API / API Cinder
 tail -f /var/log/cinder/cinder-volume.log    # Volume service / Сервис томов
 ```
 
-### Service Status Check / Проверка статуса сервисов
+### Service Status Check
 
 ```bash
-# Check all compute services / Проверить все compute-сервисы
+# Check all compute services
 openstack compute service list
 
-# Check network agents / Проверить сетевые агенты
+# Check network agents
 openstack network agent list
 
-# Check volume services / Проверить сервисы хранилища
+# Check volume services
 openstack volume service list
 
-# Check endpoints / Проверить эндпоинты
+# Check endpoints
 openstack endpoint list
 
-# Check Hypervisor stats / Статистика гипервизоров
+# Check Hypervisor stats
 openstack hypervisor list
 openstack hypervisor stats show
 openstack hypervisor show <HYPERVISOR_NAME>
 ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Controller node ports / Порты контроллера
+# Controller node ports
 firewall-cmd --permanent --add-port=5000/tcp    # Keystone
 firewall-cmd --permanent --add-port=8774/tcp    # Nova API
 firewall-cmd --permanent --add-port=8775/tcp    # Nova metadata
@@ -441,7 +441,7 @@ firewall-cmd --permanent --add-port=11211/tcp   # Memcached
 firewall-cmd --permanent --add-port=6080/tcp    # noVNC console proxy
 firewall-cmd --permanent --add-port=443/tcp     # Horizon HTTPS
 
-# Compute node ports / Порты compute-узла
+# Compute node ports
 firewall-cmd --permanent --add-port=5900-5999/tcp  # VNC consoles / VNC-консоли
 firewall-cmd --permanent --add-port=16509/tcp      # Libvirt (live migration) / Живая миграция
 firewall-cmd --permanent --add-port=49152-49261/tcp  # QEMU live migration
@@ -449,13 +449,13 @@ firewall-cmd --permanent --add-port=49152-49261/tcp  # QEMU live migration
 firewall-cmd --reload  # Apply rules / Применить правила
 ```
 
-### Quota Management / Управление квотами
+### Quota Management
 
 ```bash
-# Show project quotas / Показать квоты проекта
+# Show project quotas
 openstack quota show <PROJECT_NAME>
 
-# Update quotas / Обновить квоты
+# Update quotas
 openstack quota set --instances 50 --cores 100 --ram 204800 <PROJECT_NAME>
 openstack quota set --volumes 100 --gigabytes 5000 <PROJECT_NAME>
 openstack quota set --floating-ips 20 <PROJECT_NAME>
@@ -465,32 +465,32 @@ openstack quota set --floating-ips 20 <PROJECT_NAME>
 
 ## 4. Security
 
-### Keystone (Identity Service) / Keystone (Служба идентификации)
+### Keystone (Identity Service) / Keystone
 
 ```bash
-# List users / Список пользователей
+# List users
 openstack user list
 
-# Create user / Создать пользователя
+# Create user
 openstack user create --domain Default --project <PROJECT> --password <PASSWORD> <USER>
 
-# List projects (tenants) / Список проектов
+# List projects (tenants)
 openstack project list
 
-# Create project / Создать проект
+# Create project
 openstack project create --domain Default --description "Description" <PROJECT_NAME>
 
-# List roles / Список ролей
+# List roles
 openstack role list
 
-# Assign role to user / Назначить роль пользователю
+# Assign role to user
 openstack role add --project <PROJECT> --user <USER> <ROLE>
 
-# Revoke role / Отозвать роль
+# Revoke role
 openstack role remove --project <PROJECT> --user <USER> <ROLE>
 ```
 
-### Role Types / Типы ролей
+### Role Types
 
 | Role | Description / Описание |
 |------|------------------------|
@@ -498,20 +498,20 @@ openstack role remove --project <PROJECT> --user <USER> <ROLE>
 | `member` | Standard project operations / Стандартные операции проекта |
 | `reader` | Read-only access / Доступ только на чтение |
 
-### Domain Management / Управление доменами
+### Domain Management
 
 ```bash
-# List domains / Список доменов
+# List domains
 openstack domain list
 
-# Create domain / Создать домен
+# Create domain
 openstack domain create <DOMAIN_NAME>
 
-# Create user in specific domain / Создать пользователя в конкретном домене
+# Create user in specific domain
 openstack user create --domain <DOMAIN> --password <PASSWORD> <USER>
 ```
 
-### SSL/TLS Configuration / Настройка SSL/TLS
+### SSL/TLS Configuration
 
 `/etc/keystone/keystone.conf`
 
@@ -524,7 +524,7 @@ ca_certs = /etc/keystone/ssl/certs/ca.pem
 ```
 
 ```bash
-# Generate self-signed certificate / Сгенерировать самоподписанный сертификат
+# Generate self-signed certificate
 openssl req -x509 -newkey rsa:4096 \
   -keyout /etc/keystone/ssl/private/keystone-key.pem \
   -out /etc/keystone/ssl/certs/keystone.pem \
@@ -532,15 +532,15 @@ openssl req -x509 -newkey rsa:4096 \
   -subj "/CN=<HOST>/O=<ORG>/C=<COUNTRY_CODE>"
 ```
 
-### Application Credentials / Учётные данные приложений
+### Application Credentials
 
 ```bash
-# Create application credential (no password exposure) / Создать учётные данные приложения
+# Create application credential (no password exposure)
 openstack application credential create <CRED_NAME> \
   --secret <SECRET_KEY> \
   --role member
 
-# Use in clouds.yaml / Использование в clouds.yaml
+# Use in clouds.yaml
 # ~/.config/openstack/clouds.yaml
 ```
 
@@ -563,12 +563,12 @@ clouds:
 > [!CAUTION]
 > Always coordinate backups with service maintenance windows. Backing up databases while services are writing can cause inconsistencies. / Всегда координируйте бэкапы с окнами обслуживания. Бэкап БД во время записи может привести к несогласованности данных.
 
-### Database Backup Runbook / Сценарий резервного копирования БД
+### Database Backup Runbook
 
 1. **Identify databases / Определить базы данных:**
 
 ```bash
-# OpenStack typically uses these databases / Обычно используются эти БД:
+# OpenStack typically uses these databases
 # keystone, nova, nova_api, nova_cell0, neutron, glance, cinder, placement, heat
 mysql -u root -p<PASSWORD> -e "SHOW DATABASES;" | grep -E "keystone|nova|neutron|glance|cinder|placement|heat"
 ```
@@ -576,7 +576,7 @@ mysql -u root -p<PASSWORD> -e "SHOW DATABASES;" | grep -E "keystone|nova|neutron
 2. **Dump all OpenStack databases / Дамп всех БД OpenStack:**
 
 ```bash
-# Full backup / Полный бэкап
+# Full backup
 BACKUP_DIR="/backup/openstack/$(date +%F)"
 mkdir -p "$BACKUP_DIR"
 
@@ -599,13 +599,13 @@ tar -czf /backup/openstack/openstack_conf_$(date +%F).tar.gz \
 tar -czf /backup/openstack/glance_images_$(date +%F).tar.gz /var/lib/glance/images/
 ```
 
-### Database Restore / Восстановление БД
+### Database Restore
 
 ```bash
-# Restore a single database / Восстановить одну БД
+# Restore a single database
 gunzip -c /backup/openstack/<DATE>/keystone.sql.gz | mysql -u root -p<PASSWORD> keystone
 
-# Restore and sync DB schema / Восстановить и синхронизировать схему
+# Restore and sync DB schema
 keystone-manage db_sync         # Keystone
 nova-manage db sync             # Nova
 neutron-db-manage upgrade head  # Neutron
@@ -613,26 +613,26 @@ glance-manage db_sync           # Glance
 cinder-manage db sync           # Cinder
 ```
 
-### Volume Snapshots / Снапшоты томов
+### Volume Snapshots
 
 ```bash
-# Create volume snapshot / Создать снимок тома
+# Create volume snapshot
 openstack volume snapshot create --volume <VOL_NAME> <SNAP_NAME>
 
-# List snapshots / Список снимков
+# List snapshots
 openstack volume snapshot list
 
-# Restore from snapshot (create new volume) / Восстановить из снимка
+# Restore from snapshot (create new volume)
 openstack volume create --snapshot <SNAP_NAME> --size 20 <NEW_VOL_NAME>
 ```
 
-### Instance Snapshots / Снапшоты инстансов
+### Instance Snapshots
 
 ```bash
-# Create instance snapshot (image) / Создать снимок инстанса
+# Create instance snapshot (image)
 openstack server image create --name <SNAP_NAME> <VM_NAME>
 
-# List snapshots / Список снимков
+# List snapshots
 openstack image list --property image_type=snapshot
 ```
 
@@ -640,105 +640,105 @@ openstack image list --property image_type=snapshot
 
 ## 6. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Service Not Responding / Сервис не отвечает
+#### 1. Service Not Responding
 
 ```bash
-# Check service status / Проверить статус сервиса
+# Check service status
 openstack compute service list   # Should show "up" / Должен показать "up"
 openstack network agent list     # Check alive status / Проверить статус
 
-# Check RabbitMQ / Проверить RabbitMQ
+# Check RabbitMQ
 systemctl status rabbitmq-server
 rabbitmqctl list_queues | head -20
 
-# Check database connectivity / Проверить подключение к БД
+# Check database connectivity
 mysql -u <USER> -p<PASSWORD> -e "SELECT 1"
 
-# Check Memcached / Проверить Memcached
+# Check Memcached
 systemctl status memcached
 echo stats | nc localhost 11211
 ```
 
-#### 2. Instance Stuck in ERROR / Инстанс завис в ERROR
+#### 2. Instance Stuck in ERROR
 
 ```bash
-# Check instance fault / Проверить ошибку инстанса
+# Check instance fault
 openstack server show <VM_NAME> -c fault
 
-# Check nova-compute log on the host / Проверить лог nova-compute
+# Check nova-compute log on the host
 grep -i "error\|exception" /var/log/nova/nova-compute.log | tail -20
 
-# Force-delete stuck instance / Принудительно удалить зависший инстанс
+# Force-delete stuck instance
 openstack server delete --force <VM_NAME>
 
-# Reset instance state / Сбросить состояние инстанса
+# Reset instance state
 nova reset-state --active <VM_UUID>
 ```
 
-#### 3. Network Connectivity Issues / Проблемы с сетью
+#### 3. Network Connectivity Issues
 
 ```bash
-# Check Neutron agents / Проверить агенты Neutron
+# Check Neutron agents
 openstack network agent list   # All should be "alive" / Все должны быть "alive"
 
-# Check OVS/Linux bridge / Проверить OVS/Linux bridge
+# Check OVS/Linux bridge
 ovs-vsctl show                 # Open vSwitch status
 brctl show                     # Linux bridge status
 
-# Check namespaces / Проверить пространства имён
+# Check namespaces
 ip netns list                  # List network namespaces / Список namespace
 ip netns exec qdhcp-<NET_UUID> ip a   # Check DHCP namespace / Проверить DHCP namespace
 
-# Test from router namespace / Тест из namespace маршрутизатора
+# Test from router namespace
 ip netns exec qrouter-<ROUTER_UUID> ping <IP>
 ```
 
-#### 4. Cinder Volume Issues / Проблемы с томами Cinder
+#### 4. Cinder Volume Issues
 
 ```bash
-# Volume stuck in "creating" or "deleting" / Том завис в "creating" или "deleting"
+# Volume stuck in "creating" or "deleting"
 cinder reset-state --state available <VOL_UUID>
 cinder reset-state --state error <VOL_UUID>   # Then delete / Затем удалить
 
-# Check LVM backend / Проверить LVM бэкенд
+# Check LVM backend
 lvs                            # List logical volumes / Список LV
 vgs                            # List volume groups / Список VG
 pvs                            # List physical volumes / Список PV
 ```
 
-### Useful Administrative Commands / Полезные административные команды
+### Useful Administrative Commands
 
 ```bash
-# List all resources across projects / Ресурсы всех проектов
+# List all resources across projects
 openstack server list --all-projects
 openstack volume list --all-projects
 openstack floating ip list
 
-# Check resource usage / Проверить использование ресурсов
+# Check resource usage
 openstack hypervisor stats show
 
-# List all endpoints / Все эндпоинты
+# List all endpoints
 openstack endpoint list
 
-# Catalog (service registry) / Каталог (реестр сервисов)
+# Catalog (service registry)
 openstack catalog list
 
-# Token management / Управление токенами
+# Token management
 openstack token issue           # Issue new token / Выпустить токен
 openstack token revoke <TOKEN>  # Revoke token / Отозвать токен
 
-# DB management commands / Команды управления БД
+# DB management commands
 nova-manage db sync             # Sync Nova DB / Синхронизировать БД Nova
 nova-manage cell_v2 discover_hosts  # Discover new compute hosts / Обнаружить хосты
 ```
 
-### Health Check Script / Скрипт проверки здоровья
+### Health Check Script
 
 ```bash
 #!/bin/bash
-# Quick OpenStack health check / Быстрая проверка OpenStack
+# Quick OpenStack health check
 echo "=== Compute Services ==="
 openstack compute service list -f value -c Binary -c Status -c State
 
@@ -785,7 +785,7 @@ openstack hypervisor stats show -f value -c vcpus -c vcpus_used -c memory_mb -c 
 
 ---
 
-## 📖 Documentation / Документация
+## 📖 Documentation
 
 - **OpenStack Documentation:** https://docs.openstack.org/
 - **OpenStack CLI Reference:** https://docs.openstack.org/cli/latest/

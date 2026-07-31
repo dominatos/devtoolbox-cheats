@@ -27,21 +27,21 @@ The workflow follows a strict layer-by-layer approach: **disk → partition → 
 [growpart(1)](https://manpages.debian.org/testing/cloud-guest-utils/growpart.1.en.html) · [resize2fs(8)](https://man7.org/linux/man-pages/man8/resize2fs.8.html) · [xfs_growfs(8)](https://man7.org/linux/man-pages/man8/xfs_growfs.8.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html)
 
 ## Table of Contents
-- [Partition Growth](#Partition%20Growth%20/%20Расширение%20раздела)
-- [Filesystem Expansion](#Filesystem%20Expansion%20/%20Расширение%20файловой%20системы)
-- [LVM Growth](#LVM%20Growth%20/%20Расширение%20LVM)
-- [Cloud Providers](#Cloud%20Providers%20/%20Облачные%20провайдеры)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
-- [Filesystem Resize Comparison](#Filesystem%20Resize%20Comparison%20/%20Сравнение%20возможностей%20изменения%20размера%20ФС)
-- [Typical Growth Workflow](#Typical%20Growth%20Workflow%20/%20Типичный%20процесс%20расширения)
+- [Partition Growth](#Partition%20Growth)
+- [Filesystem Expansion](#Filesystem%20Expansion)
+- [LVM Growth](#LVM%20Growth)
+- [Cloud Providers](#Cloud%20Providers)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
+- [Best Practices](#Best%20Practices)
+- [Filesystem Resize Comparison](#Filesystem%20Resize%20Comparison)
+- [Typical Growth Workflow](#Typical%20Growth%20Workflow)
 
 ---
 
-## Partition Growth / Расширение раздела
+## Partition Growth
 
-### Automatic Partition Resize / Автоматическое изменение размера раздела
+### Automatic Partition Resize
 
 ```bash
 sudo growpart /dev/sda 1                      # Grow partition №1 / Расширить раздел №1
@@ -49,7 +49,7 @@ sudo growpart /dev/vda 1                      # Grow partition (KVM/QEMU) / Ра
 sudo growpart /dev/nvme0n1 1                  # Grow NVMe partition / Расширить раздел NVMe
 ```
 
-### Check Before Growth / Проверка перед расширением
+### Check Before Growth
 
 ```bash
 lsblk                                         # List block devices / Список блочных устройств
@@ -58,16 +58,16 @@ sudo fdisk -l /dev/sda                        # Check partition table / Пров
 sudo parted /dev/sda print                    # Alternative check / Альтернативная проверка
 ```
 
-### Manual Partition Resize (parted) / Ручное изменение (parted)
+### Manual Partition Resize (parted)
 
 ```bash
 sudo parted /dev/sda                          # Enter parted / Войти в parted
-# (parted) print                              # Show partitions / Показать разделы
-# (parted) resizepart 1 100%                  # Resize to 100% / Изменить до 100%
-# (parted) quit                               # Exit / Выйти
+# (parted) print                              # Show partitions
+# (parted) resizepart 1 100%                  # Resize to 100%
+# (parted) quit                               # Exit
 ```
 
-### Install growpart / Установка growpart
+### Install growpart
 
 ```bash
 sudo apt install cloud-guest-utils            # Debian/Ubuntu
@@ -77,7 +77,7 @@ sudo pacman -S cloud-guest-utils              # Arch Linux
 
 ---
 
-## Filesystem Expansion / Расширение файловой системы
+## Filesystem Expansion
 
 > [!CAUTION]
 > Always create a backup or snapshot before resizing a filesystem. Data loss is possible if the operation is interrupted.
@@ -112,7 +112,7 @@ sudo btrfs filesystem resize +10G /mnt        # Grow by 10GB / Увеличит�
 sudo btrfs filesystem resize 1:max /mnt       # Grow device 1 to max / Увеличить устройство 1 до максимума
 ```
 
-### Check Filesystem Type / Проверка типа ФС
+### Check Filesystem Type
 
 ```bash
 df -T                                         # Show filesystem types / Показать типы ФС
@@ -122,9 +122,9 @@ sudo blkid /dev/sda1                          # Show filesystem UUID and type / 
 
 ---
 
-## LVM Growth / Расширение LVM
+## LVM Growth
 
-### Extend Physical Volume / Расширить физический том
+### Extend Physical Volume
 
 ```bash
 sudo pvresize /dev/sda2                       # Resize PV to use full disk / Изменить PV на весь диск
@@ -132,7 +132,7 @@ sudo pvs                                      # List PVs / Список PV
 sudo pvdisplay /dev/sda2                      # Show PV details / Показать детали PV
 ```
 
-### Extend Logical Volume / Расширить логический том
+### Extend Logical Volume
 
 ```bash
 sudo lvextend -l +100%FREE /dev/vg0/lv_root   # Extend to use all free space / Расширить на всё свободное место
@@ -141,7 +141,7 @@ sudo lvextend -L 50G /dev/vg0/lv_data         # Extend to 50GB total / Расш�
 sudo lvs                                      # List LVs / Список LV
 ```
 
-### Resize Filesystem After LVM / Изменить ФС после LVM
+### Resize Filesystem After LVM
 
 ```bash
 sudo lvextend -r -l +100%FREE /dev/vg0/lv_root  # Extend and resize FS / Расширить и изменить ФС
@@ -153,37 +153,37 @@ sudo lvextend -L +10G /dev/vg0/lv_root && sudo xfs_growfs /mount  # XFS manual /
 > Use `lvextend -r` to automatically resize the filesystem along with the LV — this is the safest and most convenient method.
 > Используйте `lvextend -r` для автоматического изменения ФС вместе с LV — это самый безопасный и удобный метод.
 
-### Complete LVM Workflow / Полный процесс LVM
+### Complete LVM Workflow
 
 ```bash
-# 1. Check current state / Проверить текущее состояние
+# 1. Check current state
 lsblk
 df -h
 sudo pvs
 sudo vgs
 sudo lvs
 
-# 2. Grow partition / Расширить раздел
+# 2. Grow partition
 sudo growpart /dev/sda 2
 
-# 3. Resize PV / Изменить PV
+# 3. Resize PV
 sudo pvresize /dev/sda2
 
-# 4. Extend LV and resize FS / Расширить LV и изменить ФС
+# 4. Extend LV and resize FS
 sudo lvextend -r -l +100%FREE /dev/vg0/lv_root
 
-# 5. Verify / Проверить
+# 5. Verify
 df -h
 ```
 
 ---
 
-## Cloud Providers / Облачные провайдеры
+## Cloud Providers
 
 ### AWS EC2
 
 ```bash
-# After resizing EBS volume in AWS Console / После изменения размера тома EBS в консоли AWS
+# After resizing EBS volume in AWS Console
 lsblk
 sudo growpart /dev/xvda 1
 sudo resize2fs /dev/xvda1                     # For EXT4 / Для EXT4
@@ -197,7 +197,7 @@ sudo xfs_growfs /                             # For XFS / Для XFS
 ### Google Cloud Platform (GCP)
 
 ```bash
-# After resizing disk in GCP Console / После изменения размера диска в консоли GCP
+# After resizing disk in GCP Console
 lsblk
 sudo growpart /dev/sda 1
 sudo resize2fs /dev/sda1                      # For EXT4 / Для EXT4
@@ -207,7 +207,7 @@ sudo xfs_growfs /                             # For XFS / Для XFS
 ### Azure
 
 ```bash
-# After resizing disk in Azure Portal / После изменения размера диска в Azure Portal
+# After resizing disk in Azure Portal
 lsblk
 sudo growpart /dev/sda 1
 sudo resize2fs /dev/sda1                      # For EXT4 / Для EXT4
@@ -221,7 +221,7 @@ sudo xfs_growfs /                             # For XFS / Для XFS
 ### DigitalOcean
 
 ```bash
-# After resizing droplet / После изменения размера дроплета
+# After resizing droplet
 lsblk
 sudo growpart /dev/vda 1
 sudo resize2fs /dev/vda1                      # For EXT4 / Для EXT4
@@ -230,7 +230,7 @@ sudo resize2fs /dev/vda1                      # For EXT4 / Для EXT4
 ### VMware / Proxmox
 
 ```bash
-# After increasing disk size in hypervisor / После увеличения размера диска в гипервизоре
+# After increasing disk size in hypervisor
 lsblk
 sudo growpart /dev/sda 1
 sudo resize2fs /dev/sda1                      # For EXT4 / Для EXT4
@@ -239,154 +239,154 @@ sudo xfs_growfs /                             # For XFS / Для XFS
 
 ---
 
-## Troubleshooting / Устранение неполадок
+## Troubleshooting
 
-### Common Issues / Распространённые проблемы
+### Common Issues
 
 ```bash
-# Check if partition table is GPT or MBR / Проверить тип таблицы разделов
+# Check if partition table is GPT or MBR
 sudo parted /dev/sda print
 
-# Kernel not recognizing new size / Ядро не распознаёт новый размер
+# Kernel not recognizing new size
 sudo partprobe /dev/sda                       # Reread partition table / Перечитать таблицу разделов
 sudo partx -u /dev/sda                        # Update kernel partition table / Обновить таблицу разделов ядра
 
-# LVM not showing full size / LVM не показывает полный размер
+# LVM not showing full size / LVM
 sudo pvscan                                   # Scan for PVs / Сканировать PV
 sudo vgscan                                   # Scan for VGs / Сканировать VG
 sudo lvscan                                   # Scan for LVs / Сканировать LV
 ```
 
-### "NOCHANGE" from growpart / growpart возвращает "NOCHANGE"
+### "NOCHANGE" from growpart / growpart
 
 ```bash
 # This means the partition already uses all available space
-# Это означает, что раздел уже использует всё доступное пространство
+#
 lsblk                                         # Verify disk size vs partition size / Проверить размер диска vs раздела
 
 # If disk was resized but kernel doesn't see it:
-# Если диск был увеличен, но ядро не видит:
+#
 echo 1 > /sys/class/block/sda/device/rescan   # Rescan SCSI device / Пересканировать SCSI устройство
 ```
 
-### Verify Growth / Проверка расширения
+### Verify Growth
 
 ```bash
-# Before / До
+# Before
 lsblk
 df -h
 
-# After partition growth / После расширения раздела
+# After partition growth
 lsblk
 
-# After filesystem resize / После изменения ФС
+# After filesystem resize
 df -h
 ```
 
-### Filesystem Check / Проверка файловой системы
+### Filesystem Check
 
 ```bash
-# EXT4 check / Проверка EXT4
+# EXT4 check
 sudo e2fsck -f /dev/sda1
 
-# XFS check / Проверка XFS
+# XFS check
 sudo xfs_repair /dev/sda1
 
-# Btrfs check / Проверка Btrfs
+# Btrfs check
 sudo btrfs check /dev/sda1
 ```
 
 ---
 
-## Real-World Examples / Примеры из практики
+## Real-World Examples
 
-### Standard Cloud Growth (EXT4) / Стандартное расширение в облаке (EXT4)
+### Standard Cloud Growth (EXT4)
 
 ```bash
-# 1. Resize disk in cloud console / Изменить размер диска в консоли облака
-# 2. SSH to server / SSH на сервер
+# 1. Resize disk in cloud console
+# 2. SSH to server / SSH
 
-# 3. Check current state / Проверить текущее состояние
+# 3. Check current state
 df -h
 lsblk
 
-# 4. Grow partition / Расширить раздел
+# 4. Grow partition
 sudo growpart /dev/sda 1
 
-# 5. Resize filesystem / Изменить размер ФС
+# 5. Resize filesystem
 sudo resize2fs /dev/sda1
 
-# 6. Verify / Проверить
+# 6. Verify
 df -h
 ```
 
-### LVM in Production / LVM в продакшене
+### LVM in Production / LVM
 
 ```bash
-# Scenario: Root LV on LVM / Сценарий: Корневой LV на LVM
+# Scenario: Root LV on LVM
 
-# 1. Check state / Проверить состояние
+# 1. Check state
 sudo vgs
 sudo lvs
 df -h
 
-# 2. Grow partition (if needed) / Расширить раздел (если нужно)
+# 2. Grow partition (if needed)
 sudo growpart /dev/sda 2
 
-# 3. Resize PV / Изменить PV
+# 3. Resize PV
 sudo pvresize /dev/sda2
 
-# 4. Extend LV with filesystem / Расширить LV с ФС
+# 4. Extend LV with filesystem
 sudo lvextend -r -l +100%FREE /dev/mapper/vg0-root
 
-# 5. Verify / Проверить
+# 5. Verify
 df -h
 sudo lvs
 ```
 
-### Add New Disk to LVM / Добавить новый диск к LVM
+### Add New Disk to LVM
 
 ```bash
-# 1. Identify new disk / Идентифицировать новый диск
+# 1. Identify new disk
 lsblk
 
-# 2. Create PV / Создать PV
+# 2. Create PV
 sudo pvcreate /dev/sdb
 
-# 3. Extend VG / Расширить VG
+# 3. Extend VG
 sudo vgextend vg0 /dev/sdb
 
-# 4. Extend LV / Расширить LV
+# 4. Extend LV
 sudo lvextend -l +100%FREE /dev/vg0/lv_data
 
-# 5. Resize filesystem / Изменить ФС
+# 5. Resize filesystem
 sudo resize2fs /dev/vg0/lv_data              # EXT4
 sudo xfs_growfs /mount                        # XFS
 ```
 
-### Emergency Filesystem Recovery / Аварийное восстановление ФС
+### Emergency Filesystem Recovery
 
 ```bash
-# Boot into rescue mode / Загрузиться в режим восстановления
+# Boot into rescue mode
 
-# Unmount filesystem / Отмонтировать ФС
+# Unmount filesystem
 sudo umount /dev/sda1
 
-# Check and repair / Проверить и исправить
+# Check and repair
 sudo e2fsck -f /dev/sda1                      # EXT4
 sudo xfs_repair /dev/sda1                     # XFS
 
-# Resize / Изменить размер
+# Resize
 sudo resize2fs /dev/sda1                      # EXT4
 sudo mount /dev/sda1 /mnt && sudo xfs_growfs /mnt  # XFS
 
-# Remount / Перемонтировать
+# Remount
 sudo mount /dev/sda1 /
 ```
 
 ---
 
-## Best Practices / Лучшие практики
+## Best Practices
 
 > [!IMPORTANT]
 > - Always **backup before resizing** — snapshots in cloud, LVM snapshots, or full backups.
@@ -403,7 +403,7 @@ sudo mount /dev/sda1 /
 
 ---
 
-## Filesystem Resize Comparison / Сравнение возможностей изменения размера ФС
+## Filesystem Resize Comparison
 
 | Feature | EXT4 | XFS | Btrfs |
 | :--- | :--- | :--- | :--- |
@@ -416,7 +416,7 @@ sudo mount /dev/sda1 /
 
 ---
 
-## Typical Growth Workflow / Типичный процесс расширения
+## Typical Growth Workflow
 
 1. **Increase disk size** in hypervisor/cloud console / Увеличить размер диска в гипервизоре/облаке
 2. **Rescan** (if needed): `echo 1 > /sys/class/block/sda/device/rescan`

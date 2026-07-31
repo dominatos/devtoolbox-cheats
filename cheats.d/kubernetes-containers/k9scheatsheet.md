@@ -102,10 +102,10 @@ Ctrl+r                                         # Refresh all views / Обнов�
 /!                                             # Inverse filter / Обратный фильтр
 /-                                             # Clear filter / Очистить фильтр
 
-# Example filters / Примеры фильтров:
-# /Running     → Show only Running pods / Показать только запущенные pod-ы
-# /!Completed  → Exclude Completed pods / Исключить завершённые pod-ы
-# /app=nginx   → Filter by label / Фильтр по label
+# Example filters
+# /Running     → Show only Running pods
+# /!Completed  → Exclude Completed pods
+# /app=nginx   → Filter by label
 
 Ctrl+s                                         # Save filter / Сохранить фильтр
 ```
@@ -144,7 +144,7 @@ z                                              # Toggle error state / Перек
 
 ## Advanced Features
 
-### Logs / Логи
+### Logs
 
 ```text
 l                                              # View logs / Просмотр логов
@@ -155,14 +155,14 @@ s                                              # Toggle timestamps / Перек�
 w                                              # Toggle wrap / Переключить перенос строк
 ```
 
-### Port Forward / Проброс портов
+### Port Forward
 
 ```text
 f                                              # Start port forward / Запустить проброс портов
-# Format: local_port:remote_port / Формат: локальный_порт:удалённый_порт
+# Format: local_port:remote_port
 ```
 
-### Resource Monitoring / Мониторинг ресурсов
+### Resource Monitoring
 
 ```text
 t                                              # View resource tree / Просмотр дерева ресурсов
@@ -170,7 +170,7 @@ h                                              # Toggle header / Переклю�
 Ctrl+z                                         # Toggle errors only / Переключить только ошибки
 ```
 
-### Labels & Annotations / Метки и аннотации
+### Labels & Annotations
 
 ```text
 Shift+l                                        # Show labels / Показать labels
@@ -181,7 +181,7 @@ Shift+f                                        # Toggle full screen / Перек
 
 ## Configuration
 
-### Config Location / Расположение конфигурации
+### Config Location
 
 ```bash
 ~/.config/k9s/config.yml                       # Main config file / Основной файл конфигурации
@@ -190,7 +190,7 @@ Shift+f                                        # Toggle full screen / Перек
 ~/.config/k9s/alias.yml                        # Aliases config / Конфигурация алиасов
 ```
 
-### Sample Config / Пример конфигурации
+### Sample Config
 
 `~/.config/k9s/config.yml`
 
@@ -213,26 +213,26 @@ k9s:
     showTime: false
 ```
 
-### Useful Tips / Полезные советы
+### Useful Tips
 
 ```bash
-# Read-only mode (safe for production) / Режим только для чтения (безопасен для продакшена)
+# Read-only mode (safe for production)
 k9s --readonly
 
-# Start with specific namespace / Запуск с конкретным namespace
+# Start with specific namespace
 k9s -n kube-system
 
-# Start with specific context / Запуск с конкретным контекстом
+# Start with specific context
 k9s --context <CONTEXT_NAME>
 
-# Start with a specific resource view / Запуск с конкретным видом ресурса
+# Start with a specific resource view
 k9s --command pods
 ```
 
 > [!TIP]
 > Use `k9s --readonly` in production environments to prevent accidental resource deletion. / Используйте `k9s --readonly` в продакшн-окружениях для предотвращения случайного удаления.
 
-### Command Mode Shortcuts / Команды командного режима
+### Command Mode Shortcuts
 
 ```text
 :xray deploy                                   # Show deployment dependencies / Показать зависимости deployment

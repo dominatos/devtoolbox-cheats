@@ -12,19 +12,19 @@ tags:
 > **AWK** — pattern-scanning and text-processing language, part of POSIX and available on virtually every Unix/Linux system. GNU AWK (`gawk`) is the most common implementation. AWK excels at columnar data extraction, report generation, and one-liner transformations in shell pipelines. It remains a core sysadmin tool with no signs of deprecation; for heavier data work, consider `python` or `miller`.
 
 ## Table of Contents
-- [Basics](#Basics%20/%20Основы)
-- [Field Separators](#Field%20Separators%20/%20Разделители%20полей)
-- [Patterns & Filters](#Patterns%20&%20Filters%20/%20Шаблоны%20и%20фильтры)
-- [Built-in Variables](#Built-in%20Variables%20/%20Встроенные%20переменные)
-- [Arithmetic & Aggregation](#Arithmetic%20&%20Aggregation%20/%20Арифметика%20и%20агрегация)
-- [String Functions](#String%20Functions%20/%20Строковые%20функции)
-- [Arrays & Loops](#Arrays%20&%20Loops%20/%20Массивы%20и%20циклы)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
-- [Advanced Patterns](#Advanced%20Patterns%20/%20Продвинутые%20шаблоны)
+- [Basics](#Basics)
+- [Field Separators](#Field%20Separators)
+- [Patterns & Filters](#Patterns%20&%20Filters)
+- [Built-in Variables](#Built-in%20Variables)
+- [Arithmetic & Aggregation](#Arithmetic%20&%20Aggregation)
+- [String Functions](#String%20Functions)
+- [Arrays & Loops](#Arrays%20&%20Loops)
+- [Real-World Examples](#Real-World%20Examples)
+- [Advanced Patterns](#Advanced%20Patterns)
 
 ---
 
-## 📖 Basics / Основы
+## 📖 Basics
 
 ```bash
 awk '{print}' file                             # Print all lines / Вывести все строки
@@ -37,7 +37,7 @@ awk '{print $0}' file                          # Print whole line / Вывест
 
 ---
 
-## 🔤 Field Separators / Разделители полей
+## 🔤 Field Separators
 
 ```bash
 awk -F',' '{print $1,$3}' data.csv             # Comma separator / Разделитель — запятая
@@ -49,7 +49,7 @@ awk -F'[,:]' '{print $1}' file                 # Multiple separators / Неск�
 
 ---
 
-## 🎯 Patterns & Filters / Шаблоны и фильтры
+## 🎯 Patterns & Filters
 
 ```bash
 awk '/ERROR/' file                             # Lines matching regex / Строки с совпадением
@@ -64,7 +64,7 @@ awk '$1 ~ /^[0-9]+$/' file                     # First column is numeric / Пе�
 
 ---
 
-## 🔢 Built-in Variables / Встроенные переменные
+## 🔢 Built-in Variables
 
 ```bash
 awk '{print NR, $0}' file                      # NR = line number / NR = номер строки
@@ -77,7 +77,7 @@ awk '{print FILENAME, $0}' file                # FILENAME = current file / FILEN
 
 ---
 
-## 🧮 Arithmetic & Aggregation / Арифметика и агрегация
+## 🧮 Arithmetic & Aggregation
 
 ```bash
 awk '{sum += $2} END {print sum}' file         # Sum column 2 / Сумма столбца 2
@@ -90,7 +90,7 @@ awk '{print $1, $2 * 1.5}' file                # Multiply column / Умножи�
 
 ---
 
-## 🔡 String Functions / Строковые функции
+## 🔡 String Functions
 
 ```bash
 awk '{print toupper($1)}' file                 # Convert to uppercase / В верхний регистр
@@ -105,7 +105,7 @@ awk '{split($0, a, ":"); print a[1]}' file     # Split into array / Разбит
 
 ---
 
-## 📊 Arrays & Loops / Массивы и циклы
+## 📊 Arrays & Loops
 
 ```bash
 awk '{count[$1]++} END {for (k in count) print k, count[k]}' file  # Frequency count / Подсчёт частот
@@ -116,7 +116,7 @@ awk 'NR == FNR {map[$1] = $2; next} {print $0, map[$1]}' A B  # Join two files /
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
 ```bash
 awk -F',' '{sum[$1] += $3} END {for (k in sum) print k, sum[k]}' sales.csv  # Sales by category / Продажи по категориям
@@ -131,7 +131,7 @@ awk -F: '$3 >= 1000 {print $1}' /etc/passwd     # Users with UID >= 1000 / По�
 
 ---
 
-## 💡 Advanced Patterns / Продвинутые шаблоны
+## 💡 Advanced Patterns
 
 ```bash
 awk 'BEGIN {print "Start"} {print $0} END {print "End"}' file  # BEGIN/END blocks / Блоки BEGIN/END
@@ -144,7 +144,7 @@ awk 'NR % 2 == 1' file                         # Odd-numbered lines / Нечёт
 
 ---
 
-## 📚 Documentation / Документация
+## 📚 Documentation
 
 - [GNU AWK User's Guide (gawk)](https://www.gnu.org/software/gawk/manual/gawk.html)
 - [POSIX awk specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html)

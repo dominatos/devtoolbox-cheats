@@ -16,18 +16,18 @@ tags:
 📚 **Official Docs / Официальная документация:** [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html)
 
 ## Table of Contents
-- [Address Management](#Address%20Management%20/%20Управление%20адресами)
-- [Link Management](#Link%20Management%20/%20Управление%20ссылками)
-- [Routing](#️%20Routing%20/%20Маршрутизация)
+- [Address Management](#Address%20Management)
+- [Link Management](#Link%20Management)
+- [Routing](#️%20Routing)
 - [Neighbor (ARP/NDP)](#️%20Neighbor%20(ARP/NDP)%20/%20Соседи)
-- [Tunnels & VLANs](#Tunnels%20&%20VLANs%20/%20Туннели%20и%20VLAN)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Tunnels & VLANs](#Tunnels%20&%20VLANs)
+- [Real-World Examples](#Real-World%20Examples)
 
 ---
 
-## 📍 Address Management / Управление адресами
+## 📍 Address Management
 
-### Show Addresses / Показать адреса
+### Show Addresses
 ```bash
 ip addr                                       # Show all addresses / Показать все адреса
 ip addr show                                  # Same as above / То же что выше
@@ -37,14 +37,14 @@ ip -6 addr                                    # IPv6 only / Только IPv6
 ip addr show dev eth0                         # Show for specific interface / Показать для конкретного интерфейса
 ```
 
-### Add Addresses / Добавить адреса
+### Add Addresses
 ```bash
 sudo ip addr add 10.0.0.10/24 dev eth0        # Add IPv4 address / Добавить IPv4 адрес
 sudo ip addr add 2001:db8::10/64 dev eth0     # Add IPv6 address / Добавить IPv6 адрес
 sudo ip addr add 192.168.1.10/24 broadcast 192.168.1.255 dev eth0  # With broadcast / С broadcast
 ```
 
-### Delete Addresses / Удалить адреса
+### Delete Addresses
 ```bash
 sudo ip addr del 10.0.0.10/24 dev eth0        # Delete address / Удалить адрес
 sudo ip addr flush dev eth0                   # Remove all addresses / Удалить все адреса
@@ -52,9 +52,9 @@ sudo ip addr flush dev eth0                   # Remove all addresses / Удал�
 
 ---
 
-## 🔗 Link Management / Управление ссылками
+## 🔗 Link Management
 
-### Show Links / Показать ссылки
+### Show Links
 ```bash
 ip link                                       # Show all links / Показать все ссылки
 ip link show                                  # Same as above / То же что выше
@@ -63,7 +63,7 @@ ip -s link                                    # With statistics / Со стат�
 ip -s -s link                                 # Detailed statistics / Подробная статистика
 ```
 
-### Link Control / Управление ссылками
+### Link Control
 ```bash
 sudo ip link set eth0 up                      # Bring interface up / Поднять интерфейс
 sudo ip link set eth0 down                    # Bring interface down / Опустить интерфейс
@@ -72,14 +72,14 @@ sudo ip link set eth0 address 00:11:22:33:44:55  # Change MAC / Изменить
 sudo ip link set eth0 promisc on              # Enable promiscuous mode / Включить promiscuous режим
 ```
 
-### Create Virtual Interfaces / Создать виртуальные интерфейсы
+### Create Virtual Interfaces
 ```bash
 sudo ip link add veth0 type veth peer name veth1  # Create veth pair / Создать veth пару
 sudo ip link add br0 type bridge              # Create bridge / Создать bridge
 sudo ip link set eth0 master br0              # Add to bridge / Добавить в bridge
 ```
 
-### Delete Links / Удалить ссылки
+### Delete Links
 ```bash
 sudo ip link delete veth0                     # Delete interface / Удалить интерфейс
 sudo ip link delete br0 type bridge           # Delete bridge / Удалить bridge
@@ -87,9 +87,9 @@ sudo ip link delete br0 type bridge           # Delete bridge / Удалить b
 
 ---
 
-## 🗺️ Routing / Маршрутизация
+## 🗺️ Routing
 
-### Show Routes / Показать маршруты
+### Show Routes
 ```bash
 ip route                                      # Show routing table / Показать таблицу маршрутизации
 ip route show                                 # Same as above / То же что выше
@@ -98,7 +98,7 @@ ip -6 route                                   # IPv6 routes / IPv6 маршру�
 ip route get 8.8.8.8                          # Show route to IP / Показать маршрут к IP
 ```
 
-### Add Routes / Добавить маршруты
+### Add Routes
 ```bash
 sudo ip route add 192.168.1.0/24 via 10.0.0.1  # Add route / Добавить маршрут
 sudo ip route add default via 10.0.0.1        # Add default gateway / Добавить шлюз по умолчанию
@@ -106,7 +106,7 @@ sudo ip route add 192.168.1.0/24 dev eth0     # Add direct route / Добави�
 sudo ip route add 192.168.1.0/24 via 10.0.0.1 metric 100  # With metric / С метрикой
 ```
 
-### Delete Routes / Удалить маршруты
+### Delete Routes
 ```bash
 sudo ip route del 192.168.1.0/24              # Delete route / Удалить маршрут
 sudo ip route del default via 10.0.0.1        # Delete default gateway / Удалить шлюз по умолчанию
@@ -115,9 +115,9 @@ sudo ip route flush cache                     # Flush routing cache / Очист
 
 ---
 
-## 🏘️ Neighbor (ARP/NDP) / Соседи
+## 🏘️ Neighbor (ARP/NDP)
 
-### Show Neighbors / Показать соседей
+### Show Neighbors
 ```bash
 ip neigh                                      # Show ARP/NDP table / Показать таблицу ARP/NDP
 ip neigh show                                 # Same as above / То же что выше
@@ -125,7 +125,7 @@ ip -4 neigh                                   # IPv4 neighbors (ARP) / IPv4 со
 ip -6 neigh                                   # IPv6 neighbors (NDP) / IPv6 соседи (NDP)
 ```
 
-### Manage Neighbors / Управление соседями
+### Manage Neighbors
 ```bash
 sudo ip neigh add 192.168.1.10 lladdr 00:11:22:33:44:55 dev eth0  # Add entry / Добавить запись
 sudo ip neigh del 192.168.1.10 dev eth0       # Delete entry / Удалить запись
@@ -134,7 +134,7 @@ sudo ip neigh flush dev eth0                  # Flush neighbors / Очистит
 
 ---
 
-## 🚇 Tunnels & VLANs / Туннели и VLAN
+## 🚇 Tunnels & VLANs
 
 ### VLANs
 ```bash
@@ -143,7 +143,7 @@ sudo ip addr add 192.168.100.1/24 dev eth0.100  # Add IP to VLAN / Добави�
 sudo ip link set eth0.100 up                  # Bring VLAN up / Поднять VLAN
 ```
 
-### GRE Tunnels / GRE туннели
+### GRE Tunnels / GRE
 ```bash
 sudo ip tunnel add gre1 mode gre remote <REMOTE_IP> local <LOCAL_IP> ttl 255
 sudo ip addr add 10.0.0.1/30 dev gre1
@@ -159,32 +159,32 @@ sudo ip link set vxlan0 up
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
-### Basic Network Setup / Базовая настройка сети
+### Basic Network Setup
 ```bash
-# Configure static IP / Настроить статический IP
+# Configure static IP
 sudo ip addr flush dev eth0
 sudo ip addr add 192.168.1.10/24 dev eth0
 sudo ip route add default via 192.168.1.1
 sudo ip link set eth0 up
 ```
 
-### Temporary IP for Testing / Временный IP для тестирования
+### Temporary IP for Testing
 ```bash
-# Add temporary IP / Добавить временный IP
+# Add temporary IP
 sudo ip addr add 10.0.0.100/24 dev eth0
 
-# Test / Тест
+# Test
 ping -c 3 10.0.0.1
 
-# Remove / Удалить
+# Remove
 sudo ip addr del 10.0.0.100/24 dev eth0
 ```
 
-### Bridge Configuration / Конфигурация bridge
+### Bridge Configuration
 ```bash
-# Create bridge / Создать bridge
+# Create bridge
 sudo ip link add br0 type bridge
 sudo ip link set eth0 master br0
 sudo ip link set eth1 master br0
@@ -192,62 +192,62 @@ sudo ip link set br0 up
 sudo ip addr add 192.168.1.1/24 dev br0
 ```
 
-### Docker-Like Network / Сеть как в Docker
+### Docker-Like Network
 ```bash
-# Create bridge network / Создать bridge сеть
+# Create bridge network
 sudo ip link add docker0 type bridge
 sudo ip addr add 172.17.0.1/16 dev docker0
 sudo ip link set docker0 up
 
-# Create veth pair / Создать veth пару
+# Create veth pair
 sudo ip link add veth0 type veth peer name veth1
 sudo ip link set veth0 master docker0
 sudo ip link set veth0 up
 ```
 
-### Multi-Homed Host / Хост с несколькими сетями
+### Multi-Homed Host
 ```bash
-# eth0: Internal network / Внутренняя сеть
+# eth0: Internal network
 sudo ip addr add 192.168.1.10/24 dev eth0
 sudo ip route add 192.168.0.0/16 via 192.168.1.1 dev eth0
 
-# eth1: External network / Внешняя сеть
+# eth1: External network
 sudo ip addr add 10.0.0.10/24 dev eth1
 sudo ip route add default via 10.0.0.1 dev eth1
 ```
 
-### Policy Routing / Политическая маршрутизация
+### Policy Routing
 ```bash
-# Create routing table / Создать таблицу маршрутизации
+# Create routing table
 echo "200 custom" >> /etc/iproute2/rt_tables
 
-# Add rule / Добавить правило
+# Add rule
 sudo ip rule add from 192.168.1.0/24 table custom
 sudo ip route add default via 10.0.0.1 table custom
 ```
 
-### Monitor Network Changes / Мониторить изменения сети
+### Monitor Network Changes
 ```bash
-# Watch addresses / Следить за адресами
+# Watch addresses
 ip -timestamp monitor address
 
-# Watch routes / Следить за маршрутами
+# Watch routes
 ip -timestamp monitor route
 
-# Watch all / Следить за всем
+# Watch all
 ip -timestamp monitor all
 ```
 
-### Quick Network Check / Быстрая проверка сети
+### Quick Network Check
 ```bash
-# Check network config / Проверить конфигурацию сети
+# Check network config
 ip -br addr
 ip -br link
 ip route show
 ip neigh show
 ```
 
-## 💡 Best Practices / Лучшие практики
+## 💡 Best Practices
 
 - Use `-brief` for quick overview / Используйте `-brief` для быстрого обзора
 - Use `-4` or `-6` to filter by IP version / Используйте `-4` или `-6` для фильтрации по версии IP
@@ -256,7 +256,7 @@ ip neigh show
 - Use `ip` instead of deprecated `ifconfig` / Используйте `ip` вместо устаревшего `ifconfig`
 - Monitor with `ip -timestamp monitor` / Мониторьте с `ip -timestamp monitor`
 
-## 🔧 Common Subcommands / Распространённые подкоманды
+## 🔧 Common Subcommands
 
 | Subcommand | Description (EN / RU) |
 |------------|----------------------|
@@ -268,7 +268,7 @@ ip neigh show
 | `ip rule` | Policy routing / Политическая маршрутизация |
 | `ip monitor` | Monitor changes / Мониторить изменения |
 
-## 📋 Useful Options / Полезные опции
+## 📋 Useful Options
 
 | Option | Description (EN / RU) |
 |--------|----------------------|
@@ -280,7 +280,7 @@ ip neigh show
 | `-timestamp` | Add timestamps / Добавить временные метки |
 | `-json` | JSON output / JSON вывод |
 
-## ⚠️ Important Notes / Важные примечания
+## ⚠️ Important Notes
 
 - `ip` is part of iproute2 package / `ip` часть пакета iproute2
 - Changes are not persistent / Изменения не постоянные

@@ -52,7 +52,7 @@ tags:
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 #### Debian / Ubuntu (Official Repo)
 ```bash
@@ -76,11 +76,11 @@ sudo pacman -S caddy                                      # Install from communi
 
 #### Binary / Go Install (Any OS)
 ```bash
-# Download static binary / Скачать статический бинарник
+# Download static binary
 curl -o /usr/local/bin/caddy "https://caddyserver.com/api/download?os=linux&arch=amd64"
 chmod +x /usr/local/bin/caddy                             # Make executable / Сделать исполняемым
 
-# Or install via Go / Или установить через Go
+# Or install via Go
 go install github.com/caddyserver/caddy/v2/cmd/caddy@latest
 ```
 
@@ -94,7 +94,7 @@ docker run -d --name caddy \
   caddy:latest                                            # Run Caddy in Docker / Запуск в Docker
 ```
 
-### Default Paths / Пути по умолчанию
+### Default Paths
 
 **Main config / Основной конфиг:**
 `/etc/caddy/Caddyfile`
@@ -113,7 +113,7 @@ docker run -d --name caddy \
 **Binary location / Расположение бинарника:**
 `/usr/bin/caddy`
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port | Protocol | Description (EN / RU) |
 | :--- | :--- | :--- |
@@ -130,7 +130,7 @@ docker run -d --name caddy \
 
 ## Core Management
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start caddy                               # Start service / Запустить сервис
@@ -141,7 +141,7 @@ sudo systemctl status caddy                               # Service status / С�
 sudo systemctl enable caddy                               # Enable at boot / Автозапуск
 ```
 
-### CLI Commands / Команды CLI
+### CLI Commands
 
 ```bash
 caddy version                                             # Show version / Показать версию
@@ -150,7 +150,7 @@ caddy environ                                             # Show environment / �
 caddy build-info                                          # Build info / Информация о сборке
 ```
 
-### Configuration Management / Управление конфигурацией
+### Configuration Management
 
 ```bash
 caddy validate --config /etc/caddy/Caddyfile              # Validate Caddyfile / Проверить конфиг
@@ -159,22 +159,22 @@ caddy fmt --overwrite /etc/caddy/Caddyfile                # Format Caddyfile / �
 caddy reload --config /etc/caddy/Caddyfile                # Live reload / Перезагрузить конфиг на лету
 ```
 
-### Admin API / Админ API
+### Admin API
 
 ```bash
-# Check current config / Проверить текущую конфигурацию
+# Check current config
 curl localhost:2019/config/ | jq .
 
-# Load new config / Загрузить новую конфигурацию
+# Load new config
 curl -X POST localhost:2019/load \
   -H "Content-Type: application/json" \
   -d @caddy.json
 
-# Stop Caddy via API / Остановить Caddy через API
+# Stop Caddy via API
 curl -X POST localhost:2019/stop
 ```
 
-### Run Without systemd / Запуск без systemd
+### Run Without systemd
 
 ```bash
 caddy run --config /etc/caddy/Caddyfile                   # Run in foreground / Запуск на переднем плане
@@ -186,25 +186,25 @@ caddy stop                                                # Stop daemon / Ост
 
 ## Caddyfile Basics
 
-### Caddyfile Structure / Структура Caddyfile
+### Caddyfile Structure
 
 Caddy's native config format uses a simple, human-readable syntax.
 Нативный формат конфигурации Caddy — простой, человекочитаемый синтаксис.
 
 ```caddyfile
-# Global options / Глобальные настройки
+# Global options
 {
     email admin@example.com                               # ACME account email / Email для ACME
     admin off                                             # Disable admin API / Отключить admin API
 }
 
-# Site block / Блок сайта
+# Site block
 example.com {
     respond "Hello, World!"                               # Simple response / Простой ответ
 }
 ```
 
-### Key Concepts / Ключевые концепции
+### Key Concepts
 
 | Concept | Description (EN) | Description (RU) |
 | :--- | :--- | :--- |
@@ -219,7 +219,7 @@ example.com {
 
 ## Reverse Proxy
 
-### Basic Reverse Proxy / Базовый обратный прокси
+### Basic Reverse Proxy
 
 `/etc/caddy/Caddyfile`
 
@@ -233,7 +233,7 @@ example.com {
 > With just these 3 lines, Caddy will: obtain and auto-renew a TLS certificate, redirect HTTP→HTTPS, proxy all traffic to port 3000, and set proper `X-Forwarded-For` headers. No additional configuration needed.
 > Всего 3 строки, и Caddy: получит и обновит TLS сертификат, перенаправит HTTP→HTTPS, проксирует трафик на порт 3000 и выставит правильные заголовки `X-Forwarded-For`.
 
-### Reverse Proxy with Headers / Обратный прокси с заголовками
+### Reverse Proxy with Headers
 
 `/etc/caddy/Caddyfile`
 
@@ -247,7 +247,7 @@ example.com {
 }
 ```
 
-### Multiple Backends / Несколько бэкендов
+### Multiple Backends
 
 `/etc/caddy/Caddyfile`
 
@@ -257,7 +257,7 @@ example.com {
 }
 ```
 
-### Path-Based Routing / Маршрутизация по пути
+### Path-Based Routing
 
 `/etc/caddy/Caddyfile`
 
@@ -269,7 +269,7 @@ example.com {
 }
 ```
 
-### Host-Based Routing / Маршрутизация по домену
+### Host-Based Routing
 
 `/etc/caddy/Caddyfile`
 
@@ -287,7 +287,7 @@ admin.example.com {
 }
 ```
 
-### WebSocket Proxy / WebSocket прокси
+### WebSocket Proxy / WebSocket
 
 `/etc/caddy/Caddyfile`
 
@@ -305,7 +305,7 @@ example.com {
 
 ## Load Balancing
 
-### Load Balancing Algorithms / Алгоритмы балансировки
+### Load Balancing Algorithms
 
 | Algorithm | Description (EN) | Description (RU) | Use Case |
 | :--- | :--- | :--- | :--- |
@@ -318,7 +318,7 @@ example.com {
 | **cookie** | Cookie-based persistence | Привязка по cookie | Application sessions / Сессии приложений |
 | **header** | Hash specific header value | Хеш по значению заголовка | Custom routing / Пользовательская маршрутизация |
 
-### Load Balancing Configuration / Конфигурация балансировки
+### Load Balancing Configuration
 
 `/etc/caddy/Caddyfile`
 
@@ -330,7 +330,7 @@ example.com {
 }
 ```
 
-### Least Connections / Минимум соединений
+### Least Connections
 
 `/etc/caddy/Caddyfile`
 
@@ -342,7 +342,7 @@ example.com {
 }
 ```
 
-### Cookie-Based Persistence / Привязка по cookie
+### Cookie-Based Persistence
 
 `/etc/caddy/Caddyfile`
 
@@ -354,7 +354,7 @@ example.com {
 }
 ```
 
-### Health Checks / Проверки здоровья
+### Health Checks
 
 `/etc/caddy/Caddyfile`
 
@@ -385,7 +385,7 @@ example.com {
 
 ## HTTPS & TLS
 
-### Automatic HTTPS (Default) / Автоматический HTTPS
+### Automatic HTTPS (Default)
 
 ```caddyfile
 example.com {
@@ -397,7 +397,7 @@ example.com {
 > Caddy obtains and renews TLS certificates **automatically** using Let's Encrypt or ZeroSSL. No manual `certbot` commands needed. Requirements: port 80 and 443 accessible, valid DNS pointing to your server.
 > Caddy получает и обновляет TLS-сертификаты **автоматически** через Let's Encrypt или ZeroSSL. Никаких ручных команд `certbot`. Требования: порты 80 и 443 доступны, DNS указывает на ваш сервер.
 
-### Custom TLS / Пользовательский TLS
+### Custom TLS
 
 `/etc/caddy/Caddyfile`
 
@@ -408,7 +408,7 @@ example.com {
 }
 ```
 
-### Self-Signed (Local Dev) / Самоподписанный (Локальная разработка)
+### Self-Signed (Local Dev)
 
 ```caddyfile
 localhost {
@@ -417,7 +417,7 @@ localhost {
 }
 ```
 
-### ACME Configuration / Конфигурация ACME
+### ACME Configuration
 
 `/etc/caddy/Caddyfile`
 
@@ -446,7 +446,7 @@ localhost {
 > Wildcard certificates require the DNS challenge. You need to install the Caddy DNS provider plugin (e.g., `caddy-dns/cloudflare`) and rebuild Caddy with `xcaddy`.
 > Wildcard-сертификаты требуют DNS challenge. Нужно установить плагин DNS провайдера и пересобрать Caddy с `xcaddy`.
 
-### TLS Protocols & Ciphers / TLS протоколы и шифры
+### TLS Protocols & Ciphers / TLS
 
 `/etc/caddy/Caddyfile`
 
@@ -459,7 +459,7 @@ example.com {
 }
 ```
 
-### On-Demand TLS / TLS по запросу
+### On-Demand TLS / TLS
 
 `/etc/caddy/Caddyfile`
 
@@ -486,7 +486,7 @@ https:// {
 
 ## Static Files & File Server
 
-### Basic File Server / Базовый файловый сервер
+### Basic File Server
 
 `/etc/caddy/Caddyfile`
 
@@ -497,7 +497,7 @@ example.com {
 }
 ```
 
-### File Server with Directory Browsing / Файловый сервер с просмотром каталогов
+### File Server with Directory Browsing
 
 `/etc/caddy/Caddyfile`
 
@@ -520,7 +520,7 @@ example.com {
 }
 ```
 
-### Compression / Сжатие
+### Compression
 
 `/etc/caddy/Caddyfile`
 
@@ -536,10 +536,10 @@ example.com {
 
 ## Security & Access Control
 
-### Basic Authentication / Базовая аутентификация
+### Basic Authentication
 
 ```bash
-# Generate password hash / Сгенерировать хеш пароля
+# Generate password hash
 caddy hash-password                                        # Interactive prompt / Интерактивный ввод
 caddy hash-password --plaintext '<PASSWORD>'               # Direct hash / Прямое хеширование
 ```
@@ -555,7 +555,7 @@ example.com {
 }
 ```
 
-### Security Headers / Заголовки безопасности
+### Security Headers
 
 `/etc/caddy/Caddyfile`
 
@@ -573,7 +573,7 @@ example.com {
 }
 ```
 
-### IP Allow/Deny / Разрешение/блокировка по IP
+### IP Allow/Deny
 
 `/etc/caddy/Caddyfile`
 
@@ -590,7 +590,7 @@ example.com {
 }
 ```
 
-### Rate Limiting / Ограничение запросов
+### Rate Limiting
 
 `/etc/caddy/Caddyfile`
 
@@ -615,7 +615,7 @@ example.com {
 
 ## Logging & Monitoring
 
-### Access Logs / Логи доступа
+### Access Logs
 
 `/etc/caddy/Caddyfile`
 
@@ -634,7 +634,7 @@ example.com {
 }
 ```
 
-### Structured JSON Log Example / Пример структурированного JSON лога
+### Structured JSON Log Example
 
 ```json
 {
@@ -653,7 +653,7 @@ example.com {
 }
 ```
 
-### Global Logging / Глобальное логирование
+### Global Logging
 
 `/etc/caddy/Caddyfile`
 
@@ -666,7 +666,7 @@ example.com {
 }
 ```
 
-### Metrics (Prometheus) / Метрики (Prometheus)
+### Metrics (Prometheus)
 
 `/etc/caddy/Caddyfile`
 
@@ -686,12 +686,12 @@ example.com {
 
 ## Advanced Features
 
-### Snippets (Reusable Config) / Сниппеты (Переиспользуемые блоки)
+### Snippets (Reusable Config)
 
 `/etc/caddy/Caddyfile`
 
 ```caddyfile
-# Define snippet / Определение сниппета
+# Define snippet
 (security_headers) {
     header {
         X-Frame-Options DENY
@@ -701,7 +701,7 @@ example.com {
     }
 }
 
-# Use snippet / Использование сниппета
+# Use snippet
 example.com {
     import security_headers                                # Import snippet / Импортировать сниппет
     reverse_proxy localhost:3000
@@ -713,7 +713,7 @@ another.example.com {
 }
 ```
 
-### Import Files / Импорт файлов
+### Import Files
 
 `/etc/caddy/Caddyfile`
 
@@ -721,7 +721,7 @@ another.example.com {
 import /etc/caddy/conf.d/*.caddy                          # Import all configs / Импортировать все конфиги
 ```
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 `/etc/caddy/Caddyfile`
 
@@ -735,7 +735,7 @@ import /etc/caddy/conf.d/*.caddy                          # Import all configs /
 DOMAIN=example.com BACKEND_HOST=10.0.0.1 BACKEND_PORT=8080 caddy run  # Set env vars / Задать переменные
 ```
 
-### Matchers / Сопоставления
+### Matchers
 
 `/etc/caddy/Caddyfile`
 
@@ -756,7 +756,7 @@ example.com {
 }
 ```
 
-### Custom Error Pages / Пользовательские страницы ошибок
+### Custom Error Pages
 
 `/etc/caddy/Caddyfile`
 
@@ -777,7 +777,7 @@ example.com {
 }
 ```
 
-### Redirect / Редирект
+### Redirect
 
 `/etc/caddy/Caddyfile`
 
@@ -792,19 +792,19 @@ example.com {
 }
 ```
 
-### Custom Caddy Builds with xcaddy / Сборка с плагинами через xcaddy
+### Custom Caddy Builds with xcaddy
 
 ```bash
-# Install xcaddy / Установить xcaddy
+# Install xcaddy
 go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 
-# Build with plugins / Собрать с плагинами
+# Build with plugins
 xcaddy build \
   --with github.com/caddy-dns/cloudflare \
   --with github.com/mholt/caddy-ratelimit \
   --with github.com/caddyserver/transform-encoder
 
-# Replace system binary / Заменить системный бинарник
+# Replace system binary
 sudo mv caddy /usr/bin/caddy
 sudo systemctl restart caddy
 ```
@@ -813,7 +813,7 @@ sudo systemctl restart caddy
 
 ## Production Configuration
 
-### Production-Ready Template / Шаблон для продакшена
+### Production-Ready Template
 
 `/etc/caddy/Caddyfile`
 
@@ -830,7 +830,7 @@ sudo systemctl restart caddy
     }
 }
 
-# Reusable snippet / Переиспользуемый сниппет
+# Reusable snippet
 (common) {
     encode gzip zstd
     header {
@@ -863,7 +863,7 @@ example.com {
 }
 ```
 
-### Production Checklist / Чеклист для продакшена
+### Production Checklist
 
 - [ ] `admin off` in production / `admin off` в продакшене
 - [ ] ACME email configured / Настроен email для ACME
@@ -876,7 +876,7 @@ example.com {
 - [ ] Firewall rules for 80/443 only / Правила firewall только для 80/443
 - [ ] Monitoring/metrics enabled / Мониторинг/метрики включены
 
-### Systemd Override / Переопределение systemd
+### Systemd Override
 
 `/etc/systemd/system/caddy.service.d/override.conf`
 
@@ -894,32 +894,32 @@ sudo systemctl daemon-reload && sudo systemctl restart caddy  # Apply override /
 
 ## Troubleshooting & Tools
 
-### Common Issues / Типичные проблемы
+### Common Issues
 
 ```bash
-# Certificate not issuing / Сертификат не выдаётся
-# 1. Check DNS A/AAAA record points to your server / Проверить DNS запись
+# Certificate not issuing
+# 1. Check DNS A/AAAA record points to your server
 dig +short example.com
 
-# 2. Check ports 80 and 443 are open / Проверить что порты 80 и 443 открыты
+# 2. Check ports 80 and 443 are open
 sudo ss -tlnp | grep -E ':80|:443'
 
-# 3. Check Caddy logs for ACME errors / Проверить логи на ACME ошибки
+# 3. Check Caddy logs for ACME errors
 sudo journalctl -u caddy --no-pager --since "1 hour ago" | grep -i "acme\|tls\|certificate"
 
-# Permission issues / Проблемы с правами
+# Permission issues
 sudo chown -R caddy:caddy /var/lib/caddy                  # Fix ownership / Исправить владельца
 sudo chown -R caddy:caddy /var/log/caddy
 
-# Config syntax error / Ошибка синтаксиса
+# Config syntax error
 caddy validate --config /etc/caddy/Caddyfile              # Validate config / Проверить конфиг
 
-# Port already in use / Порт занят
+# Port already in use
 sudo ss -tlnp | grep -E ':80|:443'                        # Check what's using port / Проверить что использует порт
 sudo systemctl stop nginx apache2                         # Stop conflicting service / Остановить конфликтующий сервис
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 
 `/etc/caddy/Caddyfile`
 
@@ -933,20 +933,20 @@ sudo systemctl stop nginx apache2                         # Stop conflicting ser
 caddy run --config /etc/caddy/Caddyfile --adapter caddyfile  # Run with verbose output / Запуск с подробным выводом
 ```
 
-### Certificate Management / Управление сертификатами
+### Certificate Management
 
 ```bash
-# View managed certificates / Просмотр управляемых сертификатов
+# View managed certificates
 curl -s localhost:2019/config/apps/tls/certificates | jq .
 
-# Force certificate renewal / Принудительное обновление сертификата
+# Force certificate renewal
 caddy reload --config /etc/caddy/Caddyfile                # Reload triggers renewal check / Перезагрузка запускает проверку обновления
 
-# Check certificate from outside / Проверить сертификат извне
+# Check certificate from outside
 openssl s_client -connect example.com:443 -servername example.com < /dev/null 2>/dev/null | openssl x509 -noout -dates
 ```
 
-### Useful Diagnostic Commands / Полезные диагностические команды
+### Useful Diagnostic Commands
 
 ```bash
 caddy version                                              # Check version / Проверить версию
@@ -960,7 +960,7 @@ journalctl -u caddy -f                                     # Follow logs / Сл�
 
 ## Comparison Tables
 
-### Caddy vs Other Web Servers / Сравнение Caddy с другими веб-серверами
+### Caddy vs Other Web Servers
 
 | Feature | Caddy | Nginx | HAProxy | Traefik |
 | :--- | :--- | :--- | :--- | :--- |
@@ -975,7 +975,7 @@ journalctl -u caddy -f                                     # Follow logs / Сл�
 | **Service Discovery** | Via plugins | ❌ Manual | ❌ Manual | ✅ Built-in |
 | **Best For** | Simple HTTPS setup | High-perf reverse proxy | L4/L7 Load Balancing | Cloud-native/K8s |
 
-### TLS Certificate Sources / Источники TLS-сертификатов
+### TLS Certificate Sources
 
 | Source | Description (EN / RU) | Use Case |
 | :--- | :--- | :--- |
@@ -992,7 +992,7 @@ journalctl -u caddy -f                                     # Follow logs / Сл�
 > Caddy has **built-in log rotation** via `roll_size`, `roll_keep`, and `roll_keep_for` directives. External logrotate is optional but can be used for integration with existing systems.
 > Caddy имеет **встроенную ротацию логов** через директивы `roll_size`, `roll_keep`, `roll_keep_for`. Внешний logrotate опционален.
 
-### Built-in Rotation / Встроенная ротация
+### Built-in Rotation
 
 `/etc/caddy/Caddyfile`
 
@@ -1006,7 +1006,7 @@ log {
 }
 ```
 
-### External Logrotate / Внешний Logrotate
+### External Logrotate
 
 `/etc/logrotate.d/caddy`
 

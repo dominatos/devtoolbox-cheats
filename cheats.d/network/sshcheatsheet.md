@@ -17,7 +17,7 @@ tags:
 
 ## Table of Contents
 - [Basic Connection](#Basic%20Connection)
-- [Key Management](#Key%20Management%20/%20Управление%20ключами)
+- [Key Management](#Key%20Management)
 - [Port Forwarding & Tunnels](#Port%20Forwarding%20&%20Tunnels)
 - [ProxyJump & Bastion](#ProxyJump%20&%20Bastion)
 - [File Transfer (SCP/SFTP)](#File%20Transfer%20(SCP/SFTP))
@@ -32,7 +32,7 @@ tags:
 
 ## Basic Connection
 
-### Connect to Remote / Подключение к удалённому хосту
+### Connect to Remote
 ```bash
 ssh <USER>@<HOST>                              # Connect to host / Подключиться к хосту
 ssh -p 2222 <USER>@<HOST>                      # Custom port / Нестандартный порт
@@ -49,7 +49,7 @@ ssh -vvv <USER>@<HOST>                         # Maximum verbosity / Макси�
 
 ## Key Management
 
-### Generate & Install Keys / Генерация и установка ключей
+### Generate & Install Keys
 ```bash
 ssh-keygen -t ed25519 -C "<USER>@<HOST>"       # Generate ED25519 key / Генерация ED25519 ключа
 ssh-keygen -t rsa -b 4096 -C "<USER>@<HOST>"   # Generate RSA 4096 key / Генерация RSA 4096 ключа
@@ -65,7 +65,7 @@ ssh-add -l                                     # List added keys / Список 
 ssh-add -D                                     # Remove all keys / Удалить все ключи
 ```
 
-### Key Management / Управление ключами
+### Key Management
 ```bash
 ssh-keygen -lf ~/.ssh/id_ed25519.pub           # Show key fingerprint / Показать отпечаток ключа
 ssh-keygen -p -f ~/.ssh/id_ed25519             # Change passphrase / Изменить парольную фразу
@@ -77,7 +77,7 @@ cat ~/.ssh/id_ed25519.pub                      # View public key / Просмо�
 
 ## Port Forwarding & Tunnels
 
-### Local & Remote Forwarding / Локальный и обратный проброс
+### Local & Remote Forwarding
 ```bash
 ssh -L 8080:127.0.0.1:80 <USER>@<HOST>         # Local port forward / Локальный проброс порта
 ssh -L 3306:<DB_HOST>:3306 <USER>@<HOST>       # Forward to remote DB / Проброс к удалённой БД
@@ -93,7 +93,7 @@ ssh -R 0:localhost:8080 <USER>@<HOST>          # Auto-assign remote port / Ав�
 
 ## ProxyJump & Bastion
 
-### Jump Host Connection / Подключение через промежуточный хост
+### Jump Host Connection
 ```bash
 ssh -J <BASTION_USER>@<BASTION> <USER>@<TARGET>  # ProxyJump via bastion / Прыжок через бастион
 ssh -J <USER>@<BASTION>:2222 <USER>@<TARGET>   # Bastion with port / Бастион с портом
@@ -105,7 +105,7 @@ ssh -o ProxyCommand="ssh -W %h:%p <USER>@<BASTION>" <USER>@<TARGET>  # Proxy com
 
 ## File Transfer (SCP/SFTP)
 
-### SCP & SFTP / SCP и SFTP
+### SCP & SFTP / SCP
 ```bash
 scp file.txt <USER>@<HOST>:/path/              # Copy file to remote / Копировать файл на удалённый сервер
 scp <USER>@<HOST>:/remote/file.txt ./          # Copy from remote / Копировать с удалённого сервера
@@ -121,7 +121,7 @@ sftp -P 2222 <USER>@<HOST>                     # SFTP with port / SFTP с пор
 
 ## SSH Config
 
-### Client Configuration / Клиентская конфигурация
+### Client Configuration
 `~/.ssh/config`
 
 ```bash
@@ -159,7 +159,7 @@ Host *
 
 ## Security & Hardening
 
-### Secure Keys & Permissions / Безопасность ключей и права
+### Secure Keys & Permissions
 ```bash
 ssh-keygen -t ed25519 -a 100                   # Ed25519 with KDF rounds / Ed25519 с раундами KDF
 ssh -o PubkeyAuthentication=yes -o PasswordAuthentication=no <USER>@<HOST>  # Key-only auth / Только ключи
@@ -175,7 +175,7 @@ chmod 600 ~/.ssh/config                        # Secure config / Защитит�
 
 ## Troubleshooting
 
-### Debug & Diagnostics / Отладка и диагностика
+### Debug & Diagnostics
 ```bash
 ssh -vvv <USER>@<HOST>                         # Maximum debug output / Максимальная отладка
 ssh -o ConnectTimeout=10 <USER>@<HOST>         # Connection timeout / Таймаут подключения
@@ -193,7 +193,7 @@ ssh-keyscan <HOST> >> ~/.ssh/known_hosts       # Add host key / Добавить
 
 ## Real-World Examples
 
-### Production Workflows / Рабочие сценарии
+### Production Workflows
 ```bash
 ssh -L 3306:localhost:3306 <USER>@<DB_HOST> -N -f  # MySQL tunnel background / Туннель MySQL в фоне
 ssh -D 1080 -N -f <USER>@<HOST> && export http_proxy=socks5://127.0.0.1:1080  # SOCKS proxy setup / Настройка SOCKS прокси
@@ -211,7 +211,7 @@ ssh <USER>@<HOST> 'bash -s' < local_script.sh  # Run local script remotely / З�
 
 ## SSH Agent Forwarding
 
-### Agent Forwarding / Проброс SSH-агента
+### Agent Forwarding
 ```bash
 ssh -A <USER>@<HOST>                           # Enable agent forwarding / Включить проброс агента
 # In ~/.ssh/config:
@@ -225,7 +225,7 @@ ssh -A <USER>@<HOST>                           # Enable agent forwarding / Вк�
 
 ## Advanced Techniques
 
-### Connection Multiplexing & Automation / Мультиплексирование и автоматизация
+### Connection Multiplexing & Automation
 ```bash
 ssh -o ControlMaster=auto -o ControlPath=~/.ssh/cm-%r@%h:%p -o ControlPersist=10m <USER>@<HOST>  # Connection multiplexing / Мультиплексирование
 ssh -o 'RemoteCommand=tmux attach || tmux new' <USER>@<HOST>  # Auto tmux / Автоматический tmux

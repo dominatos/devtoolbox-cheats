@@ -38,7 +38,7 @@ This cheatsheet covers three container management tools: **Podman** — a daemon
 
 ## Podman Basics
 
-### Container Management / Управление контейнерами
+### Container Management
 
 ```bash
 podman ps -a                                   # List containers / Список контейнеров
@@ -49,7 +49,7 @@ podman restart app                             # Restart container / Перез�
 podman rm app                                  # Remove container / Удалить контейнер
 ```
 
-### Logs & Inspection / Логи и инспекция
+### Logs & Inspection
 
 ```bash
 podman logs -f app                             # Follow logs / Следить за логами
@@ -59,14 +59,14 @@ podman stats                                   # Resource usage / Использ
 podman top app                                 # Container processes / Процессы контейнера
 ```
 
-### Execute & Attach / Выполнение и подключение
+### Execute & Attach
 
 ```bash
 podman exec -it app /bin/sh                    # Shell in container / Оболочка в контейнере
 podman attach app                              # Attach to container / Подключиться к контейнеру
 ```
 
-### Image Management / Управление образами
+### Image Management
 
 ```bash
 podman images                                  # List images / Список образов
@@ -80,7 +80,7 @@ podman build -t myimg:tag .                    # Build image / Собрать о
 
 ## Podman Rootless Mode
 
-### User Setup / Настройка пользователя
+### User Setup
 
 ```bash
 podman system migrate                          # Migrate to rootless / Миграция в rootless
@@ -90,7 +90,7 @@ loginctl enable-linger <USER>                  # Enable user lingering / Вкл�
 > [!NOTE]
 > `loginctl enable-linger` allows user systemd services to run even when the user is not logged in. This is required for rootless container auto-start. / `loginctl enable-linger` позволяет пользовательским сервисам systemd работать без активной сессии.
 
-### Rootless Commands / Команды Rootless
+### Rootless Commands
 
 ```bash
 podman run --rm -it alpine                     # Run as user / Запуск от пользователя
@@ -98,7 +98,7 @@ podman system reset                            # Reset rootless storage / Сбр
 podman info | grep -i root                     # Check root/rootless / Проверить root/rootless
 ```
 
-### Port Mapping (Rootless) / Маппинг портов (Rootless)
+### Port Mapping (Rootless)
 
 ```bash
 podman run -d -p 8080:80 nginx                 # Port ≥ 1024 / Порт ≥ 1024
@@ -112,7 +112,7 @@ sudo sysctl net.ipv4.ip_unprivileged_port_start=80  # Allow ports < 1024 / Ра�
 
 ## Podman Pods
 
-### Pod Management / Управление pod-ами
+### Pod Management
 
 ```bash
 podman pod create --name mypod -p 8080:80      # Create pod / Создать pod
@@ -123,14 +123,14 @@ podman pod stop mypod                          # Stop pod / Остановить
 podman pod rm mypod                            # Remove pod / Удалить pod
 ```
 
-### Add Containers to Pod / Добавить контейнеры в pod
+### Add Containers to Pod
 
 ```bash
 podman run -d --pod mypod nginx                # Add nginx to pod / Добавить nginx в pod
 podman run -d --pod mypod redis                # Add redis to pod / Добавить redis в pod
 ```
 
-### Generate Kubernetes YAML / Сгенерировать Kubernetes YAML
+### Generate Kubernetes YAML
 
 ```bash
 podman generate kube mypod > mypod.yaml        # Generate K8s YAML / Сгенерировать K8s YAML
@@ -144,7 +144,7 @@ podman play kube mypod.yaml                    # Deploy from YAML / Развер
 
 ## Podman Systemd Integration
 
-### Generate Systemd Unit (User Service) / Генерация Systemd юнита (пользовательский)
+### Generate Systemd Unit (User Service)
 
 ```bash
 podman generate systemd --new --name app > ~/.config/systemd/user/app.service  # User service / Пользовательский сервис
@@ -154,7 +154,7 @@ systemctl --user start app                     # Start service / Запусти�
 systemctl --user status app                    # Check status / Проверить статус
 ```
 
-### System-wide Service (Root) / Системный сервис (Root)
+### System-wide Service (Root)
 
 ```bash
 podman generate systemd --new --name app > /etc/systemd/system/app.service  # System service / Системный сервис
@@ -170,7 +170,7 @@ systemctl start app                            # Start service / Запусти�
 
 ## nerdctl Basics
 
-### Container Management / Управление контейнерами
+### Container Management
 
 ```bash
 nerdctl ps -a                                  # List containers / Список контейнеров
@@ -180,14 +180,14 @@ nerdctl stop app                               # Stop container / Останов
 nerdctl rm app                                 # Remove container / Удалить контейнер
 ```
 
-### Logs & Execution / Логи и выполнение
+### Logs & Execution
 
 ```bash
 nerdctl logs -f app                            # Follow logs / Следить за логами
 nerdctl exec -it app /bin/sh                   # Shell in container / Оболочка в контейнере
 ```
 
-### Namespace Management / Управление namespace-ами
+### Namespace Management
 
 ```bash
 nerdctl namespace ls                           # List namespaces / Список namespace-ов
@@ -198,7 +198,7 @@ nerdctl -n default ps                          # Default namespace / Namespace �
 > [!NOTE]
 > nerdctl namespaces are **containerd namespaces**, not Kubernetes namespaces. The `k8s.io` namespace contains containers managed by Kubernetes. / Namespace-ы nerdctl — это namespace-ы **containerd**, а не Kubernetes.
 
-### BuildKit & Compose / BuildKit и Compose
+### BuildKit & Compose / BuildKit
 
 ```bash
 nerdctl build -t myimg:tag .                   # Build with BuildKit / Сборка с BuildKit
@@ -213,7 +213,7 @@ nerdctl compose down                           # Stop and remove / Остано�
 > [!IMPORTANT]
 > `crictl` is designed for **debugging CRI-compatible runtimes** on Kubernetes nodes. It is NOT a replacement for Docker/Podman for running containers. / `crictl` предназначен для **отладки CRI-совместимых рантаймов** на нодах Kubernetes. Это НЕ замена Docker/Podman.
 
-### Pod & Container Inspection / Инспекция pod-ов и контейнеров
+### Pod & Container Inspection
 
 ```bash
 crictl pods                                    # List pods / Список pod-ов
@@ -223,7 +223,7 @@ crictl inspect <CONTAINER_ID>                  # Inspect container / Инфор�
 crictl inspectp <POD_ID>                       # Inspect pod / Информация о pod-е
 ```
 
-### Logs & Execution / Логи и выполнение
+### Logs & Execution
 
 ```bash
 crictl logs <CONTAINER_ID>                     # Container logs / Логи контейнера
@@ -231,7 +231,7 @@ crictl logs -f <CONTAINER_ID>                  # Follow logs / Следить з
 crictl exec -it <CONTAINER_ID> /bin/sh         # Shell in container / Оболочка в контейнере
 ```
 
-### Images / Образы
+### Images
 
 ```bash
 crictl images                                  # List images / Список образов
@@ -239,7 +239,7 @@ crictl pull nginx                              # Pull image / Скачать о�
 crictl rmi <IMAGE_ID>                          # Remove image / Удалить образ
 ```
 
-### Pod Lifecycle / Жизненный цикл pod-ов
+### Pod Lifecycle
 
 ```bash
 crictl stopp <POD_ID>                          # Stop pod / Остановить pod
@@ -253,7 +253,7 @@ crictl rmp <POD_ID>                            # Remove pod / Удалить pod
 
 ## Sysadmin Essentials
 
-### Podman Configuration / Конфигурация Podman
+### Podman Configuration
 
 | Path / Путь | Description / Описание |
 | :--- | :--- |
@@ -263,14 +263,14 @@ crictl rmp <POD_ID>                            # Remove pod / Удалить pod
 | `/run/user/<UID>/podman/podman.sock` | Rootless socket / Rootless сокет |
 | `/run/podman/podman.sock` | Root socket / Root сокет |
 
-### nerdctl Configuration / Конфигурация nerdctl
+### nerdctl Configuration
 
 | Path / Путь | Description / Описание |
 | :--- | :--- |
 | `/etc/containerd/config.toml` | containerd config / Конфигурация containerd |
 | `/run/containerd/containerd.sock` | containerd socket / containerd сокет |
 
-### crictl Configuration / Конфигурация crictl
+### crictl Configuration
 
 `/etc/crictl.yaml`
 
@@ -281,9 +281,9 @@ timeout: 10
 debug: false
 ```
 
-### Network Management / Управление сетью
+### Network Management
 
-#### Podman Networks / Сети Podman
+#### Podman Networks
 
 ```bash
 podman network ls                              # List networks / Список сетей
@@ -292,7 +292,7 @@ podman network inspect mynet                   # Inspect network / Информ�
 podman network rm mynet                        # Remove network / Удалить сеть
 ```
 
-#### nerdctl Networks / Сети nerdctl
+#### nerdctl Networks
 
 ```bash
 nerdctl network ls                             # List networks / Список сетей
@@ -300,9 +300,9 @@ nerdctl network create mynet                   # Create network / Создать
 nerdctl network inspect mynet                  # Inspect network / Информация о сети
 ```
 
-### Volume Management / Управление томами
+### Volume Management
 
-#### Podman Volumes / Тома Podman
+#### Podman Volumes
 
 ```bash
 podman volume ls                               # List volumes / Список volumes
@@ -311,7 +311,7 @@ podman volume inspect myvol                    # Inspect volume / Информа
 podman volume rm myvol                         # Remove volume / Удалить volume
 ```
 
-#### nerdctl Volumes / Тома nerdctl
+#### nerdctl Volumes
 
 ```bash
 nerdctl volume ls                              # List volumes / Список volumes
@@ -319,23 +319,23 @@ nerdctl volume create myvol                    # Create volume / Создать 
 nerdctl volume inspect myvol                   # Inspect volume / Информация о volume
 ```
 
-### Troubleshooting / Устранение неполадок
+### Troubleshooting
 
 ```bash
-# Check Podman version / Проверка версии Podman
+# Check Podman version
 podman --version
 
-# Check containerd/nerdctl / Проверка containerd/nerdctl
+# Check containerd/nerdctl
 nerdctl --version
 containerd --version
 
-# Podman system info / Информация о системе Podman
+# Podman system info
 podman info
 
-# Check CRI runtime / Проверка CRI runtime
+# Check CRI runtime
 crictl version
 
-# Podman events / События Podman
+# Podman events
 podman events
 ```
 
@@ -344,17 +344,17 @@ podman events
 > `podman system reset` безвозвратно удаляет ВСЕ контейнеры, образы и тома.
 
 ```bash
-# Reset Podman storage / Сброс хранилища Podman
+# Reset Podman storage
 podman system reset
 
-# Cleanup unused resources / Очистка неиспользуемых ресурсов
+# Cleanup unused resources
 podman system prune -af
 nerdctl system prune -af
 ```
 
-### Performance & Differences vs Docker / Производительность и отличия от Docker
+### Performance & Differences vs Docker
 
-#### Podman advantages / Преимущества Podman
+#### Podman advantages
 
 | Feature | Description (EN / RU) |
 | :--- | :--- |
@@ -364,7 +364,7 @@ nerdctl system prune -af
 | Pod support | Pod concept similar to K8s / Концепция pod как в K8s |
 | Fork/exec model | Each container is a child process / Каждый контейнер — дочерний процесс |
 
-#### nerdctl advantages / Преимущества nerdctl
+#### nerdctl advantages
 
 | Feature | Description (EN / RU) |
 | :--- | :--- |

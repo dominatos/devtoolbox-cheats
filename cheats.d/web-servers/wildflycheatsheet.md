@@ -44,7 +44,7 @@ tags:
 
 ## Installation & Configuration
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -53,7 +53,7 @@ tags:
 | `9990` | Management API & Web Console / Веб-консоль управления |
 | `9993` | Management HTTPS / Защищённое управление |
 
-### Directory Structure / Структура каталогов
+### Directory Structure
 
 Assuming WildFly is installed in `/opt/wildfly` (WILDFLY_HOME).
 
@@ -77,7 +77,7 @@ WildFly supports two operating modes, each suited for different deployment scena
 - **Domain Mode:** Centrally managed cluster of WildFly instances using a Host Controller and Domain Controller. Suited for multi-server enterprise environments.
   **Domain режим:** Централизованно управляемый кластер через Host Controller и Domain Controller. Подходит для корпоративных многосерверных сред.
 
-### Standalone Mode Configuration Profiles / Профили Standalone
+### Standalone Mode Configuration Profiles
 
 `/opt/wildfly/standalone/configuration/`
 
@@ -92,27 +92,27 @@ WildFly supports two operating modes, each suited for different deployment scena
 
 ## Service & Access Management
 
-### User Management / Управление пользователями
+### User Management
 
 WildFly has no default users. You must create one to access the Web Management Console (`:9990`).
 
 ```bash
-# Add Management user (Interactive) / Создание пользователя управления
+# Add Management user (Interactive)
 /opt/wildfly/bin/add-user.sh -u <ADMIN_USER> -p <PASSWORD> --silent
 
-# Add Application user (Interactive) / Создание пользователя приложения
+# Add Application user (Interactive)
 /opt/wildfly/bin/add-user.sh -a -u <APP_USER> -p <PASSWORD> -g <GROUP_NAME>
 ```
 
-### Binding to External IPs / Привязка к внешним IP
+### Binding to External IPs
 
 By default, WildFly binds to `127.0.0.1`. To allow external access:
 
 ```bash
-# Start standalone bound to all IPv4 addresses / Запуск на всех IP
+# Start standalone bound to all IPv4 addresses
 /opt/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
 
-# Using specific profile / Использование конкретного профиля
+# Using specific profile
 /opt/wildfly/bin/standalone.sh -c standalone-ha.xml -b 0.0.0.0
 ```
 
@@ -120,7 +120,7 @@ By default, WildFly binds to `127.0.0.1`. To allow external access:
 > Do NOT expose the management interface (`-bmanagement`) to the public internet. Restrict access via firewall to admin IPs only.
 > НЕ открывайте management-интерфейс (`-bmanagement`) в публичный интернет. Ограничьте доступ файрволом.
 
-### Service Control (Systemd) / Управление сервисом
+### Service Control (Systemd)
 
 ```bash
 sudo systemctl start wildfly     # Start / Старт
@@ -138,39 +138,39 @@ sudo systemctl enable wildfly    # Enable at boot / Автозапуск
 > The `jboss-cli.sh` is the most powerful tool for automating WildFly operations without restarting the server or editing XML files manually.
 > `jboss-cli.sh` — самый мощный инструмент для автоматизации операций WildFly без перезапуска.
 
-### Connecting to CLI / Подключение к CLI
+### Connecting to CLI
 
 ```bash
-# Connect to local management port / Подключение к локальному CLI
+# Connect to local management port
 /opt/wildfly/bin/jboss-cli.sh --connect
 
-# Connect with credentials / Подключение с авторизацией
+# Connect with credentials
 /opt/wildfly/bin/jboss-cli.sh --connect --user=<USER> --password=<PASSWORD>
 ```
 
-### Application Deployment / Деплой приложений
+### Application Deployment
 
 ```bash
-# Inside jboss-cli.sh / Внутри консоли jboss-cli
+# Inside jboss-cli.sh
 [standalone@localhost:9990 /]
 
-# Deploy a WAR/EAR file / Деплой архива
+# Deploy a WAR/EAR file
 deploy /path/to/application.war
 
-# Force overwrite existing deployment / Перезапись существующего
+# Force overwrite existing deployment
 deploy /path/to/application.war --force
 
-# Undeploy / Удаление приложения
+# Undeploy
 undeploy application.war
 
-# List deployed apps / Список развёрнутых приложений
+# List deployed apps
 deployment-info
 ```
 
-### Scripted CLI (Non-interactive) / Скриптовое исполнение CLI
+### Scripted CLI (Non-interactive)
 
 ```bash
-# Run CLI commands automatically / Автоматическое выполнение команд
+# Run CLI commands automatically
 /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /path/to/app.war --force"
 ```
 
@@ -181,30 +181,30 @@ deployment-info
 `/opt/wildfly/bin/standalone.conf`
 
 ```ini
-# --- Memory Allocation (Heap & Metaspace) / Память ---
+# --- Memory Allocation (Heap & Metaspace)
 # Set min/max heap equally to prevent resizing overhead
 JAVA_OPTS="-Xms2G -Xmx2G -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=512m"
 
-# --- Garbage Collector (G1GC is default in modern Java) / Сборщик мусора ---
+# --- Garbage Collector (G1GC is default in modern Java)
 JAVA_OPTS="$JAVA_OPTS -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+ParallelRefProcEnabled"
 
-# --- IPv4 Stack Force / Принудительный IPv4 ---
+# --- IPv4 Stack Force
 JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 
-# --- GC Logging / Логирование GC ---
+# --- GC Logging
 JAVA_OPTS="$JAVA_OPTS -Xlog:gc*:file=/opt/wildfly/standalone/log/gc.log:time,uptime:filecount=5,filesize=10M"
 ```
 
-### DataSource Creation (CLI) / Создание пула подключений
+### DataSource Creation (CLI)
 
 ```bash
-# 1. Add JDBC Driver module / Добавление модуля драйвера
+# 1. Add JDBC Driver module
 /opt/wildfly/bin/jboss-cli.sh --connect --command="module add --name=com.mysql --resources=/tmp/mysql-connector-java.jar --dependencies=javax.api,javax.transaction.api"
 
-# 2. Add driver to subsystem / Регистрация драйвера
+# 2. Add driver to subsystem
 /opt/wildfly/bin/jboss-cli.sh --connect --command="/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql,driver-xa-datasource-class-name=com.mysql.cj.jdbc.MysqlXADataSource)"
 
-# 3. Create DataSource / Создание источника данных
+# 3. Create DataSource
 /opt/wildfly/bin/jboss-cli.sh --connect --command="data-source add --name=MySqlDS --jndi-name=java:/MySqlDS --driver-name=mysql --connection-url=jdbc:mysql://<DB_IP>:3306/<DB_NAME> --user-name=<DB_USER> --password=<DB_PASSWORD> --min-pool-size=10 --max-pool-size=50 --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"
 ```
 
@@ -212,24 +212,24 @@ JAVA_OPTS="$JAVA_OPTS -Xlog:gc*:file=/opt/wildfly/standalone/log/gc.log:time,upt
 
 ## Security
 
-### SSL/TLS Configuration / Конфигурация SSL/TLS
+### SSL/TLS Configuration
 
 ```bash
-# Create keystore / Создать keystore
+# Create keystore
 keytool -genkey -alias wildfly -keyalg RSA -keysize 2048 \
   -keystore /opt/wildfly/standalone/configuration/keystore.jks \
   -storepass <PASSWORD>
 
-# Import certificate / Импортировать сертификат
+# Import certificate
 keytool -import -alias wildfly -file certificate.crt \
   -keystore /opt/wildfly/standalone/configuration/keystore.jks \
   -storepass <PASSWORD>
 ```
 
-### Enable HTTPS via CLI / Включить HTTPS через CLI
+### Enable HTTPS via CLI
 
 ```bash
-# Configure Elytron SSL context / Настройка Elytron SSL
+# Configure Elytron SSL context
 /opt/wildfly/bin/jboss-cli.sh --connect << EOF
 /subsystem=elytron/key-store=httpsKS:add(path=keystore.jks,relative-to=jboss.server.config.dir,type=JKS,credential-reference={clear-text=<PASSWORD>})
 /subsystem=elytron/key-manager=httpsKM:add(key-store=httpsKS,credential-reference={clear-text=<PASSWORD>})
@@ -239,7 +239,7 @@ reload
 EOF
 ```
 
-### Security Best Practices / Лучшие практики безопасности
+### Security Best Practices
 
 - Remove the welcome-content handler in production / Удалите welcome-content в продакшене
 - Restrict management console to internal IPs / Ограничьте консоль управления внутренними IP
@@ -251,7 +251,7 @@ EOF
 
 ## Troubleshooting & Logs
 
-### Log File Locations / Расположение логов
+### Log File Locations
 
 | Log / Лог | Path / Путь |
 |-----------|-------------|
@@ -260,42 +260,42 @@ EOF
 | Garbage Collection Log / Лог GC | `/opt/wildfly/standalone/log/gc.log` |
 
 ```bash
-# View live server logs / Просмотр логов в реальном времени
+# View live server logs
 tail -f /opt/wildfly/standalone/log/server.log
 
-# Filter for errors / Поиск ошибок
+# Filter for errors
 grep -i "ERROR" /opt/wildfly/standalone/log/server.log
 ```
 
-### Changing Log Levels via CLI / Изменение уровня логирования
+### Changing Log Levels via CLI
 
 ```bash
-# Set root logger to DEBUG (Temporary without restart) / Временное включение DEBUG
+# Set root logger to DEBUG (Temporary without restart)
 /opt/wildfly/bin/jboss-cli.sh --connect --command="/subsystem=logging/root-logger=ROOT:write-attribute(name=level,value=DEBUG)"
 ```
 
-### Thread Dump / Дамп потоков
+### Thread Dump
 
 ```bash
-# Get PID / Получить PID
+# Get PID
 ps aux | grep wildfly
 
-# Generate thread dump / Создать дамп потоков
+# Generate thread dump
 kill -3 <PID>                                            # Output to server.log
 jstack <PID> > thread_dump.txt                          # Save to file / Сохранить в файл
 ```
 
-### Heap Dump / Дамп кучи
+### Heap Dump
 
 ```bash
-# Generate heap dump / Создать дамп кучи
+# Generate heap dump
 jmap -dump:format=b,file=/tmp/heap_dump.bin <PID>
 
 # Analyze with Eclipse MAT or VisualVM
-# Анализ с помощью Eclipse MAT или VisualVM
+#
 ```
 
-### Check Port Usage / Проверка занятых портов
+### Check Port Usage
 
 ```bash
 sudo ss -tlnp | grep java                               # Check Java ports / Проверить порты Java

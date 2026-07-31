@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#Installation%20&%20Configuration)
 2. [Core Management](#Core%20Management)
@@ -39,7 +39,7 @@ tags:
 
 ## Installation & Configuration
 
-### Package Installation / Установка пакетов
+### Package Installation
 
 ```bash
 # Ubuntu/Debian
@@ -48,13 +48,13 @@ sudo apt update && sudo apt install -y redis-server                        # Ins
 # RHEL/AlmaLinux/Rocky
 sudo dnf install -y redis                                                  # Install Redis / Установка Redis
 
-# From source / Из исходников
+# From source
 wget https://download.redis.io/redis-stable.tar.gz
 tar -xzf redis-stable.tar.gz && cd redis-stable
 make && sudo make install                                                  # Compile and install / Компиляция и установка
 ```
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -62,19 +62,19 @@ make && sudo make install                                                  # Com
 | `16379` | Redis Cluster bus (TCP) / Шина кластера Redis |
 | `26379` | Redis Sentinel (TCP) / Sentinel для HA |
 
-### Configuration Files / Файлы конфигурации
+### Configuration Files
 
 | OS / ОС | Config Path / Путь конфигурации |
 |---------|-------------------------------|
 | Ubuntu/Debian | `/etc/redis/redis.conf` |
 | RHEL-based | `/etc/redis.conf` or `/etc/redis/redis.conf` |
 
-### Production Configuration / Конфигурация для продакшена
+### Production Configuration
 
 `/etc/redis/redis.conf`
 
 ```bash
-# === NETWORK / СЕТЬ ===
+# === NETWORK
 bind 127.0.0.1                  # Listen only locally / Слушать только локально
 protected-mode yes               # Extra safety / Доп. защита
 port 6379
@@ -82,15 +82,15 @@ tcp-backlog 511
 timeout 0
 tcp-keepalive 300
 
-# === AUTH / АВТОРИЗАЦИЯ ===
+# === AUTH
 requirepass <PASSWORD>            # Mandatory in prod / Обязательно в проде
 
-# === MEMORY / ПАМЯТЬ ===
+# === MEMORY
 maxmemory 2gb                    # Hard RAM limit / Жёсткий лимит RAM
 maxmemory-policy allkeys-lru     # Cache eviction policy / Политика вытеснения
 maxmemory-samples 5
 
-# === PERSISTENCE / СОХРАНЕНИЕ ===
+# === PERSISTENCE
 save 900 1
 save 300 10
 save 60 10000
@@ -99,19 +99,19 @@ appendonly yes                   # Enable AOF / Включить AOF
 appendfsync everysec             # Balance safety/perf / Баланс надёжности
 no-appendfsync-on-rewrite yes
 
-# === PERFORMANCE / ПРОИЗВОДИТЕЛЬНОСТЬ ===
+# === PERFORMANCE
 lazyfree-lazy-eviction yes       # Async key deletion / Асинхронное удаление
 lazyfree-lazy-expire yes
 lazyfree-lazy-server-del yes
 
-# === LIMITS / ЛИМИТЫ ===
+# === LIMITS
 maxclients 10000                 # Connection limit / Лимит подключений
 
-# === LOGGING / ЛОГИ ===
+# === LOGGING
 loglevel notice
 logfile /var/log/redis/redis-server.log
 
-# === SAFETY / БЕЗОПАСНОСТЬ ===
+# === SAFETY
 stop-writes-on-bgsave-error yes
 ```
 
@@ -123,7 +123,7 @@ stop-writes-on-bgsave-error yes
 
 ## Core Management
 
-### Connection / Подключение
+### Connection
 
 ```bash
 redis-cli                                                                  # Connect locally / Локальное подключение
@@ -132,7 +132,7 @@ redis-cli -a <PASSWORD>                                                    # Con
 redis-cli -h <HOST> -p 6379 -a <PASSWORD> --tls                           # Connect with TLS / С TLS
 ```
 
-### General Commands / Основные команды
+### General Commands
 
 ```bash
 PING                                                                       # Health check / Проверка доступности
@@ -145,7 +145,7 @@ INFO clients                                                               # Con
 INFO server                                                                # Server version and uptime / Версия и аптайм
 ```
 
-### Memory Management / Управление памятью
+### Memory Management
 
 ```bash
 MEMORY STATS                                                               # Memory internals / Внутренняя статистика памяти
@@ -154,7 +154,7 @@ redis-cli --bigkeys                                                        # Fin
 redis-cli --memkeys                                                        # Find memory-heavy keys / Ключи с большим потреблением
 ```
 
-### TTL & Expiration / TTL и истечение срока
+### TTL & Expiration / TTL
 
 ```bash
 TTL <KEY>                                                                  # Seconds to expire / Секунд до истечения
@@ -163,7 +163,7 @@ EXPIRE <KEY> 300                                                           # Set
 PERSIST <KEY>                                                              # Remove TTL / Убрать TTL
 ```
 
-### Client Management / Управление клиентами
+### Client Management
 
 ```bash
 CLIENT LIST                                                                # Active connections / Активные соединения
@@ -172,7 +172,7 @@ CLIENT GETNAME                                                             # Get
 CLIENT SETNAME <NAME>                                                      # Set client name / Установить имя клиента
 ```
 
-### Dangerous Commands / Опасные команды
+### Dangerous Commands
 
 > [!CAUTION]
 > These commands can cause significant performance impact or data loss in production.
@@ -194,7 +194,7 @@ DEBUG SLEEP <SECONDS>                                                      # Pau
 
 ## Sysadmin Operations
 
-### Service Control / Управление сервисом
+### Service Control
 
 ```bash
 sudo systemctl start redis-server                                          # Start service / Запустить сервис
@@ -207,7 +207,7 @@ sudo systemctl enable redis-server                                         # Ena
 sudo systemctl start redis                                                 # RHEL: Start Redis / Запустить Redis
 ```
 
-### Log Locations / Расположение логов
+### Log Locations
 
 | Type / Тип | Path / Путь |
 |------------|-------------|
@@ -221,10 +221,10 @@ sudo tail -f /var/log/redis/redis-server.log                               # Fol
 sudo journalctl -u redis-server -f                                         # Systemd logs / Логи systemd
 ```
 
-### Network & Firewall / Сеть и файрвол
+### Network & Firewall
 
 ```bash
-# Default port: 6379 / Порт по умолчанию: 6379
+# Default port: 6379
 
 # UFW / UFW
 sudo ufw allow 6379/tcp                                                    # Allow Redis / Разрешить Redis
@@ -237,19 +237,19 @@ sudo firewall-cmd --permanent --add-port=6379/tcp && sudo firewall-cmd --reload 
 > **NEVER** expose Redis to the public internet. Redis has no access control by default (even `requirepass` uses a weak auth model). Always bind to `127.0.0.1` or use a VPN/firewall.
 > **НИКОГДА** не выставляйте Redis в интернет. У Redis нет контроля доступа по умолчанию.
 
-### System Tuning / Системная настройка
+### System Tuning
 
 ```bash
 # /etc/sysctl.d/99-redis.conf
 vm.overcommit_memory = 1                                                   # Required for background saves / Необходимо для фоновых сохранений
 net.core.somaxconn = 65535                                                 # Increase backlog / Увеличить backlog
 
-# Apply / Применить
+# Apply
 sudo sysctl --system
 ```
 
 ```bash
-# Increase file descriptors for Redis service / Увеличить лимит file descriptors
+# Increase file descriptors for Redis service
 # /etc/systemd/system/redis-server.service.d/override.conf
 [Service]
 LimitNOFILE=100000
@@ -259,36 +259,36 @@ LimitNOFILE=100000
 
 ## Security
 
-### Authentication / Аутентификация
+### Authentication
 
 ```bash
-# Set password in config / Установить пароль в конфиге
+# Set password in config
 requirepass <PASSWORD>
 
-# Set password at runtime (lost on restart) / Установить пароль на лету
+# Set password at runtime (lost on restart)
 CONFIG SET requirepass <PASSWORD>
 
-# Authenticate / Авторизация
+# Authenticate
 AUTH <PASSWORD>
 ```
 
-### ACL (Access Control Lists) — Redis 6+ / Списки контроля доступа
+### ACL (Access Control Lists) — Redis 6+
 
 ```bash
-# Create user with limited permissions / Создать пользователя с ограниченными правами
+# Create user with limited permissions
 ACL SETUSER <USER> on ><PASSWORD> ~cached:* +get +set +del                 # R/W on cached:* keys only
 
-# List users / Список пользователей
+# List users
 ACL LIST
 
-# Check current user / Текущий пользователь
+# Check current user
 ACL WHOAMI
 
-# Save ACL to config / Сохранить ACL
+# Save ACL to config
 ACL SAVE
 ```
 
-### Disable Dangerous Commands / Отключить опасные команды
+### Disable Dangerous Commands
 
 `/etc/redis/redis.conf`
 
@@ -303,7 +303,7 @@ rename-command KEYS ""                                                     # Dis
 
 ## Persistence
 
-### Persistence Methods Comparison / Сравнение методов персистентности
+### Persistence Methods Comparison
 
 | Method / Метод | Description (EN) | Описание (RU) | Use Case / Применение |
 |---------------|------------------|---------------|----------------------|
@@ -312,20 +312,20 @@ rename-command KEYS ""                                                     # Dis
 | **RDB + AOF** | Both methods combined | Оба метода вместе | **Recommended for production** / Рекомендуется |
 | **None** | RAM only, lost on crash | Только RAM, теряется при падении | Pure cache scenarios / Только кэш |
 
-### RDB Configuration / Настройка RDB
+### RDB Configuration
 
 ```bash
-# Trigger RDB save periodically / Периодическое сохранение RDB
+# Trigger RDB save periodically
 save 900 1                                                                 # Save if 1 key changed in 900s / Сохранять если 1 ключ изменён за 900с
 save 300 10                                                                # Save if 10 keys changed in 300s
 save 60 10000                                                              # Save if 10000 keys changed in 60s
 
-# Manual RDB save / Ручное сохранение
+# Manual RDB save
 BGSAVE                                                                     # Background save / Фоновое сохранение
 SAVE                                                                       # Blocking save (NOT for production) / Блокирующее (НЕ для прода)
 ```
 
-### AOF Configuration / Настройка AOF
+### AOF Configuration
 
 ```bash
 appendonly yes                                                             # Enable AOF / Включить AOF
@@ -333,13 +333,13 @@ appendfsync everysec                                                       # Syn
 # Options: always (safest, slowest), everysec (recommended), no (OS decides)
 ```
 
-### AOF Rewrite / Перезапись AOF
+### AOF Rewrite
 
 ```bash
-# Manual AOF rewrite / Ручная перезапись AOF
+# Manual AOF rewrite
 BGREWRITEAOF
 
-# Auto-rewrite configuration / Автоматическая перезапись
+# Auto-rewrite configuration
 auto-aof-rewrite-percentage 100                                            # Rewrite when AOF grows 100% / Перезаписать при росте на 100%
 auto-aof-rewrite-min-size 64mb                                             # Minimum size for rewrite / Минимальный размер для перезаписи
 ```
@@ -348,7 +348,7 @@ auto-aof-rewrite-min-size 64mb                                             # Min
 
 ## Monitoring & Performance
 
-### Key Metrics / Ключевые метрики
+### Key Metrics
 
 ```bash
 redis-cli -a <PASSWORD> INFO memory                                        # Memory usage / Использование памяти
@@ -357,7 +357,7 @@ redis-cli -a <PASSWORD> INFO clients                                       # Cli
 redis-cli -a <PASSWORD> INFO keyspace                                      # Keys per database / Ключи по базам
 ```
 
-### Performance Commands / Команды производительности
+### Performance Commands
 
 ```bash
 SLOWLOG GET 10                                                             # Last 10 slow commands / Последние 10 медленных команд
@@ -367,7 +367,7 @@ LATENCY LATEST                                                             # Lat
 LATENCY HISTORY <EVENT>                                                    # Latency history / История задержек
 ```
 
-### Production Red Flags / Красные флаги в продакшене
+### Production Red Flags
 
 | Issue / Проблема | Risk / Риск | Fix / Решение |
 |-----------------|------------|--------------|
@@ -378,7 +378,7 @@ LATENCY HISTORY <EVENT>                                                    # Lat
 | `noeviction` policy | Writes stop when full / Запись останавливается | Use `allkeys-lru` for caches |
 | Cluster without need | Unnecessary complexity / Лишняя сложность | Use Sentinel for HA if sufficient |
 
-### Pre-Production Checklist / Чеклист перед продакшеном
+### Pre-Production Checklist
 
 - [ ] `maxmemory` configured / Настроен `maxmemory`
 - [ ] Eviction policy defined / Определена политика вытеснения
@@ -392,7 +392,7 @@ LATENCY HISTORY <EVENT>                                                    # Lat
 
 ## Data Structures
 
-### Sorted Sets / Сортированные множества
+### Sorted Sets
 
 Sorted sets store unique elements with a score, enabling ranking and top-N queries. / Сортированные множества хранят уникальные элементы с оценкой, позволяя рейтинги и top-N запросы.
 
@@ -405,7 +405,7 @@ ZRANK leaderboard "player1"                                                # Ran
 ZSCORE leaderboard "player1"                                               # Score of element / Оценка элемента
 ```
 
-### Streams / Потоки
+### Streams
 
 Streams are an append-only log data structure, ideal for event sourcing, message queues, and consumer groups. / Потоки — структура данных с последовательной записью для событий, очередей и consumer groups.
 
@@ -415,7 +415,7 @@ XLEN mystream                                                              # Str
 XRANGE mystream - +                                                        # Read all entries / Все записи
 XREAD COUNT 5 STREAMS mystream 0                                           # Read first 5 / Первые 5
 
-# Consumer groups / Группы потребителей
+# Consumer groups
 XGROUP CREATE mystream mygroup $ MKSTREAM                                  # Create group / Создать группу
 XREADGROUP GROUP mygroup consumer1 COUNT 1 STREAMS mystream >              # Read as consumer / Прочитать как потребитель
 XACK mystream mygroup <MESSAGE_ID>                                         # Acknowledge message / Подтвердить сообщение
@@ -425,7 +425,7 @@ XACK mystream mygroup <MESSAGE_ID>                                         # Ack
 
 ## Caching Patterns
 
-### Read-Through Cache / Кэш сквозного чтения
+### Read-Through Cache
 
 Application checks Redis first → on cache miss, reads from database → stores in Redis.
 Приложение проверяет Redis → при промахе читает из БД → сохраняет в Redis.
@@ -435,7 +435,7 @@ Client → Redis (HIT?) → YES → Return data
                        → NO  → Read from MySQL/PostgreSQL → Store in Redis → Return data
 ```
 
-### Write-Through Cache / Кэш сквозной записи
+### Write-Through Cache
 
 Application writes to both database and Redis simultaneously.
 Приложение записывает в БД и Redis одновременно.
@@ -444,7 +444,7 @@ Application writes to both database and Redis simultaneously.
 Client → Write to MySQL/PostgreSQL + Write to Redis → Confirm
 ```
 
-### Cache-Aside (Lazy Loading) / Отложенная загрузка
+### Cache-Aside (Lazy Loading)
 
 Most common pattern. Application manages cache manually. / Наиболее распространённый паттерн. Приложение управляет кэшем вручную.
 
@@ -457,7 +457,7 @@ Write: Update DB → DELETE from Redis (invalidation)
 
 ## Troubleshooting & Tools
 
-### Runbook: Redis Went Down at Night / Экстренное восстановление после падения
+### Runbook: Redis Went Down at Night
 
 1. **Check service status / Проверить статус сервиса:**
    ```bash
@@ -485,7 +485,7 @@ Write: Update DB → DELETE from Redis (invalidation)
 | Fork failed (RDB) | `grep fork /var/log/redis/*.log` | Increase RAM or reduce snapshot freq |
 | FD limit reached | `INFO clients` + `ulimit -n` | Set `LimitNOFILE=100000` in systemd |
 
-### Emergency Start / Аварийный запуск
+### Emergency Start
 
 > [!CAUTION]
 > This disables persistence. Use only to get Redis back online quickly while investigating.
@@ -495,7 +495,7 @@ Write: Update DB → DELETE from Redis (invalidation)
 redis-server --appendonly no --save ""                                     # Start without persistence / Запуск без сохранения
 ```
 
-### Interview Question / Вопрос на собеседовании
+### Interview Question
 
 **Q:** What happens when Redis reaches `maxmemory`? / Что происходит при достижении `maxmemory`?
 
@@ -516,32 +516,32 @@ redis-server --appendonly no --save ""                                     # Sta
 
 ## Backup & Restore
 
-### RDB Backup / Бэкап RDB
+### RDB Backup
 
 ```bash
-# Manual backup / Ручной бэкап
+# Manual backup
 redis-cli -a <PASSWORD> BGSAVE                                             # Trigger background save / Фоновое сохранение
 redis-cli -a <PASSWORD> LASTSAVE                                           # Check last save time / Время последнего сохранения
 
-# Copy RDB file / Копировать файл RDB
+# Copy RDB file
 cp /var/lib/redis/dump.rdb /backup/redis/dump_$(date +%Y%m%d_%H%M%S).rdb  # Backup with timestamp
 ```
 
-### Restore / Восстановление
+### Restore
 
 ```bash
-# 1. Stop Redis / Остановить Redis
+# 1. Stop Redis
 sudo systemctl stop redis-server
 
-# 2. Replace RDB file / Заменить файл RDB
+# 2. Replace RDB file
 sudo cp /backup/redis/dump_<TIMESTAMP>.rdb /var/lib/redis/dump.rdb
 sudo chown redis:redis /var/lib/redis/dump.rdb
 
-# 3. Start Redis / Запустить Redis
+# 3. Start Redis
 sudo systemctl start redis-server
 ```
 
-### Automated Backup Script / Скрипт автоматического бэкапа
+### Automated Backup Script
 
 ```bash
 #!/bin/bash

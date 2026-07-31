@@ -20,44 +20,44 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
-1. [Workflow](#1.%20Workflow%20/%20Рабочий%20процесс)
-2. [State Management](#2.%20State%20Management%20/%20Управление%20состоянием%20(State))
-3. [Workspaces](#3.%20Workspaces%20/%20Рабочие%20окружения)
-4. [Modules](#4.%20Modules%20/%20Модули)
-5. [Variables & Outputs](#5.%20Variables%20&%20Outputs%20/%20Переменные%20и%20выводы)
-6. [Debugging](#6.%20Debugging%20/%20Отладка)
-7. [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
+1. [Workflow](#1.%20Workflow)
+2. [State Management](#2.%20State%20Management))
+3. [Workspaces](#3.%20Workspaces)
+4. [Modules](#4.%20Modules)
+5. [Variables & Outputs](#5.%20Variables%20&%20Outputs)
+6. [Debugging](#6.%20Debugging)
+7. [Best Practices](#Best%20Practices)
 
 ---
 
-## 1. Workflow / Рабочий процесс
+## 1. Workflow
 
-### Init & Validate / Инициализация и Проверка
+### Init & Validate
 ```bash
-# Initialize directory (Download providers) / Инициализация (Скачать провайдеры)
+# Initialize directory (Download providers)
 terraform init
 
-# Upgrade providers / Обновить провайдеры
+# Upgrade providers
 terraform init -upgrade
 
-# Format code / Форматирование кода
+# Format code
 terraform fmt -recursive
 
-# Validate syntax / Проверка синтаксиса
+# Validate syntax
 terraform validate
 ```
 
-### Plan & Apply / План и Применение
+### Plan & Apply
 ```bash
-# Plan (Preview changes) / План (Предпросмотр)
+# Plan (Preview changes)
 terraform plan -out=tfplan
 
-# Apply changes / Применить изменения
+# Apply changes
 terraform apply "tfplan"
 
-# Auto approve / Автоподтверждение
+# Auto approve
 terraform apply -auto-approve
 ```
 
@@ -66,10 +66,10 @@ terraform apply -auto-approve
 > `terraform apply -auto-approve` пропускает подтверждение. Используйте только в CI/CD или некритичных окружениях.
 
 ```bash
-# Destroy infrastructure / Удалить инфраструктуру
+# Destroy infrastructure
 terraform destroy
 
-# Preview what will be destroyed / Предпросмотр удаления
+# Preview what will be destroyed
 terraform plan -destroy
 ```
 
@@ -77,46 +77,46 @@ terraform plan -destroy
 > `terraform destroy` permanently removes all managed resources. Always run `terraform plan -destroy` first to preview what will be deleted.
 > `terraform destroy` безвозвратно удаляет все ресурсы. Всегда сначала выполняйте `terraform plan -destroy`.
 
-### Targeted Operations / Целевые операции
+### Targeted Operations
 ```bash
-# Apply only specific resource / Применить только конкретный ресурс
+# Apply only specific resource
 terraform apply -target=aws_instance.web
 
-# Destroy only specific resource / Удалить только конкретный ресурс
+# Destroy only specific resource
 terraform destroy -target=aws_instance.web
 
-# Refresh state from real infrastructure / Обновить стейт из реальной инфраструктуры
+# Refresh state from real infrastructure
 terraform refresh
 ```
 
 ---
 
-## 2. State Management / Управление состоянием (State)
+## 2. State Management
 
-### List & Show / Список и Просмотр
+### List & Show
 ```bash
-# List resources in state / Список ресурсов в стейте
+# List resources in state
 terraform state list
 
-# Show details of resource / Детали ресурса
+# Show details of resource
 terraform state show <RESOURCE_ADDRESS>
 
-# Pull remote state to local file / Загрузить удалённый стейт в локальный файл
+# Pull remote state to local file
 terraform state pull > terraform.tfstate.backup
 ```
 
-### Manipulation / Манипуляция
+### Manipulation
 ```bash
-# Remove from state (Does not destroy real resource) / Удалить из стейта (Не удаляет реальный ресурс)
+# Remove from state (Does not destroy real resource)
 terraform state rm <RESOURCE_ADDRESS>
 
-# Move/Rename resource / Переместить/Переименовать ресурс
+# Move/Rename resource
 terraform state mv <OLD_ADDR> <NEW_ADDR>
 
-# Import existing resource / Импорт существующего ресурса
+# Import existing resource
 terraform import <RESOURCE_ADDRESS> <ID>
 
-# Replace a tainted resource / Заменить повреждённый ресурс
+# Replace a tainted resource
 terraform apply -replace=<RESOURCE_ADDRESS>
 ```
 
@@ -124,7 +124,7 @@ terraform apply -replace=<RESOURCE_ADDRESS>
 > `terraform state rm` removes the resource from Terraform's tracking but does NOT destroy the actual cloud resource. Use `terraform destroy -target` to destroy.
 > `terraform state rm` удаляет ресурс из отслеживания Terraform, но НЕ уничтожает реальный облачный ресурс.
 
-### Remote State Backend / Удалённый бэкенд стейта
+### Remote State Backend
 
 `backend.tf`
 
@@ -142,22 +142,22 @@ terraform {
 
 ---
 
-## 3. Workspaces / Рабочие окружения
+## 3. Workspaces
 
 ```bash
-# List workspaces / Список окружений
+# List workspaces
 terraform workspace list
 
-# Create new workspace / Создать новое окружение
+# Create new workspace
 terraform workspace new dev
 
-# Select workspace / Выбрать окружение
+# Select workspace
 terraform workspace select prod
 
-# Show current workspace / Показать текущее окружение
+# Show current workspace
 terraform workspace show
 
-# Delete workspace / Удалить окружение
+# Delete workspace
 terraform workspace delete staging
 ```
 
@@ -167,17 +167,17 @@ terraform workspace delete staging
 
 ---
 
-## 4. Modules / Модули
+## 4. Modules
 
 ```bash
-# Download modules / Скачать модули
+# Download modules
 terraform get
 
-# Update modules / Обновить модули
+# Update modules
 terraform get -update
 ```
 
-### Module Usage Example / Пример использования модуля
+### Module Usage Example
 ```hcl
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -190,38 +190,38 @@ module "vpc" {
 
 ---
 
-## 5. Variables & Outputs / Переменные и выводы
+## 5. Variables & Outputs
 
-### Passing Variables / Передача переменных
+### Passing Variables
 ```bash
-# Via command line / Через командную строку
+# Via command line
 terraform apply -var="instance_type=t3.micro"
 
-# Via variable file / Через файл переменных
+# Via variable file
 terraform apply -var-file="prod.tfvars"
 
-# Via environment variable / Через переменную окружения
+# Via environment variable
 export TF_VAR_instance_type="t3.micro"
 terraform apply
 ```
 
-### Show Outputs / Показать выводы
+### Show Outputs
 ```bash
-# List all outputs / Список всех выводов
+# List all outputs
 terraform output
 
-# Show specific output / Показать конкретный вывод
+# Show specific output
 terraform output instance_ip
 
-# Output in JSON / Вывод в JSON
+# Output in JSON
 terraform output -json
 ```
 
 ---
 
-## 6. Debugging / Отладка
+## 6. Debugging
 
-### Logs / Логи
+### Logs
 Set env var `TF_LOG`. Levels: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
 Установите переменную окружения `TF_LOG`. Уровни: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
 
@@ -231,7 +231,7 @@ export TF_LOG_PATH=/tmp/terraform.log
 terraform apply
 ```
 
-### Console / Консоль
+### Console
 Interactive console to test expressions. / Интерактивная консоль для теста выражений.
 
 ```bash
@@ -240,15 +240,15 @@ terraform console
 > length(var.subnets)
 ```
 
-### Generate Graph / Генерация графа
+### Generate Graph
 ```bash
-# Generate dependency graph / Генерация графа зависимостей
+# Generate dependency graph
 terraform graph | dot -Tpng -o graph.png
 ```
 
 ---
 
-## Best Practices / Лучшие практики
+## Best Practices
 
 - Always run `terraform plan` before `apply` / Всегда выполняйте `terraform plan` перед `apply`
 - Use remote state backend (S3, GCS) for team collaboration / Используйте удалённый state backend для командной работы
@@ -259,7 +259,7 @@ terraform graph | dot -Tpng -o graph.png
 - Store `.tfstate` files securely (never commit to Git) / Храните `.tfstate` файлы безопасно (никогда не коммитьте в Git)
 - Use modules for reusable infrastructure / Используйте модули для переиспользуемой инфраструктуры
 
-### IaC Tools Comparison / Сравнение IaC инструментов
+### IaC Tools Comparison
 
 | Tool | Language | Type | Description (EN / RU) | Best For |
 |------|----------|------|----------------------|----------|
@@ -271,7 +271,7 @@ terraform graph | dot -Tpng -o graph.png
 
 ---
 
-## Official Documentation / Официальная документация
+## Official Documentation
 
 - **Terraform:** https://developer.hashicorp.com/terraform/docs
 - **Terraform Registry (Providers):** https://registry.terraform.io/

@@ -16,28 +16,28 @@ tags:
 📚 **Official Docs / Официальная документация:** [firewalld.org](https://firewalld.org/documentation/)
 
 ## Table of Contents
-- [Installation & Configuration](#Installation%20&%20Configuration%20/%20Установка%20и%20настройка)
-- [Basic Commands](#Basic%20Commands%20/%20Базовые%20команды)
-- [Zone Management](#️%20Zone%20Management%20/%20Управление%20зонами)
-- [Service Management](#Service%20Management%20/%20Управление%20сервисами)
-- [Port Management](#Port%20Management%20/%20Управление%20портами)
-- [Rich Rules](#Rich%20Rules%20/%20Сложные%20правила)
-- [Direct Rules](#Direct%20Rules%20/%20Прямые%20правила)
-- [Masquerading & Port Forwarding](#Masquerading%20&%20Port%20Forwarding%20/%20Маскарадинг%20и%20проброс%20портов)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
-- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Basic Commands](#Basic%20Commands)
+- [Zone Management](#️%20Zone%20Management)
+- [Service Management](#Service%20Management)
+- [Port Management](#Port%20Management)
+- [Rich Rules](#Rich%20Rules)
+- [Direct Rules](#Direct%20Rules)
+- [Masquerading & Port Forwarding](#Masquerading%20&%20Port%20Forwarding)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
 
 ---
 
-## 📦 Installation & Configuration / Установка и настройка
+## 📦 Installation & Configuration
 
-### Installation / Установка
+### Installation
 ```bash
 sudo dnf install firewalld              # RHEL/Fedora
 sudo apt install firewalld              # Debian/Ubuntu
 ```
 
-### Service Management / Управление сервисом
+### Service Management
 ```bash
 sudo systemctl start firewalld          # Start service / Запустить сервис
 sudo systemctl stop firewalld           # Stop service / Остановить сервис
@@ -49,9 +49,9 @@ sudo firewall-cmd --state               # Check daemon state / Проверит�
 
 ---
 
-## 🔧 Basic Commands / Базовые команды
+## 🔧 Basic Commands
 
-### General Information / Общая информация
+### General Information
 ```bash
 sudo firewall-cmd --state               # Daemon state / Состояние демона
 sudo firewall-cmd --get-default-zone    # Get default zone / Получить зону по умолчанию
@@ -66,9 +66,9 @@ sudo firewall-cmd --runtime-to-permanent  # Save runtime rules / Сохрани�
 
 ---
 
-## 🛡️ Zone Management / Управление зонами
+## 🛡️ Zone Management
 
-### Zone Information / Информация о зонах
+### Zone Information
 ```bash
 sudo firewall-cmd --get-zones           # List all zones / Список всех зон
 sudo firewall-cmd --list-all            # List default zone rules / Список правил зоны по умолчанию
@@ -76,20 +76,20 @@ sudo firewall-cmd --zone=<ZONE> --list-all  # List specific zone rules / Спи�
 sudo firewall-cmd --get-active-zones    # Show active zones / Показать активные зоны
 ```
 
-### Default Zones / Зоны по умолчанию
+### Default Zones
 ```bash
-# drop      — Drop all incoming, allow outgoing / Отбросить входящий, разрешить исходящий
-# block     — Reject with ICMP error / Отклонить с ICMP ошибкой
-# public    — Default, selective incoming / По умолчанию, выборочный входящий
-# external  — For external use (masquerading) / Для внешнего использования (маскарадинг)
-# dmz       — DMZ zone, limited incoming / DMZ зона, ограниченный входящий
-# work      — Work environments / Рабочие окружения
-# home      — Home networks / Домашние сети
-# internal  — Internal networks / Внутренние сети
-# trusted   — Accept all / Доверенная (принять всё)
+# drop      — Drop all incoming, allow outgoing
+# block     — Reject with ICMP error
+# public    — Default, selective incoming
+# external  — For external use (masquerading)
+# dmz       — DMZ zone, limited incoming / DMZ
+# work      — Work environments
+# home      — Home networks
+# internal  — Internal networks
+# trusted   — Accept all
 ```
 
-### Zone Operations / Операции с зонами
+### Zone Operations
 ```bash
 sudo firewall-cmd --new-zone=<ZONE> --permanent  # Create new zone / Создать новую зону
 sudo firewall-cmd --delete-zone=<ZONE> --permanent  # Delete zone / Удалить зону
@@ -100,9 +100,9 @@ sudo firewall-cmd --zone=<ZONE> --remove-source=<IP>/24  # Remove source / Уд�
 
 ---
 
-## 🌐 Service Management / Управление сервисами
+## 🌐 Service Management
 
-### Add/Remove Services / Добавить/Удалить сервисы
+### Add/Remove Services
 ```bash
 sudo firewall-cmd --zone=<ZONE> --add-service=<SERVICE>  # Add service (runtime) / Добавить сервис (runtime)
 sudo firewall-cmd --zone=<ZONE> --add-service=<SERVICE> --permanent  # Add service (permanent) / Добавить сервис (постоянно)
@@ -110,7 +110,7 @@ sudo firewall-cmd --zone=<ZONE> --remove-service=<SERVICE>  # Remove service / �
 sudo firewall-cmd --zone=<ZONE> --remove-service=<SERVICE> --permanent  # Remove permanent / Удалить постоянно
 ```
 
-### Common Services / Распространённые сервисы
+### Common Services
 ```bash
 sudo firewall-cmd --zone=public --add-service=ssh --permanent  # Allow SSH / Разрешить SSH
 sudo firewall-cmd --zone=public --add-service=http --permanent  # Allow HTTP / Разрешить HTTP
@@ -120,7 +120,7 @@ sudo firewall-cmd --zone=public --add-service=postgresql --permanent  # Allow Po
 sudo firewall-cmd --zone=public --add-service=dns --permanent  # Allow DNS / Разрешить DNS
 ```
 
-### List Services / Список сервисов
+### List Services
 ```bash
 sudo firewall-cmd --get-services        # List all available services / Список всех доступных сервисов
 sudo firewall-cmd --zone=<ZONE> --list-services  # List enabled services in zone / Список включённых сервисов в зоне
@@ -128,9 +128,9 @@ sudo firewall-cmd --zone=<ZONE> --list-services  # List enabled services in zone
 
 ---
 
-## 🔌 Port Management / Управление портами
+## 🔌 Port Management
 
-### Add/Remove Ports / Добавить/Удалить порты
+### Add/Remove Ports
 ```bash
 sudo firewall-cmd --zone=<ZONE> --add-port=<PORT>/<PROTOCOL>  # Add port (runtime) / Добавить порт (runtime)
 sudo firewall-cmd --zone=<ZONE> --add-port=<PORT>/<PROTOCOL> --permanent  # Add port (permanent) / Добавить порт (постоянно)
@@ -138,12 +138,12 @@ sudo firewall-cmd --zone=<ZONE> --remove-port=<PORT>/<PROTOCOL>  # Remove port /
 sudo firewall-cmd --zone=<ZONE> --remove-port=<PORT>/<PROTOCOL> --permanent  # Remove permanent / Удалить постоянно
 ```
 
-### Port Range / Диапазон портов
+### Port Range
 ```bash
 sudo firewall-cmd --zone=<ZONE> --add-port=8000-9000/tcp --permanent  # Add port range / Добавить диапазон портов
 ```
 
-### Common Ports Examples / Примеры распространённых портов
+### Common Ports Examples
 ```bash
 sudo firewall-cmd --zone=public --add-port=22/tcp --permanent  # SSH port / Порт SSH
 sudo firewall-cmd --zone=public --add-port=80/tcp --permanent  # HTTP port / Порт HTTP
@@ -154,48 +154,48 @@ sudo firewall-cmd --zone=public --add-port=6379/tcp --permanent  # Redis port / 
 sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent  # Custom HTTP / Пользовательский HTTP
 ```
 
-### List Ports / Список портов
+### List Ports
 ```bash
 sudo firewall-cmd --zone=<ZONE> --list-ports  # List open ports / Список открытых портов
 ```
 
 ---
 
-## 🎯 Rich Rules / Сложные правила
+## 🎯 Rich Rules
 
-### Rich Rule Syntax / Синтаксис сложных правил
+### Rich Rule Syntax
 ```bash
 sudo firewall-cmd --zone=<ZONE> --add-rich-rule='<RULE>' --permanent  # Add rich rule / Добавить сложное правило
 ```
 
-### Rich Rule Examples / Примеры сложных правил
+### Rich Rule Examples
 ```bash
-# Allow SSH from specific IP / Разрешить SSH с конкретного IP
+# Allow SSH from specific IP
 sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="<IP>" service name="ssh" accept' --permanent
 
-# Block specific IP / Заблокировать конкретный IP
+# Block specific IP
 sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="<IP>" reject' --permanent
 
-# Allow port from subnet / Разрешить порт с подсети
+# Allow port from subnet
 sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="<IP>/24" port port="8080" protocol="tcp" accept' --permanent
 
-# Rate limit SSH / Ограничить частоту SSH
+# Rate limit SSH
 sudo firewall-cmd --zone=public --add-rich-rule='rule service name="ssh" limit value="10/m" accept' --permanent
 
-# Log dropped packets / Логировать отброшенные пакеты
+# Log dropped packets
 sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="<IP>" log prefix="DROPPED: " level="info" drop' --permanent
 ```
 
-### List Rich Rules / Список сложных правил
+### List Rich Rules
 ```bash
 sudo firewall-cmd --zone=<ZONE> --list-rich-rules  # List all rich rules / Список всех сложных правил
 ```
 
 ---
 
-## ⚡ Direct Rules / Прямые правила
+## ⚡ Direct Rules
 
-### Direct Rule Management / Управление прямыми правилами
+### Direct Rule Management
 ```bash
 sudo firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p tcp --dport 9000 -j ACCEPT  # Add direct rule / Добавить прямое правило
 sudo firewall-cmd --direct --get-all-rules  # List all direct rules / Список всех прямых правил
@@ -204,9 +204,9 @@ sudo firewall-cmd --direct --remove-rule ipv4 filter INPUT 0 -p tcp --dport 9000
 
 ---
 
-## 🔀 Masquerading & Port Forwarding / Маскарадинг и проброс портов
+## 🔀 Masquerading & Port Forwarding
 
-### Masquerading / Маскарадинг
+### Masquerading
 ```bash
 sudo firewall-cmd --zone=<ZONE> --add-masquerade  # Enable masquerading (runtime) / Включить маскарадинг (runtime)
 sudo firewall-cmd --zone=<ZONE> --add-masquerade --permanent  # Enable permanent / Включить постоянно
@@ -214,26 +214,26 @@ sudo firewall-cmd --zone=<ZONE> --remove-masquerade  # Disable masquerading / О
 sudo firewall-cmd --zone=<ZONE> --query-masquerade  # Check if enabled / Проверить включён ли
 ```
 
-### Port Forwarding / Проброс портов
+### Port Forwarding
 ```bash
 sudo firewall-cmd --zone=<ZONE> --add-forward-port=port=<PORT>:proto=<PROTOCOL>:toport=<TARGET_PORT>  # Forward to local port / Перенаправить на локальный порт
 sudo firewall-cmd --zone=<ZONE> --add-forward-port=port=<PORT>:proto=<PROTOCOL>:toaddr=<IP>:toport=<TARGET_PORT>  # Forward to remote / Перенаправить на удалённый
 ```
 
-### Examples / Примеры
+### Examples
 ```bash
-# Forward port 80 to 8080 / Перенаправить порт 80 на 8080
+# Forward port 80 to 8080
 sudo firewall-cmd --zone=public --add-forward-port=port=80:proto=tcp:toport=8080 --permanent
 
-# Forward port 443 to internal server / Перенаправить порт 443 на внутренний сервер
+# Forward port 443 to internal server
 sudo firewall-cmd --zone=external --add-forward-port=port=443:proto=tcp:toaddr=<INTERNAL_IP>:toport=443 --permanent
 ```
 
 ---
 
-## 🐛 Troubleshooting / Устранение неполадок
+## 🐛 Troubleshooting
 
-### Check Configuration / Проверка конфигурации
+### Check Configuration
 ```bash
 sudo firewall-cmd --check-config        # Validate configuration / Проверить конфигурацию
 sudo firewall-cmd --list-all-zones      # List all zone configurations / Список всех конфигураций зон
@@ -241,14 +241,14 @@ sudo firewall-cmd --get-log-denied      # Check log denied setting / Прове�
 sudo firewall-cmd --set-log-denied=all  # Enable logging denied / Включить логирование отклонённых
 ```
 
-### View Logs / Просмотр логов
+### View Logs
 ```bash
 sudo journalctl -u firewalld            # View firewalld logs / Просмотр логов firewalld
 sudo journalctl -u firewalld -f         # Follow firewalld logs / Следовать за логами firewalld
 sudo journalctl -k | grep -i firewall   # Kernel firewall messages / Сообщения файрвола ядра
 ```
 
-### Debug Mode / Режим отладки
+### Debug Mode
 ```bash
 sudo firewall-cmd --set-log-denied=all  # Log all denied packets / Логировать все отброшенные пакеты
 sudo firewall-cmd --get-log-denied      # Check current log setting / Проверить текущую настройку логов
@@ -256,42 +256,42 @@ sudo firewall-cmd --get-log-denied      # Check current log setting / Прове
 
 ---
 
-## 🌟 Real-World Examples / Примеры из практики
+## 🌟 Real-World Examples
 
-### Web Server Setup / Настройка веб-сервера
+### Web Server Setup
 ```bash
-# Allow HTTP and HTTPS / Разрешить HTTP и HTTPS
+# Allow HTTP and HTTPS
 sudo firewall-cmd --zone=public --add-service=http --permanent
 sudo firewall-cmd --zone=public --add-service=https --permanent
 sudo firewall-cmd --reload
 ```
 
-### Database Server Setup / Настройка сервера БД
+### Database Server Setup
 ```bash
-# Allow MySQL only from app server / Разрешить MySQL только с сервера приложений
+# Allow MySQL only from app server
 sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="<APP_SERVER_IP>" service name="mysql" accept' --permanent
 sudo firewall-cmd --reload
 ```
 
-### NAT Gateway Setup / Настройка NAT шлюза
+### NAT Gateway Setup
 ```bash
-# Enable masquerading for external zone / Включить маскарадинг для внешней зоны
+# Enable masquerading for external zone
 sudo firewall-cmd --zone=external --add-masquerade --permanent
 sudo firewall-cmd --zone=internal --set-target=ACCEPT --permanent
 sudo firewall-cmd --reload
 ```
 
-### SSH Lockdown / Ограничение SSH
+### SSH Lockdown
 ```bash
-# Allow SSH only from management subnet / Разрешить SSH только с управленческой подсети
+# Allow SSH only from management subnet
 sudo firewall-cmd --zone=public --remove-service=ssh --permanent
 sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="<MGMT_SUBNET>/24" service name="ssh" accept' --permanent
 sudo firewall-cmd --reload
 ```
 
-### Development Environment / Среда разработки
+### Development Environment
 ```bash
-# Open common development ports / Открыть распространённые порты разработки
+# Open common development ports
 sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent  # Node.js
 sudo firewall-cmd --zone=public --add-port=8000/tcp --permanent  # Django
 sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent  # Tomcat
@@ -299,23 +299,23 @@ sudo firewall-cmd --zone=public --add-port=9000/tcp --permanent  # PHP-FPM
 sudo firewall-cmd --reload
 ```
 
-## 💡 Best Practices / Лучшие практики
-# Always use --permanent for production / Всегда используйте --permanent для продакшена
-# Reload after making changes / Перезагружайте после внесения изменений
-# Use zones to organize rules / Используйте зоны для организации правил
-# Test rules before making permanent / Тестируйте правила перед постоянным применением
-# Use rich rules for complex scenarios / Используйте сложные правила для сложных сценариев
-# Log denied packets for troubleshooting / Логируйте отклонённые пакеты для отладки
-# Keep default zone restrictive / Держите зону по умолчанию строгой
+## 💡 Best Practices
+# Always use --permanent for production
+# Reload after making changes
+# Use zones to organize rules
+# Test rules before making permanent
+# Use rich rules for complex scenarios
+# Log denied packets for troubleshooting
+# Keep default zone restrictive
 
-## 🔧 Configuration Files / Файлы конфигурации
+## 🔧 Configuration Files
 ```bash
-# /etc/firewalld/firewalld.conf                    — Main configuration / Основная конфигурация
-# /etc/firewalld/zones/                             — Zone definitions / Определения зон
-# /etc/firewalld/services/                          — Service definitions / Определения сервисов
+# /etc/firewalld/firewalld.conf                    — Main configuration
+# /etc/firewalld/zones/                             — Zone definitions
+# /etc/firewalld/services/                          — Service definitions
 ```
 
-## 📋 Common Ports / Распространённые порты
+## 📋 Common Ports
 ```bash
 # SSH: 22/tcp, HTTP: 80/tcp, HTTPS: 443/tcp
 # MySQL: 3306/tcp, PostgreSQL: 5432/tcp

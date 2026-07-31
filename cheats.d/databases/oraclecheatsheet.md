@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#Installation%20&%20Configuration)
 2. [Environment & Connection](#Environment%20&%20Connection)
@@ -37,7 +37,7 @@ tags:
 
 ## Installation & Configuration
 
-### Default Ports / Порты по умолчанию
+### Default Ports
 
 | Port / Порт | Purpose / Назначение |
 |-------------|----------------------|
@@ -46,22 +46,22 @@ tags:
 | `5500` | Enterprise Manager Express (EM Express) — web UI / Веб-интерфейс |
 | `1158` | Enterprise Manager DB Console (legacy) / Консоль (устаревший) |
 
-### Installation Overview / Обзор установки
+### Installation Overview
 
 > [!IMPORTANT]
 > Oracle Database installation requires specific OS prerequisites (kernel parameters, packages, user/group setup). Always follow the official Oracle Installation Guide for your OS version.
 > Установка Oracle Database требует определённых системных предпосылок. Всегда следуйте официальному руководству по установке.
 
 ```bash
-# Prerequisites (RHEL/AlmaLinux) / Предварительные требования
+# Prerequisites (RHEL/AlmaLinux)
 sudo dnf install -y oracle-database-preinstall-19c                         # Install prerequisite package / Установка пакета предпосылок
 
-# Silent installation example / Пример тихой установки
+# Silent installation example
 sudo /u01/app/oracle/product/19.0.0/dbhome_1/runInstaller -silent \
   -responseFile /path/to/db_install.rsp                                    # Run silent installer / Тихая установка
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Type / Тип | Path / Путь |
 |------------|-------------|
@@ -73,7 +73,7 @@ sudo /u01/app/oracle/product/19.0.0/dbhome_1/runInstaller -silent \
 | SQL*Net Config / Конфиг SQL*Net | `$ORACLE_HOME/network/admin/sqlnet.ora` |
 | Init Parameter File / Файл параметров | `$ORACLE_HOME/dbs/init<SID>.ora` or `spfile<SID>.ora` |
 
-### Environment Variables / Переменные окружения
+### Environment Variables
 
 Always ensure these are set before running commands. / Всегда проверяйте их перед запуском команд.
 
@@ -93,29 +93,29 @@ export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH                   # Ora
 
 ## Environment & Connection
 
-### SQL*Plus Connection / Подключение SQL*Plus
+### SQL*Plus Connection
 
 ```bash
-# Connect as SYSDBA (OS Auth) / Подключение как SYSDBA (OS Auth)
+# Connect as SYSDBA (OS Auth)
 sqlplus / as sysdba
 
-# Connect via Network / Подключение по сети
+# Connect via Network
 sqlplus <USER>/<PASSWORD>@//<HOST>:1521/<SERVICE_NAME>
 
-# Connect with TNS name / Подключение с TNS именем
+# Connect with TNS name
 sqlplus <USER>/<PASSWORD>@<TNS_ALIAS>
 
-# Silent mode (for scripts) / Тихий режим (для скриптов)
+# Silent mode (for scripts)
 sqlplus -s / as sysdba
 
-# Connect as SYSOPER / Подключение как SYSOPER
+# Connect as SYSOPER
 sqlplus / as sysoper
 ```
 
-### Quick Health Check / Быстрая проверка состояния
+### Quick Health Check
 
 ```bash
-# Check if Oracle is running / Проверить, работает ли Oracle
+# Check if Oracle is running
 ps -ef | grep pmon                                                         # PMON process = instance running / PMON = инстанс работает
 ps -ef | grep tnslsnr                                                      # Listener process / Процесс Listener
 ```
@@ -124,7 +124,7 @@ ps -ef | grep tnslsnr                                                      # Lis
 
 ## Listener Management
 
-### lsnrctl Commands / Команды lsnrctl
+### lsnrctl Commands
 
 ```bash
 lsnrctl status                                                             # Check listener status / Проверить статус
@@ -134,7 +134,7 @@ lsnrctl reload                                                             # Rel
 lsnrctl services                                                           # Show registered services / Показать зарегистрированные сервисы
 ```
 
-### Listener Configuration / Конфигурация Listener
+### Listener Configuration
 
 `$ORACLE_HOME/network/admin/listener.ora`
 
@@ -160,7 +160,7 @@ SID_LIST_LISTENER =
 
 ## Core Management
 
-### Startup & Shutdown / Запуск и Остановка
+### Startup & Shutdown
 
 ```sql
 -- Startup stages / Этапы запуска
@@ -170,7 +170,7 @@ STARTUP MOUNT;                                                             -- Mo
 ALTER DATABASE OPEN;                                                       -- Open database / Открыть базу
 ```
 
-### Shutdown Modes Comparison / Сравнение режимов остановки
+### Shutdown Modes Comparison
 
 | Mode / Режим | New Connections / Новые подключения | Waits for Sessions / Ожидает сессии | Recovery Needed / Нужно восстановление | Use Case / Применение |
 |-------------|-------------------------------------|-------------------------------------|----------------------------------------|----------------------|
@@ -188,7 +188,7 @@ SHUTDOWN IMMEDIATE;                                                        -- Sa
 SHUTDOWN ABORT;                                                            -- Emergency shutdown (requires recovery) / Экстренная остановка
 ```
 
-### User Management / Управление пользователями
+### User Management
 
 ```sql
 CREATE USER <USER> IDENTIFIED BY <PASSWORD>;                               -- Create user / Создать пользователя
@@ -203,7 +203,7 @@ SELECT username, account_status FROM dba_users ORDER BY username;          -- Li
 
 ## Sysadmin Operations
 
-### Service Control (systemd) / Управление сервисом
+### Service Control (systemd)
 
 ```bash
 sudo systemctl start oracle-database                                       # Start Oracle service / Запустить сервис
@@ -211,13 +211,13 @@ sudo systemctl stop oracle-database                                        # Sto
 sudo systemctl status oracle-database                                      # Service status / Статус сервиса
 sudo systemctl enable oracle-database                                      # Enable on boot / Автозапуск
 
-# Manual start (as oracle user) / Ручной запуск (от пользователя oracle)
+# Manual start (as oracle user)
 su - oracle
 sqlplus / as sysdba <<< "STARTUP;"
 lsnrctl start
 ```
 
-### Tablespaces / Табличные пространства
+### Tablespaces
 
 ```sql
 SELECT tablespace_name, status, contents FROM dba_tablespaces;             -- List tablespaces / Список табличных пространств
@@ -234,7 +234,7 @@ ALTER DATABASE DATAFILE '/u01/oradata/<SID>/<FILE>.dbf' RESIZE 2G;
 > Running out of tablespace causes `ORA-01653` errors and can halt application writes. Monitor tablespace usage proactively.
 > Исчерпание пространства таблиц вызывает ошибку `ORA-01653` и может остановить запись приложений.
 
-### Sessions / Сессии
+### Sessions
 
 ```sql
 -- Active sessions / Активные сессии
@@ -252,10 +252,10 @@ ALTER SYSTEM KILL SESSION '<SID>,<SERIAL#>' IMMEDIATE;
 > `KILL SESSION` with `IMMEDIATE` will roll back the transaction. Without `IMMEDIATE`, Oracle waits for the current operation to finish.
 > `KILL SESSION` с `IMMEDIATE` откатит транзакцию. Без `IMMEDIATE` Oracle ждёт завершения текущей операции.
 
-### Network & Firewall / Сеть и файрвол
+### Network & Firewall
 
 ```bash
-# Default port: 1521 (TCP) / Порт по умолчанию: 1521
+# Default port: 1521 (TCP)
 
 # firewalld / firewalld
 sudo firewall-cmd --permanent --add-port=1521/tcp                          # Allow Oracle Listener / Разрешить Oracle Listener
@@ -267,7 +267,7 @@ sudo ufw allow 1521/tcp                                                    # All
 sudo ufw allow 5500/tcp                                                    # Allow EM Express / Разрешить EM Express
 ```
 
-### Database Size & Space / Размер базы и пространство
+### Database Size & Space
 
 ```sql
 -- Total database size / Общий размер базы
@@ -284,7 +284,7 @@ FROM dba_data_files GROUP BY tablespace_name;
 
 ## Security
 
-### Password Expiry / Срок действия пароля
+### Password Expiry
 
 ```sql
 -- Check expiry date / Проверка даты истечения
@@ -294,7 +294,7 @@ SELECT username, expiry_date, account_status FROM dba_users WHERE username = '<U
 ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;
 ```
 
-### Audit Configuration / Настройка аудита
+### Audit Configuration
 
 ```sql
 -- Enable unified audit / Включить единый аудит (Oracle 12c+)
@@ -316,19 +316,19 @@ FETCH FIRST 50 ROWS ONLY;
 
 ## Backup & Restore
 
-### RMAN (Recovery Manager) / RMAN (Менеджер восстановления)
+### RMAN (Recovery Manager) / RMAN
 
 RMAN is the recommended backup tool for Oracle databases. / RMAN — рекомендуемый инструмент резервного копирования для Oracle.
 
 ```bash
-# Connect to target / Подключение к цели
+# Connect to target
 rman target /
 
-# Connect to target with catalog / Подключение с каталогом
+# Connect to target with catalog
 rman target / catalog <USER>/<PASSWORD>@<CATALOG_DB>
 ```
 
-### Runbook: Full Database Backup / Полный бэкап базы
+### Runbook: Full Database Backup
 
 ```bash
 rman target / <<EOF
@@ -337,32 +337,32 @@ BACKUP DATABASE PLUS ARCHIVELOG;
 EOF
 ```
 
-### Runbook: Incremental Backup / Инкрементальный бэкап
+### Runbook: Incremental Backup
 
 ```bash
 rman target / <<EOF
-# Level 0 (full baseline) / Уровень 0 (полный базовый)
+# Level 0 (full baseline)
 BACKUP INCREMENTAL LEVEL 0 DATABASE;
 
-# Level 1 (changes since last level 0) / Уровень 1 (изменения с последнего уровня 0)
+# Level 1 (changes since last level 0)
 BACKUP INCREMENTAL LEVEL 1 DATABASE;
 EOF
 ```
 
-### Backup Management / Управление бэкапами
+### Backup Management
 
 ```bash
 rman target / <<EOF
-# List backups / Список бэкапов
+# List backups
 LIST BACKUP SUMMARY;
 
-# Delete obsolete backups / Удалить устаревшие бэкапы
+# Delete obsolete backups
 DELETE OBSOLETE;
 
-# Validate backup / Проверить бэкап
+# Validate backup
 VALIDATE BACKUPSET <BACKUP_SET_ID>;
 
-# Crosscheck backups / Перекрёстная проверка
+# Crosscheck backups
 CROSSCHECK BACKUP;
 EOF
 ```
@@ -371,18 +371,18 @@ EOF
 > `DELETE OBSOLETE` removes backups exceeding the retention policy. Ensure your retention policy is correctly configured before running this command.
 > `DELETE OBSOLETE` удаляет бэкапы, превышающие политику хранения. Проверьте политику перед выполнением.
 
-### Data Pump (Export/Import) / Data Pump (Экспорт/Импорт)
+### Data Pump (Export/Import) / Data Pump (Экспорт
 
 ```bash
-# Export full database / Экспорт полной базы
+# Export full database
 expdp <USER>/<PASSWORD> FULL=YES DIRECTORY=DATA_PUMP_DIR \
   DUMPFILE=full_export_%U.dmp LOGFILE=full_export.log PARALLEL=4
 
-# Export specific schema / Экспорт конкретной схемы
+# Export specific schema
 expdp <USER>/<PASSWORD> SCHEMAS=<SCHEMA_NAME> DIRECTORY=DATA_PUMP_DIR \
   DUMPFILE=schema_export.dmp LOGFILE=schema_export.log
 
-# Import / Импорт
+# Import
 impdp <USER>/<PASSWORD> FULL=YES DIRECTORY=DATA_PUMP_DIR \
   DUMPFILE=full_export_%U.dmp LOGFILE=full_import.log PARALLEL=4
 ```
@@ -391,17 +391,17 @@ impdp <USER>/<PASSWORD> FULL=YES DIRECTORY=DATA_PUMP_DIR \
 
 ## Troubleshooting & Tools
 
-### Alert Log / Лог алертов
+### Alert Log
 
 ```bash
-# Alert Log Path / Путь к логу алертов
+# Alert Log Path
 # $ORACLE_BASE/diag/rdbms/<DB_NAME>/<SID>/trace/alert_<SID>.log
 
 tail -f $ORACLE_BASE/diag/rdbms/<DB_NAME>/<SID>/trace/alert_<SID>.log     # Follow alert log / Следить за логом
 grep "ORA-" $ORACLE_BASE/diag/rdbms/<DB_NAME>/<SID>/trace/alert_<SID>.log | tail -50  # Find errors / Найти ошибки
 ```
 
-### Common Issues / Частые проблемы
+### Common Issues
 
 **ORA-12541: TNS:no listener / Нет прослушивателя:**
 
@@ -430,7 +430,7 @@ ALTER USER <USER> ACCOUNT UNLOCK;                                          -- Un
 ALTER SYSTEM SET undo_retention=3600 SCOPE=BOTH;                           -- 1 hour / 1 час
 ```
 
-### Performance Diagnostics / Диагностика производительности
+### Performance Diagnostics
 
 ```sql
 -- AWR Report (Automatic Workload Repository) / Отчёт AWR

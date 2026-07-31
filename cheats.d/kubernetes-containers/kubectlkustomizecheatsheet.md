@@ -38,7 +38,7 @@ Kustomize is a **template-free** configuration management tool for Kubernetes, b
 ## Basic Structure
 
 ```yaml
-# Minimal kustomization.yaml / Минимальный kustomization.yaml
+# Minimal kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -54,7 +54,7 @@ commonLabels:
 
 ## Base & Overlay Pattern
 
-### Directory Structure / Структура директорий
+### Directory Structure
 
 ```text
 base/
@@ -147,7 +147,7 @@ patchesStrategicMerge:
   - patch-env.yaml
 ```
 
-### patch-resources.yaml (Strategic Merge) / Патч ресурсов
+### patch-resources.yaml (Strategic Merge)
 
 ```yaml
 apiVersion: apps/v1
@@ -195,7 +195,7 @@ patchesJson6902:
 
 ## ConfigMap & Secret Generators
 
-### ConfigMap from literals / ConfigMap из значений
+### ConfigMap from literals / ConfigMap
 
 ```yaml
 configMapGenerator:
@@ -206,7 +206,7 @@ configMapGenerator:
       - MAX_CONNECTIONS=100
 ```
 
-### ConfigMap from files / ConfigMap из файлов
+### ConfigMap from files / ConfigMap
 
 ```yaml
 configMapGenerator:
@@ -216,7 +216,7 @@ configMapGenerator:
       - application.yaml
 ```
 
-### Secret from literals / Secret из значений
+### Secret from literals / Secret
 
 ```yaml
 secretGenerator:
@@ -226,7 +226,7 @@ secretGenerator:
       - API_KEY=<SECRET_KEY>
 ```
 
-### Secret from files / Secret из файлов
+### Secret from files / Secret
 
 ```yaml
 secretGenerator:
@@ -245,7 +245,7 @@ secretGenerator:
 ## Image Tag Replacement
 
 ```yaml
-# Replace image tags / Замена тегов образов
+# Replace image tags
 images:
   - name: nginx
     newName: nginx
@@ -256,7 +256,7 @@ images:
 ```
 
 ```yaml
-# Digest replacement (immutable) / Замена digest (неизменяемый)
+# Digest replacement (immutable)
 images:
   - name: myapp
     digest: sha256:1234567890abcdef...
@@ -270,21 +270,21 @@ images:
 ## Namespace & Labels
 
 ```yaml
-# Set namespace for all resources / Установить namespace для всех ресурсов
+# Set namespace for all resources
 namespace: production
 
-# Common labels / Общие labels
+# Common labels
 commonLabels:
   app: myapp
   env: prod
   managed-by: kustomize
 
-# Common annotations / Общие аннотации
+# Common annotations
 commonAnnotations:
   monitoring: "true"
   team: platform
 
-# Name prefix/suffix / Префикс/суффикс имени
+# Name prefix/suffix
 namePrefix: prod-
 nameSuffix: -v2
 ```
@@ -294,19 +294,19 @@ nameSuffix: -v2
 ## Common Commands
 
 ```bash
-# Render kustomization / Рендер kustomization
+# Render kustomization
 kubectl kustomize ./overlays/prod
 
-# Apply kustomization / Применить kustomization
+# Apply kustomization
 kubectl apply -k ./overlays/prod
 
-# Diff before apply / Разница перед применением
+# Diff before apply
 kubectl diff -k ./overlays/prod
 
-# Delete resources / Удалить ресурсы
+# Delete resources
 kubectl delete -k ./overlays/prod
 
-# Build to file / Сохранить в файл
+# Build to file
 kubectl kustomize ./overlays/prod > rendered.yaml
 ```
 
@@ -318,22 +318,22 @@ kubectl kustomize ./overlays/prod > rendered.yaml
 ## Troubleshooting
 
 ```bash
-# Validate kustomization.yaml / Проверка kustomization.yaml
+# Validate kustomization.yaml
 kubectl kustomize ./overlays/prod --enable-alpha-plugins
 
-# Debug resource generation / Отладка генерации ресурсов
+# Debug resource generation
 kubectl kustomize ./overlays/prod --load-restrictor=LoadRestrictionsNone
 
-# Common errors / Часто встречающиеся ошибки:
-# - "accumulating resources: ..." → Check base path is correct / Проверьте путь к base
-# - "no matches for kind ..." → Ensure resources exist in base / Ресурсы должны быть в base
-# - "multiple matches for ..." → Patches target must be unique / Цель патча уникальна
+# Common errors
+# - "accumulating resources: ..." → Check base path is correct
+# - "no matches for kind ..." → Ensure resources exist in base
+# - "multiple matches for ..." → Patches target must be unique
 
-# View all resources / Просмотр всех ресурсов
+# View all resources
 kubectl kustomize ./overlays/prod | grep -E "^(kind|metadata):"
 ```
 
-### Common Issues Quick Reference / Краткий справочник проблем
+### Common Issues Quick Reference
 
 | Error / Ошибка | Cause / Причина | Fix / Решение |
 | :--- | :--- | :--- |

@@ -47,7 +47,7 @@ Swap is **not RAM**. It is slower than memory because it uses disk or compressed
 > [!WARNING]
 > Heavy continuous swap usage usually indicates a real memory bottleneck. Treat it as a symptom, not a fix.
 
-### Swap Types / Типы swap
+### Swap Types
 
 | Type | Description (EN / RU) | Best For / Когда использовать |
 |------|------------------------|-------------------------------|
@@ -56,7 +56,7 @@ Swap is **not RAM**. It is slower than memory because it uses disk or compressed
 | zram | Compressed RAM block device used as swap / Сжатый swap в RAM | Low-memory systems, laptops, lightweight VMs |
 | zswap | Compressed cache before writing pages to disk swap / Сжатый кэш перед записью на диск | Systems that already have disk swap and want fewer physical writes |
 
-### Why It Matters / Зачем это нужно
+### Why It Matters
 
 | Feature | Description (EN / RU) | Use Case / Best for |
 |---------|------------------------|---------------------|
@@ -65,7 +65,7 @@ Swap is **not RAM**. It is slower than memory because it uses disk or compressed
 | Hibernation | Saves RAM image to swap / Сохраняет образ RAM в swap | Laptops and workstations |
 | Cold-page eviction | Moves rarely used pages out of RAM / Выносит редко используемые страницы из RAM | Mixed workloads, shared hosts |
 
-### Paths, Logs, and Service Notes / Пути, логи и сервисные заметки
+### Paths, Logs, and Service Notes
 
 | Item | Typical Location / Команда | Notes / Примечание |
 |------|-----------------------------|--------------------|
@@ -85,7 +85,7 @@ Swap is **not RAM**. It is slower than memory because it uses disk or compressed
 
 ## Installation & Configuration
 
-### Inspect Current Setup / Проверить текущую конфигурацию
+### Inspect Current Setup
 
 ```bash
 swapon --show --bytes                       # Show active swap devices / Показать активные swap-устройства
@@ -94,14 +94,14 @@ free -h                                     # Show RAM and swap usage / Пока
 cat /proc/sys/vm/swappiness                 # Current swappiness value / Текущее значение swappiness
 ```
 
-### fstab Entry / Запись в fstab
+### fstab Entry
 `/etc/fstab`
 
 ```bash
 /swap.img none swap sw 0 0                  # Swap file entry / Запись swap-файла
 ```
 
-### Create or Resize Swap File to 6 GiB / Создать или изменить swap до 6 ГиБ
+### Create or Resize Swap File to 6 GiB
 
 > [!CAUTION]
 > `swapoff` can stall or fail on a host that has no free RAM to absorb swapped pages. Check memory pressure before disabling swap in production.
@@ -119,7 +119,7 @@ sudo swapon /swap.img                       # Enable new swap file / Включ�
 swapon --show                               # Verify result / Проверить результат
 ```
 
-### Persistent VM Tuning / Постоянная настройка VM
+### Persistent VM Tuning
 `/etc/sysctl.d/99-swap-tuning.conf`
 
 ```bash
@@ -134,14 +134,14 @@ sudo sysctl --system                        # Reload all sysctl config files / �
 sudo systemctl restart systemd-sysctl       # Reapply sysctl via systemd / Повторно применить sysctl через systemd
 ```
 
-### Temporary Runtime Tuning / Временная настройка во время работы
+### Temporary Runtime Tuning
 
 ```bash
 sudo sysctl vm.swappiness=10                # Set swappiness until reboot / Изменить swappiness до перезагрузки
 sudo sysctl vm.vfs_cache_pressure=50        # Tune cache pressure until reboot / Настроить cache pressure до перезагрузки
 ```
 
-### Optional zram Configuration / Опциональная настройка zram
+### Optional zram Configuration
 `/etc/systemd/zram-generator.conf`
 
 ```bash
@@ -165,7 +165,7 @@ swapon --show                               # Verify active zram or disk swap / 
 
 ## Core Management
 
-### Check Status / Проверить состояние
+### Check Status
 
 ```bash
 swapon --show                               # Active swap devices / Активные swap-устройства
@@ -180,7 +180,7 @@ NAME       TYPE SIZE USED PRIO
 /swap.img  file   6G   0B   -2
 ```
 
-### Enable or Disable / Включить или отключить
+### Enable or Disable
 
 ```bash
 sudo swapon /swap.img                       # Enable one swap file / Включить один swap-файл
@@ -189,7 +189,7 @@ sudo swapon -a                              # Enable all swap entries from fstab
 sudo swapoff -a                             # Disable all swap devices / Отключить все swap-устройства
 ```
 
-### Verify File and Priority / Проверить файл и приоритет
+### Verify File and Priority
 
 ```bash
 ls -lh /swap.img                            # Check file size and ownership / Проверить размер и владельца файла
@@ -197,7 +197,7 @@ stat /swap.img                              # Show permissions and timestamps / 
 swapon --show=NAME,TYPE,SIZE,USED,PRIO      # Show priority and utilization / Показать приоритет и использование
 ```
 
-### Quick CRUD Mindset / Базовые операции
+### Quick CRUD Mindset
 
 | Operation | Command / Что делать | Notes / Примечание |
 |-----------|----------------------|--------------------|
@@ -210,14 +210,14 @@ swapon --show=NAME,TYPE,SIZE,USED,PRIO      # Show priority and utilization / П
 
 ## Sysadmin Operations
 
-### Top Memory Consumers / Процессы с наибольшим потреблением памяти
+### Top Memory Consumers
 
 ```bash
 ps aux --sort=-%mem | head                  # Top memory users / Топ процессов по памяти
 ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 15  # Detailed top list / Подробный список лидеров
 ```
 
-### Memory Pressure and Paging / Давление на память и пейджинг
+### Memory Pressure and Paging
 
 ```bash
 vmstat 1 5                                  # Memory and swap stats / Статистика памяти и swap
@@ -233,7 +233,7 @@ Sample `vmstat` fields to watch:
 | `wa` | I/O wait / Ожидание I/O | Rising `wa` with swap often means disk contention |
 | `r` | Runnable tasks / Очередь на CPU | Helps separate CPU pressure from memory pressure |
 
-### OOM and Kernel Logs / Логи OOM и ядра
+### OOM and Kernel Logs
 
 ```bash
 dmesg | grep -i oom                         # Search kernel ring buffer for OOM / Искать OOM в буфере ядра
@@ -242,7 +242,7 @@ journalctl -k --since "1 hour ago" | grep -Ei 'oom|out of memory|swap'  # Recent
 grep -Ei 'oom|out of memory|swap' /var/log/kern.log  # Ubuntu kernel log if rsyslog is enabled / Лог ядра Ubuntu при включённом rsyslog
 ```
 
-### System Actions / Сервисные действия
+### System Actions
 
 ```bash
 sudo swapon -a                              # Re-enable configured swap devices / Повторно включить настроенные swap-устройства
@@ -251,7 +251,7 @@ sudo systemctl restart systemd-sysctl       # Reapply VM tunables / Повтор
 systemctl status systemd-sysctl             # Check sysctl unit status / Проверить статус юнита sysctl
 ```
 
-### Why zram vs Disk Swap / Почему zram и disk swap отличаются
+### Why zram vs Disk Swap
 
 | Option | Description (EN / RU) | Use Case / Best for |
 |--------|------------------------|---------------------|
@@ -265,14 +265,14 @@ Disk swap gives more total backing storage but is slower. zram is much faster be
 
 ## Performance Tuning
 
-### Swappiness / Параметр swappiness
+### Swappiness
 
 ```bash
 cat /proc/sys/vm/swappiness                 # Read current swappiness / Прочитать текущее значение swappiness
 sudo sysctl vm.swappiness=10                # Set runtime swappiness / Установить swappiness во время работы
 ```
 
-### Persistent Swappiness / Постоянный swappiness
+### Persistent Swappiness
 `/etc/sysctl.d/99-swappiness.conf`
 
 ```bash
@@ -283,7 +283,7 @@ vm.swappiness=10                            # Lower tendency to swap / Сниз�
 sudo sysctl --system                        # Reload persistent sysctl settings / Перечитать постоянные sysctl-настройки
 ```
 
-### Swappiness Comparison / Сравнение значений swappiness
+### Swappiness Comparison
 
 | Value | Behavior (EN / RU) | Use Case / Best for |
 |------|---------------------|---------------------|
@@ -291,14 +291,14 @@ sudo sysctl --system                        # Reload persistent sysctl settings 
 | `10-30` | Balanced behavior / Сбалансированное поведение | General Linux hosts and mixed workloads |
 | `60` | More aggressive paging / Более агрессивный свопинг | Kernel default on many systems, desktop-friendly defaults |
 
-### Cache Pressure / Давление на VFS cache
+### Cache Pressure
 
 ```bash
 cat /proc/sys/vm/vfs_cache_pressure         # Show current cache pressure / Показать текущее давление на кэш
 sudo sysctl vm.vfs_cache_pressure=50        # Keep filesystem cache longer / Дольше держать файловый кэш
 ```
 
-### Tuning Guidance / Практические замечания
+### Tuning Guidance
 
 - Lower `swappiness` when you care about latency more than cache retention.
 - Keep `swappiness` moderate on general-purpose hosts where occasional background swap is acceptable.
@@ -311,14 +311,14 @@ sudo sysctl vm.vfs_cache_pressure=50        # Keep filesystem cache longer / Д�
 
 ## Security
 
-### File Permissions / Права доступа
+### File Permissions
 
 ```bash
 sudo chmod 600 /swap.img                    # Restrict swap file to root only / Ограничить swap-файл только для root
 stat /swap.img                              # Verify restrictive mode / Проверить ограниченный режим доступа
 ```
 
-### Encrypted Swap Note / Заметка про шифрование
+### Encrypted Swap Note
 
 Sensitive data can be paged out to swap. On laptops, shared servers, or regulated environments, prefer full-disk encryption or encrypted swap.
 
@@ -337,7 +337,7 @@ cryptswap1 /dev/disk/by-uuid/<UUID> /dev/urandom swap,cipher=aes-xts-plain64,siz
 
 Swap contents themselves are not useful to back up. Back up the **configuration** instead: `fstab`, sysctl files, and any resume or encryption settings.
 
-### Backup and Restore Config Files / Резервная копия и восстановление конфигов
+### Backup and Restore Config Files
 
 ```bash
 sudo cp /etc/fstab /etc/fstab.bak                          # Back up fstab / Сделать резервную копию fstab
@@ -348,7 +348,7 @@ sudo swapon -a                                             # Re-enable configure
 sudo sysctl --system                                       # Reapply kernel tuning / Повторно применить настройки ядра
 ```
 
-### Snapshot Considerations / Замечания по снапшотам
+### Snapshot Considerations
 
 - VM or cloud snapshots should capture config files, not rely on live swap state.
 - Exclude swap files from backup archives when possible to save space and avoid copying meaningless transient data.
@@ -357,7 +357,7 @@ sudo sysctl --system                                       # Reapply kernel tuni
 
 ## Troubleshooting & Tools
 
-### Swap Not Working / Swap не работает
+### Swap Not Working / Swap
 
 ```bash
 swapon --show                               # Check whether swap is active / Проверить, активен ли swap
@@ -366,7 +366,7 @@ ls -lh /swap.img                            # Confirm file exists and size looks
 file /swap.img                              # Check for swap signature or file type / Проверить сигнатуру swap или тип файла
 ```
 
-### Fix Permissions / Исправить права
+### Fix Permissions
 
 ```bash
 sudo chmod 600 /swap.img                    # Fix unsafe permissions / Исправить небезопасные права
@@ -374,7 +374,7 @@ sudo mkswap /swap.img                       # Recreate swap signature if needed 
 sudo swapon /swap.img                       # Re-enable swap file / Снова включить swap-файл
 ```
 
-### Detect Thrashing / Обнаружить thrashing
+### Detect Thrashing
 
 ```bash
 vmstat 1                                    # Watch swap in/out continuously / Наблюдать swap in/out в реальном времени
@@ -385,7 +385,7 @@ ps aux --sort=-%mem | head                  # Find biggest memory consumers / Н
 > [!CAUTION]
 > High `si` and `so` values together with high I/O wait usually mean the host is thrashing and performance will collapse quickly.
 
-### Common Failure Patterns / Частые проблемы
+### Common Failure Patterns
 
 | Symptom | Likely Cause (EN / RU) | Fix / Что делать |
 |---------|-------------------------|------------------|
@@ -394,7 +394,7 @@ ps aux --sort=-%mem | head                  # Find biggest memory consumers / Н
 | `swapoff` hangs | System lacks free RAM / Не хватает свободной RAM | Stop memory-heavy apps first |
 | High swap use with low free RAM | Real memory pressure / Реальное давление на память | Identify offenders, tune, or add RAM |
 
-### Log Handling / Работа с логами
+### Log Handling
 
 There is usually no dedicated `/var/log/swap.log`. Swap events appear in kernel or system logs.
 
@@ -410,7 +410,7 @@ grep -Ei 'oom|swap|out of memory' /var/log/syslog  # Search syslog on Ubuntu sys
 
 ## Production Runbooks
 
-### Safe Swap Resize Procedure / Безопасное изменение размера swap
+### Safe Swap Resize Procedure
 
 1. Check current pressure and confirm the host can survive a temporary `swapoff`.
 
@@ -449,7 +449,7 @@ free -h                                     # Confirm memory/swap totals / Пр�
 grep -n '/swap' /etc/fstab                  # Verify persistent swap entry / Проверить постоянную запись swap
 ```
 
-### Incident: High Swap Usage / Инцидент: высокий swap
+### Incident: High Swap Usage
 
 1. Identify which process or service is driving memory consumption.
 
@@ -495,14 +495,14 @@ sudo swapon --show                          # Recheck active swap state / Пов
 
 ## Additional Notes
 
-### Naming Conventions / Именование
+### Naming Conventions
 
 | Path | Typical Usage / Типичное использование |
 |------|----------------------------------------|
 | `/swapfile` | Common default on Ubuntu and Debian |
 | `/swap.img` | Common on cloud images or custom builds |
 
-### Swap Sizing Guide / Рекомендации по размеру
+### Swap Sizing Guide
 
 | RAM | Swap | Notes / Примечание |
 |-----|------|--------------------|
@@ -510,18 +510,18 @@ sudo swapon --show                          # Recheck active swap state / Пов
 | `8-16 GiB` | `2-6 GiB` | Enough for safety margin on many servers |
 | `>= 16 GiB` | `2-4 GiB` | Often sufficient unless hibernation is required |
 
-### Hibernation / Гибернация
+### Hibernation
 
 For hibernation, swap should usually be at least as large as RAM, and resume configuration must also be correct for your distro and bootloader.
 
-### Ubuntu and Distro Differences / Отличия Ubuntu и других дистрибутивов
+### Ubuntu and Distro Differences
 
 - Ubuntu servers commonly use a swap file and rely on `systemd` + `procps`
 - Some minimal cloud images ship without swap at all
 - On systems without `rsyslog`, kernel messages may exist only in the journal, not in `/var/log/kern.log`
 - zram is increasingly common on desktops and low-memory devices, but not always enabled by default on servers
 
-### Modern Alternatives / Современные альтернативы
+### Modern Alternatives
 
 - **zram**: faster than disk swap, good for low-memory systems
 - **zswap**: reduces disk writes when real swap already exists

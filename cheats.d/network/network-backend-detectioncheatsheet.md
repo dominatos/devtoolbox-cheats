@@ -14,47 +14,47 @@ tags:
 This cheatsheet provides a universal workflow to determine which network management backend (NetworkManager, systemd-networkd, Netplan, or legacy scripts) is controlling your network interfaces. Essential for troubleshooting network configuration conflicts on any Linux distribution (Ubuntu, Debian, RHEL, CentOS, Fedora).
 
 ## Table of Contents
-- [Quick Detection Workflow](#Quick%20Detection%20Workflow%20/%20Быстрая%20проверка)
-- [Universal Backend Check](#Universal%20Backend%20Check%20/%20Универсальная%20проверка%20бэкенда)
+- [Quick Detection Workflow](#Quick%20Detection%20Workflow)
+- [Universal Backend Check](#Universal%20Backend%20Check)
 - [NetworkManager (NM)](#NetworkManager%20(NM))
 - [systemd-networkd](#systemd-networkd)
-- [Distro-Specific Layers](#Distro-Specific%20Layers%20/%20Дистрибутив-специфичные%20слои)
+- [Distro-Specific Layers](#Distro-Specific%20Layers)
     - [Netplan (Ubuntu/Debian)](#Netplan%20(Ubuntu/Debian))
     - [Legacy: Ifupdown (Debian/Old Ubuntu)](#Legacy:%20Ifupdown%20(Debian/Old%20Ubuntu))
     - [Legacy: Sysconfig (RHEL/CentOS/Fedora)](#Legacy:%20Sysconfig%20(RHEL/CentOS/Fedora))
-- [Interface Ownership](#Interface%20Ownership%20/%20Принадлежность%20интерфейса)
-- [Routing Table](#Step%204:%20Check%20routing%20table%20source%20/%20Проверить%20источник%20таблицы%20маршрутизации)
-- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
-- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Interface Ownership](#Interface%20Ownership)
+- [Routing Table](#Step%204:%20Check%20routing%20table%20source)
+- [Comparison Tables](#Comparison%20Tables)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 
-## Quick Detection Workflow / Быстрая проверка
+## Quick Detection Workflow
 
-### Production Runbook: Identify Network Backend / Определение сетевого бэкенда
+### Production Runbook: Identify Network Backend
 
 Run these commands in sequence to identify your active network backend on any Linux system:
 
 ```bash
-# Step 1: Check active services / Проверить активные сервисы
+# Step 1: Check active services
 systemctl is-active NetworkManager systemd-networkd networking network
 
-# Step 2: Check active listening processes / Проверить процессы, слушающие сеть
+# Step 2: Check active listening processes
 sudo netstat -tulpn | grep -E 'NetworkManager|systemd-networkd'
 
-# Step 3: Check interface ownership (Universal) / Проверить владение интерфейсами
+# Step 3: Check interface ownership (Universal)
 networkctl list      # systemd-networkd check / Проверка systemd-networkd
 nmcli device status  # NetworkManager check / Проверка NetworkManager
 
-# Step 4: Check routing table source / Проверить источник таблицы маршрутизации
+# Step 4: Check routing table source
 ip route show default
 ```
 
 ---
 
-## Universal Backend Check / Универсальная проверка бэкенда
+## Universal Backend Check
 
-### Service Status Matrix / Матрица статусов сервисов
+### Service Status Matrix
 
 Check which service is actually running and enabled.
 
@@ -74,7 +74,7 @@ systemctl status NetworkManager systemd-networkd networking network --no-pager
 
 Common on: Ubuntu Desktop, Fedora, RHEL 7/8/9, CentOS.
 
-### Check Status & Managed Devices / Проверка статуса и устройств
+### Check Status & Managed Devices
 ```bash
 systemctl status NetworkManager  # Check service / Проверить сервис
 nmcli general status             # minimal status / Краткий статус
@@ -91,7 +91,7 @@ lo           loopback  unmanaged  --
 - `connected`: Managed by NM.
 - `unmanaged`: Ignored by NM (likely managed by another backend).
 
-### Configuration Locations / Расположение конфигурации
+### Configuration Locations
 - **Main Config:** `/etc/NetworkManager/NetworkManager.conf`
 - **Connections:** `/etc/NetworkManager/system-connections/` (Keyfiles)
 - **Legacy Configs:** `/etc/sysconfig/network-scripts/ifcfg-*` (RHEL/CentOS)
@@ -102,7 +102,7 @@ lo           loopback  unmanaged  --
 
 Common on: Ubuntu Server, Arch Linux, Container OS, Embedded.
 
-### Check Status & Managed Devices / Проверка статуса и устройств
+### Check Status & Managed Devices
 ```bash
 systemctl status systemd-networkd  # Check service / Проверить сервис
 networkctl list                    # List interfaces / Список интерфейсов
@@ -118,21 +118,21 @@ IDX LINK    TYPE     OPERATIONAL SETUP
 - `configured`: Managed by systemd-networkd.
 - `unmanaged`: Ignored (likely managed by NM or legacy scripts).
 
-### Configuration Locations / Расположение конфигурации
+### Configuration Locations
 - **Global:** `/etc/systemd/networkd.conf`
 - **Profiles:** `/etc/systemd/network/*.network`, `/lib/systemd/network/*.network`
 
 ---
 
-## Distro-Specific Layers / Дистрибутив-специфичные слои
+## Distro-Specific Layers
 
 ### Netplan (Ubuntu/Debian)
 *Abstract renderer generator. Runs on top of NM or networkd.*
 
-#### Check Renderer / Проверить рендерер
+#### Check Renderer
 ```bash
 sudo netplan get
-# OR look at config files / ИЛИ посмотреть файлы конфигурации
+# OR look at config files
 cat /etc/netplan/*.yaml
 ```
 
@@ -149,7 +149,7 @@ network:
 ### Legacy: Ifupdown (Debian/Old Ubuntu)
 *Traditional Debian-style networking.*
 
-#### Check Status / Проверка статуса
+#### Check Status
 ```bash
 systemctl status networking
 cat /etc/network/interfaces
@@ -164,7 +164,7 @@ If `/run/network/ifstate` exists and interacts with active interfaces.
 ### Legacy: Sysconfig (RHEL/CentOS/Fedora)
 *Traditional Red Hat-style networking (`initscripts`).*
 
-#### Check Status / Проверка статуса
+#### Check Status
 ```bash
 systemctl status network
 ls /etc/sysconfig/network-scripts/ifcfg-*
@@ -174,7 +174,7 @@ ls /etc/sysconfig/network-scripts/ifcfg-*
 
 ---
 
-## Interface Ownership / Принадлежность интерфейса
+## Interface Ownership
 
 Use this script block to determine the "owner" of a specific interface (replace `<INTERFACE>`).
 
@@ -206,9 +206,9 @@ fi
 
 ---
 
-## Comparison Tables / Таблицы сравнения
+## Comparison Tables
 
-### Network Management Backends / Сетевые бэкенды
+### Network Management Backends
 
 | Backend | Primary Distros | Config Path | Service Name | Command Tool |
 | :--- | :--- | :--- | :--- | :--- |
@@ -218,7 +218,7 @@ fi
 | **sysconfig** | Old RHEL/CentOS | `/etc/sysconfig/network-scripts/` | `network` | `ip`, `ifup` |
 | **Netplan** | Ubuntu 18.04+ | `/etc/netplan/*.yaml` | Generates configs | `netplan` |
 
-### Interface States / Состояния интерфейсов
+### Interface States
 
 | State | NetworkManager | systemd-networkd | Meaning (EN / RU) |
 | :--- | :--- | :--- | :--- |
@@ -228,22 +228,22 @@ fi
 
 ---
 
-## Troubleshooting / Устранение неполадок
+## Troubleshooting
 
-### Conflict Resolution / Разрешение конфликтов
+### Conflict Resolution
 
 > [!CAUTION]
 > Never run two network managers managing the *same* interface simultaneously. This causes route flapping and connection drops.
 
 #### Scenario 1: Switch from NetworkManager to networkd
 ```bash
-# 1. Stop NM / Остановить NM
+# 1. Stop NM
 sudo systemctl disable --now NetworkManager
 
-# 2. Enable networkd / Включить networkd
+# 2. Enable networkd
 sudo systemctl enable --now systemd-networkd
 
-# 3. (Ubuntu only) Apply Netplan / (Только Ubuntu) Применить Netplan
+# 3. (Ubuntu only) Apply Netplan / (Только Ubuntu)
 # Edit /etc/netplan/01-config.yaml -> set renderer: networkd
 sudo netplan apply
 ```
@@ -257,15 +257,15 @@ If an interface shows `unmanaged` in both `nmcli` and `networkctl`:
    unmanaged-devices=interface-name:<INTERFACE>
    ```
 
-### Logs & Debugging / Логи и отладка
+### Logs & Debugging
 ```bash
-# NetworkManager logs / Логи NM
+# NetworkManager logs
 journalctl -u NetworkManager -f
 
-# systemd-networkd logs / Логи networkd
+# systemd-networkd logs
 journalctl -u systemd-networkd -f
 
-# Kernel network events / События ядра сети
+# Kernel network events
 dmesg | grep -i <INTERFACE>
 ```
 

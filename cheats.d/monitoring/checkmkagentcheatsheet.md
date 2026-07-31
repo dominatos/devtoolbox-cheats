@@ -21,7 +21,7 @@ tags:
 
 ---
 
-## 📚 Table of Contents / Содержание
+## 📚 Table of Contents
 
 1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
 2. [Core Management](#2.%20Core%20Management)
@@ -34,13 +34,13 @@ tags:
 
 ## 1. Installation & Configuration
 
-### Install Checkmk Agent / Установка агента Checkmk
+### Install Checkmk Agent
 
 > [!TIP]
 > The recommended way is to download the agent package from your Checkmk server's web UI: **Setup → Agents → Linux**. This ensures version compatibility. / Рекомендуется скачивать пакет агента из веб-интерфейса вашего сервера Checkmk.
 
 ```bash
-# Download from Checkmk server / Скачать с сервера Checkmk
+# Download from Checkmk server
 wget "https://<CHECKMK_HOST>/<SITE>/check_mk/agents/check-mk-agent-2.3.0-1.noarch.rpm"
 wget "https://<CHECKMK_HOST>/<SITE>/check_mk/agents/check-mk-agent_2.3.0-1_all.deb"
 
@@ -50,12 +50,12 @@ dnf install check-mk-agent-*.rpm
 # Install on Debian/Ubuntu
 dpkg -i check-mk-agent_*.deb
 
-# Install agent updater plugin (optional, auto-updates agent) / Установить плагин авто-обновления
+# Install agent updater plugin (optional, auto-updates agent)
 wget "https://<CHECKMK_HOST>/<SITE>/check_mk/agents/plugins/cmk-update-agent" -O /usr/lib/check_mk_agent/plugins/cmk-update-agent
 chmod +x /usr/lib/check_mk_agent/plugins/cmk-update-agent
 ```
 
-### Agent Communication Modes / Режимы связи агента
+### Agent Communication Modes
 
 | Mode | Description / Описание | Checkmk Version |
 |------|------------------------|-----------------|
@@ -66,10 +66,10 @@ chmod +x /usr/lib/check_mk_agent/plugins/cmk-update-agent
 > [!NOTE]
 > **Pull vs Push:** Pull mode requires the server to initiate connections (firewall must allow inbound 6556 on agent). Push mode has the agent initiate connections to the server (useful behind NAT/firewalls). / Pull — сервер инициирует подключение. Push — агент отправляет данные сам (удобно за NAT).
 
-### Register Agent with Controller / Регистрация агента через Controller
+### Register Agent with Controller
 
 ```bash
-# Register agent with Checkmk server (TLS mode) / Зарегистрировать агент с сервером
+# Register agent with Checkmk server (TLS mode)
 cmk-agent-ctl register \
   --hostname <THIS_HOST> \
   --server <CHECKMK_HOST> \
@@ -77,7 +77,7 @@ cmk-agent-ctl register \
   --user <USER> \
   --password <PASSWORD>
 
-# Register with trust on first use / Регистрация с доверием при первом подключении
+# Register with trust on first use
 cmk-agent-ctl register \
   --hostname <THIS_HOST> \
   --server <CHECKMK_HOST> \
@@ -85,14 +85,14 @@ cmk-agent-ctl register \
   --user <USER> \
   --trust-cert
 
-# Check registration status / Проверить статус регистрации
+# Check registration status
 cmk-agent-ctl status
 
-# Show agent controller status / Показать статус контроллера
+# Show agent controller status
 cmk-agent-ctl dump
 ```
 
-### Legacy Mode (xinetd) / Устаревший режим (xinetd)
+### Legacy Mode (xinetd)
 
 `/etc/xinetd.d/check_mk`
 
@@ -119,35 +119,35 @@ systemctl restart xinetd  # Restart xinetd / Перезапустить xinetd
 
 ## 2. Core Management
 
-### Agent Output / Вывод агента
+### Agent Output
 
 ```bash
-# Run agent manually (test output) / Запустить агент вручную (тестовый вывод)
+# Run agent manually (test output)
 check_mk_agent
 
-# Run agent via controller / Запустить через контроллер
+# Run agent via controller
 cmk-agent-ctl dump
 
-# Check agent output from server / Проверить вывод агента с сервера (на сервере Checkmk)
+# Check agent output from server
 su - <SITE>
 cmk -d <HOST>              # Fetch agent output / Получить вывод агента
 cmk --detect-plugins <HOST>  # Detect available plugins / Определить доступные плагины
 ```
 
-### Agent Plugins / Плагины агента
+### Agent Plugins
 
 ```bash
-# List installed plugins / Список установленных плагинов
+# List installed plugins
 ls -la /usr/lib/check_mk_agent/plugins/
 
-# List local checks / Список локальных проверок
+# List local checks
 ls -la /usr/lib/check_mk_agent/local/
 
-# Download available plugins from server / Скачать доступные плагины с сервера
+# Download available plugins from server
 wget "https://<CHECKMK_HOST>/<SITE>/check_mk/agents/plugins/" -O /tmp/plugins_list.html
 ```
 
-### Plugin Conventions / Соглашения по плагинам
+### Plugin Conventions
 
 | Directory | Execution | Description / Описание |
 |-----------|-----------|------------------------|
@@ -156,13 +156,13 @@ wget "https://<CHECKMK_HOST>/<SITE>/check_mk/agents/plugins/" -O /tmp/plugins_li
 | `/usr/lib/check_mk_agent/local/` | Every check interval / Каждый интервал | Custom local checks / Кастомные проверки |
 | `/etc/check_mk/` | — | Agent configuration / Конфигурация агента |
 
-### Custom Local Check Example / Пример кастомной локальной проверки
+### Custom Local Check Example
 
 `/usr/lib/check_mk_agent/local/check_disk_usage`
 
 ```bash
 #!/bin/bash
-# Custom disk usage check / Кастомная проверка использования дисков
+# Custom disk usage check
 USAGE=$(df / --output=pcent | tail -1 | tr -d ' %')
 
 if [ "$USAGE" -gt 90 ]; then
@@ -181,13 +181,13 @@ chmod +x /usr/lib/check_mk_agent/local/check_disk_usage
 > [!NOTE]
 > Local check output format: `<STATUS> <SERVICE_NAME> <PERF_DATA> <TEXT>` where STATUS: 0=OK, 1=WARN, 2=CRIT, 3=UNKNOWN. / Формат: `<СТАТУС> <ИМЯ_СЕРВИСА> <МЕТРИКИ> <ТЕКСТ>`, где 0=OK, 1=WARN, 2=CRIT, 3=UNKNOWN.
 
-### Real-World Local Check Examples / Примеры реальных локальных проверок
+### Real-World Local Check Examples
 
 `/usr/lib/check_mk_agent/local/local_aide_data.sh`
 
 ```bash
 #!/bin/bash
-# AIDE integrity check for Checkmk / Проверка целостности AIDE для Checkmk
+# AIDE integrity check for Checkmk
 DB_FILE="/var/lib/aide/aide.db.gz"
 DB_AGE=$(( ($(date +%s) - $(stat -c %Y "$DB_FILE" 2>/dev/null || echo 0)) / 86400 ))
 
@@ -204,7 +204,7 @@ fi
 
 ```bash
 #!/bin/bash
-# Filebeat service check for Checkmk / Проверка сервиса Filebeat для Checkmk
+# Filebeat service check for Checkmk
 if systemctl is-active --quiet filebeat; then
     echo "0 Filebeat_Service - OK - Filebeat is running"
 else
@@ -216,7 +216,7 @@ fi
 
 ```bash
 #!/bin/bash
-# Conntrack table usage for Checkmk / Использование таблицы conntrack для Checkmk
+# Conntrack table usage for Checkmk
 MAX=$(cat /proc/sys/net/nf_conntrack_max 2>/dev/null || echo 0)
 CUR=$(cat /proc/sys/net/netfilter/nf_conntrack_count 2>/dev/null || echo 0)
 [ "$MAX" -eq 0 ] && { echo "3 Conntrack - UNKNOWN - conntrack not available"; exit; }
@@ -239,21 +239,21 @@ chmod +x /usr/lib/check_mk_agent/local/local_*
 
 ## 3. Sysadmin Operations
 
-### Service Management / Управление сервисом
+### Service Management
 
 ```bash
-# Agent Controller service / Сервис контроллера агента
+# Agent Controller service
 systemctl start cmk-agent-ctl      # Start / Запустить
 systemctl stop cmk-agent-ctl       # Stop / Остановить
 systemctl restart cmk-agent-ctl    # Restart / Перезапустить
 systemctl enable cmk-agent-ctl     # Enable on boot / Автозапуск
 systemctl status cmk-agent-ctl     # Check status / Проверить статус
 
-# Legacy xinetd / Устаревший xinetd
+# Legacy xinetd
 systemctl restart xinetd
 ```
 
-### Important Paths / Важные пути
+### Important Paths
 
 | Path | Description / Описание |
 |------|------------------------|
@@ -266,12 +266,12 @@ systemctl restart xinetd
 | `/var/lib/cmk-agent/` | Agent controller data / Данные контроллера |
 | `/var/log/cmk-agent-ctl.log` | Controller log / Лог контроллера |
 
-### Cache Management / Управление кэшем
+### Cache Management
 
 ```bash
-# List cached check results / Список кэшированных результатов проверок
+# List cached check results
 ls -la /var/lib/check_mk_agent/cache/
-# Example entries / Примеры файлов:
+# Example entries
 # chrony.cache
 # local_aide_data.sh.cache
 # local_filebeat.sh.cache
@@ -279,21 +279,21 @@ ls -la /var/lib/check_mk_agent/cache/
 # local_check_conntrack.sh.cache
 # plugins_cmk-update-agent.cache
 
-# Clear stale local check cache / Очистить устаревший кэш локальных проверок
+# Clear stale local check cache
 rm /var/lib/check_mk_agent/cache/local_*
 
-# Clear all cache / Очистить весь кэш
+# Clear all cache
 rm /var/lib/check_mk_agent/cache/*
 ```
 
-### Firewall Configuration / Настройка фаервола
+### Firewall Configuration
 
 ```bash
-# Allow Checkmk agent port / Разрешить порт агента
+# Allow Checkmk agent port
 firewall-cmd --permanent --add-port=6556/tcp
 firewall-cmd --reload
 
-# Or restrict to monitoring server only / Или ограничить только сервером мониторинга
+# Or restrict to monitoring server only
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="<CHECKMK_SERVER_IP>" port port="6556" protocol="tcp" accept'
 firewall-cmd --reload
 ```
@@ -302,13 +302,13 @@ firewall-cmd --reload
 
 ## 4. Security
 
-### Encrypted Agent (TLS) / Шифрованный агент (TLS)
+### Encrypted Agent (TLS)
 
 ```bash
-# Check TLS status / Проверить статус TLS
+# Check TLS status
 cmk-agent-ctl status --json | jq .
 
-# Re-register with new credentials / Перерегистрировать с новыми учётными данными
+# Re-register with new credentials
 cmk-agent-ctl register \
   --hostname <THIS_HOST> \
   --server <CHECKMK_HOST> \
@@ -317,12 +317,12 @@ cmk-agent-ctl register \
   --password <PASSWORD>
 ```
 
-### Restrict Agent Access / Ограничение доступа к агенту
+### Restrict Agent Access
 
 `/etc/check_mk/encryption.cfg`
 
 ```ini
-# Enable encryption / Включить шифрование
+# Enable encryption
 ENCRYPTED=yes
 PASSPHRASE=<SECRET_KEY>
 ```
@@ -334,45 +334,45 @@ PASSPHRASE=<SECRET_KEY>
 
 ## 5. Troubleshooting & Tools
 
-### Common Issues / Частые проблемы
+### Common Issues
 
-#### 1. Agent Not Responding / Агент не отвечает
+#### 1. Agent Not Responding
 
 ```bash
-# Test agent locally / Тест агента локально
+# Test agent locally
 check_mk_agent | head -20
 
-# Test from monitoring server / Тест с сервера мониторинга
+# Test from monitoring server
 nc -w 5 <HOST> 6556 | head -20
 
-# Check controller status / Проверить статус контроллера
+# Check controller status
 cmk-agent-ctl status
 systemctl status cmk-agent-ctl
 
-# Check firewall / Проверить фаервол
+# Check firewall
 ss -tlnp | grep 6556
 ```
 
-#### 2. Plugin Not Working / Плагин не работает
+#### 2. Plugin Not Working
 
 ```bash
-# Run plugin manually / Запустить плагин вручную
+# Run plugin manually
 /usr/lib/check_mk_agent/plugins/<PLUGIN_NAME>
 
-# Check permissions / Проверить правa
+# Check permissions
 ls -la /usr/lib/check_mk_agent/plugins/<PLUGIN_NAME>
 
-# Check plugin output in agent / Проверить вывод плагина в агенте
+# Check plugin output in agent
 check_mk_agent | grep -A 5 "<<<plugin_section>>>"
 ```
 
-#### 3. Registration Fails / Ошибка регистрации
+#### 3. Registration Fails
 
 ```bash
-# Verify server connectivity / Проверить подключение к серверу
+# Verify server connectivity
 curl -kv https://<CHECKMK_HOST>/<SITE>/check_mk/api/1.0/version
 
-# Check agent controller log / Проверить лог контроллера
+# Check agent controller log
 journalctl -u cmk-agent-ctl -f --no-pager
 cat /var/log/cmk-agent-ctl.log
 ```
@@ -397,7 +397,7 @@ cat /var/log/cmk-agent-ctl.log
 
 ---
 
-## Documentation Links / Ссылки на документацию
+## Documentation Links
 
 - **Agent Installation (Linux):** https://docs.checkmk.com/latest/en/agent_linux.html
 - **Agent Controller:** https://docs.checkmk.com/latest/en/agent_linux.html#agent_controller
