@@ -6,14 +6,14 @@ Order: 5
 > **sed** (Stream Editor) — a POSIX-standard, non-interactive text transformation tool. GNU sed is pre-installed on all Linux distributions and is the primary tool for in-place file editing, substitution, and line manipulation in shell scripts. Unlike `awk` (column-oriented), `sed` operates on lines and character patterns. There is no modern replacement — `sed` remains the irreplaceable core utility for stream-based text processing.
 
 ## Table of Contents
-- [Basic Substitution](#basic-substitution)
-- [Line Selection & Deletion](#line-selection--deletion)
-- [In-Place Editing](#in-place-editing)
-- [Multiple Commands](#multiple-commands)
-- [Advanced Patterns](#advanced-patterns)
-- [Real-World Examples](#real-world-examples)
-- [Extraction & Transformation](#extraction--transformation)
-- [Advanced Use Cases](#advanced-use-cases)
+- [Basic Substitution](#Basic Substitution)
+- [Line Selection & Deletion](#Line Selection & Deletion)
+- [In-Place Editing](#In-Place Editing)
+- [Multiple Commands](#Multiple Commands)
+- [Advanced Patterns](#Advanced Patterns)
+- [Real-World Examples](#Real-World Examples)
+- [Extraction & Transformation](#Extraction & Transformation)
+- [Advanced Use Cases](#Advanced Use Cases)
 
 ---
 
