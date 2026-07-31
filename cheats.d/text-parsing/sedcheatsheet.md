@@ -139,3 +139,5 @@ sed '5q' file                                  # Quit after line 5 / Выход 
 - [POSIX sed specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sed.html)
 - [sed — Wikipedia](https://en.wikipedia.org/wiki/Sed)
 - `man sed`
+
+#sed #text-processing #regex #linux #sysadmin #bash #stream-editor
