@@ -387,3 +387,10 @@ azcopy copy /data "https://<ACCOUNT>.blob.core.windows.net/<CONTAINER>/" \
 tail -f ~/.azcopy/*.log                         # View live logs / Просмотр логов
 azcopy jobs show <JOB_ID> --with-status=All     # All file statuses / Все статусы файлов
 ```
+
+## Documentation
+
+- **AzCopy Documentation:** https://learn.microsoft.com/en-us/azure/storage/common/storage-ref-azcopy
+- **Azure Storage Documentation:** https://learn.microsoft.com/en-us/azure/storage/
+
+#backups #s3 #sysadmin #linux

@@ -366,3 +366,5 @@ sudo journalctl -u crowdsec-firewall-bouncer -e  # Bouncer logs / Логи ба�
 - [CrowdSec Community Discord](https://discord.gg/crowdsec)
 
 ---
+
+#security #crypto #sysadmin #linux

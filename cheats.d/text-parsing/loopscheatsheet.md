@@ -436,3 +436,5 @@ done
 - [Bash Reference Manual (full)](https://www.gnu.org/software/bash/manual/bash.html)
 - [Advanced Bash-Scripting Guide — Loops](https://tldp.org/LDP/abs/html/loops1.html)
 - `help for` / `help while` / `help until` (Bash built-in help)
+
+#text-parsing #linux #sysadmin

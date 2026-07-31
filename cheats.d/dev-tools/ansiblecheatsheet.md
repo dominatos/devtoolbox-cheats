@@ -195,3 +195,5 @@ ansible-config dump --only-changed             # Show changed config / Пока�
 - **Ansible Galaxy (Roles):** https://galaxy.ansible.com/
 - **Ansible Vault:** https://docs.ansible.com/ansible/latest/vault_guide/
 - **Ansible Semaphore (Web UI):** https://semaphoreui.com/
+
+#dev-tools #devops #sysadmin

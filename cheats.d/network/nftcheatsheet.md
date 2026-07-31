@@ -403,3 +403,10 @@ table inet filter {
 
 > [!IMPORTANT]
 > nftables replaces iptables. Do not use iptables and nftables simultaneously — this causes unpredictable behavior. / nftables заменяет iptables. Не используйте iptables и nftables одновременно.
+
+## 📚 Documentation Links
+
+- [nftables Wiki](https://wiki.nftables.org/)
+- [nft Man Page](https://man7.org/linux/man-pages/man8/nft.8.html)
+
+#network #sysadmin #linux

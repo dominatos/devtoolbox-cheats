@@ -341,3 +341,5 @@ snmpwalk -v2c -c <COMMUNITY_STRING> -d <HOST> sysDescr.0
 - **GitHub:** https://github.com/net-snmp/net-snmp
 
 ---
+
+#monitoring #sysadmin #linux

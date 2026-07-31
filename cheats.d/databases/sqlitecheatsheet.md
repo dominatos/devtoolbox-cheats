@@ -572,3 +572,12 @@ Many popular services use SQLite internally:
 | **JSON support** | ✅ (json1 extension) | ✅ Native | ✅ Native (JSONB) |
 | **Full-text search** | ✅ (FTS5) | ✅ (InnoDB FTS) | ✅ (tsvector) |
 | **Max DB size** | 281 TB | Unlimited (per storage) | Unlimited (per storage) |
+
+---
+
+## Documentation Links
+
+- **SQLite CLI Documentation:** https://www.sqlite.org/cli.html
+- **SQLite Documentation:** https://www.sqlite.org/docs.html
+
+#databases #sysadmin #linux

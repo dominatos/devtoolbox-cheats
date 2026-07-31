@@ -173,3 +173,5 @@ tree --version
 - [tree — Source (Old Dominion University)](https://oldmanprogrammer.net/source.php?dir=projects/tree)
 - [tree — Wikipedia](https://en.wikipedia.org/wiki/Tree_(command))
 - `man tree`
+
+#text-parsing #linux #sysadmin

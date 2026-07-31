@@ -262,3 +262,9 @@ journalctl -u systemd-networkd -f
 # Kernel network events / События ядра сети
 dmesg | grep -i <INTERFACE>
 ```
+
+## 📚 Documentation Links
+
+- [systemd.network Man Page](https://man7.org/linux/man-pages/man5/networkd.network.5.html)
+
+#network #sysadmin #linux

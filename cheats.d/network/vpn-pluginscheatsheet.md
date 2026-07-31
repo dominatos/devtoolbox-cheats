@@ -356,3 +356,9 @@ curl ifconfig.me  # Check public IP after VPN / Проверить IP после
 | **Fortinet (OSS)** | `openfortigui` | `openfortigui` |
 | **L2TP/IPSec** | `network-manager-l2tp-gnome` | `NetworkManager-l2tp-gnome` |
 | **WireGuard** | `wireguard` | `wireguard-tools` |
+
+## 📚 Documentation Links
+
+- [NetworkManager VPN Plugins](https://wiki.gnome.org/Projects/NetworkManager/VPN)
+
+#network #sysadmin #linux

@@ -357,3 +357,5 @@ sudo mount -t ext4 /dev/sdb1 /mnt/disk
 - **ArchWiki — File systems:** https://wiki.archlinux.org/title/File_systems
 - **ArchWiki — fstab:** https://wiki.archlinux.org/title/Fstab
 - **Red Hat — Managing Storage:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/managing_file_systems/index
+
+#storage #filesystem #sysadmin #linux

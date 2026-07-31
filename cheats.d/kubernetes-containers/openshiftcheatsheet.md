@@ -1,9 +1,7 @@
----
 Title: OpenShift (OCP)
 Group: Kubernetes & Containers
 Icon: ☸️
 Order: 10
----
 
 # ☸️ OpenShift (OCP) — Enterprise Kubernetes Platform
 
@@ -302,3 +300,5 @@ podman push <IMAGE> $(oc registry info)/<PROJECT>/<IMAGE>:<TAG>
 - **Red Hat OpenShift Product Page:** [https://www.redhat.com/en/technologies/cloud-computing/openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift)
 - **OpenShift GitHub:** [https://github.com/openshift](https://github.com/openshift)
 - **OpenShift Interactive Learning:** [https://learn.openshift.com/](https://learn.openshift.com/)
+
+#kubernetes #containers #docker #sysadmin

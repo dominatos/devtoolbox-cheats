@@ -299,3 +299,10 @@ curl -s -D - -o /dev/null https://example.com  # Print response headers only / �
 curl -s https://ipinfo.io/ip  # Print public IP / Показать внешний IP
 curl -s https://icanhazip.com  # Alternative public IP service / Альтернативный сервис внешнего IP
 ```
+
+## 📚 Documentation Links
+
+- [curl Official Docs](https://curl.se/docs/)
+- [curl Man Page](https://man7.org/linux/man-pages/man1/curl.1.html)
+
+#network #sysadmin #linux

@@ -362,3 +362,5 @@ git config --global alias.amend "commit --amend --no-edit"
 - **Pro Git Book (free):** https://git-scm.com/book/en/v2
 - **git-filter-repo:** https://github.com/newren/git-filter-repo
 - **BFG Repo-Cleaner:** https://rtyley.github.io/bfg-repo-cleaner/
+
+#dev-tools #devops #sysadmin

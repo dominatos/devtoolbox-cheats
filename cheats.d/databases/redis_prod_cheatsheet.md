@@ -584,3 +584,10 @@ echo "✅ Redis backup completed: dump_$TIMESTAMP.rdb.gz"
 > Альтернативно можно использовать `redis-cli DEBUG RELOAD` или настроить ротацию логов в `redis.conf`.
 
 ---
+
+## Documentation Links
+
+- **Redis Documentation:** https://redis.io/docs/
+- **Redis Commands Reference:** https://redis.io/commands/
+
+#databases #sysadmin #linux

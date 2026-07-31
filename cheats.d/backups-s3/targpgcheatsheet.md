@@ -377,3 +377,10 @@ tar -xzf backup.tar.gz data/important/          # Directory / Директори
 tar -czf backup.tar.gz /data --use-compress-program=pigz  # Parallel gzip / Параллельный gzip
 tar -cJf backup.tar.xz /data --use-compress-program="xz -T0"  # Parallel xz / Параллельный xz
 ```
+
+## Documentation
+
+- **tar Man Page:** https://man7.org/linux/man-pages/man1/tar.1.html
+- **GnuPG Documentation:** https://gnupg.org/documentation/
+
+#backups #s3 #sysadmin #linux

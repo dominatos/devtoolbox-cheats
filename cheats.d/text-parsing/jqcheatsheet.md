@@ -187,3 +187,5 @@ jq 'paths' file.json                           # Show all paths / Показат
 - [jq Play — Online Playground](https://jqplay.org/)
 - [gojq — Go reimplementation](https://github.com/itchyny/gojq)
 - `man jq`
+
+#text-parsing #linux #sysadmin

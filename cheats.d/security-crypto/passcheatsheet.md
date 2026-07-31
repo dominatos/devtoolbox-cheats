@@ -310,3 +310,5 @@ pass otp -c github/user          # Copy OTP code / Скопировать OTP к
 - [QtPass (GUI)](https://qtpass.org/)
 
 ---
+
+#security #crypto #sysadmin #linux

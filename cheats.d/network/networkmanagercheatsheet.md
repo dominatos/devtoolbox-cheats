@@ -243,3 +243,10 @@ nmcli -s connection show <CONN>  # Show with secrets / Показать с се�
 | **nmtui** | Text UI | SSH sessions, minimal env / SSH сессии, минимальная среда | Full / Полная |
 | **nm-connection-editor** | GUI | Desktop configuration / Настройка десктопа | Full / Полная |
 | **nm-applet** | System tray | Quick connect/disconnect / Быстрое подключение | Full / Полная |
+
+## 📚 Documentation Links
+
+- [NetworkManager API Docs](https://networkmanager.dev/docs/api/latest/)
+- [NetworkManager Wiki](https://wiki.gnome.org/Projects/NetworkManager)
+
+#network #sysadmin #linux

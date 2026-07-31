@@ -235,3 +235,5 @@ sort --parallel=8 -S 4G largefile.txt           # 8 cores, 4GB buffer / 8 яде
 - [GNU Coreutils — sort](https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html)
 - [GNU Coreutils — uniq](https://www.gnu.org/software/coreutils/manual/html_node/uniq-invocation.html)
 - `man cut` / `man sort` / `man uniq`
+
+#text-parsing #linux #sysadmin

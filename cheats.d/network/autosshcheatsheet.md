@@ -273,3 +273,9 @@ autossh -M 0 -N tunnel
 - Use SSH keys instead of passwords / Используйте SSH ключи вместо паролей
 - Restrict port forwarding in `sshd_config` if needed / Ограничьте переадресацию портов в `sshd_config` если нужно
 - Monitor for unauthorized tunnels / Мониторьте на несанкционированные туннели
+
+## 📚 Documentation Links
+
+- [autossh Man Page](https://www.harding.motd.ca/autossh/)
+
+#network #sysadmin #linux

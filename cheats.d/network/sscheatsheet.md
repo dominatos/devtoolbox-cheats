@@ -252,3 +252,9 @@ sudo ss -tunlp | grep -v 'users:'             # Find non-local listeners / На�
 
 > [!TIP]
 > `ss` is faster than `netstat` and provides more detail. Use `-n` for faster output (no DNS resolution). Use `sudo` for process info (`-p` option). / `ss` быстрее чем `netstat`. Используйте `-n` для быстрого вывода. Используйте `sudo` для информации о процессах.
+
+## 📚 Documentation Links
+
+- [ss Man Page](https://man7.org/linux/man-pages/man8/ss.8.html)
+
+#network #sysadmin #linux

@@ -372,3 +372,12 @@ OPTIMIZE TABLE <TABLE>;                                                   -- Reb
 
 > [!TIP]
 > Use `mysqladmin flush-logs` to rotate binary logs: `mysqladmin -u root -p flush-logs`
+
+---
+
+## Documentation Links
+
+- **MySQL Reference Manual:** https://dev.mysql.com/doc/refman/8.0/en/
+- **MariaDB Knowledge Base:** https://mariadb.com/kb/en/documentation/
+
+#databases #sysadmin #linux

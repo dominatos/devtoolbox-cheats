@@ -315,3 +315,5 @@ systemctl start filebeat
 - **GitHub:** https://github.com/elastic/beats
 
 ---
+
+#monitoring #sysadmin #linux

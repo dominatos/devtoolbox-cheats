@@ -469,3 +469,9 @@ elasticdump --input=data.json --output=https://admin:<PASSWORD>@target:9200/my-i
 
 ---
 
+## Documentation Links
+
+- **OpenSearch Documentation:** https://opensearch.org/docs/latest/
+- **OpenSearch API Reference:** https://opensearch.org/docs/latest/API_Reference/
+
+#databases #sysadmin #linux

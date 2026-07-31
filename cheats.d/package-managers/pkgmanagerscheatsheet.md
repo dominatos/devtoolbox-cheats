@@ -473,3 +473,5 @@ flatpak install flathub org.videolan.VLC
 - **Snap:** https://snapcraft.io/docs — https://ubuntu.com/core/docs/snaps-in-ubuntu-core
 - **Flatpak:** https://docs.flatpak.org/ — https://flathub.org/
 - **AppImage:** https://appimage.org/ — https://docs.appimage.org/
+
+#package-managers #sysadmin #linux

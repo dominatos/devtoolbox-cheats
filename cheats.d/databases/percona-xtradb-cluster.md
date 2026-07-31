@@ -808,3 +808,11 @@ pt-duplicate-key-checker \
 
 > [!TIP]
 > MySQL reopens log files after `FLUSH LOGS`. Binary logs are rotated automatically by MySQL based on `max_binlog_size` and `expire_logs_days` (or `binlog_expire_logs_seconds` in 8.0). You do NOT need logrotate for binary logs — MySQL manages them internally.
+
+---
+
+## Documentation Links
+
+- **Percona XtraDB Cluster Documentation:** https://docs.percona.com/percona-xtradb-cluster/
+
+#databases #sysadmin #linux

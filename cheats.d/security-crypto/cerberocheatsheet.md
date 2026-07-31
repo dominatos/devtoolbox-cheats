@@ -472,3 +472,5 @@ CerberoSuite --batch /path/to/directory --output /path/to/report.json
 - [VirusTotal (YARA rules sharing)](https://www.virustotal.com/)
 
 ---
+
+#security #crypto #sysadmin #linux

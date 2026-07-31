@@ -319,3 +319,10 @@ sudo ufw insert 1 deny from 192.168.100.0/24  # Block subnet / Заблокир�
 
 > [!TIP]
 > Use `reject` for informative denial (sends ICMP unreachable), use `deny` for silent drop (stealth). Use `limit` for SSH to prevent brute force. / Используйте `reject` для информативного отказа, `deny` для тихого отбрасывания. Используйте `limit` для SSH.
+
+## 📚 Documentation Links
+
+- [UFW Wiki](https://wiki.ubuntu.com/UncomplicatedFirewall)
+- [ufw Man Page](https://manpages.ubuntu.com/manpages/noble/man8/ufw.8.html)
+
+#network #sysadmin #linux

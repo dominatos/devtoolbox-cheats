@@ -652,3 +652,5 @@ jmap -heap <PID>                                           # Heap info / Инф�
 - **OpenSearch:** https://opensearch.org/docs/
 
 ---
+
+#dev-tools #devops #sysadmin

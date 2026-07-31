@@ -323,3 +323,9 @@ systemctl status mysql                          # Check MySQL status / Пров�
 
 > [!CAUTION]
 > Always verify your backups are restorable! Run a test restore to a staging server regularly. A backup is only as good as its last verified restoration.
+
+## Documentation
+
+- **rsync Documentation:** https://man7.org/linux/man-pages/man1/rsync.1.html
+
+#backups #s3 #sysadmin #linux

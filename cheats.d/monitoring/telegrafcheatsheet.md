@@ -301,3 +301,5 @@ telegraf --config /etc/telegraf/telegraf.conf --debug 2>&1 | grep "took"
 - **Community Forum:** https://community.influxdata.com/
 
 ---
+
+#monitoring #sysadmin #linux

@@ -227,3 +227,5 @@ ionice -c2 -n7 nice -n10 mysqldump --all-databases > backup.sql
 - **ionice(1):** https://man7.org/linux/man-pages/man1/ionice.1.html
 - **ArchWiki — Improving performance:** https://wiki.archlinux.org/title/Improving_performance
 - **Linux I/O schedulers:** https://wiki.archlinux.org/title/Improving_performance#I/O_schedulers
+
+#system #logs #sysadmin #linux

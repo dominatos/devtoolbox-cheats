@@ -352,3 +352,5 @@ dateext                                       # Add date to rotated filename / �
 - **logrotate on GitHub:** https://github.com/logrotate/logrotate
 - **ArchWiki — Logrotate:** https://wiki.archlinux.org/title/Logrotate
 - **Red Hat — Managing Log Files:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/assembly_troubleshooting-problems-using-log-files_configuring-basic-system-settings
+
+#system #logs #sysadmin #linux

@@ -379,3 +379,5 @@ CMD ["python", "app.py"]
 - **pyenv:** https://github.com/pyenv/pyenv
 - **uv (alternative):** https://github.com/astral-sh/uv
 - **pip-tools:** https://pip-tools.readthedocs.io/
+
+#dev-tools #devops #sysadmin

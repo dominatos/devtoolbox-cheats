@@ -288,3 +288,5 @@ systemctl reset-failed                        # Reset failed state / Сброс�
 - **systemd.exec(5):** https://man7.org/linux/man-pages/man5/systemd.exec.5.html
 - **ArchWiki — systemd:** https://wiki.archlinux.org/title/Systemd
 - **Freedesktop — systemd:** https://www.freedesktop.org/wiki/Software/systemd/
+
+#system #logs #sysadmin #linux

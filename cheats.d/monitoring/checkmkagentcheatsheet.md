@@ -401,3 +401,5 @@ cat /var/log/cmk-agent-ctl.log
 - **Agent Bakery (Enterprise):** https://docs.checkmk.com/latest/en/wato_monitoringagents.html
 
 ---
+
+#monitoring #sysadmin #linux

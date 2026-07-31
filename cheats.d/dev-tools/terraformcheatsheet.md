@@ -272,3 +272,5 @@ terraform graph | dot -Tpng -o graph.png
 - **HCL Language:** https://developer.hashicorp.com/terraform/language
 - **OpenTofu (fork):** https://opentofu.org/docs/
 - **Pulumi (alternative):** https://www.pulumi.com/docs/
+
+#dev-tools #devops #sysadmin

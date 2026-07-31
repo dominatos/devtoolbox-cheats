@@ -472,3 +472,10 @@ adrci exec="SET HOME diag/rdbms/<DB_NAME>/<SID>; PURGE -age 10080 -type TRACE"  
 ```
 
 ---
+
+## Documentation Links
+
+- **Oracle Database Documentation:** https://docs.oracle.com/en/database/oracle/oracle-database/
+- **Oracle SQL*Plus User's Guide:** https://docs.oracle.com/en/database/oracle/oracle-database/19/sqpug/
+
+#databases #sysadmin #linux

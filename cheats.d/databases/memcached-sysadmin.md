@@ -323,3 +323,10 @@ echo "stats" | nc localhost 11211 | grep curr_connections
 > Memcached по умолчанию логирует минимально. Включите подробное логирование флагом `-v` или `-vv` при необходимости.
 
 ---
+
+## Documentation Links
+
+- **Memcached Wiki:** https://github.com/memcached/memcached/wiki
+- **Memcached Man Page:** https://man7.org/linux/man-pages/man1/memcached.1.html
+
+#databases #sysadmin #linux

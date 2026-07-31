@@ -350,3 +350,5 @@ ExecStartPost=/bin/systemctl reload nginx
 - **systemd-analyze(1):** https://man7.org/linux/man-pages/man1/systemd-analyze.1.html
 - **ArchWiki — Timers:** https://wiki.archlinux.org/title/Systemd/Timers
 - **Red Hat — systemd Timers:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/managing-system-services-with-systemctl_configuring-basic-system-settings#creating-and-managing-timer-units_managing-system-services-with-systemctl
+
+#system #logs #sysadmin #linux

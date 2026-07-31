@@ -433,3 +433,5 @@ tar -czf kafka_data_backup_$(date +%F).tar.gz /var/lib/kafka/data
 - **KRaft Mode:** https://kafka.apache.org/documentation/#kraft
 - **Confluent Platform:** https://docs.confluent.io/
 - **kcat (kafkacat):** https://github.com/edenhill/kcat
+
+#dev-tools #devops #sysadmin

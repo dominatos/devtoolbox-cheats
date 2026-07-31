@@ -1299,3 +1299,5 @@ sudo journalctl -u haproxy -f                          # Follow logs / След�
 - [HAProxy Community Forum](https://discourse.haproxy.org/)
 
 ---
+
+#web-servers #sysadmin #linux

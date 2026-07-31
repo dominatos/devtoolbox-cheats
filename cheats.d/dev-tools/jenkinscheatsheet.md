@@ -186,3 +186,5 @@ If locked out, edit `$JENKINS_HOME/config.xml` and change `<useSecurity>true</us
 - **Jenkins Pipeline Syntax:** https://www.jenkins.io/doc/book/pipeline/syntax/
 - **Jenkins Plugins Index:** https://plugins.jenkins.io/
 - **Jenkins CLI:** https://www.jenkins.io/doc/book/managing/cli/
+
+#dev-tools #devops #sysadmin

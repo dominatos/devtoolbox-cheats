@@ -125,3 +125,5 @@ firejail ./<FILE>.AppImage                    # Run in sandbox / Запусти�
 - **AppImageHub (Directory):** https://www.appimagehub.com/
 - **AppImageLauncher:** https://github.com/TheAssassin/AppImageLauncher
 - **AppImageUpdate:** https://github.com/AppImage/AppImageUpdate
+
+#package-managers #sysadmin #linux

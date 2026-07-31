@@ -144,3 +144,5 @@ awk 'NR % 2 == 1' file                         # Odd-numbered lines / Нечёт
 - [POSIX awk specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html)
 - [AWK — Wikipedia](https://en.wikipedia.org/wiki/AWK)
 - `man awk` / `man gawk`
+
+#text-parsing #linux #sysadmin

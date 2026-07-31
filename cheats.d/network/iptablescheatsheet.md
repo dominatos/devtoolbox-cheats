@@ -368,3 +368,10 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -m statistic --mode nth --e
 iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT  # Convert to nftables / Конвертировать в nftables
 iptables-restore-translate -f /etc/iptables/rules.v4     # Convert entire ruleset / Конвертировать весь набор
 ```
+
+## 📚 Documentation Links
+
+- [iptables Man Page](https://man7.org/linux/man-pages/man8/iptables.8.html)
+- [Netfilter Official Site](https://www.netfilter.org/)
+
+#network #sysadmin #linux

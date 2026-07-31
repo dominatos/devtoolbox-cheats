@@ -218,3 +218,5 @@ metadata:
 - [Traefik BasicAuth Middleware](https://doc.traefik.io/traefik/middlewares/http/basicauth/)
 
 ---
+
+#security #crypto #sysadmin #linux

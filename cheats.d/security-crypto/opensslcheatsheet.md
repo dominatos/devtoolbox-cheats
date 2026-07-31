@@ -162,3 +162,5 @@ openssl s_client -connect <HOST>:443 -debug    # Debug SSL connection / Отла
 - [Mozilla SSL Configuration Generator](https://ssl-config.mozilla.org/)
 
 ---
+
+#security #crypto #sysadmin #linux

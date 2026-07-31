@@ -323,3 +323,5 @@ echo $(($(date '+%s') / 86400))               # Days since epoch / Дней с �
 - **ArchWiki — System time:** https://wiki.archlinux.org/title/System_time
 - **ArchWiki — chrony:** https://wiki.archlinux.org/title/Chrony
 - **Red Hat — Configuring Time:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/assembly_configuring-time-and-date_configuring-basic-system-settings
+
+#system #logs #sysadmin #linux

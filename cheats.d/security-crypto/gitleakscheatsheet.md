@@ -1459,3 +1459,5 @@ journalctl -u vault -n 100 --no-pager  # Recent logs / Последние лог
 > [!WARNING]
 > **Always treat a secret leak as a serious security incident.** Even after removing from Git history, secrets may have been indexed by search engines or cloned by attackers. **ALWAYS** revoke and recreate compromised secrets.
 > **Всегда считайте утечку секретов серьёзным инцидентом безопасности.** Даже после удаления из истории Git, секреты могли быть проиндексированы поисковиками или склонированы злоумышленниками. **ВСЕГДА** отзывайте и пересоздавайте скомпрометированные секреты.
+
+#security #crypto #sysadmin #linux

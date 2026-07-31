@@ -327,3 +327,5 @@ yarn workspaces run build                     # Run build in all workspaces / З
 - **nvm:** https://github.com/nvm-sh/nvm
 - **fnm (alternative):** https://github.com/Schniz/fnm
 - **Corepack:** https://nodejs.org/api/corepack.html
+
+#dev-tools #devops #sysadmin

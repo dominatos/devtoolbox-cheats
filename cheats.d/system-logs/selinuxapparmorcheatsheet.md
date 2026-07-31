@@ -334,3 +334,5 @@ sudo chcon -Rt svirt_sandbox_file_t /path/to/volume
 - **ArchWiki — AppArmor:** https://wiki.archlinux.org/title/AppArmor
 - **semanage(8):** https://man7.org/linux/man-pages/man8/semanage.8.html
 - **restorecon(8):** https://man7.org/linux/man-pages/man8/restorecon.8.html
+
+#system #logs #sysadmin #linux

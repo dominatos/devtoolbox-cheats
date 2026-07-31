@@ -443,3 +443,5 @@ gpg --batch --list-packets file.gpg | grep keyid  # Extract key IDs / Извле
 - [rage (Rust implementation)](https://github.com/str4d/rage)
 
 ---
+
+#security #crypto #sysadmin #linux

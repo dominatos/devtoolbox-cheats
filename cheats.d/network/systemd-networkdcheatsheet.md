@@ -320,3 +320,9 @@ sudo systemd-analyze verify /etc/systemd/network/*.network  # Verify syntax / П
 | **Balance-RR** | `balance-rr` | Round-robin load balance / Циклическая балансировка |
 | **802.3ad (LACP)** | `802.3ad` | LACP aggregation / LACP агрегация |
 | **Balance-XOR** | `balance-xor` | XOR hash-based balance / Балансировка по хэшу |
+
+## 📚 Documentation Links
+
+- [systemd.network Man Page](https://www.freedesktop.org/software/systemd/man/systemd.network.html)
+
+#network #sysadmin #linux

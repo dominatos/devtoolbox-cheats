@@ -325,3 +325,5 @@ mc cp /local/bigfile.bin myminio/mybucket/ --attr "Cache-Control=max-age=90000" 
 - [MinIO Documentation](https://docs.min.io)
 - [mc Client Complete Guide](https://docs.min.io/docs/minio-client-complete-guide.html)
 - [MinIO Admin Guide](https://docs.min.io/docs/minio-admin-complete-guide.html)
+
+#backups #s3 #sysadmin #linux

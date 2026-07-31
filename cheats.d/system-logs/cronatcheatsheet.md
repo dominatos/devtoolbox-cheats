@@ -541,3 +541,5 @@ journalctl -u crond                             # Review crond logs (RHEL) / Л�
 - **flock(1):** https://man7.org/linux/man-pages/man1/flock.1.html
 - **ArchWiki — Cron:** https://wiki.archlinux.org/title/Cron
 - **crontab.guru:** https://crontab.guru/
+
+#system #logs #sysadmin #linux

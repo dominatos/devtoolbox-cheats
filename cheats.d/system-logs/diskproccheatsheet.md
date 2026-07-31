@@ -278,3 +278,5 @@ lsof -i :8080
 - **top(1):** https://man7.org/linux/man-pages/man1/top.1.html
 - **fuser(1):** https://man7.org/linux/man-pages/man1/fuser.1.html
 - **ArchWiki — Core Utilities:** https://wiki.archlinux.org/title/Core_utilities
+
+#system #logs #sysadmin #linux

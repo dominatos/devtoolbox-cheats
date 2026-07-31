@@ -196,3 +196,10 @@ rsync -avh --bwlimit=2m --info=stats2 <SRC>/ <DEST>/  # 2 MB/s limit with stats 
 
 > [!TIP]
 > Always use trailing slashes on source dirs: `rsync <SRC>/ <DEST>/` copies **contents**, while `rsync <SRC> <DEST>/` copies the **directory itself**. Always test with `--dry-run` first. / Всегда используйте слеш в конце исходной папки. Всегда тестируйте с `--dry-run` сначала.
+
+## 📚 Documentation Links
+
+- [rsync Man Page](https://man7.org/linux/man-pages/man1/rsync.1.html)
+- [rsync Official Site](https://rsync.samba.org/)
+
+#network #sysadmin #linux

@@ -528,3 +528,5 @@ virt-top                               # Real-time VM monitor / Монитори
 - [oVirt Documentation](https://www.ovirt.org/documentation/)
 
 ---
+
+#virtualization #sysadmin #linux

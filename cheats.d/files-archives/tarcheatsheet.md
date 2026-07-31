@@ -340,3 +340,5 @@ tar -czf archive.tar.gz --use-compress-program=pigz folder/  # Specify compresso
 - **xz documentation:** https://tukaani.org/xz/
 - **Zstandard documentation:** https://facebook.github.io/zstd/
 - **pigz (parallel gzip):** https://zlib.net/pigz/
+
+#files #archives #linux #sysadmin

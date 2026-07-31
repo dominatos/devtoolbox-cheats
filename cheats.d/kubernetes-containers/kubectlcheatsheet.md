@@ -1,9 +1,7 @@
----
 Title: KUBECTL — Commands
 Group: Kubernetes & Containers
 Icon: ☸️
 Order: 1
----
 
 # ☸️ KUBECTL — Kubernetes CLI
 
@@ -295,3 +293,5 @@ kubectl describe pod POD | grep -A 10 "Limits\|Requests"
 - **kubectl Cheat Sheet (Official):** [https://kubernetes.io/docs/reference/kubectl/cheatsheet/](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 - **Kubernetes API Reference:** [https://kubernetes.io/docs/reference/kubernetes-api/](https://kubernetes.io/docs/reference/kubernetes-api/)
 - **kubectl GitHub:** [https://github.com/kubernetes/kubectl](https://github.com/kubernetes/kubectl)
+
+#kubernetes #containers #docker #sysadmin

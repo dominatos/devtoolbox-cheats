@@ -225,3 +225,12 @@ export VAR=value                              # Set env variable / Устано�
 | `Ctrl+L` | Clear screen / Очистить экран |
 
 ---
+
+## Documentation Links
+
+- **Linux Man Pages:** https://man7.org/linux/man-pages/
+- **TLDR Pages:** https://tldr.sh/
+- **Explainshell:** https://explainshell.com/
+- **Linux Journey:** https://linuxjourney.com/
+
+#linux #basics #sysadmin

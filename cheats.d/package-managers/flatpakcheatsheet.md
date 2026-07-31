@@ -140,3 +140,5 @@ flatpak info --show-commit <APP_ID>           # Show commit hash / Показа�
 - **Flatpak GitHub:** https://github.com/flatpak/flatpak
 - **Flatpak Permissions:** https://docs.flatpak.org/en/latest/sandbox-permissions.html
 - **Flatpak Builder:** https://docs.flatpak.org/en/latest/flatpak-builder.html
+
+#package-managers #sysadmin #linux

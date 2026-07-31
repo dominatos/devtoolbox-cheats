@@ -509,3 +509,12 @@ cmk list asyncjobs listall=true
 ```
 
 ---
+
+## 📖 Documentation / Документация
+
+- **Apache CloudStack Documentation:** https://docs.cloudstack.apache.org/
+- **CloudStack Administration Guide:** https://docs.cloudstack.apache.org/en/latest/adminguide/
+
+---
+
+#cloud #sysadmin

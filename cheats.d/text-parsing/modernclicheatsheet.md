@@ -369,3 +369,5 @@ brew install ripgrep fd bat eza
 - [bat — GitHub](https://github.com/sharkdp/bat)
 - [eza — GitHub (maintained fork of exa)](https://github.com/eza-community/eza)
 - [exa — GitHub (unmaintained)](https://github.com/ogham/exa)
+
+#text-parsing #linux #sysadmin

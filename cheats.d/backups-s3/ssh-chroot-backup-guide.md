@@ -229,3 +229,5 @@ rclone --config /etc/rclone/rclone.conf mkdir <REMOTE_NAME>:test_dir
 
 * [OpenSSH sshd_config Documentation](https://man.openbsd.org/sshd_config)
 * [Rclone SFTP Configuration](https://rclone.org/sftp/)
+
+#backups #s3 #sysadmin #linux

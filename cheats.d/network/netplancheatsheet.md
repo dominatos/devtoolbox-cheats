@@ -324,3 +324,10 @@ sudo cp /etc/netplan/01-netcfg.yaml /etc/netplan/01-netcfg.yaml.bak  # Backup / 
 | **balance-rr** | Round-robin / Циклическая балансировка | Maximum throughput |
 | **active-backup** | Failover only / Только отказоустойчивость | Simple HA, no switch config |
 | **802.3ad** | LACP aggregation / LACP агрегация | Enterprise, switch support required |
+
+## 📚 Documentation Links
+
+- [Netplan Official Docs](https://netplan.io/)
+- [Netplan Man Page](https://manpages.ubuntu.com/manpages/noble/man5/netplan.5.html)
+
+#network #sysadmin #linux

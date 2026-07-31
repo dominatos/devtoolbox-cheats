@@ -418,3 +418,10 @@ rclone copy /data remote:bucket --transfers 32  # Parallel transfers / Пара�
 rclone copy /data remote:bucket --checkers 16   # Parallel checkers / Параллельные проверки
 rclone copy /data remote:bucket --buffer-size 256M  # Buffer size / Размер буфера
 ```
+
+## Documentation
+
+- **Rclone Documentation:** https://rclone.org/docs/
+- **Rclone Command Reference:** https://rclone.org/commands/
+
+#backups #s3 #sysadmin #linux

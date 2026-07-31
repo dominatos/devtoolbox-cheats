@@ -779,3 +779,13 @@ openstack hypervisor stats show -f value -c vcpus -c vcpus_used -c memory_mb -c 
 ```
 
 ---
+
+## 📖 Documentation / Документация
+
+- **OpenStack Documentation:** https://docs.openstack.org/
+- **OpenStack CLI Reference:** https://docs.openstack.org/cli/latest/
+- **OpenStack Administrator Guide:** https://docs.openstack.org/admin/
+
+---
+
+#cloud #sysadmin

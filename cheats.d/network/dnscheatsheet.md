@@ -323,3 +323,10 @@ curl -H 'accept: application/dns-json' 'https://dns.google/resolve?name=example.
 # /etc/hosts                — Local DNS overrides / Локальные DNS переопределения
 # /etc/systemd/resolved.conf — Systemd DNS config / Конфигурация DNS systemd
 ```
+
+## 📚 Documentation Links
+
+- [resolvectl Man Page](https://man7.org/linux/man-pages/man8/resolvectl.8.html)
+- [Domain Name Resolution (Arch Wiki)](https://wiki.archlinux.org/title/Domain_name_resolution)
+
+#network #sysadmin #linux

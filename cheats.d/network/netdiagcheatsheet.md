@@ -448,3 +448,10 @@ nc -zv -w 2 $HOST 443
 # iftop: Real-time bandwidth / Пропускная способность в реальном времени
 # nethogs: Per-process bandwidth / Пропускная способность по процессам
 ```
+
+## 📚 Documentation Links
+
+- [mtr Man Page](https://man7.org/linux/man-pages/man8/mtr.8.html)
+- [traceroute Man Page](https://man7.org/linux/man-pages/man1/traceroute.1.html)
+
+#network #sysadmin #linux

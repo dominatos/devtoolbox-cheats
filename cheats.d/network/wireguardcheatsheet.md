@@ -335,3 +335,10 @@ qrencode -o mobile.png < /etc/wireguard/client-mobile.conf  # Save as image / С
 
 > [!TIP]
 > Use strong keys (default Ed25519). Enable PersistentKeepalive for NAT traversal. Use split-tunnel when possible. Regularly rotate keys. / Используйте сильные ключи. Включайте PersistentKeepalive для прохождения NAT. Используйте split-tunnel когда возможно. Регулярно меняйте ключи.
+
+## 📚 Documentation Links
+
+- [WireGuard Official Site](https://www.wireguard.com/)
+- [WireGuard Quickstart](https://www.wireguard.com/quickstart/)
+
+#network #sysadmin #linux

@@ -283,3 +283,5 @@ z= / zg / zw                                     # Suggestions / add / mark wron
 - [Neovim Documentation](https://neovim.io/doc/)
 - [Learn Vim Progressively](https://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/)
 - `:help` (built-in Vim help system)
+
+#text-parsing #linux #sysadmin

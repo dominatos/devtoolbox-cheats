@@ -252,3 +252,9 @@ vxvol -g <DG_NAME> start <VOL_NAME>             # Start volume / Запусти�
 # Stale NFS mounts preventing deport / Устаревшие NFS монтирования
 umount -f -l /mnt/point                         # Force unmount / Принудительное размонтирование
 ```
+
+## Documentation
+
+- **Veritas NetBackup Documentation:** https://www.veritas.com/support/en_US.html
+
+#backups #s3 #sysadmin #linux

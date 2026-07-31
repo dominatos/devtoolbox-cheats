@@ -816,3 +816,12 @@ sudo proxysql --foreground -D /var/lib/proxysql               # Foreground mode 
 
 > [!TIP]
 > ProxySQL reopens its log file on `SIGHUP`, which `systemctl reload proxysql` triggers. You can also run `kill -HUP $(pidof proxysql)` if reload is not available.
+
+---
+
+## Documentation Links
+
+- **ProxySQL Documentation:** https://proxysql.com/documentation/
+- **ProxySQL Wiki:** https://proxysql.com/documentation/
+
+#databases #sysadmin #linux

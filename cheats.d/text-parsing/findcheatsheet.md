@@ -146,3 +146,5 @@ find . -perm /4000                             # Find SUID files / Найти SU
 - [POSIX find specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/find.html)
 - [fd — modern alternative (GitHub)](https://github.com/sharkdp/fd)
 - `man find`
+
+#text-parsing #linux #sysadmin

@@ -269,3 +269,5 @@ echo "Hello   World" | tr -s ' ' | tr ' ' '-'   # Normalize and replace spaces /
 - [GNU Coreutils — tail](https://www.gnu.org/software/coreutils/manual/html_node/tail-invocation.html)
 - [procps-ng — watch (GitLab)](https://gitlab.com/procps-ng/procps)
 - `man tr` / `man head` / `man tail` / `man watch`
+
+#text-parsing #linux #sysadmin

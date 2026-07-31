@@ -280,3 +280,10 @@ ip neigh show
 - Changes are not persistent / Изменения не постоянные
 - Use NetworkManager or netplan for persistence / Используйте NetworkManager или netplan для постоянства
 - `ip` replaces `ifconfig`, `route`, `arp` / `ip` заменяет `ifconfig`, `route`, `arp`
+
+## 📚 Documentation Links
+
+- [ip Man Page](https://man7.org/linux/man-pages/man8/ip.8.html)
+- [ip-route Man Page](https://man7.org/linux/man-pages/man8/ip-route.8.html)
+
+#network #sysadmin #linux

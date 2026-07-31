@@ -179,3 +179,5 @@ grep -r -c 'pattern' .                           # Count matches per file / По
 - [POSIX grep specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/grep.html)
 - [ripgrep — modern alternative (GitHub)](https://github.com/BurntSushi/ripgrep)
 - `man grep`
+
+#text-parsing #linux #sysadmin

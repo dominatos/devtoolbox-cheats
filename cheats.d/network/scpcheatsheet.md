@@ -225,3 +225,9 @@ scp -o ProxyJump=<JUMP_HOST> file.txt <USER>@<TARGET_HOST>:/path/
 
 > [!IMPORTANT]
 > SCP is being deprecated in favor of SFTP in future OpenSSH versions. Consider using `rsync` or `sftp` for new workflows. / SCP устаревает в пользу SFTP в будущих версиях OpenSSH. Используйте `rsync` или `sftp` для новых задач.
+
+## 📚 Documentation Links
+
+- [scp Man Page](https://man7.org/linux/man-pages/man1/scp.1.html)
+
+#network #sysadmin #linux

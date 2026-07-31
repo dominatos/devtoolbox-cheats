@@ -298,3 +298,9 @@ resolvectl query _ipp._tcp.local
 
 > [!TIP]
 > Use DNS-over-TLS for privacy. Enable DNSSEC in `allow-downgrade` mode for compatibility. Use split DNS for VPN connections. Disable mDNS/LLMNR on untrusted networks. / Используйте DoT для приватности. Включайте DNSSEC в режиме `allow-downgrade` для совместимости. Отключайте mDNS/LLMNR в недоверенных сетях.
+
+## 📚 Documentation Links
+
+- [resolvectl Man Page](https://man7.org/linux/man-pages/man8/resolvectl.8.html)
+
+#network #sysadmin #linux

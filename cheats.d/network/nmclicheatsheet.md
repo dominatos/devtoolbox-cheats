@@ -273,3 +273,9 @@ sudo cp /etc/NetworkManager/system-connections/<CONN> /backup/  # Backup connect
 | **Bond** | High availability / Высокая доступность | Complex / Сложная |
 | **VLAN** | Network segmentation / Сегментация сети | Medium / Средняя |
 | **VPN** | Remote access / Удалённый доступ | Complex / Сложная |
+
+## 📚 Documentation Links
+
+- [nmcli Man Page](https://networkmanager.dev/docs/api/latest/nmcli.html)
+
+#network #sysadmin #linux

@@ -359,3 +359,10 @@ bareos-dir -d 100 -f                            # Debug director / Отладк�
 bareos-sd -d 100 -f                             # Debug storage / Отладка хранилища
 bareos-fd -d 100 -f                             # Debug FD / Отладка FD
 ```
+
+## Documentation
+
+- **Bacula Documentation:** https://www.bacula.org/
+- **Bacula Man Pages:** https://www.bacula.org/manuals/
+
+#backups #s3 #sysadmin #linux

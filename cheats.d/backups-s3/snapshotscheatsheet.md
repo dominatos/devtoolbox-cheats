@@ -516,3 +516,10 @@ zfs destroy -nv pool/dataset@snap1                # Preview space freed / Про
 btrfs filesystem df /mnt                          # Filesystem usage / Использование файловой системы
 btrfs qgroup show /mnt                            # Quota group usage (if enabled) / Квота групп
 ```
+
+## Documentation
+
+- **LVM Snapshots:** https://man7.org/linux/man-pages/man8/lvcreate.8.html
+- **Btrfs Snapshots:** https://btrfs.readthedocs.io/en/latest/Snaphots.html
+
+#backups #s3 #sysadmin #linux

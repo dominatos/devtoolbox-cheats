@@ -336,3 +336,5 @@ GET /_cluster/allocation/explain
 - **Alternative — Kibana:** https://www.elastic.co/kibana
 
 ---
+
+#monitoring #sysadmin #linux

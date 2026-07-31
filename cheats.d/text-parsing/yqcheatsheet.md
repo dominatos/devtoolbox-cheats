@@ -230,3 +230,5 @@ yq --version
 - [yq Operators Reference](https://mikefarah.gitbook.io/yq/operators)
 - [yq Usage Guide](https://mikefarah.gitbook.io/yq/)
 - `yq --help`
+
+#text-parsing #linux #sysadmin

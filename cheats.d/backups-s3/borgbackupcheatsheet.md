@@ -393,3 +393,10 @@ borg create /backup::archive-{now} /data \
 borg create /backup::archive-{now} /data \
   --read-special                                # Include special files (sockets, etc.) / Специальные файлы
 ```
+
+## Documentation
+
+- **BorgBackup Documentation:** https://www.borgbackup.org/
+- **Borg Man Page:** https://man.archlinux.org/man/borg.1.en.html
+
+#backups #s3 #sysadmin #linux

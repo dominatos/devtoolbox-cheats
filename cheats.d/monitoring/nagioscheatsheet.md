@@ -398,3 +398,5 @@ firewall-cmd --list-all | grep 5666
 - **Community Forum:** https://support.nagios.com/forum/
 
 ---
+
+#monitoring #sysadmin #linux

@@ -1882,3 +1882,9 @@ print("Script ha inserito 100 users nel db users2");
 
 ---
 
+## Documentation Links
+
+- **MongoDB Manual:** https://www.mongodb.com/docs/manual/
+- **MongoDB Reference:** https://www.mongodb.com/docs/manual/reference/
+
+#databases #sysadmin #linux

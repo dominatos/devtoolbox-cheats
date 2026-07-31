@@ -329,3 +329,5 @@ journalctl -p err --since today --no-pager | awk '/\[.*\]/ {print $6}' | sort | 
 - **systemd-journald(8):** https://man7.org/linux/man-pages/man8/systemd-journald.service.8.html
 - **ArchWiki — systemd/Journal:** https://wiki.archlinux.org/title/Systemd/Journal
 - **Red Hat — Viewing Logs:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/assembly_troubleshooting-problems-using-log-files_configuring-basic-system-settings
+
+#system #logs #sysadmin #linux

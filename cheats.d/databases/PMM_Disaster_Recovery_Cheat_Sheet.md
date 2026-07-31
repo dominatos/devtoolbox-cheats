@@ -515,3 +515,5 @@ Recovered using the Emergency Recovery runbook above. Migrated to named volumes.
 - **PostgreSQL pg_resetwal:** https://www.postgresql.org/docs/14/app-pgresetwal.html
 
 ---
+
+#databases #sysadmin #linux

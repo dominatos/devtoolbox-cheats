@@ -406,3 +406,5 @@ zabbix_server -R diaginfo
 - **GitHub:** https://github.com/zabbix/zabbix
 
 ---
+
+#monitoring #sysadmin #linux

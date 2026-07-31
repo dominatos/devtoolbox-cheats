@@ -301,3 +301,9 @@ ssh -R 8080:localhost:3000 <USER>@<PUBLIC_SERVER>
 
 > [!TIP]
 > Use ControlMaster for connection reuse. Always use `-f -N` for background tunnels. Use ProxyJump instead of nested tunnels. Bind to localhost only unless sharing. / Используйте ControlMaster для переиспользования соединений. Используйте ProxyJump вместо вложенных туннелей.
+
+## 📚 Documentation Links
+
+- [OpenSSH Manual](https://www.openssh.com/manual.html)
+
+#network #sysadmin #linux

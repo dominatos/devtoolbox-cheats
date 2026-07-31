@@ -335,3 +335,5 @@ sudo netstat -tlnp | grep :8080                          # Check specific port /
 - [JBoss EAP Documentation (Commercial)](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/)
 
 ---
+
+#web-servers #sysadmin #linux

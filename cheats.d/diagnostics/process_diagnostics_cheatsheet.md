@@ -425,3 +425,5 @@ for pid in /proc/[0-9]*/fd; do echo "$(ls $pid 2>/dev/null | wc -l) $pid"; done 
 - **atop (historical):** https://www.atoptool.nl/
 - **bpftrace (eBPF tracing):** https://github.com/bpftrace/bpftrace
 - **Brendan Gregg — Linux Performance:** https://www.brendangregg.com/linuxperf.html
+
+#diagnostics #sysadmin #linux

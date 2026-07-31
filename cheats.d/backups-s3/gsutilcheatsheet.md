@@ -370,3 +370,10 @@ gsutil perfdiag -n 100 -s 1M gs://<BUCKET>     # Performance diagnostic / Диа
 gsutil -o "GSUtil:sliced_object_download_threshold=100M" \
   cp gs://<BUCKET>/large-file .                 # Sliced download / Разбитое скачивание
 ```
+
+## Documentation
+
+- **gsutil Documentation:** https://cloud.google.com/storage/docs/gsutil
+- **GCloud CLI Reference:** https://cloud.google.com/sdk/gcloud/reference/storage
+
+#backups #s3 #sysadmin #linux

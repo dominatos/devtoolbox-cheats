@@ -1,9 +1,7 @@
----
 Title: adcli (Active Directory CLI)
 Group: Identity Management
 Icon: 🪪
 Order: 10
----
 
 # adcli — Active Directory Client Tools
 
@@ -391,3 +389,5 @@ sudo firewall-cmd --reload  # Apply changes / Применить изменен�
 - **realmd Documentation:** [https://www.freedesktop.org/software/realmd/docs/](https://www.freedesktop.org/software/realmd/docs/)
 - **Red Hat — Joining AD:** [https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/integrating_rhel_systems_directly_with_windows_active_directory/](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/integrating_rhel_systems_directly_with_windows_active_directory/)
 - **MIT Kerberos Documentation:** [https://web.mit.edu/kerberos/krb5-latest/doc/](https://web.mit.edu/kerberos/krb5-latest/doc/)
+
+#identity-management #sysadmin #security

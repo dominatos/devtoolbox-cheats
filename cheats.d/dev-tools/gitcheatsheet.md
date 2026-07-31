@@ -356,3 +356,5 @@ git log --oneline HEAD..origin/main            # Commits behind origin / Ком�
 - **Git:** https://git-scm.com/doc
 - **Git Reference:** https://git-scm.com/docs
 - **Pro Git Book (free):** https://git-scm.com/book/en/v2
+
+#dev-tools #devops #sysadmin

@@ -225,3 +225,10 @@ ssh -o ControlMaster=auto -o ControlPath=~/.ssh/cm-%r@%h:%p -o ControlPersist=10
 ssh -o 'RemoteCommand=tmux attach || tmux new' <USER>@<HOST>  # Auto tmux / Автоматический tmux
 autossh -M 0 -N -L 8080:localhost:80 <USER>@<HOST>  # Auto-reconnecting tunnel / Авто-переподключаемый туннель
 ```
+
+## 📚 Documentation Links
+
+- [OpenSSH Manual](https://www.openssh.com/manual.html)
+- [ssh_config Man Page](https://man7.org/linux/man-pages/man5/ssh_config.5.html)
+
+#network #sysadmin #linux

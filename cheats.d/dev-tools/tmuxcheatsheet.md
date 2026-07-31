@@ -368,3 +368,4 @@ alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удал�
 - **tmux Man Page:** `man tmux`
 - **Zellij (alternative):** https://zellij.dev/documentation/
 - **GNU Screen:** https://www.gnu.org/software/screen/manual/
+#dev-tools #devops #sysadmin

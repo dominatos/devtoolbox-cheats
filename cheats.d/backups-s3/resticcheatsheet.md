@@ -542,3 +542,10 @@ restic cache --cleanup                                # Free stale cache / Ос�
    ```bash
    restic -r /backup check
    ```
+
+## Documentation
+
+- **Restic Documentation:** https://restic.readthedocs.io/
+- **Restic Man Page:** https://restic.readthedocs.io/en/stable/man/
+
+#backups #s3 #sysadmin #linux

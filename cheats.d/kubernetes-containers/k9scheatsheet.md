@@ -1,9 +1,7 @@
----
 Title: k9s — Hotkeys
 Group: Kubernetes & Containers
 Icon: 🎛
 Order: 8
----
 
 # 🎛 k9s — Terminal UI for Kubernetes
 
@@ -244,3 +242,5 @@ k9s --command pods
 - **k9s Key Bindings Reference:** [https://k9scli.io/topics/commands/](https://k9scli.io/topics/commands/)
 - **k9s Plugins:** [https://k9scli.io/topics/plugins/](https://k9scli.io/topics/plugins/)
 - **k9s Configuration:** [https://k9scli.io/topics/config/](https://k9scli.io/topics/config/)
+
+#kubernetes #containers #docker #sysadmin

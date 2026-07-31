@@ -380,3 +380,5 @@ aide --init --verbose=20 2>&1 | tail -f
 - [RHEL AIDE Guide](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/checking-integrity-with-aide_security-hardening)
 
 ---
+
+#security #crypto #sysadmin #linux

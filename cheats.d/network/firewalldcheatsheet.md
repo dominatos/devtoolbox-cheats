@@ -316,3 +316,10 @@ sudo firewall-cmd --reload
 # Redis: 6379/tcp, MongoDB: 27017/tcp
 # DNS: 53/udp, NTP: 123/udp
 ```
+
+## 📚 Documentation Links
+
+- [firewalld Official Docs](https://firewalld.org/documentation)
+- [firewall-cmd Man Page](https://man7.org/linux/man-pages/man1/firewall-cmd.1.html)
+
+#network #sysadmin #linux

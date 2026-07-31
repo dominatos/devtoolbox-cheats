@@ -174,3 +174,12 @@ lspci                                          # PCI devices / PCI устрой�
 | `!$` | Last argument / Последний аргумент |
 
 ---
+
+## Documentation Links
+
+- **Linux Man Pages:** https://man7.org/linux/man-pages/
+- **TLDR Pages:** https://tldr.sh/
+- **Explainshell:** https://explainshell.com/
+- **Linux Journey:** https://linuxjourney.com/
+
+#linux #basics #sysadmin

@@ -297,3 +297,9 @@ veeamconfig --trace job start --name FullBackup  # Run with trace / Трасси
 apt remove veeam                                # Debian/Ubuntu
 rpm -e veeam                                    # RHEL/AlmaLinux/Rocky
 ```
+
+## Documentation
+
+- **Veeam Documentation:** https://helpcenter.veeam.com/
+
+#backups #s3 #sysadmin #linux

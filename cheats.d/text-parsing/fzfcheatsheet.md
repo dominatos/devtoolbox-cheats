@@ -272,3 +272,5 @@ fzf --version
 - [fzf Wiki — Examples](https://github.com/junegunn/fzf/wiki/examples)
 - [fzf Wiki — Configuring](https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings)
 - `man fzf`
+
+#text-parsing #linux #sysadmin

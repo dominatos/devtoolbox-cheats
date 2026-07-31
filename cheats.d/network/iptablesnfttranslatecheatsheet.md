@@ -376,3 +376,10 @@ nft add rule inet filter input drop
 # -d                  → ip daddr, -i                  → iifname
 # -o                  → oifname
 ```
+
+## 📚 Documentation Links
+
+- [nftables Wiki](https://wiki.nftables.org/)
+- [iptables-translate Man Page](https://man7.org/linux/man-pages/man8/iptables-translate.8.html)
+
+#network #sysadmin #linux

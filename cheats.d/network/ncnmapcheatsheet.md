@@ -352,3 +352,10 @@ nmap -p 10250 --script=banner <K8S_NODE>
 - Only scan networks you have permission to scan / Сканируйте только сети на которые у вас есть разрешение
 - Unauthorized scanning may be illegal / Несанкционированное сканирование может быть незаконным
 - Always get written permission first / Всегда получайте письменное разрешение сначала
+
+## 📚 Documentation Links
+
+- [ncat Man Page](https://man7.org/linux/man-pages/man1/ncat.1.html)
+- [Nmap Official Site](https://nmap.org/)
+
+#network #sysadmin #linux

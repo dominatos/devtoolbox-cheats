@@ -263,3 +263,5 @@ PermitRootLogin prohibit-password
 - [GitHub SSH Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
 ---
+
+#security #crypto #sysadmin #linux

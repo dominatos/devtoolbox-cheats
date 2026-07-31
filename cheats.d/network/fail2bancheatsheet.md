@@ -359,3 +359,10 @@ done > banned-ips.txt
 - Monitor for false positives / Мониторьте на ложные срабатывания
 - Fail2ban requires iptables or nftables / Fail2ban требует iptables или nftables
 - Ban time -1 means permanent ban / Время бана -1 означает постоянный бан
+
+## 📚 Documentation Links
+
+- [fail2ban GitHub](https://github.com/fail2ban/fail2ban)
+- [fail2ban-client Man Page](https://man7.org/linux/man-pages/man1/fail2ban-client.1.html)
+
+#network #sysadmin #linux

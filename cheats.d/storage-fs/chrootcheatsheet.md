@@ -273,3 +273,4 @@ reboot
 - **systemd-nspawn (alternative):** https://man7.org/linux/man-pages/man1/systemd-nspawn.1.html
 - **ArchWiki — Chroot:** https://wiki.archlinux.org/title/Chroot
 - **Debian Wiki — Chroot:** https://wiki.debian.org/Chroot
+#storage #filesystem #sysadmin #linux

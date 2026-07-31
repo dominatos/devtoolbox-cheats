@@ -479,3 +479,5 @@ cat /sys/block/md0/md/mismatch_cnt
 - **ArchWiki — S.M.A.R.T.:** https://wiki.archlinux.org/title/S.M.A.R.T.
 - **Red Hat — Managing RAID:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/managing_storage_devices/managing-raid_managing-storage-devices
 - **Linux RAID Wiki:** https://raid.wiki.kernel.org/
+
+#storage #filesystem #sysadmin #linux

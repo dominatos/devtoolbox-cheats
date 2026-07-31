@@ -440,3 +440,11 @@ aws configure set default.s3.max_concurrent_requests 50  # Max concurrent / Ма
 aws configure set default.s3.multipart_chunk_size 16MB   # Chunk size / Размер части
 aws configure set default.s3.max_bandwidth 100MB/s        # Bandwidth limit / Ограничение пропускной способности
 ```
+
+## Documentation
+
+- **AWS CLI Documentation:** https://docs.aws.amazon.com/cli/latest/reference/
+- **AWS CLI User Guide:** https://docs.aws.amazon.com/cli/latest/userguide/
+- **S3 CLI Reference:** https://docs.aws.amazon.com/cli/latest/reference/s3/
+
+#backups #s3 #sysadmin #linux

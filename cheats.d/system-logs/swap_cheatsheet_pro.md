@@ -535,3 +535,5 @@ man swapon                                  # Local manual for swapon / Лока
 man mkswap                                  # Local manual for mkswap / Локальная man-страница mkswap
 man sysctl                                  # Local manual for sysctl / Локальная man-страница sysctl
 ```
+
+#system #logs #sysadmin #linux

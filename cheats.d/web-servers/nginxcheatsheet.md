@@ -691,3 +691,5 @@ location /server_status {
 - [Nginx Security Controls](https://nginx.org/en/docs/http/ngx_http_access_module.html)
 
 ---
+
+#web-servers #sysadmin #linux

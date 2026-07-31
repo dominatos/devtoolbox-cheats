@@ -347,3 +347,10 @@ duplicity -v9 /data file:///backup             # Full debug / Полная от�
 duplicity --dry-run /data file:///backup        # Simulate backup / Симуляция бэкапа
 duplicity remove-older-than 30D --dry-run file:///backup  # Simulate removal / Симуляция удаления
 ```
+
+## Documentation
+
+- **Duplicity Documentation:** https://duplicity.nongnu.org/
+- **Duplicity Man Page:** https://duplicity.nongnu.org/duplicity.1.html
+
+#backups #s3 #sysadmin #linux
