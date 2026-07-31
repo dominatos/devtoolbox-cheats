@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="v1.4.39"
+VERSION="v1.5.0"
 
 print_header() {
   echo ""
@@ -68,6 +68,24 @@ install_cheats() {
         echo "  ✅ Cheats deployed → ~/cheats.d"
     else
         echo "  ⚠️  cheats.d not found: $cheats_src"
+    fi
+}
+
+# ─── Deploy tools (manage-tocs.py etc.) ──────────────────────────────────────
+install_tools() {
+    local tools_src="$SCRIPT_DIR/tools"
+    local tools_dest="$HOME/.local/share/devtoolbox-cheats/tools"
+
+    echo ""
+    echo "🔧 Deploying tools..."
+
+    if [ -d "$tools_src" ]; then
+        mkdir -p "$tools_dest"
+        cp -r "$tools_src/." "$tools_dest/"
+        chmod +x "$tools_dest"/*.py 2>/dev/null || true
+        echo "  ✅ Tools deployed → $tools_dest"
+    else
+        echo "  ⚠️  tools/ not found: $tools_src"
     fi
 }
 
@@ -432,6 +450,56 @@ install_updater() {
 
 # ─── Deploy cheats (always, for every DE) ────────────────────────────────────
 install_cheats
+
+# ─── Deploy tools ─────────────────────────────────────────────────────────────
+install_tools
+
+# ─── TOC Formatting preference ────────────────────────────────────────────────
+configure_toc_format() {
+    local toc_conf="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
+    local toc_format="obsidian"
+
+    echo ""
+    echo "╔══════════════════════════════════════════════════════════════╗"
+    echo "║  📝 TOC Link Formatting Style                                ║"
+    echo "╠══════════════════════════════════════════════════════════════╣"
+    echo "║  1) Obsidian  — Exact text with %20 (default, recommended)   ║"
+    echo "║                 Example: #Basic%20Commands                   ║"
+    echo "║  2) GitHub    — Lowercase slugs                              ║"
+    echo "║                 Example: #basic-commands                     ║"
+    echo "╚══════════════════════════════════════════════════════════════╝"
+    echo ""
+
+    local choice=""
+    # read with 30-second timeout; IFS= to preserve whitespace; -r to avoid backslash issues
+    if read -r -t 30 -p "  Choose [1/2] (default: 1 — Obsidian in 30s): " choice; then
+        case "${choice}" in
+            2|github|GitHub|gh) toc_format="github" ;;
+            *)                  toc_format="obsidian" ;;
+        esac
+    else
+        echo ""
+        echo "  ⏱  No input received — using default: Obsidian"
+    fi
+
+    echo "  ✅ TOC format set to: ${toc_format}"
+    mkdir -p "$(dirname "$toc_conf")"
+    printf '%s\n' "$toc_format" > "$toc_conf"
+
+    # Apply formatting to ~/cheats.d immediately if tools are available
+    local manage_tocs="${HOME}/.local/share/devtoolbox-cheats/tools/manage-tocs.py"
+    if [[ -f "$manage_tocs" ]] && command -v python3 &>/dev/null; then
+        echo ""
+        echo "  🪄 Applying TOC formatting (${toc_format}) to ~/cheats.d..."
+        if python3 "$manage_tocs" --style "$toc_format" --dir "${HOME}/cheats.d" &>/dev/null; then
+            echo "  ✅ TOC formatting applied!"
+        else
+            echo "  ⚠️  TOC formatting failed — run manually: python3 ${manage_tocs} --style ${toc_format}"
+        fi
+    fi
+}
+configure_toc_format
+
 
 # ─── Install generic app ─────────────────────────────────────────────────────
 install_generic_app

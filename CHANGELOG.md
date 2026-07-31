@@ -1,5 +1,41 @@
 # Changelog
 
+## v1.5.0 (2026-07-31)
+
+**✨ New Feature: TOC Formatting Style — Multi-Platform Configuration**
+
+A new `tools/manage-tocs.py` script allows users to reformat the Table of Contents links in all cheatsheets for either **Obsidian** (exact-match, `%20`-encoded) or **GitHub** (lowercase slug) compatibility.
+The selected style is persisted to `~/.config/devtoolbox-cheats/toc_format.conf` and respected by all parts of the application.
+
+**New Tools:**
+- ✨ `tools/manage-tocs.py` — Unified TOC rebuild script. Strips Russian translations from `##` headers, wipes the old TOC, and regenerates it from scratch in the chosen style. Supports `--style obsidian|github` and `--dir` flags. Default target: `~/cheats.d`.
+- ✨ `tools/README.md` — Documentation for the new tools directory.
+
+**GNOME Argos (`devtoolbox-cheats.30s.sh`):**
+- ✨ New **"TOC Formatting"** submenu under ⚙️ Configuration with Obsidian/GitHub radio-style options and a **"🪄 Apply Formatting Now"** action.
+- ✨ New **"📝 TOC Format"** and **"🪄 Apply TOC Formatting"** items in both the **compact menu** and **standalone menu** (XFCE Genmon, MATE, Cinnamon, LXQt, tiling WMs, all non-GNOME non-KDE platforms).
+- ✨ `showSettings` info dialog now displays the current TOC format alongside layout and version info.
+- ✨ New `get_toc_format()`, `setTocFormat()`, `applyTocFormat()`, `settingsTocFormat()` functions.
+- 🔧 `applyTocFormat()` searches multiple install locations for `manage-tocs.py` (`~/.local/share/devtoolbox-cheats/tools/`, script dir, `~/devtoolbox-cheats/tools/`) — prevents "not found" errors when the script is installed to Argos directory.
+
+**KDE Plasma 6 & 5 Widgets:**
+- ✨ New **"TOC Link Style"** ComboBox (Obsidian / GitHub) in ⚙️ Configure… settings page.
+- ✨ New **"🪄 Apply TOC Formatting"** button with live status feedback in settings.
+- ✨ Selecting a style saves it to the shared `toc_format.conf` immediately.
+- 🔧 `tocFormat` config entry added to `main.xml` schemas for both Plasma 5 and Plasma 6.
+
+**CLI Updater (`cheats-updater.sh`):**
+- ✨ After a successful `cheats-updater update`, the updater now automatically reads `toc_format.conf` and re-runs `manage-tocs.py` so newly downloaded files are instantly reformatted to the user's preferred style.
+
+**Installer (`install.sh`):**
+- ✨ New interactive **TOC format prompt** with 30-second timeout (defaults to Obsidian). Saves the choice and applies formatting immediately.
+- ✨ New `install_tools()` function deploys `tools/` directory to `~/.local/share/devtoolbox-cheats/tools/` so `manage-tocs.py` is globally accessible to all components.
+
+**Cheatsheet Quality:**
+- ✅ Standardized TOC links across all 147 cheatsheets to use Obsidian-compatible `%20`-encoded anchors.
+- ✅ Cleaned `##` section headers by removing inline Russian translations (emojis preserved).
+- 🔧 Updated `docs/ai-gen-cheatsheet.md` and `docs/ai-gen-cheatsheet-new.md` — Rule 6 now mandates `%20`-encoded TOC links for all AI-generated cheatsheets.
+
 ## v1.4.39 (2026-06-12)
 
 **Bug fixes:**

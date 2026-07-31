@@ -17,6 +17,29 @@ Kirigami.FormLayout {
     property alias cfg_preferredEditor: editorField.text
     property alias cfg_autoRebuildCache: autoRebuildField.checked
     property alias cfg_checkForUpdates: checkForUpdatesField.checked
+    property string cfg_tocFormat: "obsidian"
+
+    // DataSource for running manage-tocs.py (Plasma5 uses PlasmaCore)
+    PlasmaCore.DataSource {
+        id: tocFormatApplier
+        engine: "executable"
+        onNewData: {
+            var exitCode = data["exit code"] || 0
+            if (exitCode === 0) {
+                tocApplyStatus.text = "✅ Formatting applied!"
+            } else {
+                tocApplyStatus.text = "❌ Error applying formatting"
+            }
+            disconnectSource(sourceName)
+        }
+    }
+
+    function applyTocFormatNow() {
+        var cheatsDir = cfg_cheatsDir.replace(/^~/, "$HOME")
+        var script = "python3 $(find ~/.local -name 'manage-tocs.py' 2>/dev/null | head -1 || find ~/devtoolbox-cheats -name 'manage-tocs.py' 2>/dev/null | head -1) --style " + cfg_tocFormat + " --dir " + cheatsDir
+        tocApplyStatus.text = "⏳ Applying..."
+        tocFormatApplier.connectSource(script)
+    }
 
     // Popular editors list
     property var allEditors: [
@@ -204,6 +227,42 @@ Kirigami.FormLayout {
         id: checkForUpdatesField
         Kirigami.FormData.label: "Updates:"
         text: "Automatically check for updates on startup"
+    }
+
+    ComboBox {
+        id: tocFormatCombo
+        Kirigami.FormData.label: "TOC Link Style:"
+        model: ListModel {
+            ListElement { text: "Obsidian (Exact text, %20)"; value: "obsidian" }
+            ListElement { text: "GitHub (Lowercase slugs)";   value: "github"  }
+        }
+        textRole: "text"
+        Component.onCompleted: {
+            currentIndex = cfg_tocFormat === "github" ? 1 : 0
+        }
+        onActivated: {
+            cfg_tocFormat = currentIndex === 0 ? "obsidian" : "github"
+            var confPath = "$HOME/.config/devtoolbox-cheats/toc_format.conf"
+            var writeCmd = "mkdir -p $(dirname " + confPath + ") && echo '" + cfg_tocFormat + "' > " + confPath
+            tocFormatApplier.connectSource(writeCmd)
+        }
+    }
+
+    RowLayout {
+        Kirigami.FormData.label: "Apply Now:"
+        spacing: 8
+
+        Button {
+            text: "🪄 Apply TOC Formatting"
+            onClicked: applyTocFormatNow()
+        }
+
+        Label {
+            id: tocApplyStatus
+            text: ""
+            font.pointSize: 9
+            opacity: 0.8
+        }
     }
 
     Label {

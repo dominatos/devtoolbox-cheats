@@ -72,6 +72,7 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 - **Open in Editor** - Launch any editor (auto-detected or custom)
 - **Export** - Save individual or all cheats to Markdown/PDF
 - **FZF Integration** - Powerful fuzzy search in terminal with syntax highlighting
+- **TOC Link Formatting** - Multi-platform support to automatically format Markdown TOC anchors for Obsidian or GitHub compatibility.
 - **TLDR Generation** - Compile authored Markdown cheats into external TLDR pages
 
 ### 🔧 Generated Outputs

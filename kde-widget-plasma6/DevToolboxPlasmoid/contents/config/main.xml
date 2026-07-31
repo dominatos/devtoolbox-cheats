@@ -24,5 +24,9 @@
       <default>true</default>
       <label>Automatically check for updates</label>
     </entry>
+    <entry name="tocFormat" type="String">
+      <default>obsidian</default>
+      <label>TOC formatting style (obsidian or github)</label>
+    </entry>
   </group>
 </kcfg>

@@ -125,3 +125,28 @@ If you use the `cheats-updater.sh` and want to update cheats in your custom dire
 ```bash
 CHEATS_DIR=/path/to/your/custom/dir cheats-updater update
 ```
+
+---
+
+## 3. Table of Contents Formatting
+
+When you add custom cheatsheets, you can use the built-in formatting tool to automatically build or update their Table of Contents (TOC) links to match your preferred style.
+
+The tool supports two styles:
+- **Obsidian (default):** Exact text matching with `%20` spaces (`#Basic%20Commands`). Works universally in Obsidian and standard Markdown viewers.
+- **GitHub:** Lowercase hyphenated slugs (`#basic-commands`). Used natively by GitHub and GitLab.
+
+### How to apply formatting
+Your chosen format is automatically saved when you configure it. You can apply formatting to your custom directory through any of these UI options:
+
+- **GNOME Argos:** Right-click menu → `⚙️ Configuration` → `TOC Formatting` → `🪄 Apply Formatting Now`
+- **KDE Plasma 5/6:** Widget Settings → `🪄 Apply TOC Formatting`
+- **Other DEs (Standalone Menu):** Click `🪄 Apply TOC Formatting` in the main menu
+
+### CLI Tool
+If you are managing custom cheatsheets outside the UI, you can manually run the formatter script on any directory:
+
+```bash
+# Formats all Markdown files in the specified directory using the 'obsidian' style
+python3 ~/.local/share/devtoolbox-cheats/tools/manage-tocs.py --style obsidian --dir ~/my-custom-cheats
+```

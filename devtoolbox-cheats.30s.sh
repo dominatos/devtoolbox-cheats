@@ -19,7 +19,7 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.4.39"
+VERSION="v1.5.0"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
@@ -41,6 +41,7 @@ CHEATS_REBUILD="" # Set to any non-empty value (e.g. CHEATS_REBUILD=1) to force 
 # === Layout config ===
 # Persistent layout preference file (XDG-compliant).
 DEVTOOLBOX_LAYOUT_CONF="${HOME}/.config/devtoolbox-cheats/layout.conf"
+DEVTOOLBOX_TOC_FORMAT_CONF="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
 
 # === Argos drill-down navigation state (used by drilldown layout only) ===
 # Stores the currently selected category for the Argos inline drill-down menu.
@@ -642,6 +643,63 @@ setLayout() {
   rm -f "$ARGOS_CAT_STATE" 2>/dev/null || true
 }
 
+# Reads the persisted TOC format choice.
+get_toc_format() {
+  if [[ -n "${DEVTOOLBOX_TOC_FORMAT:-}" ]]; then
+    echo "$DEVTOOLBOX_TOC_FORMAT"
+    return
+  fi
+  if [[ -s "$DEVTOOLBOX_TOC_FORMAT_CONF" ]]; then
+    local val
+    val="$(cat "$DEVTOOLBOX_TOC_FORMAT_CONF" | tr -d '[:space:]')"
+    case "$val" in
+      obsidian|github) echo "$val"; return ;;
+    esac
+  fi
+  echo "obsidian"
+}
+
+# Persists the TOC format choice.
+setTocFormat() {
+  local format="${1:-obsidian}"
+  case "$format" in
+    obsidian|github) ;;
+    *) format="obsidian" ;;
+  esac
+  mkdir -p "$(dirname "$DEVTOOLBOX_TOC_FORMAT_CONF")"
+  printf '%s\n' "$format" > "$DEVTOOLBOX_TOC_FORMAT_CONF"
+}
+
+# Applies TOC format immediately via manage-tocs.py
+applyTocFormat() {
+  local format
+  format="$(get_toc_format)"
+
+  # Search for manage-tocs.py in known install/dev locations
+  local py_script=""
+  local script_dir
+  script_dir="$(dirname "$SCRIPT_PATH")"
+  for candidate in \
+      "${HOME}/.local/share/devtoolbox-cheats/tools/manage-tocs.py" \
+      "${script_dir}/tools/manage-tocs.py" \
+      "${HOME}/devtoolbox-cheats/tools/manage-tocs.py"; do
+    if [[ -f "$candidate" ]]; then
+      py_script="$candidate"
+      break
+    fi
+  done
+
+  if [[ -n "$py_script" ]]; then
+    if python3 "$py_script" --style "$format" --dir "$CHEATS_DIR"; then
+      notify-send "DevToolbox Cheats" "TOC Formatting applied: $format" -i text-x-markdown 2>/dev/null || true
+    else
+      notify-send "DevToolbox Cheats" "Failed to apply TOC formatting" -u critical 2>/dev/null || true
+    fi
+  else
+    notify-send "DevToolbox Cheats" "manage-tocs.py not found. Run: cheats-updater update" -u critical 2>/dev/null || true
+  fi
+}
+
 # ============= Drill-down state helpers (drilldown layout only) ============
 
 # Write current category to state file.
@@ -952,9 +1010,31 @@ fzfSearch() {
 # Action: Show Settings info dialog
 showSettings() {
   local layout; layout="$(get_layout)"
+  local toc_fmt; toc_fmt="$(get_toc_format)"
   local msg
-  printf -v msg '%b' "Version: $VERSION\nDetected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF"
+  printf -v msg '%b' "Version: $VERSION\nDetected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF\nTOC Format: $toc_fmt (obsidian|github)"
   info_dialog "Dev Toolbox Settings" "$msg"
+}
+
+# ============= TOC Format dialog (standalone/compact menus) =============
+settingsTocFormat() {
+  local current; current="$(get_toc_format)"
+  local obs_label="Obsidian (Exact text, %20)"
+  local gh_label="GitHub (Lowercase slugs)"
+  local choice
+  choice=$(list_dialog "📝 TOC Format  [current: ${current}]" "Style" \
+    "$obs_label" \
+    "$gh_label") || return 0
+
+  local new_fmt
+  case "$choice" in
+    "$obs_label") new_fmt="obsidian" ;;
+    "$gh_label")  new_fmt="github" ;;
+    *) return 0 ;;
+  esac
+
+  setTocFormat "$new_fmt"
+  info_dialog "TOC Format" "Format set to: ${new_fmt}\n\nRun '🪄 Apply TOC Formatting' to reformat your ~/cheats.d."
 }
 
 # ============= Compact menu dialog ============
@@ -979,6 +1059,8 @@ compactMenu() {
     "🌐 Online Version" \
     "🐙 GitHub Repository" \
     "⚙️ Settings" \
+    "📝 TOC Format" \
+    "🪄 Apply TOC Formatting" \
     "── Categories ──" \
     "${cat_items[@]}") || exit 0
   case "$choice" in
@@ -993,6 +1075,14 @@ compactMenu() {
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
         showSettings
+        compactMenu
+        ;;
+    "📝 TOC Format")
+        settingsTocFormat
+        compactMenu
+        ;;
+    "🪄 Apply TOC Formatting")
+        applyTocFormat
         compactMenu
         ;;
     "── Categories ──") compactMenu ;;  # Divider — no-op, re-show menu
@@ -1026,6 +1116,8 @@ standaloneMenu() {
     "🌐 Online Version" \
     "🐙 GitHub Repository" \
     "⚙️ Settings" \
+    "📝 TOC Format" \
+    "🪄 Apply TOC Formatting" \
     "── Categories ──" \
     "${cat_items[@]}") || exit 0
 
@@ -1045,6 +1137,14 @@ standaloneMenu() {
     "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
         showSettings
+        standaloneMenu
+        ;;
+    "📝 TOC Format")
+        settingsTocFormat
+        standaloneMenu
+        ;;
+    "🪄 Apply TOC Formatting")
+        applyTocFormat
         standaloneMenu
         ;;
     "── Categories ──") standaloneMenu ;;  # Divider — no-op, re-show menu
@@ -1087,10 +1187,21 @@ _render_functions_submenu() {
   echo "-- 🐙 Edit this script   | bash='code' param1='$SCRIPT_PATH' terminal=false"
   echo "-- 🐙 Go to Argos folder | bash='doublecmd' param1='$HOME/.config/argos/' terminal=false"
   echo "-- ---"
-  echo "-- 🔄 Layout"
+  echo "-- Layout Options"
   echo "-- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
   echo "-- -- ${check_zen}Zenity (dialog cheat list)     | bash='$SCRIPT_PATH' param1=setLayout param2=zenity terminal=false refresh=true"
   echo "-- -- ${check_dd}Drill-down (category→cheats)   | bash='$SCRIPT_PATH' param1=setLayout param2=drilldown terminal=false refresh=true"
+  
+  local toc_fmt
+  toc_fmt="$(get_toc_format)"
+  local check_obs="[ ] " check_gh="[ ] "
+  [[ "$toc_fmt" == "obsidian" ]] && check_obs="[x] "
+  [[ "$toc_fmt" == "github" ]] && check_gh="[x] "
+  
+  echo "-- TOC Formatting"
+  echo "-- -- ${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"
+  echo "-- -- ${check_gh}GitHub (Slugs)        | bash='$SCRIPT_PATH' param1=setTocFormat param2=github terminal=false refresh=true"
+  echo "-- -- 🪄 Apply Formatting Now...       | bash='$SCRIPT_PATH' param1=applyTocFormat terminal=false"
   echo "---"
 }
 
@@ -1214,6 +1325,14 @@ case "${1:-}" in
   setLayout)
     # param2 = layout name (standard|zenity|drilldown)
     setLayout "${2:-}"
+    exit 0
+    ;;
+  setTocFormat)
+    setTocFormat "${2:-}"
+    exit 0
+    ;;
+  applyTocFormat)
+    applyTocFormat
     exit 0
     ;;
   setCategory)

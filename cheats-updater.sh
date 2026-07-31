@@ -2,7 +2,7 @@
 # cheats-updater.sh - Update manager for devtoolbox-cheats
 set -euo pipefail
 
-readonly VERSION="v1.4.39"
+readonly VERSION="v1.5.0"
 readonly UPSTREAM_URL="https://github.com/dominatos/devtoolbox-cheats.git"
 readonly BRANCH="main"
 readonly CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
@@ -172,6 +172,38 @@ cmd_update() {
     # Notification
     if command -v notify-send &>/dev/null; then
         notify-send "DevToolbox Cheats" "Updated: +${added} new, ~${modified} modified" 2>/dev/null || true
+    fi
+    
+    # Auto-apply TOC formatting if manage-tocs.py is available and a format is configured
+    local toc_conf="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
+    local toc_format="obsidian"
+    if [[ -s "$toc_conf" ]]; then
+        local _fmt
+        _fmt="$(cat "$toc_conf" | tr -d '[:space:]')"
+        case "$_fmt" in
+            obsidian|github) toc_format="$_fmt" ;;
+        esac
+    fi
+    
+    # Search for manage-tocs.py in known install locations
+    local manage_tocs=""
+    for candidate in \
+        "$HOME/.local/share/devtoolbox-cheats/tools/manage-tocs.py" \
+        "$HOME/devtoolbox-cheats/tools/manage-tocs.py" \
+        "$(dirname "$(realpath -s "$0")")/tools/manage-tocs.py"; do
+        if [[ -f "$candidate" ]]; then
+            manage_tocs="$candidate"
+            break
+        fi
+    done
+    
+    if [[ -n "$manage_tocs" ]] && command -v python3 &>/dev/null; then
+        log_info "Applying TOC format: ${C_CYAN}${toc_format}${C_RESET}"
+        if python3 "$manage_tocs" --style "$toc_format" --dir "$CHEATS_DIR" &>/dev/null; then
+            log_info "TOC formatting applied (${toc_format})"
+        else
+            log_warn "TOC formatting failed — run manually: python3 ${manage_tocs} --style ${toc_format}"
+        fi
     fi
 }
 
