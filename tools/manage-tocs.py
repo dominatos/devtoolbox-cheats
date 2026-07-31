@@ -108,13 +108,13 @@ def main():
     parser.add_argument('--style', choices=['obsidian', 'github'], default='obsidian',
                         help='Formatting style to use for TOC links (default: obsidian)')
     parser.add_argument('--dir', type=Path, default=None,
-                        help='Directory containing .md files (default: ../cheats.d)')
+                        help='Directory containing .md files (default: ~/cheats.d)')
     args = parser.parse_args()
 
     if args.dir:
         cheats_dir = args.dir
     else:
-        cheats_dir = Path(__file__).resolve().parent.parent / 'cheats.d'
+        cheats_dir = Path.home() / 'cheats.d'
 
     if not cheats_dir.is_dir():
         print(f"Error: Directory {cheats_dir} not found.", file=sys.stderr)
