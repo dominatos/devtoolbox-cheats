@@ -17,20 +17,20 @@ Order: 1
 
 ## Table of Contents
 
-- [Quick Reference](#quick-reference)
-- [Contexts, Clusters, Namespaces](#contexts-clusters-namespaces)
-- [Pods](#pods)
-- [Deployments / ReplicaSets / StatefulSets](#deployments-replicasets-statefulsets)
-- [Services / Ingress / Networking](#services-ingress-networking)
-- [ConfigMaps & Secrets](#configmaps-secrets)
-- [Storage (PV / PVC)](#storage-pv-pvc)
-- [Nodes / Cluster](#nodes-cluster)
-- [Metrics / Debug / Troubleshooting](#metrics-debug-troubleshooting)
-- [YAML / Apply / Diff](#yaml-apply-diff)
-- [RBAC / Security](#rbac-security)
-- [Useful One-liners](#useful-one-liners)
-- [Sysadmin Essentials](#sysadmin-essentials)
-- [Documentation Links](#documentation-links)
+- [Quick Reference](#Quick%20Reference)
+- [Contexts, Clusters, Namespaces](#Contexts,%20Clusters,%20Namespaces)
+- [Pods](#Pods)
+- [Deployments / ReplicaSets / StatefulSets](#Deployments%20/%20ReplicaSets%20/%20StatefulSets)
+- [Services / Ingress / Networking](#Services%20/%20Ingress%20/%20Networking)
+- [ConfigMaps & Secrets](#ConfigMaps%20&%20Secrets)
+- [Storage (PV / PVC)](#Storage%20(PV%20/%20PVC))
+- [Nodes / Cluster](#Nodes%20/%20Cluster)
+- [Metrics / Debug / Troubleshooting](#Metrics%20/%20Debug%20/%20Troubleshooting)
+- [YAML / Apply / Diff](#YAML%20/%20Apply%20/%20Diff)
+- [RBAC / Security](#RBAC%20/%20Security)
+- [Useful One-liners](#Useful%20One-liners)
+- [Sysadmin Essentials](#Sysadmin%20Essentials)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

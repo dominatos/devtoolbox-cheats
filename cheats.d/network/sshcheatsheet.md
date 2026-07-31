@@ -10,17 +10,17 @@ Order: 6
 📚 **Official Docs / Официальная документация:** [OpenSSH Manual](https://www.openssh.com/manual.html)
 
 ## Table of Contents
-- [Basic Connection](#basic-connection)
-- [Key Management](#key-management)
-- [Port Forwarding & Tunnels](#port-forwarding-tunnels)
-- [ProxyJump & Bastion](#proxyjump-bastion)
-- [File Transfer (SCP/SFTP)](#file-transfer-scpsftp)
-- [SSH Config](#ssh-config)
-- [Security & Hardening](#security-hardening)
-- [Troubleshooting](#troubleshooting)
-- [Real-World Examples](#real-world-examples)
-- [SSH Agent Forwarding](#ssh-agent-forwarding)
-- [Advanced Techniques](#advanced-techniques)
+- [Basic Connection](#Basic%20Connection)
+- [Key Management](#Key%20Management%20/%20Управление%20ключами)
+- [Port Forwarding & Tunnels](#Port%20Forwarding%20&%20Tunnels)
+- [ProxyJump & Bastion](#ProxyJump%20&%20Bastion)
+- [File Transfer (SCP/SFTP)](#File%20Transfer%20(SCP/SFTP))
+- [SSH Config](#SSH%20Config)
+- [Security & Hardening](#Security%20&%20Hardening)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
+- [SSH Agent Forwarding](#SSH%20Agent%20Forwarding)
+- [Advanced Techniques](#Advanced%20Techniques)
 
 ---
 

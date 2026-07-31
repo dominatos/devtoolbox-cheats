@@ -10,13 +10,13 @@ Order: 17
 📚 **Official Docs / Официальная документация:** [Fail2Ban](https://www.fail2ban.org/)
 
 ## Table of Contents
-- [Basic Commands](#basic-commands-базовые-команды)
-- [Jail Management](#jail-management-управление-jail)
-- [Ban Operations](#ban-operations-операции-бана)
-- [Configuration](#configuration-конфигурация)
-- [Filters & Actions](#filters-actions-фильтры-и-действия)
-- [Monitoring & Logs](#monitoring-logs-мониторинг-и-логи)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Basic Commands](#Basic%20Commands%20/%20Базовые%20команды)
+- [Jail Management](#Jail%20Management%20/%20Управление%20jail)
+- [Ban Operations](#Ban%20Operations%20/%20Операции%20бана)
+- [Configuration](#️%20Configuration%20/%20Конфигурация)
+- [Filters & Actions](#Filters%20&%20Actions%20/%20Фильтры%20и%20действия)
+- [Monitoring & Logs](#Monitoring%20&%20Logs%20/%20Мониторинг%20и%20логи)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
 
 ---
 

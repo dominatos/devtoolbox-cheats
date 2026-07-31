@@ -23,17 +23,17 @@ After a kernel update, `dracut` rebuilds the initramfs with `hostonly="yes"` (de
 [dracut(8)](https://man7.org/linux/man-pages/man8/dracut.8.html) · [grubby(8)](https://man7.org/linux/man-pages/man8/grubby.8.html) · [lsinitrd(1)](https://man7.org/linux/man-pages/man1/lsinitrd.1.html)
 
 ## Table of Contents
-- [Quick Checklist](#quick-checklist)
-- [Quick Temporary Fix via cmdline](#quick-temporary-fix-via-cmdline)
-- [Permanent Fix via dracut](#permanent-fix-via-dracut)
-- [Safety Kernel Parameters](#safety-kernel-parameters)
-- [Early Boot Diagnostics](#early-boot-diagnostics)
-- [Common Causes → Solutions](#common-causes-solutions)
-- [grubby / GRUB Tips](#grubby-grub-tips)
-- [Fat initramfs for All Kernels](#fat-initramfs-for-all-kernels)
-- [Rescue Mode / chroot](#rescue-mode-chroot)
-- [Freeze Kernel Temporarily](#freeze-kernel-temporarily)
-- [Mini FAQ](#mini-faq)
+- [Quick Checklist](#Quick%20Checklist)
+- [Quick Temporary Fix via cmdline](#Quick%20Temporary%20Fix%20via%20cmdline)
+- [Permanent Fix via dracut](#Permanent%20Fix%20via%20dracut)
+- [Safety Kernel Parameters](#Safety%20Kernel%20Parameters)
+- [Early Boot Diagnostics](#Early%20Boot%20Diagnostics)
+- [Common Causes → Solutions](#Common%20Causes%20→%20Solutions)
+- [grubby / GRUB Tips](#grubby%20/%20GRUB%20Tips)
+- [Fat initramfs for All Kernels](#Fat%20initramfs%20for%20All%20Kernels)
+- [Rescue Mode / chroot](#Rescue%20Mode%20/%20chroot)
+- [Freeze Kernel Temporarily](#Freeze%20Kernel%20Temporarily)
+- [Mini FAQ](#Mini%20FAQ)
 
 ---
 

@@ -7,15 +7,15 @@ Order: 14
 > / **MinIO** — высокопроизводительная распределённая система хранения объектов, полностью совместимая с API Amazon S3. Используется для хранения больших объёмов неструктурированных данных. `mc` (MinIO Client) — современная альтернатива AWS CLI для управления MinIO и S3 хранилищем.
 
 ## Table of Contents
-- [Installation & Configuration](#installation-configuration)
-- [Core Management with mc](#core-management-with-mc-основное-управление-с-mc)
-- [Bucket Operations](#bucket-operations-операции-с-бакетами)
-- [Object Operations](#object-operations-операции-с-объектами)
-- [Advanced Features](#advanced-features-продвинутые-возможности )
-- [Administration](#administration-администрирование)
-- [AWS S3 Interoperability](#aws-s3-interoperability-совместимость-с-aws-s3)
-- [Troubleshooting & Tools](#troubleshooting-tools-устранение-неполадок)
-- [Comparison Tables](#comparison-tables-таблицы-сравнения)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management with mc](#Core%20Management%20with%20mc%20/%20Основное%20управление%20с%20mc)
+- [Bucket Operations](#Bucket%20Operations%20/%20Операции%20с%20бакетами)
+- [Object Operations](#Object%20Operations%20/%20Операции%20с%20объектами)
+- [Advanced Features](#Advanced%20Features%20/%20Продвинутые%20возможности)
+- [Administration](#Administration%20/%20Администрирование)
+- [AWS S3 Interoperability](#AWS%20S3%20Interoperability%20/%20Совместимость%20с%20AWS%20S3)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools%20/%20Устранение%20неполадок)
+- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
 
 ---
 

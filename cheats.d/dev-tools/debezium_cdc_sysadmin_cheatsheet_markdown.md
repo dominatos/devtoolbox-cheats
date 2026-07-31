@@ -17,17 +17,17 @@ Order: 15
 
 ## 📚 Table of Contents / Содержание
 
-1. [Architecture](#architecture)
-2. [Installation & Configuration](#installation-configuration)
-3. [Core Management](#core-management)
-4. [Sysadmin Operations](#sysadmin-operations)
-5. [Security](#security)
-6. [Backup & Restore](#backup-restore)
-7. [Troubleshooting & Tools](#troubleshooting-tools)
-8. [Production Runbooks](#production-runbooks)
-9. [Logrotate Configuration](#logrotate-configuration)
-10. [Additional Notes](#additional-notes)
-11. [Official Documentation](#official-documentation)
+1. [Architecture](#Architecture)
+2. [Installation & Configuration](#Installation%20&%20Configuration)
+3. [Core Management](#Core%20Management)
+4. [Sysadmin Operations](#Sysadmin%20Operations)
+5. [Security](#Security)
+6. [Backup & Restore](#Backup%20&%20Restore)
+7. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+8. [Production Runbooks](#Production%20Runbooks)
+9. [Logrotate Configuration](#Logrotate%20Configuration)
+10. [Additional Notes](#Additional%20Notes)
+11. [Official Documentation](#Official%20Documentation)
 
 ---
 

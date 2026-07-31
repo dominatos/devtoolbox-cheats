@@ -13,15 +13,15 @@ Order: 4
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation-configuration)
-2. [GPG Key Management](#2-gpg-key-management)
-3. [GPG Encryption & Decryption](#3-gpg-encryption-decryption)
-4. [GPG Signing & Verification](#4-gpg-signing-verification)
-5. [age — Modern Encryption](#5-age-modern-encryption)
-6. [Real-World Examples](#6-real-world-examples)
-7. [Troubleshooting & Tools](#7-troubleshooting-tools)
-8. [Best Practices](#8-best-practices)
-9. [Documentation Links](#9-documentation-links)
+1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
+2. [GPG Key Management](#2.%20GPG%20Key%20Management)
+3. [GPG Encryption & Decryption](#3.%20GPG%20Encryption%20&%20Decryption)
+4. [GPG Signing & Verification](#4.%20GPG%20Signing%20&%20Verification)
+5. [age — Modern Encryption](#5.%20age%20—%20Modern%20Encryption)
+6. [Real-World Examples](#6.%20Real-World%20Examples)
+7. [Troubleshooting & Tools](#7.%20Troubleshooting%20&%20Tools)
+8. [Best Practices](#8.%20Best%20Practices)
+9. [Documentation Links](#9.%20Documentation%20Links)
 
 ---
 

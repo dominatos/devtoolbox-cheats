@@ -15,15 +15,15 @@ k9s is a **terminal-based UI** for interacting with Kubernetes clusters. It prov
 
 ## Table of Contents
 
-- [Basic Navigation](#basic-navigation)
-- [Resource Views](#resource-views)
-- [Common Operations](#common-operations)
-- [Filtering & Search](#filtering-search)
-- [Context & Namespace](#context-namespace)
-- [Sorting & Display](#sorting-display)
-- [Advanced Features](#advanced-features)
-- [Configuration](#configuration)
-- [Documentation Links](#documentation-links)
+- [Basic Navigation](#Basic%20Navigation)
+- [Resource Views](#Resource%20Views)
+- [Common Operations](#Common%20Operations)
+- [Filtering & Search](#Filtering%20&%20Search)
+- [Context & Namespace](#Context%20&%20Namespace)
+- [Sorting & Display](#Sorting%20&%20Display)
+- [Advanced Features](#Advanced%20Features)
+- [Configuration](#Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

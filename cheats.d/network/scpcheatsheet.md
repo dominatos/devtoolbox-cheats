@@ -10,12 +10,12 @@ Order: 7
 📚 **Official Docs / Официальная документация:** [scp(1)](https://man.openbsd.org/scp)
 
 ## Table of Contents
-- [Basic Transfer](#basic-transfer)
-- [Advanced Options](#advanced-options)
-- [Performance & Compression](#performance-compression)
-- [Troubleshooting](#troubleshooting)
-- [Real-World Examples](#real-world-examples)
-- [Reference Tables](#reference-tables)
+- [Basic Transfer](#Basic%20Transfer)
+- [Advanced Options](#Advanced%20Options)
+- [Performance & Compression](#Performance%20&%20Compression)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
+- [Reference Tables](#Reference%20Tables)
 
 ---
 

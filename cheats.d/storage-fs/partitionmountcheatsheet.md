@@ -24,16 +24,16 @@ Order: 2
 [mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) · [fstab(5)](https://man7.org/linux/man-pages/man5/fstab.5.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html) · [fdisk(8)](https://man7.org/linux/man-pages/man8/fdisk.8.html) · [mkfs(8)](https://man7.org/linux/man-pages/man8/mkfs.8.html)
 
 ## Table of Contents
-- [Disk Information](#disk-information-информация-о-дисках)
-- [Partitioning](#partitioning-разметка)
-- [Formatting](#formatting-форматирование)
-- [Mounting](#mounting-монтирование)
-- [fstab Management](#fstab-management-управление-fstab)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Filesystem Types Comparison](#filesystem-types-comparison-сравнение-типов-фс)
-- [Partition Table Comparison](#partition-table-comparison-сравнение-таблиц-разделов)
-- [Best Practices](#best-practices-лучшие-практики)
-- [Default Paths](#default-paths-пути-по-умолчанию)
+- [Disk Information](#Disk%20Information%20/%20Информация%20о%20дисках)
+- [Partitioning](#Partitioning%20/%20Разметка)
+- [Formatting](#Formatting%20/%20Форматирование)
+- [Mounting](#Mounting%20/%20Монтирование)
+- [fstab Management](#fstab%20Management%20/%20Управление%20fstab)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Filesystem Types Comparison](#Filesystem%20Types%20Comparison%20/%20Сравнение%20типов%20ФС)
+- [Partition Table Comparison](#Partition%20Table%20Comparison%20/%20Сравнение%20таблиц%20разделов)
+- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
+- [Default Paths](#Default%20Paths%20/%20Пути%20по%20умолчанию)
 
 ---
 

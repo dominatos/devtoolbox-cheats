@@ -25,22 +25,22 @@ Order: 2
 
 ## Table of Contents
 
-- [Description](#description)
-- [Installation & Configuration](#installation-configuration)
-- [Core Management](#core-management)
-- [Caddyfile Basics](#caddyfile-basics)
-- [Reverse Proxy](#reverse-proxy)
-- [Load Balancing](#load-balancing)
-- [HTTPS & TLS](#https-tls)
-- [Static Files & File Server](#static-files-file-server)
-- [Security & Access Control](#security-access-control)
-- [Logging & Monitoring](#logging-monitoring)
-- [Advanced Features](#advanced-features)
-- [Production Configuration](#production-configuration)
-- [Troubleshooting & Tools](#troubleshooting-tools)
-- [Comparison Tables](#comparison-tables)
-- [Logrotate Configuration](#logrotate-configuration)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Caddyfile Basics](#Caddyfile%20Basics)
+- [Reverse Proxy](#Reverse%20Proxy)
+- [Load Balancing](#Load%20Balancing)
+- [HTTPS & TLS](#HTTPS%20&%20TLS)
+- [Static Files & File Server](#Static%20Files%20&%20File%20Server)
+- [Security & Access Control](#Security%20&%20Access%20Control)
+- [Logging & Monitoring](#Logging%20&%20Monitoring)
+- [Advanced Features](#Advanced%20Features)
+- [Production Configuration](#Production%20Configuration)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Comparison Tables](#Comparison%20Tables)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

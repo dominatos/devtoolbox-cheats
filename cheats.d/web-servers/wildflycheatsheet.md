@@ -23,16 +23,16 @@ Order: 17
 
 ## Table of Contents
 
-- [Description](#description)
-- [Installation & Configuration](#installation-configuration)
-- [Operating Modes](#operating-modes)
-- [Service & Access Management](#service-access-management)
-- [Deployment (jboss-cli)](#deployment-jboss-cli)
-- [JVM Tuning & Performance](#jvm-tuning-performance)
-- [Security](#security)
-- [Troubleshooting & Logs](#troubleshooting-logs)
-- [Logrotate Configuration](#logrotate-configuration)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Operating Modes](#Operating%20Modes)
+- [Service & Access Management](#Service%20&%20Access%20Management)
+- [Deployment (jboss-cli)](#Deployment%20(jboss-cli))
+- [JVM Tuning & Performance](#JVM%20Tuning%20&%20Performance)
+- [Security](#Security)
+- [Troubleshooting & Logs](#Troubleshooting%20&%20Logs)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

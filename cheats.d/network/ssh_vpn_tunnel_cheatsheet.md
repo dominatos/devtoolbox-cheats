@@ -10,15 +10,15 @@ SSH tunneling (port forwarding) allows you to securely route network traffic thr
 📚 **Official Docs / Официальная документация:** [ssh(1)](https://man.openbsd.org/ssh)
 
 ## Table of Contents
-- [SSH Tunnel Basics](#ssh-tunnel-basics)
-- [Local Port Forwarding](#local-port-forwarding)
-- [Remote Port Forwarding](#remote-port-forwarding)
-- [Dynamic Port Forwarding (SOCKS)](#dynamic-port-forwarding-socks)
-- [SSH Control Sockets](#ssh-control-sockets)
-- [Bastion/Jump Host Configuration](#bastionjump-host-configuration)
-- [Troubleshooting](#troubleshooting)
-- [Real-World Examples](#real-world-examples)
-- [Reference Tables](#reference-tables)
+- [SSH Tunnel Basics](#SSH%20Tunnel%20Basics)
+- [Local Port Forwarding](#Local%20Port%20Forwarding)
+- [Remote Port Forwarding](#Remote%20Port%20Forwarding)
+- [Dynamic Port Forwarding (SOCKS)](#Dynamic%20Port%20Forwarding%20(SOCKS))
+- [SSH Control Sockets](#SSH%20Control%20Sockets)
+- [Bastion/Jump Host Configuration](#Bastion/Jump%20Host%20Configuration)
+- [Troubleshooting](#Troubleshooting)
+- [Real-World Examples](#Real-World%20Examples)
+- [Reference Tables](#Reference%20Tables)
 
 ---
 

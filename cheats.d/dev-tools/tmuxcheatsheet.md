@@ -14,15 +14,15 @@ Order: 6
 ---
 
 ## Table of Contents
-- [Basics & Installation](#basics-installation-основы-и-установка)
-- [Session Management](#session-management-управление-сессиями)
-- [Window Management](#window-management-управление-окнами)
-- [Pane Management](#pane-management-управление-панелями)
-- [Copy Mode & Buffers](#copy-mode-buffers-режим-копирования-и-буферы)
-- [Configuration](#configuration-настройки)
-- [Key Bindings Quick Reference](#key-bindings-quick-reference)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Useful Tips](#useful-tips-полезные-советы)
+- [Basics & Installation](#Basics%20&%20Installation%20/%20Основы%20и%20установка)
+- [Session Management](#Session%20Management%20/%20Управление%20сессиями)
+- [Window Management](#Window%20Management%20/%20Управление%20окнами)
+- [Pane Management](#Pane%20Management%20/%20Управление%20панелями)
+- [Copy Mode & Buffers](#Copy%20Mode%20&%20Buffers%20/%20Режим%20копирования%20и%20буферы)
+- [Configuration](#️%20Configuration%20/%20Настройки)
+- [Key Bindings Quick Reference](#Key%20Bindings%20Quick%20Reference)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Useful Tips](#Useful%20Tips%20/%20Полезные%20советы)
 
 ---
 

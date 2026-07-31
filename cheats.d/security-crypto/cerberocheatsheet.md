@@ -15,15 +15,15 @@ Order: 10
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation-configuration)
-2. [Core Management](#2-core-management)
-3. [File Analysis](#3-file-analysis)
-4. [Malware Analysis & YARA](#4-malware-analysis-yara)
-5. [Reverse Engineering](#5-reverse-engineering)
-6. [Memory Forensics](#6-memory-forensics)
-7. [Scripting & Automation](#7-scripting-automation)
-8. [Troubleshooting & Tools](#8-troubleshooting-tools)
-9. [Documentation Links](#9-documentation-links)
+1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
+2. [Core Management](#2.%20Core%20Management)
+3. [File Analysis](#3.%20File%20Analysis)
+4. [Malware Analysis & YARA](#4.%20Malware%20Analysis%20&%20YARA)
+5. [Reverse Engineering](#5.%20Reverse%20Engineering)
+6. [Memory Forensics](#6.%20Memory%20Forensics)
+7. [Scripting & Automation](#7.%20Scripting%20&%20Automation)
+8. [Troubleshooting & Tools](#8.%20Troubleshooting%20&%20Tools)
+9. [Documentation Links](#9.%20Documentation%20Links)
 
 ---
 

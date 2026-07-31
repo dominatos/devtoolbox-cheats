@@ -17,15 +17,15 @@ Uyuni is an open-source systems management solution for software-defined infrast
 
 ## Table of Contents
 
-1. [Installation & Configuration](#installation-configuration)
-2. [Core Management](#core-management)
-3. [Salt & Configuration Management](#salt-configuration-management)
-4. [Sysadmin Operations](#sysadmin-operations)
-5. [Security](#security)
-6. [Backup & Restore](#backup-restore)
-7. [Troubleshooting & Tools](#troubleshooting-tools)
-8. [Logrotate Configuration](#logrotate-configuration)
-9. [Documentation Links](#documentation-links)
+1. [Installation & Configuration](#Installation%20&%20Configuration)
+2. [Core Management](#Core%20Management)
+3. [Salt & Configuration Management](#Salt%20&%20Configuration%20Management)
+4. [Sysadmin Operations](#Sysadmin%20Operations)
+5. [Security](#Security)
+6. [Backup & Restore](#Backup%20&%20Restore)
+7. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+8. [Logrotate Configuration](#Logrotate%20Configuration)
+9. [Documentation Links](#Documentation%20Links)
 
 ---
 

@@ -10,12 +10,12 @@ Order: 3
 📚 **Official Docs / Официальная документация:** [ip(8)](https://man7.org/linux/man-pages/man8/ip.8.html)
 
 ## Table of Contents
-- [Address Management](#address-management-управление-адресами)
-- [Link Management](#link-management-управление-ссылками)
-- [Routing](#routing-маршрутизация)
-- [Neighbor (ARP/NDP)](#neighbor-arpndp-соседи)
-- [Tunnels & VLANs](#tunnels-vlans-туннели-и-vlan)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Address Management](#Address%20Management%20/%20Управление%20адресами)
+- [Link Management](#Link%20Management%20/%20Управление%20ссылками)
+- [Routing](#️%20Routing%20/%20Маршрутизация)
+- [Neighbor (ARP/NDP)](#️%20Neighbor%20(ARP/NDP)%20/%20Соседи)
+- [Tunnels & VLANs](#Tunnels%20&%20VLANs%20/%20Туннели%20и%20VLAN)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
 
 ---
 

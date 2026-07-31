@@ -29,14 +29,14 @@ Order: 4
 [smartctl(8)](https://man7.org/linux/man-pages/man8/smartctl.8.html) · [smartd(8)](https://man7.org/linux/man-pages/man8/smartd.8.html) · [mdadm(8)](https://man7.org/linux/man-pages/man8/mdadm.8.html) · [md(4)](https://man7.org/linux/man-pages/man4/md.4.html)
 
 ## Table of Contents
-- [Installation](#installation-установка)
-- [SMART Diagnostics](#smart-diagnostics-диагностика-smart)
-- [mdadm RAID Management](#mdadm-raid-management-управление-raid)
-- [RAID Levels Comparison](#raid-levels-comparison-сравнение-уровней-raid)
-- [Critical SMART Attributes](#critical-smart-attributes-критические-smart-атрибуты)
-- [Monitoring & Alerts](#monitoring-alerts-мониторинг-и-оповещения)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Best Practices](#best-practices-лучшие-практики)
+- [Installation](#Installation%20/%20Установка)
+- [SMART Diagnostics](#SMART%20Diagnostics%20/%20Диагностика%20SMART)
+- [mdadm RAID Management](#mdadm%20RAID%20Management%20/%20Управление%20RAID)
+- [RAID Levels Comparison](#RAID%20Levels%20Comparison%20/%20Сравнение%20уровней%20RAID)
+- [Critical SMART Attributes](#Critical%20SMART%20Attributes%20/%20Критические%20SMART%20атрибуты)
+- [Monitoring & Alerts](#Monitoring%20&%20Alerts%20/%20Мониторинг%20и%20оповещения)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
 
 ---
 

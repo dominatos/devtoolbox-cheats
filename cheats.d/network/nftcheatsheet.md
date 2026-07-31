@@ -10,14 +10,14 @@ Order: 14
 📚 **Official Docs / Официальная документация:** [nftables wiki](https://wiki.nftables.org/)
 
 ## Table of Contents
-- [Basic Commands](#basic-commands)
-- [Tables & Chains](#tables-chains)
-- [Rules](#rules)
-- [NAT & Port Forwarding](#nat-port-forwarding)
-- [Sets & Maps](#sets-maps)
-- [Migration from iptables](#migration-from-iptables)
-- [Real-World Examples](#real-world-examples)
-- [Reference Tables](#reference-tables)
+- [Basic Commands](#Basic%20Commands)
+- [Tables & Chains](#Tables%20&%20Chains)
+- [Rules](#Rules)
+- [NAT & Port Forwarding](#NAT%20&%20Port%20Forwarding)
+- [Sets & Maps](#Sets%20&%20Maps)
+- [Migration from iptables](#Migration%20from%20iptables)
+- [Real-World Examples](#Real-World%20Examples)
+- [Reference Tables](#Reference%20Tables)
 
 ---
 

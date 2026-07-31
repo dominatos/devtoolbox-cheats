@@ -10,12 +10,12 @@ Order: 2
 📚 **Official Docs / Официальная документация:** [ss(8)](https://man7.org/linux/man-pages/man8/ss.8.html)
 
 ## Table of Contents
-- [Basic Commands](#basic-commands)
-- [Filtering](#filtering)
-- [Statistics](#statistics)
-- [Advanced Usage](#advanced-usage)
-- [Real-World Examples](#real-world-examples)
-- [Reference Tables](#reference-tables)
+- [Basic Commands](#Basic%20Commands)
+- [Filtering](#Filtering)
+- [Statistics](#Statistics)
+- [Advanced Usage](#Advanced%20Usage)
+- [Real-World Examples](#Real-World%20Examples)
+- [Reference Tables](#Reference%20Tables)
 
 ---
 

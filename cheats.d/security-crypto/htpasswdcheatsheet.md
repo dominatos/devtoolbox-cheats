@@ -12,12 +12,12 @@ Order: 10
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation-configuration)
-2. [Core Management](#2-core-management)
-3. [Sysadmin Operations](#3-sysadmin-operations)
-4. [Security](#4-security)
-5. [Real-World Examples](#5-real-world-examples)
-6. [Documentation Links](#6-documentation-links)
+1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
+2. [Core Management](#2.%20Core%20Management)
+3. [Sysadmin Operations](#3.%20Sysadmin%20Operations)
+4. [Security](#4.%20Security)
+5. [Real-World Examples](#5.%20Real-World%20Examples)
+6. [Documentation Links](#6.%20Documentation%20Links)
 
 ---
 

@@ -20,16 +20,16 @@ Order: 2
 ---
 
 ## Table of Contents
-- [Installation](#installation)
-- [Basic Operations](#basic-operations)
-- [Compression Formats](#compression-formats)
-- [Advanced Options](#advanced-options)
-- [Extraction & Listing](#extraction-listing)
-- [Backup & Restore](#backup-restore)
-- [Network Transfer](#network-transfer)
-- [Troubleshooting](#troubleshooting)
-- [Best Practices](#best-practices)
-- [Documentation Links](#documentation-links)
+- [Installation](#Installation)
+- [Basic Operations](#Basic%20Operations)
+- [Compression Formats](#Compression%20Formats)
+- [Advanced Options](#Advanced%20Options)
+- [Extraction & Listing](#Extraction%20&%20Listing)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Network Transfer](#Network%20Transfer)
+- [Troubleshooting](#Troubleshooting)
+- [Best Practices](#Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

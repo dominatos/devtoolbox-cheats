@@ -6,11 +6,11 @@ Order: 7
 > **tr**, **head**, **tail**, and **watch** — essential Unix text and monitoring utilities. `tr` (translate characters), `head` (first N lines), and `tail` (last N lines, follow mode) are part of GNU Coreutils, pre-installed everywhere. `watch` (from `procps-ng`) repeatedly runs a command and displays output, ideal for real-time monitoring. All are production staples with no replacements needed; `tail -f` is the standard way to follow logs in real time.
 
 ## Table of Contents
-- [TR — Translate Characters](#tr-translate-characters-tr-преобразование-символов)
-- [HEAD — First Lines](#head-first-lines-head-первые-строки)
-- [TAIL — Last Lines](#tail-last-lines-tail-последние-строки)
-- [WATCH — Monitor Commands](#watch-monitor-commands-watch-мониторинг-команд)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [TR — Translate Characters](#TR%20—%20Translate%20Characters%20/%20TR%20—%20Преобразование%20символов)
+- [HEAD — First Lines](#⬆️%20HEAD%20—%20First%20Lines%20/%20HEAD%20—%20Первые%20строки)
+- [TAIL — Last Lines](#⬇️%20TAIL%20—%20Last%20Lines%20/%20TAIL%20—%20Последние%20строки)
+- [WATCH — Monitor Commands](#WATCH%20—%20Monitor%20Commands%20/%20WATCH%20—%20Мониторинг%20команд)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
 
 ---
 

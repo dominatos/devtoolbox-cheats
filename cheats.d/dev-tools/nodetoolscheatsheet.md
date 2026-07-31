@@ -14,15 +14,15 @@ Order: 4
 ---
 
 ## Table of Contents
-- [nvm — Version Manager](#nvm-version-manager)
-- [npm — Package Manager](#npm-package-manager)
-- [yarn — Fast Package Manager](#yarn-fast-package-manager)
-- [pnpm — Efficient Package Manager](#pnpm-efficient-package-manager)
-- [Package Manager Comparison](#package-manager-comparison)
-- [Package Scripts](#package-scripts-скрипты-пакетов)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Best Practices](#best-practices-лучшие-практики)
+- [nvm — Version Manager](#nvm%20—%20Version%20Manager)
+- [npm — Package Manager](#npm%20—%20Package%20Manager)
+- [yarn — Fast Package Manager](#yarn%20—%20Fast%20Package%20Manager)
+- [pnpm — Efficient Package Manager](#pnpm%20—%20Efficient%20Package%20Manager)
+- [Package Manager Comparison](#Package%20Manager%20Comparison)
+- [Package Scripts](#Package%20Scripts%20/%20Скрипты%20пакетов)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
 
 ---
 

@@ -29,12 +29,12 @@ Order: 5
 
 ## 📚 Table of Contents / Содержание
 
-1. [Service Unit Template](#service-unit-template)
-2. [Timer Unit Template](#timer-unit-template)
-3. [Socket Unit Template](#socket-unit-template)
-4. [Common Directives](#common-directives)
-5. [Unit Management](#unit-management)
-6. [Troubleshooting](#troubleshooting)
+1. [Service Unit Template](#Service%20Unit%20Template)
+2. [Timer Unit Template](#Timer%20Unit%20Template)
+3. [Socket Unit Template](#Socket%20Unit%20Template)
+4. [Common Directives](#Common%20Directives)
+5. [Unit Management](#Unit%20Management)
+6. [Troubleshooting](#Troubleshooting)
 
 ---
 

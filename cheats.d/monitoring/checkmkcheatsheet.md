@@ -17,14 +17,14 @@ Order: 2
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation-configuration)
-2. [OMD Site Management](#2-omd-site-management)
-3. [Core Management](#3-core-management)
-4. [Sysadmin Operations](#4-sysadmin-operations)
-5. [Security](#5-security)
-6. [Backup & Restore](#6-backup-restore)
-7. [Troubleshooting & Tools](#7-troubleshooting-tools)
-8. [Logrotate Configuration](#8-logrotate-configuration)
+1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
+2. [OMD Site Management](#2.%20OMD%20Site%20Management)
+3. [Core Management](#3.%20Core%20Management)
+4. [Sysadmin Operations](#4.%20Sysadmin%20Operations)
+5. [Security](#5.%20Security)
+6. [Backup & Restore](#6.%20Backup%20&%20Restore)
+7. [Troubleshooting & Tools](#7.%20Troubleshooting%20&%20Tools)
+8. [Logrotate Configuration](#8.%20Logrotate%20Configuration)
 
 ---
 

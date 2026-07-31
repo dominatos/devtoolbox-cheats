@@ -6,18 +6,18 @@ Order: 2
 > **grep** (Global Regular Expression Print) — the quintessential text-search utility, part of every POSIX system. GNU grep supports Basic (BRE), Extended (ERE, `-E`), Fixed-string (`-F`), and Perl-compatible (PCRE, `-P`) regular expressions. It is the go-to tool for searching files, filtering logs, and building shell pipelines. For significantly faster recursive searches (10-100×), consider [`ripgrep` (rg)](https://github.com/BurntSushi/ripgrep) — but `grep` remains the universal standard.
 
 ## Table of Contents
-- [Quick Reference](#quick-reference-краткая-справка)
-- [Basics](#basics-основы)
-- [Regex Dialects](#regex-dialects-диалекты-регулярных-выражений)
-- [Files & Recursion](#files-recursion-файлы-и-рекурсия)
-- [Output & Context](#output-context-вывод-и-контекст)
-- [Counts & File Lists](#counts-file-lists-подсчёт-и-списки-файлов)
-- [Words, Lines & Anchors](#words-lines-anchors-слова-строки-и-якоря)
-- [Case & Locale](#case-locale-регистр-и-локаль)
-- [Multiline & NULL-Separated](#multiline-null-separated-многострочные-и-null-разделители)
-- [Performance & Behavior](#performance-behavior-производительность-и-поведение)
-- [Log & Streaming Examples](#log-streaming-examples-логи-и-потоковая-обработка)
-- [Common One-Liners](#common-one-liners-частые-однострочники)
+- [Quick Reference](#Quick%20Reference%20/%20Краткая%20справка)
+- [Basics](#Basics%20/%20Основы)
+- [Regex Dialects](#Regex%20Dialects%20/%20Диалекты%20регулярных%20выражений)
+- [Files & Recursion](#Files%20&%20Recursion%20/%20Файлы%20и%20рекурсия)
+- [Output & Context](#Output%20&%20Context%20/%20Вывод%20и%20контекст)
+- [Counts & File Lists](#Counts%20&%20File%20Lists%20/%20Подсчёт%20и%20списки%20файлов)
+- [Words, Lines & Anchors](#Words,%20Lines%20&%20Anchors%20/%20Слова,%20строки%20и%20якоря)
+- [Case & Locale](#Case%20&%20Locale%20/%20Регистр%20и%20локаль)
+- [Multiline & NULL-Separated](#Multiline%20&%20NULL-Separated%20/%20Многострочные%20и%20NULL-разделители)
+- [Performance & Behavior](#Performance%20&%20Behavior%20/%20Производительность%20и%20поведение)
+- [Log & Streaming Examples](#Log%20&%20Streaming%20Examples%20/%20Логи%20и%20потоковая%20обработка)
+- [Common One-Liners](#Common%20One-Liners%20/%20Частые%20однострочники)
 
 ---
 

@@ -13,16 +13,16 @@ All tools are actively maintained and part of most Linux distributions. There ar
 [strace(1)](https://man7.org/linux/man-pages/man1/strace.1.html) · [perf](https://perf.wiki.kernel.org/) · [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) · [lsof(8)](https://man7.org/linux/man-pages/man8/lsof.8.html) · [ltrace(1)](https://man7.org/linux/man-pages/man1/ltrace.1.html)
 
 ## Table of Contents
-- [strace — System Call Tracing](#strace-system-call-tracing)
-- [perf — Performance Analysis](#perf-performance-analysis)
-- [tcpdump — Network Packet Capture](#tcpdump-network-packet-capture)
-- [lsof — List Open Files](#lsof-list-open-files)
-- [ltrace — Library Call Tracing](#ltrace-library-call-tracing)
-- [Tool Comparison](#tool-comparison)
-- [Common strace Filters](#common-strace-filters)
-- [Troubleshooting Workflows](#troubleshooting-workflows)
-- [Real-World Examples](#real-world-examples)
-- [Best Practices](#best-practices)
+- [strace — System Call Tracing](#strace%20—%20System%20Call%20Tracing)
+- [perf — Performance Analysis](#perf%20—%20Performance%20Analysis)
+- [tcpdump — Network Packet Capture](#tcpdump%20—%20Network%20Packet%20Capture)
+- [lsof — List Open Files](#lsof%20—%20List%20Open%20Files)
+- [ltrace — Library Call Tracing](#ltrace%20—%20Library%20Call%20Tracing)
+- [Tool Comparison](#Tool%20Comparison)
+- [Common strace Filters](#Common%20strace%20Filters)
+- [Troubleshooting Workflows](#Troubleshooting%20Workflows)
+- [Real-World Examples](#Real-World%20Examples)
+- [Best Practices](#Best%20Practices)
 
 ---
 

@@ -13,15 +13,15 @@ Order: 10
 
 ## Table of Contents / Оглавление
 
-- [Installation & Configuration](#installation-configuration)
-- [Domain Discovery & Joining](#domain-discovery-joining)
-- [Machine Account Management](#machine-account-management)
-- [Active Directory Authentication (Kerberos)](#active-directory-authentication-kerberos)
-- [Key Configuration Files](#key-configuration-files)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Troubleshooting & Tools](#troubleshooting-tools)
-- [Concepts Comparison](#concepts-comparison)
-- [Documentation Links](#documentation-links)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Domain Discovery & Joining](#Domain%20Discovery%20&%20Joining)
+- [Machine Account Management](#Machine%20Account%20Management)
+- [Active Directory Authentication (Kerberos)](#Active%20Directory%20Authentication%20(Kerberos))
+- [Key Configuration Files](#Key%20Configuration%20Files)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Concepts Comparison](#Concepts%20Comparison)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

@@ -8,14 +8,14 @@ Order: 24
 Comprehensive guide to installing and configuring VPN plugins for NetworkManager and standalone VPN clients for various VPN protocols (OpenVPN, OpenConnect, Fortinet/FortiGate, L2TP/IPSec, PPTP).
 
 ## Table of Contents
-- [OpenVPN](#openvpn)
-- [OpenConnect (Cisco AnyConnect)](#openconnect-cisco-anyconnect)
-- [Fortinet VPN](#fortinet-vpn)
-- [L2TP/IPSec](#l2tpipsec)
-- [PPTP](#pptp)
-- [WireGuard](#wireguard)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Comparison Tables](#comparison-tables-таблицы-сравнения)
+- [OpenVPN](#OpenVPN)
+- [OpenConnect (Cisco AnyConnect)](#OpenConnect%20(Cisco%20AnyConnect))
+- [Fortinet VPN](#Fortinet%20VPN)
+- [L2TP/IPSec](#L2TP/IPSec)
+- [PPTP](#PPTP)
+- [WireGuard](#WireGuard)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
 
 ---
 

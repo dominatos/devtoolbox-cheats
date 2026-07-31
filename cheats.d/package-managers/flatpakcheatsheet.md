@@ -4,13 +4,13 @@ Icon: 📦
 Order: 6
 
 ## Table of Contents
-- [Description](#description)
-- [Configuration](#configuration-конфигурация)
-- [Core Management](#core-management-основное-управление)
-- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
-- [Comparison: Flatpak vs Snap](#comparison-flatpak-vs-snap)
-- [Security](#security-безопасность)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Configuration](#️%20Configuration%20/%20Конфигурация)
+- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
+- [Comparison: Flatpak vs Snap](#Comparison:%20Flatpak%20vs%20Snap)
+- [Security](#Security%20/%20Безопасность)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

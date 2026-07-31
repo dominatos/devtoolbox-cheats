@@ -6,16 +6,16 @@ Order: 9
 > **jq** — a lightweight, command-line JSON processor written in C. It uses a functional, pipeline-oriented query language for slicing, filtering, mapping, and transforming structured JSON data. Widely used in CI/CD pipelines, API automation, Kubernetes/Docker scripting, and log analysis. Actively maintained; for YAML processing, use [`yq`](https://github.com/mikefarah/yq). Alternative: [`gojq`](https://github.com/itchyny/gojq) (Go reimplementation with YAML support).
 
 ## Table of Contents
-- [Basics](#basics-основы)
-- [Selecting & Filtering](#selecting-filtering-выбор-и-фильтрация)
-- [Transforming Data](#transforming-data-преобразование-данных)
-- [Arrays & Objects](#arrays-objects-массивы-и-объекты)
-- [Aggregation & Math](#aggregation-math-агрегация-и-математика)
-- [Advanced Queries](#advanced-queries-продвинутые-запросы)
-- [Output Formatting](#output-formatting-форматирование-вывода)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Advanced Techniques](#advanced-techniques-продвинутые-техники)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Basics](#Basics%20/%20Основы)
+- [Selecting & Filtering](#Selecting%20&%20Filtering%20/%20Выбор%20и%20фильтрация)
+- [Transforming Data](#Transforming%20Data%20/%20Преобразование%20данных)
+- [Arrays & Objects](#Arrays%20&%20Objects%20/%20Массивы%20и%20объекты)
+- [Aggregation & Math](#Aggregation%20&%20Math%20/%20Агрегация%20и%20математика)
+- [Advanced Queries](#Advanced%20Queries%20/%20Продвинутые%20запросы)
+- [Output Formatting](#Output%20Formatting%20/%20Форматирование%20вывода)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Advanced Techniques](#Advanced%20Techniques%20/%20Продвинутые%20техники)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
 
 ---
 

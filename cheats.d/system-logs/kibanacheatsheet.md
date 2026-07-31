@@ -29,11 +29,11 @@ Order: 5
 [Kibana Guide](https://www.elastic.co/guide/en/kibana/current/index.html) · [KQL Reference](https://www.elastic.co/guide/en/kibana/current/kuery-query.html) · [Elasticsearch Guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
 
 ## Table of Contents
-- [Discovery & Search](#discovery-search)
-- [Management](#management)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Troubleshooting](#troubleshooting)
-- [Logrotate for Kibana](#logrotate-for-kibana)
+- [Discovery & Search](#Discovery%20&%20Search)
+- [Management](#Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
+- [Logrotate for Kibana](#Logrotate%20for%20Kibana)
 
 ---
 

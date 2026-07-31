@@ -4,14 +4,14 @@ Icon: 📦
 Order: 1
 
 ## Table of Contents
-- [Description](#description)
-- [Configuration](#configuration-конфигурация)
-- [Core Management](#core-management-основное-управление)
-- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Comparison: Upgrade vs Dist-Upgrade](#comparison-upgrade-vs-dist-upgrade)
-- [Security](#security-безопасность)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Configuration](#️%20Configuration%20/%20Конфигурация)
+- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Comparison: Upgrade vs Dist-Upgrade](#Comparison:%20Upgrade%20vs%20Dist-Upgrade)
+- [Security](#Security%20/%20Безопасность)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

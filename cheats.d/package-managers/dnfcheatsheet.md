@@ -4,14 +4,14 @@ Icon: 📦
 Order: 2
 
 ## Table of Contents
-- [Description](#description)
-- [Configuration](#configuration-конфигурация)
-- [Core Management](#core-management-основное-управление)
-- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Comparison: DNF vs YUM](#comparison-dnf-vs-yum)
-- [Security](#security-безопасность)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Configuration](#️%20Configuration%20/%20Конфигурация)
+- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Comparison: DNF vs YUM](#Comparison:%20DNF%20vs%20YUM)
+- [Security](#Security%20/%20Безопасность)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

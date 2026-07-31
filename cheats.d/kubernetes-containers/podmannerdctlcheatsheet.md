@@ -17,15 +17,15 @@ This cheatsheet covers three container management tools: **Podman** — a daemon
 
 ## Table of Contents
 
-- [Podman Basics](#podman-basics)
-- [Podman Rootless Mode](#podman-rootless-mode)
-- [Podman Pods](#podman-pods)
-- [Podman Systemd Integration](#podman-systemd-integration)
-- [nerdctl Basics](#nerdctl-basics)
-- [crictl (CRI Debugging)](#crictl-cri-debugging)
-- [Sysadmin Essentials](#sysadmin-essentials)
-- [Logrotate Configuration](#logrotate-configuration)
-- [Documentation Links](#documentation-links)
+- [Podman Basics](#Podman%20Basics)
+- [Podman Rootless Mode](#Podman%20Rootless%20Mode)
+- [Podman Pods](#Podman%20Pods)
+- [Podman Systemd Integration](#Podman%20Systemd%20Integration)
+- [nerdctl Basics](#nerdctl%20Basics)
+- [crictl (CRI Debugging)](#crictl%20(CRI%20Debugging))
+- [Sysadmin Essentials](#Sysadmin%20Essentials)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

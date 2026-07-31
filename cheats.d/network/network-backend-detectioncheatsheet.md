@@ -8,18 +8,18 @@ Order: 25
 This cheatsheet provides a universal workflow to determine which network management backend (NetworkManager, systemd-networkd, Netplan, or legacy scripts) is controlling your network interfaces. Essential for troubleshooting network configuration conflicts on any Linux distribution (Ubuntu, Debian, RHEL, CentOS, Fedora).
 
 ## Table of Contents
-- [Quick Detection Workflow](#quick-detection-workflow-быстрая-проверка)
-- [Universal Backend Check](#universal-backend-check-универсальная-проверка-бэкенда)
-- [NetworkManager (NM)](#networkmanager-nm)
+- [Quick Detection Workflow](#Quick%20Detection%20Workflow%20/%20Быстрая%20проверка)
+- [Universal Backend Check](#Universal%20Backend%20Check%20/%20Универсальная%20проверка%20бэкенда)
+- [NetworkManager (NM)](#NetworkManager%20(NM))
 - [systemd-networkd](#systemd-networkd)
-- [Distro-Specific Layers](#distro-specific-layers-дистрибутив-специфичные-слои)
-    - [Netplan (Ubuntu/Debian)](#netplan-ubuntudebian)
-    - [Legacy: Ifupdown (Debian/Old Ubuntu)](#legacy-ifupdown-debianold-ubuntu)
-    - [Legacy: Sysconfig (RHEL/CentOS/Fedora)](#legacy-sysconfig-rhelcentosfedora)
-- [Interface Ownership](#interface-ownership-принадлежность-интерфейса)
-- [Routing Table](#step-4-check-routing-table-source-проверить-источник-таблицы-маршрутизации)
-- [Comparison Tables](#comparison-tables-таблицы-сравнения)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Distro-Specific Layers](#Distro-Specific%20Layers%20/%20Дистрибутив-специфичные%20слои)
+    - [Netplan (Ubuntu/Debian)](#Netplan%20(Ubuntu/Debian))
+    - [Legacy: Ifupdown (Debian/Old Ubuntu)](#Legacy:%20Ifupdown%20(Debian/Old%20Ubuntu))
+    - [Legacy: Sysconfig (RHEL/CentOS/Fedora)](#Legacy:%20Sysconfig%20(RHEL/CentOS/Fedora))
+- [Interface Ownership](#Interface%20Ownership%20/%20Принадлежность%20интерфейса)
+- [Routing Table](#Step%204:%20Check%20routing%20table%20source%20/%20Проверить%20источник%20таблицы%20маршрутизации)
+- [Comparison Tables](#Comparison%20Tables%20/%20Таблицы%20сравнения)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
 
 ---
 

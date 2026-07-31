@@ -6,20 +6,20 @@ Order: 11
 > **fzf** (Fuzzy Finder) — a general-purpose, interactive command-line fuzzy finder written in Go by Junegunn Choi. It reads lines from stdin and provides an interactive, filterable selection interface. Commonly used for file navigation, command history search, process management, Git workflows, and as a building block for custom shell functions. Actively maintained with frequent releases; no known alternatives match its versatility.
 
 ## Table of Contents
-- [Basics](#basics-основы)
-- [File & Directory Navigation](#file-directory-navigation-навигация-по-файлам-и-каталогам)
-- [Command History](#command-history-история-команд)
-- [Git Integration](#git-integration-интеграция-с-git)
-- [Process Management](#process-management-управление-процессами)
-- [Custom Preview](#custom-preview-настраиваемый-предпросмотр)
-- [Docker & Kubernetes](#docker-kubernetes)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Advanced Techniques](#advanced-techniques-продвинутые-техники)
-- [Keybindings & Options](#keybindings-options-клавиатурные-сокращения-и-опции)
-- [Color Schemes](#color-schemes-цветовые-схемы)
-- [Search Modes](#search-modes-режимы-поиска)
-- [Performance](#performance-производительность)
-- [Installation](#installation-установка)
+- [Basics](#Basics%20/%20Основы)
+- [File & Directory Navigation](#File%20&%20Directory%20Navigation%20/%20Навигация%20по%20файлам%20и%20каталогам)
+- [Command History](#Command%20History%20/%20История%20команд)
+- [Git Integration](#Git%20Integration%20/%20Интеграция%20с%20Git)
+- [Process Management](#Process%20Management%20/%20Управление%20процессами)
+- [Custom Preview](#️%20Custom%20Preview%20/%20Настраиваемый%20предпросмотр)
+- [Docker & Kubernetes](#Docker%20&%20Kubernetes)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Advanced Techniques](#Advanced%20Techniques%20/%20Продвинутые%20техники)
+- [Keybindings & Options](#Keybindings%20&%20Options%20/%20Клавиатурные%20сокращения%20и%20опции)
+- [Color Schemes](#Color%20Schemes%20/%20Цветовые%20схемы)
+- [Search Modes](#Search%20Modes%20/%20Режимы%20поиска)
+- [Performance](#Performance%20/%20Производительность)
+- [Installation](#️%20Installation%20/%20Установка)
 
 ---
 

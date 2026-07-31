@@ -11,13 +11,13 @@ Order: 3
 [journalctl(1)](https://man7.org/linux/man-pages/man1/journalctl.1.html) · [journald.conf(5)](https://man7.org/linux/man-pages/man5/journald.conf.5.html)
 
 ## Table of Contents
-- [Basic Viewing](#basic-viewing)
-- [Time Filters](#time-filters)
-- [Unit Filters](#unit-filters)
-- [Priority & Field Filters](#priority-field-filters)
-- [Output Formats](#output-formats)
-- [Maintenance](#maintenance)
-- [Troubleshooting](#troubleshooting)
+- [Basic Viewing](#Basic%20Viewing)
+- [Time Filters](#Time%20Filters)
+- [Unit Filters](#Unit%20Filters)
+- [Priority & Field Filters](#Priority%20&%20Field%20Filters)
+- [Output Formats](#Output%20Formats)
+- [Maintenance](#Maintenance)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 

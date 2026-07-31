@@ -10,15 +10,15 @@ Order: 1
 > Commvault v11 (Simpana) is a legacy product. Current versions are branded **Commvault Complete™ Backup & Recovery** (v2024+). The CLI and architecture remain similar but the web UI has been significantly modernized.
 
 ## Table of Contents
-- [Installation & Configuration](#installation-configuration)
-- [Core Management](#core-management)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Security & Auth](#security-auth)
-- [Performance Tuning](#performance-tuning)
-- [Database Protection](#database-protection)
-- [Backup & Restore](#backup-restore)
-- [Troubleshooting](#troubleshooting)
-- [Additional Notes](#additional-notes)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security & Auth](#Security%20&%20Auth)
+- [Performance Tuning](#Performance%20Tuning)
+- [Database Protection](#Database%20Protection)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Troubleshooting](#Troubleshooting)
+- [Additional Notes](#Additional%20Notes)
 
 ---
 

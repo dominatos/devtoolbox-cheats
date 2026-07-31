@@ -6,19 +6,19 @@ Order: 8
 > **yq** — a portable, lightweight YAML/JSON/XML/CSV/TSV processor written in Go by Mike Farah. It uses jq-like syntax for querying, modifying, and converting structured data. Heavily used in Kubernetes/Helm workflows, CI/CD pipelines, and infrastructure-as-code. Actively maintained with frequent releases. Note: there are two tools named `yq` — this cheatsheet covers the Go version ([mikefarah/yq](https://github.com/mikefarah/yq)), not the Python wrapper ([kislyuk/yq](https://github.com/kislyuk/yq)).
 
 ## Table of Contents
-- [Basics](#basics-основы)
-- [Reading & Querying](#reading-querying-чтение-и-запросы)
-- [Modifying YAML](#modifying-yaml-изменение-yaml)
-- [Arrays & Objects](#arrays-objects-массивы-и-объекты)
-- [Output Formats](#output-formats-форматы-вывода)
-- [Merging & Combining](#merging-combining-слияние-и-комбинирование)
-- [Kubernetes Examples](#kubernetes-examples-примеры-kubernetes)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Data Transformation](#data-transformation-преобразование-данных)
-- [Advanced Techniques](#advanced-techniques-продвинутые-техники)
-- [Tips & Tricks](#tips-tricks-советы-и-хитрости)
-- [Validation & Debugging](#validation-debugging-проверка-и-отладка)
-- [Installation](#installation-установка)
+- [Basics](#Basics%20/%20Основы)
+- [Reading & Querying](#Reading%20&%20Querying%20/%20Чтение%20и%20запросы)
+- [Modifying YAML](#️%20Modifying%20YAML%20/%20Изменение%20YAML)
+- [Arrays & Objects](#Arrays%20&%20Objects%20/%20Массивы%20и%20объекты)
+- [Output Formats](#Output%20Formats%20/%20Форматы%20вывода)
+- [Merging & Combining](#Merging%20&%20Combining%20/%20Слияние%20и%20комбинирование)
+- [Kubernetes Examples](#️%20Kubernetes%20Examples%20/%20Примеры%20Kubernetes)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Data Transformation](#Data%20Transformation%20/%20Преобразование%20данных)
+- [Advanced Techniques](#Advanced%20Techniques%20/%20Продвинутые%20техники)
+- [Tips & Tricks](#Tips%20&%20Tricks%20/%20Советы%20и%20хитрости)
+- [Validation & Debugging](#Validation%20&%20Debugging%20/%20Проверка%20и%20отладка)
+- [Installation](#️%20Installation%20/%20Установка)
 
 ---
 

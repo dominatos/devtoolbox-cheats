@@ -26,12 +26,12 @@ Chroot is a fundamental Unix concept (since V7 Unix, 1979) and is built into the
 [chroot(1)](https://man7.org/linux/man-pages/man1/chroot.1.html) · [chroot(2)](https://man7.org/linux/man-pages/man2/chroot.2.html) · [mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) · [arch-chroot](https://man.archlinux.org/man/arch-chroot.8)
 
 ## Table of Contents
-- [Core Management](#core-management-основное-управление)
-- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
-- [Comparison: BIOS vs UEFI](#comparison-bios-vs-uefi-сравнение-bios-и-uefi)
-- [Comparison: Chroot vs Alternatives](#comparison-chroot-vs-alternatives-сравнение-chroot-и-альтернативы)
-- [Troubleshooting & Tips](#troubleshooting-tips-устранение-неполадок-и-советы)
-- [Production Runbook: System Recovery via Chroot](#production-runbook-system-recovery-via-chroot)
+- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
+- [Comparison: BIOS vs UEFI](#Comparison:%20BIOS%20vs%20UEFI%20/%20Сравнение:%20BIOS%20и%20UEFI)
+- [Comparison: Chroot vs Alternatives](#Comparison:%20Chroot%20vs%20Alternatives%20/%20Сравнение:%20Chroot%20и%20альтернативы)
+- [Troubleshooting & Tips](#Troubleshooting%20&%20Tips%20/%20Устранение%20неполадок%20и%20советы)
+- [Production Runbook: System Recovery via Chroot](#Production%20Runbook:%20System%20Recovery%20via%20Chroot)
 
 ---
 

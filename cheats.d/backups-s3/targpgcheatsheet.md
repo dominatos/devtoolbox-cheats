@@ -4,15 +4,15 @@ Icon: 🗄️
 Order: 5
 
 ## Table of Contents
-- [tar Basics](#tar-basics)
-- [GPG Encryption](#gpg-encryption)
-- [Combined tar + GPG](#combined-tar-gpg)
-- [Compression Options](#compression-options)
-- [Incremental Backups](#incremental-backups)
-- [Split Archives](#split-archives)
-- [Remote Backups](#remote-backups)
-- [Sysadmin Patterns](#sysadmin-patterns)
-- [Troubleshooting](#troubleshooting)
+- [tar Basics](#tar%20Basics)
+- [GPG Encryption](#GPG%20Encryption)
+- [Combined tar + GPG](#Combined%20tar%20+%20GPG)
+- [Compression Options](#Compression%20Options)
+- [Incremental Backups](#Incremental%20Backups)
+- [Split Archives](#Split%20Archives)
+- [Remote Backups](#Remote%20Backups)
+- [Sysadmin Patterns](#Sysadmin%20Patterns)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 

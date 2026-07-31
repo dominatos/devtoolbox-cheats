@@ -23,10 +23,10 @@ Order: 4
 
 ## 📚 Table of Contents / Содержание
 
-1. [Timer Basics](#timer-basics)
-2. [Creating Timers](#creating-timers)
-3. [Management](#management)
-4. [Real-World Examples](#real-world-examples)
+1. [Timer Basics](#Timer%20Basics)
+2. [Creating Timers](#Creating%20Timers)
+3. [Management](#Management)
+4. [Real-World Examples](#Real-World%20Examples)
 
 ---
 

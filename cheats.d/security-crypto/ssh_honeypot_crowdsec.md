@@ -13,18 +13,18 @@ Order: 99
 
 ## 📚 Table of Contents / Содержание
 
-1. [Overview](#1-overview)
-2. [Install Docker](#2-install-docker)
-3. [Move Real SSH to Port 2222](#3-move-real-ssh-to-port-2222)
-4. [Install Cowrie Honeypot](#4-install-cowrie-honeypot)
-5. [Save Honeypot Logs](#5-save-honeypot-logs)
-6. [Install CrowdSec](#6-install-crowdsec)
-7. [Install Cowrie Parser](#7-install-cowrie-parser)
-8. [Community Integration](#8-community-integration)
-9. [Web Dashboard](#9-web-dashboard)
-10. [Verify Detection & Firewall](#10-verify-detection-firewall)
-11. [Cowrie Log Analysis Script](#11-cowrie-log-analysis-script)
-12. [Documentation Links](#12-documentation-links)
+1. [Overview](#1.%20Overview)
+2. [Install Docker](#2.%20Install%20Docker)
+3. [Move Real SSH to Port 2222](#3.%20Move%20Real%20SSH%20to%20Port%202222)
+4. [Install Cowrie Honeypot](#4.%20Install%20Cowrie%20Honeypot)
+5. [Save Honeypot Logs](#5.%20Save%20Honeypot%20Logs)
+6. [Install CrowdSec](#6.%20Install%20CrowdSec)
+7. [Install Cowrie Parser](#7.%20Install%20Cowrie%20Parser)
+8. [Community Integration](#8.%20Community%20Integration)
+9. [Web Dashboard](#9.%20Web%20Dashboard)
+10. [Verify Detection & Firewall](#10.%20Verify%20Detection%20&%20Firewall)
+11. [Cowrie Log Analysis Script](#11.%20Cowrie%20Log%20Analysis%20Script)
+12. [Documentation Links](#12.%20Documentation%20Links)
 
 ---
 

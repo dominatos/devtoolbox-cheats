@@ -14,15 +14,15 @@ Order: 30
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation-configuration)
-2. [Key Generation](#2-key-generation)
-3. [Key Distribution](#3-key-distribution)
-4. [Client Configuration](#4-client-configuration)
-5. [Server Configuration](#5-server-configuration)
-6. [Security Hardening](#6-security-hardening)
-7. [Troubleshooting & Tools](#7-troubleshooting-tools)
-8. [Comparison Tables](#8-comparison-tables)
-9. [Documentation Links](#9-documentation-links)
+1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
+2. [Key Generation](#2.%20Key%20Generation)
+3. [Key Distribution](#3.%20Key%20Distribution)
+4. [Client Configuration](#4.%20Client%20Configuration)
+5. [Server Configuration](#5.%20Server%20Configuration)
+6. [Security Hardening](#6.%20Security%20Hardening)
+7. [Troubleshooting & Tools](#7.%20Troubleshooting%20&%20Tools)
+8. [Comparison Tables](#8.%20Comparison%20Tables)
+9. [Documentation Links](#9.%20Documentation%20Links)
 
 ---
 

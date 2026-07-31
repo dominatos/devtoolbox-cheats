@@ -7,16 +7,16 @@ Order: 1
 
 ## 📚 Table of Contents / Содержание
 
-1. [Navigation](#navigation-навигация)
-2. [Files & Directories](#files-directories-файлы-и-папки)
-3. [View & Edit](#view-edit-просмотр-и-редактирование)
-4. [Nano Editor](#nano-editor-редактор-nano)
-5. [Privileges](#privileges-права-и-привилегии)
-6. [Package Management (APT)](#package-management-apt-управление-пакетами-apt)
-7. [Process Management](#process-management-управление-процессами)
-8. [System Information](#system-information-информация-о-системе)
-9. [Network Basics](#network-basics-основы-сети)
-10. [Helpful Tips](#helpful-tips-полезные-советы)
+1. [Navigation](#Navigation%20/%20Навигация)
+2. [Files & Directories](#Files%20&%20Directories%20/%20Файлы%20и%20Папки)
+3. [View & Edit](#View%20&%20Edit%20/%20Просмотр%20и%20Редактирование)
+4. [Nano Editor](#Nano%20Editor%20/%20Редактор%20Nano)
+5. [Privileges](#Privileges%20/%20Права%20и%20Привилегии)
+6. [Package Management (APT)](#Package%20Management%20(APT)%20/%20Управление%20Пакетами%20(APT))
+7. [Process Management](#Process%20Management%20/%20Управление%20Процессами)
+8. [System Information](#System%20Information%20/%20Информация%20о%20Системе)
+9. [Network Basics](#Network%20Basics%20/%20Основы%20Сети)
+10. [Helpful Tips](#Helpful%20Tips%20/%20Полезные%20Советы)
 
 ---
 

@@ -23,17 +23,17 @@ Order: 3
 
 ## Table of Contents
 
-- [Description](#description)
-- [Installation & Configuration](#installation-configuration)
-- [Core Management](#core-management)
-- [Deployment](#deployment)
-- [Configuration Files](#configuration-files)
-- [JVM Tuning](#jvm-tuning)
-- [Connectors & Ports](#connectors-ports)
-- [Security](#security)
-- [Logs & Monitoring](#logs-monitoring)
-- [Troubleshooting & Tools](#troubleshooting-tools)
-- [Logrotate Configuration](#logrotate-configuration-конфигурация-logrotate)
+- [Description](#Description)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Deployment](#Deployment)
+- [Configuration Files](#Configuration%20Files)
+- [JVM Tuning](#JVM%20Tuning)
+- [Connectors & Ports](#Connectors%20&%20Ports)
+- [Security](#Security)
+- [Logs & Monitoring](#Logs%20&%20Monitoring)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration%20/%20Конфигурация%20Logrotate)
 
 ---
 

@@ -25,22 +25,22 @@ Order: 1
 
 ## Table of Contents
 
-- [Description](#description)
-- [Installation & Configuration](#installation-configuration)
-- [Core Management](#core-management)
-- [Basic Reverse Proxy](#basic-reverse-proxy)
-- [Load Balancing](#load-balancing)
-- [HTTPS & SSL/TLS](#https-ssltls)
-- [WebSocket & Special Protocols](#websocket-special-protocols)
-- [Static Files & Optimization](#static-files-optimization)
-- [Security & Access Control](#security-access-control)
-- [Caching & Performance](#caching-performance)
-- [Advanced Features](#advanced-features)
-- [Production Configuration](#production-configuration)
-- [Logs & Monitoring](#logs-monitoring)
-- [Troubleshooting & Tools](#troubleshooting-tools)
-- [Logrotate Configuration](#logrotate-configuration)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Basic Reverse Proxy](#Basic%20Reverse%20Proxy)
+- [Load Balancing](#Load%20Balancing)
+- [HTTPS & SSL/TLS](#HTTPS%20&%20SSL/TLS)
+- [WebSocket & Special Protocols](#WebSocket%20&%20Special%20Protocols)
+- [Static Files & Optimization](#Static%20Files%20&%20Optimization)
+- [Security & Access Control](#Security%20&%20Access%20Control)
+- [Caching & Performance](#Caching%20&%20Performance)
+- [Advanced Features](#Advanced%20Features)
+- [Production Configuration](#Production%20Configuration)
+- [Logs & Monitoring](#Logs%20&%20Monitoring)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

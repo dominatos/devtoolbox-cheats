@@ -23,12 +23,12 @@ Order: 9
 
 ## 📚 Table of Contents / Содержание
 
-1. [date Command](#date-command)
+1. [date Command](#date%20Command)
 2. [timedatectl](#timedatectl)
-3. [Timezones](#timezones)
-4. [Format Specifiers](#format-specifiers)
-5. [Real-World Examples](#real-world-examples)
-6. [Troubleshooting](#troubleshooting)
+3. [Timezones](#Timezones)
+4. [Format Specifiers](#Format%20Specifiers)
+5. [Real-World Examples](#Real-World%20Examples)
+6. [Troubleshooting](#Troubleshooting)
 
 ---
 

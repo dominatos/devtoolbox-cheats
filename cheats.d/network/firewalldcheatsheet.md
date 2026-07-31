@@ -10,16 +10,16 @@ Order: 12
 📚 **Official Docs / Официальная документация:** [firewalld.org](https://firewalld.org/documentation/)
 
 ## Table of Contents
-- [Installation & Configuration](#installation-configuration-установка-и-настройка)
-- [Basic Commands](#basic-commands-базовые-команды)
-- [Zone Management](#zone-management-управление-зонами)
-- [Service Management](#service-management-управление-сервисами)
-- [Port Management](#port-management-управление-портами)
-- [Rich Rules](#rich-rules-сложные-правила)
-- [Direct Rules](#direct-rules-прямые-правила)
-- [Masquerading & Port Forwarding](#masquerading-port-forwarding-маскарадинг-и-проброс-портов)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [Installation & Configuration](#Installation%20&%20Configuration%20/%20Установка%20и%20настройка)
+- [Basic Commands](#Basic%20Commands%20/%20Базовые%20команды)
+- [Zone Management](#️%20Zone%20Management%20/%20Управление%20зонами)
+- [Service Management](#Service%20Management%20/%20Управление%20сервисами)
+- [Port Management](#Port%20Management%20/%20Управление%20портами)
+- [Rich Rules](#Rich%20Rules%20/%20Сложные%20правила)
+- [Direct Rules](#Direct%20Rules%20/%20Прямые%20правила)
+- [Masquerading & Port Forwarding](#Masquerading%20&%20Port%20Forwarding%20/%20Маскарадинг%20и%20проброс%20портов)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
 
 ---
 

@@ -17,17 +17,17 @@ Order: 99
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#installation-configuration)
-2. [Core Management](#core-management)
-3. [Sysadmin Operations](#sysadmin-operations)
-4. [Security](#security)
-5. [Persistence](#persistence)
-6. [Monitoring & Performance](#monitoring-performance)
-7. [Data Structures](#data-structures)
-8. [Caching Patterns](#caching-patterns)
-9. [Troubleshooting & Tools](#troubleshooting-tools)
-10. [Backup & Restore](#backup-restore)
-11. [Logrotate Configuration](#logrotate-configuration)
+1. [Installation & Configuration](#Installation%20&%20Configuration)
+2. [Core Management](#Core%20Management)
+3. [Sysadmin Operations](#Sysadmin%20Operations)
+4. [Security](#Security)
+5. [Persistence](#Persistence)
+6. [Monitoring & Performance](#Monitoring%20&%20Performance)
+7. [Data Structures](#Data%20Structures)
+8. [Caching Patterns](#Caching%20Patterns)
+9. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+10. [Backup & Restore](#Backup%20&%20Restore)
+11. [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 

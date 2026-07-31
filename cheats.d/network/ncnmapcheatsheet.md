@@ -10,12 +10,12 @@ Order: 4
 📚 **Official Docs / Официальная документация:** [nmap.org](https://nmap.org/docs.html) · [ncat(1)](https://nmap.org/ncat/guide/)
 
 ## Table of Contents
-- [netcat — Swiss Army Knife](#netcat-swiss-army-knife)
-- [nmap — Port Scanner](#nmap-port-scanner)
-- [Advanced Scanning](#advanced-scanning-продвинутое-сканирование)
-- [NSE Scripts](#nse-scripts-скрипты-nse)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
+- [netcat — Swiss Army Knife](#netcat%20—%20Swiss%20Army%20Knife)
+- [nmap — Port Scanner](#nmap%20—%20Port%20Scanner)
+- [Advanced Scanning](#Advanced%20Scanning%20/%20Продвинутое%20сканирование)
+- [NSE Scripts](#NSE%20Scripts%20/%20Скрипты%20NSE)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
 
 ---
 

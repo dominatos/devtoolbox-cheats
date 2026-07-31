@@ -23,13 +23,13 @@ Order: 1
 ---
 
 ## Table of Contents
-- [Installation](#installation)
-- [Basic Commands](#basic-commands)
-- [Compression Levels](#compression-levels)
-- [Advanced Usage](#advanced-usage)
-- [Backup Operations](#backup-operations)
-- [Best Practices](#best-practices)
-- [Documentation Links](#documentation-links)
+- [Installation](#Installation)
+- [Basic Commands](#Basic%20Commands)
+- [Compression Levels](#Compression%20Levels)
+- [Advanced Usage](#Advanced%20Usage)
+- [Backup Operations](#Backup%20Operations)
+- [Best Practices](#Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

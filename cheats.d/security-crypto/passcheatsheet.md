@@ -13,14 +13,14 @@ Order: 5
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation-configuration)
-2. [Core Management](#2-core-management)
-3. [Organization & Search](#3-organization-search)
-4. [Git Integration](#4-git-integration)
-5. [Extensions](#5-extensions)
-6. [Real-World Examples](#6-real-world-examples)
-7. [Best Practices](#7-best-practices)
-8. [Documentation Links](#8-documentation-links)
+1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
+2. [Core Management](#2.%20Core%20Management)
+3. [Organization & Search](#3.%20Organization%20&%20Search)
+4. [Git Integration](#4.%20Git%20Integration)
+5. [Extensions](#5.%20Extensions)
+6. [Real-World Examples](#6.%20Real-World%20Examples)
+7. [Best Practices](#7.%20Best%20Practices)
+8. [Documentation Links](#8.%20Documentation%20Links)
 
 ---
 

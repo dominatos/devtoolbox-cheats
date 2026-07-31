@@ -18,13 +18,13 @@ Order: 1
 [systemctl(1)](https://man7.org/linux/man-pages/man1/systemctl.1.html) · [systemd(1)](https://man7.org/linux/man-pages/man1/systemd.1.html) · [systemd.service(5)](https://man7.org/linux/man-pages/man5/systemd.service.5.html) · [systemd.unit(5)](https://man7.org/linux/man-pages/man5/systemd.unit.5.html)
 
 ## Table of Contents
-- [Core Management](#core-management)
-- [Unit File Operations](#unit-file-operations)
-- [Journal & Logs](#journal-logs)
-- [Advanced Operations](#advanced-operations)
-- [Sandboxing & Security](#sandboxing-security)
-- [Analysis & Troubleshooting](#analysis-troubleshooting)
-- [Unit Type Comparison](#unit-type-comparison)
+- [Core Management](#Core%20Management)
+- [Unit File Operations](#Unit%20File%20Operations)
+- [Journal & Logs](#Journal%20&%20Logs)
+- [Advanced Operations](#Advanced%20Operations)
+- [Sandboxing & Security](#Sandboxing%20&%20Security)
+- [Analysis & Troubleshooting](#Analysis%20&%20Troubleshooting)
+- [Unit Type Comparison](#Unit%20Type%20Comparison)
 
 ---
 

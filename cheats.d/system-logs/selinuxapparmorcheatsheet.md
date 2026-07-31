@@ -28,10 +28,10 @@ Order: 7
 
 ## 📚 Table of Contents / Содержание
 
-1. [SELinux](#selinux)
-2. [AppArmor](#apparmor)
-3. [Troubleshooting](#troubleshooting)
-4. [Real-World Examples](#real-world-examples)
+1. [SELinux](#SELinux)
+2. [AppArmor](#AppArmor)
+3. [Troubleshooting](#Troubleshooting)
+4. [Real-World Examples](#Real-World%20Examples)
 
 ---
 

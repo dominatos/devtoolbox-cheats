@@ -22,11 +22,11 @@ Order: 98
 
 ## 📚 Table of Contents / Содержание
 
-1. [nice — CPU Priority](#ionice-nice-cpu-io-priority-control)
-2. [renice — Change Priority](#renice-change-priority)
-3. [ionice — I/O Priority](#ionice-nice-cpu-io-priority-control)
-4. [Combined Usage](#combined-usage)
-5. [Best Practices](#best-practices)
+1. [nice — CPU Priority](#ionice%20&%20nice%20—%20CPU%20&%20I/O%20Priority%20Control)
+2. [renice — Change Priority](#renice%20—%20Change%20Priority)
+3. [ionice — I/O Priority](#ionice%20&%20nice%20—%20CPU%20&%20I/O%20Priority%20Control)
+4. [Combined Usage](#Combined%20Usage)
+5. [Best Practices](#Best%20Practices)
 
 ---
 

@@ -4,15 +4,15 @@ Icon: 🗄️
 Order: 11
 
 ## Table of Contents
-- [Installation & Authentication](#installation-authentication)
-- [Copy Operations](#copy-operations)
-- [Sync Operations](#sync-operations)
-- [Storage Tiers](#storage-tiers)
-- [Blob Lifecycle](#blob-lifecycle)
-- [Performance Tuning](#performance-tuning)
-- [Benchmark Mode](#benchmark-mode)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Troubleshooting](#troubleshooting)
+- [Installation & Authentication](#Installation%20&%20Authentication)
+- [Copy Operations](#Copy%20Operations)
+- [Sync Operations](#Sync%20Operations)
+- [Storage Tiers](#Storage%20Tiers)
+- [Blob Lifecycle](#Blob%20Lifecycle)
+- [Performance Tuning](#Performance%20Tuning)
+- [Benchmark Mode](#Benchmark%20Mode)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 

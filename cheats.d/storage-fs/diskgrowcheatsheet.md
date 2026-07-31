@@ -20,15 +20,15 @@ The workflow follows a strict layer-by-layer approach: **disk → partition → 
 [growpart(1)](https://manpages.debian.org/testing/cloud-guest-utils/growpart.1.en.html) · [resize2fs(8)](https://man7.org/linux/man-pages/man8/resize2fs.8.html) · [xfs_growfs(8)](https://man7.org/linux/man-pages/man8/xfs_growfs.8.html) · [parted(8)](https://man7.org/linux/man-pages/man8/parted.8.html)
 
 ## Table of Contents
-- [Partition Growth](#partition-growth-расширение-раздела)
-- [Filesystem Expansion](#filesystem-expansion-расширение-файловой-системы)
-- [LVM Growth](#lvm-growth-расширение-lvm)
-- [Cloud Providers](#cloud-providers-облачные-провайдеры)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Best Practices](#best-practices-лучшие-практики)
-- [Filesystem Resize Comparison](#filesystem-resize-comparison-сравнение-возможностей-изменения-размера-фс)
-- [Typical Growth Workflow](#typical-growth-workflow-типичный-процесс-расширения)
+- [Partition Growth](#Partition%20Growth%20/%20Расширение%20раздела)
+- [Filesystem Expansion](#Filesystem%20Expansion%20/%20Расширение%20файловой%20системы)
+- [LVM Growth](#LVM%20Growth%20/%20Расширение%20LVM)
+- [Cloud Providers](#Cloud%20Providers%20/%20Облачные%20провайдеры)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Best Practices](#Best%20Practices%20/%20Лучшие%20практики)
+- [Filesystem Resize Comparison](#Filesystem%20Resize%20Comparison%20/%20Сравнение%20возможностей%20изменения%20размера%20ФС)
+- [Typical Growth Workflow](#Typical%20Growth%20Workflow%20/%20Типичный%20процесс%20расширения)
 
 ---
 

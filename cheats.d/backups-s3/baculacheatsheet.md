@@ -4,17 +4,17 @@ Icon: 🗄️
 Order: 6
 
 ## Table of Contents
-- [Architecture Overview](#architecture-overview)
-- [Installation](#installation)
-- [bconsole Basics](#bconsole-basics)
-- [Job Management](#job-management)
-- [Volume & Pool Management](#volume-pool-management)
-- [Restore Operations](#restore-operations)
-- [Catalog Queries](#catalog-queries)
-- [Client Operations](#client-operations)
-- [Configuration Essentials](#configuration-essentials)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Troubleshooting](#troubleshooting)
+- [Architecture Overview](#Architecture%20Overview)
+- [Installation](#Installation)
+- [bconsole Basics](#bconsole%20Basics)
+- [Job Management](#Job%20Management)
+- [Volume & Pool Management](#Volume%20&%20Pool%20Management)
+- [Restore Operations](#Restore%20Operations)
+- [Catalog Queries](#Catalog%20Queries)
+- [Client Operations](#Client%20Operations)
+- [Configuration Essentials](#Configuration%20Essentials)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 

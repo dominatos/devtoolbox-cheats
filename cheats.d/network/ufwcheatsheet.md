@@ -10,15 +10,15 @@ Order: 16
 📚 **Official Docs / Официальная документация:** [UFW Community Help](https://help.ubuntu.com/community/UFW)
 
 ## Table of Contents
-- [Basic Commands](#basic-commands)
-- [Allow Rules](#allow-rules)
-- [Deny Rules](#deny-rules)
-- [Delete Rules](#delete-rules)
-- [Advanced Rules](#advanced-rules)
-- [Application Profiles](#application-profiles)
-- [Logging & Status](#logging-status)
-- [Real-World Examples](#real-world-examples)
-- [Reference Tables](#reference-tables)
+- [Basic Commands](#Basic%20Commands)
+- [Allow Rules](#Allow%20Rules)
+- [Deny Rules](#Deny%20Rules)
+- [Delete Rules](#Delete%20Rules)
+- [Advanced Rules](#Advanced%20Rules)
+- [Application Profiles](#Application%20Profiles)
+- [Logging & Status](#Logging%20&%20Status)
+- [Real-World Examples](#Real-World%20Examples)
+- [Reference Tables](#Reference%20Tables)
 
 ---
 

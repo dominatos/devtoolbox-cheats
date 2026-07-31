@@ -7,18 +7,18 @@ Order: 6
 
 ## 📚 Table of Contents / Содержание
 
-1. [Description](#description)
-2. [Installation & Configuration](#installation-configuration)
-3. [Core Management](#core-management)
-4. [Backends & Hostgroups](#backends-hostgroups)
-5. [Query Rules & Routing](#query-rules-routing)
-6. [Connection Pooling](#connection-pooling)
-7. [Sysadmin Operations](#sysadmin-operations)
-8. [Security](#security)
-9. [Monitoring & Stats](#monitoring-stats)
-10. [Backup & Restore](#backup-restore)
-11. [Troubleshooting & Tools](#troubleshooting-tools)
-12. [Logrotate Configuration](#logrotate-configuration)
+1. [Description](#Description)
+2. [Installation & Configuration](#Installation%20&%20Configuration)
+3. [Core Management](#Core%20Management)
+4. [Backends & Hostgroups](#Backends%20&%20Hostgroups)
+5. [Query Rules & Routing](#Query%20Rules%20&%20Routing)
+6. [Connection Pooling](#Connection%20Pooling)
+7. [Sysadmin Operations](#Sysadmin%20Operations)
+8. [Security](#Security)
+9. [Monitoring & Stats](#Monitoring%20&%20Stats)
+10. [Backup & Restore](#Backup%20&%20Restore)
+11. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+12. [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 
@@ -305,7 +305,7 @@ ProxySQL uses **active health checks** to monitor backend servers:
 | **Galera check** | `wsrep_*` status variables / Статусные переменные кластера | `mysql-monitor_galera_healthcheck_interval` |
 
 > [!NOTE]
-> All health checks require a dedicated **monitor user** on every backend (see [Security](#security) section). ProxySQL **shuns** backends that fail consecutive checks automatically.
+> All health checks require a dedicated **monitor user** on every backend (see [Security](#Security) section). ProxySQL **shuns** backends that fail consecutive checks automatically.
 
 ---
 

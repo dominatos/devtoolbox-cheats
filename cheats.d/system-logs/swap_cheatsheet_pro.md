@@ -19,17 +19,17 @@ Order: 11
 - **zram** and **zswap** are modern complements, not always full replacements for disk-backed swap
 
 ## Table of Contents
-- [Overview](#overview)
-- [Installation & Configuration](#installation-configuration)
-- [Core Management](#core-management)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Performance Tuning](#performance-tuning)
-- [Security](#security)
-- [Backup & Restore](#backup-restore)
-- [Troubleshooting & Tools](#troubleshooting-tools)
-- [Production Runbooks](#production-runbooks)
-- [Additional Notes](#additional-notes)
-- [Documentation](#documentation)
+- [Overview](#Overview)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Performance Tuning](#Performance%20Tuning)
+- [Security](#Security)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Production Runbooks](#Production%20Runbooks)
+- [Additional Notes](#Additional%20Notes)
+- [Documentation](#Documentation)
 
 ---
 

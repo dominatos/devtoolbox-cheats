@@ -18,16 +18,16 @@ ACLs are implemented via POSIX.1e (withdrawn draft) and are supported on all maj
 [acl(5)](https://man7.org/linux/man-pages/man5/acl.5.html) · [getfacl(1)](https://man7.org/linux/man-pages/man1/getfacl.1.html) · [setfacl(1)](https://man7.org/linux/man-pages/man1/setfacl.1.html)
 
 ## Table of Contents
-- [Installation & Configuration](#installation-configuration)
-- [Basic Commands](#basic-commands-основные-команды)
-- [ACL Symbols and Values](#acl-symbols-and-values-символы-и-значения-acl)
-- [Usage Examples](#usage-examples-примеры-использования)
-- [Default ACLs (Inheritance)](#default-acls-inheritance-acl-по-умолчанию-наследование)
-- [ACL Mask](#acl-mask-маска-acl)
-- [Utilities and Useful Flags](#utilities-and-useful-flags-утилиты-и-полезные-флаги)
-- [Combining with chmod](#combining-with-chmod-совмещение-с-chmod)
-- [Backup & Restore ACLs](#backup-restore-acls-резервное-копирование-и-восстановление-acl)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Basic Commands](#Basic%20Commands%20/%20Основные%20команды)
+- [ACL Symbols and Values](#ACL%20Symbols%20and%20Values%20/%20Символы%20и%20значения%20ACL)
+- [Usage Examples](#Usage%20Examples%20/%20Примеры%20использования)
+- [Default ACLs (Inheritance)](#Default%20ACLs%20(Inheritance)%20/%20ACL%20по%20умолчанию%20(Наследование))
+- [ACL Mask](#ACL%20Mask%20/%20Маска%20ACL)
+- [Utilities and Useful Flags](#Utilities%20and%20Useful%20Flags%20/%20Утилиты%20и%20полезные%20флаги)
+- [Combining with chmod](#Combining%20with%20chmod%20/%20Совмещение%20с%20chmod)
+- [Backup & Restore ACLs](#Backup%20&%20Restore%20ACLs%20/%20Резервное%20копирование%20и%20восстановление%20ACL)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
 
 ---
 

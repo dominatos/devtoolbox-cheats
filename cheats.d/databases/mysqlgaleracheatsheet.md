@@ -17,13 +17,13 @@ Order: 15
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#installation-configuration)
-2. [Core Management & UID](#core-management-uid)
-3. [Sysadmin Operations](#sysadmin-operations)
-4. [Security](#security)
-5. [Backup & Restore](#backup-restore)
-6. [Troubleshooting & Tools](#troubleshooting-tools)
-7. [Logrotate Configuration](#logrotate-configuration)
+1. [Installation & Configuration](#Installation%20&%20Configuration)
+2. [Core Management & UID](#Core%20Management%20&%20UID)
+3. [Sysadmin Operations](#Sysadmin%20Operations)
+4. [Security](#Security)
+5. [Backup & Restore](#Backup%20&%20Restore)
+6. [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+7. [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 

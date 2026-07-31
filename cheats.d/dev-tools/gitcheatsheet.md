@@ -15,16 +15,16 @@ Order: 1
 ---
 
 ## Table of Contents
-- [Setup & Initialization](#setup-initialization-настройка-и-инициализация)
-- [Basic Workflow](#basic-workflow-базовый-рабочий-процесс)
-- [Branching & Merging](#branching-merging-ветки-и-слияние)
-- [Remote Operations](#remote-operations-удалённые-операции)
-- [Stashing](#stashing-временное-сохранение)
-- [History & Logs](#history-logs-история-и-логи)
-- [Undoing Changes](#undoing-changes-отмена-изменений)
-- [Tags](#tags-теги)
-- [Real-World Examples](#real-world-examples-примеры-из-практики)
-- [Tips & Best Practices](#tips-best-practices-советы-и-лучшие-практики)
+- [Setup & Initialization](#️%20Setup%20&%20Initialization%20/%20Настройка%20и%20инициализация)
+- [Basic Workflow](#Basic%20Workflow%20/%20Базовый%20рабочий%20процесс)
+- [Branching & Merging](#Branching%20&%20Merging%20/%20Ветки%20и%20слияние)
+- [Remote Operations](#Remote%20Operations%20/%20Удалённые%20операции)
+- [Stashing](#Stashing%20/%20Временное%20сохранение)
+- [History & Logs](#History%20&%20Logs%20/%20История%20и%20логи)
+- [Undoing Changes](#️%20Undoing%20Changes%20/%20Отмена%20изменений)
+- [Tags](#️%20Tags%20/%20Теги)
+- [Real-World Examples](#Real-World%20Examples%20/%20Примеры%20из%20практики)
+- [Tips & Best Practices](#Tips%20&%20Best%20Practices%20/%20Советы%20и%20лучшие%20практики)
 
 ---
 

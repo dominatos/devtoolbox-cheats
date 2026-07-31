@@ -13,15 +13,15 @@ Order: 13
 > `iptables` is legacy. For new deployments, use `nftables` — see the [nftables cheatsheet](nftcheatsheet.md) and [migration guide](iptablesnfttranslatecheatsheet.md).
 
 ## Table of Contents
-- [Basics](#basics-основы)
-- [List & View Rules](#list-view-rules-просмотр-правил)
-- [INPUT Chain](#input-chain-входящий-трафик)
-- [OUTPUT Chain](#output-chain-исходящий-трафик)
-- [FORWARD Chain](#forward-chain-пересылка)
-- [NAT & Port Forwarding](#nat-port-forwarding-nat-и-проброс-портов)
-- [Saving & Restoring](#saving-restoring-сохранение-и-восстановление)
-- [Common Patterns](#common-patterns-распространённые-шаблоны)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
+- [Basics](#Basics%20/%20Основы)
+- [List & View Rules](#List%20&%20View%20Rules%20/%20Просмотр%20правил)
+- [INPUT Chain](#⬇️%20INPUT%20Chain%20/%20Входящий%20трафик)
+- [OUTPUT Chain](#⬆️%20OUTPUT%20Chain%20/%20Исходящий%20трафик)
+- [FORWARD Chain](#FORWARD%20Chain%20/%20Пересылка)
+- [NAT & Port Forwarding](#NAT%20&%20Port%20Forwarding%20/%20NAT%20и%20проброс%20портов)
+- [Saving & Restoring](#Saving%20&%20Restoring%20/%20Сохранение%20и%20восстановление)
+- [Common Patterns](#Common%20Patterns%20/%20Распространённые%20шаблоны)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
 
 ---
 

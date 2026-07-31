@@ -25,18 +25,18 @@ Order: 5
 
 ## Table of Contents
 
-- [Description](#description)
-- [Installation & Configuration](#installation-configuration)
-- [Core Management](#core-management)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Core Concepts](#core-concepts)
-- [Configuration Deep Dive](#configuration-deep-dive)
-- [Security](#security)
-- [Optimization & Features](#optimization-features)
-- [Production Scenarios & Templates](#production-scenarios-templates)
-- [Troubleshooting & Tools](#troubleshooting-tools)
-- [Logrotate Configuration](#logrotate-configuration)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Core Concepts](#Core%20Concepts)
+- [Configuration Deep Dive](#Configuration%20Deep%20Dive)
+- [Security](#Security)
+- [Optimization & Features](#Optimization%20&%20Features)
+- [Production Scenarios & Templates](#Production%20Scenarios%20&%20Templates)
+- [Troubleshooting & Tools](#Troubleshooting%20&%20Tools)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

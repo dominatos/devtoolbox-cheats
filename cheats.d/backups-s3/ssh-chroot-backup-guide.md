@@ -6,12 +6,12 @@ Order: 15
 # Secure SSH Chroot Backup Server Configuration
 
 ## Table of Contents
-- [Architecture Overview](#architecture-overview)
-- [Client-Side Key Generation](#client-side-key-generation)
-- [Server-Side Configuration](#server-side-configuration)
-- [Verification & Path Mapping](#verification-path-mapping)
-- [Integration with Rclone](#integration-with-rclone)
-- [Documentation Links](#documentation-links)
+- [Architecture Overview](#Architecture%20Overview)
+- [Client-Side Key Generation](#Client-Side%20Key%20Generation)
+- [Server-Side Configuration](#Server-Side%20Configuration)
+- [Verification & Path Mapping](#Verification%20&%20Path%20Mapping)
+- [Integration with Rclone](#Integration%20with%20Rclone)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

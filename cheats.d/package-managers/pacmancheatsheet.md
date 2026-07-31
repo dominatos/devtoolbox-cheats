@@ -4,13 +4,13 @@ Icon: 🟢
 Order: 3
 
 ## Table of Contents
-- [Description](#description)
-- [Configuration](#configuration-конфигурация)
-- [Core Management](#core-management-основное-управление)
-- [Sysadmin Operations](#sysadmin-operations-операции-системного-администратора)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Security & Verification](#security-verification-безопасность-и-проверка)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Configuration](#️%20Configuration%20/%20Конфигурация)
+- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Sysadmin Operations](#Sysadmin%20Operations%20/%20Операции%20системного%20администратора)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Security & Verification](#Security%20&%20Verification%20/%20Безопасность%20и%20проверка)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

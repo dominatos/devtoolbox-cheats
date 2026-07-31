@@ -21,15 +21,15 @@ Order: 4
 ---
 
 ## Table of Contents
-- [Installation](#installation)
-- [diff — Compare Files](#diff-compare-files)
-- [patch — Apply Changes](#patch-apply-changes)
-- [Directory Comparison](#directory-comparison)
-- [Git-Style Diffs](#git-style-diffs)
-- [Advanced Usage](#advanced-usage)
-- [Real-World Examples](#real-world-examples)
-- [Best Practices](#best-practices)
-- [Documentation Links](#documentation-links)
+- [Installation](#Installation)
+- [diff — Compare Files](#diff%20—%20Compare%20Files)
+- [patch — Apply Changes](#patch%20—%20Apply%20Changes)
+- [Directory Comparison](#Directory%20Comparison)
+- [Git-Style Diffs](#Git-Style%20Diffs)
+- [Advanced Usage](#Advanced%20Usage)
+- [Real-World Examples](#Real-World%20Examples)
+- [Best Practices](#Best%20Practices)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

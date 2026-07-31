@@ -17,14 +17,14 @@ Order: 1
 
 ## 📚 Table of Contents / Содержание
 
-1. [Installation & Configuration](#1-installation-configuration)
-2. [Core Management](#2-core-management)
-3. [Sysadmin Operations](#3-sysadmin-operations)
-4. [NRPE Remote Monitoring](#4-nrpe-remote-monitoring)
-5. [Security](#5-security)
-6. [Maintenance](#6-maintenance)
-7. [Troubleshooting & Tools](#7-troubleshooting-tools)
-8. [Logrotate Configuration](#8-logrotate-configuration)
+1. [Installation & Configuration](#1.%20Installation%20&%20Configuration)
+2. [Core Management](#2.%20Core%20Management)
+3. [Sysadmin Operations](#3.%20Sysadmin%20Operations)
+4. [NRPE Remote Monitoring](#4.%20NRPE%20Remote%20Monitoring)
+5. [Security](#5.%20Security)
+6. [Maintenance](#6.%20Maintenance)
+7. [Troubleshooting & Tools](#7.%20Troubleshooting%20&%20Tools)
+8. [Logrotate Configuration](#8.%20Logrotate%20Configuration)
 
 ---
 

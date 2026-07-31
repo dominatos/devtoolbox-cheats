@@ -13,18 +13,18 @@ Keycloak is an open-source Identity and Access Management (IAM) solution providi
 
 ## Table of Contents / Оглавление
 
-- [Dev vs Prod Comparison](#dev-vs-prod-comparison)
-- [Installation & Configuration](#installation-configuration)
-- [Core Management](#core-management)
-- [Production Runbook: Realm Configuration (UI)](#production-runbook-realm-configuration-ui)
-- [Tomcat Integration](#tomcat-integration)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Security](#security)
-- [Backup & Restore](#backup-restore)
-- [Optimization](#optimization)
-- [Troubleshooting](#troubleshooting)
-- [Logrotate Configuration](#logrotate-configuration)
-- [Documentation Links](#documentation-links)
+- [Dev vs Prod Comparison](#Dev%20vs%20Prod%20Comparison)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Core Management](#Core%20Management)
+- [Production Runbook: Realm Configuration (UI)](#Production%20Runbook:%20Realm%20Configuration%20(UI))
+- [Tomcat Integration](#Tomcat%20Integration)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Security](#Security)
+- [Backup & Restore](#Backup%20&%20Restore)
+- [Optimization](#Optimization)
+- [Troubleshooting](#Troubleshooting)
+- [Logrotate Configuration](#Logrotate%20Configuration)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

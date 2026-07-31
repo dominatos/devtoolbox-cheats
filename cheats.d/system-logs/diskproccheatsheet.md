@@ -20,12 +20,12 @@ These are part of GNU coreutils (`du`, `df`), the `lsof` package, and `procps-ng
 [du(1)](https://man7.org/linux/man-pages/man1/du.1.html) · [df(1)](https://man7.org/linux/man-pages/man1/df.1.html) · [lsof(8)](https://man7.org/linux/man-pages/man8/lsof.8.html) · [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html) · [top(1)](https://man7.org/linux/man-pages/man1/top.1.html)
 
 ## Table of Contents
-- [Disk Usage (du)](#disk-usage-du)
-- [Filesystem Info (df)](#filesystem-info-df)
-- [Open Files (lsof)](#open-files-lsof)
-- [Process Info (ps)](#process-info-ps)
-- [Real-time Monitoring](#real-time-monitoring)
-- [Troubleshooting](#troubleshooting)
+- [Disk Usage (du)](#Disk%20Usage%20(du))
+- [Filesystem Info (df)](#Filesystem%20Info%20(df))
+- [Open Files (lsof)](#Open%20Files%20(lsof))
+- [Process Info (ps)](#Process%20Info%20(ps))
+- [Real-time Monitoring](#Real-time%20monitoring%20/%20Мониторинг%20в%20реальном%20времени)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 

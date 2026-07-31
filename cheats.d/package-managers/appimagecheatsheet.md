@@ -4,12 +4,12 @@ Icon: 📦
 Order: 7
 
 ## Table of Contents
-- [Description](#description)
-- [Core Management](#core-management-основное-управление)
-- [Advanced Operations](#advanced-operations-продвинутые-операции)
-- [Comparison: AppImage vs Others](#comparison-appimage-vs-others)
-- [Troubleshooting](#troubleshooting-устранение-неполадок)
-- [Documentation Links](#documentation-links)
+- [Description](#Description)
+- [Core Management](#Core%20Management%20/%20Основное%20управление)
+- [Advanced Operations](#Advanced%20Operations%20/%20Продвинутые%20операции)
+- [Comparison: AppImage vs Others](#Comparison:%20AppImage%20vs%20Others)
+- [Troubleshooting](#Troubleshooting%20/%20Устранение%20неполадок)
+- [Documentation Links](#Documentation%20Links)
 
 ---
 

@@ -19,19 +19,19 @@ Order: 5
 
 ## 📚 Table of Contents / Содержание
 
-1. [Connection & Basics](#connect-подключение)
-2. [CRUD Operations](#crud-operations)
-3. [Data Management](#data-management)
-4. [Administration](#administration)
-5. [Replica Set Management](#replica-set-management-управление-репликами)
-6. [Profiling & Performance](#profiling-performance)
-7. [Sysadmin Toolkit](#sysadmin-toolkit)
-8. [Percona Upgrade Guide](#percona-upgrade-guide)
-9. [MongoDB Community Upgrade Guide](#mongodb-community-upgrade-guide)
-10. [Advanced Queries](#advanced-cheatsheet---queries)
-11. [Practice Exercises](#practice-exercises)
-12. [Configuration](#configuration-snippets)
-13. [Logrotate Configuration](#logrotate-configuration)
+1. [Connection & Basics](#Connect%20/%20Подключение)
+2. [CRUD Operations](#CRUD%20Operations)
+3. [Data Management](#Data%20Management)
+4. [Administration](#Administration)
+5. [Replica Set Management](#Replica%20Set%20Management%20/%20Управление%20Репликами)
+6. [Profiling & Performance](#Profiling%20&%20Performance)
+7. [Sysadmin Toolkit](#Sysadmin%20Toolkit)
+8. [Percona Upgrade Guide](#Percona%20Upgrade%20Guide)
+9. [MongoDB Community Upgrade Guide](#MongoDB%20Community%20Upgrade%20Guide)
+10. [Advanced Queries](#Advanced%20Cheatsheet%20-%20Queries)
+11. [Practice Exercises](#Practice%20Exercises)
+12. [Configuration](#Configuration%20Snippets)
+13. [Logrotate Configuration](#Logrotate%20Configuration)
 
 ---
 

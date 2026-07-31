@@ -4,18 +4,18 @@ Icon: 🗄️
 Order: 3
 
 ## Table of Contents
-- [Installation & Configuration](#installation-configuration)
-- [Repository Management](#repository-management)
-- [Create Archives](#create-archives)
-- [List & Info](#list-info)
-- [Extract & Restore](#extract-restore)
-- [Pruning & Retention](#pruning-retention)
-- [Compression & Encryption](#compression-encryption)
-- [Remote Repositories](#remote-repositories)
-- [Mount Archives](#mount-archives)
-- [Performance & Deduplication](#performance-deduplication)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Troubleshooting](#troubleshooting)
+- [Installation & Configuration](#Installation%20&%20Configuration)
+- [Repository Management](#Repository%20Management)
+- [Create Archives](#Create%20Archives)
+- [List & Info](#List%20&%20Info)
+- [Extract & Restore](#Extract%20&%20Restore)
+- [Pruning & Retention](#Pruning%20&%20Retention)
+- [Compression & Encryption](#Compression%20&%20Encryption)
+- [Remote Repositories](#Remote%20Repositories)
+- [Mount Archives](#Mount%20Archives)
+- [Performance & Deduplication](#Performance%20&%20Deduplication)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 

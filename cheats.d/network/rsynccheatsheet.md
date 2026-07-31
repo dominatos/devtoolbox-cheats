@@ -10,15 +10,15 @@ Order: 8
 📚 **Official Docs / Официальная документация:** [rsync(1)](https://download.samba.org/pub/rsync/rsync.1)
 
 ## Table of Contents
-- [Basics](#basics)
-- [Remote Sync via SSH](#remote-sync-via-ssh)
-- [Mirror & Delete](#mirror-delete)
-- [Exclude Patterns](#exclude-patterns)
-- [Backups & Snapshots](#backups-snapshots)
-- [Permissions & Ownership](#permissions-ownership)
-- [Dry Run & Preview](#dry-run-preview)
-- [Progress & Stats](#progress-stats)
-- [Reference Tables](#reference-tables)
+- [Basics](#Basics)
+- [Remote Sync via SSH](#Remote%20Sync%20via%20SSH)
+- [Mirror & Delete](#Mirror%20&%20Delete)
+- [Exclude Patterns](#Exclude%20Patterns)
+- [Backups & Snapshots](#Backups%20&%20Snapshots)
+- [Permissions & Ownership](#Permissions%20&%20Ownership)
+- [Dry Run & Preview](#Dry%20Run%20&%20Preview)
+- [Progress & Stats](#Progress%20&%20Stats)
+- [Reference Tables](#Reference%20Tables)
 
 ---
 

@@ -7,11 +7,11 @@ Order: 8
 > / **Veritas InfoScale** (ранее Storage Foundation) — корпоративная платформа управления хранилищем, кластеризации и аварийного восстановления. Включает **VxVM** (Volume Manager) и **VxFS** (File System). Современные альтернативы: **LVM + ext4/XFS**, **ZFS**, **Btrfs**.
 
 ## Table of Contents
-- [Architecture Overview](#architecture-overview)
-- [VxVM — Volume Manager](#vxvm-volume-manager)
-- [VxFS — Filesystem](#vxfs-filesystem)
-- [Sysadmin Operations](#sysadmin-operations)
-- [Troubleshooting](#troubleshooting)
+- [Architecture Overview](#Architecture%20Overview)
+- [VxVM — Volume Manager](#VxVM%20—%20Volume%20Manager)
+- [VxFS — Filesystem](#VxFS%20—%20Filesystem)
+- [Sysadmin Operations](#Sysadmin%20Operations)
+- [Troubleshooting](#Troubleshooting)
 
 ---
 
