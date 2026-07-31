@@ -1,7 +1,13 @@
+---
 Title: 🔒 Caddy — Cheatsheet
 Group: Web Servers
 Icon: 🔒
 Order: 2
+tags:
+  - web-servers
+  - sysadmin
+  - linux
+---
 
 # 🔒 Caddy — Web Server Cheatsheet
 
@@ -1036,5 +1042,3 @@ log {
 - [xcaddy — Custom Builds](https://github.com/caddyserver/xcaddy)
 
 ---
-
-#web-servers #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 🧬 Git — Advanced Techniques
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🧬
 Order: 2
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Git Advanced Techniques Cheatsheet
 
@@ -362,5 +368,3 @@ git config --global alias.amend "commit --amend --no-edit"
 - **Pro Git Book (free):** https://git-scm.com/book/en/v2
 - **git-filter-repo:** https://github.com/newren/git-filter-repo
 - **BFG Repo-Cleaner:** https://rtyley.github.io/bfg-repo-cleaner/
-
-#dev-tools #devops #sysadmin

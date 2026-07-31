@@ -1,7 +1,13 @@
+---
 Title: 🔥 firewalld — Firewall Management
 Group: Network
 Icon: 🔥
 Order: 12
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # firewalld — Dynamic Firewall Daemon
 
@@ -321,5 +327,3 @@ sudo firewall-cmd --reload
 
 - [firewalld Official Docs](https://firewalld.org/documentation)
 - [firewall-cmd Man Page](https://man7.org/linux/man-pages/man1/firewall-cmd.1.html)
-
-#network #sysadmin #linux

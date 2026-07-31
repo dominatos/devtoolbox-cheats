@@ -1,7 +1,14 @@
+---
 Title: 🖥️ Ubuntu VPS Optimization
-Group: System & Logs
+Group: "System & Logs"
 Icon: 🖥️
 Order: 7
+tags:
+  - system
+  - logs
+  - sysadmin
+  - linux
+---
 
 # Ubuntu VPS Optimization
 
@@ -156,5 +163,3 @@ sudo reboot                                   # Reboot to apply changes / Пер
 - **systemd-analyze(1):** https://man7.org/linux/man-pages/man1/systemd-analyze.1.html
 - **deborphan:** https://packages.debian.org/deborphan
 - **ArchWiki — Improving Performance:** https://wiki.archlinux.org/title/Improving_performance
-
-#system #logs #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 🐬 MySQL Galera Cluster
 Group: Databases
 Icon: 🐬
 Order: 15
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -334,5 +340,3 @@ SHOW ENGINE INNODB STATUS\G
 ## Documentation Links
 
 - **Galera Cluster Documentation:** https://galeracluster.com/library/documentation/
-
-#databases #sysadmin #linux

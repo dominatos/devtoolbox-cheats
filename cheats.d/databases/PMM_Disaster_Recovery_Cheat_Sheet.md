@@ -1,7 +1,13 @@
+---
 Title: 🗄️ PMM Disaster Recovery
 Group: Databases
 Icon: 🗄️
 Order: 20
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 # PMM Disaster Recovery — Full Production Recovery Cheatsheet
 
@@ -515,5 +521,3 @@ Recovered using the Emergency Recovery runbook above. Migrated to named volumes.
 - **PostgreSQL pg_resetwal:** https://www.postgresql.org/docs/14/app-pgresetwal.html
 
 ---
-
-#databases #sysadmin #linux

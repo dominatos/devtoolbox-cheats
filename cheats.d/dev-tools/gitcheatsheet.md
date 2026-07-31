@@ -1,7 +1,13 @@
+---
 Title: 🧬 Git — Basics
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🧬
 Order: 1
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Git Basics Cheatsheet
 
@@ -356,5 +362,3 @@ git log --oneline HEAD..origin/main            # Commits behind origin / Ком�
 - **Git:** https://git-scm.com/doc
 - **Git Reference:** https://git-scm.com/docs
 - **Pro Git Book (free):** https://git-scm.com/book/en/v2
-
-#dev-tools #devops #sysadmin

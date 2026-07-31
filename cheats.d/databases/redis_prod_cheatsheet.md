@@ -1,7 +1,13 @@
-Title:  Redis
+---
+Title: Redis
 Group: Databases
 Icon: 🗃️
 Order: 99
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -589,5 +595,3 @@ echo "✅ Redis backup completed: dump_$TIMESTAMP.rdb.gz"
 
 - **Redis Documentation:** https://redis.io/docs/
 - **Redis Commands Reference:** https://redis.io/commands/
-
-#databases #sysadmin #linux

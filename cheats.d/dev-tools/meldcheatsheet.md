@@ -1,7 +1,13 @@
-Title: 🔍 Meld (Merge & Diff)
-Group: Dev & Tools
+---
+Title: "🔍 Meld (Merge & Diff)"
+Group: "Dev & Tools"
 Icon: 🔍
 Order: 18
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Meld Cheatsheet — Visual Diff & Merge Tool
 
@@ -165,5 +171,3 @@ You can toggle custom text filters via `Preferences -> Text Filters`.
 - **Meld:** https://meldmerge.org/
 - **Meld Help:** https://meldmerge.org/help/
 - **Git Diff/Merge Tools:** https://git-scm.com/docs/git-difftool
-
-#dev-tools #devops #sysadmin

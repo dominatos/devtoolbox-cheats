@@ -1,7 +1,14 @@
+---
 Title: 🗄️ tar + GPG — Classic Encrypted Backups
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 5
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [tar Basics](#tar%20Basics)
@@ -382,5 +389,3 @@ tar -cJf backup.tar.xz /data --use-compress-program="xz -T0"  # Parallel xz / П
 
 - **tar Man Page:** https://man7.org/linux/man-pages/man1/tar.1.html
 - **GnuPG Documentation:** https://gnupg.org/documentation/
-
-#backups #s3 #sysadmin #linux

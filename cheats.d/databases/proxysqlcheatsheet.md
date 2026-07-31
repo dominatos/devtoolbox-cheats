@@ -1,7 +1,13 @@
+---
 Title: 🔀 ProxySQL — MySQL Proxy
 Group: Databases
 Icon: 🔀
 Order: 6
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -823,5 +829,3 @@ sudo proxysql --foreground -D /var/lib/proxysql               # Foreground mode 
 
 - **ProxySQL Documentation:** https://proxysql.com/documentation/
 - **ProxySQL Wiki:** https://proxysql.com/documentation/
-
-#databases #sysadmin #linux

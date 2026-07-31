@@ -1,7 +1,13 @@
+---
 Title: 🌐 ip — Network Configuration
 Group: Network
 Icon: 🌐
 Order: 3
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # ip — Network Configuration Utility
 
@@ -285,5 +291,3 @@ ip neigh show
 
 - [ip Man Page](https://man7.org/linux/man-pages/man8/ip.8.html)
 - [ip-route Man Page](https://man7.org/linux/man-pages/man8/ip-route.8.html)
-
-#network #sysadmin #linux

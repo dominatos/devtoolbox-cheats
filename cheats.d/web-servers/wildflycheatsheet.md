@@ -1,7 +1,13 @@
+---
 Title: 🦅 WildFly (JBoss) — Cheatsheet
 Group: Web Servers
 Icon: 🦅
 Order: 17
+tags:
+  - web-servers
+  - sysadmin
+  - linux
+---
 
 # 🦅 WildFly (JBoss) — Cheatsheet
 
@@ -335,5 +341,3 @@ sudo netstat -tlnp | grep :8080                          # Check specific port /
 - [JBoss EAP Documentation (Commercial)](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/)
 
 ---
-
-#web-servers #sysadmin #linux

@@ -1,7 +1,14 @@
+---
 Title: 🗄️ rclone — Remotes/S3
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 2
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
@@ -423,5 +430,3 @@ rclone copy /data remote:bucket --buffer-size 256M  # Buffer size / Размер
 
 - **Rclone Documentation:** https://rclone.org/docs/
 - **Rclone Command Reference:** https://rclone.org/commands/
-
-#backups #s3 #sysadmin #linux

@@ -1,7 +1,14 @@
-Title: 🗄️ MinIO & mc — S3-Compatible Object Storage
-Group: Backups & S3
+---
+Title: "🗄️ MinIO & mc — S3-Compatible Object Storage"
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 14
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 > **MinIO** is a high-performance, distributed object storage system fully compatible with the Amazon S3 API. It is used for storing large volumes of unstructured data such as photos, videos, backups, and application data. The `mc` (MinIO Client) provides a modern alternative to AWS CLI for managing MinIO and S3 storage. MinIO is actively developed and widely used as a self-hosted S3 replacement in private clouds, CI/CD pipelines, and Kubernetes environments.
 > / **MinIO** — высокопроизводительная распределённая система хранения объектов, полностью совместимая с API Amazon S3. Используется для хранения больших объёмов неструктурированных данных. `mc` (MinIO Client) — современная альтернатива AWS CLI для управления MinIO и S3 хранилищем.
@@ -325,5 +332,3 @@ mc cp /local/bigfile.bin myminio/mybucket/ --attr "Cache-Control=max-age=90000" 
 - [MinIO Documentation](https://docs.min.io)
 - [mc Client Complete Guide](https://docs.min.io/docs/minio-client-complete-guide.html)
 - [MinIO Admin Guide](https://docs.min.io/docs/minio-admin-complete-guide.html)
-
-#backups #s3 #sysadmin #linux

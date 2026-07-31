@@ -1,7 +1,13 @@
-Title: 🔑 SSH — Commands & Config
+---
+Title: "🔑 SSH — Commands & Config"
 Group: Network
 Icon: 🔑
 Order: 6
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # SSH — Secure Shell Commands & Configuration
 
@@ -230,5 +236,3 @@ autossh -M 0 -N -L 8080:localhost:80 <USER>@<HOST>  # Auto-reconnecting tunnel /
 
 - [OpenSSH Manual](https://www.openssh.com/manual.html)
 - [ssh_config Man Page](https://man7.org/linux/man-pages/man5/ssh_config.5.html)
-
-#network #sysadmin #linux

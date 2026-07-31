@@ -1,7 +1,14 @@
+---
 Title: 🛡️ CrowdSec — Intrusion Prevention
-Group: Security & Crypto
+Group: "Security & Crypto"
 Icon: 🛡️
 Order: 1
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # CrowdSec Sysadmin Cheatsheet
 
@@ -366,5 +373,3 @@ sudo journalctl -u crowdsec-firewall-bouncer -e  # Bouncer logs / Логи ба�
 - [CrowdSec Community Discord](https://discord.gg/crowdsec)
 
 ---
-
-#security #crypto #sysadmin #linux

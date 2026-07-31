@@ -1,7 +1,13 @@
+---
 Title: 🧱 UFW — Uncomplicated Firewall
 Group: Network
 Icon: 🧱
 Order: 16
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # UFW — Uncomplicated Firewall
 
@@ -324,5 +330,3 @@ sudo ufw insert 1 deny from 192.168.100.0/24  # Block subnet / Заблокир�
 
 - [UFW Wiki](https://wiki.ubuntu.com/UncomplicatedFirewall)
 - [ufw Man Page](https://manpages.ubuntu.com/manpages/noble/man8/ufw.8.html)
-
-#network #sysadmin #linux

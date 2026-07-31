@@ -1,7 +1,13 @@
-Title: 🔐 VPN Plugins — Installation & Configuration
+---
+Title: "🔐 VPN Plugins — Installation & Configuration"
 Group: Network
 Icon: 🔐
 Order: 24
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # VPN Plugins — NetworkManager & Standalone Tools
 
@@ -360,5 +366,3 @@ curl ifconfig.me  # Check public IP after VPN / Проверить IP после
 ## 📚 Documentation Links
 
 - [NetworkManager VPN Plugins](https://wiki.gnome.org/Projects/NetworkManager/VPN)
-
-#network #sysadmin #linux

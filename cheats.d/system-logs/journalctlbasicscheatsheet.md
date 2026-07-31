@@ -1,7 +1,14 @@
+---
 Title: 📜 journalctl — Basics
-Group: System & Logs
+Group: "System & Logs"
 Icon: 📜
 Order: 3
+tags:
+  - system
+  - logs
+  - sysadmin
+  - linux
+---
 
 # journalctl — Quick Reference Guide
 
@@ -263,5 +270,3 @@ journalctl -k | grep -i "oom\|out of memory"
 - **journalctl(1):** https://man7.org/linux/man-pages/man1/journalctl.1.html
 - **journald.conf(5):** https://man7.org/linux/man-pages/man5/journald.conf.5.html
 - **ArchWiki — systemd/Journal:** https://wiki.archlinux.org/title/Systemd/Journal
-
-#system #logs #sysadmin #linux

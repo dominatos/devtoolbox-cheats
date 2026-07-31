@@ -1,7 +1,13 @@
+---
 Title: 🪶 Apache HTTPD — Cheatsheet
 Group: Web Servers
 Icon: 🪶
 Order: 2
+tags:
+  - web-servers
+  - sysadmin
+  - linux
+---
 
 # 🪶 Apache HTTPD — Cheatsheet
 
@@ -613,5 +619,3 @@ sudo a2ensite <SITE>.conf                                # Enable site / Вкл�
 - [Apache Performance Tuning](https://httpd.apache.org/docs/current/misc/perf-tuning.html)
 
 ---
-
-#web-servers #sysadmin #linux

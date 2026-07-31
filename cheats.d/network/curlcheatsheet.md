@@ -1,7 +1,13 @@
+---
 Title: 🌐 CURL — HTTP Client
 Group: Network
 Icon: 🌐
 Order: 1
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # curl — Command-Line HTTP Client
 
@@ -304,5 +310,3 @@ curl -s https://icanhazip.com  # Alternative public IP service / Альтерн�
 
 - [curl Official Docs](https://curl.se/docs/)
 - [curl Man Page](https://man7.org/linux/man-pages/man1/curl.1.html)
-
-#network #sysadmin #linux

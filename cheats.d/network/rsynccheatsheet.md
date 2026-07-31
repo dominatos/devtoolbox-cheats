@@ -1,7 +1,13 @@
+---
 Title: 🚚 rsync — File Synchronization
 Group: Network
 Icon: 🚚
 Order: 8
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # rsync — Fast Incremental File Synchronization
 
@@ -201,5 +207,3 @@ rsync -avh --bwlimit=2m --info=stats2 <SRC>/ <DEST>/  # 2 MB/s limit with stats 
 
 - [rsync Man Page](https://man7.org/linux/man-pages/man1/rsync.1.html)
 - [rsync Official Site](https://rsync.samba.org/)
-
-#network #sysadmin #linux

@@ -1,7 +1,14 @@
+---
 Title: 🔬 Cerbero Suite
-Group: Security & Crypto
+Group: "Security & Crypto"
 Icon: 🔬
 Order: 10
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # Cerbero Suite Sysadmin Cheatsheet
 
@@ -472,5 +479,3 @@ CerberoSuite --batch /path/to/directory --output /path/to/report.json
 - [VirusTotal (YARA rules sharing)](https://www.virustotal.com/)
 
 ---
-
-#security #crypto #sysadmin #linux

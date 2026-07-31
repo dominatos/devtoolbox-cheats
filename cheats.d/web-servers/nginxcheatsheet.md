@@ -1,7 +1,13 @@
+---
 Title: 🌐 Nginx — Cheatsheet
 Group: Web Servers
 Icon: 🌐
 Order: 1
+tags:
+  - web-servers
+  - sysadmin
+  - linux
+---
 
 # 🌐 Nginx — Cheatsheet
 
@@ -691,5 +697,3 @@ location /server_status {
 - [Nginx Security Controls](https://nginx.org/en/docs/http/ngx_http_access_module.html)
 
 ---
-
-#web-servers #sysadmin #linux

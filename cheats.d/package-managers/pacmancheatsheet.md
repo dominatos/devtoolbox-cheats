@@ -1,7 +1,13 @@
+---
 Title: 🟢 Pacman — Arch Linux
 Group: Package Managers
 Icon: 🟢
 Order: 3
+tags:
+  - package-managers
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Description](#Description)
@@ -161,5 +167,3 @@ sudo pacdiff                                  # Manage pacnew files / Управ
 - **Arch Wiki — AUR:** https://wiki.archlinux.org/title/Arch_User_Repository
 - **Pacman Tips & Tricks:** https://wiki.archlinux.org/title/Pacman/Tips_and_tricks
 - **Pacman Rosetta (cross-distro):** https://wiki.archlinux.org/title/Pacman/Rosetta
-
-#package-managers #sysadmin #linux

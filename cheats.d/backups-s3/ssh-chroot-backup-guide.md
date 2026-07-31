@@ -1,7 +1,14 @@
+---
 Title: 🗄️ SSH Chroot Backup
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 15
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 # Secure SSH Chroot Backup Server Configuration
 
@@ -229,5 +236,3 @@ rclone --config /etc/rclone/rclone.conf mkdir <REMOTE_NAME>:test_dir
 
 * [OpenSSH sshd_config Documentation](https://man.openbsd.org/sshd_config)
 * [Rclone SFTP Configuration](https://rclone.org/sftp/)
-
-#backups #s3 #sysadmin #linux

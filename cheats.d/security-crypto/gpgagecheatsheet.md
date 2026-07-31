@@ -1,7 +1,14 @@
+---
 Title: 🔐 GPG / age — Encryption
-Group: Security & Crypto
+Group: "Security & Crypto"
 Icon: 🔐
 Order: 4
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # GPG / age Sysadmin Cheatsheet
 
@@ -443,5 +450,3 @@ gpg --batch --list-packets file.gpg | grep keyid  # Extract key IDs / Извле
 - [rage (Rust implementation)](https://github.com/str4d/rage)
 
 ---
-
-#security #crypto #sysadmin #linux

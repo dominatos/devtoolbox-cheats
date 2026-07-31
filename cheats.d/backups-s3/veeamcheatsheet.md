@@ -1,7 +1,14 @@
+---
 Title: 🗄️ Veeam Agent — Linux Backup
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 7
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 > **Veeam Agent for Linux** is a free/commercial backup agent that provides image-level (bare metal), volume-level, and file-level backups for physical and cloud Linux machines. It supports local, network (SMB/NFS), and Veeam Backup & Replication repository targets. Veeam is actively developed and widely used in enterprise environments alongside VMware/Hyper-V virtual infrastructure backup.
 > / **Veeam Agent for Linux** — бесплатный/коммерческий агент резервного копирования для физических и облачных Linux-машин. Поддерживает полные образы, тома и файловые бэкапы. Широко используется в корпоративных средах.
@@ -301,5 +308,3 @@ rpm -e veeam                                    # RHEL/AlmaLinux/Rocky
 ## Documentation
 
 - **Veeam Documentation:** https://helpcenter.veeam.com/
-
-#backups #s3 #sysadmin #linux

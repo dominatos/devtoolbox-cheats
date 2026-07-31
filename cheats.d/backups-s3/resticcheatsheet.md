@@ -1,7 +1,14 @@
+---
 Title: 🗄️ restic — Backups
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 1
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
@@ -547,5 +554,3 @@ restic cache --cleanup                                # Free stale cache / Ос�
 
 - **Restic Documentation:** https://restic.readthedocs.io/
 - **Restic Man Page:** https://restic.readthedocs.io/en/stable/man/
-
-#backups #s3 #sysadmin #linux

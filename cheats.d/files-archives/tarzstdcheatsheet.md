@@ -1,7 +1,14 @@
+---
 Title: 📦 TAR + Zstandard (zstd) — Compression
-Group: Files & Archives
+Group: "Files & Archives"
 Icon: 📦
 Order: 1
+tags:
+  - files
+  - archives
+  - linux
+  - sysadmin
+---
 
 ## Description
 
@@ -243,5 +250,3 @@ zstd -t <ARCHIVE>.tar.zst                      # Test zstd layer / Провер�
 - **GNU tar Manual (zstd support):** https://www.gnu.org/software/tar/manual/
 - **Zstandard Benchmarks:** https://facebook.github.io/zstd/#benchmarks
 - **See also:** [TAR cheatsheet](tarcheatsheet.md), [ZIP/7z/ZSTD cheatsheet](zip7zzstdcheatsheet.md)
-
-#files #archives #linux #sysadmin

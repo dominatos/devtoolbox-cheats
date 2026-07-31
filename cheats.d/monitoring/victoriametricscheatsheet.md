@@ -1,7 +1,13 @@
+---
 Title: 📈 VictoriaMetrics
 Group: Monitoring
 Icon: 📈
 Order: 8
+tags:
+  - monitoring
+  - sysadmin
+  - linux
+---
 
 # VictoriaMetrics Sysadmin Cheatsheet
 
@@ -443,5 +449,3 @@ curl -s http://<HOST>:8428/metrics | grep vm_rows_inserted_total
 - **Community Slack:** https://slack.victoriametrics.com/
 
 ---
-
-#monitoring #sysadmin #linux

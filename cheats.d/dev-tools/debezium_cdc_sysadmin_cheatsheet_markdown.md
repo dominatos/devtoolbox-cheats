@@ -1,7 +1,13 @@
+---
 Title: 🛠️ Debezium CDC
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🛠️
 Order: 15
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Debezium CDC Sysadmin Cheatsheet
 
@@ -652,5 +658,3 @@ jmap -heap <PID>                                           # Heap info / Инф�
 - **OpenSearch:** https://opensearch.org/docs/
 
 ---
-
-#dev-tools #devops #sysadmin

@@ -1,7 +1,14 @@
+---
 Title: Podman / nerdctl — Commands
-Group: Kubernetes & Containers
+Group: "Kubernetes & Containers"
 Icon: 🫙
 Order: 7
+tags:
+  - kubernetes
+  - containers
+  - docker
+  - sysadmin
+---
 
 # 🫙 Podman / nerdctl / crictl — Container Runtimes & Tools
 
@@ -403,5 +410,3 @@ For containerd logs: / Для логов containerd:
 - **crictl (cri-tools) GitHub:** [https://github.com/kubernetes-sigs/cri-tools](https://github.com/kubernetes-sigs/cri-tools)
 - **Quadlet (Podman systemd):** [https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html)
 - **Buildah (OCI image builder):** [https://buildah.io/](https://buildah.io/)
-
-#kubernetes #containers #docker #sysadmin

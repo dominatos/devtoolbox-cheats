@@ -1,7 +1,13 @@
+---
 Title: 🕸 nftables — Modern Firewall
 Group: Network
 Icon: 🕸
 Order: 14
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # nftables — Modern Linux Firewall Framework
 
@@ -408,5 +414,3 @@ table inet filter {
 
 - [nftables Wiki](https://wiki.nftables.org/)
 - [nft Man Page](https://man7.org/linux/man-pages/man8/nft.8.html)
-
-#network #sysadmin #linux

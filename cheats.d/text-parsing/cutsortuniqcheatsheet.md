@@ -1,7 +1,13 @@
+---
 Title: 🔪 cut/sort/uniq — Commands
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: 🔪
 Order: 6
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **cut**, **sort**, and **uniq** — the classic GNU Coreutils trio for columnar data extraction, line ordering, and deduplication. Pre-installed on every Linux distribution, these tools form the backbone of shell-based data pipelines. They are especially useful for quick log analysis, CSV processing, and frequency counting. No modern replacements needed — they are lightweight, POSIX-compliant, and actively maintained.
 
@@ -235,5 +241,3 @@ sort --parallel=8 -S 4G largefile.txt           # 8 cores, 4GB buffer / 8 яде
 - [GNU Coreutils — sort](https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html)
 - [GNU Coreutils — uniq](https://www.gnu.org/software/coreutils/manual/html_node/uniq-invocation.html)
 - `man cut` / `man sort` / `man uniq`
-
-#text-parsing #linux #sysadmin

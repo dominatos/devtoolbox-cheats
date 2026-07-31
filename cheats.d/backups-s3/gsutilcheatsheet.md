@@ -1,7 +1,14 @@
+---
 Title: 🗄️ gsutil — Google Cloud Storage
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 10
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Installation & Authentication](#Installation%20&%20Authentication)
@@ -375,5 +382,3 @@ gsutil -o "GSUtil:sliced_object_download_threshold=100M" \
 
 - **gsutil Documentation:** https://cloud.google.com/storage/docs/gsutil
 - **GCloud CLI Reference:** https://cloud.google.com/sdk/gcloud/reference/storage
-
-#backups #s3 #sysadmin #linux

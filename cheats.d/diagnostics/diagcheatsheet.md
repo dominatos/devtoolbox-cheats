@@ -1,7 +1,13 @@
+---
 Title: 🔍 Diagnostics — strace/perf/tcpdump/lsof
 Group: Diagnostics
 Icon: 🔍
 Order: 1
+tags:
+  - diagnostics
+  - sysadmin
+  - linux
+---
 
 # Diagnostics — strace / perf / tcpdump / lsof / ltrace
 
@@ -601,5 +607,3 @@ sudo tcpdump -c 1000 -W 5 -C 100 -w out.pcap # rotate 5 files × 100MB / рот�
 - **ltrace:** https://man7.org/linux/man-pages/man1/ltrace.1.html
 - **FlameGraph:** https://github.com/brendangregg/FlameGraph
 - **Brendan Gregg's Perf Examples:** https://www.brendangregg.com/perf.html
-
-#diagnostics #sysadmin #linux

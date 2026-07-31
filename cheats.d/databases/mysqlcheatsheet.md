@@ -1,7 +1,13 @@
-Title: 🗃️ MySQL/MariaDB & Cluster
+---
+Title: "🗃️ MySQL/MariaDB & Cluster"
 Group: Databases
 Icon: 🗃️
 Order: 2
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -379,5 +385,3 @@ OPTIMIZE TABLE <TABLE>;                                                   -- Reb
 
 - **MySQL Reference Manual:** https://dev.mysql.com/doc/refman/8.0/en/
 - **MariaDB Knowledge Base:** https://mariadb.com/kb/en/documentation/
-
-#databases #sysadmin #linux

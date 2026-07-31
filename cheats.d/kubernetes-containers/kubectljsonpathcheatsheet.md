@@ -1,7 +1,14 @@
+---
 Title: KUBECTL — JSONPath
-Group: Kubernetes & Containers
+Group: "Kubernetes & Containers"
 Icon: ☸️
 Order: 2
+tags:
+  - kubernetes
+  - containers
+  - docker
+  - sysadmin
+---
 
 # ☸️ KUBECTL — JSONPath Queries
 
@@ -148,5 +155,3 @@ kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.ph
 - **kubectl Output Formatting:** [https://kubernetes.io/docs/reference/kubectl/#output-options](https://kubernetes.io/docs/reference/kubectl/#output-options)
 - **JSONPath Specification:** [https://goessner.net/articles/JsonPath/](https://goessner.net/articles/JsonPath/)
 - **jq Manual (complementary tool):** [https://jqlang.github.io/jq/manual/](https://jqlang.github.io/jq/manual/)
-
-#kubernetes #containers #docker #sysadmin

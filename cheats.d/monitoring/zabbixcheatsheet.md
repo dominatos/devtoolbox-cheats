@@ -1,7 +1,13 @@
+---
 Title: 📈 Zabbix Server
 Group: Monitoring
 Icon: 📈
 Order: 3
+tags:
+  - monitoring
+  - sysadmin
+  - linux
+---
 
 # Zabbix Server Sysadmin Cheatsheet
 
@@ -406,5 +412,3 @@ zabbix_server -R diaginfo
 - **GitHub:** https://github.com/zabbix/zabbix
 
 ---
-
-#monitoring #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 📦 AppImage — Portable Apps
 Group: Package Managers
 Icon: 📦
 Order: 7
+tags:
+  - package-managers
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Description](#Description)
@@ -125,5 +131,3 @@ firejail ./<FILE>.AppImage                    # Run in sandbox / Запусти�
 - **AppImageHub (Directory):** https://www.appimagehub.com/
 - **AppImageLauncher:** https://github.com/TheAssassin/AppImageLauncher
 - **AppImageUpdate:** https://github.com/AppImage/AppImageUpdate
-
-#package-managers #sysadmin #linux

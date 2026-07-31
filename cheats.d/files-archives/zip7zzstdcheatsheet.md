@@ -1,7 +1,14 @@
+---
 Title: 📦 ZIP / 7z / ZSTD — Archive Tools
-Group: Files & Archives
+Group: "Files & Archives"
 Icon: 📦
 Order: 3
+tags:
+  - files
+  - archives
+  - linux
+  - sysadmin
+---
 
 ## Description
 
@@ -406,5 +413,3 @@ tar --zstd -tvf archive.tar.zst               # Verify tar.zst / Провери�
   - zstd man page: `man zstd` or https://man7.org/linux/man-pages/man1/zstd.1.html
 
 - **See also:** [TAR cheatsheet](tarcheatsheet.md), [TAR+ZSTD cheatsheet](tarzstdcheatsheet.md)
-
-#files #archives #linux #sysadmin

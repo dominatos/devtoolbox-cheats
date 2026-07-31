@@ -1,7 +1,13 @@
+---
 Title: 🔁 autossh — Resilient SSH Tunnels
 Group: Network
 Icon: 🔁
 Order: 10
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # autossh — Resilient SSH Tunnels
 
@@ -277,5 +283,3 @@ autossh -M 0 -N tunnel
 ## 📚 Documentation Links
 
 - [autossh Man Page](https://www.harding.motd.ca/autossh/)
-
-#network #sysadmin #linux

@@ -1,7 +1,14 @@
+---
 Title: 🗄️ Bareos/Bacula — Enterprise Backup
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 6
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Architecture Overview](#Architecture%20Overview)
@@ -364,5 +371,3 @@ bareos-fd -d 100 -f                             # Debug FD / Отладка FD
 
 - **Bacula Documentation:** https://www.bacula.org/
 - **Bacula Man Pages:** https://www.bacula.org/manuals/
-
-#backups #s3 #sysadmin #linux

@@ -1,7 +1,13 @@
-Title: 🔑 SSH Tunneling & Port Forwarding
+---
+Title: "🔑 SSH Tunneling & Port Forwarding"
 Group: Network
 Icon: 🔑
 Order: 7
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # SSH Tunneling & Port Forwarding
 
@@ -305,5 +311,3 @@ ssh -R 8080:localhost:3000 <USER>@<PUBLIC_SERVER>
 ## 📚 Documentation Links
 
 - [OpenSSH Manual](https://www.openssh.com/manual.html)
-
-#network #sysadmin #linux

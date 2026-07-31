@@ -1,7 +1,13 @@
+---
 Title: 🧪 yq — YAML processor
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: 🧪
 Order: 8
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **yq** — a portable, lightweight YAML/JSON/XML/CSV/TSV processor written in Go by Mike Farah. It uses jq-like syntax for querying, modifying, and converting structured data. Heavily used in Kubernetes/Helm workflows, CI/CD pipelines, and infrastructure-as-code. Actively maintained with frequent releases. Note: there are two tools named `yq` — this cheatsheet covers the Go version ([mikefarah/yq](https://github.com/mikefarah/yq)), not the Python wrapper ([kislyuk/yq](https://github.com/kislyuk/yq)).
 
@@ -230,5 +236,3 @@ yq --version
 - [yq Operators Reference](https://mikefarah.gitbook.io/yq/operators)
 - [yq Usage Guide](https://mikefarah.gitbook.io/yq/)
 - `yq --help`
-
-#text-parsing #linux #sysadmin

@@ -1,7 +1,13 @@
+---
 Title: ⚡ fzf — Fuzzy Finder
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: ⚡
 Order: 11
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **fzf** (Fuzzy Finder) — a general-purpose, interactive command-line fuzzy finder written in Go by Junegunn Choi. It reads lines from stdin and provides an interactive, filterable selection interface. Commonly used for file navigation, command history search, process management, Git workflows, and as a building block for custom shell functions. Actively maintained with frequent releases; no known alternatives match its versatility.
 
@@ -272,5 +278,3 @@ fzf --version
 - [fzf Wiki — Examples](https://github.com/junegunn/fzf/wiki/examples)
 - [fzf Wiki — Configuring](https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings)
 - `man fzf`
-
-#text-parsing #linux #sysadmin

@@ -1,7 +1,13 @@
+---
 Title: 🗃️ Oracle Database
 Group: Databases
 Icon: 🗃️
 Order: 10
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -477,5 +483,3 @@ adrci exec="SET HOME diag/rdbms/<DB_NAME>/<SID>; PURGE -age 10080 -type TRACE"  
 
 - **Oracle Database Documentation:** https://docs.oracle.com/en/database/oracle/oracle-database/
 - **Oracle SQL*Plus User's Guide:** https://docs.oracle.com/en/database/oracle/oracle-database/19/sqpug/
-
-#databases #sysadmin #linux

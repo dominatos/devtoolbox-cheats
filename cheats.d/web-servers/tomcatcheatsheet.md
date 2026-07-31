@@ -1,7 +1,13 @@
+---
 Title: 🐱 Tomcat — Cheatsheet
 Group: Web Servers
 Icon: 🐱
 Order: 3
+tags:
+  - web-servers
+  - sysadmin
+  - linux
+---
 
 # 🐱 Tomcat — Cheatsheet
 
@@ -614,5 +620,3 @@ sudo rm -rf /var/lib/tomcat9/webapps/app*                # Undeploy / Удали
 - [Tomcat 9 Documentation (LTS)](https://tomcat.apache.org/tomcat-9.0-doc/index.html)
 
 ---
-
-#web-servers #sysadmin #linux

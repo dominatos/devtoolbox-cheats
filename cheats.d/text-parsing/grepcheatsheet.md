@@ -1,7 +1,13 @@
+---
 Title: 🔎 GREP — Commands
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: 🔎
 Order: 2
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **grep** (Global Regular Expression Print) — the quintessential text-search utility, part of every POSIX system. GNU grep supports Basic (BRE), Extended (ERE, `-E`), Fixed-string (`-F`), and Perl-compatible (PCRE, `-P`) regular expressions. It is the go-to tool for searching files, filtering logs, and building shell pipelines. For significantly faster recursive searches (10-100×), consider [`ripgrep` (rg)](https://github.com/BurntSushi/ripgrep) — but `grep` remains the universal standard.
 
@@ -179,5 +185,3 @@ grep -r -c 'pattern' .                           # Count matches per file / По
 - [POSIX grep specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/grep.html)
 - [ripgrep — modern alternative (GitHub)](https://github.com/BurntSushi/ripgrep)
 - `man grep`
-
-#text-parsing #linux #sysadmin

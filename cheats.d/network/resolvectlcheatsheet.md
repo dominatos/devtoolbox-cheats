@@ -1,7 +1,13 @@
+---
 Title: 🖧 resolvectl — DNS Resolution Management
 Group: Network
 Icon: 🖧
 Order: 19
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # resolvectl — systemd-resolved DNS Management
 
@@ -302,5 +308,3 @@ resolvectl query _ipp._tcp.local
 ## 📚 Documentation Links
 
 - [resolvectl Man Page](https://man7.org/linux/man-pages/man8/resolvectl.8.html)
-
-#network #sysadmin #linux

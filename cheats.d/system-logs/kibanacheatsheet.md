@@ -1,7 +1,14 @@
+---
 Title: 📜 Kibana
-Group: System & Logs
+Group: "System & Logs"
 Icon: 📜
 Order: 5
+tags:
+  - system
+  - logs
+  - sysadmin
+  - linux
+---
 
 # Kibana — Data Visualization for Elasticsearch
 
@@ -227,5 +234,3 @@ Checks plugin status and Elasticsearch connectivity. / Проверяет ста
 - **Elasticsearch Guide:** https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
 - **Kibana on Docker:** https://www.elastic.co/guide/en/kibana/current/docker.html
 - **ArchWiki — ELK:** https://wiki.archlinux.org/title/Elasticsearch
-
-#system #logs #sysadmin #linux

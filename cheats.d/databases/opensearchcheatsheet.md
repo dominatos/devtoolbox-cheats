@@ -1,7 +1,13 @@
+---
 Title: 🔎 OpenSearch
 Group: Databases
 Icon: 🔎
 Order: 4
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -473,5 +479,3 @@ elasticdump --input=data.json --output=https://admin:<PASSWORD>@target:9200/my-i
 
 - **OpenSearch Documentation:** https://opensearch.org/docs/latest/
 - **OpenSearch API Reference:** https://opensearch.org/docs/latest/API_Reference/
-
-#databases #sysadmin #linux

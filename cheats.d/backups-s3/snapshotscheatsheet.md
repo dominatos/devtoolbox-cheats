@@ -1,7 +1,14 @@
+---
 Title: 🗄️ Snapshots — LVM/ZFS/Btrfs
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 8
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 > **Filesystem snapshots** (LVM, ZFS, Btrfs) provide instant point-in-time copies of data at the block or extent level using Copy-on-Write (CoW) technology. They are used for consistent backups of running databases, quick rollbacks before risky changes, and disaster recovery. Snapshots are not a replacement for off-site backups — they protect against logical errors but not hardware failures. All three technologies are actively maintained and widely used in production.
 > / **Снапшоты файловых систем** (LVM, ZFS, Btrfs) обеспечивают мгновенные копии данных на уровне блоков с использованием Copy-on-Write (CoW). Используются для консистентных бэкапов работающих баз данных, быстрых откатов и аварийного восстановления. Снапшоты не заменяют внешние резервные копии.
@@ -521,5 +528,3 @@ btrfs qgroup show /mnt                            # Quota group usage (if enable
 
 - **LVM Snapshots:** https://man7.org/linux/man-pages/man8/lvcreate.8.html
 - **Btrfs Snapshots:** https://btrfs.readthedocs.io/en/latest/Snaphots.html
-
-#backups #s3 #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: AWX (Ansible Tower)
 Group: Infrastructure Management
 Icon: 🤖
 Order: 2
+tags:
+  - infrastructure
+  - sysadmin
+  - devops
+---
 
 # AWX (Ansible Tower) — IT Automation Platform
 
@@ -483,5 +489,3 @@ curl -s http://<HOST>:8052/api/v2/jobs/<JOB_ID>/ \
 - **AWX REST API Reference:** [https://ansible.readthedocs.io/projects/awx/en/latest/rest_api/](https://ansible.readthedocs.io/projects/awx/en/latest/rest_api/)
 - **AWX CLI (awxkit) Documentation:** [https://docs.ansible.com/automation-controller/latest/html/controllercli/](https://docs.ansible.com/automation-controller/latest/html/controllercli/)
 - **Red Hat Ansible Automation Platform (commercial):** [https://www.redhat.com/en/technologies/management/ansible](https://www.redhat.com/en/technologies/management/ansible)
-
-#infrastructure #sysadmin #devops

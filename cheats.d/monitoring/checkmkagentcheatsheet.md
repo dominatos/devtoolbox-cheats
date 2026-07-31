@@ -1,7 +1,13 @@
+---
 Title: ✅ Checkmk Agent
 Group: Monitoring
 Icon: ✅
 Order: 7
+tags:
+  - monitoring
+  - sysadmin
+  - linux
+---
 
 # Checkmk Agent (check_mk_agent) Sysadmin Cheatsheet
 
@@ -401,5 +407,3 @@ cat /var/log/cmk-agent-ctl.log
 - **Agent Bakery (Enterprise):** https://docs.checkmk.com/latest/en/wato_monitoringagents.html
 
 ---
-
-#monitoring #sysadmin #linux

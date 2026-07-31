@@ -1,7 +1,13 @@
+---
 Title: 🗃 FIND — Commands
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: 🗃
 Order: 3
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **find** — POSIX-standard utility for recursively searching the file system by name, type, size, time, permissions, and more. Part of GNU Findutils, pre-installed on all Linux distributions. `find` is the most powerful and flexible file-locating tool available in the shell. For simpler syntax and faster performance, consider the modern alternative [`fd`](https://github.com/sharkdp/fd) — but `find` remains the universal, scriptable standard.
 
@@ -146,5 +152,3 @@ find . -perm /4000                             # Find SUID files / Найти SU
 - [POSIX find specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/find.html)
 - [fd — modern alternative (GitHub)](https://github.com/sharkdp/fd)
 - `man find`
-
-#text-parsing #linux #sysadmin

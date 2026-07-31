@@ -1,7 +1,13 @@
+---
 Title: 📦 Snap — Universal Packages
 Group: Package Managers
 Icon: 📦
 Order: 5
+tags:
+  - package-managers
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Description](#Description)
@@ -162,5 +168,3 @@ snap list <PACKAGE>                           # Check notes column / Прове�
 - **Ubuntu Core — Snaps:** https://ubuntu.com/core/docs/snaps-in-ubuntu-core
 - **Snap Confinement:** https://snapcraft.io/docs/snap-confinement
 - **Snap Interfaces:** https://snapcraft.io/docs/supported-interfaces
-
-#package-managers #sysadmin #linux

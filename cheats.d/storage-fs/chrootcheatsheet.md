@@ -1,7 +1,14 @@
+---
 Title: 🐧 Chroot Cheatsheet
-Group: Storage & FS
+Group: "Storage & FS"
 Icon: 🐧
 Order: 4
+tags:
+  - storage
+  - filesystem
+  - sysadmin
+  - linux
+---
 
 # Chroot — Change Root Environment
 
@@ -273,4 +280,3 @@ reboot
 - **systemd-nspawn (alternative):** https://man7.org/linux/man-pages/man1/systemd-nspawn.1.html
 - **ArchWiki — Chroot:** https://wiki.archlinux.org/title/Chroot
 - **Debian Wiki — Chroot:** https://wiki.debian.org/Chroot
-#storage #filesystem #sysadmin #linux

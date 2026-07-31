@@ -1,7 +1,14 @@
+---
 Title: 💿 Disk Growth — Cloud/VM Expansion
-Group: Storage & FS
+Group: "Storage & FS"
 Icon: 💿
 Order: 3
+tags:
+  - storage
+  - filesystem
+  - sysadmin
+  - linux
+---
 
 # Disk Growth — Cloud/VM Expansion
 
@@ -436,5 +443,3 @@ sudo mount /dev/sda1 /
 - **AWS — Extend EBS Volume:** https://docs.aws.amazon.com/ebs/latest/userguide/recognize-expanded-volume-linux.html
 - **GCP — Resize Disk:** https://cloud.google.com/compute/docs/disks/resize-persistent-disk
 - **Azure — Expand OS Disk:** https://learn.microsoft.com/en-us/azure/virtual-machines/linux/expand-disks
-
-#storage #filesystem #sysadmin #linux

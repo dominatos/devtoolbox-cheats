@@ -1,7 +1,13 @@
+---
 Title: 💻 KVM / Libvirt — Virtualization
 Group: Virtualization
 Icon: 💻
 Order: 1
+tags:
+  - virtualization
+  - sysadmin
+  - linux
+---
 
 # 💻 KVM / Libvirt — Virtualization Cheatsheet
 
@@ -528,5 +534,3 @@ virt-top                               # Real-time VM monitor / Монитори
 - [oVirt Documentation](https://www.ovirt.org/documentation/)
 
 ---
-
-#virtualization #sysadmin #linux

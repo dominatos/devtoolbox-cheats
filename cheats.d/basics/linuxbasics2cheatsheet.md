@@ -1,7 +1,13 @@
+---
 Title: 📗 Linux Basics 2 — Next Steps
 Group: Basics
 Icon: 📗
 Order: 2
+tags:
+  - linux
+  - basics
+  - sysadmin
+---
 
 # 📗 Linux Basics 2 — Next Steps
 
@@ -181,5 +187,3 @@ lspci                                          # PCI devices / PCI устрой�
 - **TLDR Pages:** https://tldr.sh/
 - **Explainshell:** https://explainshell.com/
 - **Linux Journey:** https://linuxjourney.com/
-
-#linux #basics #sysadmin

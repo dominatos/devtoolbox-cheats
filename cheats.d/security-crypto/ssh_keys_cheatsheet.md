@@ -1,7 +1,14 @@
-Title: 🔑 SSH Keys & Access Management
-Group: Security & Crypto
+---
+Title: "🔑 SSH Keys & Access Management"
+Group: "Security & Crypto"
 Icon: 🔑
 Order: 30
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # SSH Keys & Access Management Sysadmin Cheatsheet
 
@@ -263,5 +270,3 @@ PermitRootLogin prohibit-password
 - [GitHub SSH Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
 ---
-
-#security #crypto #sysadmin #linux

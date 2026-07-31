@@ -1,7 +1,12 @@
+---
 Title: ☁️ Apache CloudStack
 Group: Cloud
 Icon: ☁️
 Order: 2
+tags:
+  - cloud
+  - sysadmin
+---
 
 # Apache CloudStack Sysadmin Cheatsheet
 
@@ -516,5 +521,3 @@ cmk list asyncjobs listall=true
 - **CloudStack Administration Guide:** https://docs.cloudstack.apache.org/en/latest/adminguide/
 
 ---
-
-#cloud #sysadmin

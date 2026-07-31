@@ -1,7 +1,14 @@
+---
 Title: 🗄️ BorgBackup — Deduplicating Backups
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 3
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
@@ -398,5 +405,3 @@ borg create /backup::archive-{now} /data \
 
 - **BorgBackup Documentation:** https://www.borgbackup.org/
 - **Borg Man Page:** https://man.archlinux.org/man/borg.1.en.html
-
-#backups #s3 #sysadmin #linux

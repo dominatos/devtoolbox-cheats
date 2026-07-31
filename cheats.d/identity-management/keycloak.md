@@ -1,7 +1,13 @@
+---
 Title: Keycloak
 Group: Identity Management
 Icon: 🪪
 Order: 50
+tags:
+  - identity-management
+  - sysadmin
+  - security
+---
 
 # Keycloak — Identity and Access Management
 
@@ -600,5 +606,3 @@ curl -X POST "https://<HOST>:8443/realms/<REALM_NAME>/protocol/openid-connect/to
 - **Keycloak REST API Reference:** [https://www.keycloak.org/docs-api/latest/rest-api/](https://www.keycloak.org/docs-api/latest/rest-api/)
 - **Keycloak GitHub Repository:** [https://github.com/keycloak/keycloak](https://github.com/keycloak/keycloak)
 - **Keycloak Migration Guide (WildFly → Quarkus):** [https://www.keycloak.org/migration/migrating-to-quarkus](https://www.keycloak.org/migration/migrating-to-quarkus)
-
-#identity-management #sysadmin #security

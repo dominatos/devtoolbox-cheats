@@ -1,7 +1,13 @@
+---
 Title: 🔐 WireGuard — VPN Setup
 Group: Network
 Icon: 🔐
 Order: 9
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # WireGuard — Modern VPN Solution
 
@@ -340,5 +346,3 @@ qrencode -o mobile.png < /etc/wireguard/client-mobile.conf  # Save as image / С
 
 - [WireGuard Official Site](https://www.wireguard.com/)
 - [WireGuard Quickstart](https://www.wireguard.com/quickstart/)
-
-#network #sysadmin #linux

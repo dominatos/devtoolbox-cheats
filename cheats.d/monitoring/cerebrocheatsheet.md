@@ -1,7 +1,13 @@
+---
 Title: 🧠 Cerebro
 Group: Monitoring
 Icon: 🧠
 Order: 9
+tags:
+  - monitoring
+  - sysadmin
+  - linux
+---
 
 # Cerebro (Elasticsearch Admin) Sysadmin Cheatsheet
 
@@ -336,5 +342,3 @@ GET /_cluster/allocation/explain
 - **Alternative — Kibana:** https://www.elastic.co/kibana
 
 ---
-
-#monitoring #sysadmin #linux

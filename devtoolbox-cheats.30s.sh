@@ -532,10 +532,12 @@ b64dec() {
 meta_val() {
   local f="$1" key="$2"
   # Read first 80 lines, remove BOM, handle CRLF, look for Key: Value
+  # Strip surrounding quotes (YAML frontmatter compatibility)
   sed '1s/^\xEF\xBB\xBF//' "$f" | head -n 80 \
     | tr -d '\r' \
     | grep -i -m1 "^[[:space:]]*${key}[[:space:]]*:" \
-    | sed -E 's/^[[:space:]]*[^:]+:[[:space:]]*//'
+    | sed -E 's/^[[:space:]]*[^:]+:[[:space:]]*//' \
+    | sed -E 's/^"(.*)"$/\1/' | sed -E "s/^'(.*)'$/\1/"
 }
 
 # Indexes all cheatsheets and builds the cache file.

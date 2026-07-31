@@ -1,7 +1,13 @@
+---
 Title: 📦 DNF — RHEL/Fedora
 Group: Package Managers
 Icon: 📦
 Order: 2
+tags:
+  - package-managers
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Description](#Description)
@@ -192,5 +198,3 @@ sudo rpm --import <KEY_FILE>                  # Import key / Импортиро�
 - **DNF5 Project:** https://github.com/rpm-software-management/dnf5
 - **RPM Man Page:** https://man7.org/linux/man-pages/man8/rpm.8.html
 - **RHEL Package Management:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_software_with_the_dnf_tool/index
-
-#package-managers #sysadmin #linux

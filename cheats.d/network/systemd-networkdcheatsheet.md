@@ -1,7 +1,13 @@
+---
 Title: ⚙️ systemd-networkd — Network Configuration
 Group: Network
 Icon: ⚙️
 Order: 22
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # systemd-networkd — systemd Network Manager
 
@@ -324,5 +330,3 @@ sudo systemd-analyze verify /etc/systemd/network/*.network  # Verify syntax / П
 ## 📚 Documentation Links
 
 - [systemd.network Man Page](https://www.freedesktop.org/software/systemd/man/systemd.network.html)
-
-#network #sysadmin #linux

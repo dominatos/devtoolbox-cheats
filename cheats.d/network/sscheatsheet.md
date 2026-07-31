@@ -1,7 +1,13 @@
+---
 Title: 📡 SS — Socket Statistics
 Group: Network
 Icon: 📡
 Order: 2
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # ss — Socket Statistics Utility
 
@@ -256,5 +262,3 @@ sudo ss -tunlp | grep -v 'users:'             # Find non-local listeners / На�
 ## 📚 Documentation Links
 
 - [ss Man Page](https://man7.org/linux/man-pages/man8/ss.8.html)
-
-#network #sysadmin #linux

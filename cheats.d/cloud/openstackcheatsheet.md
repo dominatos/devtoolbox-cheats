@@ -1,7 +1,12 @@
+---
 Title: ☁️ OpenStack
 Group: Cloud
 Icon: ☁️
 Order: 1
+tags:
+  - cloud
+  - sysadmin
+---
 
 # OpenStack Sysadmin Cheatsheet
 
@@ -787,5 +792,3 @@ openstack hypervisor stats show -f value -c vcpus -c vcpus_used -c memory_mb -c 
 - **OpenStack Administrator Guide:** https://docs.openstack.org/admin/
 
 ---
-
-#cloud #sysadmin

@@ -1,7 +1,14 @@
+---
 Title: ACL Cheat Sheet for Linux
-Group: Storage & FS
+Group: "Storage & FS"
 Icon: 💿
 Order: 5
+tags:
+  - storage
+  - filesystem
+  - sysadmin
+  - linux
+---
 
 # ACL — Access Control Lists
 
@@ -256,5 +263,3 @@ getfacl <FILE>
 - **setfacl(1):** https://man7.org/linux/man-pages/man1/setfacl.1.html
 - **ArchWiki — Access Control Lists:** https://wiki.archlinux.org/title/Access_control_lists
 - **Red Hat — ACL Guide:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/managing_file_systems/assembly_setting-access-acls_managing-file-systems
-
-#storage #filesystem #sysadmin #linux

@@ -1,7 +1,14 @@
+---
 Title: 🗄️ azcopy — Azure Blob Storage
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 11
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Installation & Authentication](#Installation%20&%20Authentication)
@@ -392,5 +399,3 @@ azcopy jobs show <JOB_ID> --with-status=All     # All file statuses / Все с�
 
 - **AzCopy Documentation:** https://learn.microsoft.com/en-us/azure/storage/common/storage-ref-azcopy
 - **Azure Storage Documentation:** https://learn.microsoft.com/en-us/azure/storage/
-
-#backups #s3 #sysadmin #linux

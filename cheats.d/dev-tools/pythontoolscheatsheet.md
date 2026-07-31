@@ -1,7 +1,13 @@
+---
 Title: 🐍 Python — venv/pip/pipx/poetry
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🐍
 Order: 3
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Python Tools Cheatsheet — venv / pip / pipx / poetry / pyenv
 
@@ -379,5 +385,3 @@ CMD ["python", "app.py"]
 - **pyenv:** https://github.com/pyenv/pyenv
 - **uv (alternative):** https://github.com/astral-sh/uv
 - **pip-tools:** https://pip-tools.readthedocs.io/
-
-#dev-tools #devops #sysadmin

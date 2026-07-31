@@ -1,7 +1,13 @@
+---
 Title: 🧭 DNS — dig/nslookup/host
 Group: Network
 Icon: 🧭
 Order: 5
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # DNS — dig / nslookup / host
 
@@ -328,5 +334,3 @@ curl -H 'accept: application/dns-json' 'https://dns.google/resolve?name=example.
 
 - [resolvectl Man Page](https://man7.org/linux/man-pages/man8/resolvectl.8.html)
 - [Domain Name Resolution (Arch Wiki)](https://wiki.archlinux.org/title/Domain_name_resolution)
-
-#network #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 📝 netplan — Network Configuration
 Group: Network
 Icon: 📝
 Order: 21
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # Netplan — Network Configuration for Ubuntu
 
@@ -329,5 +335,3 @@ sudo cp /etc/netplan/01-netcfg.yaml /etc/netplan/01-netcfg.yaml.bak  # Backup / 
 
 - [Netplan Official Docs](https://netplan.io/)
 - [Netplan Man Page](https://manpages.ubuntu.com/manpages/noble/man5/netplan.5.html)
-
-#network #sysadmin #linux

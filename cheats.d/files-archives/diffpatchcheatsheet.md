@@ -1,7 +1,14 @@
+---
 Title: 🔁 diff / patch — File Comparison
-Group: Files & Archives
+Group: "Files & Archives"
 Icon: 🔁
 Order: 4
+tags:
+  - files
+  - archives
+  - linux
+  - sysadmin
+---
 
 ## Description
 
@@ -411,5 +418,3 @@ diff -u config.<HOST1> config.<HOST3>
 - **GNU Diffutils source:** https://savannah.gnu.org/projects/diffutils
 - **Git diff documentation:** https://git-scm.com/docs/git-diff
 - **Git apply documentation:** https://git-scm.com/docs/git-apply
-
-#files #archives #linux #sysadmin

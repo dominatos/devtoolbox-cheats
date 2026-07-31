@@ -1,7 +1,13 @@
+---
 Title: ⚡ Modern CLI — ripgrep/fd/bat/eza
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: ⚡
 Order: 10
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **Modern CLI replacements** for classic Unix tools — all written in Rust for speed and safety. **ripgrep** (`rg`) replaces `grep`, **fd** replaces `find`, **bat** replaces `cat`, and **eza** (community fork of the unmaintained `exa`) replaces `ls`. These tools provide better defaults, colorized output, `.gitignore` awareness, and significantly faster performance. They are drop-in enhancements for daily sysadmin and developer workflows.
 
@@ -369,5 +375,3 @@ brew install ripgrep fd bat eza
 - [bat — GitHub](https://github.com/sharkdp/bat)
 - [eza — GitHub (maintained fork of exa)](https://github.com/eza-community/eza)
 - [exa — GitHub (unmaintained)](https://github.com/ogham/exa)
-
-#text-parsing #linux #sysadmin

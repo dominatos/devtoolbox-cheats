@@ -1,7 +1,14 @@
+---
 Title: 🔐 htpasswd — Basic Auth
-Group: Security & Crypto
+Group: "Security & Crypto"
 Icon: 🔐
 Order: 10
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # htpasswd Sysadmin Cheatsheet
 
@@ -218,5 +225,3 @@ metadata:
 - [Traefik BasicAuth Middleware](https://doc.traefik.io/traefik/middlewares/http/basicauth/)
 
 ---
-
-#security #crypto #sysadmin #linux

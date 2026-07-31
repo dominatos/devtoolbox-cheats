@@ -1,7 +1,13 @@
+---
 Title: 🔥 iptables — Firewall Rules
 Group: Network
 Icon: 🔥
 Order: 13
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # iptables — Linux Packet Filtering
 
@@ -373,5 +379,3 @@ iptables-restore-translate -f /etc/iptables/rules.v4     # Convert entire rulese
 
 - [iptables Man Page](https://man7.org/linux/man-pages/man8/iptables.8.html)
 - [Netfilter Official Site](https://www.netfilter.org/)
-
-#network #sysadmin #linux

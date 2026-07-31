@@ -1,7 +1,13 @@
+---
 Title: Uyuni
 Group: Infrastructure Management
 Icon: 🔧
 Order: 1
+tags:
+  - infrastructure
+  - sysadmin
+  - devops
+---
 
 # Uyuni — Infrastructure & Configuration Management
 
@@ -836,5 +842,3 @@ spacecmd system_list | wc -l
 - **SUSE Manager Documentation (commercial version):** [https://documentation.suse.com/suma/](https://documentation.suse.com/suma/)
 - **SaltStack Documentation:** [https://docs.saltproject.io/en/latest/](https://docs.saltproject.io/en/latest/)
 - **spacecmd Reference:** [https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/](https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/)
-
-#infrastructure #sysadmin #devops

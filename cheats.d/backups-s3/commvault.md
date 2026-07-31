@@ -1,7 +1,14 @@
+---
 Title: 🗄️ Commvault v11 — Enterprise Backup
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 1
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 > **Commvault v11 (Simpana)** is a unified data management and protection platform for enterprise environments. It provides backup, recovery, archiving, and replication across physical, virtual, and cloud workloads. Commvault is widely used in large organizations for centralized backup management with a single CommServe console managing thousands of clients.
 > / **Commvault v11 (Simpana)** — унифицированная платформа управления и защиты данных для корпоративных сред. Обеспечивает резервное копирование, восстановление, архивирование и репликацию для физической, виртуальной и облачной инфраструктуры.
@@ -305,5 +312,3 @@ If you need to use system logrotate:
 ## Documentation
 
 - **Commvault Documentation:** https://documentation.commvault.com/
-
-#backups #s3 #sysadmin #linux

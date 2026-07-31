@@ -1,7 +1,13 @@
+---
 Title: 🔌 nc / nmap — Network Tools
 Group: Network
 Icon: 🔌
 Order: 4
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # nc / nmap — Network Reconnaissance & Port Testing
 
@@ -357,5 +363,3 @@ nmap -p 10250 --script=banner <K8S_NODE>
 
 - [ncat Man Page](https://man7.org/linux/man-pages/man1/ncat.1.html)
 - [Nmap Official Site](https://nmap.org/)
-
-#network #sysadmin #linux

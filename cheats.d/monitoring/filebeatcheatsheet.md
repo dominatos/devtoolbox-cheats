@@ -1,7 +1,13 @@
+---
 Title: 📊 Filebeat
 Group: Monitoring
 Icon: 📊
 Order: 5
+tags:
+  - monitoring
+  - sysadmin
+  - linux
+---
 
 # Filebeat Sysadmin Cheatsheet
 
@@ -315,5 +321,3 @@ systemctl start filebeat
 - **GitHub:** https://github.com/elastic/beats
 
 ---
-
-#monitoring #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 🔁 iptables → nftables Translation
 Group: Network
 Icon: 🔁
 Order: 15
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # iptables → nftables Translation Guide
 
@@ -381,5 +387,3 @@ nft add rule inet filter input drop
 
 - [nftables Wiki](https://wiki.nftables.org/)
 - [iptables-translate Man Page](https://man7.org/linux/man-pages/man8/iptables-translate.8.html)
-
-#network #sysadmin #linux

@@ -1,7 +1,14 @@
+---
 Title: 🔐 OpenSSL — CSR with Subject Alternative Names (SAN)
-Group: Security & Crypto
+Group: "Security & Crypto"
 Icon: 🔐
 Order: 3
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # OpenSSL SAN CSR Sysadmin Cheatsheet
 
@@ -346,5 +353,3 @@ openssl req -new -newkey rsa:2048 -nodes \
 - [Let's Encrypt Documentation](https://letsencrypt.org/docs/)
 
 ---
-
-#security #crypto #sysadmin #linux

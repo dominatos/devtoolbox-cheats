@@ -1,7 +1,13 @@
+---
 Title: 🐬 Percona XtraDB Cluster (PXC)
 Group: Databases
 Icon: 🐬
 Order: 7
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -814,5 +820,3 @@ pt-duplicate-key-checker \
 ## Documentation Links
 
 - **Percona XtraDB Cluster Documentation:** https://docs.percona.com/percona-xtradb-cluster/
-
-#databases #sysadmin #linux

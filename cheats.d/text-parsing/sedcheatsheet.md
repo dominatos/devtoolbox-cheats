@@ -1,7 +1,17 @@
+---
 Title: ✂️ SED — Commands
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: ✂️
 Order: 5
+tags:
+  - sed
+  - text-processing
+  - regex
+  - linux
+  - sysadmin
+  - bash
+  - stream-editor
+---
 
 > **sed** (Stream Editor) — a POSIX-standard, non-interactive text transformation tool. GNU sed is pre-installed on all Linux distributions and is the primary tool for in-place file editing, substitution, and line manipulation in shell scripts. Unlike `awk` (column-oriented), `sed` operates on lines and character patterns. There is no modern replacement — `sed` remains the irreplaceable core utility for stream-based text processing.
 
@@ -139,5 +149,3 @@ sed '5q' file                                  # Quit after line 5 / Выход 
 - [POSIX sed specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sed.html)
 - [sed — Wikipedia](https://en.wikipedia.org/wiki/Sed)
 - `man sed`
-
-#sed #text-processing #regex #linux #sysadmin #bash #stream-editor

@@ -1,7 +1,14 @@
+---
 Title: 🗄️ Veritas InfoScale — Storage Foundation
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 8
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 > **Veritas InfoScale** (formerly Storage Foundation) provides enterprise-grade HA storage management, clustering, and disaster recovery for Linux and Unix systems. Key components include **VxVM** (Volume Manager) for disk, volume, and mirror management, and **VxFS** (File System) for online-resizable filesystems with integrated snapshot support. InfoScale is a legacy enterprise product; modern alternatives include **LVM + ext4/XFS** (built into Linux), **ZFS**, and **Btrfs** for volume/filesystem management.
 > / **Veritas InfoScale** (ранее Storage Foundation) — корпоративная платформа управления хранилищем, кластеризации и аварийного восстановления. Включает **VxVM** (Volume Manager) и **VxFS** (File System). Современные альтернативы: **LVM + ext4/XFS**, **ZFS**, **Btrfs**.
@@ -256,5 +263,3 @@ umount -f -l /mnt/point                         # Force unmount / Принуди
 ## Documentation
 
 - **Veritas NetBackup Documentation:** https://www.veritas.com/support/en_US.html
-
-#backups #s3 #sysadmin #linux

@@ -1,7 +1,14 @@
+---
 Title: 🗄️ aws-cli — AWS S3 Backups
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 9
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
@@ -446,5 +453,3 @@ aws configure set default.s3.max_bandwidth 100MB/s        # Bandwidth limit / О
 - **AWS CLI Documentation:** https://docs.aws.amazon.com/cli/latest/reference/
 - **AWS CLI User Guide:** https://docs.aws.amazon.com/cli/latest/userguide/
 - **S3 CLI Reference:** https://docs.aws.amazon.com/cli/latest/reference/s3/
-
-#backups #s3 #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 🌐 nmcli — NetworkManager CLI
 Group: Network
 Icon: 🌐
 Order: 20
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # nmcli — NetworkManager Command Line Interface
 
@@ -277,5 +283,3 @@ sudo cp /etc/NetworkManager/system-connections/<CONN> /backup/  # Backup connect
 ## 📚 Documentation Links
 
 - [nmcli Man Page](https://networkmanager.dev/docs/api/latest/nmcli.html)
-
-#network #sysadmin #linux

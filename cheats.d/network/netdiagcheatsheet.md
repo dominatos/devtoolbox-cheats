@@ -1,7 +1,13 @@
+---
 Title: 🛰️ Network Diagnostics — mtr/traceroute/iperf3/ping
 Group: Network
 Icon: 🛰️
 Order: 11
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # Network Diagnostics — ping / traceroute / mtr / iperf3
 
@@ -453,5 +459,3 @@ nc -zv -w 2 $HOST 443
 
 - [mtr Man Page](https://man7.org/linux/man-pages/man8/mtr.8.html)
 - [traceroute Man Page](https://man7.org/linux/man-pages/man1/traceroute.1.html)
-
-#network #sysadmin #linux

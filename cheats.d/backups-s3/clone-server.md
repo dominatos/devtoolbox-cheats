@@ -1,7 +1,14 @@
-Title: 🗄️ Complete Server Clone & Backup — Linux
-Group: Backups & S3
+---
+Title: "🗄️ Complete Server Clone & Backup — Linux"
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 7
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 > **Server cloning via tar + SSH** is a classic sysadmin technique for migrating or duplicating Linux servers by streaming a compressed filesystem archive directly over the network. It preserves permissions, ownership, and special files. This approach is commonly used for quick server migrations, disaster recovery, and bare-metal cloning. Modern alternatives include **rsync** (incremental), **Clonezilla** (disk-level), and **Ansible/Terraform** (infrastructure-as-code).
 > / **Клонирование сервера через tar + SSH** — классический метод миграции или дублирования Linux-серверов путём потоковой передачи сжатого архива файловой системы по сети. Современные альтернативы: **rsync**, **Clonezilla**, **Ansible/Terraform**.
@@ -327,5 +334,3 @@ systemctl status mysql                          # Check MySQL status / Пров�
 ## Documentation
 
 - **rsync Documentation:** https://man7.org/linux/man-pages/man1/rsync.1.html
-
-#backups #s3 #sysadmin #linux

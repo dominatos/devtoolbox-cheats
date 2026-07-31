@@ -1,7 +1,13 @@
+---
 Title: 🛠️ Apache Zookeeper
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🛠️
 Order: 8
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Zookeeper Sysadmin Cheatsheet
 
@@ -247,5 +253,3 @@ grep -E "ERROR|WARN" /opt/zookeeper/logs/zookeeper-*.log
 - **ZooKeeper Admin Guide:** https://zookeeper.apache.org/doc/current/zookeeperAdmin.html
 - **ZooKeeper CLI:** https://zookeeper.apache.org/doc/current/zookeeperCLI.html
 - **etcd (alternative):** https://etcd.io/docs/
-
-#dev-tools #devops #sysadmin

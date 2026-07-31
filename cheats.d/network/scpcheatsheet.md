@@ -1,7 +1,13 @@
+---
 Title: 🔐 SCP — Secure Copy
 Group: Network
 Icon: 🔐
 Order: 7
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # SCP — Secure Copy Protocol
 
@@ -229,5 +235,3 @@ scp -o ProxyJump=<JUMP_HOST> file.txt <USER>@<TARGET_HOST>:/path/
 ## 📚 Documentation Links
 
 - [scp Man Page](https://man7.org/linux/man-pages/man1/scp.1.html)
-
-#network #sysadmin #linux

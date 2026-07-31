@@ -1,7 +1,13 @@
+---
 Title: 🚓 Fail2Ban — Intrusion Prevention
 Group: Network
 Icon: 🚓
 Order: 17
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # Fail2Ban — Intrusion Prevention Framework
 
@@ -364,5 +370,3 @@ done > banned-ips.txt
 
 - [fail2ban GitHub](https://github.com/fail2ban/fail2ban)
 - [fail2ban-client Man Page](https://man7.org/linux/man-pages/man1/fail2ban-client.1.html)
-
-#network #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 📦 APT — Debian/Ubuntu
 Group: Package Managers
 Icon: 📦
 Order: 1
+tags:
+  - package-managers
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Description](#Description)
@@ -194,5 +200,3 @@ curl -fsSL https://<URL>/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/<RE
 - **Ubuntu APT Guide:** https://ubuntu.com/server/docs/package-management
 - **dpkg Man Page:** https://man7.org/linux/man-pages/man1/dpkg.1.html
 - **Debian Repository Format:** https://wiki.debian.org/DebianRepository/Format
-
-#package-managers #sysadmin #linux

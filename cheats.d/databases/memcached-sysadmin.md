@@ -1,7 +1,13 @@
-Title:  Memcached
+---
+Title: Memcached
 Group: Databases
 Icon: 🗃️
 Order: 99
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -328,5 +334,3 @@ echo "stats" | nc localhost 11211 | grep curr_connections
 
 - **Memcached Wiki:** https://github.com/memcached/memcached/wiki
 - **Memcached Man Page:** https://man7.org/linux/man-pages/man1/memcached.1.html
-
-#databases #sysadmin #linux

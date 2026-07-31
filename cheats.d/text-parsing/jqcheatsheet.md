@@ -1,7 +1,13 @@
+---
 Title: 🧩 JQ — Commands
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: 🧩
 Order: 9
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **jq** — a lightweight, command-line JSON processor written in C. It uses a functional, pipeline-oriented query language for slicing, filtering, mapping, and transforming structured JSON data. Widely used in CI/CD pipelines, API automation, Kubernetes/Docker scripting, and log analysis. Actively maintained; for YAML processing, use [`yq`](https://github.com/mikefarah/yq). Alternative: [`gojq`](https://github.com/itchyny/gojq) (Go reimplementation with YAML support).
 
@@ -187,5 +193,3 @@ jq 'paths' file.json                           # Show all paths / Показат
 - [jq Play — Online Playground](https://jqplay.org/)
 - [gojq — Go reimplementation](https://github.com/itchyny/gojq)
 - `man jq`
-
-#text-parsing #linux #sysadmin

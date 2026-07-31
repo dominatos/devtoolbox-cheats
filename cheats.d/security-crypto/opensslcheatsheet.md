@@ -1,7 +1,14 @@
+---
 Title: 🔐 OpenSSL — Commands
-Group: Security & Crypto
+Group: "Security & Crypto"
 Icon: 🔐
 Order: 2
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # OpenSSL Sysadmin Cheatsheet
 
@@ -162,5 +169,3 @@ openssl s_client -connect <HOST>:443 -debug    # Debug SSL connection / Отла
 - [Mozilla SSL Configuration Generator](https://ssl-config.mozilla.org/)
 
 ---
-
-#security #crypto #sysadmin #linux

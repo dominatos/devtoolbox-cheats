@@ -1,7 +1,14 @@
+---
 Title: 🔐 pass — Password Store
-Group: Security & Crypto
+Group: "Security & Crypto"
 Icon: 🔐
 Order: 5
+tags:
+  - security
+  - crypto
+  - sysadmin
+  - linux
+---
 
 # pass (Password Store) Sysadmin Cheatsheet
 
@@ -310,5 +317,3 @@ pass otp -c github/user          # Copy OTP code / Скопировать OTP к
 - [QtPass (GUI)](https://qtpass.org/)
 
 ---
-
-#security #crypto #sysadmin #linux

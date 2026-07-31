@@ -1,7 +1,13 @@
+---
 Title: 📚 Linux Basics — Cheatsheet
 Group: Basics
 Icon: 📚
 Order: 1
+tags:
+  - linux
+  - basics
+  - sysadmin
+---
 
 # 📚 Linux Basics — Cheatsheet
 
@@ -232,5 +238,3 @@ export VAR=value                              # Set env variable / Устано�
 - **TLDR Pages:** https://tldr.sh/
 - **Explainshell:** https://explainshell.com/
 - **Linux Journey:** https://linuxjourney.com/
-
-#linux #basics #sysadmin

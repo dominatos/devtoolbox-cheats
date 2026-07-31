@@ -1,7 +1,14 @@
+---
 Title: Kustomize — kustomization.yaml
-Group: Kubernetes & Containers
+Group: "Kubernetes & Containers"
 Icon: ☸️
 Order: 3
+tags:
+  - kubernetes
+  - containers
+  - docker
+  - sysadmin
+---
 
 # ☸️ Kustomize — Template-Free Kubernetes Configuration
 
@@ -344,5 +351,3 @@ kubectl kustomize ./overlays/prod | grep -E "^(kind|metadata):"
 - **Kustomize API Reference:** [https://kubectl.docs.kubernetes.io/references/kustomize/](https://kubectl.docs.kubernetes.io/references/kustomize/)
 - **kubectl apply -k Documentation:** [https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
 - **Kustomize Examples:** [https://github.com/kubernetes-sigs/kustomize/tree/master/examples](https://github.com/kubernetes-sigs/kustomize/tree/master/examples)
-
-#kubernetes #containers #docker #sysadmin

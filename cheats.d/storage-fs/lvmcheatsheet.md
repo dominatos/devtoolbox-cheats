@@ -1,7 +1,14 @@
+---
 Title: 💿 LVM — Basics
-Group: Storage & FS
+Group: "Storage & FS"
 Icon: 💿
 Order: 1
+tags:
+  - storage
+  - filesystem
+  - sysadmin
+  - linux
+---
 
 # LVM — Logical Volume Manager
 
@@ -350,5 +357,3 @@ smartctl -a /dev/sdX                       # Check disk SMART health / Пров�
 - **lvextend(8):** https://man7.org/linux/man-pages/man8/lvextend.8.html
 - **ArchWiki — LVM:** https://wiki.archlinux.org/title/LVM
 - **Ubuntu — LVM Guide:** https://ubuntu.com/server/docs/about-logical-volume-management-lvm
-
-#storage #filesystem #sysadmin #linux

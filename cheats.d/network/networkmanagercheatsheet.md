@@ -1,7 +1,13 @@
+---
 Title: 🖧 NetworkManager — GUI/TUI Network Management
 Group: Network
 Icon: 🖧
 Order: 23
+tags:
+  - network
+  - sysadmin
+  - linux
+---
 
 # NetworkManager — GUI & TUI Network Management
 
@@ -248,5 +254,3 @@ nmcli -s connection show <CONN>  # Show with secrets / Показать с се�
 
 - [NetworkManager API Docs](https://networkmanager.dev/docs/api/latest/)
 - [NetworkManager Wiki](https://wiki.gnome.org/Projects/NetworkManager)
-
-#network #sysadmin #linux

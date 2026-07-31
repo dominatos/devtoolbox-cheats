@@ -1,7 +1,13 @@
+---
 Title: 🧷 tmux — Terminal Multiplexer
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🧷
 Order: 6
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # tmux Cheatsheet — Terminal Multiplexer
 
@@ -368,4 +374,3 @@ alias tkill='tmux kill-session -t'       # Quick kill / Быстрое удал�
 - **tmux Man Page:** `man tmux`
 - **Zellij (alternative):** https://zellij.dev/documentation/
 - **GNU Screen:** https://www.gnu.org/software/screen/manual/
-#dev-tools #devops #sysadmin

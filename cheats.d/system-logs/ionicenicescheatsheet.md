@@ -1,7 +1,14 @@
-Title: 📜 ionice & nice — Priority Control
-Group: System & Logs
+---
+Title: "📜 ionice & nice — Priority Control"
+Group: "System & Logs"
 Icon: 📜
 Order: 98
+tags:
+  - system
+  - logs
+  - sysadmin
+  - linux
+---
 
 # ionice & nice — CPU & I/O Priority Control
 
@@ -227,5 +234,3 @@ ionice -c2 -n7 nice -n10 mysqldump --all-databases > backup.sql
 - **ionice(1):** https://man7.org/linux/man-pages/man1/ionice.1.html
 - **ArchWiki — Improving performance:** https://wiki.archlinux.org/title/Improving_performance
 - **Linux I/O schedulers:** https://wiki.archlinux.org/title/Improving_performance#I/O_schedulers
-
-#system #logs #sysadmin #linux

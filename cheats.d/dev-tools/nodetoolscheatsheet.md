@@ -1,7 +1,13 @@
+---
 Title: 🟢 Node — nvm/npm/yarn/pnpm
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🟢
 Order: 4
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Node.js Tools Cheatsheet — nvm / npm / yarn / pnpm
 
@@ -327,5 +333,3 @@ yarn workspaces run build                     # Run build in all workspaces / З
 - **nvm:** https://github.com/nvm-sh/nvm
 - **fnm (alternative):** https://github.com/Schniz/fnm
 - **Corepack:** https://nodejs.org/api/corepack.html
-
-#dev-tools #devops #sysadmin

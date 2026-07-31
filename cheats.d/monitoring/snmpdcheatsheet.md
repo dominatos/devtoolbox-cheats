@@ -1,7 +1,13 @@
+---
 Title: 📡 SNMPD
 Group: Monitoring
 Icon: 📡
 Order: 4
+tags:
+  - monitoring
+  - sysadmin
+  - linux
+---
 
 # SNMPD (Net-SNMP Agent) Sysadmin Cheatsheet
 
@@ -341,5 +347,3 @@ snmpwalk -v2c -c <COMMUNITY_STRING> -d <HOST> sysDescr.0
 - **GitHub:** https://github.com/net-snmp/net-snmp
 
 ---
-
-#monitoring #sysadmin #linux

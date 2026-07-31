@@ -1,7 +1,14 @@
+---
 Title: 🗄️ Duplicity — Encrypted Incremental Backups
-Group: Backups & S3
+Group: "Backups & S3"
 Icon: 🗄️
 Order: 4
+tags:
+  - backups
+  - s3
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Installation & Configuration](#Installation%20&%20Configuration)
@@ -352,5 +359,3 @@ duplicity remove-older-than 30D --dry-run file:///backup  # Simulate removal / �
 
 - **Duplicity Documentation:** https://duplicity.nongnu.org/
 - **Duplicity Man Page:** https://duplicity.nongnu.org/duplicity.1.html
-
-#backups #s3 #sysadmin #linux

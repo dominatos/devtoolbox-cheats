@@ -1,7 +1,14 @@
+---
 Title: 📜 Kernel-panic RHEL
-Group: System & Logs
+Group: "System & Logs"
 Icon: 📜
 Order: 99
+tags:
+  - system
+  - logs
+  - sysadmin
+  - linux
+---
 
 # Kernel Panic After Kernel Update (EL9: Alma/Rocky/RHEL)
 
@@ -324,5 +331,3 @@ dnf versionlock delete kernel kernel-core kernel-modules kernel-modules-extra
 - **kdump documentation:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/configuring-kdump-on-the-command-line_managing-monitoring-and-updating-the-kernel
 - **Red Hat — Kernel Troubleshooting:** https://access.redhat.com/solutions/1275
 - **ArchWiki — dracut:** https://wiki.archlinux.org/title/Dracut
-
-#system #logs #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 🟢 Zypper — OpenSUSE
 Group: Package Managers
 Icon: 🟢
 Order: 4
+tags:
+  - package-managers
+  - sysadmin
+  - linux
+---
 
 ## Table of Contents
 - [Description](#Description)
@@ -164,5 +170,3 @@ sudo zypper patch --category security         # Install only security patches / 
 - **SLES Package Management:** https://documentation.suse.com/sles/15-SP5/html/SLES-all/cha-sw-cl.html
 - **openSUSE Wiki — Package Management:** https://en.opensuse.org/Package_management
 - **Snapper (Btrfs Snapshots):** https://en.opensuse.org/openSUSE:Snapper_Tutorial
-
-#package-managers #sysadmin #linux

@@ -1,7 +1,13 @@
+---
 Title: 🗃️ SQLite
 Group: Databases
 Icon: 🗃️
 Order: 3
+tags:
+  - databases
+  - sysadmin
+  - linux
+---
 
 ---
 
@@ -579,5 +585,3 @@ Many popular services use SQLite internally:
 
 - **SQLite CLI Documentation:** https://www.sqlite.org/cli.html
 - **SQLite Documentation:** https://www.sqlite.org/docs.html
-
-#databases #sysadmin #linux

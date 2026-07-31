@@ -1,7 +1,13 @@
+---
 Title: 📈 CheckMK
 Group: Monitoring
 Icon: 📈
 Order: 2
+tags:
+  - monitoring
+  - sysadmin
+  - linux
+---
 
 # Checkmk Server Sysadmin Cheatsheet
 
@@ -355,5 +361,3 @@ No external logrotate configuration is typically needed for Checkmk. / Внеш�
 - **GitHub (Raw Edition):** https://github.com/Checkmk/checkmk
 
 ---
-
-#monitoring #sysadmin #linux

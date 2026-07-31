@@ -1,7 +1,13 @@
+---
 Title: 🌲 Tree — Cheatsheet
-Group: Text & Parsing
+Group: "Text & Parsing"
 Icon: 🌲
 Order: 13
+tags:
+  - text-parsing
+  - linux
+  - sysadmin
+---
 
 > **tree** — a recursive directory listing program that produces a depth-indented, colorized tree of files. Not part of coreutils; requires separate installation on most systems. Commonly used for project overviews, documentation, and quick filesystem audits. Actively maintained; modern alternative: `exa --tree` / `eza --tree` provides similar functionality with git integration.
 
@@ -173,5 +179,3 @@ tree --version
 - [tree — Source (Old Dominion University)](https://oldmanprogrammer.net/source.php?dir=projects/tree)
 - [tree — Wikipedia](https://en.wikipedia.org/wiki/Tree_(command))
 - `man tree`
-
-#text-parsing #linux #sysadmin

@@ -1,7 +1,14 @@
+---
 Title: 🛠 systemctl — Commands
-Group: System & Logs
+Group: "System & Logs"
 Icon: 🛠
 Order: 1
+tags:
+  - system
+  - logs
+  - sysadmin
+  - linux
+---
 
 # systemctl — systemd Service Manager
 
@@ -246,5 +253,3 @@ systemctl reset-failed <SERVICE>              # Clear specific unit / Сброс
 - **ArchWiki — systemd:** https://wiki.archlinux.org/title/Systemd
 - **Red Hat — systemd Guide:** https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/managing-system-services-with-systemctl_configuring-basic-system-settings
 - **Freedesktop — systemd:** https://www.freedesktop.org/wiki/Software/systemd/
-
-#system #logs #sysadmin #linux

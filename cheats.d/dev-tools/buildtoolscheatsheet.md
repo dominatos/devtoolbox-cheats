@@ -1,7 +1,13 @@
+---
 Title: 🛠️ Build — Make/CMake/Meson
-Group: Dev & Tools
+Group: "Dev & Tools"
 Icon: 🛠️
 Order: 5
+tags:
+  - dev-tools
+  - devops
+  - sysadmin
+---
 
 # Build Tools Cheatsheet — Make / CMake / Meson / Ninja
 
@@ -413,5 +419,3 @@ docker run --rm -v $(pwd):/src -w /src ubuntu:22.04 bash -c "apt update && apt i
 - **Meson:** https://mesonbuild.com/Manual.html
 - **Ninja:** https://ninja-build.org/manual.html
 - **GNU Autotools:** https://www.gnu.org/software/automake/manual/
-
-#dev-tools #devops #sysadmin

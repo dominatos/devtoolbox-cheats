@@ -1,7 +1,13 @@
-Title: Pacemaker & Corosync High Availability
+---
+Title: "Pacemaker & Corosync High Availability"
 Group: Infrastructure Management
 Icon: 🫀
 Order: 16
+tags:
+  - infrastructure
+  - sysadmin
+  - devops
+---
 
 # Pacemaker & Corosync — Linux High Availability Clustering
 
@@ -483,5 +489,3 @@ sudo pcs resource failcount show <RES_NAME>  # Show fail count / Показат�
 - **SUSE HA Extension Documentation:** [https://documentation.suse.com/sle-ha/](https://documentation.suse.com/sle-ha/)
 - **Corosync Project:** [https://corosync.github.io/corosync/](https://corosync.github.io/corosync/)
 - **Pacemaker GitHub Repository:** [https://github.com/ClusterLabs/pacemaker](https://github.com/ClusterLabs/pacemaker)
-
-#infrastructure #sysadmin #devops
