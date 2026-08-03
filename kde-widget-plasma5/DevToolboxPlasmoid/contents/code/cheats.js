@@ -79,34 +79,47 @@ function stripFrontMatter(content) {
     return output.join('\n');
 }
 
+// Escape a value for safe use inside double-quoted bash strings.
+// Handles backslashes, double quotes, dollar signs, and backticks.
+function escapeBashDoubleQuoted(s) {
+    return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\$/g, '\\$').replace(/`/g, '\\`');
+}
+
+// Like escapeBashDoubleQuoted but preserves a leading $HOME/ path prefix so bash
+// expands it naturally. Embedded or unqualified $HOME text stays escaped.
+function escapePathForBash(s) {
+    var safe = escapeBashDoubleQuoted(s);
+    // After escaping, a leading $HOME/ becomes \$HOME/ — restore only that prefix
+    return safe.replace(/^\\\$HOME\//, '$HOME/');
+}
+
 // Build command to index cheats (using shell for performance)
-// We retain the bash logic for indexing because it's faster and reliable on Linux
-function getIndexCommand(cheatsDir, cacheFile) {
-    // We will construct a shell command that finds files, parses them, and outputs JSON
-    // Note: Writing complex JSON generator in one-liner bash is tricky.
-    // Instead, we might want to just output TSV like before, or a simple format 
-    // that we can easily parse in QML.
+/**
+ * Builds a UTF-8 Bash command that indexes Markdown files and emits pipe-delimited metadata records.
+ * @param {string} cheatsDir - The directory containing Markdown cheat files.
+ * @param {*} cacheFile - Retained for compatibility and not used.
+ * @param {string} [debugLog="/tmp/devtoolbox-debug.log"] - The file for diagnostic output.
+ * @return {string} The Bash indexing command.
+ */
+function getIndexCommand(cheatsDir, cacheFile, debugLog) {
+    debugLog = debugLog || "/tmp/devtoolbox-debug.log";
 
-    // Let's stick to the existing TSV format output by the bash script command,
-    // and we will parse that TSV in QML/JS to build our model.
-    // This avoids needing to rewrite the robust bash indexing logic in pure JS/QML
-    // which might run into permission or performance issues.
-
-    // Robust indexing command wrapped in bash
-    // We iterate over files and extract metadata one by one.
-    // The command string uses double quotes internally for bash variables, so we need to be careful with escaping.
-    // We construct the inner command first, then wrap it.
-
-    // Robust indexing command wrapped in bash with single quotes to prevent expansion
-    // We construct the script content first.
-
-    // Check directory existence and list it for debug
-    var debugLog = "/home/sviatoslav/Downloads/devtoolbox-kde/devtoolbox-cheats-beta/kde-widget-plasma5/debug.log";
+    var safeCheatsDir = escapePathForBash(cheatsDir);
+    var safeDebugLog  = escapePathForBash(debugLog);
 
     var script = "{ " +
-        "searchDir=\"" + cheatsDir + "\"; " +
-        "echo \"Search Dir: $searchDir\" > " + debugLog + "; " +
-        "[ -d \"$searchDir\" ] || echo 'Directory not found!' >> " + debugLog + "; " +
+        "debugLog=\"" + safeDebugLog + "\"; " +
+        "mkdir -p \"$(dirname \"$debugLog\")\" 2>/dev/null || " +
+        "{ debugLog=\"/tmp/devtoolbox-debug.log\"; " +
+        "mkdir -p \"$(dirname \"$debugLog\")\" 2>/dev/null || " +
+        "{ echo \"Cannot create debug log directory\" >&2; exit 1; }; }; " +
+        "searchDir=\"" + safeCheatsDir + "\"; " +
+        "echo \"Search Dir: $searchDir\" > \"$debugLog\" 2>/dev/null || " +
+        "{ debugLog=\"/tmp/devtoolbox-debug.log\"; " +
+        "mkdir -p \"$(dirname \"$debugLog\")\" 2>/dev/null; " +
+        "echo \"Search Dir: $searchDir\" > \"$debugLog\" 2>/dev/null || " +
+        "{ echo \"Cannot write to debug log\" >&2; exit 1; }; }; " +
+        "[ -d \"$searchDir\" ] || echo 'Directory not found!' >> \"$debugLog\"; " +
         "find -L \"$searchDir\" -type f -name '*.md' | while read -r f; do " +
         "  title=$(grep -i -m1 '^Title:' \"$f\" | sed -E 's/^[Tt][Ii][Tt][Ll][Ee]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
         "  group=$(grep -i -m1 '^Group:' \"$f\" | sed -E 's/^[Gg][Rr][Oo][Uu][Pp]:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\\r'); " +
@@ -117,7 +130,7 @@ function getIndexCommand(cheatsDir, cacheFile) {
         "  [ -z \"$order\" ] && order=9999; " +
         "  res=\"$f|$title|$group|$icon|$order\"; " +
         "  echo \"$res\"; " +
-        "  echo \"$res\" >> " + debugLog + "; " +
+        "  echo \"$res\" >> \"$debugLog\"; " +
         "done; }";
 
     var safeScript = script.replace(/'/g, "'\\''");

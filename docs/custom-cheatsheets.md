@@ -13,10 +13,12 @@ You have two main approaches to managing custom cheatsheets:
 ### Approach A: Mixing with Official Cheats (Recommended)
 You can simply add your own `.md` files to the default `~/cheats.d/` directory! You can create entirely new categories (folders), or place your files inside existing category folders (like `network/` or `basics/`) to have them appear alongside the official cheats.
 
-**Will the updater overwrite my files?** 
-No! The built-in `cheats-updater.sh` is designed to be smart. When you run `cheats-updater update`, it will:
-- Update the official files.
-- Completely ignore any new `.md` files or folders you've created. It will leave them alone and mark them as `(custom)` in the update output.
+**Will the updater overwrite my files?**
+No! The built-in `cheats-updater.sh` is designed to be safe. When you run `cheats-updater update`, it will:
+- Update the official files only — it never writes to any `.md` file you created yourself.
+- Leave your custom files untouched and mark them as `(custom)` in the update output.
+- Apply TOC formatting (Obsidian or GitHub style, based on your setting) **only to official files** — your custom cheatsheets are explicitly excluded from the auto-formatter.
+
 *(Note: Do not edit the official `.md` files directly if you want to keep your changes, as the updater will overwrite them. Always create a new file like `mysql-custom.md`.)*
 
 ### Approach B: Fully Isolated Directory

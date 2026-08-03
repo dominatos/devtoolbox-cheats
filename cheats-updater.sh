@@ -2,7 +2,7 @@
 # cheats-updater.sh - Update manager for devtoolbox-cheats
 set -euo pipefail
 
-readonly VERSION="v1.5.0"
+readonly VERSION="v1.5.1"
 readonly UPSTREAM_URL="https://github.com/dominatos/devtoolbox-cheats.git"
 readonly BRANCH="main"
 readonly CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
@@ -104,7 +104,7 @@ cmd_check() {
     fi
 }
 
-# List all files
+# cmd_list lists all official Markdown cheatsheets from the upstream repository, sorted by relative path.
 cmd_list() {
     clone_repo
     
@@ -117,7 +117,7 @@ cmd_list() {
     echo
 }
 
-# Update files - preserve custom cheats
+# cmd_update updates official cheatsheets while preserving custom files and creating a backup of the existing cheatsheet directory.
 cmd_update() {
     clone_repo
     
@@ -137,11 +137,12 @@ cmd_update() {
     echo
     
     local added=0 modified=0 unchanged=0
+    local official_local_files=()
     
     # Get list of all remote files
     mapfile -t remote_files < <(find "$TEMP_DIR/cheats.d" -type f -name "*.md" | sort)
     
-    # Process each file
+    # Process each file and accumulate official local paths
     for remote_file in "${remote_files[@]}"; do
         local rel_path="${remote_file#"${TEMP_DIR}"/cheats.d/}"
         local local_file="${CHEATS_DIR}/${rel_path}"
@@ -161,6 +162,7 @@ cmd_update() {
         else
             ((unchanged++)) || true
         fi
+        [[ -f "$local_file" ]] && official_local_files+=("$local_file")
     done
     
     echo
@@ -174,7 +176,7 @@ cmd_update() {
         notify-send "DevToolbox Cheats" "Updated: +${added} new, ~${modified} modified" 2>/dev/null || true
     fi
     
-    # Auto-apply TOC formatting if manage-tocs.py is available and a format is configured
+    # Auto-apply TOC formatting — official files only, never custom user files
     local toc_conf="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
     local toc_format="obsidian"
     if [[ -s "$toc_conf" ]]; then
@@ -184,7 +186,7 @@ cmd_update() {
             obsidian|github) toc_format="$_fmt" ;;
         esac
     fi
-    
+
     # Search for manage-tocs.py in known install locations
     local manage_tocs=""
     for candidate in \
@@ -196,13 +198,45 @@ cmd_update() {
             break
         fi
     done
-    
+
     if [[ -n "$manage_tocs" ]] && command -v python3 &>/dev/null; then
-        log_info "Applying TOC format: ${C_CYAN}${toc_format}${C_RESET}"
-        if python3 "$manage_tocs" --style "$toc_format" --dir "$CHEATS_DIR" &>/dev/null; then
-            log_info "TOC formatting applied (${toc_format})"
-        else
-            log_warn "TOC formatting failed — run manually: python3 ${manage_tocs} --style ${toc_format}"
+        log_info "Applying TOC format (${C_CYAN}${toc_format}${C_RESET}) to official files only..."
+        if (( ${#official_local_files[@]} > 0 )); then
+            local out
+            if ! out="$(python3 "$manage_tocs" --style "$toc_format" --files "${official_local_files[@]}" 2>&1)"; then
+                log_error "TOC formatting failed:\n$out"
+                if [[ -n "${backup_dir:-}" && -d "$backup_dir" ]]; then
+                    log_warn "Restoring backup from ${backup_dir}..."
+                    if [[ ! -d "$CHEATS_DIR" ]]; then
+                        log_error "Cannot restore: CHEATS_DIR does not exist"
+                    else
+                        local staging_parent parent_dir
+                        parent_dir="$(dirname -- "$CHEATS_DIR")"
+                        if [[ "$parent_dir" == "/" ]]; then
+                            log_error "Cannot stage recovery: parent of CHEATS_DIR is root"
+                        else
+                            staging_parent="$(mktemp -d "${parent_dir}/.staging.XXXXXX")" || {
+                                log_error "Cannot create staging directory"
+                            }
+                        fi
+                        if [[ -n "${staging_parent:-}" ]]; then
+                            rollback_dir="${staging_parent}/rollback"
+                            if mv -- "$CHEATS_DIR" "$rollback_dir" && cp -a -- "$backup_dir" "$CHEATS_DIR"; then
+                                rm -rf -- "$staging_parent"
+                                log_info "Backup restored"
+                            else
+                                log_error "Backup recovery failed, rolling back..."
+                                rm -rf -- "$CHEATS_DIR"
+                                mv -- "$rollback_dir" "$CHEATS_DIR" 2>/dev/null || true
+                                rm -rf -- "$staging_parent"
+                            fi
+                        fi
+                    fi
+                fi
+                exit 1
+            else
+                log_info "TOC formatting applied (${toc_format}, ${#official_local_files[@]} official files)"
+            fi
         fi
     fi
 }

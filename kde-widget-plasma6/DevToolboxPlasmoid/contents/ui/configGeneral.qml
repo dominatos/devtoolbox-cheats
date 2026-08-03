@@ -36,12 +36,20 @@ KCM.SimpleKCM {
     }
 
     function applyTocFormatNow() {
-        var cheatsDir = cfg_cheatsDir.replace(/^~/, "$HOME")
-        // Resolve manage-tocs.py path from the argos script location if installed
-        // Otherwise fall back to a search
-        var script = "python3 $(find ~/.local -name 'manage-tocs.py' 2>/dev/null | head -1 || find ~/devtoolbox-cheats -name 'manage-tocs.py' 2>/dev/null | head -1) --style " + cfg_tocFormat + " --dir " + cheatsDir
+        var isHome = cfg_cheatsDir.match(/^~\/?/)
+        var rawPath = isHome ? cfg_cheatsDir.replace(/^~\/?/, "") : cfg_cheatsDir
+        var escapedPath = "'" + rawPath.replace(/'/g, "'\\''") + "'"
+        var cheatsDir = isHome ? "\"$HOME\"/" + escapedPath : escapedPath
+
+        var confPath = "$HOME/.config/devtoolbox-cheats/toc_format.conf"
+        var safeFormat = (cfg_tocFormat === "github") ? "github" : "obsidian"
+        
+        var writeCmd = "mkdir -p \"$(dirname \"" + confPath + "\")\" && echo '" + safeFormat + "' > \"" + confPath + "\""
+        var pySearch = "script=$(find ~/.local -name 'manage-tocs.py' 2>/dev/null | head -n 1); [ -z \"$script\" ] && script=$(find ~/devtoolbox-cheats -name 'manage-tocs.py' 2>/dev/null | head -n 1); [ -z \"$script\" ] && exit 1"
+        var pyCmd = pySearch + " ; python3 \"$script\" --style '" + safeFormat + "' --dir " + cheatsDir
+        
         tocApplyStatus.text = "⏳ Applying..."
-        tocFormatApplier.connectSource(script)
+        tocFormatApplier.connectSource(writeCmd + " && " + pyCmd)
     }
 
     // Popular editors list with commands
@@ -235,36 +243,25 @@ KCM.SimpleKCM {
             text: "Automatically check for updates on startup"
         }
 
-        ComboBox {
-            id: tocFormatCombo
-            Kirigami.FormData.label: "TOC Link Style:"
-            model: [
-                { text: "Obsidian (Exact text, %20)", value: "obsidian" },
-                { text: "GitHub (Lowercase slugs)",   value: "github"  }
-            ]
-            textRole: "text"
-            valueRole: "value"
-            Component.onCompleted: {
-                currentIndex = cfg_tocFormat === "github" ? 1 : 0
-            }
-            onActivated: {
-                cfg_tocFormat = model[currentIndex].value
-                // Sync to shared config file so cheats-updater.sh picks it up
-                var confPath = "$HOME/.config/devtoolbox-cheats/toc_format.conf"
-                var writeCmd = "mkdir -p $(dirname " + confPath + ") && echo '" + cfg_tocFormat + "' > " + confPath
-                tocFormatApplier.connectSource(writeCmd)
-            }
-        }
-
         RowLayout {
-            Kirigami.FormData.label: "Apply Now:"
+            Kirigami.FormData.label: "TOC Link Style:"
             spacing: Kirigami.Units.smallSpacing
 
-            Button {
-                text: "🪄 Apply TOC Formatting"
-                onClicked: applyTocFormatNow()
-                ToolTip.text: "Run manage-tocs.py on ~/cheats.d right now"
-                ToolTip.visible: hovered
+            ComboBox {
+                id: tocFormatCombo
+                model: [
+                    { text: "Obsidian (Exact text, %20)", value: "obsidian" },
+                    { text: "GitHub (Lowercase slugs)",   value: "github"  }
+                ]
+                textRole: "text"
+                valueRole: "value"
+                Component.onCompleted: {
+                    currentIndex = cfg_tocFormat === "github" ? 1 : 0
+                }
+                onActivated: {
+                    cfg_tocFormat = model[currentIndex].value
+                    applyTocFormatNow()
+                }
             }
 
             Label {

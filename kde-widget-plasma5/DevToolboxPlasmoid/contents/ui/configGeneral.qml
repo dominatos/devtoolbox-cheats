@@ -35,10 +35,20 @@ Kirigami.FormLayout {
     }
 
     function applyTocFormatNow() {
-        var cheatsDir = cfg_cheatsDir.replace(/^~/, "$HOME")
-        var script = "python3 $(find ~/.local -name 'manage-tocs.py' 2>/dev/null | head -1 || find ~/devtoolbox-cheats -name 'manage-tocs.py' 2>/dev/null | head -1) --style " + cfg_tocFormat + " --dir " + cheatsDir
+        var isHome = cfg_cheatsDir.match(/^~\/?/)
+        var rawPath = isHome ? cfg_cheatsDir.replace(/^~\/?/, "") : cfg_cheatsDir
+        var escapedPath = "'" + rawPath.replace(/'/g, "'\\''") + "'"
+        var cheatsDir = isHome ? "\"$HOME\"/" + escapedPath : escapedPath
+
+        var confPath = "$HOME/.config/devtoolbox-cheats/toc_format.conf"
+        var safeFormat = (cfg_tocFormat === "github") ? "github" : "obsidian"
+        
+        var writeCmd = "mkdir -p \"$(dirname \"" + confPath + "\")\" && echo '" + safeFormat + "' > \"" + confPath + "\""
+        var pySearch = "script=$(find ~/.local -name 'manage-tocs.py' 2>/dev/null | head -n 1); [ -z \"$script\" ] && script=$(find ~/devtoolbox-cheats -name 'manage-tocs.py' 2>/dev/null | head -n 1); [ -z \"$script\" ] && exit 1"
+        var pyCmd = pySearch + " ; python3 \"$script\" --style '" + safeFormat + "' --dir " + cheatsDir
+        
         tocApplyStatus.text = "⏳ Applying..."
-        tocFormatApplier.connectSource(script)
+        tocFormatApplier.connectSource(writeCmd + " && " + pyCmd)
     }
 
     // Popular editors list
@@ -242,27 +252,16 @@ Kirigami.FormLayout {
         }
         onActivated: {
             cfg_tocFormat = currentIndex === 0 ? "obsidian" : "github"
-            var confPath = "$HOME/.config/devtoolbox-cheats/toc_format.conf"
-            var writeCmd = "mkdir -p $(dirname " + confPath + ") && echo '" + cfg_tocFormat + "' > " + confPath
-            tocFormatApplier.connectSource(writeCmd)
+            applyTocFormatNow()
         }
     }
 
-    RowLayout {
-        Kirigami.FormData.label: "Apply Now:"
-        spacing: 8
-
-        Button {
-            text: "🪄 Apply TOC Formatting"
-            onClicked: applyTocFormatNow()
-        }
-
-        Label {
-            id: tocApplyStatus
-            text: ""
-            font.pointSize: 9
-            opacity: 0.8
-        }
+    Label {
+        id: tocApplyStatus
+        Kirigami.FormData.label: ""
+        text: ""
+        font.pointSize: 9
+        opacity: 0.8
     }
 
     Label {

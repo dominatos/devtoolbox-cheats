@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="v1.5.0"
+VERSION="v1.5.1"
 
+# print_header prints the DevToolbox Cheats installer banner and version.
 print_header() {
   echo ""
   echo "╔══════════════════════════════════════════════════════════════╗"
@@ -488,17 +489,22 @@ configure_toc_format() {
 
     # Apply formatting to ~/cheats.d immediately if tools are available
     local manage_tocs="${HOME}/.local/share/devtoolbox-cheats/tools/manage-tocs.py"
-    if [[ -f "$manage_tocs" ]] && command -v python3 &>/dev/null; then
+    if ! command -v python3 &>/dev/null; then
+        echo "  ⚠️  python3 not found — TOC formatting skipped"
+    elif [[ ! -f "$manage_tocs" ]]; then
+        echo "  ⚠️  manage-tocs.py not found — TOC formatting skipped"
+    else
         echo ""
         echo "  🪄 Applying TOC formatting (${toc_format}) to ~/cheats.d..."
-        if python3 "$manage_tocs" --style "$toc_format" --dir "${HOME}/cheats.d" &>/dev/null; then
+        if python3 "$manage_tocs" --style "$toc_format" --dir "${HOME}/cheats.d"; then
             echo "  ✅ TOC formatting applied!"
         else
-            echo "  ⚠️  TOC formatting failed — run manually: python3 ${manage_tocs} --style ${toc_format}"
+            echo "  ⚠️  TOC formatting failed — run manually: python3 \"${manage_tocs}\" --style ${toc_format} --dir \"${HOME}/cheats.d\""
+            return 1
         fi
     fi
 }
-configure_toc_format
+configure_toc_format || true
 
 
 # ─── Install generic app ─────────────────────────────────────────────────────

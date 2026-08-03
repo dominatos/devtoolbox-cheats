@@ -23,7 +23,7 @@ if [ -d "$CHEATS_DIR" ]; then
     CHEAT_COUNT=$(find "$CHEATS_DIR" -name "*.md" 2>/dev/null | wc -l)
     echo "✅ Found $CHEATS_DIR with $CHEAT_COUNT .md files"
     
-    if [ $CHEAT_COUNT -eq 0 ]; then
+    if [ "$CHEAT_COUNT" -eq 0 ]; then
         echo "⚠️  WARNING: No .md files found in $CHEATS_DIR"
         echo "   You need to install cheatsheets first!"
     else
@@ -76,7 +76,7 @@ echo "Running: bash \"$INDEXER\" \"$CHEATS_DIR\" \"$DEBUG_LOG\""
 OUTPUT=$(bash "$INDEXER" "$CHEATS_DIR" "$DEBUG_LOG" 2>&1)
 EXIT_CODE=$?
 
-if [ $EXIT_CODE -eq 0 ]; then
+if [ "$EXIT_CODE" -eq 0 ]; then
     LINE_COUNT=$(echo "$OUTPUT" | wc -l)
     PIPE_COUNT=$(echo "$OUTPUT" | grep -c '|')
     
@@ -85,7 +85,7 @@ if [ $EXIT_CODE -eq 0 ]; then
     echo "   Output lines: $LINE_COUNT"
     echo "   Lines with pipes: $PIPE_COUNT"
     
-    if [ $PIPE_COUNT -gt 0 ]; then
+    if [ "$PIPE_COUNT" -gt 0 ]; then
         echo "   Sample output (first 3 lines):"
         echo "$OUTPUT" | head -3 | sed 's/^/   /'
     else

@@ -30,6 +30,7 @@ PlasmoidItem {
     property var    globalCheatsModel:    []
     property string globalDetectedEditor: ""
     property bool   globalIsLoading:      false
+    property bool   globalDataCompleted:  false
     property string globalStatusMessage:  ""
     property string scriptBasePath:       ""
     property string globalUpdateVersion:  ""  // Set to latest version string if an update is available
@@ -70,6 +71,7 @@ PlasmoidItem {
                     devToolboxRoot.globalIsLoading = false
                 }
                 devToolboxRoot.accumulatedStdoutMap[sourceName] = ""
+                devToolboxRoot.globalDataCompleted = true
                 disconnectSource(sourceName)
             }
         }
@@ -108,13 +110,20 @@ PlasmoidItem {
         }
 
         var cheatsDir = Cheats.bashSafePath(plasmoid.configuration.cheatsDir)
-        var cacheFile = Cheats.bashSafePath(plasmoid.configuration.cacheFile)
-        var debugLog  = "/tmp/devtoolbox-debug.log"
+        var normalizedCacheFile = plasmoid.configuration.cacheFile.replace(/^~\//, "$HOME/")
+        var cacheFile = Cheats.bashSafePath(normalizedCacheFile)
+        var rawCacheDir = normalizedCacheFile.replace(/\/[^\/]*$/, "")
+        // Regex misses bare filenames (no "/") — they pass through unchanged.
+        // Detect "unchanged" by checking for "/" and fall back to $HOME/.cache.
+        if (rawCacheDir === normalizedCacheFile) {
+            rawCacheDir = normalizedCacheFile.indexOf("/") !== -1 ? "/" : "$HOME/.cache"
+        }
+        var debugLog  = Cheats.bashSafePath(rawCacheDir + "/devtoolbox-debug.log")
 
         // Escape all interpolated values to prevent shell injection.
         // scriptBasePath is widget-internal (Qt.resolvedUrl), but still escaped for safety.
         var cmd = "bash " + Cheats.escapeShell(scriptBasePath) + " " + cheatsDir + " "
-                + Cheats.escapeShell(debugLog) + " " + cacheFile
+                + debugLog + " " + cacheFile
         console.log("[DevToolbox] Running indexer:", cmd)
         devToolboxRoot.accumulatedStdoutMap[cmd] = "" // Initialize buffer for this command
         shSource.connectSource(cmd)
@@ -217,5 +226,47 @@ PlasmoidItem {
 
         Qt.callLater(refreshCheats)
         Qt.callLater(checkForUpdate)
+    }
+
+    // Safety net: if onNewData never completed after a reasonable delay, disconnect
+    // the stale source, clear loading state, and retry once.
+    Timer {
+        id: startupRetryTimer
+        interval: 30000
+        running: true
+        repeat: false
+        onTriggered: {
+            if (!devToolboxRoot.globalDataCompleted) {
+                console.log("[DevToolbox] Startup retry: no onNewData completion after 30 s, disconnecting stale source.")
+                var sources = shSource.connectedSources
+                for (var i = 0; i < sources.length; i++) {
+                    shSource.disconnectSource(sources[i])
+                }
+                devToolboxRoot.globalIsLoading = false
+                devToolboxRoot.globalDataCompleted = false
+                Qt.callLater(refreshCheats)
+                // Bound the retry: if it also fails, clear loading after 30 s
+                retryBoundTimer.start()
+            }
+        }
+    }
+
+    // Bounds the startup retry so a second failure cannot leave the UI loading forever.
+    Timer {
+        id: retryBoundTimer
+        interval: 30000
+        running: false
+        repeat: false
+        onTriggered: {
+            if (!devToolboxRoot.globalDataCompleted && devToolboxRoot.globalIsLoading) {
+                console.warn("[DevToolbox] Startup retry also failed after 30 s — clearing loading state.")
+                var sources = shSource.connectedSources
+                for (var i = 0; i < sources.length; i++) {
+                    shSource.disconnectSource(sources[i])
+                }
+                devToolboxRoot.globalIsLoading = false
+                devToolboxRoot.globalStatusMessage = "⚠️ Failed to load cheats. Check cheats.d directory."
+            }
+        }
     }
 }

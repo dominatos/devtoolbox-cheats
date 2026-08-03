@@ -90,9 +90,19 @@ Item {
         root.globalIsLoading     = true
         root.globalStatusMessage = "Indexing cheats..."
 
+        var normalizedCacheFile = plasmoid.configuration.cacheFile.replace(/^~\//, "$HOME/")
+        var rawCacheDir = normalizedCacheFile.replace(/\/[^\/]*$/, "")
+        // Regex misses bare filenames (no "/") — they pass through unchanged.
+        // Detect "unchanged" by checking for "/" and fall back to $HOME/.cache.
+        if (rawCacheDir === normalizedCacheFile) {
+            rawCacheDir = normalizedCacheFile.indexOf("/") !== -1 ? "/" : "$HOME/.cache"
+        }
+        var debugLog = rawCacheDir + "/devtoolbox-debug.log"
+
         var cmd = Cheats.getIndexCommand(
-            plasmoid.configuration.cheatsDir.replace("~", "$HOME"),
-            plasmoid.configuration.cacheFile.replace("~", "$HOME")
+            plasmoid.configuration.cheatsDir.replace(/^~\//, "$HOME/"),
+            normalizedCacheFile,
+            debugLog
         )
         console.log("[DevToolbox] Refreshing cheats:", cmd)
         root.accumulatedStdoutMap[cmd] = "" // Initialize buffer for this command

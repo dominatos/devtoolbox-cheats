@@ -19,7 +19,7 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.5.0"
+VERSION="v1.5.1"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
@@ -58,6 +58,8 @@ ARGOS_CAT_TTL="${ARGOS_CAT_TTL:-60}"
 # Per-category Argos output cache directory (drilldown layout only).
 # Each category's cheat list is cached as a text file and reused until CHEATS_CACHE changes.
 ARGOS_CAT_CACHE_DIR="${HOME}/.cache/devtoolbox-cheats-argos-combined"
+# Global path for the current category temp file (used by EXIT trap for cleanup).
+_ARGOS_TMP_CACHE=""
 
 # === Group Icons (Section Headers) ===
 # Maps category names (Group metadata) to emoji icons for the menu display.
@@ -84,7 +86,7 @@ declare -A GROUP_ICON=(
 )
 
 
-CHEAT_VIEWERS="${CHEAT_VIEWERS:-code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity}"
+CHEAT_VIEWERS="${CHEAT_VIEWERS:-code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity terminal}"
 export PATH="/usr/local/bin:/usr/bin:$PATH"
 SCRIPT_PATH="$(realpath -s "$0")"
 
@@ -98,8 +100,8 @@ else
   CLIPBOARD_COPY=""
 fi
 
-# Helper function to copy text to clipboard safely.
-copy() { [[ -n "$CLIPBOARD_COPY" ]] && eval "$CLIPBOARD_COPY" || true; }
+# copy copies the provided text to the configured clipboard when clipboard support is available.
+copy() { [[ -n "$CLIPBOARD_COPY" ]] && eval "$CLIPBOARD_COPY"; }
 
 # ============= Cross-DE Abstraction Layer =============
 # Provides DE-agnostic functions for notifications, dialogs, and terminals.
@@ -159,9 +161,10 @@ detect_de() {
 }
 
 # --- Dialog Tool Detection / Определение инструмента диалогов ---
-# Returns: kdialog, zenity, yad, or empty
+# detect_dialog_tool selects the preferred available dialog tool for the detected desktop environment and echoes its name.
 detect_dialog_tool() {
-  local de="$(detect_de)"
+  local de
+  de="$(detect_de)"
   
   case "$de" in
     kde)
@@ -194,10 +197,11 @@ detect_dialog_tool() {
   esac
 }
 
-# --- Notification Wrapper / Обёртка уведомлений ---
+# notify displays a desktop notification with the specified title and message.
 notify() {
   local title="$1" msg="$2"
-  local de="$(detect_de)"
+  local de
+  de="$(detect_de)"
   
   case "$de" in
     kde)
@@ -213,10 +217,11 @@ notify() {
   esac
 }
 
-# --- Input Dialog / Диалог ввода ---
+# input_dialog displays an input prompt using the available desktop dialog tool or the terminal and outputs the entered value.
 input_dialog() {
   local title="$1" prompt="$2"
-  local tool="$(detect_dialog_tool)"
+  local tool
+  tool="$(detect_dialog_tool)"
   
   case "$tool" in
     kdialog) kdialog --inputbox "$prompt" --title "$title" 2>/dev/null ;;
@@ -226,10 +231,11 @@ input_dialog() {
   esac
 }
 
-# --- Info Dialog / Информационный диалог ---
+# info_dialog displays an informational message using the available desktop dialog tool or a terminal fallback.
 info_dialog() {
   local title="$1" msg="$2"
-  local tool="$(detect_dialog_tool)"
+  local tool
+  tool="$(detect_dialog_tool)"
   
   case "$tool" in
     kdialog) kdialog --msgbox "$msg" --title "$title" 2>/dev/null ;;
@@ -241,11 +247,12 @@ info_dialog() {
 
 # --- List Selection Dialog / Диалог выбора из списка ---
 # Usage: list_dialog "title" "column" item1 item2 ...
-# or pipe items: echo -e "item1\nitem2" | list_dialog "title" "column"
+# list_dialog displays selectable items from arguments or standard input and outputs the selected item.
 list_dialog() {
   local title="$1" col="$2"
   shift 2
-  local tool="$(detect_dialog_tool)"
+  local tool
+  tool="$(detect_dialog_tool)"
   local w h
   read -r w h < <(calc_window_size)
   
@@ -293,10 +300,11 @@ list_dialog() {
   esac
 }
 
-# --- Text Display Dialog / Показать текст ---
+# text_dialog displays text in a desktop dialog or terminal pager with the specified title.
 text_dialog() {
   local title="$1" body="$2"
-  local tool="$(detect_dialog_tool)"
+  local tool
+  tool="$(detect_dialog_tool)"
   local w h
   read -r w h < <(calc_window_size)
   
@@ -310,9 +318,10 @@ text_dialog() {
 
 # --- Default Terminal Detection / Терминал по умолчанию ---
 # Returns the preferred terminal emulator for the current DE
-# Extended list for compatibility / Расширенный список для совместимости
+# default_terminal selects an available terminal emulator based on the desktop environment, then falls back to common terminal commands and returns `xterm` if none are found.
 default_terminal() {
-  local de="$(detect_de)"
+  local de
+  de="$(detect_de)"
   
   # Check DE-specific terminals first / Сначала проверить терминалы DE
   case "$de" in
@@ -327,9 +336,7 @@ default_terminal() {
       done
       ;;
     xfce)     
-      for t in xfce4-terminal; do
-        command -v "$t" >/dev/null 2>&1 && { echo "$t"; return; }
-      done
+      command -v xfce4-terminal >/dev/null 2>&1 && { echo "xfce4-terminal"; return; }
       ;;
     cinnamon) 
       for t in gnome-terminal tilix; do
@@ -337,9 +344,7 @@ default_terminal() {
       done
       ;;
     mate)     
-      for t in mate-terminal; do
-        command -v "$t" >/dev/null 2>&1 && { echo "$t"; return; }
-      done
+      command -v mate-terminal >/dev/null 2>&1 && { echo "mate-terminal"; return; }
       ;;
     lxqt)     
       for t in qterminal lxterminal; do
@@ -347,9 +352,7 @@ default_terminal() {
       done
       ;;
     lxde)     
-      for t in lxterminal; do
-        command -v "$t" >/dev/null 2>&1 && { echo "$t"; return; }
-      done
+      command -v lxterminal >/dev/null 2>&1 && { echo "lxterminal"; return; }
       ;;
   esac
   
@@ -363,10 +366,11 @@ default_terminal() {
   echo "xterm"
 }
 
-# --- Run Command in Terminal / Запустить команду в терминале ---
+# run_in_terminal executes a command in the selected terminal emulator and optionally sets its window title.
 run_in_terminal() {
   local cmd="$1" title="${2:-Dev Toolbox}"
-  local term="$(default_terminal)"
+  local term
+  term="$(default_terminal)"
   local escaped_cmd
   escaped_cmd=$(printf '%q' "$cmd")
   
@@ -609,7 +613,7 @@ strip_front_matter() {
 # ============= Layout Config =============
 
 # Reads the persisted layout choice.
-# Priority: env var DEVTOOLBOX_LAYOUT > config file > default (standard)
+# get_layout selects the configured cheatsheet display layout, defaulting to standard when no valid configuration is available.
 get_layout() {
   # Env var override takes highest priority
   if [[ -n "${DEVTOOLBOX_LAYOUT:-}" ]]; then
@@ -619,7 +623,7 @@ get_layout() {
   # Read from config file if it exists and is non-empty
   if [[ -s "$DEVTOOLBOX_LAYOUT_CONF" ]]; then
     local val
-    val="$(cat "$DEVTOOLBOX_LAYOUT_CONF" | tr -d '[:space:]')"
+    val="$(tr -d '[:space:]' < "$DEVTOOLBOX_LAYOUT_CONF")"
     case "$val" in
       standard|zenity|drilldown) echo "$val"; return ;;
     esac
@@ -629,7 +633,7 @@ get_layout() {
 }
 
 # Persists the chosen layout to the config file.
-# Called via Argos param dispatch: param1=setLayout param2=<layout>
+# setLayout validates and persists the selected layout, defaulting to standard and clearing active drill-down state.
 setLayout() {
   local layout="${1:-standard}"
   # Validate input — only known values accepted
@@ -643,15 +647,17 @@ setLayout() {
   rm -f "$ARGOS_CAT_STATE" 2>/dev/null || true
 }
 
-# Reads the persisted TOC format choice.
+# get_toc_format reads the configured table-of-contents format, honoring a valid environment override and persisted setting before defaulting to obsidian.
 get_toc_format() {
   if [[ -n "${DEVTOOLBOX_TOC_FORMAT:-}" ]]; then
-    echo "$DEVTOOLBOX_TOC_FORMAT"
-    return
+    case "$DEVTOOLBOX_TOC_FORMAT" in
+      obsidian|github) echo "$DEVTOOLBOX_TOC_FORMAT"; return ;;
+    esac
+    # Invalid override — fall through to persisted config or default
   fi
   if [[ -s "$DEVTOOLBOX_TOC_FORMAT_CONF" ]]; then
     local val
-    val="$(cat "$DEVTOOLBOX_TOC_FORMAT_CONF" | tr -d '[:space:]')"
+    val="$(tr -d '[:space:]' < "$DEVTOOLBOX_TOC_FORMAT_CONF")"
     case "$val" in
       obsidian|github) echo "$val"; return ;;
     esac
@@ -659,7 +665,7 @@ get_toc_format() {
   echo "obsidian"
 }
 
-# Persists the TOC format choice.
+# setTocFormat persists a valid TOC format choice, defaulting invalid values to `obsidian`.
 setTocFormat() {
   local format="${1:-obsidian}"
   case "$format" in
@@ -670,10 +676,16 @@ setTocFormat() {
   printf '%s\n' "$format" > "$DEVTOOLBOX_TOC_FORMAT_CONF"
 }
 
-# Applies TOC format immediately via manage-tocs.py
+# applyTocFormat applies the configured table-of-contents format to the cheatsheet directory, if the required Python script is available.
 applyTocFormat() {
   local format
   format="$(get_toc_format)"
+
+  # Guard: python3 must be available
+  if ! command -v python3 &>/dev/null; then
+    notify-send "DevToolbox Cheats" "python3 not found — cannot apply TOC formatting" -u critical 2>/dev/null || true
+    return 1
+  fi
 
   # Search for manage-tocs.py in known install/dev locations
   local py_script=""
@@ -694,9 +706,11 @@ applyTocFormat() {
       notify-send "DevToolbox Cheats" "TOC Formatting applied: $format" -i text-x-markdown 2>/dev/null || true
     else
       notify-send "DevToolbox Cheats" "Failed to apply TOC formatting" -u critical 2>/dev/null || true
+      return 1
     fi
   else
     notify-send "DevToolbox Cheats" "manage-tocs.py not found. Run: cheats-updater update" -u critical 2>/dev/null || true
+    return 1
   fi
 }
 
@@ -739,7 +753,7 @@ argos_get_category() {
 # On first call (or after CHEATS_CACHE update) generates the lines and writes
 # them to a per-category cache file. Subsequent calls read the cache directly.
 # Cache is invalidated automatically when CHEATS_CACHE is newer than the cache file.
-# Each cheat line includes refresh=true so Argos re-renders after click.
+# argos_category_lines outputs sorted Argos menu entries for a category and caches them until the cheatsheet index changes.
 argos_category_lines() {
   local grp="$1"
   local hash_sum cat_cache line
@@ -757,7 +771,8 @@ argos_category_lines() {
   # Generate, write to temporary cache, and output simultaneously
   local tmp_cache
   tmp_cache="$(mktemp "${cat_cache}.XXXXXX")"
-  trap "rm -f '$tmp_cache' 2>/dev/null" EXIT
+  _ARGOS_TMP_CACHE="$tmp_cache"
+  trap '[[ -n "$_ARGOS_TMP_CACHE" ]] && rm -f "$_ARGOS_TMP_CACHE" 2>/dev/null; true' EXIT
 
   while IFS=$'\t' read -r file title group icon order; do
     label="$(compose_label "$title" "$icon")"
@@ -770,7 +785,9 @@ argos_category_lines() {
            | sort -t$'\t' -k5,5n -k2,2f)
 
   chmod 644 "$tmp_cache" 2>/dev/null || true
-  mv -f "$tmp_cache" "$cat_cache"
+  if mv -f "$tmp_cache" "$cat_cache"; then
+    _ARGOS_TMP_CACHE=""
+  fi
 }
 
 # ============= Actions ============
@@ -804,10 +821,15 @@ showCheat() {
   # Get content without metadata headers
   body="$(strip_front_matter < "$file")"
 
-  # Copy to clipboard
+  # Copy to clipboard (non-blocking: clipboard failure must not prevent cheat from opening)
+  local _copy_rc=0
   if [[ -n "$CLIPBOARD_COPY" ]]; then
-    copy <<< "$body"
+    copy <<< "$body" || _copy_rc=$?
+  fi
+  if [[ $_copy_rc -eq 0 && -n "$CLIPBOARD_COPY" ]]; then
     notify "✅ Dev Toolbox" "$title (copied to clipboard)"
+  elif [[ -n "$CLIPBOARD_COPY" ]]; then
+    notify "⚠️ Dev Toolbox" "$title (clipboard failed — displayed only)"
   else
     notify "✅ Dev Toolbox" "$title (displayed — no clipboard backend)"
   fi
@@ -823,8 +845,11 @@ showCheat() {
   for viewer in $CHEAT_VIEWERS; do
     case "$viewer" in
       code)
-        # Reuse VS Code window if available
-        command -v code >/dev/null 2>&1 && code --reuse-window "$file" &>/dev/null && return 0
+        # Try VS Code; return immediately to prevent fallthrough to other viewers
+        if command -v code >/dev/null 2>&1; then
+          code --reuse-window "$file" 2>/dev/null
+          return 0
+        fi
         ;;
       cat)
         command -v cat >/dev/null 2>&1 && cat "$file" && return 0
@@ -928,7 +953,7 @@ browseDeep_Cheats() {
 
   # Find file and show / Найти файл и показать
   local file
-  file="$(printf "%s\n" "$list" | awk -F'\t' -v s="$sel" '$1==s{print $2; exit}')"
+  file="$(printf '%s\n' "$list" | awk -F'\t' -v s="$sel" '$1==s{print $2; exit}')"
   
   if [[ -n "$file" ]]; then
     showCheat _ "$(printf '%s' "$file" | b64enc)"
@@ -1007,7 +1032,7 @@ fzfSearch() {
   fi
 }
 
-# Action: Show Settings info dialog
+# showSettings displays the current Dev Toolbox version, environment, paths, layout, and table-of-contents format.
 showSettings() {
   local layout; layout="$(get_layout)"
   local toc_fmt; toc_fmt="$(get_toc_format)"
@@ -1016,7 +1041,7 @@ showSettings() {
   info_dialog "Dev Toolbox Settings" "$msg"
 }
 
-# ============= TOC Format dialog (standalone/compact menus) =============
+# settingsTocFormat lets the user select, save, and immediately apply a table-of-contents format.
 settingsTocFormat() {
   local current; current="$(get_toc_format)"
   local obs_label="Obsidian (Exact text, %20)"
@@ -1034,11 +1059,13 @@ settingsTocFormat() {
   esac
 
   setTocFormat "$new_fmt"
-  info_dialog "TOC Format" "Format set to: ${new_fmt}\n\nRun '🪄 Apply TOC Formatting' to reformat your ~/cheats.d."
+  
+  # Auto-apply the new format immediately
+  applyTocFormat
 }
 
 # ============= Compact menu dialog ============
-# Dialog for when screen space is limited or requested directly
+# compactMenu displays a compact menu for searching, browsing, exporting, configuring, and selecting cheatsheets.
 compactMenu() {
   ensure_cache
 
@@ -1060,7 +1087,6 @@ compactMenu() {
     "🐙 GitHub Repository" \
     "⚙️ Settings" \
     "📝 TOC Format" \
-    "🪄 Apply TOC Formatting" \
     "── Categories ──" \
     "${cat_items[@]}") || exit 0
   case "$choice" in
@@ -1081,10 +1107,6 @@ compactMenu() {
         settingsTocFormat
         compactMenu
         ;;
-    "🪄 Apply TOC Formatting")
-        applyTocFormat
-        compactMenu
-        ;;
     "── Categories ──") compactMenu ;;  # Divider — no-op, re-show menu
     *)
         # Category selected — extract group name (remove leading icon + space)
@@ -1095,7 +1117,7 @@ compactMenu() {
 }
 
 # ============= Standalone Menu (Non-Argos) / Меню вне Argos =============
-# For non-GNOME DEs or direct terminal invocation
+# standaloneMenu displays the interactive DevToolbox menu for non-GNOME environments or direct terminal use.
 standaloneMenu() {
   ensure_cache
 
@@ -1117,7 +1139,6 @@ standaloneMenu() {
     "🐙 GitHub Repository" \
     "⚙️ Settings" \
     "📝 TOC Format" \
-    "🪄 Apply TOC Formatting" \
     "── Categories ──" \
     "${cat_items[@]}") || exit 0
 
@@ -1143,10 +1164,6 @@ standaloneMenu() {
         settingsTocFormat
         standaloneMenu
         ;;
-    "🪄 Apply TOC Formatting")
-        applyTocFormat
-        standaloneMenu
-        ;;
     "── Categories ──") standaloneMenu ;;  # Divider — no-op, re-show menu
     *)
         # Category selected — extract group name (remove leading icon + space)
@@ -1158,7 +1175,7 @@ standaloneMenu() {
 
 # ============= Argos Layout Renderers =============
 
-# --- Shared: small-screen header (same for all 3 layouts) ---
+# _render_small_screen_header renders the shared small-screen header with function actions and a browse-all-cheats option.
 _render_small_screen_header() {
   local layout="$1"
   _render_functions_submenu "$layout"
@@ -1166,7 +1183,7 @@ _render_small_screen_header() {
   echo "---"
 }
 
-# --- Shared: DevToolbox Functions submenu with layout switcher ---
+# _render_functions_submenu renders the DevToolbox functions submenu with actions, layout options, and TOC formatting choices.
 _render_functions_submenu() {
   local layout="$1"
   local check_std="" check_zen="" check_dd=""
@@ -1201,7 +1218,6 @@ _render_functions_submenu() {
   echo "-- TOC Formatting"
   echo "-- -- ${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"
   echo "-- -- ${check_gh}GitHub (Slugs)        | bash='$SCRIPT_PATH' param1=setTocFormat param2=github terminal=false refresh=true"
-  echo "-- -- 🪄 Apply Formatting Now...       | bash='$SCRIPT_PATH' param1=applyTocFormat terminal=false"
   echo "---"
 }
 
@@ -1329,6 +1345,7 @@ case "${1:-}" in
     ;;
   setTocFormat)
     setTocFormat "${2:-}"
+    applyTocFormat
     exit 0
     ;;
   applyTocFormat)

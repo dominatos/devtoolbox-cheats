@@ -24,7 +24,7 @@ if command -v kpackagetool6 >/dev/null 2>&1; then
     kpackagetool6 --type Plasma/Applet --remove "$PKG_ID" 2>/dev/null || true
 fi
 
-# Force-remove directories regardless
+# Force-remove directories regardless (clean slate)
 rm -rf "$INSTALL_DIR" 2>/dev/null || true
 rm -rf "$HOME/.local/share/kpackage/generic/$PKG_ID" 2>/dev/null || true
 
@@ -48,6 +48,53 @@ find "$HOME/.cache" -type f \( -name "*.qmlc" -o -name "*.jsc" \) -path "*domina
 
 echo "  ✅ QML cache cleared"
 
+# --- Helper: transactional copy install ---
+# stage_install SRC DEST — copies SRC into a temp dir, validates, then replaces DEST.
+# Preserves DEST on failure. Exits 1 on any error.
+stage_install() {
+    local src="$1" dest="$2"
+    local tmp="${dest}.staging.$$"
+    local backup="${dest}.backup.$$"
+
+    # Stage into temp sibling
+    if ! rm -rf "$tmp" 2>/dev/null; then
+        echo "❌ Failed to clean staging dir: $tmp" >&2; exit 1
+    fi
+    if ! mkdir -p "$tmp"; then
+        echo "❌ Failed to create staging dir: $tmp" >&2; exit 1
+    fi
+    if ! cp -a "$src"/. "$tmp/"; then
+        echo "❌ Failed to stage files from $src" >&2
+        rm -rf "$tmp" 2>/dev/null || true
+        exit 1
+    fi
+
+    # Backup existing destination (if any)
+    if [ -d "$dest" ]; then
+        if ! mv "$dest" "$backup"; then
+            echo "❌ Failed to backup existing: $dest" >&2
+            rm -rf "$tmp" 2>/dev/null || true
+            exit 1
+        fi
+    fi
+
+    # Replace destination with staged files
+    if ! mv "$tmp" "$dest"; then
+        echo "❌ Failed to install: $dest" >&2
+        rm -rf "$tmp" 2>/dev/null || true
+        # Restore backup if we moved the original
+        if [ -d "$backup" ]; then
+            if ! mv "$backup" "$dest"; then
+                echo "❌ Recovery also failed — backup at: $backup" >&2
+            fi
+        fi
+        exit 1
+    fi
+
+    # Cleanup backup on success
+    rm -rf "$backup" 2>/dev/null || true
+}
+
 # --- 4. Install widget ---
 echo "→ Installing widget..."
 if command -v kpackagetool6 >/dev/null 2>&1; then
@@ -56,10 +103,9 @@ if command -v kpackagetool6 >/dev/null 2>&1; then
         kpackagetool6 --type Plasma/Applet --upgrade "$PKG_DIR" 2>&1 || true
     fi
 else
-    # Manual install fallback: just copy files
+    # Manual install fallback: transactional copy
     echo "  ⚠️  kpackagetool6 not found — doing manual copy install"
-    mkdir -p "$INSTALL_DIR"
-    cp -r "$PKG_DIR"/* "$INSTALL_DIR/"
+    stage_install "$PKG_DIR" "$INSTALL_DIR"
 fi
 
 # Verify installation
@@ -71,8 +117,7 @@ else
         echo "✅ Widget installed (via kpackagetool6)"
     else
         echo "⚠️  Installation may have failed. Doing manual copy..."
-        mkdir -p "$INSTALL_DIR"
-        cp -r "$PKG_DIR"/* "$INSTALL_DIR/"
+        stage_install "$PKG_DIR" "$INSTALL_DIR"
         echo "✅ Manual install done: $INSTALL_DIR"
     fi
 fi

@@ -1,5 +1,65 @@
 # Changelog
 
+## v1.5.1 (2026-07-31)
+
+**🔧 Bug Fixes & Refactoring (Code Review Iteration):**
+- **tests/**: Extracted duplicated test helper functions (`pass`, `fail`, `assert_eq`, `assert_contains`, `assert_file_exists`, `extract_func`, `make_workspace`, `make_test_cheat`) into a shared `test_helpers.sh` file, eliminating maintenance burden across 7 test files.
+- **.github/workflows/ci.yml**: Added `generate-tldr.sh` to the CI version-sync check so its `VERSION` variable is validated against `version.txt`.
+- **devtoolbox-cheats.30s.sh**: Fixed viewer-selection loop to always `return 0` after invoking `code --reuse-window`, preventing silent fallthrough to other viewers when VS Code is installed but the command fails.
+- **kde-widget-plasma6 main.qml**: Increased `startupRetryTimer` and `retryBoundTimer` intervals from 10s to 30s, preventing premature disconnection of the indexer for large cheats directories.
+- **cheats-updater.sh**: Fixed broken rollback mechanism in backup recovery — `mktemp -d` was pre-creating the rollback destination, allowing `mv` to nest `CHEATS_DIR` inside it rather than performing a true rename, which broke the intended rollback path. Now uses a staging parent directory so both `mv` operations perform true renames, with proper cleanup on both success and failure paths.
+- **kde-widget-plasma5 cheats.js**: Fixed shell injection vulnerability in `getIndexCommand()` — `cheatsDir` and `debugLog` were interpolated directly into double-quoted bash strings without escaping. Added `escapeBashDoubleQuoted()` helper to properly escape `"`, `$`, `` ` ``, and `\` characters before interpolation.
+- **kde-widget-plasma5 cheats.js**: Added `mkdir -p` for the debug log parent directory in the indexer shell command, preventing silent failure when the cache directory doesn't exist yet.
+- **kde-widget-plasma5 cheats.js**: Added exit-status check and `/tmp` fallback for the `mkdir -p` in `getIndexCommand()` — if the debug log directory cannot be created, falls back to `/tmp/devtoolbox-debug.log`; if that also fails, emits an error and exits non-zero.
+- **devtoolbox-cheats.30s.sh**: `applyTocFormat()` now waits for `manage-tocs.py` to finish and propagates its exit status to callers of `setTocFormat` and the CLI `applyTocFormat` command, instead of backgrounding and detaching the process.
+- **devtoolbox-cheats.30s.sh**: Added guard to EXIT trap for `_ARGOS_TMP_CACHE` — skips cleanup when the variable is empty and always returns success, preventing `rm -f ""` from overriding the script's exit status.
+- **devtoolbox-cheats.30s.sh**: `_ARGOS_TMP_CACHE` is now only cleared after `mv -f "$tmp_cache" "$cat_cache"` succeeds, so failed moves still allow the temporary cache to be removed by the EXIT trap.
+- **kde-widget-plasma5 cheats.js**: Added write-verification for the initial `echo > "$debugLog"` in `getIndexCommand()` — if the log file is not writable, falls back to `/tmp/devtoolbox-debug.log` and retries; emits an error and exits non-zero if that also fails.
+- **devtoolbox-cheats.30s.sh**: `applyTocFormat()` now returns exit code 1 when `manage-tocs.py` is not found, matching the existing python3 availability check behavior.
+- **devtoolbox-cheats.30s.sh**: Fixed EXIT trap in `argos_show_category` to use a scope-safe global path (`_ARGOS_TMP_CACHE`) so cleanup works after the function returns, and preserves any existing EXIT trap.
+- **devtoolbox-cheats.30s.sh**: Split 8 `local var="$(cmd)"` declarations into separate declaration and assignment to avoid masking subshell return values (SC2155).
+- **devtoolbox-cheats.30s.sh**: Replaced 3 redundant single-item `for` loops with direct `command -v` checks (SC2043).
+- **devtoolbox-cheats.30s.sh**: Fixed `copy()` to let clipboard errors propagate instead of silently masking them (SC2015).
+- **kde-widget-plasma6/debug-widget.sh**: Quoted unquoted variables in test expressions to prevent syntax errors on empty values (SC2086).
+- **bump-version.sh, devtoolbox-cheats.30s.sh**: Replaced useless `cat` pipes with input redirection (SC2002).
+- **cheats-updater.sh**: Added exit-status checks to backup recovery block to prevent silent corruption on `rm`/`cp` failure.
+- **cheats-updater.sh**: Strengthened backup recovery to use transactional staging — moves current dir to rollback location before copy, with automatic rollback on failure. Uses `--` for safe path handling.
+- **kde-widget-plasma6 indexer.sh**: Added diagnostic when debug log directory creation fails instead of silently swallowing the error.
+- **tools/manage-tocs.py**: Preserved original file permissions during atomic write — temp file now inherits the original file's mode bits before replacement.
+- **tools/manage-tocs.py**: Fixed tmp_fd double-close risk by transferring ownership to file object before write can fail.
+- **manage-tocs.py**: Hardened file operations by explicitly catching `OSError` and safely skipping files that fail to write. Removed `Exception` swallowing for better visibility.
+- **manage-tocs.py**: Added `in_fence` parsing state to skip markdown code blocks, preventing inline `##` comments from being accidentally parsed as TOC headers.
+- **manage-tocs.py**: Improved `sys.exit` code tracking when explicit `--files` args contain missing paths; valid files are still successfully processed, but the script accurately returns `1` at the end to fail CI/CD automation pipelines.
+- **manage-tocs.py**: Refactored `clean_header()` to reliably slice using a regex stripping `##` whitespace tolerances, and restricted the removal of trailing translations strictly to Cyrillic payloads.
+- **fix-toc-github.py**: Strengthened Strategy 6 (fuzzy matching) heuristics, updated dry-run simulation to utilize in-memory mutated states correctly, resolved bug where duplicate headings incorrectly overwrite keys by dynamically appending GitHub-style suffixes (`-1`, `-2`), and properly corrected TOC links using literal line numbers.
+- **fix_tocs-obsidian.py**: Scrapped the duplicated fallback payload script. It is now a highly-efficient Python shim wrapping native `--style obsidian` operations out to `manage-tocs.py`.
+- **docs/cheats-readme.sh**: Added `set -euo pipefail` for strict bash error handling. Ripped out developer-hardcoded local path references (`/home/sviatoslav/...`), converting logic to dynamically evaluate the current repository path using `BASH_SOURCE[0]`, gracefully supporting `CHEATS_DIR` and `README_FILE` variable overrides.
+- **devtoolbox-cheats.30s.sh**: Simplified the `argos_set_category` internal API directory initialization by applying `mkdir -p -m 0700` directly. 
+- **KDE Plasma (5 & 6) Widgets**: Restructured formatting implementation for UI `configGeneral.qml` files; `applyTocFormatNow()` logic now explicitly shell-escapes `cfg_cheatsDir` to prevent shell injection via malicious directory names while safely allowing `$HOME` expansion, normalizes `cfg_tocFormat` injections defensively, and reliably queries `.local` or repo directories using chained evaluation if finding scripts.
+
+**🧪 Test Improvements:**
+- **tests/test_uninstall.sh**: Added user cheat sheet preservation assertion to `test_uninstall_removes_known_paths()`.
+- **tests/test_uninstall.sh**: Updated `test_remove_file_readonly` to check output for failure indicators and verify file existence instead of exit status.
+- **tests/test_uninstall.sh**: Replaced inline `mktemp -d` assignments with the shared `make_workspace()` helper, adding proper error handling.
+- **tests/test_plasma5_cheats_js.mjs**: Strengthened assertion in "uses default debug log when not provided" test to verify the exact default path `/tmp/devtoolbox-debug.log` instead of generic text.
+- **tests/test_install.sh**: Fixed `test_configure_toc_format_default_obsidian` to stop mutating the real repository by removing the `mkdir -p "$REPO_ROOT/tools"` command.
+- **tests/test_install.sh**: Fixed `test_install_cheats_copies_files` to assert the grep result instead of discarding it, ensuring the test validates the install pipeline output.
+- **tests/test_install.sh**: Fixed broken "Results" summary line by adding a `passed` counter and using it in the output.
+- **tests/test_install_extended.sh**: Replaced inline awk-based function extraction with the existing `extract_func()` helper, eliminating code duplication.
+- **tests/test_indexer.sh**: Fixed `test_indexer_disables_debug_on_bad_dir` to actually assert the indexer succeeds and produces output instead of masking the exit status with `|| true`.
+- **tests/test_devtoolbox_cheats_ui.sh**: Fixed `test_ensure_cache_rebuilds_on_rebuild_flag` to use the real `index_cheats` function instead of a mocked version that was being overridden, ensuring the test actually validates rebuild behavior.
+- **tests/test_devtoolbox_cheats_screen.sh**: Fixed four test functions that always passed regardless of assertion results by conditionally calling `pass` only when `[[ -n "$out" ]]` succeeds.
+- **tests/test_helpers.sh**: Created shared test helper file with common utilities (`pass`, `fail`, `assert_eq`, `assert_contains`, `assert_file_exists`, `extract_func`, `make_workspace`, `make_test_cheat`) to eliminate duplication across test files.
+- **tests/test_argos_renderers.sh**: Updated to source shared test helpers instead of defining them locally.
+- **tests/test_cheats_updater_extended2.sh**: Updated to source shared test helpers instead of defining them locally.
+- **tests/test_devtoolbox_cheats_screen.sh**: Updated to source shared test helpers instead of defining them locally.
+- **tests/test_devtoolbox_cheats_ui.sh**: Updated to source shared test helpers instead of defining them locally.
+- **tests/test_indexer.sh**: Updated to source shared test helpers instead of defining them locally.
+- **tests/test_bump_version.sh**: Updated to source shared test helpers instead of defining them locally.
+- **tests/test_cheats_readme.sh**: Updated to source shared test helpers instead of defining them locally.
+- **tests/test_bump_version.sh**: Fixed `test_no_version_txt_no_changes` to copy the script into the workspace (which lacks `version.txt`) instead of running from the repo root where `version.txt` always exists.
+- **tests/test_bump_version.sh**: Replaced duplicated sed logic in `test_updates_version_in_bash_scripts`, `test_updates_version_in_metadata_json`, `test_preserves_readonly_prefix`, and `test_version_with_special_chars` with actual `bump-version.sh` execution, ensuring tests catch regressions in the real script.
+- **tests/test_devtoolbox_cheats_core.sh**: Replaced standalone function redefinitions in `test_compose_label_without_icon` with `extract_func` to use the real implementations, matching the pattern of adjacent tests.
 ## v1.5.0 (2026-07-31)
 
 **✨ New Feature: TOC Formatting Style — Multi-Platform Configuration**
