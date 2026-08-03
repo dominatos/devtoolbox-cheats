@@ -1245,3 +1245,36 @@ Future readers of `tofix.md` get conflicting guidance about what the actual defa
 
 **Fix:**
 Update issue #73's **Description** to reference `/tmp/devtoolbox-debug.log` as the expected default, removing the conflicting `$HOME/.cache` reference. No code change required.
+
+---
+
+## 79. devtools.1m.sh clipboard helpers use eval [MAJOR]
+
+**Status:** Open (Code Review Finding)
+**Affected components:** devtools.1m.sh:41-42
+
+**Description:**
+The `paste()` and `copy()` functions execute the configured clipboard command strings using `eval "$CLIPBOARD_PASTE"` and `eval "$CLIPBOARD_COPY"`.
+
+**Impact:**
+Shell evaluation of user-controlled or environment-controlled command strings can introduce command injection, quoting errors, and unexpected behavior.
+
+**Fix:**
+Avoid `eval` by invoking the clipboard helper directly, e.g. `paste() { $CLIPBOARD_PASTE; }` and `copy() { $CLIPBOARD_COPY; }`, or store the command and arguments in a safe array form before execution.
+
+---
+
+## 80. devtoolbox-cheats.30s.sh terminal wrapper relies on eval [MAJOR]
+
+**Status:** Open (Code Review Finding)
+**Affected components:** devtoolbox-cheats.30s.sh:104, 369-394
+
+**Description:**
+`run_in_terminal()` escapes the command using `printf '%q'` and then executes it through `bash -c "eval $escaped_cmd"` inside multiple terminal emulator invocations.
+
+**Impact:**
+This double-eval pattern increases the risk of command injection and can break quoting, making terminal command execution unsafe for untrusted or complex commands.
+
+**Fix:**
+Remove the `eval` wrapper and use a safer shell invocation strategy, such as passing a properly quoted command string to `bash -lc "$cmd"` or using arrays/explicit command execution without intermediate evaluation.
+
