@@ -20,3 +20,11 @@ install-dev.sh
 
 .mimocode/.cron-lock
 docs/ai-gen-cheatsheet-new.md
+__pycache__
+tmp/fix-toc-github.py
+tmp/fix_tocs-obsidian.py
+tmp/
+tmp/*
+fixprompt.md
+autofixprompt.md
+CHECKLIST.md

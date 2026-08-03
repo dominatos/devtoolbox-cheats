@@ -52,29 +52,16 @@ var GROUP_ICONS = {
 };
 
 /**
- * Plasma 6 Shield: Backslash-escape every non-alphanumeric character (except space)
- * to survive the DataSource whitelist stripping in Plasma 6.
- * The DataSource strips characters like / | $ _ = ; & [ ] before execution.
- * By escaping them, they survive the stripping AND the shell then interprets them correctly.
+ * Protects shell command text from Plasma 6 DataSource filtering.
+ * @param {string} str - The text to escape.
+ * @return {string} The text with non-alphanumeric characters other than spaces prefixed by backslashes.
  */
 function plasmaShield(str) {
     if (!str) return "";
     return str.replace(/([^a-zA-Z0-9 ])/g, "\\$1");
 }
 
-// Build command to index cheats (using shell for performance)
-// We use a helper script to avoid complex escaping issues in Plasma 6
-function getIndexCommand(cheatsDir, cacheFile, scriptPath) {
-    // Simple debug log path
-    var debugLog = "/tmp/devtoolbox-debug.log";
 
-    // Construct the command to call the helper script
-    // We point to the absolute path of indexer.sh provided by the QML
-    var finalCmd = "bash \"" + scriptPath + "\" \"" + cheatsDir + "\" \"" + debugLog + "\"";
-
-    // Apply the Plasma 6 Shield to survive the journey
-    return plasmaShield(finalCmd);
-}
 
 // Parse the output of the index command
 // Format: path|title|group|icon|order

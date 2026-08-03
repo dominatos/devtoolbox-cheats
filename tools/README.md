@@ -35,5 +35,4 @@ By default, the script processes all `.md` files in `~/cheats.d/`. You can overr
 
 ## Deprecated Scripts
 
-- `fix-toc-github.py`: An older, complex script that attempted to fuzzy-match broken GitHub anchors to existing headers. It has been fully replaced by `manage-tocs.py`, which offers a much cleaner "rebuild from scratch" approach. You can safely delete this script.
 - `fix_tocs.py`: A temporary script previously located at the repo root. Replaced by `manage-tocs.py`.

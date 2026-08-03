@@ -3,7 +3,7 @@
 # Usage: ./indexer.sh <cheatsDir> [debugLog] [cacheFile]
 
 CHEATS_DIR="$1"
-DEBUG_LOG="${2:-/tmp/devtoolbox-debug.log}"
+DEBUG_LOG="${2:-$HOME/.cache/devtoolbox-cheats/devtoolbox-debug.log}"
 CACHE_FILE="${3:-$HOME/.cache/devtoolbox-cheats-index.cache}"
 
 if [ -z "$CHEATS_DIR" ]; then
@@ -14,6 +14,11 @@ fi
 # Ensure UTF-8
 export LC_ALL=C.UTF-8
 
+# Ensure debug log directory exists before first write
+if ! mkdir -p "$(dirname "$DEBUG_LOG")" 2>/dev/null; then
+    echo "Warning: cannot create debug log directory, disabling debug logging" >&2
+    DEBUG_LOG="/dev/null"
+fi
 echo "Search Dir: $CHEATS_DIR" > "$DEBUG_LOG"
 echo "Cache File: $CACHE_FILE" >> "$DEBUG_LOG"
 
@@ -98,7 +103,7 @@ find -L "$CHEATS_DIR" -type f -name '*.md' 2>/dev/null | while read -r f; do
     
     # Output format: path|title|group|icon|order
     echo "$f|$title|$group|$icon|$order"
-done | tee "$temp_output" "$DEBUG_LOG"
+done | tee -a "$temp_output" "$DEBUG_LOG"
 
 # Save to cache
 mv "$temp_output" "$CACHE_FILE" 2>/dev/null || cp "$temp_output" "$CACHE_FILE"

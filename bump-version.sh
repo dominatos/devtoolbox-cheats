@@ -13,7 +13,7 @@ if [[ ! -f "$VERSION_FILE" ]]; then
     exit 1
 fi
 
-RAW_VERSION=$(cat "$VERSION_FILE" | tr -d '[:space:]')
+RAW_VERSION=$(tr -d '[:space:]' < "$VERSION_FILE")
 V_VERSION="v${RAW_VERSION}"
 echo "Syncing version: $RAW_VERSION"
 
