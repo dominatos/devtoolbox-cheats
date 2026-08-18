@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="v1.5.1"
+VERSION="v1.5.2"
 
 # print_header prints the DevToolbox Cheats installer banner and version.
 print_header() {

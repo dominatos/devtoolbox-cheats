@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.2 (2026-08-18)
+
+**🔧 Bug Fixes:**
+- **cheats-updater.sh**: Replaced hardcoded script name in output messages with `$(basename "$0")` so that the CLI usage matches the installed command name (`cheats-updater` instead of `cheats-updater.sh`). Fixed related ShellCheck warnings.
+
 ## v1.5.1 (2026-07-31)
 
 **🔧 Bug Fixes & Refactoring (Code Review Iteration):**

@@ -2,7 +2,9 @@
 # cheats-updater.sh - Update manager for devtoolbox-cheats
 set -euo pipefail
 
-readonly VERSION="v1.5.1"
+readonly VERSION="v1.5.2"
+SCRIPT_NAME="$(basename "$0")"
+readonly SCRIPT_NAME
 readonly UPSTREAM_URL="https://github.com/dominatos/devtoolbox-cheats.git"
 readonly BRANCH="main"
 readonly CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
@@ -58,7 +60,7 @@ cmd_check() {
         total=$(find "$TEMP_DIR/cheats.d" -type f -name "*.md" | wc -l)
         echo "  ${C_GREEN}All ${total} files are new${C_RESET}"
         echo
-        echo "  Run ${C_CYAN}cheats-updater.sh update${C_RESET} to download"
+        echo "  Run ${C_CYAN}${SCRIPT_NAME} update${C_RESET} to download"
         return 0
     fi
     
@@ -98,7 +100,7 @@ cmd_check() {
     echo "    ${C_GREEN}+${new}${C_RESET} new  ${C_YELLOW}~${modified}${C_RESET} modified  ${C_DIM}=${unchanged}${C_RESET} unchanged  ${C_BLUE}?${custom}${C_RESET} custom"
     echo
     if (( new + modified > 0 )); then
-        echo "  Run ${C_CYAN}cheats-updater.sh update${C_RESET} to apply changes"
+        echo "  Run ${C_CYAN}${SCRIPT_NAME} update${C_RESET} to apply changes"
     else
         echo "  ${C_GREEN}Everything is up to date${C_RESET}"
     fi
@@ -181,7 +183,7 @@ cmd_update() {
     local toc_format="obsidian"
     if [[ -s "$toc_conf" ]]; then
         local _fmt
-        _fmt="$(cat "$toc_conf" | tr -d '[:space:]')"
+        _fmt="$(tr -d '[:space:]' < "$toc_conf")"
         case "$_fmt" in
             obsidian|github) toc_format="$_fmt" ;;
         esac
@@ -243,10 +245,10 @@ cmd_update() {
 
 show_help() {
     cat <<EOF
-${C_BOLD}cheats-updater.sh${C_RESET} ${VERSION}
+${C_BOLD}${SCRIPT_NAME}${C_RESET} ${VERSION}
 
 ${C_BOLD}USAGE${C_RESET}
-    cheats-updater.sh <command>
+    ${SCRIPT_NAME} <command>
 
 ${C_BOLD}COMMANDS${C_RESET}
     ${C_GREEN}check${C_RESET}       Check for updates
@@ -257,10 +259,10 @@ ${C_BOLD}ENVIRONMENT${C_RESET}
     CHEATS_DIR     Target directory (default: ~/cheats.d)
 
 ${C_BOLD}EXAMPLES${C_RESET}
-    cheats-updater.sh check
-    cheats-updater.sh update
+    ${SCRIPT_NAME} check
+    ${SCRIPT_NAME} update
     
-    CHEATS_DIR=/custom/path cheats-updater.sh update
+    CHEATS_DIR=/custom/path ${SCRIPT_NAME} update
 
 ${C_BOLD}BACKUP${C_RESET}
     Automatic backup is created before every update:
