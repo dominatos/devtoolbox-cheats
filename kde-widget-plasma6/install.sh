@@ -124,14 +124,18 @@ fi
 
 # --- 5. Deploy cheatsheets ---
 echo ""
-echo "→ Deploying cheatsheets..."
-if [ -d "$SCRIPT_DIR/../cheats.d" ]; then
-    mkdir -p "$HOME/cheats.d"
-    cp -r "$SCRIPT_DIR/../cheats.d"/* "$HOME/cheats.d/"
-    CHEAT_COUNT=$(find "$HOME/cheats.d" -name "*.md" | wc -l)
-    echo "✅ Deployed $CHEAT_COUNT cheatsheets to ~/cheats.d"
+if [ "${SKIP_CHEATS_DEPLOY:-0}" != "1" ]; then
+    echo "→ Deploying cheatsheets..."
+    if [ -d "$SCRIPT_DIR/../cheats.d" ]; then
+        mkdir -p "$HOME/cheats.d"
+        cp -r "$SCRIPT_DIR/../cheats.d"/* "$HOME/cheats.d/"
+        CHEAT_COUNT=$(find "$HOME/cheats.d" -name "*.md" | wc -l)
+        echo "✅ Deployed $CHEAT_COUNT cheatsheets to ~/cheats.d"
+    else
+        echo "⚠️  cheats.d source not found at $SCRIPT_DIR/../cheats.d — skipping"
+    fi
 else
-    echo "⚠️  cheats.d source not found at $SCRIPT_DIR/../cheats.d — skipping"
+    echo "→ Skipping cheatsheets deployment (already deployed)"
 fi
 
 # --- 6. Install dependencies (optional, non-fatal) ---

@@ -28,13 +28,17 @@ $TOOL --type Plasma/Applet --install "$PKG"
 
 
 echo ""
-echo "📂 Deploying cheatsheets into ~/cheats.d..."
-if [ -d "../cheats.d" ]; then
-    mkdir -p "$HOME/cheats.d"
-    cp -r ../cheats.d/* "$HOME/cheats.d/"
-    echo "✅ Cheatsheets deployed to $HOME/cheats.d"
+if [ "${SKIP_CHEATS_DEPLOY:-0}" != "1" ]; then
+    echo "📂 Deploying cheatsheets into ~/cheats.d..."
+    if [ -d "../cheats.d" ]; then
+        mkdir -p "$HOME/cheats.d"
+        cp -r ../cheats.d/* "$HOME/cheats.d/"
+        echo "✅ Cheatsheets deployed to $HOME/cheats.d"
+    else
+        echo "⚠️ Warning: cheats.d source not found (looked in ../cheats.d). Skipping deployment."
+    fi
 else
-    echo "⚠️ Warning: cheats.d source not found (looked in ../cheats.d). Skipping deployment."
+    echo "📂 Skipping cheatsheets deployment (already deployed)"
 fi
 
 echo ""

@@ -527,6 +527,8 @@ fi
 echo ""
 echo "🔍 Detecting KDE Plasma version..."
 
+export SKIP_CHEATS_DEPLOY=1
+
 if command -v kpackagetool6 >/dev/null 2>&1; then
     echo "✅ Detected Plasma 6"
     echo "📂 Using kde-widget-plasma6..."
