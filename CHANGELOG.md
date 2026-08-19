@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.6 (2026-08-19)
+
+**🔧 Bug Fixes:**
+- **Installer**: Fixed an issue where the KDE widget sub-installers would overwrite newly applied TOC formatting by blindly copying raw cheatsheets from the repository. The main installer now exports `SKIP_CHEATS_DEPLOY=1` so the sub-installers preserve the `~/cheats.d` directory.
+
 ## v1.5.4 (2026-08-19)
 
 **🔧 Bug Fixes:**
