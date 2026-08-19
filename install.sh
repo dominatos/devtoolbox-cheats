@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VERSION="v1.5.2"
+VERSION="v1.5.3"
 
 # print_header prints the DevToolbox Cheats installer banner and version.
 print_header() {
@@ -474,6 +474,8 @@ configure_toc_format() {
     local choice=""
     # read with 30-second timeout; IFS= to preserve whitespace; -r to avoid backslash issues
     if read -r -t 30 -p "  Choose [1/2] (default: 1 — Obsidian in 30s): " choice; then
+        choice="${choice%$'\r'}"
+        choice="${choice// /}"
         case "${choice}" in
             2|github|GitHub|gh) toc_format="github" ;;
             *)                  toc_format="obsidian" ;;

@@ -19,7 +19,7 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.5.2"
+VERSION="v1.5.3"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
@@ -1211,9 +1211,9 @@ _render_functions_submenu() {
   
   local toc_fmt
   toc_fmt="$(get_toc_format)"
-  local check_obs="[ ] " check_gh="[ ] "
-  [[ "$toc_fmt" == "obsidian" ]] && check_obs="[x] "
-  [[ "$toc_fmt" == "github" ]] && check_gh="[x] "
+  local check_obs="" check_gh=""
+  [[ "$toc_fmt" == "obsidian" ]] && check_obs="✅ "
+  [[ "$toc_fmt" == "github" ]] && check_gh="✅ "
   
   echo "-- TOC Formatting"
   echo "-- -- ${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"

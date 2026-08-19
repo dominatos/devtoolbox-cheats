@@ -2,7 +2,7 @@
 # cheats-updater.sh - Update manager for devtoolbox-cheats
 set -euo pipefail
 
-readonly VERSION="v1.5.2"
+readonly VERSION="v1.5.3"
 SCRIPT_NAME="$(basename "$0")"
 readonly SCRIPT_NAME
 readonly UPSTREAM_URL="https://github.com/dominatos/devtoolbox-cheats.git"

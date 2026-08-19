@@ -25,6 +25,15 @@ assert_eq() {
     fi
 }
 
+assert_contains() {
+    local desc="$1" out="$2" substr="$3"
+    if [[ "$out" == *"$substr"* ]]; then
+        pass "$desc"
+    else
+        fail "$desc (expected string not found: $substr)"
+    fi
+}
+
 assert_file_exists() {
     local desc="$1" f="$2"
     if [[ -f "$f" ]]; then

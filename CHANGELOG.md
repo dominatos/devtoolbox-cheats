@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.5.3 (2026-08-19)
+
+**🔧 Bug Fixes:**
+- **manage-tocs.py**: Restored missing TOC formatting logic and implemented `--files` parameter and exact translation stripping to support updated test requirements.
+- **devtoolbox-cheats.30s.sh**: Fixed broken TOC checkbox rendering in GNOME Argos by replacing bracket markers `[x]` with `✅` emoji.
+- **install.sh**: Hardened TOC selection prompt against `\r` (carriage return) and stray spaces to prevent incorrect formatting application.
+
 ## v1.5.2 (2026-08-18)
 
 **🔧 Bug Fixes:**
