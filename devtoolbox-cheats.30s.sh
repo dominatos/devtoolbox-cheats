@@ -19,7 +19,7 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.5.3"
+VERSION="v1.5.4"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.

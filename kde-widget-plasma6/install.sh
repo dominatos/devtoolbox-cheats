@@ -167,6 +167,20 @@ echo "============================================"
 echo "✅ Installation complete!"
 echo "============================================"
 echo ""
+
+if ! pgrep -x plasmashell >/dev/null 2>&1; then
+    echo "ℹ️  Plasma Shell is not currently running."
+    echo "   The widget will be available the next time you log into KDE Plasma."
+    echo ""
+    echo "When you run Plasma:"
+    echo "  1. Right-click panel → Add Widgets"
+    echo "  2. Search 'DevToolbox Cheats'"
+    echo "  3. Add to panel or desktop"
+    echo "  4. Right-click widget → Configure"
+    echo ""
+    exit 0
+fi
+
 echo "🔄 Plasma Shell needs to restart for changes to take effect."
 echo "   (This ensures config page shows correctly!)"
 echo ""

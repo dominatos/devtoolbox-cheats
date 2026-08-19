@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.4 (2026-08-19)
+
+**🔧 Bug Fixes:**
+- **Installer**: The KDE widget installers now check if Plasma Shell is actually running before prompting for a restart. This prevents unnecessary prompts for users running the universal installer on dual-DE setups (e.g. while logged into GNOME).
+
 ## v1.5.3 (2026-08-19)
 
 **🔧 Bug Fixes:**
