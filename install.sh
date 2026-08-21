@@ -515,6 +515,14 @@ install_generic_app
 # ─── Universal Desktop Entry ─────────────────────────────────────────────────
 install_desktop_entry
 
+# ─── macOS detection ────────────────────────────────────────────────────────
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    echo "✅ Detected macOS"
+    echo "📂 Using macOS installer..."
+    cd "$SCRIPT_DIR/macOS-beta" && ./install.sh
+    exit $?
+fi
+
 # ─── DE routing ──────────────────────────────────────────────────────────────
 INSTALLED=0
 
