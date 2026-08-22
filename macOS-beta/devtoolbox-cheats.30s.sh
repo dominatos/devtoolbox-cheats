@@ -818,9 +818,9 @@ _render_functions_submenu() {
     echo "-- 🐙 GitHub Repository   | bash='open_url' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
     echo "---"
     echo "-- Layout Options"
-    echo "-- -- \${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
-    echo "-- -- \${check_zen}Zenity (dialog cheat list)     | bash='$SCRIPT_PATH' param1=setLayout param2=zenity terminal=false refresh=true"
-    echo "-- -- \${check_dd}Drill-down (category→cheats)   | bash='$SCRIPT_PATH' param1=setLayout param2=drilldown terminal=false refresh=true"
+    echo "-- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
+    echo "-- -- ${check_zen}Zenity (dialog cheat list)     | bash='$SCRIPT_PATH' param1=setLayout param2=zenity terminal=false refresh=true"
+    echo "-- -- ${check_dd}Drill-down (category→cheats)   | bash='$SCRIPT_PATH' param1=setLayout param2=drilldown terminal=false refresh=true"
 
     local toc_fmt
     toc_fmt="$(get_toc_format)"
@@ -829,8 +829,8 @@ _render_functions_submenu() {
     [[ "$toc_fmt" == "github" ]] && check_gh="✅ "
 
     echo "-- TOC Formatting"
-    echo "-- -- \${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"
-    echo "-- -- \${check_gh}GitHub (Slugs)        | bash='$SCRIPT_PATH' param1=setTocFormat param2=github terminal=false refresh=true"
+    echo "-- -- ${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"
+    echo "-- -- ${check_gh}GitHub (Slugs)        | bash='$SCRIPT_PATH' param1=setTocFormat param2=github terminal=false refresh=true"
     echo "---"
 }
 
