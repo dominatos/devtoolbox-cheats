@@ -188,16 +188,28 @@ mkdir -p "$XBAR_PLUGINS_DIR"
 # Make scripts executable
 chmod +x "$SCRIPT_DIR"/*.sh
 
-# Create individual symlinks for each script (xbar requires this)
-# Only link cheats wrapper — devtools.1m.sh is not yet working
-for script in "$SCRIPT_DIR"/devtoolbox-cheats.30s.sh "$SCRIPT_DIR"/compat.sh; do
-    script_name="$(basename "$script")"
+# Remove stale DevToolbox entries from earlier installer versions.
+# Only symbolic links are removed; unrelated xbar plugins and regular files stay intact.
+for script_name in \
+    compat.sh \
+    devtools.1m.sh \
+    cheats-updater.sh \
+    generate-tldr.sh \
+    bump-version.sh \
+    devtoolbox-cheats; do
     xbar_link="$XBAR_PLUGINS_DIR/$script_name"
     if [[ -L "$xbar_link" ]]; then
         rm -f "$xbar_link"
+        log_info "  Removed stale xbar link: $script_name"
     fi
-    ln -sf "$script" "$xbar_link"
 done
+
+# Install only the current dedicated macOS xbar plugin.
+xbar_link="$XBAR_PLUGINS_DIR/devtoolbox-cheats.30s.sh"
+if [[ -L "$xbar_link" ]]; then
+    rm -f "$xbar_link"
+fi
+ln -sf "$SCRIPT_DIR/devtoolbox-cheats.30s.sh" "$xbar_link"
 log_info "  xbar plugin links → ${C_CYAN}$XBAR_PLUGINS_DIR/${C_RESET}"
 
 # ============= Setup PATH =============
