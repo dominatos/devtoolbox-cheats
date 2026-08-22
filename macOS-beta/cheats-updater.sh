@@ -1,7 +1,7 @@
 #!/bin/bash
-# macOS-beta/cheats-updater.sh — macOS wrapper for cheatsheet updater
-# Thin wrapper that overrides Linux-incompatible functions,
-# then sources the original Linux script for shared core logic.
+# macOS-beta/cheats-updater.sh — standalone macOS cheatsheet updater
+# This script intentionally contains its own update flow so the installed
+# ~/.local/bin/cheats-updater command has no runtime dependency on Linux files.
 #
 # Requires: Bash 4+ (macOS ships with 3.2)
 # This script auto-detects and re-executes with Homebrew Bash if needed.
@@ -19,9 +19,50 @@ fi
 
 set -euo pipefail
 
-# ============= Source Platform Abstraction =============
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/compat.sh"
+readonly VERSION="v1.5.5"
+SCRIPT_NAME="$(basename "$0")"
+readonly SCRIPT_NAME
+readonly UPSTREAM_URL="https://github.com/dominatos/devtoolbox-cheats.git"
+readonly BRANCH="main"
+readonly CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
+TEMP_DIR="$(mktemp -d /tmp/devtoolbox-cheats-XXXXXX)"
+readonly TEMP_DIR
+readonly PLATFORM="macos"
+
+# ============= Colors =============
+if [[ -t 1 ]]; then
+    C_RESET=$'\033[0m' C_RED=$'\033[0;31m' C_GREEN=$'\033[0;32m'
+    C_YELLOW=$'\033[0;33m' C_BLUE=$'\033[0;34m' C_CYAN=$'\033[0;36m'
+    C_BOLD=$'\033[1m' C_DIM=$'\033[2m'
+else
+    C_RESET="" C_RED="" C_GREEN="" C_YELLOW="" C_BLUE="" C_CYAN="" C_BOLD="" C_DIM=""
+fi
+
+log_info()  { echo -e "${C_GREEN}[INFO]${C_RESET} $*" >&2; }
+log_warn()  { echo -e "${C_YELLOW}[WARN]${C_RESET} $*" >&2; }
+log_error() { echo -e "${C_RED}[ERROR]${C_RESET} $*" >&2; }
+
+cleanup() {
+    [[ -n "${TEMP_DIR:-}" && -d "$TEMP_DIR" ]] && rm -rf "$TEMP_DIR"
+}
+trap cleanup EXIT
+
+# Clone the upstream repository into the per-invocation temporary directory.
+clone_repo() {
+    log_info "Cloning ${C_CYAN}${UPSTREAM_URL}${C_RESET} (${BRANCH})..."
+
+    if ! git clone --branch "$BRANCH" --depth 1 --quiet "$UPSTREAM_URL" "$TEMP_DIR" 2>&1; then
+        log_error "Failed to clone repository"
+        exit 1
+    fi
+
+    if [[ ! -d "$TEMP_DIR/cheats.d" ]]; then
+        log_error "Repository cloned but cheats.d directory not found"
+        exit 1
+    fi
+
+    log_info "Clone complete"
+}
 
 # ============= Override: find -printf =============
 # macOS find doesn't support -printf; use sed to strip leading ./
@@ -288,9 +329,6 @@ EOF
 }
 
 # ============= Main Entry Point =============
-# Override VERSION for this wrapper
-VERSION="v1.5.5"
-
 for cmd in git find cp cmp; do
     if ! command -v "$cmd" &>/dev/null; then
         log_error "Required command: ${cmd}"

@@ -250,7 +250,7 @@ fi
 log_info ""
 log_info "Setting up cheats-updater..."
 
-UPDATER_SRC="$ROOT_DIR/cheats-updater.sh"
+UPDATER_SRC="$SCRIPT_DIR/cheats-updater.sh"
 UPDATER_DEST="$LOCAL_BIN/cheats-updater"
 
 mkdir -p "$LOCAL_BIN"

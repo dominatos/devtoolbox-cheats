@@ -121,17 +121,19 @@ macOS-beta/
 ├── devtoolbox-cheats.30s.sh     # Main script wrapper
 ├── devtools.1m.sh               # Tools menu wrapper
 ├── install.sh                   # macOS installer
-├── cheats-updater.sh            # Updater wrapper
+├── cheats-updater.sh            # Standalone macOS updater
 ├── generate-tldr.sh             # TLDR generator wrapper
 └── README.md                    # This file
 ```
 
-Each wrapper:
+The menu and tool wrappers:
 1. Sources `compat.sh` for platform detection
 2. Overrides Linux-incompatible functions
 3. Sources the corresponding Linux script for shared core logic
 
-This avoids duplicating ~2,800 lines of core logic.
+`cheats-updater.sh` is intentionally different: it is self-contained so the
+installed `~/.local/bin/cheats-updater` command does not depend on files in the
+repository checkout or a Linux updater at runtime.
 
 ## Platform Abstraction
 

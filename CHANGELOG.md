@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+**macOS Beta:**
+- **cheats-updater.sh:** Began the standalone macOS updater implementation so
+  the installed `~/.local/bin/cheats-updater` command no longer requires a
+  sibling compatibility script or Linux updater files at runtime.
+
 ## v1.5.5 (2026-08-19)
 
 **🔧 Bug Fixes:**

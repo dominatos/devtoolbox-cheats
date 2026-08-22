@@ -57,6 +57,7 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 - **LXQt / LXDE** - Lightweight dialog menus
 - **Budgie / Pantheon / Deepin** - Dialog-based menus with auto-detection
 - **Tiling WMs** - Terminal-based with FZF (i3, sway, bspwm, hyprland)
+- **macOS (BETA)** - xbar menu-bar integration with a standalone macOS updater ([View Guide](https://github.com/dominatos/devtoolbox-cheats/blob/main/macOS-beta/README.md))
 - **Windows (BETA)** - Native tray application via AutoHotkey with **full autodiscovery & search support** ([View Guide](https://github.com/dominatos/devtoolbox-cheats/blob/main/Windows-beta/README-windows.md))
 - **Auto-Detection** - Detects your DE and adapts automatically
 
@@ -119,6 +120,15 @@ tldr openssl
 ## 📦 Installation
 
 ### Choose Your Desktop Environment
+
+<details>
+<summary><b> macOS (xbar, Beta)</b></summary>
+
+The macOS beta uses xbar for menu-bar integration and a dedicated standalone
+updater. See the [macOS Setup Guide](macOS-beta/README.md) for prerequisites,
+installation, launchd scheduling, and updater usage.
+
+</details>
 
 <details>
 <summary><b>🪟 Windows (Native Tray App)</b></summary>
