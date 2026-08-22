@@ -25,9 +25,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/compat.sh"
 
 # ============= Provide realpath for Linux script =============
-# The Linux script calls 'realpath' directly — macOS doesn't have it
+# The Linux script calls 'realpath' directly — macOS doesn't have it as a command
 realpath() {
-    compat_realpath "$@"
+  # Skip -s flag (no trailing slash)
+  local path="$1"
+  [[ "$path" == "-s" ]] && path="$2"
+  if [[ -e "$path" ]]; then
+    (cd "$(dirname "$path")" && echo "$(pwd)/$(basename "$path")")
+  else
+    echo "$path"
+  fi
 }
 
 # ============= Resolve Script Path =============
