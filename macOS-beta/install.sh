@@ -181,21 +181,23 @@ log_info ""
 log_info "Setting up xbar plugin..."
 
 XBAR_PLUGINS_DIR="$HOME/Library/Application Support/xbar/plugins"
-DEVTOOLBOX_XBAR_DIR="$XBAR_PLUGINS_DIR/devtoolbox-cheats"
 
 # Create xbar plugins directory if it doesn't exist
 mkdir -p "$XBAR_PLUGINS_DIR"
 
-# Create symlink to macOS scripts
-if [[ -L "$DEVTOOLBOX_XBAR_DIR" ]]; then
-    rm -f "$DEVTOOLBOX_XBAR_DIR"
-fi
-
-ln -sf "$SCRIPT_DIR" "$DEVTOOLBOX_XBAR_DIR"
-log_info "  xbar plugin link → ${C_CYAN}$DEVTOOLBOX_XBAR_DIR${C_RESET}"
-
 # Make scripts executable
 chmod +x "$SCRIPT_DIR"/*.sh
+
+# Create individual symlinks for each script (xbar requires this)
+for script in "$SCRIPT_DIR"/*.sh; do
+    script_name="$(basename "$script")"
+    xbar_link="$XBAR_PLUGINS_DIR/$script_name"
+    if [[ -L "$xbar_link" ]]; then
+        rm -f "$xbar_link"
+    fi
+    ln -sf "$script" "$xbar_link"
+done
+log_info "  xbar plugin links → ${C_CYAN}$XBAR_PLUGINS_DIR/${C_RESET}"
 
 # ============= Setup PATH =============
 log_info ""

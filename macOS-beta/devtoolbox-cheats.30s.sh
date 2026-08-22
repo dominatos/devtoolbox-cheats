@@ -21,7 +21,14 @@ set -Eeuo pipefail
 trap ' exit 0' ERR
 
 # ============= Source Platform Abstraction =============
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Resolve symlink to get actual script directory
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -L "$SOURCE" ]]; do
+    SCRIPT_DIR="$(cd "$(dirname "$SOURCE")" && pwd)"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ "$SOURCE" != /* ]] && SOURCE="$SCRIPT_DIR/$SOURCE"
+done
+SCRIPT_DIR="$(cd "$(dirname "$SOURCE")" && pwd)"
 source "${SCRIPT_DIR}/compat.sh"
 
 # ============= Provide realpath for Linux script =============
@@ -43,8 +50,7 @@ realpath() {
 MACOS_SCRIPT_PATH="${SCRIPT_DIR}/devtoolbox-cheats.30s.sh"
 LINUX_SCRIPT_PATH="${SCRIPT_DIR}/../devtoolbox-cheats.30s.sh"
 
-# ============= Override: Clipboard Detection =============
-# Lines 94-101 in original
+# ============= Pre-set Clipboard (before sourcing) =============
 if [[ "$PLATFORM" == "macos" ]]; then
   if command -v pbcopy >/dev/null 2>&1 && command -v pbpaste >/dev/null 2>&1; then
     CLIPBOARD_COPY="pbcopy"
@@ -53,8 +59,14 @@ if [[ "$PLATFORM" == "macos" ]]; then
   fi
 fi
 
-# ============= Override: DE Detection =============
-# Lines 121-161 in original — return "xbar" on macOS
+# ============= Source Linux Script =============
+# CLIPBOARD_COPY is already set, so Linux script skips its detection
+source "$LINUX_SCRIPT_PATH"
+
+# ============= Override SCRIPT_PATH for xbar =============
+SCRIPT_PATH="$MACOS_SCRIPT_PATH"
+
+# ============= Override: DE Detection (AFTER sourcing) =============
 detect_de() {
   # Return configured DE if not auto
   if [[ "$DEVTOOLBOX_DE" != "auto" ]]; then
@@ -71,7 +83,7 @@ detect_de() {
   local detected="terminal"
 
   if [[ "$PLATFORM" == "macos" ]]; then
-    detected="xbar"
+    detected="gnome"  # Use xbar/Argos output format (same as GNOME)
   else
     # Linux DE detection (from original)
     case "${XDG_CURRENT_DESKTOP:-}" in
@@ -624,11 +636,3 @@ standaloneMenu() {
         ;;
   esac
 }
-
-# ============= Source Linux Script =============
-# This loads all the remaining functions and logic
-source "$LINUX_SCRIPT_PATH"
-
-# ============= Override SCRIPT_PATH for xbar =============
-# The Linux script sets SCRIPT_PATH to itself, but xbar needs it to point to this wrapper
-SCRIPT_PATH="$MACOS_SCRIPT_PATH"

@@ -42,12 +42,14 @@ if [[ -f "$PLIST_PATH" ]]; then
 fi
 
 # ============= Remove xbar Plugin =============
-XBAR_PLUGIN="$HOME/Library/Application Support/xbar/plugins/devtoolbox-cheats"
-if [[ -e "$XBAR_PLUGIN" ]]; then
-    log_remove "Removing xbar plugin..."
-    rm -f "$XBAR_PLUGIN"
-    log_remove "  Removed $XBAR_PLUGIN"
-fi
+XBAR_PLUGINS_DIR="$HOME/Library/Application Support/xbar/plugins"
+for script in devtoolbox-cheats.30s.sh devtools.1m.sh; do
+    xbar_link="$XBAR_PLUGINS_DIR/$script"
+    if [[ -L "$xbar_link" ]]; then
+        rm -f "$xbar_link"
+        log_remove "  Removed $xbar_link"
+    fi
+done
 
 # ============= Remove Cheats-Updater =============
 LOCAL_BIN="$HOME/.local/bin"
