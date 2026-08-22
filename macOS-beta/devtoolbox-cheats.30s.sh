@@ -493,7 +493,7 @@ showCheat() {
     local popup_title="$title"
     [[ -n "$icon_meta" ]] && popup_title="$(compose_label "$title" "$icon_meta")"
 
-    local CHEAT_VIEWERS="${CHEAT_VIEWERS:-code codium antigravity windsurf subl kate kwrite gedit terminal}"
+    local CHEAT_VIEWERS="${CHEAT_VIEWERS:-code textedit default}"
     for viewer in $CHEAT_VIEWERS; do
         case "$viewer" in
             code)
@@ -501,6 +501,12 @@ showCheat() {
                     code --reuse-window "$file" 2>/dev/null
                     return 0
                 fi
+                ;;
+            textedit)
+                open -a TextEdit "$file" 2>/dev/null && return 0
+                ;;
+            default)
+                open "$file" 2>/dev/null && return 0
                 ;;
             cat)
                 command -v cat >/dev/null 2>&1 && cat "$file" && return 0
