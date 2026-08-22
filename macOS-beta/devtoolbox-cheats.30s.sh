@@ -29,7 +29,7 @@ if [[ -L "$CHEATS_DIR" ]]; then
 fi
 
 CHEATS_CACHE="${CHEATS_CACHE:-$HOME/.cache/devtoolbox-cheats-combined.idx}"
-CHEATS_REBUILD=""
+CHEATS_REBUILD="${CHEATS_REBUILD:-}"
 
 DEVTOOLBOX_LAYOUT_CONF="${HOME}/.config/devtoolbox-cheats/layout.conf"
 DEVTOOLBOX_TOC_FORMAT_CONF="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
@@ -809,13 +809,13 @@ _render_functions_submenu() {
     esac
 
     echo "🛠 DevToolbox Functions"
-    echo "-- 🌐 Online Version       | bash='open_url' param1='https://cheats.alteron.net/' terminal=false"
+    echo "-- 🌐 Online Version       | bash='$SCRIPT_PATH' param1=openUrl param2='https://cheats.alteron.net/' terminal=false"
     echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
     echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
     echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
     echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
     echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-    echo "-- 🐙 GitHub Repository   | bash='open_url' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+    echo "-- 🐙 GitHub Repository   | bash='$SCRIPT_PATH' param1=openUrl param2='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
     echo "---"
     echo "-- Layout Options"
     echo "-- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
