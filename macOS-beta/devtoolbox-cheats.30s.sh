@@ -120,7 +120,7 @@ list_dialog() {
         fzf_cmd="fzf"
     fi
 
-    if [[ -n "$fzf_cmd" ]]; then
+    if [[ -n "$fzf_cmd" && "$(uname -s)" != "Darwin" ]]; then
         if [[ $# -gt 0 ]]; then
             printf '%s\n' "$@" | "$fzf_cmd" --prompt="$title > " --height=40% --reverse
         else
