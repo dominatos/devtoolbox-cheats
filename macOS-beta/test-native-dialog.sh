@@ -15,6 +15,16 @@ fi
 
 script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
 
+if [[ $# -eq 0 && -t 0 ]]; then
+    printf '%s\n' '1) Test alert' '2) Test list dialog' 'q) Quit'
+    read -r -p 'Select test: ' test_choice
+    case "$test_choice" in
+        1) set -- runAlert ;;
+        2) set -- runDialog ;;
+        *) exit 0 ;;
+    esac
+fi
+
 if [[ "${1:-}" == runAlert ]]; then
     if osascript -e 'display alert "DevToolbox dialog test" message "Basic macOS GUI access works."'; then
         echo "Alert completed successfully."
