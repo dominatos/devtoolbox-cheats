@@ -109,6 +109,13 @@ list_dialog() {
     local title="$1" col="$2"
     shift 2
 
+    if [[ "$(uname -s)" == "Darwin" && $# -eq 0 && ! -t 0 ]]; then
+        local stdin_item
+        while IFS= read -r stdin_item; do
+            [[ -n "$stdin_item" ]] && set -- "$@" "$stdin_item"
+        done
+    fi
+
     local fzf_cmd=""
     for p in /opt/local/bin/fzf /opt/homebrew/bin/fzf /usr/local/bin/fzf; do
         if [[ -x "$p" ]]; then
