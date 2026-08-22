@@ -127,15 +127,18 @@ list_dialog() {
             "$fzf_cmd" --prompt="$title > " --height=40% --reverse
         fi
     else
-        # Fallback: osascript choose from list
+        # Native macOS list dialog. Pass values through argv instead of interpolating
+        # them into AppleScript source, because titles may contain quotes or symbols.
         if [[ $# -gt 0 ]]; then
-            local items_json
-            items_json="$(printf '\"%s\",' "$@" | sed 's/,$//')"
-            osascript \
-                -e 'tell application "System Events" to activate' \
-                -e "set selected_item to choose from list {${items_json}} with prompt \"$col\" with title \"$title\"" \
-                -e 'if selected_item is not false then return item 1 of selected_item' \
-                2>/dev/null || true
+            osascript - "$title" "$col" "$@" <<'APPLESCRIPT' 2>/dev/null || true
+on run argv
+    set dialog_title to item 1 of argv
+    set prompt_text to item 2 of argv
+    set choices to items 3 thru -1 of argv
+    set selected_item to choose from list choices with prompt prompt_text with title dialog_title
+    if selected_item is not false then return item 1 of selected_item
+end run
+APPLESCRIPT
         fi
     fi
 }
