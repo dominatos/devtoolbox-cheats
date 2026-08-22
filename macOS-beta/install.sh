@@ -40,15 +40,36 @@ fi
 
 # ============= Package Manager Detection =============
 PKG_MGR=""
+HAS_BREW=false
+HAS_PORT=false
 
-# Try Homebrew first
+# Check what's available
 if command -v brew >/dev/null 2>&1; then
+    HAS_BREW=true
+fi
+if command -v port >/dev/null 2>&1; then
+    HAS_PORT=true
+fi
+
+# Ask user which to use
+if [[ "$HAS_BREW" == true && "$HAS_PORT" == true ]]; then
+    # Both available — ask user
+    echo ""
+    echo "  ${C_BOLD}Multiple package managers detected:${C_RESET}"
+    echo "    1) Homebrew ($(brew --version 2>/dev/null | head -n1))"
+    echo "    2) MacPorts ($(port version 2>/dev/null | head -n1))"
+    echo ""
+    read -rp "  Which package manager to use? [1/2]: " choice
+    case "$choice" in
+        2) PKG_MGR="port" ;;
+        *) PKG_MGR="brew" ;;
+    esac
+elif [[ "$HAS_BREW" == true ]]; then
     PKG_MGR="brew"
-    log_info "Homebrew found: $(brew --version | head -n1)"
-# Fallback to MacPorts
-elif command -v port >/dev/null 2>&1; then
+    log_info "Using Homebrew: $(brew --version | head -n1)"
+elif [[ "$HAS_PORT" == true ]]; then
     PKG_MGR="port"
-    log_info "MacPorts found: $(port version | head -n1)"
+    log_info "Using MacPorts: $(port version | head -n1)"
 else
     log_error "No package manager found (Homebrew or MacPorts required)."
     echo ""
@@ -59,6 +80,8 @@ else
     echo "    https://www.macports.org/install.php"
     exit 1
 fi
+
+log_info "Selected package manager: ${C_CYAN}$PKG_MGR${C_RESET}"
 
 # ============= Package Install Helper =============
 # Maps package names between brew and port
