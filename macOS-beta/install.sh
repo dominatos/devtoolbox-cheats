@@ -7,6 +7,9 @@ VERSION="v1.5.5"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+# Homebrew and MacPorts may be installed outside the non-interactive PATH.
+export PATH="/opt/homebrew/bin:/opt/local/bin:/usr/local/bin:$PATH"
+
 # ============= Colors =============
 if [[ -t 1 ]]; then
     C_RESET=$'\033[0m' C_RED=$'\033[0;31m' C_GREEN=$'\033[0;32m'
