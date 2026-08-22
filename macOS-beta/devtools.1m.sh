@@ -23,6 +23,11 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/compat.sh"
 
+# ============= Provide realpath for Linux script =============
+realpath() {
+    compat_realpath "$@"
+}
+
 # ============= Resolve Script Path =============
 LINUX_SCRIPT_PATH="${SCRIPT_DIR}/../devtools.1m.sh"
 

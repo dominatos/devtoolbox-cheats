@@ -24,6 +24,12 @@ trap ' exit 0' ERR
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/compat.sh"
 
+# ============= Provide realpath for Linux script =============
+# The Linux script calls 'realpath' directly — macOS doesn't have it
+realpath() {
+    compat_realpath "$@"
+}
+
 # ============= Resolve Script Path =============
 # The Linux script expects SCRIPT_PATH to point to itself
 # but we need it to point to this wrapper for xbar compatibility
