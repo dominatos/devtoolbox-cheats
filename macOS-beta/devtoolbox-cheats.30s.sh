@@ -824,14 +824,13 @@ _render_functions_submenu() {
     echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
     echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
     echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-    echo "-- 🐙 GitHub Repository   | bash='$SCRIPT_PATH' param1=openUrl param2='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-    echo "-- ⚙️ Settings"
-    echo "-- -- View settings       | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
+    echo "-- 🐙 GitHub Repository  | bash='$SCRIPT_PATH' param1=openUrl param2='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
     echo "---"
-    echo "-- -- Layout Options"
-    echo "-- -- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
-    echo "-- -- -- ${check_zen}Zenity (dialog cheat list)     | bash='$SCRIPT_PATH' param1=setLayout param2=zenity terminal=false refresh=true"
-    echo "-- -- -- ${check_dd}Drill-down (category→cheats)   | bash='$SCRIPT_PATH' param1=setLayout param2=drilldown terminal=false refresh=true"
+    echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
+    echo "-- Layout Options"
+    echo "-- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
+    echo "-- -- ${check_zen}Zenity (dialog cheat list)     | bash='$SCRIPT_PATH' param1=setLayout param2=zenity terminal=false refresh=true"
+    echo "-- -- ${check_dd}Drill-down (category→cheats)   | bash='$SCRIPT_PATH' param1=setLayout param2=drilldown terminal=false refresh=true"
 
     local toc_fmt
     toc_fmt="$(get_toc_format)"
@@ -839,9 +838,9 @@ _render_functions_submenu() {
     [[ "$toc_fmt" == "obsidian" ]] && check_obs="✅ "
     [[ "$toc_fmt" == "github" ]] && check_gh="✅ "
 
-    echo "-- -- TOC Formatting"
-    echo "-- -- -- ${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"
-    echo "-- -- -- ${check_gh}GitHub (Slugs)        | bash='$SCRIPT_PATH' param1=setTocFormat param2=github terminal=false refresh=true"
+    echo "-- TOC Formatting"
+    echo "-- -- ${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"
+    echo "-- -- ${check_gh}GitHub (Slugs)        | bash='$SCRIPT_PATH' param1=setTocFormat param2=github terminal=false refresh=true"
     echo "---"
 }
 
