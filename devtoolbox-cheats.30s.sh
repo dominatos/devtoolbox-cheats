@@ -145,6 +145,12 @@ detect_de() {
     return
   fi
 
+  # macOS: always use xbar/Argos output format / macOS: всегда формат xbar/Argos
+  if [[ "$PLATFORM" == "macos" ]]; then
+    echo "gnome"
+    return
+  fi
+
   # Return cached value if exists / Вернуть кэшированное значение
   if [[ -f "$DE_CACHE_FILE" ]]; then
     cat "$DE_CACHE_FILE"

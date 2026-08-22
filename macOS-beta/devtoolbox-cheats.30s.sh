@@ -59,58 +59,30 @@ if [[ "$PLATFORM" == "macos" ]]; then
   fi
 fi
 
-# ============= Source Linux Script =============
-# CLIPBOARD_COPY is already set, so Linux script skips its detection
-source "$LINUX_SCRIPT_PATH"
-
-# ============= Override SCRIPT_PATH for xbar =============
-SCRIPT_PATH="$MACOS_SCRIPT_PATH"
-
-# ============= Override: DE Detection (AFTER sourcing) =============
+# ============= Override: DE Detection (BEFORE sourcing) =============
+# Linux script's main execution calls detect_de when sourced,
+# so this must be defined BEFORE source.
 detect_de() {
-  # Return configured DE if not auto
   if [[ "$DEVTOOLBOX_DE" != "auto" ]]; then
     echo "$DEVTOOLBOX_DE"
     return
   fi
-
-  # Return cached value if exists
   if [[ -f "$DE_CACHE_FILE" ]]; then
     cat "$DE_CACHE_FILE"
     return
   fi
-
-  local detected="terminal"
-
-  if [[ "$PLATFORM" == "macos" ]]; then
-    detected="gnome"  # Use xbar/Argos output format (same as GNOME)
-  else
-    # Linux DE detection (from original)
-    case "${XDG_CURRENT_DESKTOP:-}" in
-      *GNOME*|*Unity*|*Pantheon*) detected="gnome" ;;
-      *KDE*|*Plasma*)             detected="kde" ;;
-      *XFCE*)                     detected="xfce" ;;
-      *Cinnamon*)                 detected="cinnamon" ;;
-      *MATE*)                     detected="mate" ;;
-      *LXQt*)                     detected="lxqt" ;;
-      *LXDE*)                     detected="lxde" ;;
-      *)
-        if pgrep -x gnome-shell >/dev/null 2>&1; then detected="gnome"
-        elif pgrep -x plasmashell >/dev/null 2>&1; then detected="kde"
-        elif pgrep -x xfce4-panel >/dev/null 2>&1; then detected="xfce"
-        elif pgrep -x cinnamon >/dev/null 2>&1; then detected="cinnamon"
-        elif pgrep -x mate-panel >/dev/null 2>&1; then detected="mate"
-        elif pgrep -x lxqt-panel >/dev/null 2>&1; then detected="lxqt"
-        elif pgrep -x lxpanel >/dev/null 2>&1; then detected="lxde"
-        fi
-        ;;
-    esac
-  fi
-
-  # Cache the result
+  local detected="gnome"
   echo "$detected" > "$DE_CACHE_FILE"
   echo "$detected"
 }
+
+# ============= Source Linux Script =============
+# CLIPBOARD_COPY is already set, so Linux script skips its detection
+# detect_de is already overridden, so it returns "gnome" on macOS
+source "$LINUX_SCRIPT_PATH"
+
+# ============= Override SCRIPT_PATH for xbar =============
+SCRIPT_PATH="$MACOS_SCRIPT_PATH"
 
 # ============= Override: Dialog Tool Detection =============
 # Lines 165-198 in original — return "osascript" on macOS
