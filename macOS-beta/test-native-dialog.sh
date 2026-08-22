@@ -15,21 +15,37 @@ fi
 
 script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
 
+if [[ "${1:-}" == runAlert ]]; then
+    if osascript -e 'display alert "DevToolbox dialog test" message "Basic macOS GUI access works."'; then
+        echo "Alert completed successfully."
+        exit 0
+    fi
+    echo "ERROR: basic macOS alert failed." >&2
+    exit 1
+fi
+
 if [[ "${1:-}" != runDialog ]]; then
     echo "DevToolbox Dialog Test"
     echo "---"
     echo "Open native macOS list dialog | bash='$script_path' param1=runDialog terminal=false"
+    echo "Open native macOS alert      | bash='$script_path' param1=runAlert terminal=false"
     exit 0
 fi
 
-selection="$(osascript - <<'APPLESCRIPT'
+dialog_error=""
+if ! selection="$(osascript - <<'APPLESCRIPT'
 on run
     set selected_item to choose from list {"Search cheats", "Browse all cheats", "Settings"} with prompt "Choose an action" with title "DevToolbox Dialog Test"
     if selected_item is false then return "CANCELLED"
     return item 1 of selected_item
 end run
 APPLESCRIPT
-)"
+ 2>&1)"; then
+    dialog_error="$selection"
+    echo "ERROR: native macOS list dialog failed:" >&2
+    printf '%s\n' "$dialog_error" >&2
+    exit 1
+fi
 
 if [[ "$selection" == "CANCELLED" ]]; then
     echo "Dialog opened successfully; selection cancelled."
