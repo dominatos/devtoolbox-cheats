@@ -3,6 +3,15 @@ set -euo pipefail
 
 VERSION="v1.5.5"
 
+# ─── macOS detection ──────────
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    echo "✅ Detected macOS"
+    echo "📂 Using macOS uninstaller..."
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    cd "$SCRIPT_DIR/macOS-beta" && ./uninstall.sh
+    exit $?
+fi
+
 print_header() {
   echo ""
   echo "╔══════════════════════════════════════════════════════════════╗"

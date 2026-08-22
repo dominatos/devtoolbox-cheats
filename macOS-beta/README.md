@@ -121,6 +121,7 @@ macOS-beta/
 ├── devtoolbox-cheats.30s.sh     # Main script wrapper
 ├── devtools.1m.sh               # Tools menu wrapper
 ├── install.sh                   # macOS installer
+├── uninstall.sh                 # macOS uninstaller
 ├── cheats-updater.sh            # Standalone macOS updater
 ├── generate-tldr.sh             # TLDR generator wrapper
 └── README.md                    # This file

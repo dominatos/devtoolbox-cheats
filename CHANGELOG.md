@@ -6,6 +6,8 @@
 - **cheats-updater.sh:** Began the standalone macOS updater implementation so
   the installed `~/.local/bin/cheats-updater` command no longer requires a
   sibling compatibility script or Linux updater files at runtime.
+- **uninstall.sh:** The uninstaller now asks for explicit confirmation before removing `~/cheats.d`, safely preserving custom user cheatsheets by default.
+- **Documentation:** Updated `macOS-beta/README.md` to reflect the completed standalone installer/updater architecture and the safe uninstaller.
 
 ## v1.5.5 (2026-08-19)
 

@@ -5,9 +5,9 @@ set -euo pipefail
 # ============= Colors =============
 if [[ -t 1 ]]; then
     C_RESET=$'\033[0m' C_RED=$'\033[0;31m' C_GREEN=$'\033[0;32m'
-    C_YELLOW=$'\033[0;33m' C_CYAN=$'\033[0;36m' C_BOLD=$'\033[1m'
+    C_YELLOW=$'\033[0;33m' C_BOLD=$'\033[1m'
 else
-    C_RESET="" C_RED="" C_GREEN="" C_YELLOW="" C_CYAN="" C_BOLD=""
+    C_RESET="" C_RED="" C_GREEN="" C_YELLOW="" C_BOLD=""
 fi
 
 log_info()  { echo -e "${C_GREEN}[INFO]${C_RESET} $*"; }
@@ -63,9 +63,15 @@ fi
 # ============= Remove Deployed Cheatsheets =============
 CHEATS_DIR="$HOME/cheats.d"
 if [[ -d "$CHEATS_DIR" ]]; then
-    log_remove "Removing cheatsheets..."
-    rm -rf "$CHEATS_DIR"
-    log_remove "  Removed $CHEATS_DIR"
+    echo ""
+    read -rp "Do you also want to remove all cheatsheets in ~/cheats.d (including custom ones)? [y/N]: " confirm_cheats
+    if [[ "$confirm_cheats" == [yY] ]]; then
+        log_remove "Removing cheatsheets..."
+        rm -rf "$CHEATS_DIR"
+        log_remove "  Removed $CHEATS_DIR"
+    else
+        log_info "Keeping cheatsheets in $CHEATS_DIR"
+    fi
 fi
 
 # ============= Remove Deployed Tools =============
@@ -103,13 +109,12 @@ fi
 
 # ============= Remove PATH from Shell RC =============
 log_info "Checking shell RC files for PATH entry..."
-LOCAL_BIN_LINE='export PATH="$HOME/.local/bin:$PATH"'
-DEVTOOLBOX_COMMENT="# DevToolbox Cheats"
 
 for rc in "$HOME/.zshrc" "$HOME/.bash_profile" "$HOME/.bashrc"; do
     if [[ -f "$rc" ]] && grep -q "DevToolbox Cheats" "$rc" 2>/dev/null; then
         # Remove the comment line and the PATH line after it
         sed -i '' '/# DevToolbox Cheats/d' "$rc"
+        # shellcheck disable=SC2016
         sed -i '' '/\$HOME\/.local\/bin/d' "$rc"
         log_remove "  Cleaned $rc"
     fi
@@ -125,7 +130,7 @@ echo "║                   Uninstall Complete                         ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 echo "  ${C_BOLD}Removed:${C_RESET}"
-echo "    • Cheatsheets  → ~/cheats.d/"
+echo "    • Cheatsheets  → ~/cheats.d/ (if confirmed)"
 echo "    • xbar plugin  → ~/Library/Application Support/xbar/plugins/devtoolbox-cheats"
 echo "    • Updater      → ~/.local/bin/cheats-updater"
 echo "    • Auto-update  → LaunchAgent unloaded"
