@@ -189,7 +189,8 @@ mkdir -p "$XBAR_PLUGINS_DIR"
 chmod +x "$SCRIPT_DIR"/*.sh
 
 # Create individual symlinks for each script (xbar requires this)
-for script in "$SCRIPT_DIR"/*.sh; do
+# Only link cheats wrapper — devtools.1m.sh is not yet working
+for script in "$SCRIPT_DIR"/devtoolbox-cheats.30s.sh "$SCRIPT_DIR"/compat.sh; do
     script_name="$(basename "$script")"
     xbar_link="$XBAR_PLUGINS_DIR/$script_name"
     if [[ -L "$xbar_link" ]]; then

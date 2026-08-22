@@ -95,11 +95,18 @@ compat_list_dialog() {
   local title="$1" col="$2"
   shift 2
   if [[ "$PLATFORM" == "macos" ]]; then
-    if command -v fzf >/dev/null 2>&1; then
+    # Find fzf in common macOS locations
+    local fzf_bin=""
+    for p in /opt/local/bin/fzf /opt/homebrew/bin/fzf /usr/local/bin/fzf; do
+      [[ -x "$p" ]] && { fzf_bin="$p"; break; }
+    done
+    [[ -z "$fzf_bin" ]] && command -v fzf >/dev/null 2>&1 && fzf_bin="fzf"
+
+    if [[ -n "$fzf_bin" ]]; then
       if [[ $# -gt 0 ]]; then
-        printf '%s\n' "$@" | fzf --prompt="$title > "
+        printf '%s\n' "$@" | "$fzf_bin" --prompt="$title > "
       else
-        fzf --prompt="$title > "
+        "$fzf_bin" --prompt="$title > "
       fi
     else
       # Fallback: use osascript with choose from list
