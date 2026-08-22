@@ -6,12 +6,16 @@ A macOS port of DevToolbox Cheats using [xbar](https://github.com/matryer/xbar) 
 
 | Requirement | Purpose | Install |
 |-------------|---------|---------|
-| **Homebrew** | Package manager | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
-| **Bash 5** | Script runtime (macOS ships with 3.2) | `brew install bash` |
+| **Homebrew** or **MacPorts** | Package manager | See below |
+| **Bash 5** | Script runtime (macOS ships with 3.2) | `brew install bash` or `sudo port install bash` |
 | **xbar** | Menu bar app | `brew install --cask xbar` |
-| **fzf** | Fuzzy finder (optional) | `brew install fzf` |
-| **bat** | Syntax highlighting (optional) | `brew install bat` |
-| **pandoc** | PDF export (optional) | `brew install pandoc` |
+| **fzf** | Fuzzy finder (optional) | `brew install fzf` or `sudo port install fzf` |
+| **bat** | Syntax highlighting (optional) | `brew install bat` or `sudo port install bat` |
+| **pandoc** | PDF export (optional) | `brew install pandoc` or `sudo port install pandoc` |
+
+**Package Manager Install:**
+- Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- MacPorts: https://www.macports.org/install.php
 
 ## Quick Install
 
@@ -20,7 +24,7 @@ A macOS port of DevToolbox Cheats using [xbar](https://github.com/matryer/xbar) 
 ```
 
 This will:
-1. Install dependencies via Homebrew
+1. Detect Homebrew or MacPorts and install dependencies
 2. Deploy cheatsheets to `~/cheats.d/`
 3. Set up xbar plugin symlink
 4. Configure daily auto-updates via launchd
@@ -29,9 +33,15 @@ This will:
 
 ### 1. Install Dependencies
 
+**Homebrew:**
 ```bash
 brew install fzf bat coreutils jq pandoc
 brew install --cask font-noto-color-emoji
+```
+
+**MacPorts:**
+```bash
+sudo port install fzf bat coreutils jq pandoc
 ```
 
 ### 2. Deploy Cheatsheets

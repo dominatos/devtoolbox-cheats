@@ -38,46 +38,88 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
     exit 1
 fi
 
-# ============= Check Homebrew =============
-log_info "Checking for Homebrew..."
-if ! command -v brew >/dev/null 2>&1; then
-    log_error "Homebrew is required but not installed."
+# ============= Package Manager Detection =============
+PKG_MGR=""
+
+# Try Homebrew first
+if command -v brew >/dev/null 2>&1; then
+    PKG_MGR="brew"
+    log_info "Homebrew found: $(brew --version | head -n1)"
+# Fallback to MacPorts
+elif command -v port >/dev/null 2>&1; then
+    PKG_MGR="port"
+    log_info "MacPorts found: $(port version | head -n1)"
+else
+    log_error "No package manager found (Homebrew or MacPorts required)."
+    echo ""
     echo "  Install Homebrew:"
     echo "    /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+    echo ""
+    echo "  Or install MacPorts:"
+    echo "    https://www.macports.org/install.php"
     exit 1
 fi
-log_info "Homebrew found: $(brew --version | head -n1)"
+
+# ============= Package Install Helper =============
+# Maps package names between brew and port
+install_pkg() {
+    local pkg="$1"
+    local brew_name="${2:-$pkg}"
+    local port_name="${3:-$pkg}"
+
+    if [[ "$PKG_MGR" == "brew" ]]; then
+        if brew list "$brew_name" >/dev/null 2>&1; then
+            log_info "  ${C_DIM}$brew_name${C_RESET} — already installed"
+        else
+            log_info "  Installing ${C_CYAN}$brew_name${C_RESET} via Homebrew..."
+            brew install "$brew_name" || log_warn "Failed to install $brew_name"
+        fi
+    elif [[ "$PKG_MGR" == "port" ]]; then
+        if port installed "$port_name" 2>/dev/null | grep -q "installed"; then
+            log_info "  ${C_DIM}$port_name${C_RESET} — already installed"
+        else
+            log_info "  Installing ${C_CYAN}$port_name${C_RESET} via MacPorts..."
+            sudo port install "$port_name" || log_warn "Failed to install $port_name"
+        fi
+    fi
+}
 
 # ============= Install Dependencies =============
-log_info "Installing dependencies via Homebrew..."
+log_info "Installing dependencies via $PKG_MGR..."
 echo ""
 
 # Required dependencies
-DEPS=(
-    "fzf"              # Fuzzy finder
-    "bat"              # Syntax highlighting (optional, for fzf preview)
-    "coreutils"        # GNU coreutils (grealpath, etc.)
-    "jq"               # JSON processor
-    "pandoc"           # Document converter (optional, for PDF export)
-)
+# Format: "generic_name brew_name port_name"
+# If brew_name and port_name are same as generic, can omit them
+install_pkg "fzf"
+install_pkg "jq"
+install_pkg "pandoc"
 
-for dep in "${DEPS[@]}"; do
-    if brew list "$dep" >/dev/null 2>&1; then
-        log_info "  ${C_DIM}$dep${C_RESET} — already installed"
-    else
-        log_info "  Installing ${C_CYAN}$dep${C_RESET}..."
-        brew install "$dep" || log_warn "Failed to install $dep (may be optional)"
-    fi
-done
+# bat: different names in brew vs port
+if [[ "$PKG_MGR" == "brew" ]]; then
+    install_pkg "bat" "bat" "bat"
+elif [[ "$PKG_MGR" == "port" ]]; then
+    # MacPorts uses 'bat' as well
+    install_pkg "bat" "bat" "bat"
+fi
+
+# coreutils: GNU coreutils (grealpath, etc.)
+if [[ "$PKG_MGR" == "brew" ]]; then
+    install_pkg "coreutils" "coreutils" "coreutils"
+elif [[ "$PKG_MGR" == "port" ]]; then
+    install_pkg "coreutils" "coreutils" "coreutils"
+fi
 
 # Optional: Noto Color Emoji font
 echo ""
 log_info "Checking for emoji font..."
-if fc-list 2>/dev/null | grep -qi "noto.*emoji"; then
+if command -v fc-list >/dev/null 2>&1 && fc-list 2>/dev/null | grep -qi "noto.*emoji"; then
     log_info "  Noto Color Emoji font found"
-else
+elif [[ "$PKG_MGR" == "brew" ]]; then
     log_info "  Installing Noto Color Emoji font..."
     brew install --cask font-noto-color-emoji || log_warn "Failed to install emoji font (optional)"
+else
+    log_info "  Skipping emoji font (install manually via Homebrew cask if needed)"
 fi
 
 # ============= Deploy Cheatsheets =============

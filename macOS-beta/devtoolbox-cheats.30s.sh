@@ -604,3 +604,7 @@ standaloneMenu() {
 # ============= Source Linux Script =============
 # This loads all the remaining functions and logic
 source "$LINUX_SCRIPT_PATH"
+
+# ============= Override SCRIPT_PATH for xbar =============
+# The Linux script sets SCRIPT_PATH to itself, but xbar needs it to point to this wrapper
+SCRIPT_PATH="$MACOS_SCRIPT_PATH"
