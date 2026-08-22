@@ -684,8 +684,9 @@ fzfSearch() {
 showSettings() {
     local layout; layout="$(get_layout)"
     local toc_fmt; toc_fmt="$(get_toc_format)"
+    local detected_de="${DEVTOOLBOX_DE:-auto}"
     local msg
-    printf -v msg '%b' "Version: $VERSION\nPlatform: macOS\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF\nTOC Format: $toc_fmt (obsidian|github)"
+    printf -v msg '%b' "Version: $VERSION\nPlatform: macOS\n\nConfiguration:\nDEVTOOLBOX_DE=$detected_de\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF\nTOC Format: $toc_fmt (obsidian|github)"
     info_dialog "Dev Toolbox Settings" "$msg"
 }
 
