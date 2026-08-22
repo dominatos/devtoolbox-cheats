@@ -43,9 +43,14 @@ if [[ "${1:-}" != runDialog ]]; then
 fi
 
 dialog_error=""
-if ! selection="$(osascript - <<'APPLESCRIPT'
+if ! selection="$(osascript - "DevToolbox Category" "Cheatsheets" \
+    "📚 apache" "📦 awk" "🔐 openssl" "🌐 curl" "🛠️ systemctl" \
+    "📝 sed" "☁️ aws" "🗃️ mysql" <<'APPLESCRIPT'
 on run
-    set selected_item to choose from list {"Search cheats", "Browse all cheats", "Settings"} with prompt "Choose an action" with title "DevToolbox Dialog Test"
+    set dialog_title to item 1 of argv
+    set prompt_text to item 2 of argv
+    set choices to items 3 thru -1 of argv
+    set selected_item to choose from list choices with prompt prompt_text with title dialog_title
     if selected_item is false then return "CANCELLED"
     return item 1 of selected_item
 end run
