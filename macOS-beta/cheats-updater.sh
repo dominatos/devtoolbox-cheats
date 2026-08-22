@@ -1,9 +1,21 @@
-#!/opt/homebrew/bin/bash
+#!/bin/bash
 # macOS-beta/cheats-updater.sh — macOS wrapper for cheatsheet updater
 # Thin wrapper that overrides Linux-incompatible functions,
 # then sources the original Linux script for shared core logic.
 #
-# Requires: Homebrew Bash 5+ (/opt/homebrew/bin/bash)
+# Requires: Bash 4+ (macOS ships with 3.2)
+# This script auto-detects and re-executes with Homebrew Bash if needed.
+
+# --- Auto-detect Bash 4+ and re-exec if needed ---
+if [[ "${BASH_VERSINFO[0]:-0}" -lt 4 ]]; then
+    for bash_path in /opt/homebrew/bin/bash /usr/local/bin/bash /opt/local/bin/bash; do
+        if [[ -x "$bash_path" ]]; then
+            exec "$bash_path" "$0" "$@"
+        fi
+    done
+    echo "ERROR: Bash 4+ required. Install with: brew install bash" >&2
+    exit 1
+fi
 
 set -euo pipefail
 
