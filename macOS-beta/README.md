@@ -188,6 +188,14 @@ The `compat.sh` file provides macOS-compatible versions of:
 
 ## Troubleshooting
 
+### macOS Security Permissions (TCC)
+
+On macOS 11 (Big Sur) and newer (especially Ventura/Sonoma), macOS employs strict privacy controls. 
+
+When the scripts use `osascript` to trigger a system notification (e.g., from the updater), macOS will pause the script and show a prompt asking: **"xbar (or Terminal) would like to send you notifications"**.
+- You simply need to click **Allow** once. The script will wait for your response and continue normally.
+- Because this project uses raw bash scripts rather than compiled executables, it gracefully bypasses Gatekeeper restrictions and does not require manual code-signing or notarization.
+
 ### Scripts not executing
 
 ```bash
