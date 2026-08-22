@@ -131,7 +131,8 @@ list_dialog() {
         if [[ $# -gt 0 ]]; then
             local items_json
             items_json="$(printf '\"%s\",' "$@" | sed 's/,$//')"
-            osascript -e "tell application \"System Events\" to choose from list {${items_json}} with prompt \"$col\" with title \"$title\"" 2>/dev/null || true
+            osascript -e "choose from list {${items_json}} with prompt \"$col\" with title \"$title\"" \
+                2>/dev/null || true
         fi
     fi
 }
