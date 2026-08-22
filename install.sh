@@ -3,6 +3,15 @@ set -euo pipefail
 
 VERSION="v1.5.5"
 
+# ─── macOS detection (must be before any package manager detection) ──────────
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    echo "✅ Detected macOS"
+    echo "📂 Using macOS installer..."
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    cd "$SCRIPT_DIR/macOS-beta" && ./install.sh
+    exit $?
+fi
+
 # print_header prints the DevToolbox Cheats installer banner and version.
 print_header() {
   echo ""

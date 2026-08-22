@@ -24,18 +24,20 @@ SCRIPT_PATH="$(realpath -s "$0")"
 # Maintained by bump-version.sh — used for consistency across all project scripts
 VERSION="v1.5.5"
 
-# Detect clipboard method
-if command -v wl-copy >/dev/null && command -v wl-paste >/dev/null; then
-  CLIPBOARD_COPY="wl-copy"
-  CLIPBOARD_PASTE="wl-paste"
-  CLIPBOARD_MODE="Wayland"
-elif command -v xclip >/dev/null; then
-  CLIPBOARD_COPY="xclip -selection clipboard"
-  CLIPBOARD_PASTE="xclip -o -selection clipboard"
-  CLIPBOARD_MODE="X11"
-else
-  echo "❌ Requires wl-clipboard or xclip"
-  exit 1
+# Detect clipboard method (skip if already set by wrapper)
+if [[ -z "${CLIPBOARD_COPY:-}" ]]; then
+  if command -v wl-copy >/dev/null && command -v wl-paste >/dev/null; then
+    CLIPBOARD_COPY="wl-copy"
+    CLIPBOARD_PASTE="wl-paste"
+    CLIPBOARD_MODE="Wayland"
+  elif command -v xclip >/dev/null; then
+    CLIPBOARD_COPY="xclip -selection clipboard"
+    CLIPBOARD_PASTE="xclip -o -selection clipboard"
+    CLIPBOARD_MODE="X11"
+  else
+    echo "❌ Requires wl-clipboard or xclip"
+    exit 1
+  fi
 fi
 
 paste()  { eval "$CLIPBOARD_PASTE"; }

@@ -29,8 +29,12 @@ CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
 # Resolve symlink to ensure find works reliably
 # If CHEATS_DIR is a symbolic link, we resolve it to its absolute path.
 # This ensures that the 'find' command correctly traverses the directory structure.
-if [[ -L "$CHEATS_DIR" ]] && command -v realpath >/dev/null 2>&1; then
-  CHEATS_DIR="$(realpath "$CHEATS_DIR")"
+if [[ -L "$CHEATS_DIR" ]]; then
+  if command -v realpath >/dev/null 2>&1; then
+    CHEATS_DIR="$(realpath "$CHEATS_DIR")"
+  elif [[ "$(uname -s)" == "Darwin" ]]; then
+    CHEATS_DIR="$(cd "$(dirname "$CHEATS_DIR")" && pwd)/$(basename "$CHEATS_DIR")"
+  fi
 fi
 
 # Cache file to store indexed cheatsheet metadata.
@@ -88,20 +92,36 @@ declare -A GROUP_ICON=(
 
 CHEAT_VIEWERS="${CHEAT_VIEWERS:-code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity terminal}"
 export PATH="/usr/local/bin:/usr/bin:$PATH"
-SCRIPT_PATH="$(realpath -s "$0")"
+if command -v realpath >/dev/null 2>&1; then
+  SCRIPT_PATH="$(realpath -s "$0")"
+else
+  SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
+fi
 
 # ============= Clipboard =============
 # Detect available clipboard utility (Wayland's wl-copy or X11's xclip).
-if command -v wl-copy >/dev/null 2>&1 && command -v wl-paste >/dev/null 2>&1; then
-  CLIPBOARD_COPY="wl-copy"
-elif command -v xclip >/dev/null 2>&1; then
-  CLIPBOARD_COPY="xclip -selection clipboard"
-else
-  CLIPBOARD_COPY=""
+# Skip if already set by wrapper (e.g. macOS pbcopy).
+if [[ -z "${CLIPBOARD_COPY:-}" ]]; then
+  if command -v wl-copy >/dev/null 2>&1 && command -v wl-paste >/dev/null 2>&1; then
+    CLIPBOARD_COPY="wl-copy"
+  elif command -v xclip >/dev/null 2>&1; then
+    CLIPBOARD_COPY="xclip -selection clipboard"
+  else
+    CLIPBOARD_COPY=""
+  fi
 fi
 
 # copy copies the provided text to the configured clipboard when clipboard support is available.
 copy() { [[ -n "$CLIPBOARD_COPY" ]] && eval "$CLIPBOARD_COPY"; }
+
+# open_url opens a URL in the default browser (cross-platform).
+open_url() {
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    open "$1"
+  else
+    open_url "$1" 2>/dev/null || true
+  fi
+}
 
 # ============= Cross-DE Abstraction Layer =============
 # Provides DE-agnostic functions for notifications, dialogs, and terminals.
@@ -202,6 +222,12 @@ notify() {
   local title="$1" msg="$2"
   local de
   de="$(detect_de)"
+  
+  # macOS: use osascript
+  if [[ "$(uname -s)" == "Darwin" ]] && command -v osascript >/dev/null 2>&1; then
+    osascript -e "display notification \"$msg\" with title \"$title\"" 2>/dev/null || true
+    return
+  fi
   
   case "$de" in
     kde)
@@ -585,10 +611,18 @@ ensure_cache() {
   
   # Check if any cheatsheet file is newer than the cache file
   local latest_src mtime_cache
-  latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 || true)"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -exec stat -f '%m' {} + 2>/dev/null | sort -nr | head -n1 || true)"
+  else
+    latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 || true)"
+  fi
   [[ -z "$latest_src" ]] && { index_cheats; _CACHE_CHECKED=1; return; }
   
-  mtime_cache="$(stat -c '%Y' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    mtime_cache="$(stat -f '%m' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
+  else
+    mtime_cache="$(stat -c '%Y' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
+  fi
   local latest_int="${latest_src%.*}"
   
   # If source file is newer, rebuild index
@@ -738,7 +772,11 @@ argos_clear_category() {
 argos_get_category() {
   [[ -f "$ARGOS_CAT_STATE" ]] || { printf ''; return; }
   local mtime now age
-  mtime="$(stat -c '%Y' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    mtime="$(stat -f '%m' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  else
+    mtime="$(stat -c '%Y' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  fi
   now="$(date +%s)"
   age=$(( now - mtime ))
   if (( age > ARGOS_CAT_TTL )); then
@@ -757,7 +795,11 @@ argos_get_category() {
 argos_category_lines() {
   local grp="$1"
   local hash_sum cat_cache line
-  hash_sum="$(printf '%s' "$grp" | sha256sum | awk '{print $1}')"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    hash_sum="$(printf '%s' "$grp" | shasum -a 256 | awk '{print $1}')"
+  else
+    hash_sum="$(printf '%s' "$grp" | sha256sum | awk '{print $1}')"
+  fi
   cat_cache="${ARGOS_CAT_CACHE_DIR}/cat_${hash_sum}.lines"
 
   mkdir -p "$ARGOS_CAT_CACHE_DIR"
@@ -1097,8 +1139,8 @@ compactMenu() {
         ;;
     "📚 Browse all cheats") browseAllCheatsFS ;;
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
-    "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
-    "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
+    "🌐 Online Version") open_url "https://cheats.alteron.net/" &>/dev/null ;;
+    "🐙 GitHub Repository") open_url "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
         showSettings
         compactMenu
@@ -1154,8 +1196,8 @@ standaloneMenu() {
         ;;
     "📚 Browse all cheats") browseAllCheatsFS ;;
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
-    "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
-    "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
+    "🌐 Online Version") open_url "https://cheats.alteron.net/" &>/dev/null ;;
+    "🐙 GitHub Repository") open_url "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
         showSettings
         standaloneMenu
@@ -1194,13 +1236,13 @@ _render_functions_submenu() {
   esac
 
   echo "🛠 DevToolbox Functions"
-  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "-- 🌐 Online Version       | bash='open_url' param1='https://cheats.alteron.net/' terminal=false"
   echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
   echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
   echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
   echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+  echo "-- 🐙 GitHub Repository   | bash='open_url' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
   echo "-- 🐙 Edit this script   | bash='code' param1='$SCRIPT_PATH' terminal=false"
   echo "-- 🐙 Go to Argos folder | bash='doublecmd' param1='$HOME/.config/argos/' terminal=false"
   echo "-- ---"
