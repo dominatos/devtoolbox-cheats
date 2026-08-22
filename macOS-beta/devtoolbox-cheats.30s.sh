@@ -825,7 +825,6 @@ _render_functions_submenu() {
     echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
     echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
     echo "-- 🐙 GitHub Repository  | bash='$SCRIPT_PATH' param1=openUrl param2='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
-    echo "---"
     echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
     echo "-- Layout Options"
     echo "-- -- ${check_std}Standard (inline submenus)    | bash='$SCRIPT_PATH' param1=setLayout param2=standard terminal=false refresh=true"
