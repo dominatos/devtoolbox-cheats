@@ -253,6 +253,9 @@ PLIST_NAME="com.devtoolbox-cheats.updater"
 PLIST_PATH="$HOME/Library/LaunchAgents/${PLIST_NAME}.plist"
 SCRIPT_PATH="$LOCAL_BIN/cheats-updater"
 
+# Create LaunchAgents directory if it doesn't exist
+mkdir -p "$HOME/Library/LaunchAgents"
+
 # Create launchd plist for daily auto-updates
 cat > "$PLIST_PATH" << PLIST
 <?xml version="1.0" encoding="UTF-8"?>
