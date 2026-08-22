@@ -46,7 +46,7 @@ dialog_error=""
 if ! selection="$(osascript - "DevToolbox Category" "Cheatsheets" \
     "📚 apache" "📦 awk" "🔐 openssl" "🌐 curl" "🛠️ systemctl" \
     "📝 sed" "☁️ aws" "🗃️ mysql" <<'APPLESCRIPT'
-on run
+on run argv
     set dialog_title to item 1 of argv
     set prompt_text to item 2 of argv
     set choices to items 3 thru -1 of argv
