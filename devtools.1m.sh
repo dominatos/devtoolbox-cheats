@@ -22,24 +22,29 @@ export PATH="/usr/local/bin:/usr/bin:$PATH"
 SCRIPT_PATH="$(realpath -s "$0")"
 
 # Maintained by bump-version.sh — used for consistency across all project scripts
-VERSION="v1.5.5"
+VERSION="v1.5.6"
 
-# Detect clipboard method
-if command -v wl-copy >/dev/null && command -v wl-paste >/dev/null; then
-  CLIPBOARD_COPY="wl-copy"
-  CLIPBOARD_PASTE="wl-paste"
-  CLIPBOARD_MODE="Wayland"
-elif command -v xclip >/dev/null; then
-  CLIPBOARD_COPY="xclip -selection clipboard"
-  CLIPBOARD_PASTE="xclip -o -selection clipboard"
-  CLIPBOARD_MODE="X11"
-else
-  echo "❌ Requires wl-clipboard or xclip"
-  exit 1
+# Detect clipboard method (skip if already set by wrapper)
+if [[ -z "${CLIPBOARD_COPY:-}" ]]; then
+  if command -v wl-copy >/dev/null && command -v wl-paste >/dev/null; then
+    CLIPBOARD_COPY="wl-copy"
+    CLIPBOARD_PASTE="wl-paste"
+    CLIPBOARD_MODE="Wayland"
+  elif command -v xclip >/dev/null; then
+    CLIPBOARD_COPY="xclip -selection clipboard"
+    CLIPBOARD_PASTE="xclip -o -selection clipboard"
+    CLIPBOARD_MODE="X11"
+  else
+    echo "❌ Requires wl-clipboard or xclip"
+    exit 1
+  fi
 fi
 
+# paste outputs the current clipboard contents.
 paste()  { eval "$CLIPBOARD_PASTE"; }
+# copy copies the provided input to the system clipboard using the configured clipboard command.
 copy()   { eval "$CLIPBOARD_COPY"; }
+# popup displays text in a Zenity dialog with the specified title.
 popup()  { echo -e "$2" | zenity --text-info --title="Dev Toolbox: $1" --width=800 --height=500 --filename=/dev/stdin --no-wrap --ok-label="Close" 2>/dev/null; }
 show()   { result="$(cat)"; copy <<<"$result"; notify-send "✅ Dev Toolbox" "$1"; popup "$1" "$result"; }
 

@@ -23,6 +23,8 @@ reviews:
     - "!**/*.min.css"
     - "!**/*.min.js"
     - "!**/cheats.d/**"
+    - "!**/debug.log"
+    - "!**/debug-output/**"
 
 
   path_instructions:

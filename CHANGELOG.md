@@ -1,5 +1,37 @@
 # Changelog
 
+## v1.5.6 (2026-08-29)
+
+**macOS Beta:**
+- **Installer & App:** Switched the primary macOS menu bar app recommendation to **SwiftBar** (required for macOS 12+), keeping xbar as a legacy internal option. The installer now defaults to SwiftBar without an interactive prompt, falling back to xbar automatically on older macOS versions.
+- **Documentation:** Updated `macOS-beta/README.md`, root `README.md`, `INSTRUCTIONS.md`, and `troubleshoot.md` to reflect SwiftBar as the primary macOS integration.
+- **cheats-updater.sh:** Began the standalone macOS updater implementation so
+  the installed `~/.local/bin/cheats-updater` command no longer requires a
+  sibling compatibility script or Linux updater files at runtime.
+- **uninstall.sh:** The uninstaller now asks for explicit confirmation before removing `~/cheats.d`, preserving custom user cheatsheets by default.
+- **Documentation:** Updated `macOS-beta/README.md` to reflect the completed standalone installer/updater architecture and the safe uninstaller.
+
+**🔧 Fixes (macOS 26 user feedback):**
+- **macOS-beta/devtoolbox-cheats.30s.sh:** Fixed race condition causing empty cache (and empty categories in compact mode) by writing cache updates atomically to a temporary file before replacing the main cache file. This prevents xbar timeout interruptions from corrupting the cheatsheet cache.
+- **install.sh:** Robust script resolution (`BASH_SOURCE` unset under `zsh install.sh` / stdin piping no longer errors). New dependency model with an explicit Required/Optional plan: only `bash` (verified ≥4 after install) and `python3` are required; `fzf`, `jq`, `bat`, `pandoc`, and `coreutils` are warn-only optional — the installer no longer aborts when they fail. Pre-flight validates system commands (`find`, `cp`, `cmp`, `sed`, `sort`) and `git` (with an `xcode-select --install` hint). `python3` detection probes known absolute locations, not just PATH. Execute bits of shipped scripts are restored (and reported) after git/archive mode stripping — xbar silently skips non-executable plugins. `chmod +x` now touches only the two xbar plugins. Existing regular files at plugin paths are never overwritten.
+- **macOS-beta/devtools.1m.sh:** Tray title shortened to `🛠 DT` to save menu-bar space (dialogs keep the full name).
+
+**🔧 Fixes (macOS port):**
+- **macOS-beta/devtools.1m.sh / macOS-beta/devtoolbox-cheats.30s.sh:** All AppleScript construction now uses quoted heredocs with positional `argv` values (`on run argv`), eliminating injection via titles/messages. Popup truncation happens before escaping. Clipboard helpers renamed to `clip_read`/`clip_write` so they no longer shadow POSIX `paste`.
+- **Bash 4+ re-exec blocks** in all four standalone scripts are guarded by `_DEVTOOLBOX_BASH_REEXEC`, preventing infinite re-exec loops.
+- **macOS-beta/cheats-updater.sh:** `update` is rollback-safe — newly added files are tracked and any failed copy or TOC-formatting step restores the pre-update backup and removes partial additions. The python3 realpath fallback passes paths via `sys.argv` and uses `abspath`; BSD `wc` padding is stripped.
+- **Terminal actions (macOS-beta/devtoolbox-cheats.30s.sh):** `run_in_terminal` accepts the script path and action separately and quotes both via AppleScript `quoted form of`, so spaces in the checkout path can no longer break or inject into the Terminal command.
+- **devtools.1m.sh:** Base64 decoding accepts successful decodes with empty output; JWT payloads that are not valid JSON are reported via dialog instead of crashing the action.
+- **install.sh:** Required dependencies (`bash`, `python3`) abort installation on failure via `require_pkg`; optional packages (`fzf`, `jq`, `pandoc`, `bat`, `coreutils`) warn without aborting. MacPorts "already installed" detection now matches the actual port line (the old `grep "installed"` matched the *"None of the specified ports are installed."* message and skipped everything). `python3` is detected system-wide before attempting installation (MacPorts has no unversioned port). Package-manager selection handles EOF by defaulting to Homebrew. Existing `~/cheats.d` is backed up (timestamped) before deployment. Shell RC detection matches the literal installer marker, preventing duplicate PATH blocks on re-runs. xbar links are removed only after an ownership check on their symlink target. LaunchAgent logs moved from `/tmp` to `~/Library/Logs/devtoolbox-cheats`.
+- **uninstall.sh:** Rejects non-macOS hosts before any cleanup; RC cleanup removes only the DevToolbox marker block and its adjacent PATH line (with a backup); updater backups preserved unless explicitly confirmed; legacy xbar links cleaned with ownership verification.
+- **macOS-beta/generate-tldr.sh:** `--platform` rejects path traversal; staging removal guarded against empty components; page-name collisions detected and counted once; temp files cleaned via EXIT trap; dead awk branch removed.
+- **Root script (shared):** `open_url` no longer recurses on Linux (calls `xdg-open`); Online Version/GitHub menu entries dispatch through `$SCRIPT_PATH` (`param1=open_url param2=<url>`); macOS notification branch uses argv-based osascript; Darwin platform check cached once at startup instead of repeated `uname` calls per menu render.
+
+**🧪 Tests:**
+- macOS installer suite extended to 43 assertions: dependency-install command logging for Homebrew/MacPorts, required-dependency failure aborting, plugin/CLI install verification.
+- macOS updater suite extended to 13 assertions including a full update-flow test (backup creation, custom-file preservation, manage-tocs.py invocation).
+- CI standalone check detects POSIX dot-sourcing; macos-port job runs on native `macos-latest`.
+
 ## v1.5.5 (2026-08-19)
 
 **🔧 Bug Fixes:**
