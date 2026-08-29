@@ -1,6 +1,6 @@
-# 📒 DevToolbox Cheats — Universal Linux Cheatsheet Manager
+# 📒 DevToolbox Cheats — Linux, macOS, and Windows Cheatsheet Manager
 
-**Cross-Desktop cheatsheet manager** for Linux with native support for GNOME, KDE, XFCE, and more. Access your Markdown command references instantly from your panel or menu.
+**Cross-platform cheatsheet manager** for Linux, macOS, and Windows, with native support for GNOME, KDE, XFCE, SwiftBar, and more. Access your Markdown command references instantly from your panel or menu.
 
 
 ![GNOME](https://img.shields.io/badge/GNOME-Argos-informational)
@@ -22,6 +22,14 @@
 
 
 If you like this project, consider supporting me on [Buy Me a Coffee](https://www.buymeacoffee.com/dominatos) ☕️
+
+---
+
+### 🚀 Quick Install (Linux & macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/install.sh -o /tmp/devtoolbox-install.sh && bash /tmp/devtoolbox-install.sh
+```
 
 ---
 
@@ -57,6 +65,7 @@ If you like this project, consider supporting me on [Buy Me a Coffee](https://ww
 - **LXQt / LXDE** - Lightweight dialog menus
 - **Budgie / Pantheon / Deepin** - Dialog-based menus with auto-detection
 - **Tiling WMs** - Terminal-based with FZF (i3, sway, bspwm, hyprland)
+- **macOS (BETA)** - SwiftBar menu-bar integration with a standalone macOS updater ([View Guide](https://github.com/dominatos/devtoolbox-cheats/blob/main/macOS-beta/README.md))
 - **Windows (BETA)** - Native tray application via AutoHotkey with **full autodiscovery & search support** ([View Guide](https://github.com/dominatos/devtoolbox-cheats/blob/main/Windows-beta/README-windows.md))
 - **Auto-Detection** - Detects your DE and adapts automatically
 
@@ -118,7 +127,23 @@ tldr openssl
 
 ## 📦 Installation
 
+### Quick Install (Linux & macOS)
+The fastest way to install DevToolbox Cheats is via our automated installation script for Linux and macOS (beta):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/install.sh -o /tmp/devtoolbox-install.sh && bash /tmp/devtoolbox-install.sh
+```
+
 ### Choose Your Desktop Environment
+
+<details>
+<summary><b> macOS (SwiftBar, Beta)</b></summary>
+
+The macOS beta uses SwiftBar for menu-bar integration and a dedicated standalone
+updater. See the [macOS Setup Guide](macOS-beta/README.md) for prerequisites,
+installation, launchd scheduling, and updater usage.
+
+</details>
 
 <details>
 <summary><b>🪟 Windows (Native Tray App)</b></summary>
@@ -757,7 +782,7 @@ export CHEATS_REBUILD=1
 export DEVTOOLBOX_DE=kde     # kde, gnome, xfce, lxqt, budgie, terminal
 
 # Set preferred viewers (space-separated, tried in order)
-export CHEAT_VIEWERS="code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity"
+export CHEAT_VIEWERS="code codium antigravity windsurf subl warp obsidian joplin macdown typora bear iawriter ulysses textmate kate kwrite geany gedit mousepad pluma xed notepadqq zenity"
 ```
 
 ### GNOME Argos: Adaptive Menu Layout

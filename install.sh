@@ -1,7 +1,61 @@
 #!/bin/bash
+{
 set -euo pipefail
 
-VERSION="v1.5.5"
+VERSION="v1.5.6"
+
+# ─── Remote Installation / Curl execution detection ────────────────────────────
+# If the script is run via `curl ... | bash` or downloaded independently,
+# it won't have the adjacent repository files (e.g. cheats.d/).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+if [ ! -f "$SCRIPT_DIR/devtoolbox-cheats.30s.sh" ] || [ ! -d "$SCRIPT_DIR/cheats.d" ]; then
+    echo "📦 Standalone execution detected (e.g. curl | bash)"
+    
+    if ! command -v git >/dev/null 2>&1; then
+        echo "❌ git is required for remote installation. Please install git."
+        exit 1
+    fi
+    
+    REPO_URL="https://github.com/dominatos/devtoolbox-cheats.git"
+    CLONE_BRANCH="${DEVTOOLBOX_BRANCH:-macos-beta}"
+    CLONE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/devtoolbox-cheats-XXXXXX")"
+    
+    echo "🚀 Cloning repository ($CLONE_BRANCH) to $CLONE_DIR..."
+    if ! git clone --depth 1 -b "$CLONE_BRANCH" "$REPO_URL" "$CLONE_DIR"; then
+        echo "❌ Failed to clone repository."
+        rm -rf "$CLONE_DIR"
+        exit 1
+    fi
+    
+    echo "🔄 Starting installer from cloned repository..."
+    cd "$CLONE_DIR"
+    
+    # Run the installer from the cloned repo; capture exit status so cleanup
+    # always runs even when the delegated installer fails under set -e.
+    EXIT_CODE=0
+    bash ./install.sh || EXIT_CODE=$?
+    
+    echo "🧹 Cleaning up temporary clone..."
+    cd /
+    # When DEVTOOLBOX_USE_SYMLINKS=true the delegated installer created
+    # symlinks pointing into CLONE_DIR — keep the clone so they stay valid.
+    if [[ "${DEVTOOLBOX_USE_SYMLINKS:-false}" != "true" ]]; then
+        rm -rf "$CLONE_DIR"
+    else
+        echo "📦 Clone retained for symlinks: $CLONE_DIR"
+    fi
+    exit "$EXIT_CODE"
+fi
+
+# ─── macOS detection (must be before any package manager detection) ──────────
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    echo "✅ Detected macOS"
+    echo "📂 Using macOS installer..."
+    cd "$SCRIPT_DIR/macOS-beta"
+    EXIT_CODE=0
+    ./install.sh || EXIT_CODE=$?
+    exit "$EXIT_CODE"
+fi
 
 # print_header prints the DevToolbox Cheats installer banner and version.
 print_header() {
@@ -54,9 +108,10 @@ else
     echo "     Please install manually: fzf bat zenity wl-clipboard xclip libnotify fontconfig"
 fi
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# SCRIPT_DIR is already defined at the top
 
-# ─── Deploy cheats.d (universal, all DEs) ────────────────────────────────────
+
+# install_cheats deploys the bundled cheatsheets to ~/cheats.d when the source directory exists.
 install_cheats() {
     local cheats_src="$SCRIPT_DIR/cheats.d"
 
@@ -455,7 +510,8 @@ install_cheats
 # ─── Deploy tools ─────────────────────────────────────────────────────────────
 install_tools
 
-# ─── TOC Formatting preference ────────────────────────────────────────────────
+# configure_toc_format prompts for a TOC link style, saves the selection, and applies it to the cheat sheets when supported.
+# Defaults to Obsidian after 30 seconds or in non-interactive sessions and returns a failure status if applying the format fails.
 configure_toc_format() {
     local toc_conf="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
     local toc_format="obsidian"
@@ -472,17 +528,22 @@ configure_toc_format() {
     echo ""
 
     local choice=""
-    # read with 30-second timeout; IFS= to preserve whitespace; -r to avoid backslash issues
-    if read -r -t 30 -p "  Choose [1/2] (default: 1 — Obsidian in 30s): " choice; then
-        choice="${choice%$'\r'}"
-        choice="${choice// /}"
-        case "${choice}" in
-            2|github|GitHub|gh) toc_format="github" ;;
-            *)                  toc_format="obsidian" ;;
-        esac
+    if [[ -r /dev/tty ]]; then
+        # read with 30-second timeout; IFS= to preserve whitespace; -r to avoid backslash issues
+        if read -r -t 30 -p "  Choose [1/2] (default: 1 — Obsidian in 30s): " choice < /dev/tty; then
+            choice="${choice%$'\r'}"
+            choice="${choice// /}"
+            case "${choice}" in
+                2|github|GitHub|gh) toc_format="github" ;;
+                *)                  toc_format="obsidian" ;;
+            esac
+        else
+            echo ""
+            echo "  ⏱  No input received — using default: Obsidian"
+        fi
     else
         echo ""
-        echo "  ⏱  No input received — using default: Obsidian"
+        echo "  ⏱  Non-interactive session — using default: Obsidian"
     fi
 
     echo "  ✅ TOC format set to: ${toc_format}"
@@ -557,3 +618,6 @@ fi
 
 # Always install the updater (works on any DE)
 install_updater
+
+}
+

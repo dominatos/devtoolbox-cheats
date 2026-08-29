@@ -28,3 +28,13 @@ tmp/*
 fixprompt.md
 autofixprompt.md
 CHECKLIST.md
+macOS-beta/MACOS_PORT_PLAN.md
+macOS-beta/MACOS_DEDICATED_PORT_PLAN.md
+
+macOS-beta/MACOS_INSTALL_FIXES_PLAN.md
+tofix.md
+temp/
+temp/*
+macOS-beta/debug-output/
+
+
