@@ -1,5 +1,37 @@
 #!/usr/bin/env bash
-# generate-tldr.sh - Generate native TLDR pages from DevToolbox Markdown cheatsheets
+# macOS-beta/generate-tldr.sh — standalone macOS TLDR page generator
+# This script intentionally contains its own platform logic and does not
+# source Linux runtime scripts or a compatibility shim.
+#
+# macOS-specific differences from the Linux generator:
+#   - Bash 4+ is auto-detected and re-executed (mapfile / ${var,,} support).
+#   - Front-matter BOM stripping uses perl (BSD sed cannot match UTF-8 bytes).
+#   - The awk parser avoids gawk's three-argument match() extension, which
+#     BSD awk (macOS default) does not support.
+
+# --- Auto-detect Bash 4+ and re-exec if needed ---
+if [[ "${BASH_VERSINFO[0]:-0}" -lt 4 ]]; then
+    # Loop protection: the flag is only meaningful while still on Bash < 4.
+    # A successful re-exec inherits it but exits this branch immediately.
+    if [[ -n "${_DEVTOOLBOX_BASH_REEXEC:-}" ]]; then
+        echo "ERROR: Bash 4+ required but re-exec already attempted." >&2
+        echo "Install a modern Bash first: brew install bash" >&2
+        exit 1
+    fi
+    # Verify each candidate really provides Bash 4+ before exec'ing into it.
+    for bash_path in /opt/homebrew/bin/bash /usr/local/bin/bash /opt/local/bin/bash; do
+        # shellcheck disable=SC2016  # must stay single-quoted: evaluated by the candidate bash
+        if [[ -x "$bash_path" ]] && "$bash_path" -c '[[ "${BASH_VERSINFO[0]:-0}" -ge 4 ]]' 2>/dev/null; then
+            export _DEVTOOLBOX_BASH_REEXEC=1
+            exec "$bash_path" "$0" "$@"
+        fi
+    done
+    echo "ERROR: Bash 4+ required." >&2
+    echo "  Install with Homebrew: brew install bash" >&2
+    echo "  Or with MacPorts:      sudo port install bash" >&2
+    exit 1
+fi
+
 set -euo pipefail
 
 readonly VERSION="v1.5.6"
@@ -21,9 +53,14 @@ examples_extracted=0
 skipped_pairs=0
 stale_files=0
 
+# Temporary-file guard: registered files are removed on exit, failure or signal.
+_GEN_TLDR_TMP_FILE=""
+trap '[[ -n "$_GEN_TLDR_TMP_FILE" ]] && rm -f "$_GEN_TLDR_TMP_FILE" 2>/dev/null; true' EXIT
+
+# usage prints command-line usage information, supported options, defaults, and output behavior.
 usage() {
     cat <<EOF
-generate-tldr.sh ${VERSION}
+generate-tldr.sh ${VERSION} (macOS)
 
 USAGE
     generate-tldr.sh [options]
@@ -48,31 +85,38 @@ NOTES
 EOF
 }
 
+# log_info writes an informational message to standard error.
 log_info() {
     printf '[INFO] %s\n' "$*" >&2
 }
 
+# log_warn prints a warning message to standard error.
 log_warn() {
     printf '[WARN] %s\n' "$*" >&2
 }
 
+# log_error writes an error message to standard error with an error label.
 log_error() {
     printf '[ERROR] %s\n' "$*" >&2
 }
 
+# meta_val extracts the first matching metadata value for a key from the first 80 lines of a Markdown file.
 meta_val() {
     local file="$1" key="$2"
-    sed '1s/^\xEF\xBB\xBF//' "$file" | head -n 80 \
+    # perl strips the UTF-8 BOM; BSD sed cannot express the byte sequence.
+    perl -pe 's/^\xEF\xBB\xBF//' "$file" | head -n 80 \
         | tr -d '\r' \
         | grep -i -m1 "^[[:space:]]*${key}[[:space:]]*:" \
-        | sed -E 's/^[[:space:]]*[^:]+:[[:space:]]*//'
+        | sed -E 's/^[[:space:]]*[^:]+:[[:space:]]*//' || true
 }
 
+# relative_path converts a source path to a path relative to the configured source directory.
 relative_path() {
     local path="$1"
     printf '%s\n' "${path#"$SOURCE_DIR"/}"
 }
 
+# page_name_from_source derives a lowercase TLDR page name from a Markdown source path by removing common cheatsheet suffixes and trailing separators.
 page_name_from_source() {
     local src="$1"
     local name
@@ -85,16 +129,19 @@ page_name_from_source() {
     printf '%s\n' "${name,,}"
 }
 
+# staging_page_path constructs the staging path for a TLDR page.
 staging_page_path() {
     local page_name="$1"
     printf '%s/pages/%s/%s.md\n' "$OUTPUT_DIR" "$PLATFORM_DIR" "$page_name"
 }
 
+# cache_page_path builds the cache path for a TLDR page.
 cache_page_path() {
     local page_name="$1"
     printf '%s/%s/%s.md\n' "$CACHE_DIR" "$PLATFORM_DIR" "$page_name"
 }
 
+# print_summary reports file-processing, page-generation, installation, extraction, and skipped-entry counts, including stale or missing files in check mode.
 print_summary() {
     printf 'Scanned: %d file(s)\n' "$files_scanned"
     printf 'Written: %d page(s)\n' "$files_written"
@@ -106,6 +153,7 @@ print_summary() {
     fi
 }
 
+# parse_args parses command-line options and updates the script configuration, exiting on invalid or unsupported arguments.
 parse_args() {
     while (($#)); do
         case "$1" in
@@ -126,6 +174,12 @@ parse_args() {
                 ;;
             --platform)
                 [[ $# -ge 2 ]] || { log_error "Missing value for --platform"; exit 1; }
+                # Reject empty values and path separators so the platform name
+                # can never target the staging root or escape it.
+                if [[ -z "$2" || "$2" == */* || "$2" == *\\* || "$2" == "." || "$2" == ".." ]]; then
+                    log_error "Invalid value for --platform: '$2'"
+                    exit 1
+                fi
                 PLATFORM_DIR="$2"
                 shift 2
                 ;;
@@ -166,6 +220,7 @@ parse_args() {
     done
 }
 
+# validate_paths verifies source accessibility and prepares writable output and cache parent directories.
 validate_paths() {
     [[ -d "$SOURCE_DIR" ]] || { log_error "Source directory not found: $SOURCE_DIR"; exit 1; }
     [[ -r "$SOURCE_DIR" ]] || { log_error "Source directory is not readable: $SOURCE_DIR"; exit 1; }
@@ -183,6 +238,8 @@ validate_paths() {
     fi
 }
 
+# generate_file_content converts a Markdown cheatsheet into TLDR-formatted content and reports extraction statistics.  
+# generate_file_content converts a Markdown cheatsheet into a TLDR-formatted page and reports extraction statistics.
 generate_file_content() {
     local src="$1" page_name="$2"
     local title source_uri
@@ -283,9 +340,18 @@ generate_file_content() {
                 inline_desc = ""
                 cmd = line
 
-                if (match(line, /^[[:space:]]*(.*[^[:space:]])[[:space:]]+#(.*)$/, parts)) {
-                    cmd = parts[1]
-                    inline_desc = parts[2]
+                # Portable inline-comment split (BSD awk has no 3-arg match).
+                # Mirrors the greedy Linux regex: split at the LAST " #".
+                hash_pos = 0
+                for (i = length(line) - 1; i > 0; i--) {
+                    if (substr(line, i, 2) == " #") {
+                        hash_pos = i
+                        break
+                    }
+                }
+                if (hash_pos > 0) {
+                    cmd = substr(line, 1, hash_pos - 1)
+                    inline_desc = "#" substr(line, hash_pos + 1)
                 }
 
                 cmd = trim(cmd)
@@ -339,6 +405,7 @@ generate_file_content() {
     ' "$src"
 }
 
+# merge_page_content preserves an existing TLDR page and appends newly generated examples whose commands are not already present.
 merge_page_content() {
     local existing_path="$1" generated_content="$2"
 
@@ -391,9 +458,7 @@ merge_page_content() {
             flush_block()
             printf "%s", existing
             if (append_count > 0) {
-                if (existing !~ /\n$/) {
-                    printf "\n"
-                }
+                # `existing` always ends with a newline (ORS-accumulated).
                 printf "\n<!-- Appended from DevToolbox -->\n\n"
                 for (i = 1; i <= append_count; i++) {
                     printf "%s", appended[i]
@@ -403,6 +468,7 @@ merge_page_content() {
     ' "$existing_path" <(printf '%s\n' "$generated_content")
 }
 
+# compare_content compares expected content with a file and records missing or stale output.
 compare_content() {
     local expected="$1" actual_path="$2" label="$3"
     if [[ ! -f "$actual_path" ]]; then
@@ -419,13 +485,18 @@ compare_content() {
     fi
 }
 
+# write_output_file writes generated TLDR content to the staging destination and optionally installs it in the cache.
+
+# write_output_file generates a TLDR page, writes or merges it into the staging destination, and optionally installs it in the cache, with dry-run reporting support.
 write_output_file() {
     local src="$1" page_name="$2" staging_dest="$3" cache_dest="$4"
     local tmp_file generated final_staging final_cache summary_line examples skipped
     tmp_file="$(mktemp)"
+    _GEN_TLDR_TMP_FILE="$tmp_file"
 
     if ! generated="$(generate_file_content "$src" "$page_name" 2> "$tmp_file")"; then
         rm -f "$tmp_file"
+    _GEN_TLDR_TMP_FILE=""
         log_error "Failed to generate content for $(relative_path "$src")"
         exit 1
     fi
@@ -433,6 +504,7 @@ write_output_file() {
     summary_line="$(grep '^__SUMMARY__' "$tmp_file" | tail -n1 || true)"
     if [[ -z "$summary_line" ]]; then
         rm -f "$tmp_file"
+    _GEN_TLDR_TMP_FILE=""
         log_error "Internal summary missing for $(relative_path "$src")"
         exit 1
     fi
@@ -465,6 +537,7 @@ write_output_file() {
             files_installed=$((files_installed + 1))
         fi
         rm -f "$tmp_file"
+    _GEN_TLDR_TMP_FILE=""
         return
     fi
 
@@ -490,20 +563,31 @@ write_output_file() {
     fi
 
     rm -f "$tmp_file"
+    _GEN_TLDR_TMP_FILE=""
 }
 
+# check_output_file compares generated TLDR content with existing staging and cache pages.
 check_output_file() {
     local src="$1" page_name="$2" staging_dest="$3" cache_dest="$4"
     local tmp_file generated expected_staging expected_cache summary_line examples skipped
     tmp_file="$(mktemp)"
+    _GEN_TLDR_TMP_FILE="$tmp_file"
 
     if ! generated="$(generate_file_content "$src" "$page_name" 2> "$tmp_file")"; then
         rm -f "$tmp_file"
+    _GEN_TLDR_TMP_FILE=""
         log_error "Failed to generate comparison content for $(relative_path "$src")"
         exit 1
     fi
 
     summary_line="$(grep '^__SUMMARY__' "$tmp_file" | tail -n1 || true)"
+    if [[ -z "$summary_line" ]]; then
+        rm -f "$tmp_file"
+    _GEN_TLDR_TMP_FILE=""
+        log_error "Internal summary missing for $(relative_path "$src")"
+        exit 1
+    fi
+
     examples="$(printf '%s\n' "$summary_line" | cut -f2)"
     skipped="$(printf '%s\n' "$summary_line" | cut -f3)"
     examples_extracted=$((examples_extracted + examples))
@@ -527,10 +611,19 @@ check_output_file() {
     fi
 
     rm -f "$tmp_file"
+    _GEN_TLDR_TMP_FILE=""
 }
 
+# main parses arguments, validates paths, processes all Markdown sources into TLDR pages, and reports the operation summary.
 main() {
     parse_args "$@"
+    # Re-validate the effective value: TLDR_PLATFORM_DIR (env) bypasses the
+    # --platform check in parse_args, and this must hold before any path is
+    # built or cleanup runs.
+    if [[ -z "$PLATFORM_DIR" || "$PLATFORM_DIR" == */* || "$PLATFORM_DIR" == *\\* || "$PLATFORM_DIR" == "." || "$PLATFORM_DIR" == ".." ]]; then
+        log_error "Invalid platform directory: '$PLATFORM_DIR'"
+        exit 1
+    fi
     validate_paths
 
     mapfile -t source_files < <(find -L "$SOURCE_DIR" -type f -name '*.md' | sort -f)
@@ -540,20 +633,43 @@ main() {
     staging_platform_dir="$OUTPUT_DIR/pages/$PLATFORM_DIR"
 
     if (( CHECK_ONLY == 0 && DRY_RUN == 0 )); then
+        # Guard rm -rf against empty path components.
+        [[ -n "$OUTPUT_DIR" && -n "$PLATFORM_DIR" ]] || {
+            log_error "OUTPUT_DIR and PLATFORM_DIR must be non-empty"
+            exit 1
+        }
         rm -rf "$staging_platform_dir"
         mkdir -p "$staging_platform_dir"
     fi
 
     local src page_name staging_dest cache_dest
+    local -A seen_page_names=()
+    local is_dup before_written before_installed
     for src in "${source_files[@]}"; do
         page_name="$(page_name_from_source "$src")"
+        is_dup=0
+        if [[ -n "${seen_page_names[$page_name]:-}" ]]; then
+            log_warn "Page-name collision: '$(relative_path "$src")' maps to already generated '${page_name}.md' (earlier: ${seen_page_names[$page_name]})"
+            is_dup=1
+        else
+            seen_page_names["$page_name"]="$(relative_path "$src")"
+        fi
         staging_dest="$(staging_page_path "$page_name")"
         cache_dest="$(cache_page_path "$page_name")"
+
+        before_written=$files_written
+        before_installed=$files_installed
 
         if (( CHECK_ONLY )); then
             check_output_file "$src" "$page_name" "$staging_dest" "$cache_dest"
         else
             write_output_file "$src" "$page_name" "$staging_dest" "$cache_dest"
+        fi
+
+        # Preserve overwrite behavior but count only distinct generated pages.
+        if (( is_dup )); then
+            if (( files_written > before_written )); then ((files_written--)); fi
+            if (( files_installed > before_installed )); then ((files_installed--)); fi
         fi
     done
 
