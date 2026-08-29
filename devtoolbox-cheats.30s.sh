@@ -19,7 +19,11 @@
 set -Eeuo pipefail
 trap '  exit 0' ERR
 
-VERSION="v1.5.5"
+VERSION="v1.5.6"
+
+# Platform detection, cached once: repeated `uname -s` command substitutions
+# are wasteful on every menu render.
+_DEVTOOLBOX_OS="$(uname -s 2>/dev/null || echo Unknown)"
 
 # ============= Config =============🖧
 # Directory containing markdown cheatsheets.
@@ -29,8 +33,12 @@ CHEATS_DIR="${CHEATS_DIR:-$HOME/cheats.d}"
 # Resolve symlink to ensure find works reliably
 # If CHEATS_DIR is a symbolic link, we resolve it to its absolute path.
 # This ensures that the 'find' command correctly traverses the directory structure.
-if [[ -L "$CHEATS_DIR" ]] && command -v realpath >/dev/null 2>&1; then
-  CHEATS_DIR="$(realpath "$CHEATS_DIR")"
+if [[ -L "$CHEATS_DIR" ]]; then
+  if command -v realpath >/dev/null 2>&1; then
+    CHEATS_DIR="$(realpath "$CHEATS_DIR")"
+  elif [[ "$_DEVTOOLBOX_OS" == "Darwin" ]]; then
+    CHEATS_DIR="$(cd "$(dirname "$CHEATS_DIR")" && pwd)/$(basename "$CHEATS_DIR")"
+  fi
 fi
 
 # Cache file to store indexed cheatsheet metadata.
@@ -42,6 +50,7 @@ CHEATS_REBUILD="" # Set to any non-empty value (e.g. CHEATS_REBUILD=1) to force 
 # Persistent layout preference file (XDG-compliant).
 DEVTOOLBOX_LAYOUT_CONF="${HOME}/.config/devtoolbox-cheats/layout.conf"
 DEVTOOLBOX_TOC_FORMAT_CONF="${HOME}/.config/devtoolbox-cheats/toc_format.conf"
+DEVTOOLBOX_VIEWER_CONF="${HOME}/.config/devtoolbox-cheats/viewer.conf"
 
 # === Argos drill-down navigation state (used by drilldown layout only) ===
 # Stores the currently selected category for the Argos inline drill-down menu.
@@ -86,22 +95,134 @@ declare -A GROUP_ICON=(
 )
 
 
-CHEAT_VIEWERS="${CHEAT_VIEWERS:-code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity terminal}"
+CHEAT_VIEWERS_DEFAULT="default code codium antigravity windsurf subl kate kwrite geany gedit mousepad pluma xed notepadqq zenity terminal"
+
+# get_cheat_viewer reads and outputs the configured viewer list, falling back to the built-in default.
+get_cheat_viewer() {
+  if [[ -n "${CHEAT_VIEWERS:-}" ]]; then
+    echo "$CHEAT_VIEWERS"; return
+  fi
+  if [[ -s "$DEVTOOLBOX_VIEWER_CONF" ]]; then
+    local val
+    val="$(sed 's/^[[:space:]]*//;s/[[:space:]]*$//' < "$DEVTOOLBOX_VIEWER_CONF")"
+    [[ -n "$val" ]] && { echo "$val"; return; }
+  fi
+  echo "$CHEAT_VIEWERS_DEFAULT"
+}
+
+# setCheatViewer saves the selected cheatsheet viewer list to the configured file.
+setCheatViewer() {
+  local viewer="${1:-}"
+  [[ -z "$viewer" ]] && viewer="$CHEAT_VIEWERS_DEFAULT"
+  mkdir -p "$(dirname "$DEVTOOLBOX_VIEWER_CONF")"
+  printf '%s\n' "$viewer" > "$DEVTOOLBOX_VIEWER_CONF"
+}
+
+# All known viewers with display names (order = preference).
+declare -a VIEWER_LIST=(
+  "default:System Default (xdg-open)"
+  "code:VS Code"
+  "codium:VSCodium"
+  "cursor:Cursor"
+  "windsurf:Windsurf"
+  "zed:Zed"
+  "subl:Sublime Text"
+  "atom:Atom"
+  "kate:Kate"
+  "kwrite:KWrite"
+  "geany:Geany"
+  "gedit:GNOME Text Editor"
+  "mousepad:Mousepad (XFCE)"
+  "pluma:Pluma (MATE)"
+  "xed:Xed (Cinnamon)"
+  "notepadqq:Notepadqq"
+  "nano:Nano"
+  "vim:Vim"
+  "nvim:Neovim"
+  "helix:Helix"
+  "emacs:Emacs"
+  "less:Less (pager)"
+  "cat:Cat (terminal)"
+  "zenity:Zenity (dialog)"
+  "kdialog:KDialog"
+  "yad:YAD"
+)
+
+# detect_installed_viewers checks which viewers are available and returns
+# detect_installed_viewers lists each configured viewer with its display name and installation status.
+detect_installed_viewers() {
+  local id name installed
+  for entry in "${VIEWER_LIST[@]}"; do
+    id="${entry%%:*}"
+    name="${entry#*:}"
+    installed=0
+    case "$id" in
+      default)
+        # xdg-open is always considered available on Linux
+        command -v xdg-open >/dev/null 2>&1 && installed=1
+        ;;
+      cat|less|nano|vim|nvim|helix|emacs)
+        command -v "$id" >/dev/null 2>&1 && installed=1
+        ;;
+      *)
+        # Check CLI first, then .desktop files for GUI apps
+        if command -v "$id" >/dev/null 2>&1; then
+          installed=1
+        elif [[ -d "/usr/share/applications" ]]; then
+          # Map viewer IDs to their actual .desktop file names
+          local desk_pattern
+          case "$id" in
+            code)       desk_pattern="code\.desktop" ;;
+            codium)     desk_pattern="codium\.desktop" ;;
+            cursor)     desk_pattern="cursor\.desktop" ;;
+            windsurf)   desk_pattern="windsurf\.desktop" ;;
+            subl)       desk_pattern="sublime_text\.desktop" ;;
+            atom)       desk_pattern="atom\.desktop" ;;
+            *)          desk_pattern="${id}\\.desktop" ;;
+          esac
+          local desk_file
+          desk_file="$(find /usr/share/applications/ -maxdepth 1 -name "$desk_pattern" 2>/dev/null | head -1)"
+          [[ -z "$desk_file" ]] && desk_file="$(grep -rl -m1 "^Exec=.*/${id}[[:space:]]\|^Exec=.*/${id}$\|^Exec=${id}[[:space:]]\|^Exec=${id}$" /usr/share/applications/ 2>/dev/null | head -1 || true)"
+          [[ -n "$desk_file" ]] && installed=1
+        fi
+        ;;
+    esac
+    printf '%s|%s|%d\n' "$id" "$name" "$installed"
+  done
+}
+
+CHEAT_VIEWERS="$(get_cheat_viewer)"
 export PATH="/usr/local/bin:/usr/bin:$PATH"
-SCRIPT_PATH="$(realpath -s "$0")"
+if command -v realpath >/dev/null 2>&1; then
+  SCRIPT_PATH="$(realpath -s "$0")"
+else
+  SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
+fi
 
 # ============= Clipboard =============
 # Detect available clipboard utility (Wayland's wl-copy or X11's xclip).
-if command -v wl-copy >/dev/null 2>&1 && command -v wl-paste >/dev/null 2>&1; then
-  CLIPBOARD_COPY="wl-copy"
-elif command -v xclip >/dev/null 2>&1; then
-  CLIPBOARD_COPY="xclip -selection clipboard"
-else
-  CLIPBOARD_COPY=""
+# Skip if already set by wrapper (e.g. macOS pbcopy).
+if [[ -z "${CLIPBOARD_COPY:-}" ]]; then
+  if command -v wl-copy >/dev/null 2>&1 && command -v wl-paste >/dev/null 2>&1; then
+    CLIPBOARD_COPY="wl-copy"
+  elif command -v xclip >/dev/null 2>&1; then
+    CLIPBOARD_COPY="xclip -selection clipboard"
+  else
+    CLIPBOARD_COPY=""
+  fi
 fi
 
 # copy copies the provided text to the configured clipboard when clipboard support is available.
 copy() { [[ -n "$CLIPBOARD_COPY" ]] && eval "$CLIPBOARD_COPY"; }
+
+# open_url opens a URL in the default browser using the platform-appropriate command.
+open_url() {
+  if [[ "$_DEVTOOLBOX_OS" == "Darwin" ]]; then
+    open "$1"
+  else
+    xdg-open "$1" 2>/dev/null || true
+  fi
+}
 
 # ============= Cross-DE Abstraction Layer =============
 # Provides DE-agnostic functions for notifications, dialogs, and terminals.
@@ -202,6 +323,16 @@ notify() {
   local title="$1" msg="$2"
   local de
   de="$(detect_de)"
+  
+  # macOS: use osascript (values passed via argv so quotes cannot inject AppleScript)
+  if [[ "$_DEVTOOLBOX_OS" == "Darwin" ]] && command -v osascript >/dev/null 2>&1; then
+    osascript - "$title" "$msg" <<'APPLESCRIPT' 2>/dev/null || true
+on run argv
+    display notification (item 2 of argv) with title (item 1 of argv)
+end run
+APPLESCRIPT
+    return
+  fi
   
   case "$de" in
     kde)
@@ -574,7 +705,7 @@ index_cheats() {
 # from multiple functions within the same shell invocation.
 _CACHE_CHECKED=0
 
-# Ensures the cache exists and is up-to-date.
+# ensure_cache ensures the cheatsheet cache exists and is current, rebuilding it when forced, missing, empty, or older than a source file.
 ensure_cache() {
   # Skip all checks if already verified in this process invocation
   (( _CACHE_CHECKED )) && return
@@ -585,10 +716,18 @@ ensure_cache() {
   
   # Check if any cheatsheet file is newer than the cache file
   local latest_src mtime_cache
-  latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 || true)"
+  if [[ "$_DEVTOOLBOX_OS" == "Darwin" ]]; then
+    latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -exec stat -f '%m' {} + 2>/dev/null | sort -nr | head -n1 || true)"
+  else
+    latest_src="$(find -L "$CHEATS_DIR" -type f -name '*.md' -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 || true)"
+  fi
   [[ -z "$latest_src" ]] && { index_cheats; _CACHE_CHECKED=1; return; }
   
-  mtime_cache="$(stat -c '%Y' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
+  if [[ "$_DEVTOOLBOX_OS" == "Darwin" ]]; then
+    mtime_cache="$(stat -f '%m' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
+  else
+    mtime_cache="$(stat -c '%Y' "$CHEATS_CACHE" 2>/dev/null || echo 0)"
+  fi
   local latest_int="${latest_src%.*}"
   
   # If source file is newer, rebuild index
@@ -734,11 +873,15 @@ argos_clear_category() {
 
 # Read current category from state file, respecting ARGOS_CAT_TTL.
 # Prints the category name if the state is still valid; empty string if expired or missing.
-# Auto-deletes the state file when TTL is exceeded.
+# argos_get_category returns the persisted category when it is within the configured TTL, or an empty value after removing expired state.
 argos_get_category() {
   [[ -f "$ARGOS_CAT_STATE" ]] || { printf ''; return; }
   local mtime now age
-  mtime="$(stat -c '%Y' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  if [[ "$_DEVTOOLBOX_OS" == "Darwin" ]]; then
+    mtime="$(stat -f '%m' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  else
+    mtime="$(stat -c '%Y' "$ARGOS_CAT_STATE" 2>/dev/null || echo 0)"
+  fi
   now="$(date +%s)"
   age=$(( now - mtime ))
   if (( age > ARGOS_CAT_TTL )); then
@@ -757,7 +900,11 @@ argos_get_category() {
 argos_category_lines() {
   local grp="$1"
   local hash_sum cat_cache line
-  hash_sum="$(printf '%s' "$grp" | sha256sum | awk '{print $1}')"
+  if [[ "$_DEVTOOLBOX_OS" == "Darwin" ]]; then
+    hash_sum="$(printf '%s' "$grp" | shasum -a 256 | awk '{print $1}')"
+  else
+    hash_sum="$(printf '%s' "$grp" | sha256sum | awk '{print $1}')"
+  fi
   cat_cache="${ARGOS_CAT_CACHE_DIR}/cat_${hash_sum}.lines"
 
   mkdir -p "$ARGOS_CAT_CACHE_DIR"
@@ -793,7 +940,7 @@ argos_category_lines() {
 # ============= Actions ============
 
 # Action: Show the cheatsheet content.
-# Param2: Base64 encoded file path.
+# showCheat opens a cheatsheet file from a Base64-encoded path, copies its content to the clipboard when configured, and displays it using the preferred available viewer.
 showCheat() {
   local enc="${2:-}" file="" title="" icon_meta="" body=""
 
@@ -844,18 +991,22 @@ showCheat() {
   # Try to open with preferred viewer
   for viewer in $CHEAT_VIEWERS; do
     case "$viewer" in
-      code)
-        # Try VS Code; return immediately to prevent fallthrough to other viewers
-        if command -v code >/dev/null 2>&1; then
-          code --reuse-window "$file" 2>/dev/null
-          return 0
+      default)
+        # System default: xdg-open on Linux
+        if command -v xdg-open >/dev/null 2>&1; then
+          xdg-open "$file" 2>/dev/null && return 0
         fi
         ;;
-      cat)
-        command -v cat >/dev/null 2>&1 && cat "$file" && return 0
+      code)
+        if command -v code >/dev/null 2>&1; then
+          code --reuse-window "$file" 2>/dev/null && return 0
+        fi
         ;;
-      less)
-        command -v less >/dev/null 2>&1 && less "$file" && return 0
+      cat|less|nano|vim|nvim|helix|emacs)
+        # Terminal-based viewers: open in terminal emulator
+        local escaped_file
+        printf -v escaped_file '%q' "$file"
+        run_in_terminal "$viewer $escaped_file" "$popup_title" && return 0
         ;;
       zenity)
         command -v zenity >/dev/null 2>&1 && popup "$popup_title" "$body" && return 0
@@ -874,6 +1025,11 @@ showCheat() {
         ;;
     esac
   done
+
+  # Fallback: open in terminal if no viewer succeeded
+  local escaped_file
+  printf -v escaped_file '%q' "$file"
+  run_in_terminal "cat $escaped_file" "$popup_title" 2>/dev/null || true
 }
 
 
@@ -1032,12 +1188,13 @@ fzfSearch() {
   fi
 }
 
-# showSettings displays the current Dev Toolbox version, environment, paths, layout, and table-of-contents format.
+# showSettings displays the current Dev Toolbox version, environment, paths, layout, table-of-contents format, and cheatsheet viewer.
 showSettings() {
   local layout; layout="$(get_layout)"
   local toc_fmt; toc_fmt="$(get_toc_format)"
+  local viewer; viewer="$(get_cheat_viewer)"
   local msg
-  printf -v msg '%b' "Version: $VERSION\nDetected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF\nTOC Format: $toc_fmt (obsidian|github)"
+  printf -v msg '%b' "Version: $VERSION\nDetected DE: $(detect_de)\nDialog tool: $(detect_dialog_tool)\nTerminal: $(default_terminal)\n\nConfiguration:\nDEVTOOLBOX_DE=$DEVTOOLBOX_DE (set to override DE)\nCHEATS_DIR=$CHEATS_DIR\nCHEATS_CACHE=$CHEATS_CACHE\nLayout: $layout (standard|zenity|drilldown)\nLayout config: $DEVTOOLBOX_LAYOUT_CONF\nTOC Format: $toc_fmt (obsidian|github)\nViewer: $viewer"
   info_dialog "Dev Toolbox Settings" "$msg"
 }
 
@@ -1064,6 +1221,51 @@ settingsTocFormat() {
   applyTocFormat
 }
 
+# settingsViewer lets the user select a preferred Markdown viewer and saves the selection.
+settingsViewer() {
+  local current; current="$(get_cheat_viewer)"
+
+  # Build list with installed status
+  local items=()
+  local ids=()
+  while IFS='|' read -r id name installed; do
+    ids+=("$id")
+    if [[ "$installed" -eq 1 ]]; then
+      items+=("✅ $name ($id)")
+    else
+      items+=("❌ $name ($id) — not installed")
+    fi
+  done < <(detect_installed_viewers)
+
+  items+=("── Custom ──")
+  items+=("✏️ Custom viewer...")
+
+  local choice
+  choice=$(list_dialog "👁️ Viewer  [current: ${current%% *}]$( [[ "$current" == *"default"* ]] && echo ' (system default)' || echo " ($current)" )" "Select preferred viewer" \
+    "${items[@]}") || return 0
+
+  case "$choice" in
+    "✏️ Custom viewer...")
+      local input
+      input=$(input_dialog "Custom viewer" "Space-separated app names, e.g.: code cursor default") || return 0
+      [[ -z "$input" ]] && return 0
+      setCheatViewer "$input"
+      ;;
+    "── Custom ──")
+      return 0
+      ;;
+    *)
+      # Extract id from "✅ Name (id)" or "❌ Name (id) — not installed"
+      local selected_id
+      selected_id="$(printf '%s' "$choice" | sed 's/.*(\(.*\)).*/\1/')"
+      [[ -n "$selected_id" ]] && setCheatViewer "$selected_id"
+      ;;
+  esac
+
+  # Refresh runtime variable so the new choice takes effect immediately
+  CHEAT_VIEWERS="$(get_cheat_viewer)"
+}
+
 # ============= Compact menu dialog ============
 # compactMenu displays a compact menu for searching, browsing, exporting, configuring, and selecting cheatsheets.
 compactMenu() {
@@ -1087,6 +1289,7 @@ compactMenu() {
     "🐙 GitHub Repository" \
     "⚙️ Settings" \
     "📝 TOC Format" \
+    "👁️ Viewer" \
     "── Categories ──" \
     "${cat_items[@]}") || exit 0
   case "$choice" in
@@ -1097,14 +1300,18 @@ compactMenu() {
         ;;
     "📚 Browse all cheats") browseAllCheatsFS ;;
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
-    "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
-    "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
+    "🌐 Online Version") open_url "https://cheats.alteron.net/" &>/dev/null ;;
+    "🐙 GitHub Repository") open_url "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
         showSettings
         compactMenu
         ;;
     "📝 TOC Format")
         settingsTocFormat
+        compactMenu
+        ;;
+    "👁️ Viewer")
+        settingsViewer
         compactMenu
         ;;
     "── Categories ──") compactMenu ;;  # Divider — no-op, re-show menu
@@ -1139,6 +1346,7 @@ standaloneMenu() {
     "🐙 GitHub Repository" \
     "⚙️ Settings" \
     "📝 TOC Format" \
+    "👁️ Viewer" \
     "── Categories ──" \
     "${cat_items[@]}") || exit 0
 
@@ -1154,14 +1362,18 @@ standaloneMenu() {
         ;;
     "📚 Browse all cheats") browseAllCheatsFS ;;
     "📥 Export all (MD/PDF)") exportAllCheatsFS ;;
-    "🌐 Online Version") xdg-open "https://cheats.alteron.net/" &>/dev/null ;;
-    "🐙 GitHub Repository") xdg-open "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
+    "🌐 Online Version") open_url "https://cheats.alteron.net/" &>/dev/null ;;
+    "🐙 GitHub Repository") open_url "https://github.com/dominatos/devtoolbox-cheats/" &>/dev/null ;;
     "⚙️ Settings")
         showSettings
         standaloneMenu
         ;;
     "📝 TOC Format")
         settingsTocFormat
+        standaloneMenu
+        ;;
+    "👁️ Viewer")
+        settingsViewer
         standaloneMenu
         ;;
     "── Categories ──") standaloneMenu ;;  # Divider — no-op, re-show menu
@@ -1194,13 +1406,13 @@ _render_functions_submenu() {
   esac
 
   echo "🛠 DevToolbox Functions"
-  echo "-- 🌐 Online Version       | bash='xdg-open' param1='https://cheats.alteron.net/' terminal=false"
+  echo "-- 🌐 Online Version       | bash='$SCRIPT_PATH' param1=open_url param2='https://cheats.alteron.net/' terminal=false"
   echo "-- ⚙️ Open compact menu    | bash='$SCRIPT_PATH' param1=compactMenu terminal=false"
   echo "-- ⚙️ Settings             | bash='$SCRIPT_PATH' param1=showSettings terminal=false"
   echo "-- 🔎 Search cheats        | bash='$SCRIPT_PATH' param1=searchCheatsFS terminal=false"
   echo "-- 🚀 FZF Search Commands  | bash='$SCRIPT_PATH' param1=fzfSearch terminal=true"
   echo "-- 📥 Export all (MD/PDF)  | bash='$SCRIPT_PATH' param1=exportAllCheatsFS terminal=false"
-  echo "-- 🐙 GitHub Repository   | bash='xdg-open' param1='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
+  echo "-- 🐙 GitHub Repository   | bash='$SCRIPT_PATH' param1=open_url param2='https://github.com/dominatos/devtoolbox-cheats/' terminal=false"
   echo "-- 🐙 Edit this script   | bash='code' param1='$SCRIPT_PATH' terminal=false"
   echo "-- 🐙 Go to Argos folder | bash='doublecmd' param1='$HOME/.config/argos/' terminal=false"
   echo "-- ---"
@@ -1218,6 +1430,11 @@ _render_functions_submenu() {
   echo "-- TOC Formatting"
   echo "-- -- ${check_obs}Obsidian (Exact, %20) | bash='$SCRIPT_PATH' param1=setTocFormat param2=obsidian terminal=false refresh=true"
   echo "-- -- ${check_gh}GitHub (Slugs)        | bash='$SCRIPT_PATH' param1=setTocFormat param2=github terminal=false refresh=true"
+
+  local viewer
+  viewer="$(get_cheat_viewer)"
+  echo "-- Viewer (${viewer%% *})"
+  echo "-- -- ⚙️ Change viewer...   | bash='$SCRIPT_PATH' param1=settingsViewer terminal=false refresh=true"
   echo "---"
 }
 
@@ -1348,6 +1565,14 @@ case "${1:-}" in
     applyTocFormat
     exit 0
     ;;
+  setCheatViewer)
+    setCheatViewer "${2:-}"
+    exit 0
+    ;;
+  settingsViewer)
+    settingsViewer
+    exit 0
+    ;;
   applyTocFormat)
     applyTocFormat
     exit 0
@@ -1362,6 +1587,11 @@ case "${1:-}" in
   clearCategory)
     # Drill-down: clear state file so next render returns to category list.
     argos_clear_category
+    exit 0
+    ;;
+  open_url)
+    # Menu dispatch convention: $1 = action name, $2 = destination URL.
+    open_url "${2:-}"
     exit 0
     ;;
 esac

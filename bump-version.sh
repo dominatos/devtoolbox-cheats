@@ -21,9 +21,15 @@ echo "Syncing version: $RAW_VERSION"
 escaped_v_version=$(printf '%s\n' "$V_VERSION" | sed -e 's/[\/&]/\\&/g')
 escaped_raw_version=$(printf '%s\n' "$RAW_VERSION" | sed -e 's/[\/&]/\\&/g')
 
-# 1. Update Bash Scripts
+# 1. Update Bash Scripts (root level + macOS-beta standalone scripts)
 echo "Updating shell scripts..."
-find "$ROOT_DIR" -maxdepth 1 -name "*.sh" -type f | while read -r file; do
+{
+    find "$ROOT_DIR" -maxdepth 1 -name "*.sh" -type f
+    # Only skip when the directory itself is absent; real find errors propagate.
+    if [[ -d "$ROOT_DIR/macOS-beta" ]]; then
+        find "$ROOT_DIR/macOS-beta" -maxdepth 1 -name "*.sh" -type f
+    fi
+} | while read -r file; do
     if grep -qE "^(readonly )?VERSION=" "$file"; then
         echo "  -> $(basename "$file")"
         sed -i -E "s/^(readonly )?VERSION=\".*\"/\1VERSION=\"$escaped_v_version\"/" "$file"
