@@ -194,7 +194,7 @@ else
     fi
     if [[ "$choice" == [yY]* ]]; then
         log_info "Installing Homebrew..."
-        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         
         # Export PATH for the rest of the script
         if [[ "$(uname -m)" == "arm64" ]]; then
