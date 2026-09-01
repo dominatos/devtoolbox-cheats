@@ -184,14 +184,41 @@ elif [[ "$HAS_PORT" == true ]]; then
     PKG_MGR="port"
     log_info "Using MacPorts: $(port version | head -n1)"
 else
+    echo ""
     log_error "No package manager found (Homebrew or MacPorts required)."
-    echo ""
-    echo "  Install Homebrew:"
-    echo "    /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
-    echo ""
-    echo "  Or install MacPorts:"
-    echo "    https://www.macports.org/install.php"
-    exit 1
+    printf "  Would you like to install Homebrew now? [y/N]: "
+    if ! read -r choice < /dev/tty 2>/dev/null; then
+        if ! read -r choice 2>/dev/null; then
+            choice=""
+        fi
+    fi
+    if [[ "$choice" == [yY]* ]]; then
+        log_info "Installing Homebrew..."
+        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        
+        # Export PATH for the rest of the script
+        if [[ "$(uname -m)" == "arm64" ]]; then
+            export PATH="/opt/homebrew/bin:$PATH"
+        else
+            export PATH="/usr/local/bin:$PATH"
+        fi
+        
+        if command -v brew >/dev/null 2>&1; then
+            PKG_MGR="brew"
+            log_info "Homebrew installed successfully: $(brew --version | head -n1)"
+        else
+            log_error "Homebrew installation failed. brew command not found."
+            exit 1
+        fi
+    else
+        echo ""
+        echo "  Install Homebrew manually:"
+        echo "    /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+        echo ""
+        echo "  Or install MacPorts:"
+        echo "    https://www.macports.org/install.php"
+        exit 1
+    fi
 fi
 
 log_info "Selected package manager: ${C_CYAN}$PKG_MGR${C_RESET}"
@@ -393,6 +420,34 @@ else
         log_warn "macOS ${MACOS_MAJOR} detected. SwiftBar requires macOS 12+."
         log_info "Defaulting to xbar for this macOS version."
         APP_CHOICE="1"
+    fi
+fi
+
+if [[ "$APP_CHOICE" == "2" || "$APP_CHOICE" == "3" ]]; then
+    if [[ ! -d "/Applications/SwiftBar.app" && ! -d "$HOME/Applications/SwiftBar.app" ]]; then
+        echo ""
+        log_warn "SwiftBar is not installed."
+        if [[ "$PKG_MGR" == "brew" ]]; then
+            printf "  Would you like to install SwiftBar via Homebrew? [y/N]: "
+            if ! read -r choice < /dev/tty 2>/dev/null; then
+                if ! read -r choice 2>/dev/null; then
+                    choice=""
+                fi
+            fi
+            if [[ "$choice" == [yY]* ]]; then
+                log_info "Installing SwiftBar..."
+                if brew install --cask swiftbar; then
+                    log_info "SwiftBar installed successfully."
+                else
+                    log_warn "Failed to install SwiftBar. You may need to install it manually."
+                fi
+            else
+                log_info "Skipping SwiftBar installation."
+            fi
+        else
+            log_warn "Please install SwiftBar manually from https://swiftbar.app"
+        fi
+        echo ""
     fi
 fi
 

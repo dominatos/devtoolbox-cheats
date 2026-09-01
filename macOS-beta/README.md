@@ -23,8 +23,9 @@ The installer prints a Required/Optional plan before installing and never
 aborts because an optional package failed.
 
 **Package Manager Install:**
-- Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
-- MacPorts: https://www.macports.org/install.php
+- The `install.sh` script will prompt you to install Homebrew automatically if no package manager is found.
+- Manual Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- Manual MacPorts: https://www.macports.org/install.php
 
 ## Quick Install
 
@@ -35,9 +36,11 @@ From the repository root:
 ```
 
 This will:
-1. Detect Homebrew or MacPorts and install dependencies
-2. Deploy cheatsheets to `~/cheats.d/`
-3. Set up menu bar plugins for SwiftBar (`devtoolbox-cheats.30s.sh`, `devtools.1m.sh`)
+1. Detect Homebrew or MacPorts (and offer to install Homebrew if missing).
+2. Install required dependencies.
+3. Deploy cheatsheets to `~/cheats.d/`.
+4. Check for SwiftBar and offer to install it via Homebrew if missing.
+5. Set up menu bar plugins for SwiftBar (`devtoolbox-cheats.30s.sh`, `devtools.1m.sh`)
 4. Install the `cheats-updater` and `generate-tldr` CLI commands to `~/.local/bin`
 5. Configure daily auto-updates via launchd
 
