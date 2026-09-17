@@ -1,7 +1,6 @@
-# 📒 DevToolbox Cheats — Linux, macOS, and Windows Cheatsheet Manager
-
-**Cross-platform cheatsheet manager** for Linux, macOS, and Windows, with native support for GNOME, KDE, XFCE, SwiftBar, and more. Access your Markdown command references instantly from your panel or menu.
-
+<p align="center">
+  <img src="./docs/img/hero.svg" width="100%" alt="DevToolbox Cheats: Universal cross-desktop cheatsheet manager for Linux, macOS, and Windows">
+</p>
 
 ![GNOME](https://img.shields.io/badge/GNOME-Argos-informational)
 ![KDE](https://img.shields.io/badge/KDE-Plasma_5%2F6-informational)
@@ -12,24 +11,6 @@
 [![Online Version](https://img.shields.io/badge/Online%20Version-cheats.alteron.net-blue)](https://cheats.alteron.net/)
 
 > 🌐 **Online version available at [cheats.alteron.net](https://cheats.alteron.net/)**
-
----
-## Overview
-> [!IMPORTANT]
-> **Batteries Included!** This repository is not just a menu engine; it comes pre-packed with a comprehensive collection of over **100+ production-ready cheatsheets** for sysadmins, DevOps, and developers.
-
----
-
-
-If you like this project, consider supporting me on [Buy Me a Coffee](https://www.buymeacoffee.com/dominatos) ☕️
-
----
-
-### 🚀 Quick Install (Linux & macOS)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/install.sh -o /tmp/devtoolbox-install.sh && bash /tmp/devtoolbox-install.sh
-```
 
 ---
 
@@ -51,10 +32,22 @@ curl -fsSL https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/in
 <img src="docs/img/cat-zenity.png" alt="Sub menu">
 </details>
 <details>
+<summary>Screenshots from macOS (SwiftBar, Beta)</summary>
+<img src="docs/img/macos-menu.jpg" alt="macOS Menu">
+<img src="docs/img/macos-devtools.jpg" alt="macOS Devtools">
+</details>
+<details>
 <summary>Screenshots from Windows (Native Tray App)</summary>
 <img src="Windows-beta/screenshot-windows.jpg" alt="Windows Tray Menu">
 </details>
 
+---
+
+## Overview
+> [!IMPORTANT]
+> **Batteries Included!** This repository is not just a menu engine; it comes pre-packed with a comprehensive collection of over **100+ production-ready cheatsheets** for sysadmins, DevOps, and developers.
+
+If you like this project, consider supporting me on [Buy Me a Coffee](https://www.buymeacoffee.com/dominatos) ☕️
 
 ## ✨ Features
 
@@ -123,6 +116,13 @@ tldr openssl
 - **Custom Icons** - Emoji or system icons per category/cheat
 - **Safe Install** - No crashes, works in VMs
 
+---
+
+### 🚀 Quick Install (Linux & macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/install.sh -o /tmp/devtoolbox-install.sh && bash /tmp/devtoolbox-install.sh
+```
 ---
 
 ## 📦 Installation
