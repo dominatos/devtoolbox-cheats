@@ -43,6 +43,14 @@
 
 ---
 
+### 🚀 Quick Install (Linux & macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/install.sh -o /tmp/devtoolbox-install.sh && bash /tmp/devtoolbox-install.sh
+```
+
+---
+
 ## Overview
 > [!IMPORTANT]
 > **Batteries Included!** This repository is not just a menu engine; it comes pre-packed with a comprehensive collection of over **100+ production-ready cheatsheets** for sysadmins, DevOps, and developers.
@@ -116,13 +124,6 @@ tldr openssl
 - **Custom Icons** - Emoji or system icons per category/cheat
 - **Safe Install** - No crashes, works in VMs
 
----
-
-### 🚀 Quick Install (Linux & macOS)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dominatos/devtoolbox-cheats/main/install.sh -o /tmp/devtoolbox-install.sh && bash /tmp/devtoolbox-install.sh
-```
 ---
 
 ## 📦 Installation
