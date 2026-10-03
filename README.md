@@ -1142,6 +1142,8 @@ Please see [CHANGELOG.md](CHANGELOG.md) for release history.
 - 🔧 **Infrastructure Management**
 - 🪪 **Identity Management**
 - 🖥️ **Virtualization**
+- ✉️ **Mail**
+- 🤖 **AI**
 
 
 ## Included cheats (full list)
@@ -1175,6 +1177,7 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [☁️ OpenStack](cheats.d/cloud/openstackcheatsheet.md)
 
 ### Databases
+- [📊 ClickHouse — Columnar OLAP](cheats.d/databases/clickhousecheatsheet.md)
 - [🗃️ Memcached — Sysadmin Cheatsheet](cheats.d/databases/memcached-sysadmin.md)
 - [🍃 MongoDB — Cheatsheet](cheats.d/databases/mongodbcheatsheet.md)
 - [🗃️ MySQL/MariaDB](cheats.d/databases/mysqlcheatsheet.md)
@@ -1187,6 +1190,8 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🗃️ SQLite](cheats.d/databases/sqlitecheatsheet.md)
 - [🐬 MySQL Galera Cluster](cheats.d/databases/mysqlgaleracheatsheet.md)
 - [🗄️ PMM — Disaster Recovery](cheats.d/databases/PMM_Disaster_Recovery_Cheat_Sheet.md)
+- [📊 ClickHouse — Columnar OLAP](cheats.d/databases/clickhousecheatsheet.md)
+- [🔀 PgBouncer — PostgreSQL Pooler](cheats.d/databases/pgbouncercheatsheet.md)
 
 ### Dev & Tools
 - [🛠️ Ansible](cheats.d/dev-tools/ansiblecheatsheet.md)
@@ -1222,6 +1227,11 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [☸️ Kustomize — kustomization.yaml](cheats.d/kubernetes-containers/kubectlkustomizecheatsheet.md)
 - [☸️ OpenShift (OCP)](cheats.d/kubernetes-containers/openshiftcheatsheet.md)
 - [🫙 Podman / nerdctl — Commands](cheats.d/kubernetes-containers/podmannerdctlcheatsheet.md)
+- [🐳 containerd — Container Runtime](cheats.d/kubernetes-containers/containerdcheatsheet.md)
+- [⚙️ runc — Container Runtime CLI](cheats.d/kubernetes-containers/runccheatsheet.md)
+- [🔄 Argo CD — GitOps Delivery](cheats.d/kubernetes-containers/argocdcheatsheet.md)
+- [🌿 Flux — GitOps Toolkit](cheats.d/kubernetes-containers/fluxcheatsheet.md)
+- [🗄️ etcd — Distributed KV Store](cheats.d/kubernetes-containers/etcdcheatsheet.md)
 
 ### Infrastructure Management
 - [🤖 AWX (Ansible Tower)](cheats.d/infrastructure-mgmt/awxcheatsheet.md)
@@ -1231,6 +1241,9 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 ### Identity Management
 - [🪪 adcli (Active Directory CLI)](cheats.d/identity-management/adclicheatsheet.md)
 - [🪪 Keycloak — Identity Management](cheats.d/identity-management/keycloak.md)
+- [📇 OpenLDAP — LDAP Directory](cheats.d/identity-management/openldapcheatsheet.md)
+- [🪪 FreeIPA — Integrated Identity](cheats.d/identity-management/freeipacheatsheet.md)
+- [🪪 SSSD — System Security Services](cheats.d/identity-management/sssdcheatsheet.md)
 
 ### Monitoring
 - [🧠 Cerebro (Elasticsearch Admin)](cheats.d/monitoring/cerebrocheatsheet.md)
@@ -1242,6 +1255,11 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [📈 Telegraf](cheats.d/monitoring/telegrafcheatsheet.md)
 - [📈 VictoriaMetrics](cheats.d/monitoring/victoriametricscheatsheet.md)
 - [📈 Zabbix Server](cheats.d/monitoring/zabbixcheatsheet.md)
+- [📈 Prometheus — Metrics & PromQL](cheats.d/monitoring/prometheuscheatsheet.md)
+- [📊 Grafana — Dashboards](cheats.d/monitoring/grafanacheatsheet.md)
+- [🔍 Loki — Log Aggregation](cheats.d/monitoring/lokicheatsheet.md)
+- [📤 Promtail — Log Shipper](cheats.d/monitoring/promtailcheatsheet.md)
+- [📊 Vector — Data Pipeline](cheats.d/monitoring/vectorcheatsheet.md)
 
 ### Network
 - [🔁 autossh — Resilient tunnels](cheats.d/network/autosshcheatsheet.md)
@@ -1269,6 +1287,8 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [SSH — Commands & Config](cheats.d/network/sshcheatsheet.md)
 - [🧱 UFW — Commands](cheats.d/network/ufwcheatsheet.md)
 - [WireGuard — Quickstart](cheats.d/network/wireguardcheatsheet.md)
+- [🌐 OpenVPN — VPN Tunnel](cheats.d/network/openvpncheatsheet.md)
+- [📂 vsftpd — FTP Server](cheats.d/network/vsftpdcheatsheet.md)
 
 ### Package Managers
 - [📦 Package Managers](cheats.d/package-managers/pkgmanagerscheatsheet.md)
@@ -1288,18 +1308,28 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🔐 htpasswd — Basic Auth](cheats.d/security-crypto/htpasswdcheatsheet.md)
 - [🔐 OpenSSL — Commands](cheats.d/security-crypto/opensslcheatsheet.md)
 - [🔐 Git Secret Leak Detection](cheats.d/security-crypto/gitleakscheatsheet.md)
+- [🛡️ Polkit (PolicyKit) — Privilege Management](cheats.d/security-crypto/polkicheatsheet.md)
 - [🔑 SSH Keys & Access Management](cheats.d/security-crypto/ssh_keys_cheatsheet.md)
 - [🔐 OpenSSL — CSR with SAN](cheats.d/security-crypto/opensslsancsrcheatsheet.md)
 - [🔐 pass — Password Store](cheats.d/security-crypto/passcheatsheet.md)
 - [🍯 SSH Honeypot & CrowdSec](cheats.d/security-crypto/ssh_honeypot_crowdsec.md)
+- [🔐 Certbot — Let's Encrypt](cheats.d/security-crypto/certbotcheatsheet.md)
+- [🔐 sudoers / PAM — Privilege & Auth](cheats.d/security-crypto/sudoerspamcheatsheet.md)
+- [🛡️ auditd — Linux Audit Framework](cheats.d/security-crypto/auditdcheatsheet.md)
 
 ### Storage & FS
 - [💿 ACL — Access Control Lists](cheats.d/storage-fs/aclcheatsheet.md)
 - [💿 Chroot — System Recovery](cheats.d/storage-fs/chrootcheatsheet.md)
 - [💿 Grow Disk (Cloud EXT4/XFS)](cheats.d/storage-fs/diskgrowcheatsheet.md)
 - [💿 LVM — Basics](cheats.d/storage-fs/lvmcheatsheet.md)
+- [📁 NFS — Network File System](cheats.d/storage-fs/nfscheatsheet.md)
 - [💿 Partition & Mount](cheats.d/storage-fs/partitionmountcheatsheet.md)
 - [💿 SMART & mdadm RAID](cheats.d/storage-fs/smartraidcheatsheet.md)
+- [🔒 LUKS — Full-Disk Encryption](cheats.d/storage-fs/luksencryptsetupcheatsheet.md)
+- [📁 Samba — SMB/CIFS Shares](cheats.d/storage-fs/sambacheatsheet.md)
+- [💾 ZFS — Advanced Filesystem](cheats.d/storage-fs/zfscheatsheet.md)
+- [🐙 Ceph — Distributed Storage](cheats.d/storage-fs/cephcheatsheet.md)
+- [📦 GlusterFS — Scale-out FS](cheats.d/storage-fs/glusterfscheatsheet.md)
 
 ### System & Logs
 - [⏰ cron / at — Commands](cheats.d/system-logs/cronatcheatsheet.md)
@@ -1316,7 +1346,12 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🛠 systemctl — Commands](cheats.d/system-logs/systemctlcheatsheet.md)
 - [🕰️ systemd timers — Basics](cheats.d/system-logs/systemdtimerscheatsheet.md)
 - [🧩 systemd unit — template](cheats.d/system-logs/systemdunittemplate.md)
+- [⚙️ sysctl — Kernel Parameters](cheats.d/system-logs/sysctlcheatsheet.md)
 - [💾 Swap — Management](cheats.d/system-logs/swap_cheatsheet_pro.md)
+- [⏰ chrony / NTP — Time Sync](cheats.d/system-logs/chronyntpcheatsheet.md)
+- [📊 systemd-analyze — Boot Analysis](cheats.d/system-logs/systemdanalyzecheatsheet.md)
+- [📦 supervisord — Process Manager](cheats.d/system-logs/supervisordcheatsheet.md)
+- [⚡ runit — Init & Process Manager](cheats.d/system-logs/runitcheatsheet.md)
 
 ### Text & Parsing
 - [🦾 AWK — Commands](cheats.d/text-parsing/awkcheatsheet.md)
@@ -1341,9 +1376,28 @@ This repository includes ready-to-use cheatsheets for popular tools, organized b
 - [🌐 WebLogic Server](cheats.d/web-servers/weblogiccheatsheet.md)
 - [🐱 Tomcat — Cheatsheet](cheats.d/web-servers/tomcatcheatsheet.md)
 - [🦅 WildFly (JBoss)](cheats.d/web-servers/wildflycheatsheet.md)
+- [🧭 Traefik — Reverse Proxy](cheats.d/web-servers/traefikcheatsheet.md)
+- [🌀 Varnish — HTTP Cache](cheats.d/web-servers/varnishcheatsheet.md)
+- [🐘 PHP-FPM — Process Manager](cheats.d/web-servers/phpfpcheatsheet.md)
 
 ### Virtualization
 - [🖥️ KVM / QEMU — Virtualization](cheats.d/virtualization/kvmcheatsheet.md)
+- [🖥️ Virsh — Libvirt Shell](cheats.d/virtualization/virshcheatsheet.md)
+
+### Mail
+- [✉️ Postfix — SMTP Mail Server](cheats.d/mail/postfixcheatsheet.md)
+- [📧 Dovecot — IMAP/POP3 Server](cheats.d/mail/dovecotcheatsheet.md)
+
+### AI
+- [🤖 Ollama — Local LLM Runtime](cheats.d/ai/ollamacheatsheet.md)
+- [🧬 OpenCode — AI Coding Agent](cheats.d/ai/opencodecheatsheet.md)
+- [🚀 vLLM — LLM Serving Engine](cheats.d/ai/vllmcheatsheet.md)
+- [⚡ llama.cpp — Inference Engine](cheats.d/ai/llamacppcheatsheet.md)
+- [🧩 LocalAI — Multi-modal AI Engine](cheats.d/ai/localaicheatsheet.md)
+- [🌐 Open WebUI — Self-hosted AI Chat](cheats.d/ai/openwebuicheatsheet.md)
+- [🚪 LiteLLM — AI Gateway](cheats.d/ai/litellmcheatsheet.md)
+- [🖥️ NVIDIA Container Toolkit](cheats.d/ai/nvidiacontainertoolkitcheatsheet.md)
+
 ---
 
 ## 📄 License

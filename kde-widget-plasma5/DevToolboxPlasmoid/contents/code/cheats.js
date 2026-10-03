@@ -25,7 +25,10 @@ var GROUP_ICONS = {
     "Cloud": "cloud-shape",
     "Monitoring": "utilities-energy-monitor",
     "Infrastructure Management": "preferences-system-network",
-    "Identity Management": "resource-group"
+    "Identity Management": "resource-group",
+    "Virtualization": "virtual-desktop",
+    "Mail": "mail-message-new",
+    "AI": "applications-ai"
 };
 
 

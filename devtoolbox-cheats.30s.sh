@@ -92,6 +92,9 @@ declare -A GROUP_ICON=(
   ["Cloud"]="☁️"
   ["Infrastructure Management"]="🔧"
   ["Identity Management"]="🪪"
+  ["Virtualization"]="🖥️"
+  ["Mail"]="✉️"
+  ["AI"]="🤖"
 )
 
 
